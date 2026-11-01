@@ -37,14 +37,9 @@ const eslintConfig = defineConfig([
     rules: {
       // Couleurs : aucun code hexadécimal dans les composants.
       "no-restricted-syntax": hexColorRule,
-      // Boutons et listes déroulantes : utiliser les composants du site (voir eslint.rules.mjs).
+      // Boutons et listes déroulantes : utiliser Button et Select de @bbfrance/ui (voir eslint.rules.mjs).
       "react/forbid-elements": forbidNativeElementsRule,
     },
-  },
-  {
-    // Les composants de base eux-mêmes sont construits sur les éléments natifs.
-    files: ["common/components/Button/**", "common/components/Form/ClassicSelect.tsx"],
-    rules: { "react/forbid-elements": "off" },
   },
   // Override default ignores of eslint-config-next.
   globalIgnores([

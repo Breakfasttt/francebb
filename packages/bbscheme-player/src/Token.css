@@ -212,12 +212,12 @@
   z-index: 300;
 }
 
-/* -- Token Stats Hover -- */
-/* -- Token Stats Hover (Portal Version) -- */
+/* -- Bulle d'infos d'un pion (affichée par un portail) --
+   Fond sombre et or (#ffd700) fixes : ce sont des couleurs de jeu, identiques dans les 8 thèmes (carte 101). */
 .token-stats-hover.portal-tooltip {
   position: fixed;
   background: #11111a;
-  border: 1px solid var(--accent);
+  border: 1px solid #ffd700;
   border-radius: 12px;
   padding: 10px 14px;
   display: flex;
@@ -253,7 +253,7 @@
   font-size: 0.7rem;
   font-weight: 900;
   color: #000;
-  background: var(--accent);
+  background: #ffd700;
   padding: 1px 6px;
   border-radius: 4px;
   text-transform: uppercase;
@@ -268,7 +268,7 @@
   font-family: 'Inter', sans-serif;
   font-weight: 800;
   font-size: 0.9rem;
-  color: var(--accent);
+  color: #ffd700;
   text-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
 }
 
@@ -292,7 +292,7 @@
   padding-top: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   font-size: 0.75rem;
-  color: var(--accent);
+  color: #ffd700;
   max-width: 200px;
   white-space: normal;
   text-align: center;

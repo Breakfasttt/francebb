@@ -11,19 +11,16 @@ import Link from "next/link";
 import { Toaster } from "@bbfrance/ui";
 import { DEFAULT_SITE_THEME } from "@/lib/themes";
 import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
-import Navbar from "@/common/components/Navbar/Navbar";
 import AppShell from "@/common/components/AppShell/AppShell";
 import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
-import { getNavCounts } from "@/common/components/Navbar/navCounts";
+import { getNavCounts } from "@/common/components/AppShell/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import "./tailwind.css";
-import "./globals-mobile.css";
-import "@/common/styles/widgets.css";
 
 
 // Police du site (ADR 0006, carte 079) : Inter, servie par le site lui-même (licence libre OFL, app/fonts/).
 // Le build ne demande pas de réseau et aucune donnée de visiteur ne part chez Google. La variable CSS --font-bb
-// est lue par le CSS historique (globals.css, thèmes) et par les variables v2 (--bb-font-sans).
+// est lue par les variables v2 (--bb-font-sans, packages/ui/src/tokens.css).
 const interFont = localFont({
   src: "./fonts/inter-latin-wght.woff2",
   weight: "100 900",
@@ -57,12 +54,10 @@ export default async function RootLayout({
   const isAdmin = getRolePower(userRole) >= ROLE_POWER.ADMIN;
   // Compteurs de la barre de navigation : la promesse est transmise sans l'attendre, pour ne pas retarder la page
   const navCounts = user?.id ? getNavCounts(user.id, isMod) : undefined;
-  // Nouvelle coquille de la refonte (ADR 0006, carte 081) ; REFONTE=0 rend l'ancienne barre et son menu latéral
-  const refonte = process.env.REFONTE !== "0";
 
   return (
     <html lang="fr" data-theme={userTheme} className={interFont.variable} suppressHydrationWarning>
-      <body suppressHydrationWarning className={refonte ? "refonte-shell" : undefined} style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <body suppressHydrationWarning className="flex min-h-screen flex-col">
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
@@ -70,20 +65,16 @@ export default async function RootLayout({
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
           
-          {refonte ? (
-            <AppShell
-              user={user ? { id: user.id, name: user.name, image: user.image } : null}
-              hubLogout={!!session?.hubLogout}
-              isAdmin={isAdmin}
-              isMod={isMod}
-              counts={navCounts}
-            />
-          ) : (
-            <Navbar session={session} isAdmin={isAdmin} isMod={isMod} counts={navCounts} />
-          )}
+          <AppShell
+            user={user ? { id: user.id, name: user.name, image: user.image } : null}
+            hubLogout={!!session?.hubLogout}
+            isAdmin={isAdmin}
+            isMod={isMod}
+            counts={navCounts}
+          />
 
           <main className="main-layout-wrapper">
-            {refonte && user?.id ? <NewLookBanner isLoggedIn /> : null}
+            {user?.id ? <NewLookBanner isLoggedIn /> : null}
             {children}
           </main>
           

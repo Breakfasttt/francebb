@@ -514,7 +514,7 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
           <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={t.open.toggleArchive} disabled={t.isPending}>
             {t.isArchived ? ico(EyeOff) : ico(Eye)} {t.isArchived ? "Désarchiver" : "Archiver"}
           </Button>
-          <LockButton id={t.topicId} type="topic" isLocked={t.isLocked} refonte />
+          <LockButton id={t.topicId} type="topic" isLocked={t.isLocked} />
           <Button type="button" variant="danger" size="tap" className={toolButton} onClick={() => t.run(t.open.deleteTopic)} disabled={t.isPending}>
             {ico(Trash2)} Supprimer le sujet
           </Button>

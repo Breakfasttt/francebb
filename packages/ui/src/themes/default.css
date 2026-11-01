@@ -2,6 +2,7 @@
 [data-theme="default"] {
   --bb-scheme: dark;
   --bb-bg: #0a0a0c;
+  --bb-bg-image: radial-gradient(circle at 50% 50%, #1a1a2e 0%, #0a0a0c 100%);
   --bb-surface: #17171c;
   --bb-surface-2: #222229;
   --bb-border: #2e2e36;

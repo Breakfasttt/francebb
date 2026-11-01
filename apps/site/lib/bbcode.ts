@@ -108,7 +108,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
 
   // Code blocks
   while (/\[code\]((?:(?!\[code\])[\s\S])*?)\[\/code\]/i.test(html)) {
-    html = html.replace(/\[code\]((?:(?!\[code\])[\s\S])*?)\[\/code\]/i, "<pre style='background: rgba(0,0,0,0.35); padding: 1rem; border-radius: 8px; border: 1px solid var(--glass-border); font-family: monospace; white-space: pre-wrap; color: var(--text-secondary); margin: 1rem 0; font-size: 0.85rem;'>$1</pre>");
+    html = html.replace(/\[code\]((?:(?!\[code\])[\s\S])*?)\[\/code\]/i, "<pre style='background: var(--bb-surface-2); padding: 1rem; border-radius: 8px; border: 1px solid var(--bb-border); font-family: monospace; white-space: pre-wrap; overflow-x: auto; color: var(--bb-text); margin: 1rem 0; font-size: 0.85rem;'>$1</pre>");
   }
 
   // Sub/Sup
@@ -120,7 +120,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   }
   
   // Horizontal Rule
-  html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--glass-border); margin: 1rem 0; clear: both;' />");
+  html = html.replace(/\[hr\]/gi, "<hr style='border: none; border-top: 1px solid var(--bb-border); margin: 1rem 0; clear: both;' />");
 
   // 2.5 BBScheme (Placeholder for BBCodeContent to hydrate)
   html = html.replace(/\[bbscheme(?:=(vertical|horizontal))?\]([\s\S]*?)\[\/bbscheme\]/gi, (match, layout, rawId) => {
@@ -159,40 +159,40 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
       if (postId && postStatusMap && postStatusMap[postId]) {
         const status = postStatusMap[postId];
         if (status.isDeleted) {
-          quoteContent = `<div style="text-align: center; color: var(--text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
+          quoteContent = `<div style="text-align: center; color: var(--bb-text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
         } else if (status.isModerated) {
-          quoteContent = `<div style="text-align: center; color: var(--danger); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
+          quoteContent = `<div style="text-align: center; color: var(--bb-danger-text); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
         }
       }
       const displayContent = (quoteContent || content).trim();
       const tabs = [];
-      tabs.push(`<div style="background: var(--primary); color: var(--header-foreground); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--primary); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
+      tabs.push(`<div style="background: var(--bb-accent); color: var(--bb-on-accent); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--bb-accent); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
       if (userId) {
         const isMe = currentUserId === userId;
         const profileHref = isMe ? '/profile' : `/spy/${userId}`;
         const displayName = userName || userId;
-        tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
+        tabs.push(`<div style="background: var(--bb-surface-2); border: 1px solid var(--bb-border); border-bottom: none; color: var(--bb-text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--bb-accent-text); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
       }
       if (postId) {
-        tabs.push(`<div style="background: var(--glass-bg); border: 1px solid var(--glass-border); border-bottom: none; color: var(--text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
+        tabs.push(`<div style="background: var(--bb-surface-2); border: 1px solid var(--bb-border); border-bottom: none; color: var(--bb-text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
       }
-      return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--glass-border); border-left: 4px solid var(--primary); background: var(--glass-bg); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--text-secondary); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
+      return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--bb-border); border-left: 4px solid var(--bb-accent); background: var(--bb-surface-2); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--bb-text-muted); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
     });
   }
 
   // 6. Links
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, (match, url, content) => {
-    return `<a href="${sanitizeUrl(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">${content}</a>`;
+    return `<a href="${sanitizeUrl(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--bb-accent-text); text-decoration:underline;">${content}</a>`;
   });
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, (match, url) => {
     const safeUrl = sanitizeUrl(url);
-    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--accent); text-decoration:underline;">${url}</a>`;
+    return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--bb-accent-text); text-decoration:underline;">${url}</a>`;
   });
-  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--primary); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: rgba(var(--primary-rgb, 100,200,255), 0.1); border-radius: 4px;\">📌 $2</a>");
+  html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--bb-accent-text); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: var(--bb-accent-soft); border-radius: 4px;\">📌 $2</a>");
   html = html.replace(/\[mention=([a-zA-Z0-9_-]+)\](.*?)\[\/mention\]/gi, (match, mId, mName) => {
     const isMe = currentUserId === mId;
     const href = isMe ? '/profile' : `/spy/${mId}`;
-    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="mention" style="color: var(--primary); font-weight: 700; background: rgba(var(--primary-rgb,100,200,255),0.12); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;">@${mName}</a>`;
+    return `<a href="${href}" target="_blank" rel="noopener noreferrer" class="mention" style="color: var(--bb-accent-text); font-weight: 700; background: var(--bb-accent-soft); padding: 0.05rem 0.35rem; border-radius: 4px; text-decoration: none;">@${mName}</a>`;
   });
 
   // 7. Replace Images
@@ -262,10 +262,10 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
 
   // 10. Tables [table], [tr], [td], [th]
   while (/\[td\]((?:(?!\[td\])[\s\S])*?)\[\/td\]/i.test(html)) {
-    html = html.replace(/\[td\]((?:(?!\[td\])[\s\S])*?)\[\/td\]/i, "<td style='padding: 0.8rem; border: 1px solid var(--glass-border); vertical-align: top; color: var(--foreground);'>$1</td>");
+    html = html.replace(/\[td\]((?:(?!\[td\])[\s\S])*?)\[\/td\]/i, "<td style='padding: 0.8rem; border: 1px solid var(--bb-border); vertical-align: top; color: var(--bb-text);'>$1</td>");
   }
   while (/\[th\]((?:(?!\[th\])[\s\S])*?)\[\/th\]/i.test(html)) {
-    html = html.replace(/\[th\]((?:(?!\[th\])[\s\S])*?)\[\/th\]/i, "<th style='padding: 0.8rem; border: 1px solid var(--glass-border); background: var(--primary-transparent); color: var(--accent); font-weight: 800; text-align: left;'>$1</th>");
+    html = html.replace(/\[th\]((?:(?!\[th\])[\s\S])*?)\[\/th\]/i, "<th style='padding: 0.8rem; border: 1px solid var(--bb-border); background: var(--bb-accent-soft); color: var(--bb-accent-text); font-weight: 800; text-align: left;'>$1</th>");
   }
   while (/\[tr\]((?:(?!\[tr\])[\s\S])*?)\[\/tr\]/i.test(html)) {
     html = html.replace(/\[tr\]((?:(?!\[tr\])[\s\S])*?)\[\/tr\]/i, "<tr style='transition: background 0.2s;'>$1</tr>");
@@ -273,7 +273,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   while (/\[table\]([\s\S]*?)\[\/table\]/i.test(html)) {
     html = html.replace(/\[table\]([\s\S]*?)\[\/table\]/i, (match, content) => {
       const cleanContent = content.replace(/\r\n|\r|\n/g, "");
-      return `<div style="overflow-x: auto; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--glass-border);"><table style="width: 100%; border-collapse: collapse; background: var(--card-bg); font-size: 0.9rem;">${cleanContent}</table></div>`;
+      return `<div style="overflow-x: auto; margin: 1rem 0; border-radius: 8px; border: 1px solid var(--bb-border);"><table style="width: 100%; border-collapse: collapse; background: var(--bb-surface); font-size: 0.9rem;">${cleanContent}</table></div>`;
     });
   }
 

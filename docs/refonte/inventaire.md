@@ -20,25 +20,25 @@ Cette liste de contrôle sert à vérifier qu'aucune fonctionnalité ne dispara�
 
 ## 1. Éléments présents sur toutes les pages
 
-Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/Navbar/`, `MobileSidebar/`, `PageHeader/`, `CookieBanner/`.
+Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/AppShell/` (la coquille ; `Navbar/` et `MobileSidebar/` ont été supprimés par la carte 101), `PageHeader/`, `CookieBanner/`. *Lignes vérifiées par `tests/e2e/inventaire/coquille.spec.ts` (cartes 081 et 084) et `coquille-fin.spec.ts` (carte 101), en taille ordinateur et en taille téléphone.*
 
-- [ ] [tous] Le logo du site ramène à l'accueil. Sur l'accueil, la barre n'affiche pas de logo, parce que la page a déjà le sien en grand.
+- [x] [tous] Le logo du site ramène à l'accueil. Sur l'accueil, la barre n'affiche pas de logo, parce que la page a déjà le sien en grand.
 - [x] [visiteur] Un bouton « Connexion » mène à `/auth/login`.
 - [x] [membre] Une pastille de profil (avatar ou initiale, plus le pseudo) mène à `/profile`.
 - [x] [membre] Un bouton « Déconnexion » déconnecte et ramène à l'accueil. En mode hub, il ferme aussi la session du hub par un envoi POST vers `/auth/logout`.
 - [x] [membre] Une icône Messagerie mène à `/messagerie` et affiche une pastille avec le nombre de messages privés non lus.
 - [x] [modo] Une icône Modération mène à `/moderation` et affiche une pastille avec le nombre d'éléments en attente : signalements et ressources à valider, avec « 9+ » au-delà de 9.
-- [ ] [admin] Une icône Administration mène à `/administration`.
+- [x] [admin] Une icône Administration mène à `/administration`. *(Sur téléphone, le lien est dans le panneau « Plus ».)*
 - [x] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-page-sidebar-slot` du menu latéral.
-- [ ] [tous] Sur téléphone, le bouton retour de la page reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-back-button-slot` de la barre.
+- [x] [tous] Sur téléphone, le bouton retour de la page reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-back-button-slot` de la barre.
 - [x] [tous] Le menu de téléphone se ferme quand on change de page, et le défilement de la page est bloqué tant qu'il est ouvert.
 - [x] [tous] Le pied de page donne accès aux mentions légales, à la mention « Conçu avec l'aide de l'IA », au GitHub (lien externe) et aux statistiques (`/statistiques`). Sur téléphone, ces liens sont aujourd'hui en bas du menu latéral.
-- [ ] [tous] Le bandeau cookies apparaît après 1,5 seconde si aucun consentement n'est enregistré. « Accepter » est mémorisé dans le navigateur, la croix ferme le bandeau pour la session, et un lien mène aux mentions légales.
-- [ ] [tous] Les notifications temporaires (toasts) s'affichent, sans être cachées par la navigation.
-- [ ] [tous] Le thème choisi est appliqué dès le premier affichage, sans éclair d'une autre couleur (ADR 0005). Pour un membre, il vient de sa session ; pour un visiteur, de la mémoire du navigateur.
-- [ ] [membre banni] Un membre banni est envoyé vers `/banned`.
-- [ ] [membre] Tant que le profil n'est pas terminé, le membre est renvoyé vers l'onboarding (`proxy.ts`).
-- [ ] [tous, en développement seulement] Le widget de comptes de test (`DebugAuthWidget`) et le widget de thème (`DebugThemeWidget`) restent utilisables.
+- [x] [tous] Le bandeau cookies apparaît après 1,5 seconde si aucun consentement n'est enregistré. « Accepter » est mémorisé dans le navigateur, la croix ferme le bandeau pour la session, et un lien mène aux mentions légales. *(Carte 101 : il est posé au-dessus de la barre basse et la page réserve sa place.)*
+- [x] [tous] Les notifications temporaires (toasts) s'affichent, sans être cachées par la navigation.
+- [ ] [tous] Le thème choisi est appliqué dès le premier affichage, sans éclair d'une autre couleur (ADR 0005). Pour un membre, il vient de sa session ; pour un visiteur, de la mémoire du navigateur. *(Carte 101 : vérifié pour un membre (le thème est dans la page envoyée par le serveur). Pour un visiteur, le thème gardé par le navigateur n'est posé qu'après le chargement de la page (`ThemeProvider`), d'où un court éclair du thème par défaut : défaut hors refonte, ligne laissée non cochée.)*
+- [x] [membre banni] Un membre banni est envoyé vers `/banned`.
+- [x] [membre] Tant que le profil n'est pas terminé, le membre est renvoyé vers l'onboarding (`proxy.ts`).
+- [x] [tous, en développement seulement] Le widget de comptes de test (`DebugAuthWidget`) et le widget de thème (`DebugThemeWidget`) restent utilisables.
 
 ## 2. L'éditeur BBCode (partagé par le forum, les articles, la messagerie, les ligues, le profil et l'administration)
 
@@ -215,7 +215,7 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
 - [x] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
 - [x] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
-- [ ] [tous] `/mentions-legales`. *Non traitée par la carte 090 : le texte de la page était réécrit au même moment (carte 126, RGPD). Sa mise en forme est reportée à la carte 101.*
+- [x] [tous] `/mentions-legales`. *Non traitée par la carte 090 : le texte de la page était réécrit au même moment (carte 126, RGPD). Mise en forme faite par la carte 101 (sans toucher `page.tsx`), vérifiée par `coquille-fin.spec.ts` : titre, dix sections, pas de défilement de côté, texte en 16 pixels.*
 - [x] [tous] `/media` : lecteurs Twitch avec le lien « Suivez… » et listes de lecture YouTube. *Le lien s'appelle « Voir sur Twitch » (avant comme après la refonte).*
 - [x] [tous] `/statistiques` : utilisateurs, ligues, articles, sujets du forum, vues totales, personnes en ligne.
 - [x] [admin] `/statistiques` : courriels du mois, quota restant, quota de stockage, taille de la base, signalements, ressources.

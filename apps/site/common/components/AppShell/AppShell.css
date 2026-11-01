@@ -1,19 +1,28 @@
 /*
- * Mise en page autour de la nouvelle coquille (carte 081). Ces règles ne s'appliquent que si le layout pose
- * la classe `refonte-shell` sur <body> (REFONTE différent de 0).
+ * Mise en page autour de la coquille du site (cartes 081 et 101).
  * --app-bottom-nav-space : place occupée en bas par la barre de navigation (0 sur ordinateur, pendant la saisie
  * et sur BBScheme). Les éléments fixés en bas (bandeau cookies, bouton de filtres, notifications) s'en servent.
+ * --app-cookie-space : hauteur du bandeau des cookies tant qu'il est affiché (posée par CookieBanner.tsx), 0 sinon.
  */
-.refonte-shell {
+body {
   --app-bottom-nav-space: 0px;
 }
 
+/* Zone du contenu de chaque page (app/layout.tsx). Sur ordinateur, la place du pied de page fixé en bas, et celle du
+   bandeau des cookies s'il est affiché : la fin de la page peut toujours défiler au-dessus. */
+.main-layout-wrapper {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  padding-bottom: calc(3rem + var(--app-cookie-space, 0px));
+}
+
 @media (max-width: 1024px) {
-  .refonte-shell:has(.app-bottom-nav) {
+  body:has(.app-bottom-nav) {
     --app-bottom-nav-space: calc(58px + env(safe-area-inset-bottom));
   }
 
-  html[data-typing] .refonte-shell {
+  html[data-typing] body {
     --app-bottom-nav-space: 0px;
   }
 
@@ -26,42 +35,43 @@
     transform: translateY(100%);
   }
 
-  /* L'ancienne barre fixe réservait 64 px en haut ; la nouvelle barre haute occupe sa place dans le flux */
-  .refonte-shell .main-layout-wrapper {
-    padding-top: 0 !important;
-    padding-bottom: calc(var(--app-bottom-nav-space) + 1.5rem);
+  /* Sur téléphone : la place de la barre basse, du bandeau des cookies et des notifications affichées (une page qui
+     colle sa propre barre d'actions en bas réserve elle-même sa place). Les notifications s'empilent juste au-dessus
+     de la barre basse : tant qu'il y en a une, on peut faire défiler les derniers boutons de la page au-dessus d'elle. */
+  body:has([data-sonner-toast]) {
+    --app-toast-space: 6rem;
   }
 
-  .refonte-shell .cookie-banner-overlay {
-    bottom: var(--app-bottom-nav-space) !important;
+  .main-layout-wrapper {
+    padding-bottom: calc(var(--app-bottom-nav-space) + var(--app-cookie-space, 0px) + var(--app-toast-space, 0px) + 1.5rem);
   }
 
   /* --app-page-bar-space : hauteur d'une barre d'actions collée en bas par la page elle-même (par exemple
      « Répondre » et la pagination d'un sujet, carte 086), repérée par l'attribut data-page-bottom-bar. Les éléments
      flottants (notifications, widgets de développement) montent d'autant pour ne pas la couvrir. La barre s'efface
      pendant la saisie, la place réservée aussi. */
-  .refonte-shell:has([data-page-bottom-bar]) {
+  body:has([data-page-bottom-bar]) {
     --app-page-bar-space: 60px;
   }
 
-  html[data-typing] .refonte-shell {
+  html[data-typing] body {
     --app-page-bar-space: 0px;
   }
 
   /* Barre d'envoi des écrans de rédaction (carte 087, data-page-bottom-bar="always") : elle reste affichée pendant
      la saisie, pour que « Publier » reste à portée de pouce ; la place réservée reste donc la même. */
-  html[data-typing] .refonte-shell:has([data-page-bottom-bar="always"]) {
+  html[data-typing] body:has([data-page-bottom-bar="always"]) {
     --app-page-bar-space: 60px;
   }
 
   /* Écran qui couvre tout le téléphone sans avoir sa propre adresse, repéré par l'attribut data-fullscreen (une
      conversation de la messagerie, ouverte par le paramètre ?id=, carte 093) : la barre basse est retirée, comme sur
      les écrans de rédaction (isComposePath), et la page restée derrière ne défile plus. */
-  .refonte-shell:has([data-fullscreen]) {
+  body:has([data-fullscreen]) {
     --app-bottom-nav-space: 0px;
   }
 
-  .refonte-shell:has([data-fullscreen]) .app-bottom-nav {
+  body:has([data-fullscreen]) .app-bottom-nav {
     display: none;
   }
 

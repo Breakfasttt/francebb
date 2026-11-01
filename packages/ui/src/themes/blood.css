@@ -2,6 +2,7 @@
 [data-theme="blood"] {
   --bb-scheme: dark;
   --bb-bg: #120000;
+  --bb-bg-image: radial-gradient(circle at 50% 50%, #3a0000 0%, #0a0000 100%);
   --bb-surface: #1e0505;
   --bb-surface-2: #2a0909;
   --bb-border: #401313;

@@ -20,7 +20,6 @@ import BackButton from "@/common/components/BackButton/BackButton";
 import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { notFound, redirect } from "next/navigation";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) et animation du nouveau message, partagés par le forum
-import "../../page.css";
 
 export const dynamic = "force-dynamic";
 

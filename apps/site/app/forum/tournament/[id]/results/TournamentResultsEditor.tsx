@@ -147,8 +147,7 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
       </div>
       <div className={cn(cell, "max-lg:col-span-2 max-lg:col-start-3 max-lg:row-start-2")}>
         <span className={cellLabel}>Membre du site</span>
-        {/* Composant historique (petite police) : champ en 16 pixels et cibles de 44 pixels imposés ici */}
-        <div className="[&_button]:!min-h-11 [&_button]:!min-w-11 [&_input]:!min-h-11 [&_input]:!text-base">
+        <div className="min-w-0">
         <UserMapper
           selectedUser={res.user}
           onSelect={(user: any) => {

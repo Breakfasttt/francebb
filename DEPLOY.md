@@ -161,9 +161,9 @@ Le hub (`apps/hub`) donne un seul compte BBFrance pour le site et les futures ap
 
 ---
 
-## Refonte visuelle : revenir à l'ancienne navigation (carte 081)
+## Refonte visuelle : fin de la variable `REFONTE` (carte 101)
 
-La nouvelle navigation (barre basse sur téléphone, nouvelle barre haute) est active par défaut. En cas de problème, on revient à l'ancienne barre et à son menu latéral sans toucher au code : sur Vercel, **Settings** > **Environment Variables**, ajouter `REFONTE` avec la valeur `0`, puis redéployer. Supprimer la variable (ou lui donner une autre valeur) remet la nouvelle navigation. Cette variable disparaîtra à la fin de la refonte (carte 101).
+La variable d'environnement `REFONTE`, qui permettait de revenir à l'ancienne navigation pendant la refonte, n'existe plus : l'ancienne navigation et l'ancien CSS ont été supprimés. Si elle est encore déclarée sur Vercel (**Settings** > **Environment Variables**), la supprimer ; elle n'a plus aucun effet. Pour revenir en arrière en cas de problème, annuler le commit de la carte 101 (`git revert`), puis redéployer.
 
 ---
 

@@ -1,0 +1,221 @@
+/*
+ * Feuille unique des balises BBCode (carte 101). Le HTML est produit par lib/bbcode.ts, qui l'utilise partout où un
+ * message est affiché : forum, articles, ligues, messagerie, page « Jouer », aperçu de l'éditeur. Elle est donc chargée
+ * pour tout le site par app/tailwind.css. Les balises simples (citation, code, tableau, lien) portent leur style dans
+ * la balise elle-même ; ici ne restent que celles qui ont besoin d'un état (ouvert, révélé) ou d'un survol.
+ * Couleurs : variables v2 uniquement (voir le skill theming-rules).
+ */
+
+/* Contenu d'un message : un mot très long (adresse, pseudo) passe à la ligne au lieu d'élargir la page. */
+.bbcode-content-wrapper {
+  overflow-wrap: anywhere;
+}
+
+/* ---------- Accordéon : [accordion=Titre]…[/accordion] ---------- */
+.bb-accordion {
+  margin: 0.8rem 0;
+  border-radius: var(--bb-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--bb-border);
+  border-left: 6px solid var(--bb-accent);
+  background: var(--bb-surface);
+}
+
+.bb-accordion summary {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-height: 44px;
+  padding: 0.6rem 1.2rem;
+  cursor: pointer;
+  list-style: none;
+  font-weight: 700;
+  color: var(--bb-text);
+  background: var(--bb-surface-2);
+  user-select: none;
+}
+
+.bb-accordion summary::-webkit-details-marker {
+  display: none;
+}
+
+/* Flèche qui tourne quand l'accordéon s'ouvre */
+.bb-accordion summary::before {
+  content: "→";
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--bb-accent-text);
+  transition: transform 0.3s ease;
+}
+
+.bb-accordion[open] summary::before {
+  transform: rotate(90deg);
+}
+
+.bb-accordion summary:hover {
+  background: var(--bb-accent-soft);
+}
+
+.bb-accordion-content {
+  padding: 0.8rem 1.2rem;
+  color: var(--bb-text);
+  line-height: 1.7;
+  border-top: 1px solid var(--bb-border);
+}
+
+/* ---------- Spoiler : [spoiler=Titre]…[/spoiler] ---------- */
+/* Le texte est caché sous un cache ; un clic sur le cache le révèle (classe « revealed »), l'œil le recouvre. */
+.bb-spoiler-wrapper {
+  margin: 0.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.bb-spoiler-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-left: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--bb-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.bb-spoiler-header::before {
+  content: "⚠️";
+  font-size: 0.9rem;
+}
+
+.bb-spoiler-box {
+  position: relative;
+  min-height: 80px;
+  border-radius: var(--bb-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--bb-border);
+  background: var(--bb-surface);
+  cursor: pointer;
+}
+
+.bb-spoiler-body {
+  padding: 1rem 1.2rem 3.5rem;
+  color: var(--bb-text);
+  background: var(--bb-surface-2);
+  /* Le texte est présent mais invisible et flou tant que le spoiler n'est pas révélé */
+  opacity: 0;
+  filter: blur(40px);
+  pointer-events: none;
+  transition: opacity 0.6s ease, filter 0.6s ease;
+}
+
+.bb-spoiler-box.revealed > .bb-spoiler-body {
+  opacity: 1;
+  filter: none;
+  pointer-events: auto;
+}
+
+.bb-spoiler-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 1px;
+  border: 1px dashed var(--bb-accent-text);
+  border-radius: calc(var(--bb-radius-md) - 1px);
+  background-color: var(--bb-surface);
+  /* Grain léger, de la couleur des bordures du thème */
+  background-image: radial-gradient(var(--bb-border) 1px, transparent 1px);
+  background-size: 8px 8px;
+  user-select: none;
+  transition: opacity 0.4s ease, visibility 0.4s;
+}
+
+.bb-spoiler-box.revealed > .bb-spoiler-mask {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.bb-spoiler-mask-text {
+  color: var(--bb-accent-text);
+  text-transform: uppercase;
+  letter-spacing: 0.4rem;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+/* Bouton « œil » qui recouvre le spoiler : 44 pixels, la taille d'un pouce */
+.bb-spoiler-rehide {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--bb-border);
+  border-radius: var(--bb-radius-sm);
+  background: var(--bb-surface);
+  color: var(--bb-text-muted);
+  cursor: pointer;
+}
+
+.bb-spoiler-rehide:hover {
+  border-color: var(--bb-accent-text);
+}
+
+.bb-spoiler-rehide:focus-visible {
+  outline: 2px solid var(--bb-focus);
+  outline-offset: 2px;
+}
+
+/* ---------- Galerie : [gallery]…[/gallery] ---------- */
+.bb-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(180px, 100%), 1fr));
+  gap: 1rem;
+  margin: 1.2rem 0;
+  padding: 0.8rem;
+  border: 1px solid var(--bb-border);
+  border-radius: var(--bb-radius-md);
+  background: var(--bb-surface-2);
+}
+
+.bb-gallery-item {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: var(--bb-radius-sm);
+  border: 1px solid var(--bb-border);
+  transition: border-color 0.2s ease;
+}
+
+.bb-gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.bb-gallery-item:hover {
+  border-color: var(--bb-accent-text);
+}
+
+.bb-gallery-item:hover img {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-accordion summary::before,
+  .bb-spoiler-body,
+  .bb-spoiler-mask,
+  .bb-gallery-item img {
+    transition: none;
+  }
+}

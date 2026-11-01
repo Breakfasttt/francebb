@@ -20,7 +20,6 @@ BBScheme est un plateau de Blood Bowl interactif : le coach place des joueurs de
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/bbscheme/page.tsx` | L'éditeur entier (environ 1 550 lignes, composant client) : logique du plateau et habillage en classes Tailwind |
-| `apps/site/app/bbscheme/page.css` | Les seules règles CSS restantes : celles du cadre du terrain (geste au doigt, pincement, animations de taille) |
 | `apps/site/app/bbscheme/component/ToolButton.tsx` | Bouton d'outil (icône, nom accessible, info-bulle, état allumé `aria-pressed`) |
 | `apps/site/app/bbscheme/component/HelpSheet.tsx`, `GifExportSheet.tsx` | Fenêtres d'aide et d'export en GIF (`Sheet` de `packages/ui`) |
 | `apps/site/common/hooks/usePinchZoom.ts` | Hook réutilisable du zoom au pincement à deux doigts (carte 068), branché sur le cadre `.pitch-viewport` de l'éditeur |
@@ -42,8 +41,8 @@ BBScheme est un plateau de Blood Bowl interactif : le coach place des joueurs de
 - L'identifiant passé dans `[bbscheme]` est inséré dans un attribut HTML ; il est protégé parce que `parseBBCode` échappe d'abord les guillemets. Ne pas déplacer ce traitement avant l'échappement.
 - La fonction « fosses » (réserve, KO, blessés, expulsés) est désactivée en commentaire.
 - Couleurs : l'habillage suit les variables v2 (`bg-bb-surface`, `text-bb-text`…) dans les 8 thèmes ; seules les couleurs des deux équipes (bleu, rouge, comme les pions) et celles du terrain (dans le paquet) sont fixes. Les règles propres à BBScheme du thème Saison 3 ont été retirées (carte 100).
-- L'éditeur est un cadre fixé entre la barre haute du site (57 pixels sur téléphone, 65 sur ordinateur) et le pied de page de l'ordinateur (40 pixels) : si la hauteur de l'une de ces barres change, corriger les classes `top-[57px]`, `lg:top-[65px]` et `lg:bottom-10` de `page.tsx`. Avec l'ancienne coquille (`REFONTE=0`), ces valeurs ne correspondent plus exactement.
-- Gestes sur le terrain : les classes `pitch-viewport`, `pitch-resizer` et `pitch-rotator` portent les règles de `page.css` et servent à `handleResize` et à l'export en GIF (capture de `.pitch-resizer`) : ne pas les renommer.
+- L'éditeur est un cadre fixé entre la barre haute du site (57 pixels sur téléphone, 65 sur ordinateur) et le pied de page de l'ordinateur (40 pixels) : si la hauteur de l'une de ces barres change, corriger les classes `top-[57px]`, `lg:top-[65px]` et `lg:bottom-10` de `page.tsx`.
+- Gestes sur le terrain : les classes `pitch-viewport`, `pitch-resizer` et `pitch-rotator` portent les classes Tailwind des gestes (défilement au doigt, coupure des animations pendant un pincement, carte 101) et servent à `handleResize` et à l'export en GIF (capture de `.pitch-resizer`) : ne pas les renommer.
 - **Zoom au pincement** (carte 068) : le cadre `.pitch-viewport` porte `touch-action: pan-x pan-y` (le navigateur fait défiler le terrain au doigt mais ne zoome plus la page) et le hook `usePinchZoom` annule le geste par défaut (`preventDefault`) dès que deux doigts sont posés. Le défilement à un doigt de `page.tsx` (`handleTouchStart`, `handleTouchMove`) s'arrête quand un deuxième doigt arrive. Pendant le geste, la classe `pinching` coupe les animations de taille du terrain. Les bornes du zoom sont les constantes `ZOOM_MIN` et `ZOOM_MAX` de `page.tsx`, communes au curseur, à la molette et au pincement. Le test `tests/e2e/bbscheme-pinch.spec.ts` simule deux doigts par le protocole de pilotage de Chrome (CDP) ; l'essai sur un vrai téléphone reste à faire.
 
 ## Les mots expliqués

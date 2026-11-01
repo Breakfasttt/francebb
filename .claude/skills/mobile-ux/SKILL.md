@@ -23,7 +23,7 @@ Vérification : tests automatiques en taille téléphone, plus un contrôle à l
 
 ## Principes
 
-- **Ne rien casser sur ordinateur** : les règles mobiles sont à part, dans `page-mobile.css` ou un bloc `@media (max-width: 1024px)`.
+- **Ne rien casser sur ordinateur** : les règles mobiles sont à part : préfixe Tailwind `max-lg:` (ou `lg:` pour ce qui est réservé à l'ordinateur), ou bloc `@media (max-width: 1024px)` dans un fichier CSS de composant.
 - Sur téléphone, on empile les éléments verticalement (`flex-direction: column`) et on garde de l'air (marges intérieures).
 - Un tableau trop large passe en liste verticale ou défile dans son propre cadre (`overflow-x: auto`), jamais la page entière.
 - Si un composant est trop complexe à adapter, on simplifie son affichage mobile.
@@ -32,9 +32,9 @@ Vérification : tests automatiques en taille téléphone, plus un contrôle à l
 
 Le site passe de l'affichage ordinateur à l'affichage téléphone à **1024 pixels de large** (carte 055). Les tablettes reçoivent donc l'affichage téléphone. Ce seuil est le même partout :
 
-- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()`, `MobilePortal`, `TabSystem` et `PageHeader`. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
+- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()` et `MobilePortal` ; `useMediaQuery(DESKTOP_QUERY)` de `@bbfrance/ui` suit le même seuil. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
 - en CSS : `@media (max-width: 1024px)` pour les règles téléphone, `@media (min-width: 1025px)` pour les règles réservées à l'ordinateur. Le CSS ne sait pas lire une variable dans un `@media`, d'où la valeur écrite en clair ;
-- les classes `.mobile-only` et `.desktop-only` (`globals.css`, `globals-mobile.css`) basculent à la même largeur.
+- en Tailwind : `max-lg:` (téléphone) et `lg:` (ordinateur), réglés sur 1025 pixels dans `packages/ui/src/tokens.css`. Les anciennes classes `.mobile-only` et `.desktop-only` ont été supprimées (carte 101).
 
 Pourquoi : avant la carte 055, une partie du site basculait à 768 pixels et l'autre à 1024. Entre les deux (tablettes), des colonnes étaient masquées par le CSS sans être encore déplacées dans le menu par le JavaScript : les onglets de la modération devenaient inaccessibles.
 
@@ -74,4 +74,4 @@ Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois
 
 ## Pages impossibles sur téléphone
 
-Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher `<DesktopOnlyFallback>` avec un message clair : « Optimisé pour ordinateur ou tablette ». Ce n'est pas le cas de l'éditeur BBScheme, qui a sa propre interface téléphone (carte 100) : terrain entre une barre compacte d'outils (le reste dans un panneau « Plus d'outils ») et une barre basse pour les réserves et l'animation.
+Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher un message clair (par exemple un `EmptyState` de `@bbfrance/ui` : « Optimisé pour ordinateur ou tablette ») ; l'ancien composant `DesktopOnlyFallback`, jamais utilisé, a été supprimé par la carte 101. Ce n'est pas le cas de l'éditeur BBScheme, qui a sa propre interface téléphone (carte 100) : terrain entre une barre compacte d'outils (le reste dans un panneau « Plus d'outils ») et une barre basse pour les réserves et l'animation.

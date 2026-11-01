@@ -19,7 +19,7 @@ Plus tard : `apps/bbscheme` (éditeur BBScheme en application séparée).
 
 | Dossier | Contenu | Règle |
 |---|---|---|
-| `app/<page>/` | La page (`page.tsx`), son style (`page.css`, `page-mobile.css`), ses composants propres (`component/`) et ses actions serveur (`actions.ts`) | Les requêtes à la base de données vont dans `actions.ts` ou dans `page.tsx`, jamais dans un composant d'affichage |
+| `app/<page>/` | La page (`page.tsx`, mise en forme en classes Tailwind), ses composants propres (`component/`) et ses actions serveur (`actions.ts`) | Les requêtes à la base de données vont dans `actions.ts` ou dans `page.tsx`, jamais dans un composant d'affichage |
 | `common/components/` | Composants utilisés par au moins 2 pages | Inventaire : skill `.claude/skills/reuse-first` |
 | `common/hooks/`, `common/utils/` | Petites fonctions réutilisables côté navigateur | |
 | `lib/` | Fonctions côté serveur : base de données, connexion, rôles, BBCode, mail | Jamais importé par un composant navigateur |
@@ -58,7 +58,7 @@ ESLint (l'outil qui relit le code, voir le glossaire) refuse dans `apps/site` tr
 |---|---|---|
 | Frontière entre applications | Un import du code d'une autre application : par son nom de paquet (`@bbfrance/hub`), par un chemin qui passe par `apps/`, ou par un chemin relatif qui remonte jusqu'au dossier du hub | `no-restricted-imports` |
 | Couleurs via les variables des thèmes | Un code couleur hexadécimal (`#fff`, `#2E7D32`) écrit dans un fichier `.tsx` | `no-restricted-syntax` |
-| Composants existants | Un `<button>` ou un `<select>` natif dans un fichier `.tsx`. Seuls les composants de base (`common/components/Button/`, `ClassicSelect`) ont le droit de les utiliser | `react/forbid-elements` |
+| Composants existants | Un `<button>` ou un `<select>` natif dans un fichier `.tsx`. On utilise `Button` et `Select` de `@bbfrance/ui`, seuls autorisés à les employer | `react/forbid-elements` |
 
 Le code écrit avant ces règles contient encore des écarts. Le cliquet (`apps/site/scripts/lint-ratchet.mjs`) les tolère, mais il garde un plafond **pour chaque règle** dans `apps/site/lint-baseline.json` : une nouvelle erreur est refusée même si une autre a été corrigée ailleurs. Quand on corrige des écarts, on abaisse les plafonds avec `node scripts/lint-ratchet.mjs --update`.
 

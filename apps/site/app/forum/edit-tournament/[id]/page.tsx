@@ -1,7 +1,6 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
-import "../../page.css";
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { parseInlineBBCode } from "@/lib/bbcode";

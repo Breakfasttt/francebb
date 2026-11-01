@@ -6,5 +6,5 @@ Ce paquet affiche un plateau BBScheme enregistré et rejoue son animation : c'es
 - **Fichiers lus sur le site** : les rosters sont chargés depuis l'adresse `/data/roster/…` (dossier `public/` du site), et le bouton « Ouvrir dans l'éditeur » mène à `/bbscheme?id=…`. Une application qui utilise le lecteur doit donc servir ces adresses.
 - **Boutons** : ceux de `@bbfrance/ui`, jamais ceux de `apps/site/common/components/Button` (un paquet n'importe jamais le code d'une application).
 - **Téléphone** : les règles sont dans `src/BBSchemePlayer-mobile.css`, sous le seuil unique de 1024 pixels (`@media (max-width: 1024px)`) ; les boutons y font 44 pixels.
-- **Couleurs** : celles de l'interface passent par les variables des thèmes (`var(--primary)`, `var(--card-bg)`…). Le terrain et les pions gardent leurs couleurs de jeu, écrites dans `Pitch.css` et `Token.css`.
+- **Couleurs** : celles de l'interface passent par les variables v2 des thèmes (`var(--bb-accent)`, `var(--bb-surface)`…, voir le skill `theming-rules`). Le terrain, les pions et leur bulle d'infos gardent leurs couleurs de jeu, écrites dans `Pitch.css` et `Token.css`.
 - Le site utilise directement les fichiers sources TypeScript (`transpilePackages` dans `apps/site/next.config.ts`) : il n'y a pas d'étape de compilation du paquet.

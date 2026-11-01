@@ -234,9 +234,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
                         </div>
                         <div className={cn(cell, "max-lg:col-span-4 max-lg:row-start-2")}>
                           <span className={cellLabel}>Membre du site</span>
-                          {/* Composant historique (petite police) : champ en 16 pixels et cibles de 44 pixels imposés ici ; le
-                              champ de recherche passe sous le membre choisi au lieu de déborder sur la colonne suivante */}
-                          <div className="min-w-0 [&_.mapper-input]:!min-w-0 [&_.mapper-input-wrapper]:!min-w-0 [&_.mapper-input-wrapper]:!basis-32 [&_.mapper-input-wrapper]:!h-auto [&_.user-mapper-row]:!h-auto [&_.user-mapper-row]:!flex-wrap [&_.user-mapper-row]:!gap-1 [&_.selected-name]:!max-w-none [&_.selected-user-badge]:!max-w-full [&_.selected-user-badge]:!text-sm [&_button]:!min-h-11 [&_button]:!min-w-11 [&_input]:!min-h-11 [&_input]:!text-base">
+                          <div className="min-w-0">
                             <UserMapper
                               selectedUser={entry.user}
                               onSelect={(user) => onUserSelect(entry, user)}

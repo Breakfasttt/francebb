@@ -3,7 +3,7 @@
 /**
  * Une bulle de message (refonte, carte 093) : ses propres messages à droite, sur la couleur douce de l'accent ; ceux
  * des autres à gauche, avec l'avatar de l'auteur. Le texte est du BBCode converti en HTML (styles des blocs dans
- * app/forum/page.css, importé par la page). L'heure est suivie de la date si le message n'est pas du jour.
+ * common/components/BBCodeContent/bbcode.css, chargé pour tout le site). L'heure est suivie de la date si le message n'est pas du jour.
  */
 import { format, isToday } from "date-fns";
 import { fr } from "date-fns/locale";

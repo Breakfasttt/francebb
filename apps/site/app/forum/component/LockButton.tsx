@@ -4,19 +4,16 @@ import { useTransition } from "react";
 import { Lock, Unlock } from "lucide-react";
 import { toggleForumLock, toggleTopicLock } from "@/app/forum/actions";
 import { useRouter } from "next/navigation";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
 import { Button, toast } from "@bbfrance/ui";
-import AdminButton from "@/common/components/Button/AdminButton";
 
 interface LockButtonProps {
   id: string;
   type: "forum" | "topic";
   isLocked: boolean;
-  /** Apparence de la refonte (ADR 0006), pour les écrans déjà refaits ; sinon, le bouton historique. */
-  refonte?: boolean;
 }
 
-export default function LockButton({ id, type, isLocked, refonte = false }: LockButtonProps) {
+/** Bouton « Verrouiller » ou « Déverrouiller » un forum ou un sujet, dans les outils des modérateurs. */
+export default function LockButton({ id, type, isLocked }: LockButtonProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -38,25 +35,10 @@ export default function LockButton({ id, type, isLocked, refonte = false }: Lock
 
   const label = isLocked ? "Déverrouiller" : "Verrouiller";
 
-  if (refonte) {
-    const Icon = isLocked ? Unlock : Lock;
-    return (
-      <Button type="button" variant="secondary" size="tap" className="w-full justify-start" onClick={handleToggle} disabled={isPending}>
-        <Icon size={18} aria-hidden="true" /> {label} {type === "forum" ? "le forum" : "le sujet"}
-      </Button>
-    );
-  }
-
+  const Icon = isLocked ? Unlock : Lock;
   return (
-    <Tooltip text={`${label} ce ${type === "forum" ? "forum" : "sujet"}`}>
-      <AdminButton
-        onClick={handleToggle}
-        isLoading={isPending}
-        icon={isLocked ? Unlock : Lock}
-        fullWidth
-      >
-        {label}
-      </AdminButton>
-    </Tooltip>
+    <Button type="button" variant="secondary" size="tap" className="w-full justify-start" onClick={handleToggle} disabled={isPending}>
+      <Icon size={18} aria-hidden="true" /> {label} {type === "forum" ? "le forum" : "le sujet"}
+    </Button>
   );
 }

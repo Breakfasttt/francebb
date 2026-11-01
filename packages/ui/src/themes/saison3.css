@@ -2,6 +2,7 @@
 [data-theme="saison3"] {
   --bb-scheme: light;
   --bb-bg: #efebdd;
+  --bb-bg-image: linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%);
   --bb-surface: #fbf8ef;
   --bb-surface-2: #e9e2cd;
   --bb-border: #d3c9ae;

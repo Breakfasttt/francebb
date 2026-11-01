@@ -46,10 +46,9 @@ export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, cont
     row.scrollLeft += tabBox.left - rowBox.left - (rowBox.width - tabBox.width) / 2;
   }, [activeHref, loading]);
 
-  // Sur téléphone, une grande marge sous le contenu : les notifications s'empilent en bas de l'écran, au-dessus de la
-  // barre du bas, et ne doivent pas cacher les derniers boutons de la page (on peut faire défiler au-delà).
+  // La place des notifications sous le contenu est réservée par la coquille (AppShell.css, --app-toast-space)
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-56 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
+    <div className="mx-auto w-full max-w-[1232px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
       <ForumListHeader title={title} subtitle={subtitle} backHref="/" backTitle="Retour à l'accueil" />
 
       {loading ? (

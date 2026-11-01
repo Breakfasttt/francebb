@@ -5,9 +5,6 @@ import { parseBBCode } from "@/lib/bbcode";
 import { Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map, ChevronRight } from "lucide-react";
 import { Button, Card } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
-// Styles des blocs BBCode (accordéons, spoilers, galeries), comme dans les sujets du forum ; avant la carte 090,
-// la page en gardait une copie dans son propre page.css
-import "@/app/forum/page.css";
 
 /**
  * Page « Jouer » : le guide du coach débutant (refonte, carte 090, ADR 0006).

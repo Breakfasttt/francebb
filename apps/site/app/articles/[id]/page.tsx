@@ -27,7 +27,6 @@ import ArticleActions from "./component/ArticleActions";
 import ArticleReactions from "./component/ArticleReactions";
 import ViewCounter from "./component/ViewCounter";
 // Styles des blocs BBCode (accordéons, spoilers, galeries) du texte, comme dans les sujets du forum
-import "@/app/forum/page.css";
 
 export const dynamic = "force-dynamic";
 

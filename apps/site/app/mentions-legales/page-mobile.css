@@ -1,12 +1,12 @@
-/* styles spécifiques mobile pour la page des mentions légales */
+/* Mentions légales sur téléphone : une seule colonne et des gouttières de 16 pixels (voir page.css). */
 
 @media (max-width: 1024px) {
   .mentions-container {
-    padding: 1rem;
-    margin: 1rem auto;
+    padding: 0.5rem 1rem 1.5rem;
   }
-  
+
   .mentions-grid {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }

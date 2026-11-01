@@ -2,6 +2,7 @@
 [data-theme="light"] {
   --bb-scheme: light;
   --bb-bg: #e5e7eb;
+  --bb-bg-image: linear-gradient(135deg, #e5e7eb 0%, #d1d5db 100%);
   --bb-surface: #ffffff;
   --bb-surface-2: #f1f2f4;
   --bb-border: #cfd3da;

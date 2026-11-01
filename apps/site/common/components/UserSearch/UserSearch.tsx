@@ -1,11 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X, User as UserIcon } from "lucide-react";
+import { Search, X, Loader2 } from "lucide-react";
+import { Button, Input } from "@bbfrance/ui";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { searchUsersAction } from "@/app/forum/actions";
-import "./UserSearch.css";
-import "./UserSearch-mobile.css";
 
 interface User {
   id: string;
@@ -73,48 +72,58 @@ export default function UserSearch({
     }
   };
 
-  return (
-    <div className="user-search-container" ref={containerRef}>
-      <div className="selected-users">
-        {selectedUsers.map(user => (
-          <div key={user.id} className="selected-user-tag">
-            <UserAvatar image={user.image} name={user.name || ""} size={24} selectedRank={user.avatarFrame} />
-            <span>{user.name}</span>
-            <button type="button" className="remove-user-btn" onClick={() => onRemove(user.id)}>
-              <X size={14} />
-            </button>
-          </div>
-        ))}
-      </div>
+  const isFull = selectedUsers.length >= maxSelections;
 
-      <div className="user-search-input-wrapper">
-        <Search size={18} className="search-icon" />
-        <input
+  // Apparence de la refonte (carte 101), sur le modèle de MultiLigueSearch : pastilles des membres choisis avec une
+  // croix de 44 pixels, champ de packages/ui, résultats en boutons.
+  return (
+    <div className="flex flex-col gap-2" ref={containerRef}>
+      {selectedUsers.length > 0 && (
+        <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
+          {selectedUsers.map(user => (
+            <li key={user.id} className="inline-flex min-h-11 max-w-full items-center gap-2 rounded-full border border-bb-border bg-bb-surface-2 pl-1.5 text-sm text-bb-text">
+              <UserAvatar image={user.image} name={user.name || ""} size={28} selectedRank={user.avatarFrame} />
+              <span className="truncate font-semibold">{user.name}</span>
+              <Button type="button" variant="quiet" size="tap-icon" className="rounded-full" onClick={() => onRemove(user.id)} aria-label={`Retirer ${user.name || "ce membre"}`}>
+                <X size={16} aria-hidden="true" />
+              </Button>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      <div className="relative">
+        <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+        <Input
           type="text"
+          className="pl-10"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          placeholder={selectedUsers.length >= maxSelections ? "Limite atteinte" : placeholder}
-          disabled={selectedUsers.length >= maxSelections}
+          placeholder={isFull ? "Limite atteinte" : placeholder}
+          disabled={isFull}
           onFocus={() => query.length >= 2 && setShowResults(true)}
         />
-        {isLoading && <div style={{ position: 'absolute', right: '1rem', scale: '0.8' }}>⏳</div>}
+        {isLoading && <Loader2 size={16} className="absolute top-1/2 right-3 -translate-y-1/2 animate-spin text-bb-text-muted" aria-label="Recherche en cours" />}
 
-        {showResults && results.length > 0 && (
-          <div className="user-search-results">
-            {results.map(user => (
-              <div key={user.id} className="user-result-item" onClick={() => handleSelect(user)}>
-                <UserAvatar image={user.image} name={user.name || ""} size={32} selectedRank={user.avatarFrame} />
-                <span>{user.name}</span>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {showResults && results.length === 0 && query.length >= 2 && !isLoading && (
-          <div className="user-search-results">
-            <div style={{ padding: '1rem', color: '#666', fontSize: '0.9rem', textAlign: 'center' }}>
-              Aucun utilisateur trouvé
-            </div>
+        {showResults && query.length >= 2 && !isLoading && (
+          <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+            {results.length > 0 ? (
+              results.map(user => (
+                <Button
+                  key={user.id}
+                  type="button"
+                  variant="quiet"
+                  size="tap"
+                  className="w-full justify-start gap-3 py-1.5 text-left font-semibold whitespace-normal text-bb-text"
+                  onClick={() => handleSelect(user)}
+                >
+                  <UserAvatar image={user.image} name={user.name || ""} size={32} selectedRank={user.avatarFrame} />
+                  <span>{user.name}</span>
+                </Button>
+              ))
+            ) : (
+              <p className="m-0 p-3 text-center text-sm text-bb-text-muted">Aucun utilisateur trouvé</p>
+            )}
           </div>
         )}
       </div>

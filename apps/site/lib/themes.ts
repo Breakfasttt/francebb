@@ -2,7 +2,7 @@
  * Liste officielle des 8 thèmes visuels du site (ADR 0006 : « Vestiaire » s'ajoute aux 7 historiques).
  * L'identifiant (`id`) est la valeur enregistrée dans le profil du membre (colonne `theme`)
  * et posée sur la balise <html> (attribut `data-theme`) ; il doit correspondre à un fichier
- * `app/theme/theme.<id>.css` (le thème sombre `default` est celui de `:root`).
+ * `packages/ui/src/themes/<id>.css` (Vestiaire, le thème par défaut, est aussi celui de `:root`).
  * Le nom (`label`) est celui affiché au membre. Toute liste de thèmes du site part de celle-ci.
  * Ce fichier ne contient que des données : il peut être lu côté serveur comme côté navigateur.
  */

@@ -13,7 +13,6 @@ import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import ComposeScreen, { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
 import { parseInlineBBCode } from "@/lib/bbcode";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
-import "../page.css";
 
 /**
  * Page de création d'un sujet classique (carte 087 : écran de rédaction plein écran sur téléphone, voir

@@ -1,13 +1,13 @@
 .bb-player-root {
   display: flex !important;
   flex-direction: column;
-  background: var(--card-bg);
-  color: var(--foreground);
+  background: var(--bb-surface);
+  color: var(--bb-text);
   overflow: hidden !important;
   padding: 0 !important;
   margin: 1.5rem auto;
   border-radius: 16px;
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--bb-border);
   width: 100% !important;
   max-width: 100% !important;
 }
@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: center;
   background: rgba(0, 0, 0, 0.05);
-  color: var(--accent);
+  color: var(--bb-accent-text);
 }
 
 .bb-player-viewport {
@@ -29,7 +29,7 @@
   background: #000;
   display: flex;
   justify-content: center;
-  border-bottom: 1px solid var(--glass-border);
+  border-bottom: 1px solid var(--bb-border);
 }
 
 .bb-player-pitch-container {
@@ -74,19 +74,19 @@
   background: rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   overflow: hidden;
-  border: 1px solid var(--glass-border);
+  border: 1px solid var(--bb-border);
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--primary);
+  background: var(--bb-accent);
   transition: width 0.3s ease-out;
 }
 
 .frame-info {
   font-size: 0.85rem;
   font-weight: 800;
-  color: var(--primary);
+  color: var(--bb-accent-text);
   min-width: 55px;
   text-align: right;
   font-variant-numeric: tabular-nums;
@@ -105,14 +105,14 @@
   background: rgba(0, 0, 0, 0.05);
   padding: 5px 10px;
   border-radius: 10px;
-  border: 1px solid var(--glass-border);
-  color: var(--foreground);
+  border: 1px solid var(--bb-border);
+  color: var(--bb-text);
 }
 
 .speed-input {
   background: transparent;
   border: none;
-  color: var(--primary);
+  color: var(--bb-accent-text);
   font-size: 0.85rem;
   font-weight: 900;
   width: 45px;
@@ -136,13 +136,13 @@
   font-size: 0.7rem;
   font-weight: 700;
   opacity: 0.7;
-  color: var(--text-muted);
+  color: var(--bb-text-muted);
 }
 
 .divider {
   width: 1px;
   height: 24px;
-  background: var(--glass-border);
+  background: var(--bb-border);
   margin: 0 0.2rem;
   opacity: 1;
 }
@@ -151,46 +151,4 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-}
-
-/* Theme Saison 3 specific overrides */
-[data-theme='saison3'] .bb-player-root {
-  border: 3px solid var(--secondary);
-  background: #f4f1e6 !important; /* Parchment cream */
-}
-
-[data-theme='saison3'] .bb-player-controls {
-  background: transparent;
-}
-
-[data-theme='saison3'] .progress-track {
-  background: rgba(0, 0, 0, 0.1);
-  border-color: var(--secondary);
-}
-
-[data-theme='saison3'] .progress-fill {
-  background: var(--primary);
-}
-
-[data-theme='saison3'] .speed-control-pill {
-  background: rgba(0, 0, 0, 0.05);
-  border-color: var(--secondary);
-}
-
-[data-theme='saison3'] .speed-input {
-  color: var(--primary);
-}
-
-[data-theme='saison3'] .frame-info {
-  color: var(--primary);
-}
-
-[data-theme='saison3'] .unit {
-  color: var(--secondary);
-  opacity: 0.8;
-}
-
-[data-theme='saison3'] .divider {
-  background: var(--secondary);
-  opacity: 0.3;
 }

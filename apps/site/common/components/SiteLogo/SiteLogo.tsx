@@ -1,11 +1,11 @@
 /*
-  SiteLogo - Gère l'affichage du logo officiel.
-  Désormais utilise la nouvelle image logo3.png fournie.
+  SiteLogo : le logo officiel (images/logo3.png), qui est aussi un lien vers l'accueil.
+  La zone cliquable fait au moins 44 pixels de haut (taille d'un pouce), même quand le logo est plus petit, comme dans
+  la barre du haut sur téléphone (carte 101).
 */
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import './SiteLogo.css';
 
 interface SiteLogoProps {
   scale?: number;
@@ -22,8 +22,8 @@ const SiteLogo: React.FC<SiteLogoProps> = ({ scale = 1 }) => {
   const w = Math.round((h * LOGO_FILE_WIDTH) / LOGO_FILE_HEIGHT);
 
   return (
-    <Link href="/" className="site-logo-link">
-      <div className="logo-wrapper">
+    <Link href="/" className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-bb-sm transition-transform hover:scale-[1.02] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus">
+      <span className="flex items-center justify-center">
         {/*
           Largeur et hauteur réelles d'affichage : next/image envoie alors une image à la
           taille du logo affiché (et en double pour les écrans haute définition), au lieu
@@ -35,10 +35,10 @@ const SiteLogo: React.FC<SiteLogoProps> = ({ scale = 1 }) => {
           width={w}
           height={h}
           preload
-          className="logo-image"
+          className="drop-shadow-md"
           style={{ width: 'auto', height: `${h}px`, objectFit: 'contain' }}
         />
-      </div>
+      </span>
     </Link>
   );
 };

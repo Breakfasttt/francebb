@@ -10,7 +10,6 @@ import { isModerator } from "@/lib/roles";
 import ComposeScreen from "@/app/forum/component/ComposeScreen";
 import ArticleForm from "@/app/articles/component/ArticleForm";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
-import "@/app/forum/page.css";
 
 export default async function EditArticlePage({
   params,

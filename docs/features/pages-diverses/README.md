@@ -14,7 +14,7 @@ Refaite par la carte 090 (ADR 0006). En haut, un en-tête dans le flux de la pag
 
 ### Jouer — `/jouer` (`app/jouer/page.tsx`)
 Le « Guide du Coach » : six sections illustrées (C'est quoi Blood Bowl, plateformes, communauté, tournois, NAF/CdF/RTC, challenges régionaux), dont le texte en BBCode est saisi par un admin dans l'administration (`getHowToPlaySettings`). Une section sans texte est masquée, sauf la première.
-Depuis la carte 090 : une seule colonne de 880 pixels au plus, une carte par section (illustration en bandeau, icône, « Étape N », titre, texte, bouton « Prochaine étape » vers l'ancre de la section suivante), puis une carte d'appel avec « Créer mon compte » et « Parcourir le forum ». Les styles des blocs BBCode (accordéons, spoilers, galeries) viennent de `app/forum/page.css`, comme dans les sujets du forum.
+Depuis la carte 090 : une seule colonne de 880 pixels au plus, une carte par section (illustration en bandeau, icône, « Étape N », titre, texte, bouton « Prochaine étape » vers l'ancre de la section suivante), puis une carte d'appel avec « Créer mon compte » et « Parcourir le forum ». Les styles des blocs BBCode (accordéons, spoilers, galeries) viennent de `common/components/BBCodeContent/bbcode.css`, chargé pour tout le site (carte 101).
 **Sur téléphone** : la même colonne, boutons de 44 pixels, boutons d'appel empilés en pleine largeur. Depuis la carte 019, les six images passent par `next/image` (voir le glossaire) : chacune pèse environ 1 Mo dans `public/images/how-to-play/` (des JPEG malgré leur extension `.png`), et le téléphone reçoit maintenant une version WebP à la largeur de l'écran, de 100 à 150 Ko. Elles se chargent seulement quand on approche de leur section.
 
 ### Profil public — `/spy/[id]` (`app/spy/[id]/page.tsx`)
@@ -43,13 +43,13 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 |---|---|
 | `apps/site/app/page.tsx` | Accueil |
 | `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/`, affichées par `next/image` en mode `fill` (l'image remplit un bandeau au format 16/7) |
-| `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut, menu latéral sur téléphone, grand logo de l'accueil). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
+| `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut, grand logo de l'accueil ; zone cliquable d'au moins 44 pixels depuis la carte 101). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public (client), lit `/api/users/[id]` et les actions de `app/profile/actions.ts` |
-| `apps/site/app/mentions-legales/page.tsx` | Mentions légales |
+| `apps/site/app/mentions-legales/page.tsx`, `page.css`, `page-mobile.css` | Mentions légales. La page appartient au chantier RGPD ; sa mise en forme (carte 101) passe par `page.css` (variables v2), `PageHeader` et `PremiumCard`, ses seuls utilisateurs. C'est le dernier `page.css` du site : le jour où la page est réécrite, passer ses classes en Tailwind et supprimer les deux fichiers CSS |
 | `apps/site/app/banned/page.tsx`, `common/components/BannedRedirect/BannedRedirect.tsx` | Page et redirection des bannis |
 | `apps/site/tests/e2e/inventaire/accueil.spec.ts` | Test d'inventaire de la section 5 (accueil, `/jouer`, `/media`, statistiques, bannis, 404), en taille ordinateur et en taille téléphone |
 | `apps/site/app/not-found.tsx` | Page 404 |
-| `apps/site/app/theme/themes.css`, `theme.*.css` | Couleurs de chaque thème (`[data-theme='…']`) |
+| `packages/ui/src/themes/<id>.css` | Couleurs de chaque thème en variables v2 (`[data-theme='…']`, skill `theming-rules`) |
 | `apps/site/common/components/ThemeProvider/ThemeProvider.tsx` | `useTheme()` : thème actif, `setTheme`, liste des thèmes |
 | `apps/site/common/components/DebugThemeWidget/DebugThemeWidget.tsx` | Sélecteur de développement |
 

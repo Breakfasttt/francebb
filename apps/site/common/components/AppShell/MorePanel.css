@@ -38,6 +38,23 @@
   visibility: visible;
 }
 
+/* Emplacement « Cette page » : ce que la page y envoie (outils, onglets) s'affiche en colonne. Règles reprises à
+   l'identique de l'ancien menu latéral (MobileSidebar.css, retiré par la carte 101). */
+.mobile-sidebar-slot {
+  display: flex;
+  flex-direction: column;
+  min-height: 20px;
+}
+
+.mobile-sidebar-slot > div,
+.mobile-sidebar-slot > aside,
+.mobile-sidebar-slot form {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 /* « Cette page » disparaît quand la page n'y a rien envoyé */
 .more-page-section:has(#mobile-page-sidebar-slot:empty) {
   display: none;

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X, User as UserIcon } from "lucide-react";
+import { Search, X, Loader2 } from "lucide-react";
+import { Button, Input, cn } from "@bbfrance/ui";
 import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { searchUsersAction } from "@/app/forum/actions";
-import "./UserMapper.css";
 
 interface User {
   id: string;
@@ -73,41 +73,58 @@ export default function UserMapper({
     setShowResults(false);
   };
 
+  // Lie une ligne (résultat de tournoi, archive du classement) à un membre du site. Apparence de la refonte
+  // (carte 101) : le membre choisi en pastille avec sa croix, puis le champ de recherche ; tout fait 44 pixels de haut
+  // et le champ passe à la ligne s'il manque de place.
   return (
-    <div className={`user-mapper-row ${className} ${selectedUser ? "has-selection" : ""}`} ref={containerRef}>
+    <div className={cn("relative flex w-full min-w-0 flex-wrap items-center gap-1", className)} ref={containerRef}>
       {selectedUser && (
-        <div className="selected-user-badge">
-          <UserAvatar image={selectedUser.image} name={selectedUser.name || ""} size={20} selectedRank={selectedUser.avatarFrame as Rank} />
-          <span className="selected-name">{selectedUser.name}</span>
-          <button type="button" className="unselect-btn" onClick={(e) => { e.stopPropagation(); onRemove(); }}>
-            <X size={12} />
-          </button>
+        <div className="inline-flex min-h-11 max-w-full min-w-0 items-center gap-1.5 rounded-bb-md border border-bb-border bg-bb-accent-soft pl-2 text-sm font-semibold text-bb-text">
+          <UserAvatar image={selectedUser.image} name={selectedUser.name || ""} size={24} selectedRank={selectedUser.avatarFrame as Rank} />
+          <span className="min-w-0 truncate">{selectedUser.name}</span>
+          <Button
+            type="button"
+            variant="quiet"
+            size="tap-icon"
+            className="shrink-0"
+            aria-label={`Délier ${selectedUser.name || "ce membre"}`}
+            onClick={(e) => { e.stopPropagation(); onRemove(); }}
+          >
+            <X size={14} aria-hidden="true" />
+          </Button>
         </div>
       )}
 
-      <div className="mapper-input-wrapper">
-        <Search size={14} className="mapper-search-icon" />
-        <input
+      <div className="relative min-w-0 flex-1 basis-32">
+        <Search size={16} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+        <Input
           type="text"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           placeholder={placeholder}
           onFocus={() => query.length >= 2 && setShowResults(true)}
-          className="mapper-input"
+          className="min-w-0 pl-9"
         />
-        {isLoading && <div className="mapper-loader">⏳</div>}
+        {isLoading && <Loader2 size={16} className="absolute top-1/2 right-3 -translate-y-1/2 animate-spin text-bb-text-muted" aria-label="Recherche en cours" />}
 
         {showResults && (results.length > 0 || query.length >= 2) && (
-          <div className="mapper-results-popover">
+          <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-60 min-w-48 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
             {results.length > 0 ? (
               results.map(user => (
-                <div key={user.id} className="mapper-result-item" onClick={() => handleSelect(user)}>
+                <Button
+                  key={user.id}
+                  type="button"
+                  variant="quiet"
+                  size="tap"
+                  className="w-full justify-start gap-2 py-1.5 text-left text-sm font-semibold whitespace-normal text-bb-text"
+                  onClick={() => handleSelect(user)}
+                >
                   <UserAvatar image={user.image} name={user.name || ""} size={24} selectedRank={user.avatarFrame as Rank} />
                   <span>{user.name}</span>
-                </div>
+                </Button>
               ))
             ) : !isLoading ? (
-              <div className="mapper-no-results">Aucun utilisateur</div>
+              <p className="m-0 p-3 text-center text-sm text-bb-text-muted">Aucun utilisateur</p>
             ) : null}
           </div>
         )}

@@ -63,7 +63,6 @@ import { useIsMobile } from "@/common/hooks/useIsMobile";
 import { usePinchZoom } from "@/common/hooks/usePinchZoom";
 
 // Règles du terrain (geste au doigt, pincement à deux doigts) : le reste de l'habillage est en classes Tailwind
-import "./page.css";
 
 interface HistoryState {
   tokens: TokenData[];
@@ -1359,12 +1358,16 @@ export default function BBSchemePage() {
             aria-label="Terrain"
             aria-busy={loading || undefined}
             className={cn(
-              // Classe pitch-viewport : règles du terrain (geste au doigt, pincement) dans page.css, et repère de
-              // handleResize pour ajuster le terrain à la place disponible
-              "pitch-viewport min-h-0 min-w-0 flex-1 overflow-auto bg-bb-surface-2",
+              // Classe pitch-viewport : repère de handleResize (ajuster le terrain à la place disponible) et des tests.
+              // Gestes : au doigt, le terrain défile mais le navigateur ne zoome pas la page (touch-pan) ; le pincement à
+              // deux doigts règle le zoom du terrain (hook usePinchZoom). Ne pas retirer sans vérifier le test
+              // tests/e2e/bbscheme-pinch.spec.ts.
+              "pitch-viewport relative min-h-0 min-w-0 flex-1 cursor-grab touch-pan-x touch-pan-y overflow-auto bg-bb-surface-2",
               "max-lg:flex max-lg:items-start max-lg:justify-center lg:grid lg:place-items-center lg:rounded-bb-lg lg:border lg:border-bb-border",
-              selectedId && "has-selection",
-              isPanning && "panning"
+              // Un pion est choisi : le pointeur indique qu'on vise une case
+              selectedId && "has-selection cursor-crosshair",
+              // Déplacement du terrain à la souris ou au doigt (handlePanningStart)
+              isPanning && "panning cursor-grabbing select-none"
             )}
             onMouseDown={handlePanningStart}
             onMouseMove={handlePanningMove}
@@ -1374,12 +1377,12 @@ export default function BBSchemePage() {
             onTouchMove={handleTouchMove}
             onTouchEnd={handlePanningEnd}
           >
-            <div ref={resizerRef} role="group" aria-label="Plateau" className="pitch-resizer" style={{
+            <div ref={resizerRef} role="group" aria-label="Plateau" className="pitch-resizer relative flex items-center justify-center transition-[width,height] duration-600 ease-[cubic-bezier(0.175,0.885,0.32,1.275)] [.pinching_&]:transition-none!" style={{
               width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`,
               height: `${(rotation === 90 ? 1308 : 758) * finalScale}px`,
               margin: '0'
             }}>
-              <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
+              <div className="pitch-rotator [.pinching_&]:transition-none!" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                 <Pitch
                   tokens={tokens.filter(t => t.location === 'pitch')}
                   onSquareClick={handleSquareClick}

@@ -17,9 +17,6 @@ import ConversationList from "./component/ConversationList";
 import ConversationView from "./component/ConversationView";
 import NewConversationModal, { ENCRYPTION_NOTE } from "./component/NewConversationModal";
 import { startConversation } from "./actions";
-// Styles des blocs BBCode (accordéons, spoilers, galeries) des messages, comme dans les sujets du forum ; avant la
-// carte 093, la messagerie en gardait une copie dans son propre page.css
-import "@/app/forum/page.css";
 
 function MessagerieContent() {
   const searchParams = useSearchParams();

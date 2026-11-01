@@ -16,7 +16,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Comportement de modale | `Dialog`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogTitle`, `DialogClose` |
 | Bouton pour nouveau code hors site | `Button` (variantes sur tokens) |
 
-**Composants de la refonte (ADR 0006, carte 082)**, à utiliser pour tout écran refait. Ils n'utilisent que les variables v2 `--bb-*` et les classes `bg-bb-*`, `text-bb-*`. Les composants historiques de `common/components` restent en place sur les écrans pas encore refaits.
+**Composants de la refonte (ADR 0006, carte 082)**, à utiliser pour tout écran. Ils n'utilisent que les variables v2 `--bb-*` et les classes `bg-bb-*`, `text-bb-*`. Les anciens composants de `common/components` qui avaient un équivalent ici ont été supprimés par la carte 101.
 
 | Besoin | Utiliser |
 |---|---|
@@ -48,27 +48,22 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 ## Composants (`common/components/`)
 | Besoin | Utiliser |
 |---|---|
-| Bouton | `Button/` : `ClassicButton`, `CTAButton`, `DangerButton`, `AdminButton`, `BadgeButton`, `ToggleButton`, `ExplainButton` |
-| Champ / select | `Form/ClassicInput`, `Form/ClassicSelect` (jamais `<select>`) |
+| Bouton, champ, liste déroulante | `Button`, `Input`, `Select` de `@bbfrance/ui` (jamais `<button>` ni `<select>` natifs) |
 | Formulaire envoyé à une action serveur qui renvoie `ActionResult` (refus en notification, champs gardés) | `Form/ActionForm` (au lieu de `<form action={monAction}>`) |
-| Conteneur carte | `PremiumCard` |
-| Modale / confirmation | `Modal`, `ConfirmModal`, `ReportModal` (jamais `window.confirm`) ; modale spécifique : `Dialog*` de `@bbfrance/ui` |
+| Conteneur carte | `Card` de `@bbfrance/ui` ; `PremiumCard` ne sert plus qu'aux mentions légales |
+| Modale / confirmation | `ConfirmDialog` et `Sheet` de `@bbfrance/ui` ; `Modal`, `ConfirmModal` (restylés en variables v2, carte 101) restent pour leurs écrans actuels ; `ReportModal` (jamais `window.confirm`) ; modale spécifique : `Dialog*` de `@bbfrance/ui` |
 | Notification | `toast` de `@bbfrance/ui` (sonner) |
-| Info-bulle | `Tooltip` |
-| Onglets | `TabSystem` |
-| Pagination | `Pagination` |
 | Avatar + cadre de rang | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
 | Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil (carte 092) |
 | Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` (carte 092) |
 | Recherche user / ligue | `UserSearch`, `UserMapper`, `LigueSearch` (prop `inputId` pour un libellé, carte 095), `MultiLigueSearch` (choix de plusieurs ligues, refait avec `packages/ui` par la carte 091) |
-| Statut / tags | `StatusBadge`, `TagSelector` (saisie de tags avec suggestions, refaite avec `packages/ui` par la carte 095 ; props `id` et `aria-label` pour le relier à un libellé) (le contour d'avatar se choisit dans une liste `Select`, carte 092) |
+| Statut / tags | `Badge` de `@bbfrance/ui`, `TagSelector` (saisie de tags avec suggestions, refaite avec `packages/ui` par la carte 095 ; props `id` et `aria-label` pour le relier à un libellé) (le contour d'avatar se choisit dans une liste `Select`, carte 092) |
 | BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu) |
-| Smileys | `SmileyPicker`, `SmileyGrid` |
-| En-tête page / retour | `PageHeader`, `BackButton` |
+| Smileys | `SmileyGrid` |
+| En-tête page / retour | `ForumListHeader` (`app/forum/component/`), `PageHeader` (mentions légales), `BackButton` (44 px sur téléphone) |
 | Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`, carte 099) |
-| Vide / stat | `EmptyState`, `StatItem` |
-| Mobile | `MobilePortal`, `MobileSidebar`, `DesktopOnlyFallback`, `GlobalPortal` (filtres d'une liste sur téléphone : bouton « Filtres » et `Sheet`, voir le skill `mobile-ux`) |
+| Mobile | `MobilePortal` (vers le panneau « Plus » ou la barre du haut), `GlobalPortal` (filtres d'une liste sur téléphone : bouton « Filtres » et `Sheet`, voir le skill `mobile-ux`) |
 | Icônes | `lucide-react` uniquement (`Icons/` = icônes custom existantes) |
 
 ## Hooks / utils / lib
@@ -93,7 +88,7 @@ Dépendance npm : jamais sans accord user + ADR (`docs/adr/`). Une lib déjà pr
 | Mail | `lib/mail.ts` |
 | Données de référence | `lib/referenceData.ts` |
 | Config site | `lib/siteConfig.ts` |
-| Liste des 7 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |
+| Liste des 8 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |
 | Points classement CDF | `common/utils/cdf.ts` |
 | Dates | `date-fns` (déjà installé) |
 | Drag & drop | `@dnd-kit/*` (déjà installé) |

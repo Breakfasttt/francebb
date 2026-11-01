@@ -7,7 +7,6 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 import ReplyForm from "@/app/forum/component/ReplyForm";
 import ComposeScreen, { RecentPostsRecap } from "@/app/forum/component/ComposeScreen";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu et le rappel des messages
-import "../../../page.css";
 
 export const dynamic = "force-dynamic";
 

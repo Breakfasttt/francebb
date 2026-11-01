@@ -42,7 +42,7 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 - **Modifier un article efface sa ligue** : `edit/[id]/page.tsx` ne transmet pas `ligueId` au formulaire, et `updateArticle` enregistre alors une ligue vide. La page d'un article n'affiche pas non plus la ligue rattachée.
 - `incrementArticleViews` n'a aucun contrôle : n'importe qui peut gonfler le compteur. Le composant `ViewCounter` limite à une vue par onglet (`sessionStorage`).
 - Un membre n'a qu'une réaction par article : choisir un autre émoji remplace le précédent.
-- Le texte est transformé en HTML par `parseBBCode` puis injecté tel quel (`dangerouslySetInnerHTML`) : toute la sécurité repose sur `lib/bbcode`. La page importe `app/forum/page.css` pour les blocs BBCode (spoiler, accordéon, galerie), comme les ligues et la messagerie. Un schéma BBScheme n'y est pas animé (il faudrait `BBCodeContent`, comme dans le forum).
+- Le texte est transformé en HTML par `parseBBCode` puis injecté tel quel (`dangerouslySetInnerHTML`) : toute la sécurité repose sur `lib/bbcode`. Les blocs BBCode (spoiler, accordéon, galerie) sont mis en forme par `common/components/BBCodeContent/bbcode.css`, chargé pour tout le site (carte 101). Un schéma BBScheme n'y est pas animé (il faudrait `BBCodeContent`, comme dans le forum).
 - La recherche par texte (`contains`) parcourt tout le contenu : lente si les articles deviennent nombreux.
 - La fenêtre de modération (`ModerationModal`, commune au forum) a pour titre « Modérer le message de … », même pour un article.
 - L'ancienne mention « Membre depuis 2024 », écrite en dur sous le nom de l'auteur, a disparu avec la refonte.

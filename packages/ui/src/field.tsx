@@ -1,12 +1,14 @@
 /**
  * Champs de formulaire de la refonte : libellé, champ texte, zone de texte et liste déroulante native.
  * Hauteur tactile de 44 px et texte à 16 px (évite le zoom automatique de l'iPhone au focus).
+ * Police du site imposée sur chaque champ : sans elle, le navigateur écrit une zone de texte en police à chasse fixe
+ * (toutes les lettres de la même largeur), là où le preflight de Tailwind n'est pas actif (carte 101).
  */
 import * as React from "react";
 import { cn } from "./cn";
 
 const control =
-  "w-full rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 text-base text-bb-text placeholder:text-bb-text-muted focus-visible:border-bb-focus focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-bb-focus disabled:opacity-60";
+  "w-full rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 font-bb-sans text-base text-bb-text placeholder:text-bb-text-muted focus-visible:border-bb-focus focus-visible:outline-2 focus-visible:outline-offset-0 focus-visible:outline-bb-focus disabled:opacity-60";
 
 export function Label({ className, ...props }: React.ComponentProps<"label">) {
   return <label className={cn("text-sm font-semibold text-bb-text", className)} {...props} />;

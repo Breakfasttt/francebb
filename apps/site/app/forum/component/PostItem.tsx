@@ -50,11 +50,10 @@ const longDate = (date: Date | string) =>
 
 /**
  * Mise en forme du corps du message. Les citations, produites par lib/bbcode.ts avec des styles écrits dans la balise,
- * passent sur un encadré de surface : d'où les « ! » (priorité forte). Le `px-0!` annule la marge intérieure que
- * l'ancien globals-mobile.css ajoute au rendu BBCode sur téléphone.
+ * passent sur un encadré de surface : d'où les « ! » (priorité forte).
  */
 const bodyClass =
-  "px-0! text-base leading-[1.6] text-bb-text break-words [&_blockquote]:bg-bb-surface-2! [&_blockquote]:not-italic! [&_blockquote]:text-bb-text! [&_blockquote]:border-bb-border!";
+  "text-base leading-[1.6] text-bb-text break-words [&_blockquote]:bg-bb-surface-2! [&_blockquote]:not-italic! [&_blockquote]:text-bb-text! [&_blockquote]:border-bb-border!";
 
 const PostItem: React.FC<PostItemProps> = ({
   post,
@@ -218,7 +217,7 @@ const PostItem: React.FC<PostItemProps> = ({
 
                 {author.signature && (
                   <div className="mt-4 border-t border-bb-border pt-3">
-                    <BBCodeContent content={author.signature} currentUserId={currentUserId} className="px-0! text-sm leading-normal text-bb-text-muted" />
+                    <BBCodeContent content={author.signature} currentUserId={currentUserId} className="text-sm leading-normal text-bb-text-muted" />
                   </div>
                 )}
               </div>

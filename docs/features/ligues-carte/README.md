@@ -43,7 +43,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 - La clé ImgBB du blason est publique (`NEXT_PUBLIC_IMGBB_API_KEY`).
 - Les coordonnées : si latitude et longitude manquent, le serveur les calcule depuis la ville et l'adresse (géocodage) ; une ligue sans coordonnées n'apparaît pas sur la carte.
 - La feuille de style de Leaflet (`leaflet.css`) l'emporte sur les classes Tailwind du site : `CarteClient.tsx` habille la bulle, le zoom et les repères avec des classes à priorité forcée (suffixe `!`).
-- La présentation d'une ligue importe `app/forum/page.css` pour les blocs BBCode (citation, spoiler…), comme `/jouer` et la messagerie.
+- Les blocs BBCode de la présentation d'une ligue (spoiler, accordéon…) sont mis en forme par `common/components/BBCodeContent/bbcode.css`, chargé pour tout le site (carte 101).
 
 ## Les mots expliqués
 

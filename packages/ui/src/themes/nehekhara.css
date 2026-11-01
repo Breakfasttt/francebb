@@ -2,6 +2,7 @@
 [data-theme="nehekhara"] {
   --bb-scheme: dark;
   --bb-bg: #0b0e14;
+  --bb-bg-image: radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%);
   --bb-surface: #141924;
   --bb-surface-2: #1c2331;
   --bb-border: #2a3344;

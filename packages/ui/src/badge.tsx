@@ -33,7 +33,7 @@ export function CountBadge({ count, max = 9, className, ...props }: React.Compon
   return (
     <span
       className={cn(
-        "inline-flex h-[18px] min-w-[18px] items-center justify-center rounded-full bg-bb-accent px-1.5 text-[11px] leading-none font-bold text-bb-on-accent",
+        "inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-bb-accent px-1.5 text-xs leading-none font-bold text-bb-on-accent",
         className
       )}
       {...props}

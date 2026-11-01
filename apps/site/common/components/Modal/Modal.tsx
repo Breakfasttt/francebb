@@ -1,15 +1,13 @@
 "use client";
 
 import { X } from "lucide-react";
-import { Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogClose } from "@bbfrance/ui";
-import ClassicButton from "../Button/ClassicButton";
-import CTAButton from "../Button/CTAButton";
-import DangerButton from "../Button/DangerButton";
-import AdminButton from "../Button/AdminButton";
+import { Button, Dialog, DialogPortal, DialogOverlay, DialogContent, DialogTitle, DialogClose } from "@bbfrance/ui";
 
 /**
- * Modale générique du site. Coquille Radix Dialog (@bbfrance/ui) : Échap, clic extérieur, focus piégé,
- * scroll bloqué et role="dialog" ; l'apparence reste celle du CSS ci-dessous (7 thèmes).
+ * Fenêtre générique du site. Coquille Radix Dialog (@bbfrance/ui) : Échap, clic à côté, focus piégé, défilement de la
+ * page bloqué et role="dialog". Apparence de la refonte (variables v2, carte 101) : surface du thème, boutons de
+ * packages/ui, boutons empilés sur toute la largeur sur téléphone.
+ * Pour une simple confirmation, préférer `ConfirmDialog` de @bbfrance/ui.
  */
 
 interface ModalProps {
@@ -26,12 +24,12 @@ interface ModalProps {
   hideFooter?: boolean;
 }
 
-export default function Modal({ 
-  isOpen, 
-  onClose, 
-  onConfirm, 
-  title, 
-  message, 
+export default function Modal({
+  isOpen,
+  onClose,
+  onConfirm,
+  title,
+  message,
   children,
   confirmText,
   cancelText,
@@ -39,176 +37,38 @@ export default function Modal({
   maxWidth = "550px",
   hideFooter = false
 }: ModalProps) {
-  const renderConfirmButton = () => {
-    if (!onConfirm) return null;
-
-    if (variant === 'danger') {
-      return (
-        <DangerButton onClick={onConfirm}>
-          {confirmText || "Confirmer"}
-        </DangerButton>
-      );
-    }
-
-    if (variant === 'admin') {
-      return (
-        <AdminButton onClick={onConfirm}>
-          {confirmText || "Confirmer"}
-        </AdminButton>
-      );
-    }
-
-    return (
-      <CTAButton onClick={onConfirm}>
-        {confirmText || "Confirmer"}
-      </CTAButton>
-    );
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DialogPortal>
-        <DialogOverlay asChild>
-          <div className="modal-overlay">
-            <DialogContent asChild aria-describedby={undefined}>
-              <div className="modal-content" style={{ maxWidth }}>
-                <DialogClose asChild>
-                  <button className="modal-close-btn" title="Fermer">
-                    <X size={20} />
-                  </button>
-                </DialogClose>
+        <DialogOverlay className="fixed inset-0 z-[var(--z-index-modal-bottom)] flex items-center justify-center bg-bb-overlay p-4">
+          <DialogContent
+            aria-describedby={undefined}
+            className="relative max-h-[90vh] w-full overflow-y-auto rounded-bb-lg border border-bb-border bg-bb-surface p-5 font-bb-sans text-bb-text shadow-bb lg:p-8"
+            style={{ maxWidth }}
+          >
+            <DialogClose asChild>
+              <Button type="button" variant="quiet" size="tap-icon" title="Fermer" aria-label="Fermer" className="absolute top-2 right-2">
+                <X size={20} aria-hidden="true" />
+              </Button>
+            </DialogClose>
 
-                <DialogTitle asChild>
-                  <h2>{title}</h2>
-                </DialogTitle>
-                {message && <p>{message}</p>}
-                {children}
+            <DialogTitle className="m-0 mb-4 pr-10 text-xl font-extrabold text-bb-text">{title}</DialogTitle>
+            {message && <p className="m-0 mb-6 leading-relaxed text-bb-text">{message}</p>}
+            {children}
 
-                {!hideFooter && (
-                  <div className="modal-actions">
-                    <ClassicButton onClick={onClose}>
-                      {cancelText || "Annuler"}
-                    </ClassicButton>
-                    {renderConfirmButton()}
-                  </div>
+            {!hideFooter && (
+              <div className="mt-6 flex flex-col-reverse gap-2 lg:flex-row lg:justify-end">
+                <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={onClose}>
+                  {cancelText || "Annuler"}
+                </Button>
+                {onConfirm && (
+                  <Button type="button" variant={variant === "danger" ? "danger" : "primary"} size="tap" className="w-full lg:w-auto" onClick={onConfirm}>
+                    {confirmText || "Confirmer"}
+                  </Button>
                 )}
               </div>
-            </DialogContent>
-
-            <style jsx>{`
-              .modal-overlay {
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                background: rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(8px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                z-index: var(--z-index-modal-bottom, 8000);
-                padding: 1rem;
-              }
-
-              .modal-content {
-                background: var(--card-bg);
-                backdrop-filter: blur(16px);
-                border: 1px solid var(--glass-border);
-                border-radius: 24px;
-                padding: 2.5rem;
-                max-width: ${maxWidth};
-                width: 100%;
-                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
-                animation: modalAppear 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-                position: relative;
-                max-height: 90vh;
-                overflow-y: auto;
-              }
-
-              .modal-close-btn {
-                position: absolute;
-                top: 1.5rem;
-                right: 1.5rem;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid var(--glass-border);
-                color: var(--foreground);
-                width: 32px;
-                height: 32px;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: all 0.2s ease;
-                opacity: 0.6;
-                z-index: 10;
-              }
-
-              .modal-close-btn:hover {
-                opacity: 1;
-                background: rgba(255, 255, 255, 0.1);
-                transform: rotate(90deg);
-              }
-
-              h2 {
-                color: var(--primary);
-                margin-bottom: 1.5rem;
-                font-size: 1.5rem;
-                font-weight: 800;
-                text-transform: uppercase;
-                letter-spacing: 0.02em;
-                border-bottom: 2px solid var(--primary-transparent);
-                padding-bottom: 0.8rem;
-                display: inline-block;
-              }
-
-              p {
-                color: var(--foreground);
-                margin-bottom: 2rem;
-                line-height: 1.6;
-                font-size: 1rem;
-                opacity: 0.9;
-              }
-
-              .modal-actions {
-                display: flex;
-                gap: 1rem;
-                justify-content: flex-end;
-                margin-top: 2rem;
-              }
-
-              @keyframes modalAppear {
-                from { transform: scale(0.95) translateY(10px); opacity: 0; }
-                to { transform: scale(1) translateY(0); opacity: 1; }
-              }
-
-              @media (max-width: 600px) {
-                .modal-content {
-                  padding: 1.5rem;
-                  border-radius: 20px;
-                }
-
-                .modal-actions {
-                  flex-direction: column;
-                  gap: 0.8rem;
-                }
-
-                .modal-actions :global(button) {
-                  width: 100%;
-                }
-
-                h2 {
-                  font-size: 1.2rem;
-                }
-                
-                .modal-close-btn {
-                  top: 1rem;
-                  right: 1rem;
-                }
-              }
-            `}</style>
-          </div>
+            )}
+          </DialogContent>
         </DialogOverlay>
       </DialogPortal>
     </Dialog>

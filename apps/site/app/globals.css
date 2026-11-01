@@ -1,10 +1,11 @@
-/* Fichier CSS global — styles partagés sur toutes les pages */
-/* Les thèmes sont définis dans app/theme/ */
-/* Les styles spécifiques à une page sont dans app/[page]/page.css */
+/*
+ * Styles communs à tout le site (carte 101). Les couleurs viennent uniquement des variables v2 (`--bb-*`) des 8 thèmes,
+ * définies dans packages/ui/src/themes/ ; la remise à zéro des styles du navigateur est le preflight de Tailwind
+ * (app/tailwind.css). Les écrans se mettent en forme avec des classes Tailwind, pas avec un fichier CSS de page.
+ */
 
-@import './theme/themes.css';
-
-html, body {
+html,
+body {
   overflow-x: hidden;
   max-width: 100vw;
   width: 100%;
@@ -12,7 +13,7 @@ html, body {
 }
 
 :root {
-  /* Échelle absolue des superpositions (Z-Index Scale) */
+  /* Échelle des superpositions (z-index) : un élément ne choisit pas sa valeur au hasard, il prend une de celles-ci. */
   --z-index-base: 1;
   --z-index-page-content: 1100;
   --z-index-dropdown: 1500;
@@ -22,226 +23,95 @@ html, body {
   --z-index-sidebar: 7100;
   --z-index-modal-bottom: 8000;
   --z-index-toast: 9000;
-}
-
-/* Classes utilitaires pour le responsive (Mobile-First) */
-.mobile-only {
-  display: none !important;
-}
-
-@media (max-width: 1024px) {
-  .mobile-only {
-    display: flex !important;
-  }
-  
-  .desktop-only {
-    display: none !important;
-  }
-}
-
-/* Reset dans la couche "legacy" (déclarée avant "utilities" dans tailwind.css) : il ne bloque plus les classes Tailwind
-   (p-4, m-2…), et il perd déjà contre toute autre règle non rangée en couche, comme avant. */
-@layer legacy {
-  * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
+  /* Les contrôles natifs (cases, barres de défilement, listes déroulantes) suivent le thème clair ou sombre */
+  color-scheme: var(--bb-scheme, dark);
 }
 
 body {
-  background: var(--bg-gradient, var(--background));
-  background-color: var(--background);
+  /* Fond du thème ; certains thèmes y ajoutent un léger dégradé (--bb-bg-image), fixé pendant le défilement */
+  background-color: var(--bb-bg);
+  background-image: var(--bb-bg-image, none);
   background-attachment: fixed;
   background-size: cover;
-  color: var(--foreground);
-  font-family: var(--font-bb, 'Inter'), system-ui, -apple-system, sans-serif;
-  min-height: 100vh;
+  color: var(--bb-text);
+  font-family: var(--bb-font-sans);
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.3s ease, color 0.3s ease;
 }
 
-/* Règles qui visent une balise : rangées dans la couche "legacy" (carte 080) pour qu'une classe Tailwind posée sur
-   un lien, un titre ou un libellé d'un écran refait l'emporte. Elles perdent déjà contre toute règle de classe. */
-@layer legacy {
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    color: var(--foreground);
-  }
-
-  h2,
-  h3 {
-    text-transform: uppercase;
-    font-style: italic;
-    border-left: var(--heading-decoration-border, none);
-    padding-left: var(--heading-padding-left, 0);
-  }
-
-  label {
-    color: var(--text-secondary);
+/*
+ * Icônes Lucide : le preflight de Tailwind passe les images vectorielles en `display: block`. Une icône posée dans une
+ * phrase (« 📌 », cadenas à côté d'un titre) irait alors à la ligne ; elle reste dans le texte, comme avant le preflight.
+ * Dans un conteneur flex (le cas le plus courant), cette règle ne change rien.
+ */
+@layer base {
+  svg.lucide {
+    display: inline-block;
   }
 }
 
-
-
-.btn-primary {
-  background: var(--primary);
-  color: var(--header-foreground);
-  padding: 0.8rem 1.5rem;
-  border-radius: 8px;
-  font-weight: 600;
-  border: none;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.btn-primary:hover {
-  background: var(--primary-hover);
-}
-
-.nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0.5rem 2rem;
-  /* Réduction du padding pour resserrer la hauteur */
-  background: var(--nav-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  position: sticky;
-  top: 0;
-  z-index: var(--z-index-nav, 1000);
-  border-bottom: 2px solid var(--accent);
-  /* Un vrai liseret qui marque la séparation */
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  /* Profondeur pour casser le côté "flat" */
-}
-
-.nav-icon-capsule {
-  display: flex !important;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  background: var(--nav-btn-bg);
-  border: 1.5px solid var(--nav-btn-border);
-  border-radius: 50%;
-  color: var(--nav-btn-color);
-  transition: all 0.2s ease;
-  backdrop-filter: blur(4px);
-}
-
-.nav-icon-capsule:hover {
-  transform: translateY(-2px);
-  background: var(--nav-btn-hover-bg);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: 800;
-  letter-spacing: -1px;
-  text-transform: uppercase;
-  color: var(--primary);
-}
-
-.logo span {
-  color: var(--foreground);
-}
-
-.nav-badge {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  font-size: 0.65rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-}
-
-.nav-badge.danger {
-  background: var(--danger);
-  color: var(--badge-text, #ffffff);
-  box-shadow: 0 0 10px rgba(var(--primary-rgb), 0.3);
-}
-
-.nav-badge.primary {
-  background: var(--primary);
-  color: var(--badge-text, #ffffff);
-}
-
-.main-layout-wrapper {
-  flex: 1;
-  width: 100%;
-  position: relative;
-  padding-bottom: 3rem;
-  /* Spacing for fixed footer */
-}
-
-.container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-}
-
-
-
-.tournament-badge {
-  background: var(--primary);
-  color: var(--header-foreground);
-  padding: 0.2rem 0.6rem;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: bold;
-}
-
-
-
-
-
-/* .btn-primary, .widget-button and .secondary-btn have been replaced by the standardized Button component system */
-
-
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 1.2rem;
-  border-left: 5px solid var(--primary);
-  padding-left: 1rem;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 2rem;
-}
-
+/* Liste déroulante native : ses options prennent les couleurs du thème */
 select option {
-  background-color: var(--card-bg);
-  /* Use card-bg which is usually theme-friendly */
-  color: var(--foreground);
+  background-color: var(--bb-surface);
+  color: var(--bb-text);
 }
 
+/* Nouveau message du forum : il apparaît en glissant doucement (ajouté par app/forum/component/QuickReply.tsx) */
+.new-post-fade-in {
+  animation: bb-new-post 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
 
-/* ==========================================================================
-   RESPONSIVE DESIGN (MOBILE)
-   Déplacé dans globals-mobile.css
-   ========================================================================== */
+@keyframes bb-new-post {
+  0% {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/*
+ * Apparition en fondu d'un élément qui arrive après le chargement (bandeau des cookies). Il part d'une opacité nulle :
+ * le navigateur ne le compte donc pas comme « plus grand élément affiché » de la page (indicateur LCP de Lighthouse),
+ * qui doit rester le contenu de la page et non un bandeau ajouté 1,5 seconde plus tard.
+ */
+@keyframes bb-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.bb-fade-in {
+  animation: bb-fade-in 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .new-post-fade-in {
+    animation: none;
+  }
+
+  /* Sans mouvement, mais toujours parti d'une opacité nulle (voir plus haut) */
+  .bb-fade-in {
+    animation-name: bb-fade-in-opacity;
+  }
+}
+
+@keyframes bb-fade-in-opacity {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { Search, X, Shield } from "lucide-react";
+import { Search, X, Shield, Loader2 } from "lucide-react";
+import { Button, Input } from "@bbfrance/ui";
 import { searchLiguesAction } from "@/app/ligues/actions";
-import "./LigueSearch.css";
 
 interface Ligue {
   id: string;
@@ -86,63 +86,67 @@ export default function LigueSearch({
     if (onChange) onChange(null, val);
   };
 
+  // Apparence de la refonte (carte 101), sur le modèle de MultiLigueSearch : champ de packages/ui, liste de résultats
+  // en boutons de 44 pixels, croix de retrait nommée pour les lecteurs d'écran.
   return (
-    <div className="ligue-search-container" ref={containerRef}>
+    <div className="relative flex flex-col gap-2" ref={containerRef}>
       <input type="hidden" name={nameId} value={selectedLigue?.id || ""} />
       <input type="hidden" name={nameCustom} value={selectedLigue ? "" : query} />
 
       {selectedLigue ? (
-        <div className="selected-ligue-tag">
-          <Shield size={18} className="ligue-icon" />
-          <div className="ligue-info">
-            <span className="ligue-name">{selectedLigue.name} ({selectedLigue.acronym})</span>
-            {selectedLigue.geographicalZone && <span className="ligue-zone">{selectedLigue.geographicalZone}</span>}
+        <div className="flex min-h-11 items-center gap-3 rounded-bb-md border border-bb-border bg-bb-surface-2 py-1 pr-1 pl-3 text-bb-text">
+          <Shield size={18} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
+          <div className="flex min-w-0 flex-1 flex-col">
+            <span className="font-semibold break-words">{selectedLigue.name} ({selectedLigue.acronym})</span>
+            {selectedLigue.geographicalZone && <span className="text-sm text-bb-text-muted">{selectedLigue.geographicalZone}</span>}
           </div>
-          <button type="button" className="remove-ligue-btn" onClick={handleClear}>
-            <X size={16} />
-          </button>
+          <Button type="button" variant="quiet" size="tap-icon" className="shrink-0 rounded-full" onClick={handleClear} aria-label={`Retirer ${selectedLigue.acronym || selectedLigue.name}`}>
+            <X size={16} aria-hidden="true" />
+          </Button>
         </div>
       ) : (
-        <div className="ligue-search-input-wrapper">
-          <Search size={18} className="search-icon" />
-          <input
+        <div className="relative">
+          <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
+          <Input
             id={inputId}
             type="text"
-            className="ligue-search-input"
+            className="pl-10"
             value={query}
             onChange={(e) => handleQueryChange(e.target.value)}
             placeholder={placeholder}
             onFocus={() => query.length >= 2 && setShowResults(true)}
           />
-          {isLoading && <div className="loading-spinner">⏳</div>}
         </div>
       )}
 
-      {isLoading && (
-         <div className="ligue-search-results">
-           <div className="no-results">Recherche en cours...</div>
-         </div>
-      )}
-
-      {showResults && results.length > 0 && (
-        <div className="ligue-search-results">
-          {results.map(ligue => (
-            <div key={ligue.id} className="ligue-result-item" onClick={() => handleSelect(ligue)}>
-              <Shield size={16} />
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontWeight: 600 }}>{ligue.name} ({ligue.acronym})</span>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{ligue.geographicalZone} - {ligue.region}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {showResults && results.length === 0 && query.length >= 2 && !isLoading && (
-        <div className="ligue-search-results">
-          <div className="no-results">
-            Aucune ligue trouvée &quot;{query}&quot;.
-          </div>
+      {(isLoading || (showResults && query.length >= 2)) && (
+        <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+          {isLoading ? (
+            <p className="m-0 flex items-center gap-2 p-3 text-sm text-bb-text-muted">
+              <Loader2 size={16} className="animate-spin" aria-hidden="true" /> Recherche en cours...
+            </p>
+          ) : results.length > 0 ? (
+            results.map(ligue => (
+              <Button
+                key={ligue.id}
+                type="button"
+                variant="quiet"
+                size="tap"
+                className="w-full justify-start gap-3 py-2 text-left font-normal whitespace-normal text-bb-text"
+                onClick={() => handleSelect(ligue)}
+              >
+                <Shield size={16} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
+                <span className="flex min-w-0 flex-col">
+                  <span className="font-semibold">{ligue.name} ({ligue.acronym})</span>
+                  <span className="text-sm text-bb-text-muted">{[ligue.geographicalZone, ligue.region].filter(Boolean).join(" - ")}</span>
+                </span>
+              </Button>
+            ))
+          ) : (
+            <p className="m-0 p-3 text-sm text-bb-text-muted">
+              Aucune ligue trouvée &quot;{query}&quot;.
+            </p>
+          )}
         </div>
       )}
     </div>

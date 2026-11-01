@@ -7,7 +7,6 @@
  * - Ordinateur : barre haute avec les destinations principales, un menu « Plus », les pastilles et le menu du compte.
  * La barre basse se cache pendant la saisie (clavier ouvert), sur l'éditeur BBScheme et sur les écrans de rédaction du
  * forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran.
- * L'ancienne coquille (Navbar, MobileSidebar) reste disponible avec REFONTE=0 (voir DEPLOY.md).
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -15,8 +14,8 @@ import { usePathname } from "next/navigation";
 import { ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
 import { ActionMenu, Avatar, Button, CountBadge, Sheet, SheetContent, cn } from "@bbfrance/ui";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
-import type { NavCounts } from "@/common/components/Navbar/navCounts";
-import { useNavCounts } from "@/common/components/Navbar/useNavCounts";
+import type { NavCounts } from "./navCounts";
+import { useNavCounts } from "./useNavCounts";
 import { signOutUser } from "@/common/utils/signOutUser";
 import MorePanel from "./MorePanel";
 import ThemePicker from "./ThemePicker";
@@ -171,7 +170,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
                 href={href}
                 aria-current={active ? "page" : undefined}
                 aria-label={badge ? `${label}, ${badge} non lu(s)` : undefined}
-                className={cn("flex min-h-[52px] flex-col items-center justify-center gap-0.5 text-[11.5px]", active ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
+                className={cn("flex min-h-[52px] flex-col items-center justify-center gap-0.5 text-xs leading-tight", active ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
               >
                 <span className="relative flex" aria-hidden="true">
                   <Icon size={24} />
@@ -187,7 +186,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
             aria-expanded={moreOpen}
             aria-controls="more-panel"
             onClick={() => setMoreOpen((open) => !open)}
-            className={cn("flex h-auto min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-none bg-transparent p-0 text-[11.5px] hover:bg-transparent", moreOpen ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
+            className={cn("flex h-auto min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-none bg-transparent p-0 text-xs leading-tight hover:bg-transparent", moreOpen ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
           >
             <span className="relative flex" aria-hidden="true">
               <MORE_ICON size={24} />

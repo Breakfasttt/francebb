@@ -19,7 +19,7 @@ La messagerie permet aux coachs de s'écrire en privé, à deux ou en groupe, sa
 
 | Fichier | Rôle |
 |---|---|
-| `apps/site/app/messagerie/page.tsx` | Page client : les deux colonnes, l'ouverture par `?userId=`. Importe `app/forum/page.css` pour les styles des blocs BBCode (spoilers, accordéons, galeries). |
+| `apps/site/app/messagerie/page.tsx` | Page client : les deux colonnes, l'ouverture par `?userId=`. |
 | `apps/site/app/messagerie/component/ConversationList.tsx` | Liste des conversations et pastille des non-lus. |
 | `apps/site/app/messagerie/component/ConversationView.tsx` | En-tête, fil de messages, saisie, rafraîchissement automatique, participants, départ ; plein écran sur téléphone. |
 | `apps/site/app/messagerie/component/ChatBubble.tsx` | Une bulle de message. |

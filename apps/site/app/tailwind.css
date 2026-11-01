@@ -1,31 +1,21 @@
 /*
- * Point d'entrée CSS du site : Tailwind v4 + CSS historique (cartes 021 et 080, ADR 0006).
- * - Le CSS historique (globals.css, thèmes, page.css) reste HORS couche : le ranger entièrement dans une couche
- *   changeait des priorités existantes (logo, sidebar ~1 % de pixels différents). Seuls le reset `*` et les règles
- *   qui visent une balise (a, h1-h6, label) sont rangés dans la couche "legacy", déclarée avant "utilities" :
- *   ils ne bloquent pas les classes Tailwind des écrans refaits.
- * - Pas de preflight Tailwind (reset) tant que le CSS historique existe : il sera activé à la carte 101.
- * - Tailwind génère ses classes pour tout le site (app, common, lib) et pour packages/ui. Les classes historiques
- *   qui portaient le nom d'une classe Tailwind ont été renommées (carte 080), sauf celles exclues ci-dessous.
+ * Point d'entrée CSS du site : Tailwind v4 et les variables v2 des thèmes (ADR 0006).
+ * - Le preflight de Tailwind (remise à zéro des styles du navigateur : marges, titres, listes, boutons) est actif
+ *   depuis la carte 101, qui a retiré l'ancien CSS. Un titre ou une liste n'a donc aucun style tant qu'on ne lui en
+ *   donne pas par des classes.
+ * - Tailwind génère ses classes pour tout le site (app, common, lib) et pour packages/ui.
+ * - globals.css : styles communs (fond de page, échelle des superpositions) ; bbcode.css : rendu des messages BBCode.
  */
-@layer theme, base, legacy, components, utilities;
+@layer theme, base, components, utilities;
 
 @import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
 @import "@bbfrance/ui/tokens.css";
 @import "./globals.css";
+@import "../common/components/BBCodeContent/bbcode.css";
 @import "tailwindcss/utilities.css" layer(utilities) source(none);
 
 @source "../../../packages/ui/src";
 @source "../app";
 @source "../common";
 @source "../lib";
-
-/*
- * Noms jamais générés par Tailwind, parce que le CSS historique les utilise avec un autre sens :
- * - container : 41 usages historiques (largeur de page) ; les écrans refaits utilisent mx-auto et max-w-* ;
- * - box-content : boîtes de BBScheme et du formulaire de tournoi (Tailwind changerait box-sizing) ;
- * - text-muted, text-secondary : dans le pont des tokens, ces couleurs sont des fonds, le texte deviendrait illisible ;
- *   les écrans refaits utilisent text-bb-text-muted ;
- * - disabled : état historique de plusieurs boutons et onglets.
- */
-@source not inline("container box-content text-muted text-secondary disabled");

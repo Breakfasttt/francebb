@@ -115,7 +115,7 @@ export default async function ForumSidebar({
         <section className="flex flex-col gap-2" aria-label="Administration du forum">
           <h2 className={groupTitle}>Administration</h2>
           <NewForumButton categoryId={categoryId} parentForumId={parentForumId} subForumCount={subForumCount} />
-          {forumId && <LockButton id={forumId} type="forum" isLocked={isLocked || false} refonte />}
+          {forumId && <LockButton id={forumId} type="forum" isLocked={isLocked || false} />}
           {forumId && <DeleteForumButton forumId={forumId} forumName={forumName || ""} />}
         </section>
       )}

@@ -11,11 +11,9 @@ Le plan des dossiers et leurs règles sont dans `ARCHITECTURE.md` (section « O�
 
 - Dossier `apps/site/app/<adresse>/`. Exemple : `app/classement/` correspond à l'adresse `/classement`.
 - Fichiers :
-  - `page.tsx` (la page) ;
-  - `page.css` (son style) ;
-  - `page-mobile.css` (ses ajustements pour téléphone) ;
+  - `page.tsx` (la page), mise en forme en classes Tailwind avec les variables v2 (skill `theming-rules`), ajustements pour téléphone avec `max-lg:` ;
   - `actions.ts` si la page lit ou modifie des données.
-- Les deux fichiers CSS sont importés dans `page.tsx`.
+- Pas de `page.css` : l'ancien CSS des pages a été supprimé par la carte 101.
 
 ## Un nouveau composant
 

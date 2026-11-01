@@ -2,6 +2,7 @@
 [data-theme="malpierre"] {
   --bb-scheme: dark;
   --bb-bg: #020a02;
+  --bb-bg-image: radial-gradient(circle at 50% 50%, #082508 0%, #010501 100%);
   --bb-surface: #0a160a;
   --bb-surface-2: #112211;
   --bb-border: #1f381f;

@@ -8,7 +8,6 @@ import EditPostForm from "@/app/forum/component/EditPostForm";
 import ComposeScreen, { RecentPostsRecap } from "@/app/forum/component/ComposeScreen";
 import { isModerator } from "@/lib/roles";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu et le rappel des messages
-import "../../../page.css";
 
 export const dynamic = "force-dynamic";
 

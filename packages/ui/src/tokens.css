@@ -2,28 +2,29 @@
 @import "./themes/index.css";
 
 /*
- * Pont des tokens : les noms shadcn/Tailwind (`bg-primary`, `text-muted-foreground`, `border-border`…) pointent sur
- * les variables des 7 thèmes du site (app/theme/theme.*.css). Aucune couleur ici : changer de thème change tout.
+ * Pont des noms shadcn : les classes historiques de shadcn/Tailwind (`bg-primary`, `text-muted-foreground`,
+ * `border-border`…), encore utilisées par les variantes `default`, `outline`, `ghost` et `destructive` de Button,
+ * pointent sur les variables v2 ci-dessous. Aucune couleur ici : changer de thème change tout.
  * `inline` : la classe générée référence la variable du thème actif, pas sa valeur au moment du build.
  */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-card: var(--card-bg);
-  --color-card-foreground: var(--foreground);
-  --color-primary: var(--primary);
-  --color-primary-hover: var(--primary-hover);
-  --color-primary-foreground: var(--badge-text);
-  --color-secondary: var(--secondary);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-muted: var(--theme-overlay);
-  --color-muted-foreground: var(--text-muted);
-  --color-destructive: var(--danger);
-  --color-success: var(--success);
-  --color-warning: var(--warning);
-  --color-border: var(--glass-border);
-  --color-ring: var(--primary);
+  --color-background: var(--bb-bg);
+  --color-foreground: var(--bb-text);
+  --color-card: var(--bb-surface);
+  --color-card-foreground: var(--bb-text);
+  --color-primary: var(--bb-accent);
+  --color-primary-hover: var(--bb-accent-hover);
+  --color-primary-foreground: var(--bb-on-accent);
+  --color-secondary: var(--bb-surface-2);
+  --color-accent: var(--bb-accent-text);
+  --color-accent-foreground: var(--bb-bg);
+  --color-muted: var(--bb-surface-2);
+  --color-muted-foreground: var(--bb-text-muted);
+  --color-destructive: var(--bb-danger);
+  --color-success: var(--bb-success-text);
+  --color-warning: var(--bb-warning-text);
+  --color-border: var(--bb-border);
+  --color-ring: var(--bb-focus);
 }
 
 /*
@@ -37,7 +38,9 @@
  * - --bb-focus (contour du focus clavier), --bb-border ;
  * - navigation : --bb-nav-bg, --bb-nav-border, --bb-nav-text, --bb-nav-active ;
  * - --bb-overlay (fond derrière une fenêtre), --bb-shadow, --bb-glass-blur (verre dépoli : 0px = désactivé),
- *   --bb-scheme (light ou dark, pour les contrôles natifs du navigateur).
+ *   --bb-scheme (light ou dark, pour les contrôles natifs du navigateur) ;
+ * - --bb-bg-image (facultatif) : léger dégradé posé sur le fond de la page, propre à l'esprit d'un thème ; un thème
+ *   qui ne le définit pas garde un fond uni.
  * Les valeurs ci-dessous ne dépendent pas du thème.
  */
 :root {

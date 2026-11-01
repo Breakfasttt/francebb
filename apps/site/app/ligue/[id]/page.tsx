@@ -22,7 +22,6 @@ import LigueBlason from "@/app/ligues/component/LigueBlason";
 import LigueActions from "./component/LigueActions";
 // Styles des blocs BBCode (accordéons, spoilers, galeries) de la présentation, comme dans les sujets du forum ; avant
 // la carte 094, la page en gardait une copie dans son propre fichier id.css
-import "@/app/forum/page.css";
 
 /** Titre d'une carte de la fiche. */
 const sectionTitle = "m-0 flex items-center gap-2 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic";
