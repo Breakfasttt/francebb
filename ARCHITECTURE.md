@@ -8,7 +8,7 @@ Ce document dit **comment le code est organisé et quelles règles respecter** q
 |---|---|---|
 | `apps/site` | Le site BBFrance (Next.js) | En ligne |
 | `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
-| `packages/ui` | Composants d'interface partagés (shadcn/ui) | Utilisé par le site |
+| `packages/ui` | Composants d'interface partagés (shadcn/ui) et variables de couleur des 8 thèmes | Utilisé par le site et le hub |
 | `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types (carte 024) | Utilisé par le site (messages du forum et éditeur `/bbscheme`) |
 
 Plus tard : `apps/bbscheme` (éditeur BBScheme en application séparée).
@@ -45,10 +45,10 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 - **Langue** : commentaires d'en-tête de fichier en français, noms de variables et de fonctions en anglais.
 - **Interface** :
   - utiliser les composants existants (boutons, sélecteurs, fenêtres, notifications de `@bbfrance/ui`) ;
-  - couleurs uniquement via les variables CSS des thèmes (jamais de code couleur en dur) ;
+  - mise en forme en classes Tailwind, couleurs uniquement via les variables v2 des thèmes (`bg-bb-surface`, `var(--bb-text)`…, jamais de code couleur en dur ; skill `theming-rules`) ;
   - icônes Lucide uniquement ;
   - chaque écran testé en taille téléphone ;
-  - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `mobile-ux`).
+  - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En Tailwind, les préfixes `max-lg:` (téléphone) et `lg:` (ordinateur) ; dans un fichier CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `mobile-ux`).
 
 ## Règles vérifiées automatiquement
 

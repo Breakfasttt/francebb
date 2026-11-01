@@ -10,7 +10,7 @@ Ce que la fonctionnalité apporte aux coachs, en 2 ou 3 phrases.
 
 - Les pages concernées, avec leur adresse (ex. `/forum`), et ce qu'on peut y faire.
 - Qui y a accès : visiteur, membre connecté, modérateur, admin.
-- **Sur téléphone** : ce qui change par rapport à l'ordinateur (menu latéral, bouton de filtres, version simplifiée…), et les problèmes connus.
+- **Sur téléphone** : ce qui change par rapport à l'ordinateur (contenu envoyé dans le panneau « Plus », bouton « Filtres », écran plein écran, version simplifiée…), et les problèmes connus.
 
 ## Les fichiers
 

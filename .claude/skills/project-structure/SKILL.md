@@ -13,14 +13,14 @@ Le plan des dossiers et leurs règles sont dans `ARCHITECTURE.md` (section « O�
 - Fichiers :
   - `page.tsx` (la page), mise en forme en classes Tailwind avec les variables v2 (skill `theming-rules`), ajustements pour téléphone avec `max-lg:` ;
   - `actions.ts` si la page lit ou modifie des données.
-- Pas de `page.css` : l'ancien CSS des pages a été supprimé par la carte 101.
+- Pas de `page.css` : toute la mise en forme passe par les classes Tailwind.
 
 ## Un nouveau composant
 
-- Utilisé par une seule page : `app/<page>/component/<Nom>/<Nom>.tsx`.
-- Utilisé par au moins deux pages : `common/components/<Nom>/<Nom>.tsx`, puis l'ajouter au skill `reuse-first`.
-- Partagé entre plusieurs applications (site, hub…) : `packages/ui/src/` (voir `packages/ui/CLAUDE.md`). Une partie de BBScheme (lecteur, terrain, pions) : `packages/bbscheme-player/src/` (voir son `CLAUDE.md`).
-- Un composant = un dossier, avec `<Nom>.tsx`, `<Nom>.css` et `<Nom>-mobile.css`.
+- Utilisé par une seule rubrique du site : `app/<rubrique>/component/<Nom>.tsx` (exemple : `app/forum/component/TopicTools.tsx`).
+- Utilisé par au moins deux rubriques : `common/components/<Nom>/<Nom>.tsx` (un dossier par composant), puis l'ajouter au skill `reuse-first`.
+- Partagé entre plusieurs applications (site, hub…) : `packages/ui/src/<nom>.tsx`, en minuscules avec des tirets comme les composants shadcn (`confirm-dialog.tsx`), exporté par `src/index.ts` (voir `packages/ui/CLAUDE.md`). Une partie de BBScheme (lecteur, terrain, pions) : `packages/bbscheme-player/src/` (voir son `CLAUDE.md`).
+- La mise en forme s'écrit en classes Tailwind dans le `.tsx`, avec un réglage téléphone en `max-lg:` (skill `mobile-ux`). Pas de fichier `-mobile.css`. Un fichier `<Nom>.css` à côté du composant n'est permis que pour ce que Tailwind exprime mal (skill `theming-rules`).
 
 ## Autres cas
 
@@ -35,5 +35,5 @@ Le plan des dossiers et leurs règles sont dans `ARCHITECTURE.md` (section « O�
 
 ## Noms
 
-- Fichiers de composants en `PascalCase` (`UserAvatar.tsx`), autres fichiers en `camelCase` (`forumAccess.ts`).
+- Fichiers de composants du site en `PascalCase` (`UserAvatar.tsx`), autres fichiers en `camelCase` (`forumAccess.ts`). Dans `packages/ui`, minuscules et tirets (`page-nav.tsx`), comme shadcn.
 - Code en anglais, commentaire d'en-tête de fichier en français : il dit en une ou deux phrases à quoi sert le fichier.

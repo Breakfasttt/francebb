@@ -26,3 +26,14 @@ Les tests automatiques vérifient que chaque fonctionnalité de l'inventaire exi
   - chaque écran refait par les cartes 088 à 100.
 - Ranger dans `kanban/a-tester/` les cartes de l'épic qui attendent cet essai, et les passer dans `termine/` une fois l'essai réussi.
 - Les problèmes trouvés pendant l'essai deviennent des cartes séparées.
+
+## Résultat
+
+La liste est écrite dans `docs/refonte/tests-manuels.md` : 180 cases à cocher, rangées en 20 sections par écran, plus une section qui rappelle les bugs déjà rangés dans des cartes (109 à 113, 129 à 148), pour ne pas les signaler une seconde fois. Chaque ligne indique l'appareil, le compte à utiliser et le résultat attendu. Aucune ligne ne demande d'effacer des données réelles : pour les suppressions et la remise à zéro de la base, on ouvre seulement la fenêtre, puis on annule.
+
+La carte attend maintenant l'essai du responsable, sur son téléphone (Android et, si possible, iPhone) et sur ordinateur. Elle passera dans `termine/` une fois la liste déroulée ; chaque problème trouvé deviendra une carte séparée.
+
+Points à savoir avant l'essai :
+
+- Le bandeau « Nouveau look » n'apparaît qu'à un membre qui avait gardé un ancien thème : il faut un compte dans ce cas pour l'essayer.
+- Les résumés des cartes de bugs, dans la dernière section, sont tirés de leur titre : en cas de doute, lire la carte.

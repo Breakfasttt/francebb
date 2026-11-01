@@ -1,77 +1,80 @@
 ---
 name: mobile-ux
-description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (règle absolue - mobile impeccable) - menu latéral global, déplacement des colonnes latérales, bouton de filtres, bouton retour. À lire avant toute modification d'interface.
+description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (règle absolue - mobile impeccable) - coquille (barre basse, panneau « Plus », « Cette page »), seuil unique de 1024 pixels, bouton Filtres, bouton retour, écrans plein écran. À lire avant toute modification d'interface.
 ---
 
 # BBFrance sur téléphone
 
-**Règle absolue du projet : le site doit être impeccable sur téléphone** (voir `README.md`). La plupart des coachs l'utilisent depuis leur mobile.
+**Règle absolue du projet : le site doit être impeccable sur téléphone** (voir `README.md`). La plupart des coachs l'utilisent depuis leur mobile. Les chemins de ce skill sont relatifs à `apps/site`.
 
 ## Ce que chaque écran doit respecter
 
-- Pas de défilement horizontal.
-- Textes lisibles sans zoomer.
-- Boutons et liens d'au moins 44 pixels de haut, assez espacés pour le pouce.
+- Pas de défilement horizontal de la page.
+- Textes lisibles sans zoomer : aucun texte sous 12 pixels.
+- Boutons et liens d'au moins 44 pixels de haut (`size="tap"` ou `"tap-icon"` de `Button`), assez espacés pour le pouce.
+- Champs de saisie en police de 16 pixels au moins : en dessous, l'iPhone zoome tout seul sur le champ. Les champs de `@bbfrance/ui` (`Input`, `Textarea`, `Select`) le font déjà.
 - Fenêtres, menus et listes déroulantes qui s'ouvrent et se ferment sans bug.
-- Lisible dans les 7 thèmes.
+- Lisible dans les 8 thèmes.
 - Fluide : pas de saut de mise en page au chargement, réponse immédiate au toucher.
 
-Mesure rapide après une correction, sans écrire de test temporaire : dans `apps/site`, `node scripts/e2e-db.mjs` puis `MOBILE_AUDIT=1 MOBILE_AUDIT_PAGES=profile,tournois npx playwright test tests/e2e/mobile-audit.spec.ts --project=chromium` (chemins sans « / » au début sous Git Bash).
-Le résumé affiché à la fin donne, par page et par taille d'écran, les cibles trop petites, les textes sous 12 pixels, les champs sous 16 pixels et les éléments coupés ; le détail est dans `logs/mobile-audit.json` (voir `docs/mobile-audit.md`).
+Mesure rapide après une correction, sans écrire de test temporaire : dans `apps/site`, `node scripts/e2e-db.mjs` puis `MOBILE_AUDIT=1 MOBILE_AUDIT_PAGES=profile,tournois npx playwright test tests/e2e/mobile-audit.spec.ts --project=chromium` (chemins sans « / » au début sous Git Bash). Le résumé affiché à la fin donne, par page et par taille d'écran, les cibles trop petites, les textes sous 12 pixels, les champs sous 16 pixels et les éléments coupés ; le détail est dans `logs/mobile-audit.json` (voir `docs/mobile-audit.md`).
 
-Vérification : tests automatiques en taille téléphone, plus un contrôle à l'œil (sur un vrai téléphone : voir « Tester sur un vrai téléphone » dans le `README.md`).
-
-## Principes
-
-- **Ne rien casser sur ordinateur** : les règles mobiles sont à part : préfixe Tailwind `max-lg:` (ou `lg:` pour ce qui est réservé à l'ordinateur), ou bloc `@media (max-width: 1024px)` dans un fichier CSS de composant.
-- Sur téléphone, on empile les éléments verticalement (`flex-direction: column`) et on garde de l'air (marges intérieures).
-- Un tableau trop large passe en liste verticale ou défile dans son propre cadre (`overflow-x: auto`), jamais la page entière.
-- Si un composant est trop complexe à adapter, on simplifie son affichage mobile.
+Vérification : tests automatiques en taille téléphone (les tests d'inventaire de `tests/e2e/inventaire/` tournent en taille ordinateur et téléphone), plus un contrôle à l'œil sur un vrai téléphone (voir « Tester sur un vrai téléphone » dans le `README.md`).
 
 ## Un seul seuil : 1024 pixels
 
-Le site passe de l'affichage ordinateur à l'affichage téléphone à **1024 pixels de large** (carte 055). Les tablettes reçoivent donc l'affichage téléphone. Ce seuil est le même partout :
+Le site passe de l'affichage ordinateur à l'affichage téléphone à **1024 pixels de large**. Les tablettes reçoivent donc l'affichage téléphone. Ce seuil est le même partout :
 
-- en JavaScript : la constante `MOBILE_BREAKPOINT` de `common/hooks/useIsMobile.ts`, utilisée par défaut par `useIsMobile()` et `MobilePortal` ; `useMediaQuery(DESKTOP_QUERY)` de `@bbfrance/ui` suit le même seuil. Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
-- en CSS : `@media (max-width: 1024px)` pour les règles téléphone, `@media (min-width: 1025px)` pour les règles réservées à l'ordinateur. Le CSS ne sait pas lire une variable dans un `@media`, d'où la valeur écrite en clair ;
-- en Tailwind : `max-lg:` (téléphone) et `lg:` (ordinateur), réglés sur 1025 pixels dans `packages/ui/src/tokens.css`. Les anciennes classes `.mobile-only` et `.desktop-only` ont été supprimées (carte 101).
+- en Tailwind : `max-lg:` (téléphone) et `lg:` (ordinateur, à partir de 1025 pixels), réglés dans `packages/ui/src/tokens.css` ;
+- en JavaScript : `useMediaQuery(DESKTOP_QUERY)` de `@bbfrance/ui`, ou `useIsMobile()` de `common/hooks/useIsMobile.ts` (constante `MOBILE_BREAKPOINT`). Ne jamais passer d'autre valeur à `useIsMobile` ni écrire `window.innerWidth <= …` ;
+- dans un fichier CSS de composant : `@media (max-width: 1024px)` et `@media (min-width: 1025px)`. Le CSS ne sait pas lire une variable dans un `@media`, d'où la valeur écrite en clair.
 
-Pourquoi : avant la carte 055, une partie du site basculait à 768 pixels et l'autre à 1024. Entre les deux (tablettes), des colonnes étaient masquées par le CSS sans être encore déplacées dans le menu par le JavaScript : les onglets de la modération devenaient inaccessibles.
+D'autres largeurs restent permises **seulement pour ajuster une grille à la place disponible** (passer de 3 colonnes de cartes à 2, réduire une marge). Elles ne doivent jamais masquer, déplacer ou remplacer une colonne, un onglet, un menu ou des filtres : c'est le rôle du seuil unique. Autrement, entre deux seuils, une partie de l'interface devient inaccessible.
 
-D'autres largeurs (`600px`, `480px`, `900px`, `1100px`…) restent permises **seulement pour ajuster une grille ou un tableau à la place disponible** (passer de 3 colonnes de cartes à 2, réduire une marge). Elles ne doivent jamais masquer, déplacer ou remplacer une colonne latérale, un onglet, un menu ou des filtres : cela, c'est le rôle du seuil unique.
+## La coquille du site sur téléphone
 
-## Le menu latéral global (téléphone uniquement)
+La coquille est ce qui entoure chaque page : `common/components/AppShell/` (`AppShell.tsx`, `MorePanel.tsx`, `navItems.ts`, `AppShell.css`).
 
-Sur téléphone, la barre de navigation devient un bouton « hamburger » (trois traits) qui ouvre un menu latéral. Ce menu contient, dans l'ordre :
-1. le logo ;
-2. le profil du membre (avatar, connexion ou déconnexion) ;
-3. les liens principaux (messagerie, forum, modération, administration) ;
-4. un séparateur ;
-5. un emplacement libre `<div id="mobile-page-sidebar-slot">` pour la colonne latérale propre à la page ;
-6. en bas : mentions légales et lien GitHub.
+- **Barre du haut** : l'emplacement du bouton retour de la page (`#mobile-back-button-slot`), le logo (sauf sur l'accueil) et, pour un visiteur, « Connexion ».
+- **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier.
+- **Panneau « Plus »** : il monte du bas et contient le profil ou la connexion, le choix du thème, les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier), la rubrique « Cette page », la modération et l'administration pour l'équipe, les mentions légales et la déconnexion.
+- **« Cette page »** : une page peut y envoyer des outils secondaires (actions de la colonne latérale du forum, outils d'un sujet) par un portail vers `#mobile-page-sidebar-slot` (`GlobalPortal` ou `MobilePortal`). La rubrique disparaît quand la page n'y envoie rien. Le panneau reste monté en permanence, caché quand il est fermé, pour que cet emplacement existe toujours.
 
-## Colonne latérale d'une page
+Place réservée en bas de la page : la coquille calcule elle-même la place de la barre basse (`--app-bottom-nav-space`), du bandeau des cookies (`--app-cookie-space`) et des notifications (`--app-toast-space`). Une page n'ajoute pas de marge pour eux.
 
-Si une page a sa propre colonne latérale (onglets de l'administration, de la modération…) :
-- sur ordinateur, elle s'affiche normalement ;
-- sur téléphone, son contenu est déplacé dans l'emplacement libre du menu global, avec le composant `<MobilePortal target="mobile-page-sidebar-slot">` et le hook `useIsMobile`. La colonne d'origine est masquée en CSS mobile.
-- les écrans refaits (ADR 0006) mettent plutôt leurs onglets en haut de la page avec `LinkTabs` de `packages/ui`, une rangée qui défile de côté (exemple : `/profile`, carte 092). Quand les onglets sont nombreux, `StaffPageLayout` (carte 099, `/moderation` et `/administration`) en fait une colonne sur ordinateur et une rangée sur téléphone, qui se place sur l'onglet ouvert.
+## Barre d'actions collée en bas par une page
 
-## Filtres et longs formulaires
-
-Sur ordinateur, les filtres d'une liste sont dans une colonne « Filtres » à gauche des résultats. Sur téléphone, cette colonne disparaît : un bouton « Filtres », dans la barre au-dessus des résultats, ouvre un panneau qui monte du bas de l'écran (`Sheet` de `packages/ui`) avec les mêmes filtres, « Réinitialiser » et « Voir N résultats ». Le nombre de filtres actifs est affiché sur le bouton, et chaque filtre actif est rappelé en pastille, avec une croix pour le retirer, au-dessus des résultats. Exemples : `/forum/search` (carte 088), `/tournois` (carte 089), `/membres` (carte 092), `/ligues` (carte 094), `/articles` (carte 095), `/ressources` (carte 096). Le modèle le plus simple à copier : `app/articles/component/ArticleFilters.tsx` (filtres écrits dans l'adresse) ou `app/ressources/component/ResourceFilters.tsx` (filtres gardés dans la page).
-
-- L'ancien bouton flottant en forme d'entonnoir (`MobileFilterWrapper`, carte 054) a été supprimé par la carte 096, quand `/ressources`, sa dernière page, est passée au bouton « Filtres ». Ne pas le recréer.
-- Ne pas envoyer les filtres dans le menu latéral global (`#mobile-page-sidebar-slot`) : ce menu est réservé à la navigation et aux onglets des pages (profil, administration…).
-
-## Titre de page et bouton retour
-
-Utiliser `<PageHeader />`. Sur téléphone, le bouton retour (`BackButton`) est déplacé dans la barre de navigation (emplacement `#mobile-back-button-slot`) : il reste accessible même quand on fait défiler la page.
+Une page qui colle sa propre barre en bas (« Répondre » et la pagination d'un sujet, barre d'envoi d'un écran de rédaction, saisie d'une conversation) pose l'attribut `data-page-bottom-bar` sur cette barre. La coquille réserve alors sa hauteur (`--app-page-bar-space`, 60 pixels), et les notifications et le bandeau des cookies montent au-dessus. Sans valeur, la barre s'efface pendant la saisie ; avec `data-page-bottom-bar="always"`, elle reste affichée pour que « Publier » reste à portée de pouce. La barre se place à `bottom-[var(--app-bottom-nav-space)]` pour ne pas passer sous la barre basse.
 
 ## Écrans plein écran
 
-Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois) , le formulaire d'une ligue (carte 094) et celui d'un article (carte 095) retirent la barre de navigation du bas grâce à leur adresse (`isComposePath` dans `common/components/AppShell/navItems.ts`). Un écran plein écran qui n'a pas sa propre adresse, comme une conversation de la messagerie ouverte par `?id=` (carte 093), pose l'attribut `data-fullscreen` sur son cadre : `AppShell.css` retire alors la barre du bas et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
+- **Écrans de rédaction** (répondre, modifier un message, nouveau sujet, tournois, ligues, articles, ressources, archives du classement, propositions du quizz) : la barre basse est retirée grâce à leur adresse, reconnue par `isComposePath` dans `navItems.ts`. Une nouvelle adresse de rédaction doit y être ajoutée, sinon la barre basse recouvre la barre d'envoi. Leur mise en page passe par `ComposeScreen` et `ComposeActionBar` (`app/forum/component/ComposeScreen.tsx`). L'éditeur BBScheme (`/bbscheme`) n'a pas non plus de barre basse.
+- **Écran plein écran sans adresse propre** (conversation de la messagerie ouverte par `?id=`, carte en plein écran) : il pose l'attribut `data-fullscreen` sur son cadre. `AppShell.css` retire alors la barre basse et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
+
+## Onglets d'une page
+
+Les onglets se placent en haut de la page avec `LinkTabs` de `@bbfrance/ui` : une rangée qui défile de côté (exemple : `/profile`). Quand ils sont nombreux, `StaffPageLayout` (`/moderation`, `/administration`) en fait une colonne sur ordinateur et une rangée sur téléphone, qui se place sur l'onglet ouvert. Les onglets ne vont pas dans le panneau « Plus ».
+
+## Filtres d'une liste : bouton « Filtres », panneau et pastilles
+
+Sur ordinateur, les filtres d'une liste sont dans une colonne « Filtres » à gauche des résultats. Sur téléphone, cette colonne disparaît :
+- un bouton « Filtres », dans la barre au-dessus des résultats, affiche le nombre de filtres actifs (`CountBadge`) ;
+- il ouvre un panneau qui monte du bas (`Sheet` de `@bbfrance/ui`) avec les mêmes filtres, « Réinitialiser » et « Voir N résultats » ;
+- chaque filtre actif est rappelé en pastille au-dessus des résultats, avec une croix pour le retirer.
+
+Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/ressources`. Les modèles les plus simples à copier : `app/articles/component/ArticleFilters.tsx` (filtres écrits dans l'adresse) ou `app/ressources/component/ResourceFilters.tsx` (filtres gardés dans la page). Les filtres ne vont jamais dans le panneau « Plus ».
+
+## Mise en page
+
+- **Ne rien casser sur ordinateur** : les règles propres au téléphone passent par `max-lg:` (ou `lg:` pour ce qui est réservé à l'ordinateur).
+- Sur téléphone, on empile les éléments en une colonne et on garde de l'air.
+- Un tableau trop large passe en liste de cartes (exemple : `app/membres/component/MembersTable.tsx`) ou défile dans son propre cadre (`overflow-x-auto`), jamais la page entière.
+- Si un composant est trop complexe à adapter, on simplifie son affichage sur téléphone.
+
+## Titre de page et bouton retour
+
+Le bouton retour (`BackButton`) est envoyé dans la barre du haut sur téléphone (`MobilePortal targetId="mobile-back-button-slot"`) : il reste accessible quand on fait défiler la page. `ForumListHeader` (forum) et `ComposeScreen` le font déjà ; `PageHeader` ne sert plus qu'aux mentions légales.
 
 ## Pages impossibles sur téléphone
 
-Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher un message clair (par exemple un `EmptyState` de `@bbfrance/ui` : « Optimisé pour ordinateur ou tablette ») ; l'ancien composant `DesktopOnlyFallback`, jamais utilisé, a été supprimé par la carte 101. Ce n'est pas le cas de l'éditeur BBScheme, qui a sa propre interface téléphone (carte 100) : terrain entre une barre compacte d'outils (le reste dans un panneau « Plus d'outils ») et une barre basse pour les réserves et l'animation.
+Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher un message clair avec `EmptyState` de `@bbfrance/ui` (« Optimisé pour ordinateur ou tablette »). Aucune page n'est dans ce cas aujourd'hui : même l'éditeur BBScheme a son interface téléphone (terrain entre une barre compacte d'outils et une barre basse pour les réserves et l'animation).

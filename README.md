@@ -113,7 +113,7 @@ GitHub relance automatiquement ces vérifications à chaque envoi de code (`.git
 | Base de données | [Postgres](https://www.postgresql.org), hébergé chez [Neon](https://neon.tech) en production ; en local, `prisma dev` (sans Docker) |
 | Accès à la base de données | [Prisma 7](https://www.prisma.io) |
 | Connexion des membres | [Auth.js v5](https://authjs.dev) aujourd'hui ; [Better Auth](https://www.better-auth.com) dans le hub |
-| Apparence | CSS avec 7 thèmes, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
+| Apparence | [Tailwind CSS](https://tailwindcss.com) et 8 thèmes de couleurs, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
 | Hébergement | [Vercel](https://vercel.com) |
 
 ---

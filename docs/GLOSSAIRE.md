@@ -30,8 +30,8 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Confirmation** (`ConfirmDialog`) | Fenêtre qui demande « Êtes-vous sûr ? » avant une action importante (désinscription, suppression, effacement des résultats). Sur les écrans refaits, elle remplace la fenêtre grise du navigateur (`confirm()`) : panneau qui monte du bas sur téléphone, fenêtre centrée sur ordinateur, avec « Annuler » et le bouton de l'action (composant de `@bbfrance/ui`, carte 089). |
 | **Conseil** (`/council`) | Réunion de 5 agents IA aux rôles différents, qui donnent leur avis avant une décision importante. Voir `.claude/commands/council.md`. |
 | **Contraste AA** | Niveau d'accessibilité de la norme WCAG : l'écart de luminosité entre un texte et son fond doit être d'au moins 4,5 pour 1 (3 pour 1 pour un grand texte). En dessous, le texte devient difficile à lire, surtout en plein soleil ou avec une vue faible. |
-| **Coquille** | Ce qui entoure chaque page du site : en-tête, navigation, pied de page (`apps/site/common/components/AppShell/`). Pendant la refonte, la variable d'environnement `REFONTE` choisissait entre l'ancienne et la nouvelle coquille ; l'ancienne a été supprimée par la carte 101 (ADR 0006). |
-| **Couche CSS (`@layer`)** | Groupe de règles CSS dont on fixe la priorité. Une règle d'une couche de faible priorité perd toujours face à une règle d'une couche plus forte, quel que soit l'ordre des fichiers. La refonte range l'ancien CSS dans une couche faible, pour que les nouveaux styles l'emportent. |
+| **Coquille** | Ce qui entoure chaque page du site : barre du haut, barre de navigation basse et panneau « Plus » sur téléphone, pied de page sur ordinateur (`apps/site/common/components/AppShell/`, ADR 0006). |
+| **Couche CSS (`@layer`)** | Groupe de règles CSS dont on fixe la priorité. Une règle d'une couche de faible priorité perd toujours face à une règle d'une couche plus forte, quel que soit l'ordre des fichiers. Pendant la refonte, l'ancien CSS était rangé dans une couche faible pour que les nouveaux styles l'emportent ; aujourd'hui, `apps/site/app/tailwind.css` déclare les couches de Tailwind (`theme`, `base`, `components`, `utilities`). |
 | **CSS** | Langage qui décrit l'apparence des pages (couleurs, tailles, positions). |
 | **Déconnexion globale** (*end_session*) | Quand le coach se déconnecte d'une application, celle-ci l'envoie aussi vers le hub, qui ferme sa propre session. Sans cela, la connexion suivante serait automatique. |
 | **Déployer** | Mettre une nouvelle version du site en ligne. |
@@ -103,9 +103,9 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Rollback** (retour arrière) | Revenir à la version précédente quand une mise à jour pose problème. |
 | **Safe area (zone protégée)** | Partie de l'écran d'un iPhone que ne recouvrent ni l'encoche en haut ni la barre d'accueil en bas. Une barre fixée en bas doit ajouter cette marge (`env(safe-area-inset-bottom)`), sinon ses boutons passent sous la barre d'accueil. |
 | **Schéma** (base de données) | La liste des tables, de leurs colonnes et de leurs liens. |
-| **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. BBFrance n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (menu latéral global, colonnes latérales rangées dans ce menu, filtres derrière le bouton flottant) ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
+| **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. BBFrance n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (barre de navigation basse, panneau « Plus », filtres derrière un bouton « Filtres ») ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en Tailwind, ce sont les préfixes `max-lg:` et `lg:` ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
 | **Seed** / **firstSetup** | Script qui remplit une base neuve avec les données de base (rôles, catégories du forum, listes de référence). |
-| **shadcn/ui** | Collection de composants d'interface copiés dans le projet (`packages/ui`) et adaptés à nos 7 thèmes. |
+| **shadcn/ui** | Collection de composants d'interface copiés dans le projet (`packages/ui`) et adaptés à nos 8 thèmes (variables v2). |
 | **Skill** | Fiche de consignes que l'IA lit avant une tâche précise (ex. règles d'interface). Rangées dans `.claude/skills/`. |
 | **Smoke test** | Test rapide qui vérifie que les parcours essentiels marchent encore. |
 | **sonner** | Bibliothèque des petites notifications en bas à droite (« Message envoyé »). |
@@ -113,9 +113,9 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **SQL** | Langage pour interroger une base de données. |
 | **SQLite** | Base de données qui tient dans un seul fichier. Pratique en local, mais limitée pour un site en ligne. |
 | **SSO** (*Single Sign-On*) | Connexion unique : un seul compte et une seule connexion pour plusieurs applications. |
-| **Tailwind** | Système de mise en forme par petites classes (`p-4` = marge intérieure de 16 pixels). Utilisé dans `packages/ui`. |
+| **Tailwind** | Système de mise en forme par petites classes (`p-4` = marge intérieure de 16 pixels). Toute la mise en forme du site et de `packages/ui` s'écrit ainsi ; le préfixe `max-lg:` applique une classe seulement sur téléphone, `lg:` seulement sur ordinateur. |
 | **TBT** (*Total Blocking Time*, temps de blocage total) | Mesure de Lighthouse : pendant le chargement, temps total où le téléphone est trop occupé à exécuter le JavaScript de la page pour réagir à un toucher. Plus il est court, plus la page répond vite. Bon en dessous de 200 millisecondes. |
-| **Thème** | Jeu de couleurs du site. Il y en a 7, au choix du coach (`apps/site/app/theme/`). |
+| **Thème** | Jeu de couleurs du site. Il y en a 8, au choix du coach : « Vestiaire » (par défaut) et les 7 thèmes historiques. Liste dans `apps/site/lib/themes.ts`, couleurs (variables v2) dans `packages/ui/src/themes/`. |
 | **Token** (jeton) | Mot de passe technique qui donne accès à un service (GitHub, base de données). S'il fuite, il faut le révoquer. |
 | **Tokens de thème** | Noms de couleurs (`primary`, `card`…) qui pointent vers les couleurs du thème actif. |
 | **Turbo** (Turborepo) | Outil qui lance les commandes (build, tests) sur toutes les applications du monorepo. |

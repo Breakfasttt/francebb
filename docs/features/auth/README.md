@@ -65,7 +65,7 @@ Utilisation dans une action serveur : `const session = await getActiveSession();
 ## État
 
 - Fait : ban appliqué côté serveur dans toutes les actions (carte 002) ; email masqué par défaut ; test smoke de la redirection des bannis.
-- Fait aussi (carte 062) : l'inscription et le profil lisent les 7 thèmes dans la liste officielle `lib/themes.ts` ; le thème « Sombre » est enregistré sous son vrai identifiant, `default` (avant, `dark`, inconnu du site). L'action `updateTheme` refuse un identifiant absent de cette liste. Les membres déjà enregistrés avec `dark` sont passés à `default` par la migration de données `20261030120000_theme_dark_to_default`.
+- Fait aussi (carte 062) : l'inscription et le profil lisent les thèmes dans la liste officielle `lib/themes.ts` (8 thèmes depuis la refonte, ADR 0006) ; le thème « Sombre » est enregistré sous son vrai identifiant, `default` (avant, `dark`, inconnu du site). L'action `updateTheme` refuse un identifiant absent de cette liste. Les membres déjà enregistrés avec `dark` sont passés à `default` par la migration de données `20261030120000_theme_dark_to_default`.
 - Fait aussi (carte 069) : le bannissement et le changement de rôle sont immédiats ; un test e2e vérifie qu'un membre banni pendant sa session est envoyé vers `/banned` à la page suivante, et qu'un administrateur rétrogradé perd `/administration`.
 - Manque : test smoke du refus d'une action par un banni (reste de la carte 002).
 - Hub : bascule prévue par les cartes 035, 037, 038, 039 ; la liaison dangereuse Discord/Google disparaîtra avec elle. La carte 036 (migration des comptes) est annulée par l'ADR-0004 : les membres se réinscriront via le hub.

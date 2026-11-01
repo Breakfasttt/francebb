@@ -6,7 +6,7 @@ keywords: ["shadcn", "ui", "Next.js", "pnpm", "blocks", "sonner", "forms", "dark
 
 # shadcn/ui Skills
 
-> **Pour BBFrance** : les composants shadcn vivent dans `packages/ui` et doivent utiliser les couleurs des 7 thèmes (voir `packages/ui/CLAUDE.md` et le skill `theming-rules`). Ce qui suit est la documentation générique de shadcn/ui.
+> **Pour BBFrance** : les composants shadcn vivent dans `packages/ui` et doivent utiliser les variables de couleur v2 (`--bb-*`) des 8 thèmes du site, jamais une couleur écrite en dur (voir `packages/ui/CLAUDE.md` et le skill `theming-rules`). Ce qui suit est la documentation générique de shadcn/ui.
 
 **Status:** Next.js 16 ready  
 **Package Manager:** pnpm (required)  

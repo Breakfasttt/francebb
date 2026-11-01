@@ -34,3 +34,17 @@ Les bugs repérés pendant l'inventaire sont dans les cartes 103 à 108, rattach
 - Le CSS historique (`page.css`, `globals-mobile.css`, variables v1) a été supprimé.
 - Les 8 thèmes ont un contraste AA, la norme d'accessibilité WCAG.
 - La note Lighthouse sur téléphone est d'au moins 90.
+
+## Bilan (carte 102)
+
+**Ce qui a été fait.** Les cartes 075 à 101 sont terminées ; la carte 102 a remis la documentation à jour.
+- Le site a une nouvelle coquille : sur téléphone, une barre de navigation en bas de l'écran et un panneau « Plus » ; sur ordinateur, une barre haute avec un menu « Plus ».
+- Les 8 thèmes (« Vestiaire », thème de tout le monde, et les 7 thèmes historiques) n'utilisent plus que les variables v2 de `packages/ui`, et leur contraste AA est vérifié par `contraste.spec.ts`.
+- Tous les écrans ont été refaits avec les composants de `packages/ui` et des classes Tailwind. L'ancien CSS, les variables v1, l'ancienne coquille et la variable `REFONTE` ont disparu (carte 101). Seule la page des mentions légales garde deux fichiers CSS, en attendant sa réécriture par le chantier RGPD.
+- Chaque écran a son test d'inventaire, qui passe en taille ordinateur et en taille téléphone. Lighthouse sur téléphone donne entre 91 et 94 pour l'accueil, le forum, un sujet et les tournois ; le profil reste à 88, comme avant la refonte.
+- Les skills (`theming-rules`, `ui-components`, `mobile-ux`, `reuse-first`, `project-structure`), le glossaire et les fiches de fonctionnalité décrivent la nouvelle interface (carte 102).
+
+**Ce qui reste.**
+- Carte 114 : dérouler à la main, sur un vrai téléphone, la liste des tests manuels de fin de refonte. L'épic ne sera fermé qu'après elle.
+- Deux conditions de « Terminé quand » ne sont pas encore remplies : quatorze lignes de `docs/refonte/inventaire.md` ne sont pas cochées (liste dans le résultat de la carte 101), et la page du profil reste à 88 dans Lighthouse sur téléphone, sous le seuil de 90.
+- Les bugs repérés pendant la refonte, cartes 109 à 113 et 129 à 148 (épic E01), à traiter une fois la refonte terminée.
