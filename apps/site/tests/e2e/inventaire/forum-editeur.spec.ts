@@ -489,14 +489,11 @@ test.describe("3.6 nouveau sujet", () => {
   });
 
   test("[modo] cases « Épingler » et « Verrouiller le sujet » ; forum verrouillé refusé au membre, permis au modo", async ({ page }) => {
-    // Membre dans un forum verrouillé : refus du serveur en notification
+    // Membre dans un forum verrouillé : renvoyé vers le forum avant d'écrire (carte 152)
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/new-topic?forumId=${LOCKED_FORUM.id}`, { waitUntil: "networkidle" });
-    await page.getByRole("textbox", { name: "Titre du sujet" }).fill("Inv éditeur créé refusé");
-    await page.getByRole("textbox", { name: "Message", exact: true }).fill("Message refusé");
-    await visibleButton(page, "Créer le sujet").click();
-    await expect(page.getByText(/Ce forum est verrouillé/)).toBeVisible();
-    await expect(page).toHaveURL(/\/forum\/new-topic/);
+    await expect(page).toHaveURL(new RegExp(`/forum/${LOCKED_FORUM.id}$`));
+    await expect(page.getByRole("textbox", { name: "Titre du sujet" })).toHaveCount(0);
 
     // Modérateur : cases de modération, création permise dans le forum verrouillé, sujet épinglé
     await loginAs(page, E2E.modoId);

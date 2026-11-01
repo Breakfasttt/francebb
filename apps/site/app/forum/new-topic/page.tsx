@@ -46,6 +46,12 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
 
   const userCanStick = isModerator(session.user.role);
 
+  // Carte 152 : même règle que createTopic, un forum verrouillé n'accepte de nouveaux sujets que des modérateurs.
+  // Un membre ordinaire est renvoyé vers le forum avant d'écrire, au lieu d'être refusé à l'envoi.
+  if (forum.isLocked && !userCanStick) {
+    redirect(`/forum/${forumId}`);
+  }
+
   const breadcrumbs = [];
   if (forum.parentForum) {
     if (forum.parentForum.category) breadcrumbs.push({ label: forum.parentForum.category.name, isCategory: true });

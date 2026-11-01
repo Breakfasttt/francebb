@@ -4,6 +4,8 @@
  * - 149 : l'écran de réponse d'un sujet verrouillé renvoie un membre ordinaire vers le sujet (un modérateur peut
  *   toujours répondre), et un visiteur qui ouvre l'écran de nouveau sujet est envoyé vers la page de connexion, qui
  *   le ramènera ensuite sur cet écran (paramètre `callbackUrl`) ;
+ * - 152 : l'écran de nouveau sujet d'un forum verrouillé renvoie un membre ordinaire vers le forum (un modérateur
+ *   garde l'accès, comme pour `createTopic`) ;
  * - 150 : la liste `/tournois` affiche « x / y places » d'après les inscriptions réelles (liste d'attente exclue), et
  *   le choix du lieu sur une carte (`MapPicker`) affiche un repère servi par le site, sans rien demander à unpkg.com.
  *
@@ -40,6 +42,8 @@ const USER_IDS = [MEMBER.id, ...Array.from({ length: FILLER_COUNT }, (_, i) => f
 
 /** Sujet verrouillé du forum de test (carte 149). */
 const LOCKED_TOPIC = { id: "e2e_bugv2_verrou", title: "Bug V2 sujet verrouillé" };
+/** Forum verrouillé, sous le forum de test (carte 152). */
+const LOCKED_FORUM = { id: "e2e_bugv2_forum_verrou", name: "Bug V2 forum verrouillé" };
 /** Tournoi de 20 places : 3 inscrits et 1 en liste d'attente, rien dans le nombre importé de l'ancien site (carte 150). */
 const RECENT = { id: "e2e_bugv2_recent", name: "Bug V2 Tournoi récent" };
 /** Ancien tournoi de 10 places : aucune inscription sur le site, 7 places prises d'après l'ancien site (carte 150). */
@@ -53,6 +57,7 @@ async function cleanUp() {
     await prisma.topicFollow.deleteMany({ where: { OR: [{ userId: { in: USER_IDS } }, { topic: topicWhere }] } });
     await prisma.post.deleteMany({ where: { OR: [{ topic: topicWhere }, { authorId: { in: USER_IDS } }] } });
     await prisma.topic.deleteMany({ where: topicWhere });
+    await prisma.forum.deleteMany({ where: { id: LOCKED_FORUM.id } });
     const tournamentWhere = { OR: [{ id: { startsWith: "e2e_bugv2_" } }, { name: { startsWith: "Bug V2" } }] };
     await prisma.tournamentRegistration.deleteMany({ where: { tournament: tournamentWhere } });
     await prisma.tournament.deleteMany({ where: tournamentWhere });
@@ -77,6 +82,8 @@ test.beforeAll(async () => {
         posts: { create: { id: `${LOCKED_TOPIC.id}_p1`, content: "Message du sujet verrouillé", authorId: MEMBER.id } },
       },
     });
+
+    await prisma.forum.create({ data: { id: LOCKED_FORUM.id, name: LOCKED_FORUM.name, parentForumId: E2E.forumId, isLocked: true, order: 90 } });
 
     const tournament = { location: "Salle des fêtes", ville: "Rennes", organizerId: MEMBER.id };
     await prisma.tournament.create({ data: { ...tournament, id: RECENT.id, name: RECENT.name, date: inDays(50), maxParticipants: 20 } });
@@ -163,4 +170,21 @@ test("150 : le repère du choix de lieu sur une carte est servi par le site", as
 
   // Rien n'est enregistré : on ferme la fenêtre sans valider
   await page.keyboard.press("Escape");
+});
+
+test.describe("carte 152 : nouveau sujet dans un forum verrouillé", () => {
+  test("un membre ordinaire est renvoyé vers le forum avant d'écrire", async ({ page }) => {
+    await loginAs(page, MEMBER.id);
+    await page.goto(`/forum/new-topic?forumId=${LOCKED_FORUM.id}`, { waitUntil: "networkidle" });
+    await expect.poll(() => new URL(page.url()).pathname).toBe(`/forum/${LOCKED_FORUM.id}`);
+    // Pas d'écran de rédaction : le membre n'a rien pu écrire
+    await expect(page.getByRole("heading", { name: "Nouveau sujet" })).toHaveCount(0);
+  });
+
+  test("un modérateur garde l'accès à l'écran de nouveau sujet", async ({ page }) => {
+    await loginAs(page, E2E.modoId);
+    await page.goto(`/forum/new-topic?forumId=${LOCKED_FORUM.id}`, { waitUntil: "networkidle" });
+    await expect.poll(() => new URL(page.url()).pathname).toBe("/forum/new-topic");
+    await expect(page.getByRole("heading", { name: "Nouveau sujet" }).first()).toBeVisible();
+  });
 });
