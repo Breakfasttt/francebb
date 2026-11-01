@@ -1,14 +1,13 @@
 "use client";
 
 /**
- * BB Scheme - Plateau tactique Blood Bowl
+ * BBScheme : plateau tactique de Blood Bowl (placer les joueurs, dessiner, animer image par image, partager).
+ * L'habillage (barres d'outils, réserves, fenêtres) a été refait par la carte 100 avec les composants de packages/ui ;
+ * la logique d'édition sur le terrain (déplacements, tracés, zoom, pincement à deux doigts) n'a pas changé.
  */
 
 import BackButton from "@/common/components/BackButton/BackButton";
-import ClassicSelect from "@/common/components/Form/ClassicSelect";
 import {
-  ChevronLeft,
-  ChevronRight,
   Clock,
   Copy,
   Download,
@@ -19,8 +18,10 @@ import {
   LogOut,
   Maximize,
   Minimize,
+  MoreHorizontal,
   MousePointer2,
   Pause,
+  PenOff,
   Pencil,
   Play,
   PlusCircle,
@@ -37,15 +38,8 @@ import {
 } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { toast } from "@bbfrance/ui";
+import { Button, ConfirmDialog, EmptyState, Input, Select, Sheet, SheetContent, cn, toast } from "@bbfrance/ui";
 import { getBoardState, saveBoardState } from "./actions";
-// @ts-ignore
-import ClassicButton from "@/common/components/Button/ClassicButton";
-import CTAButton from "@/common/components/Button/CTAButton";
-
-import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
-import Modal from "@/common/components/Modal/Modal";
-import Tooltip from "@/common/components/Tooltip/Tooltip";
 import {
   BBSchemePlayer,
   Pitch,
@@ -60,12 +54,15 @@ import {
 } from "@bbfrance/bbscheme-player";
 // import Dugout from "./component/Dugout";
 import FigurineBox from "./component/FigurineBox";
+import GifExportSheet from "./component/GifExportSheet";
+import HelpSheet from "./component/HelpSheet";
+import ToolButton from "./component/ToolButton";
 
 import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
 import { usePinchZoom } from "@/common/hooks/usePinchZoom";
 
-import "./page-mobile.css";
+// Règles du terrain (geste au doigt, pincement à deux doigts) : le reste de l'habillage est en classes Tailwind
 import "./page.css";
 
 interface HistoryState {
@@ -147,16 +144,9 @@ export default function BBSchemePage() {
   const [allStarPlayers, setAllStarPlayers] = useState<PlayerRosterInfo[]>([]);
   const resizerRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
-  const mobileToolbarRef = useRef<HTMLDivElement>(null);
+  // Téléphone : réserve ouverte dans un panneau, et panneau « Plus d'outils »
   const [mobileActivePanel, setMobileActivePanel] = useState<'blue' | 'red' | null>(null);
-
-  // Barre d'outils sur téléphone : une flèche la fait défiler de sa largeur visible moins 60 pixels,
-  // pour qu'un outil déjà vu reste à l'écran comme point de repère
-  const scrollMobileToolbar = (direction: 1 | -1) => {
-    const toolbar = mobileToolbarRef.current;
-    if (!toolbar) return;
-    toolbar.scrollBy({ left: direction * Math.max(100, toolbar.clientWidth - 60), behavior: 'smooth' });
-  };
+  const [toolsOpen, setToolsOpen] = useState(false);
 
   // -- FIN DES HOOKS --
 
@@ -593,14 +583,21 @@ export default function BBSchemePage() {
 
   // -- FIN DES HOOKS --
 
-  // SI MOBILE : On laisse passer, le CSS gérera l'affichage (Theming rules / Mobile UX)
-  // if (isMobile && !isEmbed) {
-  //   return <DesktopOnlyFallback />;
-  // }
-
-  // SI MODE EMBED : Affichage du player dédié uniquement
-  if (isEmbed && boardId) {
-    return <BBSchemePlayer boardId={boardId} loadBoard={getBoardState} />;
+  // Mode embed (plateau affiché dans une iframe, par exemple dans un article d'un autre site) : le lecteur seul, posé
+  // par-dessus la coquille du site (barres de navigation) qui n'a pas sa place dans un cadre intégré. Sa largeur est
+  // limitée pour que le terrain (environ 1,7 fois plus large que haut) et ses commandes tiennent dans la hauteur du cadre.
+  if (isEmbed) {
+    return (
+      <div className="fixed inset-0 z-[5001] overflow-auto bg-bb-bg">
+        {boardId ? (
+          <div className="mx-auto w-full max-w-[calc((100dvh-7rem)*1.72)] px-2">
+            <BBSchemePlayer boardId={boardId} loadBoard={getBoardState} />
+          </div>
+        ) : (
+          <EmptyState title="Aucun plateau à afficher">L&apos;adresse doit indiquer le plateau à lire avec le paramètre ?id=.</EmptyState>
+        )}
+      </div>
+    );
   }
 
   const handleStarPlayerSelect = (starName: string) => {
@@ -1177,487 +1174,210 @@ export default function BBSchemePage() {
   };
 
   const ballItem = tokens.find(t => t.type === 'ball');
-  const carrier = ballItem?.attachedToId ? tokens.find(t => t.id === ballItem.attachedToId) : null;
   const isBallSelected = selectedToken?.type === 'ball';
+  const isLastFrame = currentFrameIndex === frames.length - 1;
+
+  // -- Habillage de l'éditeur (carte 100, ADR 0006) --
+  // Ordinateur : barre d'outils en haut, une réserve de chaque côté du terrain, barre de l'animation en bas.
+  // Téléphone : barre compacte des outils principaux en haut (le reste dans le panneau « Plus d'outils »), le terrain
+  // au milieu, et en bas les réserves (panneaux qui montent du bas) et la lecture de l'animation.
+  const goToPreviousFrame = () => setCurrentFrameIndex(prev => Math.max(0, prev - 1));
+  const goToNextFrame = () => {
+    if (isLastFrame) addFrame();
+    else setCurrentFrameIndex(prev => prev + 1);
+  };
+  const clearDrawings = () => {
+    saveToHistory(tokens, drawings);
+    setDrawings([]);
+    toast.success("Dessins effacés");
+  };
+  /** Une commande du panneau « Plus d'outils » referme d'abord le panneau, pour laisser voir le résultat. */
+  const fromTools = (action: () => void) => () => {
+    setToolsOpen(false);
+    action();
+  };
+  /** Sur téléphone, choisir un pion dans une réserve referme le panneau : on touche ensuite la case du terrain. */
+  const pickFromReserve = (tokenId: string) => {
+    handleTokenClick(tokenId);
+    setMobileActivePanel(null);
+  };
+  const putBackInReserve = (team: 'blue' | 'red') => {
+    handleBoxClick(team);
+    setMobileActivePanel(null);
+  };
+
+  const frameCounter = (
+    <span className="min-w-12 shrink-0 text-center text-sm font-bold tabular-nums text-bb-text" aria-live="polite">
+      {currentFrameIndex + 1} / {frames.length}
+    </span>
+  );
+  const playButton = (
+    <ToolButton
+      label={isPlaying ? "Pause" : "Lecture"}
+      icon={isPlaying ? <Pause size={20} aria-hidden="true" /> : <Play size={20} aria-hidden="true" />}
+      onClick={() => setIsPlaying(!isPlaying)}
+      className="bg-bb-accent text-bb-on-accent hover:bg-bb-accent-hover hover:text-bb-on-accent"
+    />
+  );
+  const previousButton = (
+    <ToolButton label="Image précédente" icon={<SkipBack size={18} aria-hidden="true" />} onClick={goToPreviousFrame} disabled={currentFrameIndex === 0 || isPlaying} />
+  );
+  const nextButton = (
+    <ToolButton
+      label={isLastFrame ? "Ajouter une image" : "Image suivante"}
+      icon={isLastFrame ? <PlusCircle size={18} aria-hidden="true" /> : <SkipForward size={18} aria-hidden="true" />}
+      onClick={goToNextFrame}
+      disabled={isPlaying}
+    />
+  );
+  const zoomSlider = (id: string) => (
+    <input
+      id={id}
+      type="range"
+      aria-label="Zoom du terrain"
+      min={ZOOM_MIN}
+      max={ZOOM_MAX}
+      step="0.05"
+      value={zoom}
+      onChange={(e) => setZoom(parseFloat(e.target.value))}
+      className="h-11 w-full cursor-pointer accent-bb-accent lg:h-10 lg:w-24"
+    />
+  );
+  const speedInput = (id: string) => (
+    <Input
+      id={id}
+      type="number"
+      aria-label="Vitesse de lecture (millisecondes)"
+      value={playbackSpeed}
+      onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
+      min={100}
+      max={3000}
+      step={100}
+      className="w-24 text-center lg:min-h-10"
+    />
+  );
+  const starSelect = (id: string) => (
+    <Select
+      id={id}
+      aria-label="Star Player choisi"
+      value={selectedToken?.playerInfo?.name === "Star Player" ? "aucun" : selectedToken?.playerInfo?.name || "aucun"}
+      onChange={(e) => handleStarPlayerSelect(e.target.value)}
+      className="lg:min-h-10 lg:w-56"
+    >
+      <option value="aucun">Star Player à choisir</option>
+      {allStarPlayers.map((star, idx) => (
+        <option key={`star-opt-${idx}`} value={star.name}>
+          {star.name} ({star.cost / 1000}k)
+        </option>
+      ))}
+    </Select>
+  );
+  const selectedName = selectedToken
+    ? selectedToken.type === 'ball' ? "le ballon" : `${selectedToken.playerInfo?.name ?? "joueur"} n° ${selectedToken.number ?? ""}`.trim()
+    : null;
+
+  const reserveProps = (team: 'blue' | 'red') => ({
+    team,
+    roster: (team === 'blue' ? blueRoster : redRoster)?.roster || [],
+    tokens: tokens.filter(t => t.type === team && t.location === 'box'),
+    rosterList: rosters,
+    onRosterSelect: (file: string) => handleRosterSelect(team, file),
+    selectedId,
+    rosterFile: team === 'blue' ? blueRosterFile : redRosterFile,
+    isLoading: team === 'blue' ? isBlueLoading : isRedLoading,
+    showTooltips,
+    allTokens: tokens,
+  });
 
   return (
-    <main
-      className={`bbscheme-page ${isFullscreen ? 'fullscreen' : ''} ${isEmbed ? 'is-embed' : ''}`}
+    <div
+      className={cn(
+        // L'éditeur occupe tout l'espace entre la barre haute du site (57 pixels sur téléphone, 65 sur ordinateur) et,
+        // sur ordinateur, le pied de page fixé en bas (40 pixels). En plein écran, il couvre tout l'écran.
+        "fixed inset-x-0 bottom-0 flex flex-col bg-bb-bg font-bb-sans text-bb-text",
+        isFullscreen ? "top-0 z-[5001]" : "top-[57px] z-[500] lg:top-[65px] lg:bottom-10"
+      )}
       onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
     >
-      {/* UI MOBILE - HEADER & TOOLBAR */}
-      {isMobile && !isEmbed && (
-        <>
-          {/* Portail pour injecter le bouton retour dans la Navbar globale du site */}
-          <MobilePortal targetId="mobile-back-button-slot">
-            <BackButton className="forced-relative" />
-          </MobilePortal>
-
-          <div className="mobile-bbscheme-ui">
-            {/* LIGNE 2 : TOOLBAR SLIDE */}
-            <div className="mobile-toolbar-container">
-              {/* Les flèches font défiler la barre d'un écran presque entier (moins un outil, qui reste visible pour se repérer) */}
-              <button className="toolbar-slide-btn left" aria-label="Outils précédents" onClick={() => scrollMobileToolbar(-1)}>
-                <ChevronLeft size={20} />
-              </button>
-              <div className="mobile-scroll-toolbar" ref={mobileToolbarRef}>
-                {/* ZOOM ET DESELECT AU TOUT DÉBUT (À GAUCHE) */}
-                <div className="mobile-zoom-control">
-                  <ZoomIn size={16} />
-                  <input
-                    type="range"
-                    min={ZOOM_MIN} max={ZOOM_MAX} step="0.05"
-                    value={zoom}
-                    onChange={(e) => setZoom(parseFloat(e.target.value))}
-                  />
-                </div>
-                <button className="mobile-tool-item" onClick={() => setSelectedId(null)} disabled={!selectedId} title="Désélectionner" style={{ position: 'relative' }}>
-                  <MousePointer2 size={18} style={{ opacity: 0.5 }} />
-                  <X size={10} style={{ position: 'absolute', top: 5, right: 5, color: 'var(--danger)' }} />
-                </button>
-                <button className="mobile-tool-item" onClick={handleReturnToReserve} disabled={!selectedId || isBallSelected} title="Remettre en réserve">
-                  <LogOut size={18} />
-                </button>
-
-                <div className="mobile-divider" />
-
-                {/* 1. Outils de dessin/sélection */}
-                <button className={`mobile-tool-item ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button>
-                <button className={`mobile-tool-item ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} /></button>
-                <button className={`mobile-tool-item ${activeTool === 'ball' ? 'active' : ''}`} onClick={() => setActiveTool('ball')}><BallIcon size={18} /></button>
-                <button className={`mobile-tool-item ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} /></button>
-                <button className={`mobile-tool-item ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => { saveToHistory(tokens, drawings); setDrawings([]); toast.success("Dessins effacés"); }}><Eraser size={18} /></button>
-
-                <div className="mobile-divider" />
-
-                {/* 2. Playback & Vitesse (comme Desktop) */}
-                <div className="mobile-frame-counter">
-                  {currentFrameIndex + 1}/{frames.length}
-                </div>
-                <button className="mobile-tool-item" onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying}><SkipBack size={18} /></button>
-                <button className={`mobile-tool-item ${isPlaying ? 'active' : ''}`} onClick={() => setIsPlaying(!isPlaying)}>
-                  {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                </button>
-                <button 
-                  className="mobile-tool-item" 
-                  onClick={() => {
-                    if (currentFrameIndex === frames.length - 1) addFrame();
-                    else setCurrentFrameIndex(prev => prev + 1);
-                  }} 
-                  disabled={isPlaying}
-                >
-                  {currentFrameIndex === frames.length - 1 ? <PlusCircle size={18} /> : <SkipForward size={18} />}
-                </button>
-
-                {/* Vitesse de défilement */}
-                <div className="mobile-speed-control">
-                  <Clock size={14} />
-                  <input
-                    type="number"
-                    value={playbackSpeed}
-                    onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
-                    min={100} max={3000} step={100}
-                  />
-                  <span>ms</span>
-                </div>
-
-                <div className="mobile-divider" />
-
-                {/* 3. Gestion des images */}
-                <button className="mobile-tool-item" onClick={duplicateFrame} disabled={isPlaying}><Copy size={18} /></button>
-                <button className="mobile-tool-item" onClick={removeFrame} disabled={isPlaying || frames.length <= 1}><Trash2 size={18} /></button>
-                <button className="mobile-tool-item" onClick={handleGifExport} disabled={isPlaying || isExporting}><Download size={18} /></button>
-
-                <div className="mobile-divider" />
-
-                {/* 4. Utilitaires */}
-                <button className="mobile-tool-item" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button>
-                <button className="mobile-tool-item" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} style={{ color: 'var(--danger)' }} /></button>
-                <button className={`mobile-tool-item ${showTooltips ? 'active' : ''}`} onClick={() => setShowTooltips(!showTooltips)}><Info size={18} /></button>
-                <button className="mobile-tool-item" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button>
-                <button className="mobile-tool-item" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button>
-              </div>
-              <button className="toolbar-slide-btn right" aria-label="Outils suivants" onClick={() => scrollMobileToolbar(1)}>
-                <ChevronRight size={20} />
-              </button>
-            </div>
-
-            {/* LIGNE 3 : RÉSERVES */}
-            <div className="mobile-reserves-row">
-              <button
-                className={`reserve-toggle blue ${mobileActivePanel === 'blue' ? 'active' : ''}`}
-                onClick={() => setMobileActivePanel(mobileActivePanel === 'blue' ? null : 'blue')}
-              >
-                RÉSERVE BLEUE
-              </button>
-              <button
-                className={`reserve-toggle red ${mobileActivePanel === 'red' ? 'active' : ''}`}
-                onClick={() => setMobileActivePanel(mobileActivePanel === 'red' ? null : 'red')}
-              >
-                RÉSERVE ROUGE
-              </button>
-            </div>
-          </div>
-        </>
+      {/* Téléphone : le bouton retour va dans la barre haute du site */}
+      {isMobile && (
+        <MobilePortal targetId="mobile-back-button-slot">
+          <BackButton href="/" title="Retour à l'accueil" style={{ width: 44, height: 44 }} />
+        </MobilePortal>
       )}
 
-      {!isMobile && !isEmbed && (
-        <header className="tool-header">
-          <div className="header-left">
-            <BackButton href="/" title="Retour" />
-            <div className="title-group" style={{ display: 'flex', alignItems: 'baseline', gap: '0.8rem' }}>
-              <h1 className="title-modern">BB<span>Scheme</span></h1>
-              <div className="credits-link" style={{ fontSize: '0.65rem', opacity: 0.6 }}>
-                Inspiré par <a href="https://www.teamfrancebb.fr/bbpusher/" target="_blank" rel="noopener noreferrer">Elyoukey et Thot</a>
-              </div>
-            </div>
-          </div>
-
-          <div className="tool-handler">
-            <div className="zoom-bar">
-              <ZoomOut size={14} color="#fff" />
-              <input
-                type="range"
-                min={ZOOM_MIN}
-                max={ZOOM_MAX}
-                step="0.05"
-                value={zoom}
-                onChange={(e) => setZoom(parseFloat(e.target.value))}
-              />
-              <ZoomIn size={14} color="#fff" />
-            </div>
-            <div className="divider" style={{ opacity: 0.3 }} />
-            <div className="tool-group">
-              <Tooltip text="Sélect. intelligente" position="bottom"><button className={`tool-btn ${activeTool === 'select' ? 'active' : ''}`} onClick={() => setActiveTool('select')}><MousePointer2 size={18} /></button></Tooltip>
-              <Tooltip text="Annotation" position="bottom"><button className={`tool-btn ${activeTool === 'draw' ? 'active' : ''}`} onClick={() => setActiveTool('draw')}><Pencil size={18} color="#ef4444" /></button></Tooltip>
-              <Tooltip text={ballItem?.attachedToId ? "Détacher le ballon" : "Ballon libre"} position="bottom">
-                <button
-                  className={`tool-btn`}
-                  onClick={handleDetachBall}
-                  disabled={!ballItem?.attachedToId}
-                  style={{ opacity: !ballItem?.attachedToId ? 0.4 : 1 }}
-                >
-                  <div style={{ width: 18, height: 18, display: 'flex', alignItems: 'center', justifyItems: 'center' }}>🏈</div>
-                </button>
-              </Tooltip>
-              <Tooltip text="État du joueur" position="bottom"><button className={`tool-btn ${activeTool === 'status' ? 'active' : ''}`} onClick={() => setActiveTool('status')}><Wand2 size={18} className="status-tool-icon" /></button></Tooltip>
-              <Tooltip text="Gomme" position="bottom"><button className={`tool-btn ${activeTool === 'eraser' ? 'active' : ''}`} onClick={() => setActiveTool('eraser')}><Eraser size={18} /></button></Tooltip>
-              <Tooltip text="Annuler" position="bottom"><button className="tool-btn" onClick={handleUndo} disabled={history.length === 0}><Undo2 size={18} /></button></Tooltip>
-              <Tooltip text="Tout vider" position="bottom"><button className="tool-btn" onClick={() => setIsClearModalOpen(true)}><Trash2 size={18} /></button></Tooltip>
-            </div>
-
-            <div className="divider" />
-
-            {/* Séquence complète */}
-            <div className="sequence-group" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              {/* 1. Sélecteur de vitesse */}
-              <div className="speed-control theme-aware">
-                <Clock size={12} />
-                <input
-                  type="number"
-                  className="speed-input theme-aware"
-                  value={playbackSpeed}
-                  onChange={(e) => setPlaybackSpeed(Number(e.target.value))}
-                  min={100}
-                  max={3000}
-                  step={100}
-                />
-                <span style={{ fontSize: '0.65rem', fontWeight: 800 }}>ms</span>
-              </div>
-
-              {/* 2. Compteur d'images */}
-              <div className="frame-counter" style={{ minWidth: '40px', textAlign: 'center', fontSize: '0.75rem', fontWeight: 800 }}>
-                {currentFrameIndex + 1}/{frames.length}
-              </div>
-
-              {/* 3. Précédent */}
-              <Tooltip text="Image précédente" position="bottom">
-                <span><ClassicButton onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying} size="xs" icon={<SkipBack size={14} />} /></span>
-              </Tooltip>
-
-              {/* 4. Lecture */}
-              <Tooltip text={isPlaying ? "Pause" : "Lecture"} position="bottom">
-                <span>
-                  <CTAButton
-                    onClick={() => setIsPlaying(!isPlaying)}
-                    icon={isPlaying ? <Pause size={16} /> : <Play size={16} />}
-                    size="sm"
-                    style={{ borderRadius: "6px", width: "36px", height: "36px", padding: 0, justifyContent: "center" }}
-                  />
-                </span>
-              </Tooltip>
-
-              {/* 5. Suivant / Ajouter */}
-              <Tooltip text={currentFrameIndex === frames.length - 1 ? "Ajouter une image" : "Image suivante"} position="bottom">
-                <span>
-                  <ClassicButton
-                    onClick={() => {
-                      if (currentFrameIndex === frames.length - 1) addFrame();
-                      else setCurrentFrameIndex(prev => prev + 1);
-                    }}
-                    disabled={isPlaying}
-                    size="xs"
-                    icon={currentFrameIndex === frames.length - 1 ? <PlusCircle size={14} /> : <SkipForward size={14} />}
-                  />
-                </span>
-              </Tooltip>
-
-              <div className="divider" style={{ opacity: 0.3 }} />
-
-              {/* Actions images */}
-              <Tooltip text="Dupliquer image" position="bottom"><span><ClassicButton onClick={duplicateFrame} size="xs" icon={<Copy size={14} />} disabled={isPlaying} /></span></Tooltip>
-              <Tooltip text="Supprimer image" position="bottom"><span><ClassicButton onClick={removeFrame} size="xs" icon={<Trash2 size={14} />} disabled={isPlaying || frames.length <= 1} /></span></Tooltip>
-              <Tooltip text="Exporter en GIF" position="bottom">
-                <span>
-                  <CTAButton onClick={handleGifExport} disabled={isPlaying || isExporting} size="xs" style={{ padding: '0 8px', height: '28px' }}>
-                    <Download size={12} /> <span style={{ marginLeft: '4px', fontSize: '0.7rem' }}>{isExporting ? `${exportProgress}%` : 'GIF'}</span>
-                  </CTAButton>
-                </span>
-              </Tooltip>
-            </div>
-
-            <div className="divider" />
-
-            <div className="action-group">
-              <Tooltip text="Afficher les infos" position="bottom">
-                <button className={`tool-btn ${showTooltips ? 'active' : ''}`} onClick={() => setShowTooltips(!showTooltips)}>
-                  <Info size={18} />
-                </button>
-              </Tooltip>
-              <Tooltip text="Rotation" position="bottom"><button className={`tool-btn ${rotation === 90 ? 'active' : ''}`} onClick={() => setRotation(r => r === 0 ? 90 : 0)}><RotateCw size={18} /></button></Tooltip>
-              <Tooltip text="Partager / Sauvegarder" position="bottom"><button className="tool-btn share-btn" onClick={handleShare} disabled={isSharing}>{isSharing ? <Loader2 size={18} className="animate-spin" /> : <Share2 size={18} />}</button></Tooltip>
-              <Tooltip text="Plein écran" position="bottom"><button className="tool-btn" onClick={handleFullscreen}>{isFullscreen ? <Minimize size={18} /> : <Maximize size={18} />}</button></Tooltip>
-              <Tooltip text="Aide" position="bottom"><button className="tool-btn help-trigger-btn" onClick={() => setIsHelpOpen(true)}><HelpCircle size={18} /></button></Tooltip>
-            </div>
-          </div>
-
-          <div className="header-right">
-            {isStarPlayerSelected && (
-              <div className="star-player-selector" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ fontSize: '0.75rem', color: '#fff', fontWeight: 900, textShadow: '1px 1px 0px rgba(0,0,0,0.5)' }}>STAR:</span>
-                <ClassicSelect
-                  onChange={(e) => handleStarPlayerSelect(e.target.value)}
-                  value={selectedToken?.playerInfo?.name === "Star Player" ? "aucun" : selectedToken?.playerInfo?.name || "aucun"}
-                  size="sm"
-                  containerStyle={{ width: "160px" }}
-                >
-                  <option value="">Aucun</option>
-                  {allStarPlayers.map((star, idx) => (
-                    <option key={`star-opt-${idx}`} value={star.name}>
-                      {star.name} ({star.cost / 1000}k)
-                    </option>
-                  ))}
-                </ClassicSelect>
-              </div>
-            )}
-          </div>
-        </header>
-      )}
-
-
-      <Modal isOpen={isHelpOpen} onClose={() => setIsHelpOpen(false)} title="Guide Tactique BB Scheme" hideFooter={true}>
-        <div className="help-content">
-          <section className="help-section">
-            <h3>🖱️ Interactions</h3>
-            <div className="help-grid">
-              <div className="item"><strong>Déplacer</strong> : Cliquez sur un jeton (terrain/réserve) puis sur sa destination.</div>
-              <div className="item"><strong>Ballon</strong> : Pour l'attacher, sélectionnez le ballon puis cliquez sur le joueur cible.</div>
-              <div className="item"><strong>Sélection</strong> : Un clic droit (ou clic dans le vide) déselectionne l'outil ou le jeton.</div>
-            </div>
-          </section>
-          <section className="help-section">
-            <h3>🔹 Outils Principaux</h3>
-            <div className="help-grid">
-              <div className="item"><strong><MousePointer2 size={14} /> Sélecteur</strong> : Sélectionner et déplacer (Drag & Drop ou Clic-Clic).</div>
-              <div className="item"><strong><Pencil size={14} /> Crayon</strong> : Tracer des flèches et annotations.</div>
-              <div className="item"><strong>🏈 Ballon</strong> : Détache le ballon du porteur sélectionné.</div>
-              <div className="item"><strong><Wand2 size={14} /> Baguette</strong> : Changer l'état (Couché, Sonné, etc.).</div>
-              <div className="item"><strong><Eraser size={14} /> Gomme</strong> : Effacer tous les dessins.</div>
-              <div className="item"><strong><Undo2 size={14} /> Annuler</strong> : Revenir en arrière sur le dernier mouvement.</div>
-              <div className="item"><strong><Trash2 size={14} /> Vider</strong> : Réinitialiser tout le plateau.</div>
-            </div>
-          </section>
-
-          <section className="help-section">
-            <h3>⏱️ Séquences & Lecteur</h3>
-            <div className="help-grid">
-              <div className="item"><strong><Clock size={14} /> Vitesse</strong> : Délai entre deux images (en ms).</div>
-              <div className="item"><strong><PlusCircle size={14} /> Suivant/Ajouter</strong> : Avance à l'image suivante, ou crée une nouvelle image si vous êtes à la fin (limite de 50).</div>
-              <div className="item"><strong><Copy size={14} /> Dupliquer</strong> : Copier l'image actuelle (pratique pour les petits mouvements).</div>
-              <div className="item"><strong><Download size={14} /> GIF</strong> : Exporter votre tactique en image animée.</div>
-            </div>
-          </section>
-
-          <section className="help-section">
-            <h3>⚙️ Options d'Affichage</h3>
-            <div className="help-grid">
-              <div className="item"><strong><Info size={14} /> Infos</strong> : Afficher/Masquer les bulles d'aide des joueurs.</div>
-              <div className="item"><strong><RotateCw size={14} /> Rotation</strong> : Basculer le terrain (Horizontal / Vertical).</div>
-              <div className="item"><strong><Share2 size={14} /> Partager</strong> : Générer un lien permanent pour cette tactique.</div>
-            </div>
-          </section>
+      {/* ===== Ordinateur : barre d'outils ===== */}
+      <header className="hidden shrink-0 items-center gap-2 border-b border-bb-border bg-bb-surface px-3 py-1.5 lg:flex">
+        <BackButton href="/" title="Retour à l'accueil" style={{ width: 40, height: 40 }} />
+        <h1 className="m-0 border-0 p-0 text-lg font-bold whitespace-nowrap text-bb-text normal-case not-italic">BBScheme</h1>
+        <span aria-hidden="true" className="mx-1 h-6 w-px bg-bb-border" />
+        <div role="toolbar" aria-label="Outils" className="flex items-center gap-1">
+          <ToolButton label="Sélection" icon={<MousePointer2 size={18} aria-hidden="true" />} active={activeTool === 'select'} onClick={() => setActiveTool('select')} />
+          <ToolButton label="Crayon" icon={<Pencil size={18} aria-hidden="true" />} active={activeTool === 'draw'} onClick={() => setActiveTool('draw')} />
+          <ToolButton label="État du joueur" icon={<Wand2 size={18} aria-hidden="true" />} active={activeTool === 'status'} onClick={() => setActiveTool('status')} />
+          <ToolButton label="Gomme" icon={<Eraser size={18} aria-hidden="true" />} active={activeTool === 'eraser'} onClick={() => setActiveTool('eraser')} />
+          <ToolButton label="Lâcher le ballon" icon={<BallIcon size={18} />} onClick={handleDetachBall} disabled={!ballItem?.attachedToId} />
+          <ToolButton label="Effacer les dessins" icon={<PenOff size={18} aria-hidden="true" />} onClick={clearDrawings} disabled={drawings.length === 0} />
+          <ToolButton label="Annuler la dernière action" icon={<Undo2 size={18} aria-hidden="true" />} onClick={handleUndo} disabled={history.length === 0} />
+          <ToolButton label="Tout vider" icon={<Trash2 size={18} aria-hidden="true" />} onClick={() => setIsClearModalOpen(true)} danger />
         </div>
-        <style jsx>{`
-          .help-content { display: flex; flex-direction: column; gap: 1.2rem; max-height: 60vh; overflow-y: auto; padding-right: 10px; }
-          .help-section { 
-            background: var(--glass-bg); 
-            padding: 1rem; 
-            border-radius: 12px; 
-            border: 1px solid var(--glass-border); 
-            backdrop-filter: blur(4px);
-          }
-          .help-section h3 { 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            color: var(--accent); 
-            margin-bottom: 0.8rem; 
-            font-size: 1rem; 
-            border-bottom: 1px solid var(--glass-border); 
-            padding-bottom: 0.3rem; 
-          }
-          .help-grid { display: grid; grid-template-columns: 1fr; gap: 0.6rem; }
-          .item { font-size: 0.85rem; line-height: 1.4; color: var(--foreground); font-weight: 500; display: flex; align-items: center; gap: 0.5rem; }
-          .item strong { color: var(--accent); display: flex; align-items: center; gap: 0.3rem; min-width: 90px; }
-          .speed-control {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-left: 1rem;
-            opacity: 0.8;
-            background: var(--nav-btn-bg);
-            padding: 4px 8px;
-            border-radius: 8px;
-            border: 1px solid var(--nav-btn-border);
-            color: var(--nav-btn-color);
-          }
-          .speed-input {
-            background: transparent;
-            border: none;
-            color: var(--nav-btn-color);
-            font-size: 0.75rem;
-            font-weight: 800;
-            width: 45px;
-            text-align: center;
-            outline: none;
-            font-family: inherit;
-          }
-        `}</style>
-      </Modal>
-
-      <Modal
-        isOpen={isExporting}
-        onClose={() => { if (exportProgress === 100) setIsExporting(false); }}
-        title="Exportation GIF"
-        hideFooter={true}
-      >
-        <div className="export-modal-content" style={{ display: "flex", flexDirection: "column", gap: "1.5rem", alignItems: "center", padding: "1rem" }}>
-          {exportProgress < 100 ? (
-            <div style={{ textAlign: "center", width: "100%" }}>
-              <div className="loader-container" style={{ marginBottom: "1rem" }}>
-                <Loader2 size={48} className="animate-spin" style={{ color: "var(--accent)", margin: "auto" }} />
-              </div>
-              <p style={{ fontWeight: 600 }}>Génération de votre séquence...</p>
-              <div className="progress-bar-bg" style={{ width: "100%", height: "8px", background: "rgba(255,255,255,0.1)", borderRadius: "4px", marginTop: "1rem", overflow: "hidden" }}>
-                <div className="progress-bar-fill" style={{ width: `${exportProgress}%`, height: "100%", background: "var(--accent)", transition: "width 0.3s" }} />
-              </div>
-              <p style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "0.5rem" }}>
-                {exportProgress < 50 ? "Capture des images..." : "Compilation du GIF..."}
-              </p>
-            </div>
-          ) : (
-            <div style={{ textAlign: "center", width: "100%" }}>
-              <div style={{ background: "#000", borderRadius: "8px", overflow: "hidden", marginBottom: "1.5rem", border: "1px solid var(--glass-border)" }}>
-                {generatedGif && <img src={generatedGif} alt="Export Result" style={{ maxWidth: "100%", display: "block" }} />}
-              </div>
-              <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-                <CTAButton onClick={() => {
-                  const link = document.createElement("a");
-                  link.href = generatedGif!;
-                  link.download = `bbscheme-${new Date().getTime()}.gif`;
-                  link.click();
-                }} icon={Download}>Télécharger</CTAButton>
-                <ClassicButton onClick={() => setIsExporting(false)}>Fermer</ClassicButton>
-              </div>
-            </div>
-          )}
+        <div className="flex-1" />
+        <div role="toolbar" aria-label="Affichage" className="flex items-center gap-1">
+          <ZoomOut size={16} aria-hidden="true" className="text-bb-text-muted" />
+          {zoomSlider("bbscheme-zoom-desktop")}
+          <ZoomIn size={16} aria-hidden="true" className="mr-1 text-bb-text-muted" />
+          <ToolButton label="Tourner le terrain" icon={<RotateCw size={18} aria-hidden="true" />} active={rotation === 90} onClick={() => setRotation(r => r === 0 ? 90 : 0)} />
+          <ToolButton label="Afficher les infos des joueurs" icon={<Info size={18} aria-hidden="true" />} active={showTooltips} onClick={() => setShowTooltips(!showTooltips)} />
+          <ToolButton label={isFullscreen ? "Quitter le plein écran" : "Plein écran"} icon={isFullscreen ? <Minimize size={18} aria-hidden="true" /> : <Maximize size={18} aria-hidden="true" />} onClick={handleFullscreen} />
+          <ToolButton label="Aide" icon={<HelpCircle size={18} aria-hidden="true" />} onClick={() => setIsHelpOpen(true)} />
         </div>
-      </Modal>
+        <Button type="button" variant="primary" size="tap" className="lg:min-h-10" onClick={handleShare} disabled={isSharing}>
+          {isSharing ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Share2 size={18} aria-hidden="true" />}
+          Partager
+        </Button>
+      </header>
 
-      <ConfirmModal
-        isOpen={isClearModalOpen}
-        onClose={() => setIsClearModalOpen(false)}
-        onConfirm={async () => {
-          saveToHistory(tokens, drawings);
-          setTokens([{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }]);
-          setDrawings([]);
-          setIsClearModalOpen(false);
-          setSelectedId(null);
-          toast.success("Plateau tactique vidé");
-        }}
-        title="Tout vider"
-        message="Voulez-vous vraiment vider tout le plateau ? Cela effacera tous les joueurs et toutes les annotations. Le ballon sera remis au centre."
-        confirmLabel="Tout vider"
-        isDanger={true}
-      />
+      {/* ===== Téléphone : barre compacte des outils principaux ===== */}
+      <div role="toolbar" aria-label="Outils" className="flex h-[52px] shrink-0 items-center gap-1 border-b border-bb-border bg-bb-surface px-2 lg:hidden">
+        <ToolButton label="Sélection" icon={<MousePointer2 size={20} aria-hidden="true" />} active={activeTool === 'select'} onClick={() => setActiveTool('select')} />
+        <ToolButton label="Crayon" icon={<Pencil size={20} aria-hidden="true" />} active={activeTool === 'draw'} onClick={() => setActiveTool('draw')} />
+        <ToolButton label="État du joueur" icon={<Wand2 size={20} aria-hidden="true" />} active={activeTool === 'status'} onClick={() => setActiveTool('status')} />
+        <ToolButton label="Gomme" icon={<Eraser size={20} aria-hidden="true" />} active={activeTool === 'eraser'} onClick={() => setActiveTool('eraser')} />
+        <ToolButton label="Annuler la dernière action" icon={<Undo2 size={20} aria-hidden="true" />} onClick={handleUndo} disabled={history.length === 0} />
+        <div className="flex-1" />
+        <ToolButton label="Plus d'outils" icon={<MoreHorizontal size={22} aria-hidden="true" />} onClick={() => setToolsOpen(true)} />
+      </div>
 
-      <div className={`tool-layout ${isEmbed ? 'is-embed' : ''} ${isMobile ? 'mobile-mode' : ''}`}>
-        <div className="work-area">
-          {(!isEmbed && (!isMobile || mobileActivePanel === 'blue')) && (
-            <div className={`global-team-area blue ${mobileActivePanel === 'blue' ? 'mobile-open' : ''}`}>
-              {isMobile && (
-                <div className="mobile-panel-header">
-                  <span className="team-label blue">RÉSERVE BLEUE</span>
-                  <button className="mobile-close-btn" onClick={() => setMobileActivePanel(null)}><X size={18} /></button>
-                </div>
-              )}
-              <FigurineBox
-                team="blue"
-                roster={blueRoster?.roster || []}
-                tokens={tokens.filter(t => t.type === 'blue' && t.location === 'box')}
-                rosterList={rosters}
-                onRosterSelect={(file) => handleRosterSelect('blue', file)}
-                onTokenClick={handleTokenClick}
-                onBoxClick={() => handleBoxClick('blue')}
-                selectedId={selectedId}
-                rosterFile={blueRosterFile}
-                isLoading={isBlueLoading}
-                showTooltips={showTooltips}
-                allTokens={tokens}
-              />
-              {/* 
-                  FONCTIONNALITÉ FOSSES (DUGOUT) - DÉSACTIVÉE TEMPORAIREMENT
-                  Décommenter pour réactiver les zones Réserve, KO, Blessés, Expulsés.
-              <div className="dugout-container">
-                <Dugout
-                  team="blue"
-                  tokens={tokens.filter(t => t.type === 'blue' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))}
-                  onTokenClick={handleTokenClick}
-                  onZoneClick={(zone) => handleZoneClick('blue', zone)}
-                  selectedId={selectedId}
-                  showTooltips={showTooltips}
-                  allTokens={tokens}
-                />
-              </div>
-              */}
-            </div>
-          )}
+      {/* ===== Terrain et réserves ===== */}
+      <div className="flex min-h-0 flex-1 gap-3 lg:p-3">
+        <FigurineBox {...reserveProps('blue')} onTokenClick={handleTokenClick} onBoxClick={() => handleBoxClick('blue')} className="hidden w-[280px] shrink-0 lg:flex" />
 
+        <div className="relative flex min-h-0 min-w-0 flex-1">
           <div
             ref={viewportRef}
-            className={`pitch-viewport ${selectedId ? 'has-selection' : ''} ${isPanning ? 'panning' : ''} ${isEmbed ? 'read-only embed-player' : ''}`}
-            onMouseDown={(e) => { if (!isEmbed) handlePanningStart(e); }}
-            onMouseMove={(e) => { if (!isEmbed) handlePanningMove(e); }}
+            role="region"
+            aria-label="Terrain"
+            aria-busy={loading || undefined}
+            className={cn(
+              // Classe pitch-viewport : règles du terrain (geste au doigt, pincement) dans page.css, et repère de
+              // handleResize pour ajuster le terrain à la place disponible
+              "pitch-viewport min-h-0 min-w-0 flex-1 overflow-auto bg-bb-surface-2",
+              "max-lg:flex max-lg:items-start max-lg:justify-center lg:grid lg:place-items-center lg:rounded-bb-lg lg:border lg:border-bb-border",
+              selectedId && "has-selection",
+              isPanning && "panning"
+            )}
+            onMouseDown={handlePanningStart}
+            onMouseMove={handlePanningMove}
             onMouseUp={handlePanningEnd}
             onMouseLeave={handlePanningEnd}
-            onTouchStart={(e) => { if (!isEmbed) handleTouchStart(e); }}
-            onTouchMove={(e) => { if (!isEmbed) handleTouchMove(e); }}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
             onTouchEnd={handlePanningEnd}
           >
-            <div ref={resizerRef} className="pitch-resizer" style={{
+            <div ref={resizerRef} role="group" aria-label="Plateau" className="pitch-resizer" style={{
               width: `${(rotation === 90 ? 758 : 1308) * finalScale}px`,
               height: `${(rotation === 90 ? 1308 : 758) * finalScale}px`,
-              margin: isEmbed ? 'auto' : '0'
+              margin: '0'
             }}>
               <div className="pitch-rotator" style={{ transform: `scale(${finalScale}) rotate(${rotation}deg)`, transformOrigin: 'center center', transition: 'transform 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)' }}>
                 <Pitch
@@ -1671,77 +1391,141 @@ export default function BBSchemePage() {
                   rotation={rotation}
                   finalScale={finalScale}
                   showTooltips={showTooltips}
-                  readOnly={isEmbed}
+                  readOnly={false}
                 />
               </div>
             </div>
           </div>
 
-          {isEmbed && (
-            <div className="embed-footer-bar">
-              <div className="playback-group player-style">
-                <button className="player-control-btn" onClick={() => setCurrentFrameIndex(prev => Math.max(0, prev - 1))} disabled={currentFrameIndex === 0 || isPlaying}><SkipBack size={18} /></button>
-                <button className="player-play-btn" onClick={() => setIsPlaying(!isPlaying)}>
-                  {isPlaying ? <Pause size={24} fill="currentColor" /> : <Play size={24} fill="currentColor" />}
-                </button>
-                <button className="player-control-btn" onClick={() => setCurrentFrameIndex(prev => Math.min(frames.length - 1, prev + 1))} disabled={currentFrameIndex === frames.length - 1 || isPlaying}><SkipForward size={18} /></button>
-
-                <div className="player-progress">
-                  <div className="player-progress-track">
-                    <div className="player-progress-fill" style={{ width: `${((currentFrameIndex + 1) / frames.length) * 100}%` }} />
-                  </div>
-                  <span className="player-frame-text">{currentFrameIndex + 1} / {frames.length}</span>
-                </div>
-
-                <div className="player-speed-pill">
-                  {playbackSpeed}ms
-                </div>
-              </div>
-            </div>
-          )}
-
-          {(!isEmbed && (!isMobile || mobileActivePanel === 'red')) && (
-            <div className={`global-team-area red ${mobileActivePanel === 'red' ? 'mobile-open' : ''}`}>
-              {isMobile && (
-                <div className="mobile-panel-header">
-                  <span className="team-label red">RÉSERVE ROUGE</span>
-                  <button className="mobile-close-btn" onClick={() => setMobileActivePanel(null)}><X size={18} /></button>
-                </div>
-              )}
-              {/* 
-                  FONCTIONNALITÉ FOSSES (DUGOUT) - DÉSACTIVÉE TEMPORAIREMENT
-                  Décommenter pour réactiver les zones Réserve, KO, Blessés, Expulsés.
-              <div className="dugout-container">
-                <Dugout
-                  team="red"
-                  tokens={tokens.filter(t => t.type === 'red' && (t.location === 'reserve' || t.location === 'ko' || t.location === 'injured' || t.location === 'expelled'))}
-                  onTokenClick={handleTokenClick}
-                  onZoneClick={(zone) => handleZoneClick('red', zone)}
-                  selectedId={selectedId}
-                  showTooltips={showTooltips}
-                  allTokens={tokens}
-                />
-              </div>
-              */}
-              <FigurineBox
-                team="red"
-                roster={redRoster?.roster || []}
-                tokens={tokens.filter(t => t.type === 'red' && t.location === 'box')}
-                rosterList={rosters}
-                onRosterSelect={(file) => handleRosterSelect('red', file)}
-                onTokenClick={handleTokenClick}
-                onBoxClick={() => handleBoxClick('red')}
-                selectedId={selectedId}
-                rosterFile={redRosterFile}
-                isLoading={isRedLoading}
-                showTooltips={showTooltips}
-                allTokens={tokens}
-              />
+          {/* Chargement d'un plateau partagé (?id=) : indicateur propre à BBScheme, posé sur le terrain */}
+          {loading && (
+            <div role="status" className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-bb-bg/80 text-bb-text">
+              <Loader2 size={36} className="animate-spin text-bb-accent-text" aria-hidden="true" />
+              <p className="m-0 font-semibold">Chargement du plateau…</p>
             </div>
           )}
         </div>
+
+        <FigurineBox {...reserveProps('red')} onTokenClick={handleTokenClick} onBoxClick={() => handleBoxClick('red')} className="hidden w-[280px] shrink-0 lg:flex" />
       </div>
-    </main>
+
+      {/* ===== Ordinateur : barre de l'animation et du pion choisi ===== */}
+      <div className="hidden shrink-0 items-center gap-2 border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:flex">
+        <div role="toolbar" aria-label="Animation" className="flex items-center gap-1">
+          {previousButton}
+          {playButton}
+          {frameCounter}
+          {nextButton}
+          <span aria-hidden="true" className="mx-1 h-6 w-px bg-bb-border" />
+          <ToolButton label="Dupliquer l'image" icon={<Copy size={18} aria-hidden="true" />} onClick={duplicateFrame} disabled={isPlaying} />
+          <ToolButton label="Supprimer l'image" icon={<Trash2 size={18} aria-hidden="true" />} onClick={removeFrame} disabled={isPlaying || frames.length <= 1} />
+          <label htmlFor="bbscheme-speed-desktop" className="ml-2 flex items-center gap-1.5 text-sm text-bb-text-muted">
+            <Clock size={16} aria-hidden="true" /> Vitesse
+          </label>
+          {speedInput("bbscheme-speed-desktop")}
+          <span className="text-sm text-bb-text-muted">ms</span>
+          <Button type="button" variant="secondary" size="tap" aria-label="Exporter en GIF" className="ml-2 lg:min-h-10" onClick={handleGifExport} disabled={isPlaying || isExporting}>
+            <Download size={18} aria-hidden="true" /> {isExporting ? `${exportProgress} %` : "GIF"}
+          </Button>
+        </div>
+        <div className="flex-1" />
+        {selectedName && (
+          <div role="group" aria-label="Pion choisi" className="flex min-w-0 items-center gap-1">
+            <span className="truncate text-sm text-bb-text-muted">Choisi : <strong className="text-bb-text">{selectedName}</strong></span>
+            {isStarPlayerSelected && starSelect("bbscheme-star-desktop")}
+            <ToolButton label="Remettre en réserve" icon={<LogOut size={18} aria-hidden="true" />} onClick={handleReturnToReserve} disabled={isBallSelected} />
+            <ToolButton label="Désélectionner" icon={<X size={18} aria-hidden="true" />} onClick={() => setSelectedId(null)} />
+          </div>
+        )}
+      </div>
+
+      {/* ===== Téléphone : réserves et lecture de l'animation, à portée de pouce ===== */}
+      <div data-page-bottom-bar="always" className="flex shrink-0 items-center gap-1 border-t border-bb-border bg-bb-surface px-2 pt-1.5 pb-[max(0.375rem,env(safe-area-inset-bottom))] lg:hidden">
+        <Button type="button" variant="secondary" size="tap" aria-label="Réserve bleue" className="min-w-0 flex-1 gap-1.5 px-2" onClick={() => setMobileActivePanel('blue')}>
+          <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-blue-500" /> Bleue
+        </Button>
+        {previousButton}
+        {playButton}
+        {frameCounter}
+        {nextButton}
+        <Button type="button" variant="secondary" size="tap" aria-label="Réserve rouge" className="min-w-0 flex-1 gap-1.5 px-2" onClick={() => setMobileActivePanel('red')}>
+          <span aria-hidden="true" className="size-3 shrink-0 rounded-full bg-red-500" /> Rouge
+        </Button>
+      </div>
+
+      {/* Téléphone : réserves dans un panneau qui monte du bas */}
+      {(['blue', 'red'] as const).map(team => (
+        <Sheet key={team} open={mobileActivePanel === team} onOpenChange={(open) => { if (!open) setMobileActivePanel(null); }}>
+          <SheetContent title={team === 'blue' ? "Réserve bleue" : "Réserve rouge"} description="Touchez un pion, puis la case du terrain où le placer.">
+            <FigurineBox
+              {...reserveProps(team)}
+              onTokenClick={pickFromReserve}
+              onBoxClick={() => putBackInReserve(team)}
+              hideTitle
+              className="mb-2"
+            />
+          </SheetContent>
+        </Sheet>
+      ))}
+
+      {/* Téléphone : panneau « Plus d'outils » */}
+      <Sheet open={toolsOpen} onOpenChange={setToolsOpen}>
+        <SheetContent title="Outils">
+          <ToolsSection title={selectedName ? `Pion choisi : ${selectedName}` : "Pion choisi : aucun"}>
+            {isStarPlayerSelected && <div className="min-[400px]:col-span-2">{starSelect("bbscheme-star-mobile")}</div>}
+            <ToolsRow label="Remettre en réserve" icon={<LogOut size={18} aria-hidden="true" />} onClick={fromTools(handleReturnToReserve)} disabled={!selectedId || isBallSelected} />
+            <ToolsRow label="Désélectionner" icon={<X size={18} aria-hidden="true" />} onClick={fromTools(() => setSelectedId(null))} disabled={!selectedId} />
+          </ToolsSection>
+          <ToolsSection title="Terrain">
+            <label htmlFor="bbscheme-zoom-mobile" className="flex items-center gap-2 text-sm font-semibold min-[400px]:col-span-2">
+              <ZoomIn size={18} aria-hidden="true" className="shrink-0 text-bb-text-muted" /> Zoom
+              {zoomSlider("bbscheme-zoom-mobile")}
+            </label>
+            <ToolsRow label="Lâcher le ballon" icon={<BallIcon size={18} />} onClick={fromTools(handleDetachBall)} disabled={!ballItem?.attachedToId} />
+            <ToolsRow label="Effacer les dessins" icon={<PenOff size={18} aria-hidden="true" />} onClick={fromTools(clearDrawings)} disabled={drawings.length === 0} />
+            <ToolsRow label="Afficher les infos des joueurs" icon={<Info size={18} aria-hidden="true" />} pressed={showTooltips} onClick={fromTools(() => setShowTooltips(!showTooltips))} />
+            <ToolsRow label="Tourner le terrain" icon={<RotateCw size={18} aria-hidden="true" />} pressed={rotation === 90} onClick={fromTools(() => setRotation(r => r === 0 ? 90 : 0))} />
+            <ToolsRow label={isFullscreen ? "Quitter le plein écran" : "Plein écran"} icon={isFullscreen ? <Minimize size={18} aria-hidden="true" /> : <Maximize size={18} aria-hidden="true" />} onClick={fromTools(handleFullscreen)} />
+          </ToolsSection>
+          <ToolsSection title="Animation">
+            <label htmlFor="bbscheme-speed-mobile" className="flex items-center gap-2 text-sm font-semibold min-[400px]:col-span-2">
+              <Clock size={18} aria-hidden="true" className="shrink-0 text-bb-text-muted" /> Vitesse
+              {speedInput("bbscheme-speed-mobile")}
+              <span className="font-normal text-bb-text-muted">millisecondes par image</span>
+            </label>
+            <ToolsRow label="Dupliquer l'image" icon={<Copy size={18} aria-hidden="true" />} onClick={fromTools(duplicateFrame)} disabled={isPlaying} />
+            <ToolsRow label="Supprimer l'image" icon={<Trash2 size={18} aria-hidden="true" />} onClick={fromTools(removeFrame)} disabled={isPlaying || frames.length <= 1} />
+            <ToolsRow label="Exporter en GIF" icon={<Download size={18} aria-hidden="true" />} onClick={fromTools(handleGifExport)} disabled={isPlaying || isExporting} />
+          </ToolsSection>
+          <ToolsSection title="Plateau">
+            <ToolsRow label="Partager" icon={isSharing ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Share2 size={18} aria-hidden="true" />} onClick={fromTools(handleShare)} disabled={isSharing} />
+            <ToolsRow label="Aide" icon={<HelpCircle size={18} aria-hidden="true" />} onClick={fromTools(() => setIsHelpOpen(true))} />
+            <ToolsRow label="Tout vider" icon={<Trash2 size={18} aria-hidden="true" />} onClick={fromTools(() => setIsClearModalOpen(true))} danger />
+          </ToolsSection>
+        </SheetContent>
+      </Sheet>
+
+      <HelpSheet open={isHelpOpen} onOpenChange={setIsHelpOpen} />
+
+      <GifExportSheet open={isExporting} progress={exportProgress} gif={generatedGif} onClose={() => setIsExporting(false)} />
+
+      <ConfirmDialog
+        open={isClearModalOpen}
+        onOpenChange={setIsClearModalOpen}
+        title="Tout vider"
+        message="Tous les joueurs et tous les dessins seront retirés du plateau. Le ballon revient au centre. « Annuler la dernière action » permet de revenir en arrière."
+        confirmLabel="Tout vider"
+        danger
+        onConfirm={() => {
+          saveToHistory(tokens, drawings);
+          setTokens([{ id: 'ball-initial', type: 'ball', x: 13, y: 7, status: 'up', location: 'pitch' }]);
+          setDrawings([]);
+          setIsClearModalOpen(false);
+          setSelectedId(null);
+          toast.success("Plateau tactique vidé");
+        }}
+      />
+    </div>
   );
 }
 
@@ -1750,5 +1534,41 @@ function BallIcon({ size = 20 }) {
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M12 2C15.3137 2 18 6.47715 18 12C18 17.5228 15.3137 22 12 22C8.68629 22 6 17.5228 6 12C6 6.47715 8.68629 2 12 2Z" fill="currentColor" fillOpacity="0.2" /><path d="M12 2C15.3137 2 18 6.47715 18 12C18 17.5228 15.3137 22 12 22C8.68629 22 6 17.5228 6 12C6 6.47715 8.68629 2 12 2Z" stroke="currentColor" strokeWidth="2" /><path d="M6 12H18" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2" /><path d="M9 7H15M9 17H15" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
+  );
+}
+
+/** Ligne du panneau « Plus d'outils » (téléphone) : icône et nom, sur toute la largeur, 44 pixels de haut au moins. */
+function ToolsRow({ label, icon, onClick, disabled, pressed, danger }: {
+  label: string;
+  icon: React.ReactNode;
+  onClick: () => void;
+  disabled?: boolean;
+  /** Option à deux états (allumée ou non), annoncée par aria-pressed. */
+  pressed?: boolean;
+  danger?: boolean;
+}) {
+  return (
+    <Button
+      type="button"
+      variant="secondary"
+      size="tap"
+      aria-pressed={pressed}
+      disabled={disabled}
+      onClick={onClick}
+      className={cn("w-full justify-start gap-3 font-semibold", danger && "text-bb-danger-text", pressed && "border-bb-accent bg-bb-accent-soft")}
+    >
+      {icon}
+      {label}
+    </Button>
+  );
+}
+
+/** Groupe de commandes du panneau « Plus d'outils », avec son titre ; deux colonnes dès 400 pixels de large. */
+function ToolsSection({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <section className="border-b border-bb-border py-3 last:border-b-0">
+      <h3 className="m-0 mb-2 border-0 p-0 text-sm font-bold text-bb-text-muted normal-case not-italic">{title}</h3>
+      <div className="grid grid-cols-1 gap-2 min-[400px]:grid-cols-2">{children}</div>
+    </section>
   );
 }

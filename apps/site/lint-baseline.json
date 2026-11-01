@@ -1,13 +1,13 @@
 {
-  "maxErrors": 319,
+  "maxErrors": 261,
   "rules": {
-    "@typescript-eslint/ban-ts-comment": 7,
-    "@typescript-eslint/no-explicit-any": 196,
-    "no-restricted-syntax": 32,
+    "@typescript-eslint/ban-ts-comment": 6,
+    "@typescript-eslint/no-explicit-any": 194,
+    "no-restricted-syntax": 24,
     "prefer-const": 8,
     "react-hooks/purity": 1,
     "react-hooks/set-state-in-effect": 5,
-    "react/forbid-elements": 59,
-    "react/no-unescaped-entities": 11
+    "react/forbid-elements": 19,
+    "react/no-unescaped-entities": 4
   }
 }

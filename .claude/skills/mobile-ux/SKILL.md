@@ -74,4 +74,4 @@ Les écrans de rédaction du forum (répondre, modifier, nouveau sujet, tournois
 
 ## Pages impossibles sur téléphone
 
-Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone (ex. l'éditeur BBScheme et son grand plateau interactif), afficher `<DesktopOnlyFallback>` avec un message clair : « Optimisé pour ordinateur ou tablette ».
+Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher `<DesktopOnlyFallback>` avec un message clair : « Optimisé pour ordinateur ou tablette ». Ce n'est pas le cas de l'éditeur BBScheme, qui a sa propre interface téléphone (carte 100) : terrain entre une barre compacte d'outils (le reste dans un panneau « Plus d'outils ») et une barre basse pour les réserves et l'animation.

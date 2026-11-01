@@ -112,6 +112,8 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: `/spy/${E2E.targetId}`, connected: true },
   { path: "/membres", connected: true, openFilters: true },
   { path: "/bbscheme", connected: false },
+  // Carte 100 : le lecteur seul (mode embed, affiché dans une iframe), posé par-dessus la coquille du site
+  { path: `/bbscheme?id=${E2E.bbschemeBoardId}&embed=true`, connected: false },
   { path: "/bbquizz", connected: true },
   // Carte 098 : la proposition d'une question, la validation (une proposition de l'audit, voir plus bas) et la gestion
   // des questions (sans question en base : le jeu utilise alors les questions de départ, ce que suppose security.spec.ts)

@@ -310,13 +310,15 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 13. BBScheme `/bbscheme`
 
-- [ ] [tous] Choix du roster bleu et du roster rouge, Star Players, réserves des deux équipes, « Remettre en réserve ».
-- [ ] [tous] Outils : sélection ou déplacement (y compris du terrain), crayon, gomme, « Vider » les dessins, baguette (état du pion : debout, à terre, sonné, bonehead, stupid, fourchette), ballon, annuler, « Tout vider », désélectionner.
-- [ ] [tous] Images de l'animation : ajouter, dupliquer, supprimer, précédente, suivante, compteur `n/N`, 50 au plus. Lecture, pause, vitesse.
-- [ ] [tous] Vue : rotation, zoom (curseur, molette, pincement à deux doigts), plein écran.
-- [ ] [tous] « Partager » : enregistre et copie le lien `?id=`. Export en GIF avec barre de progression et « Télécharger ». Fenêtre « Infos ».
-- [ ] [tous] Paramètres d'adresse `?id=`, `&embed=true` et `&layout=vertical`.
-- [ ] [tous] Interface dédiée au téléphone : barre d'outils qui défile avec des flèches, panneaux de réserve, terrain vertical.
+- [x] [tous] Choix du roster bleu et du roster rouge, Star Players, réserves des deux équipes, « Remettre en réserve ». *Avant la refonte, le choix d'un Star Player n'existait que sur ordinateur et « Remettre en réserve » que sur téléphone (sur ordinateur, on rangeait le pion en touchant la réserve) : le test les vérifie là où ils existaient ; depuis la refonte, les deux existent dans les deux tailles (sur téléphone, dans le panneau « Plus d'outils »).*
+- [x] [tous] Outils : sélection ou déplacement (y compris du terrain), crayon, gomme, « Vider » les dessins, baguette (état du pion : debout, à terre, sonné, bonehead, stupid, fourchette), ballon, annuler, « Tout vider », désélectionner. *Le test vérifie que chaque outil existe, que sélection, crayon et baguette s'allument, et « Tout vider » (avec confirmation) puis « Annuler la dernière action ». Le passage d'un état à l'autre avec la baguette et les tracés au crayon (logique du terrain, inchangée) ne sont pas vérifiés automatiquement. Depuis la refonte, la gomme (outil) et « Effacer les dessins » existent dans les deux tailles ; avant, le téléphone n'avait que « Effacer les dessins », et son bouton « ballon » ne faisait rien de plus que la sélection : il est remplacé par « Lâcher le ballon », comme sur ordinateur.*
+- [x] [tous] Images de l'animation : ajouter, dupliquer, supprimer, précédente, suivante, compteur `n/N`, 50 au plus. Lecture, pause, vitesse.
+- [x] [tous] Vue : rotation, zoom (curseur, molette, pincement à deux doigts), plein écran. *Le pincement est vérifié par `tests/e2e/bbscheme-pinch.spec.ts` ; la molette, la rotation et le plein écran sur ordinateur seulement (le téléphone n'avait ni rotation ni plein écran avant la refonte ; il les a maintenant dans « Plus d'outils »). L'entrée réelle en plein écran n'est pas vérifiée (le navigateur de test ne la permet pas).*
+- [x] [tous] « Partager » : enregistre et copie le lien `?id=`. Export en GIF avec barre de progression et « Télécharger ». Fenêtre « Infos ». *« Infos » est compris comme le bouton « Afficher les infos des joueurs » ; la fenêtre d'aide (« Guide de BBScheme ») est vérifiée aussi.*
+- [x] [tous] Paramètres d'adresse `?id=`, `&embed=true` et `&layout=vertical`. *Avant la refonte, le mode `embed` affichait le lecteur sous la barre du site et son pied de page ; il couvre maintenant tout le cadre, sans la coquille.*
+- [x] [tous] Interface dédiée au téléphone : barre d'outils qui défile avec des flèches, panneaux de réserve, terrain vertical. *Depuis la refonte, la barre qui défile avec des flèches est remplacée par une barre compacte des outils principaux et le panneau « Plus d'outils » ; les réserves et la lecture de l'animation sont dans une barre en bas. Le test vérifie le terrain vertical, les deux réserves, les boutons de 44 pixels et l'absence de défilement horizontal.*
+
+*Section vérifiée par `tests/e2e/inventaire/bbscheme.spec.ts` (carte 100), en taille ordinateur et en taille téléphone, et par `tests/e2e/bbscheme-pinch.spec.ts` pour le pincement à deux doigts.*
 
 ## 14. BBQuizz
 

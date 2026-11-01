@@ -31,15 +31,31 @@ async function pinch(cdp: CDPSession, center: Point, from: number, to: number) {
   await touch(cdp, "touchEnd", []);
 }
 
+/**
+ * Ouvre l'éditeur et renvoie le centre du terrain et une fonction qui lit le zoom.
+ * Depuis la carte 100, le curseur de zoom est rangé, sur téléphone, dans le panneau « Plus d'outils » : le zoom est
+ * donc lu sur la largeur demandée au terrain (style de `.pitch-resizer`, proportionnelle au zoom), divisée par sa
+ * largeur au zoom de départ (1).
+ */
 async function openEditor(page: Page) {
   await page.goto("/bbscheme");
-  const slider = page.locator(".mobile-zoom-control input[type=range]");
-  await expect(slider).toBeVisible({ timeout: 20_000 });
-  const box = await page.locator(".pitch-viewport").boundingBox();
+  const viewport = page.locator(".pitch-viewport");
+  await expect(viewport).toBeVisible({ timeout: 20_000 });
+  const resizer = page.locator(".pitch-resizer");
+  const styleWidth = () => resizer.evaluate((el) => parseFloat((el as HTMLElement).style.width));
+  // Le terrain s'ajuste à la place disponible juste après l'affichage : on attend que sa largeur ne bouge plus
+  let base = 0;
+  await expect.poll(async () => {
+    const previous = base;
+    await page.waitForTimeout(300);
+    base = await styleWidth();
+    return base > 0 && base === previous;
+  }, { timeout: 10_000 }).toBe(true);
+  const box = await viewport.boundingBox();
   if (!box) throw new Error("Le terrain n'est pas affiché");
   const center = { x: box.x + box.width / 2, y: box.y + Math.min(box.height / 2, 150) };
-  const zoom = async () => parseFloat(await slider.inputValue());
-  return { slider, center, zoom };
+  const zoom = async () => Math.round(((await styleWidth()) / base) * 1000) / 1000;
+  return { center, zoom };
 }
 
 test("écarter puis rapprocher deux doigts change le zoom du terrain, pas celui de la page", async ({ page }) => {
