@@ -20,3 +20,13 @@ Quand tous les écrans sont refaits, l'ancien CSS, les alias v1 et la variable `
 - Supprimer les fichiers CSS historiques, la couche `legacy`, les alias v1, `MobileSidebar`, l'ancienne coquille et la variable `REFONTE` (mettre à jour `DEPLOY.md`).
 - Activer le preflight de Tailwind et vérifier toutes les pages en taille téléphone et ordinateur.
 - Lancer la suite e2e complète et Lighthouse en mode mobile.
+- Corriger les défauts du socle relevés pendant la refonte des écrans :
+  - `Textarea` de `packages/ui` affiché en police à chasse fixe ;
+  - trait vertical de l'ancien style sur le titre des panneaux et règle `[data-theme='saison3'] h2` qui garde les titres en bleu marine en Saison 3 ;
+  - chiffre de `CountBadge` en 11 pixels, trop petit ;
+  - styles BBCode recopiés dans plusieurs `page.css` (garder une seule feuille partagée) ;
+  - bandeau des cookies et notifications empilées qui couvrent le bas des pages sur téléphone (la modération et l'administration le contournent par une marge, à retirer ensuite) ;
+  - mise en forme des mentions légales ;
+  - logo de la coquille et libellés de la barre basse ;
+  - `UserMapper`, `UserSearch` et `LigueSearch` encore à l'ancien style ;
+  - `.loader-container` de `/bbscheme`, qui ne reçoit son style qu'après un passage par `/classement`.
