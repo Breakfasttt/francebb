@@ -3,14 +3,16 @@
  * Préparation : scripts/e2e-setup.mjs (pnpm test:sso).
  */
 import { readFileSync } from "node:fs";
+import path from "node:path";
 import { defineConfig, devices } from "@playwright/test";
 import { HUB_API_TEST_CRON_SECRET, SSO_TEST_SECRET } from "./tests/api/secrets.mjs";
 
-const client = JSON.parse(readFileSync("tests/.sso-client.json", "utf-8")) as { clientId: string; clientSecret: string };
+// Chemins construits depuis ce dossier : l'extension Playwright de VS Code charge ce fichier depuis la racine du dépôt (carte 154)
+const client = JSON.parse(readFileSync(path.join(__dirname, "tests/.sso-client.json"), "utf-8")) as { clientId: string; clientSecret: string };
 // Secret avec lequel le site vérifie les événements du hub (scripts/client-hooks.mjs, carte 122)
-const hooks = JSON.parse(readFileSync("tests/.sso-hooks.json", "utf-8")) as { eventsSecret: string };
+const hooks = JSON.parse(readFileSync(path.join(__dirname, "tests/.sso-hooks.json"), "utf-8")) as { eventsSecret: string };
 // Adresses des bases Postgres locales de test, enregistrées par scripts/local-postgres.mjs
-const databases = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8")) as Record<string, string>;
+const databases = JSON.parse(readFileSync(path.join(__dirname, "../../.local-postgres.json"), "utf-8")) as Record<string, string>;
 
 export default defineConfig({
   testDir: "./tests",
