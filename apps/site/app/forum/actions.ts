@@ -1878,6 +1878,11 @@ export async function updateRegistrationStatus(params: {
     if (!isOrganizer && !isCommissaire && !isMod) {
       return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette inscription." };
     }
+    // Le paiement est l'affaire de l'organisateur et des commissaires du tournoi, pas de la modération du site
+    // (décision du responsable, carte 177). Un modérateur peut nommer un commissaire si l'organisateur est absent.
+    if (params.paymentStatus !== undefined && !isOrganizer && !isCommissaire) {
+      return { success: false, error: "Seuls l'organisateur et les commissaires du tournoi peuvent modifier un paiement." };
+    }
   } catch (e) {
     return { success: false, error: "Erreur lors de la vérification des droits." };
   }

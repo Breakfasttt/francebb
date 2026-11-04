@@ -179,14 +179,16 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const isTournamentOrganizer = topic.tournament?.organizerId === currentUserId;
   const isTournamentCommissaire = topic.tournament?.commissaires.some((c) => c.id === currentUserId);
   const canEditTournament = isUserModerator || isTournamentOrganizer || isTournamentCommissaire;
+  // L'état de paiement des inscrits ne regarde que l'organisateur et les commissaires (cartes 174 et 177)
+  const canManagePayments = !!(isTournamentOrganizer || isTournamentCommissaire);
 
   // Ce que reçoit le module d'inscription, qui s'exécute dans le navigateur (carte 174) : les quelques champs du
-  // tournoi qu'il lit, et l'état de paiement de chaque inscription seulement pour ceux qui gèrent le tournoi (même
-  // règle que l'action updateRegistrationStatus : organisateur, commissaire ou modérateur).
+  // tournoi qu'il lit, et l'état de paiement de chaque inscription seulement pour l'organisateur et les commissaires
+  // (même règle que l'action updateRegistrationStatus pour le paiement, carte 177).
   let registrationTournament = null;
   if (topic.tournament) {
     const t = topic.tournament;
-    const [registrationPayments, teamPayments] = canEditTournament
+    const [registrationPayments, teamPayments] = canManagePayments
       ? await Promise.all([
           prisma.tournamentRegistration.findMany({ where: { tournamentId: t.id }, select: { id: true, paymentStatus: true } }),
           prisma.tournamentTeam.findMany({ where: { tournamentId: t.id }, select: { id: true, paymentStatus: true } })
@@ -199,8 +201,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       coachsPerTeam: t.coachsPerTeam,
       isFinished: t.isFinished,
       registrationsLocked: t.registrationsLocked,
-      registrations: canEditTournament ? withPaymentStatus(t.registrations, registrationPayments) : t.registrations,
-      teams: canEditTournament ? withPaymentStatus(t.teams, teamPayments) : t.teams,
+      registrations: canManagePayments ? withPaymentStatus(t.registrations, registrationPayments) : t.registrations,
+      teams: canManagePayments ? withPaymentStatus(t.teams, teamPayments) : t.teams,
       mercenaries: t.mercenaries
     };
   }
