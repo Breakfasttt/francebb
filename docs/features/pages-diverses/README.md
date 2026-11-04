@@ -9,8 +9,8 @@ Les petites pages du site, trop courtes pour une fiche chacune : la porte d'entr
 ## Ce que voit le coach
 
 ### Accueil — `/` (`app/page.tsx`)
-Refaite par la carte 090 (ADR 0006). En haut, un en-tête dans le flux de la page : le grand logo (titre de la page) et une phrase de présentation. Puis les tuiles des rubriques : « Jouer à Blood Bowl ! » en premier, en couleur d'accent, et les autres (Forum, Ligues, Tournois, La Carte, Championnat de France, Articles, Ressources, BBScheme, Quizz, Discord). Les tuiles Ligues et Tournois ont un lien « Créer » dans leur coin ; pour un visiteur, il mène à la connexion, qui renvoie ensuite vers le formulaire. Ensuite, les 3 prochains tournois, affichés avec la carte de la liste `/tournois` (`TournamentCard`), et un article tiré au hasard. Visible par tous. Les tournois et le lien Discord sont gardés en cache (60 s et 1 h).
-**Sur ordinateur** : six tuiles par ligne (« Jouer » en occupe deux), les trois tournois côte à côte. **Sur téléphone** : deux tuiles par ligne, « Jouer » sur toute la largeur, logo de 80 pixels de haut (avant la carte 090, l'accueil n'avait aucun logo sur téléphone), tournois et article l'un sous l'autre.
+Refaite par la carte 155 (ADR 0006), d'après la maquette choisie par le responsable ; il n'y a plus de logo. En haut, un bandeau de présentation : le titre de la page (un texte), puis trois boutons. « Aller au forum » est le plus visible (couleur d'accent, un peu plus grand), à côté de « Jouer à Blood Bowl ! » et « Rejoindre le Discord ». À côté du bandeau, les 3 prochains tournois en liste compacte (date, nom, ville, places prises) ; s'il n'y en a aucun, le message « Aucun tournoi prévu pour l'instant » et un lien « Créer un tournoi ». Ensuite, toutes les rubriques en trois blocs, chaque lien avec une courte description : « Débuter » (Jouer, Ressources, Quizz, BBScheme), « Jouer en compétition » (Tournois et Ligues, chacun avec un lien « Créer », La Carte, Championnat de France) et « La communauté » (Forum, Articles, Discord). Pour un visiteur, « Créer » mène à la connexion, qui renvoie ensuite vers le formulaire. Enfin, un article tiré au hasard ; s'il n'y a aucun article, ce bloc n'est pas affiché. Visible par tous. Les tournois et le lien Discord sont gardés en cache (60 s et 1 h).
+**Sur ordinateur** : le bandeau et les tournois côte à côte, les trois blocs de rubriques en colonnes, l'article en bandeau horizontal. **Sur téléphone** : tout l'un sous l'autre ; « Aller au forum » occupe toute la largeur, « Jouer » et « Discord » se partagent la ligne suivante ; chaque lien fait au moins 56 pixels de haut.
 
 ### Jouer — `/jouer` (`app/jouer/page.tsx`)
 Le « Guide du Coach » : six sections illustrées (C'est quoi Blood Bowl, plateformes, communauté, tournois, NAF/CdF/RTC, challenges régionaux), dont le texte en BBCode est saisi par un admin dans l'administration (`getHowToPlaySettings`). Une section sans texte est masquée, sauf la première.
@@ -43,7 +43,7 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 |---|---|
 | `apps/site/app/page.tsx` | Accueil |
 | `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/`, affichées par `next/image` en mode `fill` (l'image remplit un bandeau au format 16/7) |
-| `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut, grand logo de l'accueil ; zone cliquable d'au moins 44 pixels depuis la carte 101). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
+| `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut des autres pages que l'accueil ; zone cliquable d'au moins 44 pixels depuis la carte 101). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public (client), lit `/api/users/[id]` et les actions de `app/profile/actions.ts` |
 | `apps/site/app/mentions-legales/page.tsx`, `page.css`, `page-mobile.css` | Mentions légales. La page appartient au chantier RGPD ; sa mise en forme (carte 101) passe par `page.css` (variables v2), `PageHeader` et `PremiumCard`, ses seuls utilisateurs. C'est le dernier `page.css` du site : le jour où la page est réécrite, passer ses classes en Tailwind et supprimer les deux fichiers CSS |
 | `apps/site/app/banned/page.tsx`, `common/components/BannedRedirect/BannedRedirect.tsx` | Page et redirection des bannis |
@@ -66,7 +66,6 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 
 | Mot | Sens |
 |---|---|
-| Tuile | Grande carte cliquable de l'accueil qui mène à une rubrique. |
 | `data-theme` | Attribut posé sur la balise `<html>` ; chaque fichier `theme.*.css` redéfinit les couleurs quand il vaut son nom. |
 | `localStorage` | Petite mémoire du navigateur, propre à un appareil, où le thème est aussi rangé. |
 | Spy | Nom interne de la page de profil d'un autre coach (« espionner » son profil). |

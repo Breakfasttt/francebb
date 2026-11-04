@@ -37,11 +37,12 @@ export interface TournamentListItem {
 }
 
 /** Adresse du sujet du tournoi ; sans sujet (supprimé), la liste des tournois, faute de page dédiée. */
-const topicHref = (tournament: TournamentListItem) => (tournament.topic?.id ? `/forum/topic/${tournament.topic.id}` : "/tournois");
+export const topicHref = (tournament: Pick<TournamentListItem, "topic">) => (tournament.topic?.id ? `/forum/topic/${tournament.topic.id}` : "/tournois");
 
 const priceText = (price: number | null) => (price === 0 ? "Gratuit" : price != null ? `${price} €` : "Prix non précisé");
 
-const placeText = (tournament: TournamentListItem) => (tournament.ville || tournament.location);
+/** Ville du tournoi, ou à défaut son lieu. Réutilisé par l'accueil (carte 155). */
+export const placeText = (tournament: Pick<TournamentListItem, "ville" | "location">) => (tournament.ville || tournament.location);
 
 /** Badge de statut : annulé, terminé ou passé (date dépassée sans avoir été marqué terminé). */
 export function TournamentStatusBadge({ tournament, todayStart }: { tournament: TournamentListItem; todayStart: Date }) {

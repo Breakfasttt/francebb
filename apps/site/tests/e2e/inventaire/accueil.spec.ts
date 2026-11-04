@@ -1,6 +1,7 @@
 /**
  * Inventaire de la refonte, section 5 « Accueil et pages fixes » de docs/refonte/inventaire.md (carte 090) :
- * l'accueil (logo, tuiles, « Créer » une ligue ou un tournoi, prochains tournois, article aléatoire), le guide
+ * l'accueil (titre sans logo, liens des rubriques, « Créer » une ligue ou un tournoi, prochains tournois, article au
+ * hasard ; refait par la carte 155), le guide
  * `/jouer`, la page `/media`, les statistiques (publiques et réservées à l'administrateur), la page des bannis et la
  * page introuvable (404). Les mentions légales ne sont pas vérifiées ici : leur texte est réécrit par la carte 126.
  * Rejoué en taille ordinateur (projet chromium) et en taille téléphone (projet telephone). Les éléments sont
@@ -10,13 +11,13 @@
  * Données préparées par le test (et supprimées ou remises en place à la fin), toutes nommées « Inv Accueil … » :
  * - un forum de tournois et quatre tournois à venir, chacun avec son sujet (seuls les trois plus proches doivent
  *   apparaître sur l'accueil) ;
- * - un article, pour le bloc « Article aléatoire » ;
+ * - un article, pour le bloc « Article au hasard » ;
  * - un administrateur, pour les statistiques réservées ;
  * - les réglages du guide `/jouer` (première section vide, sections 2 à 5 remplies, sixième vide) et les chaînes
  *   Twitch et YouTube de `/media`. Les valeurs d'avant le test sont remises à la fin.
  *
  * Le lien Discord de l'accueil vient d'un réglage de l'administration gardé en cache une heure par le site : le test
- * vérifie seulement que la tuile existe et s'ouvre dans un nouvel onglet, sans changer ce réglage.
+ * vérifie seulement que ses liens existent et s'ouvrent dans un nouvel onglet, sans changer ce réglage.
  *
  * La liste des prochains tournois est gardée en cache 60 secondes par le site (`unstable_cache`, étiquette
  * « home-tournaments »). Ce cache est enregistré sur le disque dans `.next` et survit au redémarrage du serveur de test,
@@ -158,7 +159,7 @@ test.afterAll(async () => {
 /** Contenu propre à la page (la coquille, avec sa navigation et son pied de page, est en dehors). */
 const content = (page: Page) => page.getByRole("main").first();
 
-/** Les tuiles de l'accueil : début du nom accessible et adresse visée. */
+/** Les liens des rubriques de l'accueil : début du nom accessible et adresse visée. */
 const TILES: [RegExp, string][] = [
   [/^Jouer/, "/jouer"],
   [/^Forum/, "/forum"],
@@ -173,22 +174,29 @@ const TILES: [RegExp, string][] = [
 ];
 
 test.describe("accueil", () => {
-  test("logo, tuiles et liens « Créer » pour un visiteur", async ({ page }, testInfo) => {
+  test("titre, rubriques et liens « Créer » pour un visiteur", async ({ page }, testInfo) => {
     await page.goto("/", { waitUntil: "networkidle" });
     const main = content(page);
-    // Avant la refonte, le grand logo n'existait que sur ordinateur (sur téléphone, l'accueil n'avait aucun logo)
-    if ((page.viewportSize()?.width ?? 1280) > 1024) {
-      await expect(main.getByRole("img", { name: "Blood Bowl France" })).toBeVisible();
-    }
+    // Depuis la carte 155, l'accueil n'a plus de logo : son titre est un texte
+    await expect(main.getByRole("heading", { level: 1, name: /Blood Bowl en France/ })).toBeVisible();
+    await expect(main.getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
+    // « Aller au forum », le bouton mis en avant (carte 155)
+    await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
     for (const [name, href] of TILES) {
       await expect(main.getByRole("link", { name }).first()).toHaveAttribute("href", href);
     }
+    // Deux liens Discord depuis la carte 155 : le bouton du bandeau et la ligne du bloc « La communauté »
     const discord = main.getByRole("link", { name: /Discord/ });
-    await expect(discord).toBeVisible();
-    await expect(discord).toHaveAttribute("target", "_blank");
+    await expect(discord).toHaveCount(2);
+    for (const link of await discord.all()) {
+      await expect(link).toBeVisible();
+      await expect(link).toHaveAttribute("target", "_blank");
+    }
 
-    // « Créer » une ligue ou un tournoi envoie un visiteur vers la connexion, en gardant la page visée
-    const create = main.getByRole("link", { name: /Créer/ });
+    // « Créer » une ligue ou un tournoi envoie un visiteur vers la connexion, en gardant la page visée. On regarde les
+    // blocs de rubriques seulement : quand la liste des tournois est vide (cache d'un lancement précédent), son
+    // message a aussi un lien « Créer un tournoi »
+    const create = main.getByRole("navigation", { name: "Rubriques du site" }).getByRole("link", { name: /Créer/ });
     await expect(create).toHaveCount(2);
     const hrefs = await create.evaluateAll((links) => links.map((link) => link.getAttribute("href") ?? ""));
     expect(hrefs).toContainEqual(expect.stringMatching(/^\/auth\/login\?callbackUrl=.*new-tournament.*forumId/));
@@ -209,7 +217,7 @@ test.describe("accueil", () => {
     expect(hrefs).toContainEqual(expect.stringMatching(/^\/forum\/new-tournament\?forumId=/));
   });
 
-  test("prochains tournois et article aléatoire", async ({ page }, testInfo) => {
+  test("prochains tournois et article au hasard", async ({ page }, testInfo) => {
     test.setTimeout(150_000);
     // La liste des prochains tournois est gardée en cache 60 secondes par le site : on recharge jusqu'à la voir
     await expect(async () => {
@@ -223,7 +231,7 @@ test.describe("accueil", () => {
     }).toPass({ timeout: 120_000, intervals: [5_000] });
 
     const main = content(page);
-    await expect(main.getByRole("heading", { name: /article aléatoire/i })).toBeVisible();
+    await expect(main.getByRole("heading", { name: /article au hasard/i })).toBeVisible();
     // L'article est tiré au hasard parmi ceux de la base : n'importe lequel convient
     const titles = await db((prisma) => prisma.article.findMany({ select: { id: true, title: true } }));
     const pattern = new RegExp(titles.map((a) => a.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"));

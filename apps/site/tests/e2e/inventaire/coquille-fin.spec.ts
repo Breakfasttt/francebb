@@ -54,7 +54,9 @@ test("[tous] le logo ramène à l'accueil ; sur l'accueil, la barre n'en affiche
   await logo.click();
   await page.waitForURL((url) => url.pathname === "/");
   await expect(page.getByRole("banner").getByRole("link", { name: "Blood Bowl France" }).filter({ visible: true })).toHaveCount(0);
-  await expect(page.getByRole("main").getByRole("img", { name: "Blood Bowl France" })).toBeVisible();
+  // Depuis la carte 155, l'accueil n'a plus de grand logo non plus : son titre est un texte
+  await expect(page.getByRole("main").getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
+  await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
 });
 
 test("[admin] une icône Administration mène à /administration", async ({ page }) => {
@@ -70,13 +72,16 @@ test("[admin] une icône Administration mène à /administration", async ({ page
   }
 });
 
-test("[tous] sur téléphone, le bouton retour de la page est dans la barre du haut", async ({ page }) => {
+// Depuis la carte 156, le bouton retour reste dans l'en-tête de la page, à toutes les tailles (plus de portail React
+// vers la barre du haut)
+test("[tous] le bouton retour est dans l'en-tête de la page, 44 pixels sur téléphone", async ({ page }) => {
   await acceptCookies(page);
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
   const back = page.getByRole("button", { name: "Retour au forum" }).filter({ visible: true });
   await expect(back).toHaveCount(1);
   if (isPhone(page)) {
-    await expect(page.getByRole("banner").getByRole("button", { name: "Retour au forum" })).toBeVisible();
+    await expect(page.getByRole("main").getByRole("button", { name: "Retour au forum" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("button", { name: "Retour au forum" })).toHaveCount(0);
     expect((await back.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
 });

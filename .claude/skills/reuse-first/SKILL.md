@@ -44,7 +44,8 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Besoin | Utiliser |
 |---|---|
 | Écran de rédaction (plein écran sur téléphone, sans barre basse) | `ComposeScreen` (fil d'Ariane du forum facultatif), `ComposeActionBar` (barre d'envoi collée en bas), `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) ; `BBCodeEditor` avec la prop `screen` ; l'adresse s'ajoute à `isComposePath` |
-| Pavé de date (jour en grand, mois dessous) | `DateBlock` de `app/tournois/component/TournamentListItems.tsx` (aussi sur la fiche d'une ligue) |
+| Pavé de date (jour en grand, mois dessous) | `DateBlock` de `app/tournois/component/TournamentListItems.tsx` (aussi sur la fiche d'une ligue et l'accueil) |
+| Lien vers le sujet d'un tournoi, ville d'un tournoi | `topicHref` et `placeText` du même fichier (utilisés aussi par l'accueil, carte 155) |
 | Blason d'une ligue (ou bouclier s'il n'y en a pas) | `LigueBlason` (`app/ligues/component/LigueBlason.tsx`) |
 | Formulaire envoyé à une action serveur qui renvoie `ActionResult` (refus en notification, champs gardés) | `Form/ActionForm` (au lieu de `<form action={monAction}>`) |
 | Conteneur carte | `Card` de `@bbfrance/ui` ; `PremiumCard` ne sert plus qu'aux mentions légales, ne pas le réutiliser |
@@ -57,9 +58,9 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Saisie d'étiquettes (tags) avec suggestions | `TagSelector` (props `id` et `aria-label` pour le relier à un libellé) ; pour afficher un statut, `Badge` de `@bbfrance/ui` |
 | Écrire et afficher un message BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu, styles dans `BBCodeContent/bbcode.css`) |
 | Smileys | `SmileyGrid` |
-| En-tête de page et bouton retour | `ForumListHeader` (`app/forum/component/`, pages du forum), `BackButton` (44 px, envoyé dans la barre du haut sur téléphone) ; `PageHeader` ne sert plus qu'aux mentions légales |
+| En-tête de page et bouton retour | `ForumListHeader` (`app/forum/component/`, pages du forum), `BackButton` (44 px sur téléphone, affiché sur place à gauche du titre) ; `PageHeader` ne sert plus qu'aux mentions légales |
 | Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |
-| Envoyer un élément dans la coquille (téléphone) | `MobilePortal` (seulement sur téléphone ; `targetId="mobile-back-button-slot"` pour le bouton retour, par défaut la rubrique « Cette page » du panneau « Plus »), `GlobalPortal` (toutes tailles, vers un sélecteur CSS : `ForumSidebar.tsx` et `TopicTools.tsx` l'utilisent pour « Cette page ») |
+| Envoyer un élément dans la coquille (téléphone) | **Interdit** depuis la carte 156 : pas de portail React (`createPortal`) dans le code du projet. Afficher l'élément dans la page, ou dans un `Sheet` ouvert depuis la page |
 | Filtres d'une liste sur téléphone | Bouton « Filtres », `Sheet` et pastilles : copier `app/articles/component/ArticleFilters.tsx` ou `app/ressources/component/ResourceFilters.tsx` (skill `mobile-ux`) |
 | Rubriques de la navigation, écrans plein écran | `common/components/AppShell/navItems.ts` (`PRIMARY_NAV`, `MORE_NAV`, `DESKTOP_NAV`, `isComposePath`) |
 | Icônes | `lucide-react` uniquement ; `Icons/SocialIcons.tsx` garde les logos de réseaux sociaux absents de Lucide |

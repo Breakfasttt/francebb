@@ -29,8 +29,8 @@ Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/AppShell/` (la
 - [x] [membre] Une icône Messagerie mène à `/messagerie` et affiche une pastille avec le nombre de messages privés non lus.
 - [x] [modo] Une icône Modération mène à `/moderation` et affiche une pastille avec le nombre d'éléments en attente : signalements et ressources à valider, avec « 9+ » au-delà de 9.
 - [x] [admin] Une icône Administration mène à `/administration`. *(Sur téléphone, le lien est dans le panneau « Plus ».)*
-- [x] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-page-sidebar-slot` du menu latéral.
-- [x] [tous] Sur téléphone, le bouton retour de la page reste accessible. Aujourd'hui, il est dans l'emplacement `#mobile-back-button-slot` de la barre.
+- [x] [tous] Sur téléphone, le contenu propre à chaque page (onglets du profil, de la modération, de l'administration, colonnes latérales du forum, gestion d'une ligue…) reste accessible. *(Carte 156 : affiché dans la page elle-même, bloc « Outils du forum » ou panneau « Outils du sujet », sans portail.)*
+- [x] [tous] Sur téléphone, le bouton retour de la page reste accessible. *(Carte 156 : affiché sur place, à gauche du titre de la page, sans portail.)*
 - [x] [tous] Le menu de téléphone se ferme quand on change de page, et le défilement de la page est bloqué tant qu'il est ouvert.
 - [x] [tous] Le pied de page donne accès aux mentions légales, à la mention « Conçu avec l'aide de l'IA », au GitHub (lien externe) et aux statistiques (`/statistiques`). Sur téléphone, ces liens sont aujourd'hui en bas du menu latéral.
 - [x] [tous] Le bandeau cookies apparaît après 1,5 seconde si aucun consentement n'est enregistré. « Accepter » est mémorisé dans le navigateur, la croix ferme le bandeau pour la session, et un lien mène aux mentions légales. *(Carte 101 : il est posé au-dessus de la barre basse et la page réserve sa place.)*
@@ -211,7 +211,7 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 5. Accueil et pages fixes
 
-- [x] [tous] `/` : grand logo. Tuiles Jouer, Forum, Ligues (avec « Créer »), Tournois (avec « Créer »), La Carte, Championnat de France, Articles, Ressources, BBScheme, Quizz, Discord (lien réglé dans l'administration). *Le test vérifie le logo en taille ordinateur seulement : avant la refonte, l'accueil n'avait pas de logo sur téléphone (il en a un depuis la carte 090). Pour Discord, il vérifie la tuile et son ouverture dans un nouvel onglet, pas l'adresse réglée (gardée en cache une heure par le site).*
+- [x] [tous] `/` : titre en texte, sans logo (carte 155). Bouton « Aller au forum » mis en avant, puis « Jouer à Blood Bowl ! » et « Rejoindre le Discord ». Liens vers toutes les rubriques, rangés en trois blocs : Débuter (Jouer, Ressources, Quizz, BBScheme), Jouer en compétition (Tournois et Ligues, chacun avec « Créer », La Carte, Championnat de France) et La communauté (Forum, Articles, Discord, lien réglé dans l'administration). *Le test vérifie le titre, l'absence de logo et les liens. Pour Discord, il vérifie les deux liens et leur ouverture dans un nouvel onglet, pas l'adresse réglée (gardée en cache une heure par le site).*
 - [x] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
 - [x] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
 - [x] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
