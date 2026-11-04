@@ -1,6 +1,6 @@
 # BBFrance — la communauté Blood Bowl française
 
-BBFrance est le site de la communauté française de **Blood Bowl** (jeu de plateau de football fantastique). On y trouve un forum, les tournois (annonce, inscriptions, résultats), les profils des coachs (les joueurs), une messagerie privée, un classement, des articles et des outils de jeu comme BBScheme (éditeur de schémas de jeu).
+BBFrance est le site de la communauté française de **Blood Bowl** (jeu de plateau de football fantastique). On y trouve un forum, les tournois (annonce, inscriptions, résultats), les profils des coachs (les joueurs), une messagerie privée, un classement, des articles et des outils de jeu. L'éditeur de schémas de jeu BBScheme et le quiz BBQuizz sont des applications à part du dépôt, en attente de relance.
 
 **Ce fichier est la porte d'entrée du projet.** Commence par lui : il explique les règles, le plan du dépôt et où trouver le reste. Un mot technique inconnu ? Il est expliqué dans le [glossaire](docs/GLOSSAIRE.md).
 
@@ -42,7 +42,10 @@ Chaque règle n'est écrite qu'à un seul endroit :
 |---|---|
 | `apps/site/` | **Le site BBFrance** (forum, tournois, profils…), avec sa base de données et ses tests |
 | `apps/hub/` | **Le hub de connexion** : un compte unique pour le site et les futures applications. Prêt, mais pas encore en ligne |
+| `apps/bbscheme/` | **BBScheme**, l'application des schémas tactiques, avec sa propre base. En attente : elle ne fait que donner au site les schémas déjà publiés ; l'éditeur sera relancé plus tard |
+| `apps/bbquizz/` | **BBQuizz**, l'application du quiz, avec sa propre base (questions, parties, scores). En attente : elle n'affiche qu'une page « Le quiz revient bientôt » ; le quiz sera relancé plus tard |
 | `packages/ui/` | Composants d'interface partagés entre les applications (fenêtres, notifications…) |
+| `packages/bbscheme-player/` | Le lecteur des schémas BBScheme, partagé entre le site et l'application BBScheme |
 | `docs/features/` | **Une fiche par fonctionnalité** : à quoi elle sert, ce que voit le coach, où est le code |
 | `docs/adr/` | Les décisions importantes et leurs raisons (voir « ADR » dans le glossaire) |
 | `docs/GLOSSAIRE.md` | Les mots techniques expliqués |

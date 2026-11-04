@@ -2,7 +2,8 @@
 import React, { useEffect } from "react";
 import { parseBBCode, type QuoteStatusMap } from "@/lib/bbcode";
 import { BBSchemePlayer } from "@bbfrance/bbscheme-player";
-import { getBoardState } from "@/app/bbscheme/actions";
+// Carte 179 : le schéma est lu auprès de l'application BBScheme (réglage BBSCHEME_URL), par le serveur du site
+import { getBoardState } from "@/app/bbschemeBoardActions";
 
 interface BBCodeContentProps {
   content: string;

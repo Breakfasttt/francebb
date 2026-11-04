@@ -121,12 +121,9 @@ export default async function globalSetup() {
     },
   });
 
-  // Cartes 061 et 024 : sujet dont le message affiche le lecteur BBScheme (plateau vide : terrain sans joueurs)
-  await prisma.bBSchemeState.upsert({
-    where: { id: E2E.bbschemeBoardId },
-    update: {},
-    create: { id: E2E.bbschemeBoardId, hash: E2E.bbschemeBoardId, data: "{}" },
-  });
+  // Cartes 061 et 024 : sujet dont le message affiche le lecteur BBScheme (plateau vide : terrain sans joueurs). Le
+  // schéma lui-même est servi par le faux serveur BBScheme des tests (carte 179), pas par la base du site. Le même
+  // message contient un second schéma, inconnu du faux serveur, qui doit afficher « Schéma indisponible ».
   await prisma.topic.upsert({
     where: { id: E2E.bbschemeTopicId },
     update: {},
@@ -136,7 +133,7 @@ export default async function globalSetup() {
       forumId: forum.id,
       authorId: E2E.coachId,
       lastPostAuthorId: E2E.coachId,
-      posts: { create: { content: `Voici le schéma : [bbscheme]${E2E.bbschemeBoardId}[/bbscheme]`, authorId: E2E.coachId } },
+      posts: { create: { content: `Voici le schéma : [bbscheme]${E2E.bbschemeBoardId}[/bbscheme] et un schéma perdu : [bbscheme]${E2E.bbschemeMissingBoardId}[/bbscheme]`, authorId: E2E.coachId } },
     },
   });
 

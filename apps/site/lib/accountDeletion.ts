@@ -52,13 +52,12 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
       await tx.tournamentRegistration.deleteMany({ where: { userId } });
       await tx.tournamentMercenary.deleteMany({ where: { userId } });
       await tx.tournamentTeamMember.deleteMany({ where: { userId } });
-      await tx.quizAttempt.deleteMany({ where: { userId } });
 
       // 3. Supprimer les messages privés et participations aux conversations
       await tx.privateMessage.deleteMany({ where: { authorId: userId } });
       await tx.conversationParticipant.deleteMany({ where: { userId } });
 
-      // 4. Anonymiser l'activité publique (Forum, Articles, Ligues, Tournois, Quiz)
+      // 4. Anonymiser l'activité publique (Forum, Articles, Ligues, Tournois)
       await tx.topic.updateMany({
         where: { authorId: userId },
         data: { authorId: ghostId }
@@ -87,11 +86,6 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
       await tx.tournamentTeam.updateMany({
         where: { captainId: userId },
         data: { captainId: ghostId }
-      });
-
-      await tx.quizQuestionSuggestion.updateMany({
-        where: { authorId: userId },
-        data: { authorId: ghostId }
       });
 
       // Résultats et matchs de tournoi : historique gardé, nom et NAF remplacés par un pseudonyme (carte 124).
@@ -150,16 +144,11 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
         data: { authorId: ghostId }
       });
 
-      // Tournois organisés, gagnants du jour au BBQuizz, signalements envoyés et journal de modération :
+      // Tournois organisés, signalements envoyés et journal de modération :
       // ces lignes exigent un auteur (la base refuserait de supprimer le membre), on garde l'historique.
       await tx.tournament.updateMany({
         where: { organizerId: userId },
         data: { organizerId: ghostId }
-      });
-
-      await tx.quizDailyWinner.updateMany({
-        where: { userId },
-        data: { userId: ghostId }
       });
 
       await tx.moderationReport.updateMany({
@@ -172,8 +161,10 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
         data: { moderatorId: ghostId }
       });
 
-      // Schémas BBScheme : gardés, sans créateur
-      await tx.bBSchemeState.updateMany({ where: { creatorId: userId }, data: { creatorId: null } });
+      // Schémas BBScheme : ils sont rangés dans la base de l'application BBScheme depuis la carte 179. Le site ne peut
+      // plus effacer leur créateur ; ce sera fait par l'application BBScheme elle-même, prévenue par le hub, à sa relance.
+      // Quiz : ses parties, propositions et scores sont dans la base de l'application BBQuizz depuis la carte 180, et
+      // seront effacés de la même façon à sa relance.
       // Traces de l'email : journal des mails envoyés et fiche de l'ancien forum
       if (identity?.email) {
         await tx.mailLog.deleteMany({ where: { to: identity.email } });
@@ -201,11 +192,7 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
             emailVerified: null,
             equipe: null,
             forumactifName: null,
-            legacyId: null,
-            quizTotalScore: 0,
-            quizBestScore: 0,
-            quizStreak: 0,
-            quizAttemptsCount: 0
+            legacyId: null
           }
         });
       } else {

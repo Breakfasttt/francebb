@@ -1,0 +1,101 @@
+// Base de l'application BBQuizz (carte 180, ADR-0008), distincte de celle du site et de celle du hub.
+// Elle contient les questions du quiz, les parties, les classements et les scores des joueurs.
+// Cette base n'a pas de table de membres : un membre y est désigné par son identifiant (celui du site, puis celui du
+// hub à la relance), sans lien vers une autre table. Les cinq premiers modèles sont repris tels quels du site.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Une question du quiz : quatre réponses (texte JSON), l'indice de la bonne, une explication facultative, et le
+/// nombre de fois où chaque réponse a été choisie (pour le joker « appel à la communauté »).
+model QuizQuestion {
+  id           String   @id @default(cuid())
+  category     String
+  question     String
+  imageUrl     String?
+  options      String
+  correctIndex Int
+  explanation  String?
+  timesCorrect Int      @default(0)
+  timesOption0 Int      @default(0)
+  timesOption1 Int      @default(0)
+  timesOption2 Int      @default(0)
+  timesOption3 Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Une partie terminée, avec son résultat. `userId` : identifiant du joueur.
+model QuizAttempt {
+  id         String   @id @default(cuid())
+  userId     String
+  score      Int
+  correct    Int
+  total      Int      @default(20)
+  duration   Int
+  jokersUsed Int      @default(0)
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+}
+
+/// Partie de BBQuizz en cours, tenue par le serveur (carte 051) : le navigateur ne reçoit jamais la bonne
+/// réponse avant d'avoir répondu, et le score est calculé ici. Une seule partie en cours par membre ;
+/// la ligne est supprimée à la fin de la partie, quand le résultat est enregistré dans QuizAttempt.
+model QuizGame {
+  id               String    @id @default(cuid())
+  userId           String
+  questionIds      String[]
+  currentIndex     Int       @default(0)
+  questionServedAt DateTime?
+  score            Int       @default(0)
+  correct          Int       @default(0)
+  fiftyUsed        Boolean   @default(false)
+  communityUsed    Boolean   @default(false)
+  skipUsed         Boolean   @default(false)
+  startedAt        DateTime  @default(now())
+
+  @@index([userId])
+}
+
+/// Meilleur joueur d'une journée. `userId` : identifiant du joueur.
+model QuizDailyWinner {
+  date   DateTime @id
+  userId String
+  score  Int
+  streak Int      @default(1)
+}
+
+/// Question proposée par un membre, en attente de validation par la modération. `authorId` : identifiant de l'auteur.
+model QuizQuestionSuggestion {
+  id           String   @id @default(cuid())
+  category     String
+  question     String
+  imageUrl     String?
+  options      String
+  correctIndex Int
+  explanation  String?
+  authorId     String
+  status       String   @default("PENDING")
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+/// Scores d'un joueur, qui étaient rangés sur sa fiche de membre dans la base du site (colonnes quizTotalScore,
+/// quizBestScore, quizStreak, quizAttemptsCount) jusqu'à la carte 180. Une ligne par joueur qui a déjà joué.
+model QuizPlayerStats {
+  /// Identifiant du joueur (celui du site, puis celui du hub à la relance).
+  userId        String   @id
+  totalScore    Int      @default(0)
+  bestScore     Int      @default(0)
+  /// Série de parties : affichée par le classement mais jamais calculée par le code actuel du quiz (toujours 0).
+  streak       Int      @default(0)
+  attemptsCount Int      @default(0)
+  updatedAt     DateTime @updatedAt
+}

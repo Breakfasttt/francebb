@@ -103,7 +103,7 @@ export default function MentionsLegalesPage() {
               </li>
               <li>
                 <strong>Contributions et activité sur le site</strong> (messages, sujets, articles, messages privés, inscriptions et
-                résultats de tournoi, scores du quiz, réglages) : pour faire fonctionner le forum, les tournois et les autres services.
+                résultats de tournoi, réglages) : pour faire fonctionner le forum, les tournois et les autres services.
                 Base légale : le service demandé. Gardées tant que ton compte existe.
               </li>
               <li>

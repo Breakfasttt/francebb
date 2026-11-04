@@ -45,6 +45,10 @@ backup.sql
 .last-magic-link.json
 # Hub : client Prisma généré par `pnpm db:generate` (le site, lui, versionne le sien)
 /apps/hub/prisma/generated-client/
+# Application BBScheme : client Prisma généré par `pnpm db:generate`, comme pour le hub (carte 179)
+/apps/bbscheme/prisma/generated-client/
+# Application BBQuizz : client Prisma généré par `pnpm db:generate`, comme pour BBScheme (carte 180)
+/apps/bbquizz/prisma/generated-client/
 
 # Fichiers système et journaux d'erreurs des gestionnaires de paquets
 .DS_Store

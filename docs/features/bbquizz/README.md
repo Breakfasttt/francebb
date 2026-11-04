@@ -1,4 +1,4 @@
-# BBQuizz
+# BBQuizz, application à part, en attente
 
 > Fiche écrite pour quelqu'un qui découvre le projet : phrases simples, termes techniques expliqués. Tenue à jour à chaque carte qui touche la fonctionnalité (commande `/ship`). Environ 80 lignes au plus.
 
@@ -6,43 +6,38 @@
 
 Un mini-jeu de culture Blood Bowl : 20 questions à choix multiple (règles, équipes, positionnels, Star Players, compétences), avec un chronomètre et trois jokers. Les scores alimentent un classement du jour, de la semaine et de tous les temps. Les coachs peuvent proposer des questions, que les modérateurs valident.
 
+Depuis la carte 180 (décision ADR-0008), le quiz n'est plus dans le site : c'est l'application `apps/bbquizz`, avec sa propre base de données. Elle est **en attente** : le quiz ne tourne pas, son code est rangé dans `apps/bbquizz/quiz-en-attente/` (son `README.md` explique comment le relancer). Les questions, les parties et les scores sont gardés dans la base de l'application.
+
 ## Ce que voit le coach
 
-- `/bbquizz` : le jeu et, à droite sur ordinateur, le classement (onglets « Du jour », « Semaine », « Panthéon »). L'accueil du jeu rappelle les règles et propose « Commencer le quizz ! ». Pendant une partie, une barre en haut de la carte montre la question en cours (« Question 3 / 20 »), le chronomètre et le score ; une fine barre de temps passe à l'orange pendant la lecture. Pour chaque question : 5 secondes de lecture (réponses floutées), puis 30 secondes pour répondre, puis les points gagnés ou perdus, l'explication et « Suivant » (sinon, la question suivante arrive seule après 5 secondes). Jokers, une fois chacun par partie : « 50/50 » (deux mauvaises réponses barrées), « Communauté » (pourcentage des réponses déjà données, en barre dans chaque réponse), « Passer ». Écran de fin : score, bonnes réponses, temps total, « Rejouer ». Réservé aux membres connectés.
-- « Proposer une question » est sous le titre de `/bbquizz` ; pour un modérateur, le menu « Gestion du quizz » mène à « Valider les propositions » et « Éditer les questions ».
-- `/bbquizz/proposer` : un membre propose une question, dans un formulaire en trois blocs (la question avec sa catégorie, les quatre réponses avec « Bonne réponse » à cocher, l'explication facultative).
-- `/bbquizz/valider` : un modérateur approuve ou rejette les propositions en attente (une carte par proposition, la bonne réponse marquée en vert).
-- `/bbquizz/editer` : un modérateur cherche, modifie (`?edit=<identifiant>`, même formulaire que la proposition) ou supprime une question, après confirmation.
-- **Sur téléphone** (jusqu'à 1024 pixels) : pendant une partie, le titre de la page et le classement sont masqués, pour que la question, le chronomètre, le score, les quatre réponses (pleine largeur, 56 pixels de haut au moins) et les jokers tiennent dans l'écran sans défiler. Le classement est sous l'accueil du jeu et sous l'écran de fin. La proposition et la gestion des questions sont des écrans plein écran (`ComposeScreen`, sans la barre du bas, voir `isComposePath`), avec « Annuler » et « Envoyer » ou « Enregistrer » collés en bas. Comme `isComposePath` ne lit que le chemin de l'adresse, la liste de `/bbquizz/editer` est elle aussi sans barre du bas.
+- Plus d'entrée « Quizz » dans le menu du site, ni de tuile sur l'accueil. L'ancienne adresse `/bbquizz` du site (et ses pages `/bbquizz/proposer`, `/valider`, `/editer`) donne la page introuvable.
+- L'adresse de l'application (port 4200 en local) n'affiche qu'une page « Le quiz revient bientôt », lisible sur téléphone (texte de 18 pixels, largeur limitée à l'écran).
+
+## Comment le quiz fonctionnait (à garder pour la relance)
+
+- `/bbquizz` : le jeu et le classement (onglets « Du jour », « Semaine », « Panthéon »). Pour chaque question : 5 secondes de lecture, puis 30 secondes pour répondre, puis les points gagnés ou perdus et l'explication. Jokers, une fois chacun par partie : « 50/50 », « Communauté » (pourcentage des réponses déjà données), « Passer ». Réservé aux membres connectés.
+- `/bbquizz/proposer` (membres), `/bbquizz/valider` et `/bbquizz/editer` (modérateurs, menu « Gestion du quizz »).
+- **Sur téléphone** : pendant une partie, le titre et le classement sont masqués pour que la question, le chronomètre, le score, les quatre réponses (56 pixels de haut au moins) et les jokers tiennent dans l'écran sans défiler. La proposition et l'édition des questions sont des écrans plein écran, sans la barre du bas.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
-| `apps/site/app/bbquizz/page.tsx` | Page du jeu, envoie le visiteur vers la connexion (`/auth/login`) |
-| `apps/site/app/bbquizz/component/QuizEngine.tsx` | Écran du jeu : titre et actions, accueil, partie (chronomètres, jokers, score), écran de fin, place du classement ; il ne fait qu'afficher ce que renvoie le serveur |
-| `apps/site/lib/quizGame.ts` | Règles côté serveur : tirage équilibré des questions, lecture d'une question, temps restant et points |
-| `apps/site/app/bbquizz/component/QuizLeaderboard.tsx` | Classement (jour, semaine, tout temps) |
-| `apps/site/app/bbquizz/component/QuizForm.tsx` | Formulaire de question en blocs, partagé par proposer et éditer |
-| `apps/site/app/bbquizz/proposer/`, `valider/`, `editer/` | Pages de proposition, de validation et d'édition (`page.tsx` serveur + `*Content.tsx` client ; `editer/EditQuestion.tsx` pour la modification) |
-| `apps/site/tests/e2e/inventaire/bbquizz.spec.ts` | Test d'inventaire de la refonte (carte 098), en taille ordinateur et téléphone |
-| `apps/site/app/bbquizz/actions.ts` | Actions serveur |
-| `apps/site/app/bbquizz/data/questions.ts` | Questions de départ : insérées par `prisma/firstSetup.ts`, et utilisées si la base est vide |
-| `apps/site/app/bbquizz/utils.ts` | `translateCategory` : nom français d'une catégorie ; `startOfQuizDay` et `startOfQuizWeek` : début du jour et de la semaine, heure de Paris |
+| `apps/bbquizz/app/page.tsx` | Page d'attente « Le quiz revient bientôt » |
+| `apps/bbquizz/prisma/schema.prisma` | Base de l'application : les cinq tables du quiz et `QuizPlayerStats` (les scores des joueurs) ; un membre n'y est qu'un identifiant |
+| `apps/bbquizz/scripts/import-beta-backup.ts` | Reprise des données du quiz de l'ancienne production (sauvegarde du 4 novembre 2026) |
+| `apps/bbquizz/quiz-en-attente/` | Le code du quiz, non servi : page, actions serveur, règles du jeu (`lib/quizGame.ts`), composants, questions de départ, tests |
+| `apps/bbquizz/quiz-en-attente/README.md` | Ce que le quiz empruntait au site et comment le relancer |
+| `apps/site/tests/e2e/smoke.spec.ts` | Vérifie que `/bbquizz` donne la page introuvable dans le site |
 
-Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`, `answerQuizQuestion`, `skipQuizQuestion`, `applyQuizFiftyFifty`, `applyQuizCommunity` (une partie), `getQuizLeaderboard`, `suggestQuizQuestion` (membres) ; `getQuizSuggestions`, `handleQuizSuggestion`, `getAllQuizQuestions`, `updateQuizQuestion`, `deleteQuizQuestion` (modérateurs).
+## Les pièges (pour la relance)
 
-## Les pièges
-
-- **La partie est tenue par le serveur** (carte 051), pour empêcher la triche. Le navigateur ne reçoit qu'une question à la fois, sans la bonne réponse ni l'explication ; elles ne sont révélées qu'après la réponse. Le serveur note l'heure d'envoi de chaque question et calcule lui-même les points (100 plus le bonus de rapidité, ou -25), puis enregistre le score final. Ne jamais renvoyer `correctIndex` ou `explanation` au navigateur avant la réponse, ni accepter un score venu du navigateur. Un test e2e le vérifie (`tests/e2e/security.spec.ts`) : depuis la carte 098, il repère la question, les réponses, les points gagnés et le score par leur rôle et leur nom accessible (zone « Question en cours », groupe « Réponses », zone d'annonce « Score », voir « Rôle ARIA » dans le glossaire). Ne pas renommer ces éléments sans adapter le test.
-- La partie en cours est une ligne de la table `QuizGame` (une seule par membre, supprimée quand le résultat passe dans `QuizAttempt`). Chaque réponse fait avancer la partie seulement si elle en est encore à la question attendue : répondre deux fois ou rejouer une ancienne réponse ne compte pas.
-- Le chronomètre affiché dans le navigateur n'est qu'un affichage : c'est l'heure du serveur qui compte, avec 3 secondes de marge pour le trajet réseau. Une réponse arrivée trop tard compte comme fausse.
-- Le joker « appel à la communauté » lit les compteurs `timesOption0` à `3` de la question, augmentés à chaque réponse depuis la carte 051. Sans aucune réponse enregistrée (ou pour les questions de départ hors base), il affiche 25 % partout.
-- La série (`quizStreak`) est affichée dans le classement mais jamais mise à jour (la colonne est gardée : calculer la série ou la retirer reste à décider, carte 143).
-- **Les propositions et les modifications sont contrôlées par le serveur** (carte 143), car une action serveur est appelable directement avec n'importe quelles données : catégorie, question et quatre réponses non vides, bonne réponse entre 0 et 3, longueurs maximales (question 500 caractères, réponse 200, explication 1 000). `updateQuizQuestion` ne recopie que ces champs : un compteur ou une autre colonne glissés dans la requête sont ignorés. Ces actions renvoient `{ success, error }`, et le message s'affiche dans une notification.
-- `handleQuizSuggestion` ne traite qu'une proposition encore en attente : le statut change dans une transaction (une opération tout ou rien) seulement s'il vaut encore `PENDING`. Approuver deux fois, ou deux modérateurs en même temps, ne crée donc jamais la question en double. Une proposition inconnue donne « Proposition introuvable ».
-- Les classements « Du jour » et « Semaine » commencent à minuit, **heure de Paris**, et la semaine **le lundi** (carte 143), quelle que soit l'heure réglée sur le serveur (Vercel tourne en heure universelle).
-- Les pages `/bbquizz/valider` et `/bbquizz/editer` obtiennent la session par `getActiveSession()` (carte 052).
+- **La partie est tenue par le serveur** (carte 051), pour empêcher la triche. Le navigateur ne reçoit qu'une question à la fois, sans la bonne réponse ni l'explication ; le serveur note l'heure d'envoi de chaque question et calcule lui-même les points (100 plus le bonus de rapidité, ou -25). Ne jamais renvoyer `correctIndex` ou `explanation` au navigateur avant la réponse, ni accepter un score venu du navigateur. Les tests de sécurité correspondants sont dans `quiz-en-attente/tests/quiz-security.spec.ts`.
+- La partie en cours est une ligne de `QuizGame` (une seule par membre). Une réponse ne compte que si la partie en est encore à la question attendue. Le chronomètre du navigateur n'est qu'un affichage : c'est l'heure du serveur qui compte, avec 3 secondes de marge.
+- **Les propositions et les modifications sont contrôlées par le serveur** (carte 143) : champs non vides, bonne réponse entre 0 et 3, longueurs maximales. Une proposition approuvée deux fois ne crée pas de doublon (transaction).
+- Les classements « Du jour » et « Semaine » commencent à minuit, **heure de Paris**, et la semaine **le lundi**.
+- Les scores des joueurs ne sont plus sur la fiche des membres (le site a perdu ses colonnes `quiz*`) : le code en attente lit et écrit encore `prisma.user` et doit passer à `QuizPlayerStats`.
+- **Données personnelles** : la suppression d'un compte et l'export des données d'un membre, faits par le site, ne touchent plus le quiz. À la relance, l'application devra écouter l'événement de suppression envoyé par le hub et fournir ses données à l'export.
 
 ## Les mots expliqués
 
@@ -52,14 +47,10 @@ Actions serveur (`app/bbquizz/actions.ts`) : `startQuizGame`, `getQuizQuestion`,
 | Partie en cours (`QuizGame`) | Partie pas encore finie, gardée en base par le serveur : questions tirées, question en cours, heure d'envoi, score, jokers utilisés. |
 | Joker | Aide utilisable une fois par partie : 50/50, appel à la communauté, passer. |
 | Proposition (*suggestion*) | Question envoyée par un membre, en attente (`PENDING`) jusqu'à acceptation ou refus par un modérateur. |
-| Panthéon / classement | Les 10 meilleurs : meilleur score de tous les temps, ou meilleure partie du jour ou de la semaine. |
-| Pioche équilibrée | Les questions sont tirées à tour de rôle dans chaque catégorie, pour ne pas avoir 20 questions du même thème. |
+| Questions de départ | Environ 300 questions écrites dans `quiz-en-attente/data/questions.ts`, utilisées par le jeu quand la base n'a aucune question. Elles ne sont plus chargées par `firstSetup.ts` du site. |
 
 ## État
 
-- Marche : partie complète, classements, proposition, validation, édition.
-- Marche aussi depuis la carte 051 : score calculé par le serveur, réponses cachées jusqu'à la réponse, adresse de connexion corrigée, compteurs du joker communauté.
-- Refonte visuelle (carte 098, ADR 0006) : composants de `packages/ui`, plus aucun fichier CSS propre au quizz. L'audit mobile mesure `/bbquizz`, `/bbquizz/proposer`, `/bbquizz/valider` et `/bbquizz/editer` : rien à signaler en dehors de la coquille.
-- Carte 143 : contrôles côté serveur des propositions, des modifications et des validations, semaine du lundi à l'heure de Paris ; tests dans `tests/e2e/security.spec.ts`.
-- Manque : série (`quizStreak`).
-- Cartes ouvertes : 049 (audit mobile), 098 (refonte visuelle, en attente de validation sur téléphone).
+- Carte 180 : le quiz est sorti du site. Base de l'application remplie par la reprise de l'ancienne production : 339 questions (340 lues, un texte en double ignoré), 7 parties terminées, les scores de 4 joueurs. Les tables et les colonnes du quiz ont été retirées de la base du site par la migration `20261105120000_quiz_hors_du_site`.
+- La série (`quizStreak`, devenue `QuizPlayerStats.streak`) était affichée mais jamais calculée : à décider à la relance.
+- Reste à faire : mettre en ligne l'application et sa base, reprendre les données en production (`DEPLOY.md`), puis relancer le quiz dans une carte à part.

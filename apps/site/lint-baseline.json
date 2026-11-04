@@ -1,8 +1,8 @@
 {
-  "maxErrors": 225,
+  "maxErrors": 203,
   "rules": {
     "@typescript-eslint/ban-ts-comment": 6,
-    "@typescript-eslint/no-explicit-any": 178,
+    "@typescript-eslint/no-explicit-any": 156,
     "no-restricted-syntax": 22,
     "prefer-const": 8,
     "react-hooks/purity": 1,

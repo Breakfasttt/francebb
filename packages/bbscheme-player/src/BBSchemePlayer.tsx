@@ -4,6 +4,8 @@
  * Lecteur BBScheme : affiche un plateau enregistré et rejoue son animation (lecture, image par image, vitesse,
  * rotation). Copié depuis apps/site/app/bbscheme/component/BBSchemePlayer.tsx (carte 024). Le paquet ne peut pas
  * appeler la base de données : c'est l'application qui fournit la fonction `loadBoard` (action serveur du site).
+ * Si le plateau ne peut pas être lu (application BBScheme arrêtée, schéma inconnu), le lecteur affiche « Schéma
+ * indisponible » (carte 179). Le bouton « Ouvrir dans l'éditeur » n'apparaît que si l'application donne `editorUrl`.
  * Les boutons viennent de @bbfrance/ui, car un paquet n'a pas accès aux boutons propres au site.
  */
 
@@ -37,9 +39,14 @@ export interface BBSchemePlayerProps {
   layout?: string;
   /** Lit le plateau `id` (dans le site : l'action serveur `getBoardState`). */
   loadBoard: (id: string) => Promise<BoardStateResult>;
+  /**
+   * Adresse de la page de l'éditeur BBScheme. Fournie, elle fait apparaître le bouton « Ouvrir dans l'éditeur », qui
+   * ouvre `editorUrl?id=<identifiant>`. Absente (cas du site depuis la carte 179, éditeur en attente), pas de bouton.
+   */
+  editorUrl?: string;
 }
 
-const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBoard }) => {
+const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBoard, editorUrl }) => {
   const [frames, setFrames] = useState<TokenData[][]>([]);
   const [tokens, setTokens] = useState<TokenData[]>([]);
   const [drawings, setDrawings] = useState<DrawingPath[]>([]);
@@ -49,6 +56,8 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBo
   const [rotation, setRotation] = useState(0);
   const [zoom, setZoom] = useState(1);
   const [loading, setLoading] = useState(true);
+  // Vrai si le plateau n'a pas pu être lu : le lecteur affiche alors « Schéma indisponible »
+  const [unavailable, setUnavailable] = useState(false);
   const [showTooltips, setShowTooltips] = useState(true);
 
   const playTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -60,7 +69,10 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBo
 
     const loadState = async () => {
       setLoading(true);
-      const result = await loadBoard(boardId);
+      setUnavailable(false);
+      // Une panne de l'appel lui-même (réseau coupé) compte comme un plateau illisible
+      const result: BoardStateResult = await loadBoard(boardId).catch(() => ({ success: false }));
+      if (!result.success || !result.data) setUnavailable(true);
       if (result.success && result.data) {
         try {
           const parsed = JSON.parse(result.data);
@@ -253,6 +265,15 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBo
     );
   }
 
+  if (unavailable) {
+    return (
+      <div className="player-unavailable" role="status">
+        <p className="player-unavailable-title">Schéma indisponible</p>
+        <p>Ce schéma tactique ne peut pas être affiché pour le moment.</p>
+      </div>
+    );
+  }
+
   const isVertical = rotation === 90 || rotation === 270;
   const nativeW = (isVertical ? 758 : 1308) + 8;
   const nativeH = (isVertical ? 1308 : 758) + 8;
@@ -381,16 +402,22 @@ const BBSchemePlayer: React.FC<BBSchemePlayerProps> = ({ boardId, layout, loadBo
             >
               <RotateCw size={14} />
             </Button>
-            <Button
-              className="bb-player-btn"
-              variant="outline"
-              size="icon"
-              onClick={() => window.open(`/bbscheme?id=${boardId}`, '_blank')}
-              title="Ouvrir dans l'éditeur BBScheme"
-              aria-label="Ouvrir dans l'éditeur BBScheme"
-            >
-              <ExternalLink size={14} />
-            </Button>
+            {editorUrl && (
+              <Button
+                className="bb-player-btn"
+                variant="outline"
+                size="icon"
+                onClick={() => {
+                  const url = new URL(editorUrl, window.location.href);
+                  url.searchParams.set("id", boardId);
+                  window.open(url.toString(), "_blank", "noopener");
+                }}
+                title="Ouvrir dans l'éditeur BBScheme"
+                aria-label="Ouvrir dans l'éditeur BBScheme"
+              >
+                <ExternalLink size={14} />
+              </Button>
+            )}
           </div>
         </div>
       </div>

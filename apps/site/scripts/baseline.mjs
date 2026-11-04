@@ -16,7 +16,7 @@ import nextEnv from "@next/env";
 const PORT = 3200;
 const BASE_URL = `http://localhost:${PORT}`;
 const RUNS = 3;
-const ROUTES = ["/", "/forum", "/forum/[firstForum]", "/forum/topic/[biggestTopic]", "/tournois", "/classement", "/bbscheme"];
+const ROUTES = ["/", "/forum", "/forum/[firstForum]", "/forum/topic/[biggestTopic]", "/tournois", "/classement"];
 const SECRET = process.env.AUTH_SECRET ?? "baseline-secret";
 
 mkdirSync("logs", { recursive: true });

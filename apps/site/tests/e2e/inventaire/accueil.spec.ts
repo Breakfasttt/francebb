@@ -169,8 +169,6 @@ const TILES: [RegExp, string][] = [
   [/^Championnat de France/, "/classement"],
   [/^Articles/, "/articles"],
   [/^Ressources/, "/ressources"],
-  [/^BBScheme/, "/bbscheme"],
-  [/^Quizz/, "/bbquizz"],
 ];
 
 test.describe("accueil", () => {
@@ -289,7 +287,8 @@ test.describe("pages fixes", () => {
   });
 
   const PUBLIC_STATS = [/utilisateurs/i, /^ligues$/i, /^articles$/i, /sujets/i, /vues/i, /en ligne/i];
-  const ADMIN_STATS = [/(e-?mails|courriels) du mois/i, /quota restant/i, /quota (de )?stockage/i, /taille (bdd|de la base)/i, /rapports|signalements/i, /^ressources$/i];
+  // Carte 175 : plus de « Quota restant » (quota d'un ancien service d'e-mail, qui n'est plus utilisé)
+  const ADMIN_STATS = [/(e-?mails|courriels) du mois/i, /quota (de )?stockage/i, /taille (bdd|de la base)/i, /rapports|signalements/i, /^ressources$/i];
 
   test("/statistiques : chiffres publics, sans la partie réservée", async ({ page }) => {
     await page.goto("/statistiques", { waitUntil: "networkidle" });
@@ -300,7 +299,7 @@ test.describe("pages fixes", () => {
     // Un modérateur n'est pas administrateur : il ne voit pas non plus la partie réservée
     await loginAs(page, E2E.modoId);
     await page.goto("/statistiques", { waitUntil: "networkidle" });
-    await expect(content(page).getByText(/quota restant/i)).toHaveCount(0);
+    await expect(content(page).getByText(/quota (de )?stockage/i)).toHaveCount(0);
   });
 
   test("/statistiques : partie réservée à l'administrateur", async ({ page }, testInfo) => {

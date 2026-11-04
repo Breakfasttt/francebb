@@ -1,6 +1,8 @@
 /**
  * Données d'un membre que le site fournit au passeport pour l'export RGPD (carte 125) : profil, contributions
- * (sujets, messages du forum, articles), messages privés envoyés, inscriptions aux tournois, résultats et quiz.
+ * (sujets, messages du forum, articles), messages privés envoyés, inscriptions aux tournois et résultats.
+ * Les données du quiz sont dans la base de l'application BBQuizz depuis la carte 180 : elle les fournira elle-même au
+ * passeport à sa relance.
  * Les données des autres membres (messages reçus, réponses) ne sont pas incluses.
  * Fichier volontairement PAS « use server » : appelé seulement par app/api/hub/export/route.ts, après vérification.
  */
@@ -13,8 +15,7 @@ export async function exportMember(userId: string) {
     select: {
       id: true, name: true, email: true, image: true, role: true, nafNumber: true, region: true, equipe: true, ligueCustom: true,
       signature: true, theme: true, avatarFrame: true, forumactifName: true, notifPm: true,
-      notifFollowedTopic: true, notifNewsletter: true, autoFollowTopics: true, quizTotalScore: true, quizBestScore: true, quizStreak: true,
-      quizAttemptsCount: true, ligues: { select: { name: true } },
+      notifFollowedTopic: true, notifNewsletter: true, autoFollowTopics: true, ligues: { select: { name: true } },
     },
   });
   if (!profile) return null;
@@ -27,6 +28,5 @@ export async function exportMember(userId: string) {
     select: { createdAt: true, tournament: { select: { name: true } } },
   });
   const tournamentResults = await prisma.tournamentResult.findMany({ where: { userId } });
-  const quizAttempts = await prisma.quizAttempt.findMany({ where: { userId }, select: { score: true, createdAt: true } });
-  return { site: "BBFrance", profile, topics, posts, articles, privateMessagesSent, tournamentRegistrations, tournamentResults, quizAttempts };
+  return { site: "BBFrance", profile, topics, posts, articles, privateMessagesSent, tournamentRegistrations, tournamentResults };
 }

@@ -2,7 +2,7 @@
  * Modification d'une ressource `/ressources/edit/[id]` (refonte, carte 096) : le même formulaire que la proposition
  * (`ResourceForm`), prérempli, dans un écran de rédaction plein écran sur téléphone.
  * Droits inchangés depuis avant la refonte : l'auteur et la modération modifient une ressource, qui repasse alors en
- * attente de validation ; un outil officiel (ou bbscheme) n'est modifiable que par un administrateur. Quelqu'un d'autre
+ * attente de validation ; un outil officiel n'est modifiable que par un administrateur. Quelqu'un d'autre
  * voit le message « Action non autorisée ». Une ressource introuvable renvoie à la liste.
  * L'action serveur `updateResourceAction` vérifie de nouveau ces droits à l'enregistrement.
  */
@@ -22,7 +22,7 @@ export default async function EditResourcePage({ params }: { params: Promise<{ i
   if (!resource) redirect("/ressources");
 
   const user = session?.user;
-  const isSystem = resource.isSystem || resource.id === "bbscheme";
+  const isSystem = resource.isSystem;
   const canEdit = isSystem ? isAdmin(user?.role) : isModerator(user?.role) || (!!user?.id && user.id === resource.authorId);
 
   return (

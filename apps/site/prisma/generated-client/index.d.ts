@@ -202,42 +202,10 @@ export type TournamentRound = $Result.DefaultSelection<Prisma.$TournamentRoundPa
  */
 export type TournamentMatch = $Result.DefaultSelection<Prisma.$TournamentMatchPayload>
 /**
- * Model QuizQuestion
- * 
- */
-export type QuizQuestion = $Result.DefaultSelection<Prisma.$QuizQuestionPayload>
-/**
- * Model QuizAttempt
- * 
- */
-export type QuizAttempt = $Result.DefaultSelection<Prisma.$QuizAttemptPayload>
-/**
- * Model QuizGame
- * Partie de BBQuizz en cours, tenue par le serveur (carte 051) : le navigateur ne reçoit jamais la bonne
- * réponse avant d'avoir répondu, et le score est calculé ici. Une seule partie en cours par membre ;
- * la ligne est supprimée à la fin de la partie, quand le résultat est enregistré dans QuizAttempt.
- */
-export type QuizGame = $Result.DefaultSelection<Prisma.$QuizGamePayload>
-/**
- * Model QuizDailyWinner
- * 
- */
-export type QuizDailyWinner = $Result.DefaultSelection<Prisma.$QuizDailyWinnerPayload>
-/**
- * Model QuizQuestionSuggestion
- * 
- */
-export type QuizQuestionSuggestion = $Result.DefaultSelection<Prisma.$QuizQuestionSuggestionPayload>
-/**
  * Model LegacyMember
  * 
  */
 export type LegacyMember = $Result.DefaultSelection<Prisma.$LegacyMemberPayload>
-/**
- * Model BBSchemeState
- * 
- */
-export type BBSchemeState = $Result.DefaultSelection<Prisma.$BBSchemeStatePayload>
 /**
  * Model MailLog
  * 
@@ -769,56 +737,6 @@ export class PrismaClient<
   get tournamentMatch(): Prisma.TournamentMatchDelegate<ExtArgs, ClientOptions>;
 
   /**
-   * `prisma.quizQuestion`: Exposes CRUD operations for the **QuizQuestion** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more QuizQuestions
-    * const quizQuestions = await prisma.quizQuestion.findMany()
-    * ```
-    */
-  get quizQuestion(): Prisma.QuizQuestionDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.quizAttempt`: Exposes CRUD operations for the **QuizAttempt** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more QuizAttempts
-    * const quizAttempts = await prisma.quizAttempt.findMany()
-    * ```
-    */
-  get quizAttempt(): Prisma.QuizAttemptDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.quizGame`: Exposes CRUD operations for the **QuizGame** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more QuizGames
-    * const quizGames = await prisma.quizGame.findMany()
-    * ```
-    */
-  get quizGame(): Prisma.QuizGameDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.quizDailyWinner`: Exposes CRUD operations for the **QuizDailyWinner** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more QuizDailyWinners
-    * const quizDailyWinners = await prisma.quizDailyWinner.findMany()
-    * ```
-    */
-  get quizDailyWinner(): Prisma.QuizDailyWinnerDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.quizQuestionSuggestion`: Exposes CRUD operations for the **QuizQuestionSuggestion** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more QuizQuestionSuggestions
-    * const quizQuestionSuggestions = await prisma.quizQuestionSuggestion.findMany()
-    * ```
-    */
-  get quizQuestionSuggestion(): Prisma.QuizQuestionSuggestionDelegate<ExtArgs, ClientOptions>;
-
-  /**
    * `prisma.legacyMember`: Exposes CRUD operations for the **LegacyMember** model.
     * Example usage:
     * ```ts
@@ -827,16 +745,6 @@ export class PrismaClient<
     * ```
     */
   get legacyMember(): Prisma.LegacyMemberDelegate<ExtArgs, ClientOptions>;
-
-  /**
-   * `prisma.bBSchemeState`: Exposes CRUD operations for the **BBSchemeState** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more BBSchemeStates
-    * const bBSchemeStates = await prisma.bBSchemeState.findMany()
-    * ```
-    */
-  get bBSchemeState(): Prisma.BBSchemeStateDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.mailLog`: Exposes CRUD operations for the **MailLog** model.
@@ -1318,13 +1226,7 @@ export namespace Prisma {
     TournamentResult: 'TournamentResult',
     TournamentRound: 'TournamentRound',
     TournamentMatch: 'TournamentMatch',
-    QuizQuestion: 'QuizQuestion',
-    QuizAttempt: 'QuizAttempt',
-    QuizGame: 'QuizGame',
-    QuizDailyWinner: 'QuizDailyWinner',
-    QuizQuestionSuggestion: 'QuizQuestionSuggestion',
     LegacyMember: 'LegacyMember',
-    BBSchemeState: 'BBSchemeState',
     MailLog: 'MailLog'
   };
 
@@ -1341,7 +1243,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizGame" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4083,376 +3985,6 @@ export namespace Prisma {
           }
         }
       }
-      QuizQuestion: {
-        payload: Prisma.$QuizQuestionPayload<ExtArgs>
-        fields: Prisma.QuizQuestionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.QuizQuestionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.QuizQuestionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          findFirst: {
-            args: Prisma.QuizQuestionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.QuizQuestionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          findMany: {
-            args: Prisma.QuizQuestionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
-          }
-          create: {
-            args: Prisma.QuizQuestionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          createMany: {
-            args: Prisma.QuizQuestionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.QuizQuestionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
-          }
-          delete: {
-            args: Prisma.QuizQuestionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          update: {
-            args: Prisma.QuizQuestionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          deleteMany: {
-            args: Prisma.QuizQuestionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.QuizQuestionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.QuizQuestionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>[]
-          }
-          upsert: {
-            args: Prisma.QuizQuestionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionPayload>
-          }
-          aggregate: {
-            args: Prisma.QuizQuestionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateQuizQuestion>
-          }
-          groupBy: {
-            args: Prisma.QuizQuestionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<QuizQuestionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.QuizQuestionCountArgs<ExtArgs>
-            result: $Utils.Optional<QuizQuestionCountAggregateOutputType> | number
-          }
-        }
-      }
-      QuizAttempt: {
-        payload: Prisma.$QuizAttemptPayload<ExtArgs>
-        fields: Prisma.QuizAttemptFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.QuizAttemptFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.QuizAttemptFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          findFirst: {
-            args: Prisma.QuizAttemptFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.QuizAttemptFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          findMany: {
-            args: Prisma.QuizAttemptFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
-          }
-          create: {
-            args: Prisma.QuizAttemptCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          createMany: {
-            args: Prisma.QuizAttemptCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.QuizAttemptCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
-          }
-          delete: {
-            args: Prisma.QuizAttemptDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          update: {
-            args: Prisma.QuizAttemptUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          deleteMany: {
-            args: Prisma.QuizAttemptDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.QuizAttemptUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.QuizAttemptUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>[]
-          }
-          upsert: {
-            args: Prisma.QuizAttemptUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizAttemptPayload>
-          }
-          aggregate: {
-            args: Prisma.QuizAttemptAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateQuizAttempt>
-          }
-          groupBy: {
-            args: Prisma.QuizAttemptGroupByArgs<ExtArgs>
-            result: $Utils.Optional<QuizAttemptGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.QuizAttemptCountArgs<ExtArgs>
-            result: $Utils.Optional<QuizAttemptCountAggregateOutputType> | number
-          }
-        }
-      }
-      QuizGame: {
-        payload: Prisma.$QuizGamePayload<ExtArgs>
-        fields: Prisma.QuizGameFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.QuizGameFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.QuizGameFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          findFirst: {
-            args: Prisma.QuizGameFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.QuizGameFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          findMany: {
-            args: Prisma.QuizGameFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
-          }
-          create: {
-            args: Prisma.QuizGameCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          createMany: {
-            args: Prisma.QuizGameCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.QuizGameCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
-          }
-          delete: {
-            args: Prisma.QuizGameDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          update: {
-            args: Prisma.QuizGameUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          deleteMany: {
-            args: Prisma.QuizGameDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.QuizGameUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.QuizGameUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>[]
-          }
-          upsert: {
-            args: Prisma.QuizGameUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizGamePayload>
-          }
-          aggregate: {
-            args: Prisma.QuizGameAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateQuizGame>
-          }
-          groupBy: {
-            args: Prisma.QuizGameGroupByArgs<ExtArgs>
-            result: $Utils.Optional<QuizGameGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.QuizGameCountArgs<ExtArgs>
-            result: $Utils.Optional<QuizGameCountAggregateOutputType> | number
-          }
-        }
-      }
-      QuizDailyWinner: {
-        payload: Prisma.$QuizDailyWinnerPayload<ExtArgs>
-        fields: Prisma.QuizDailyWinnerFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.QuizDailyWinnerFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          findFirst: {
-            args: Prisma.QuizDailyWinnerFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          findMany: {
-            args: Prisma.QuizDailyWinnerFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
-          }
-          create: {
-            args: Prisma.QuizDailyWinnerCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          createMany: {
-            args: Prisma.QuizDailyWinnerCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
-          }
-          delete: {
-            args: Prisma.QuizDailyWinnerDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          update: {
-            args: Prisma.QuizDailyWinnerUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          deleteMany: {
-            args: Prisma.QuizDailyWinnerDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.QuizDailyWinnerUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>[]
-          }
-          upsert: {
-            args: Prisma.QuizDailyWinnerUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizDailyWinnerPayload>
-          }
-          aggregate: {
-            args: Prisma.QuizDailyWinnerAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateQuizDailyWinner>
-          }
-          groupBy: {
-            args: Prisma.QuizDailyWinnerGroupByArgs<ExtArgs>
-            result: $Utils.Optional<QuizDailyWinnerGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.QuizDailyWinnerCountArgs<ExtArgs>
-            result: $Utils.Optional<QuizDailyWinnerCountAggregateOutputType> | number
-          }
-        }
-      }
-      QuizQuestionSuggestion: {
-        payload: Prisma.$QuizQuestionSuggestionPayload<ExtArgs>
-        fields: Prisma.QuizQuestionSuggestionFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.QuizQuestionSuggestionFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.QuizQuestionSuggestionFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          findFirst: {
-            args: Prisma.QuizQuestionSuggestionFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.QuizQuestionSuggestionFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          findMany: {
-            args: Prisma.QuizQuestionSuggestionFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>[]
-          }
-          create: {
-            args: Prisma.QuizQuestionSuggestionCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          createMany: {
-            args: Prisma.QuizQuestionSuggestionCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.QuizQuestionSuggestionCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>[]
-          }
-          delete: {
-            args: Prisma.QuizQuestionSuggestionDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          update: {
-            args: Prisma.QuizQuestionSuggestionUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          deleteMany: {
-            args: Prisma.QuizQuestionSuggestionDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.QuizQuestionSuggestionUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.QuizQuestionSuggestionUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>[]
-          }
-          upsert: {
-            args: Prisma.QuizQuestionSuggestionUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$QuizQuestionSuggestionPayload>
-          }
-          aggregate: {
-            args: Prisma.QuizQuestionSuggestionAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateQuizQuestionSuggestion>
-          }
-          groupBy: {
-            args: Prisma.QuizQuestionSuggestionGroupByArgs<ExtArgs>
-            result: $Utils.Optional<QuizQuestionSuggestionGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.QuizQuestionSuggestionCountArgs<ExtArgs>
-            result: $Utils.Optional<QuizQuestionSuggestionCountAggregateOutputType> | number
-          }
-        }
-      }
       LegacyMember: {
         payload: Prisma.$LegacyMemberPayload<ExtArgs>
         fields: Prisma.LegacyMemberFieldRefs
@@ -4524,80 +4056,6 @@ export namespace Prisma {
           count: {
             args: Prisma.LegacyMemberCountArgs<ExtArgs>
             result: $Utils.Optional<LegacyMemberCountAggregateOutputType> | number
-          }
-        }
-      }
-      BBSchemeState: {
-        payload: Prisma.$BBSchemeStatePayload<ExtArgs>
-        fields: Prisma.BBSchemeStateFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.BBSchemeStateFindUniqueArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.BBSchemeStateFindUniqueOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          findFirst: {
-            args: Prisma.BBSchemeStateFindFirstArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.BBSchemeStateFindFirstOrThrowArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          findMany: {
-            args: Prisma.BBSchemeStateFindManyArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>[]
-          }
-          create: {
-            args: Prisma.BBSchemeStateCreateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          createMany: {
-            args: Prisma.BBSchemeStateCreateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          createManyAndReturn: {
-            args: Prisma.BBSchemeStateCreateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>[]
-          }
-          delete: {
-            args: Prisma.BBSchemeStateDeleteArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          update: {
-            args: Prisma.BBSchemeStateUpdateArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          deleteMany: {
-            args: Prisma.BBSchemeStateDeleteManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateMany: {
-            args: Prisma.BBSchemeStateUpdateManyArgs<ExtArgs>
-            result: BatchPayload
-          }
-          updateManyAndReturn: {
-            args: Prisma.BBSchemeStateUpdateManyAndReturnArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>[]
-          }
-          upsert: {
-            args: Prisma.BBSchemeStateUpsertArgs<ExtArgs>
-            result: $Utils.PayloadToResult<Prisma.$BBSchemeStatePayload>
-          }
-          aggregate: {
-            args: Prisma.BBSchemeStateAggregateArgs<ExtArgs>
-            result: $Utils.Optional<AggregateBBSchemeState>
-          }
-          groupBy: {
-            args: Prisma.BBSchemeStateGroupByArgs<ExtArgs>
-            result: $Utils.Optional<BBSchemeStateGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.BBSchemeStateCountArgs<ExtArgs>
-            result: $Utils.Optional<BBSchemeStateCountAggregateOutputType> | number
           }
         }
       }
@@ -4820,13 +4278,7 @@ export namespace Prisma {
     tournamentResult?: TournamentResultOmit
     tournamentRound?: TournamentRoundOmit
     tournamentMatch?: TournamentMatchOmit
-    quizQuestion?: QuizQuestionOmit
-    quizAttempt?: QuizAttemptOmit
-    quizGame?: QuizGameOmit
-    quizDailyWinner?: QuizDailyWinnerOmit
-    quizQuestionSuggestion?: QuizQuestionSuggestionOmit
     legacyMember?: LegacyMemberOmit
-    bBSchemeState?: BBSchemeStateOmit
     mailLog?: MailLogOmit
   }
 
@@ -4927,10 +4379,6 @@ export namespace Prisma {
     posts: number
     postReactions: number
     privateMessages: number
-    quizAttempts: number
-    quizGames: number
-    dailyWins: number
-    quizSuggestions: number
     rankingArchives: number
     submittedResources: number
     sessions: number
@@ -4952,7 +4400,6 @@ export namespace Prisma {
     deletedTopics: number
     deletedPosts: number
     lastPostTopics: number
-    bbSchemeStates: number
     notifications: number
     notificationsCaused: number
   }
@@ -4977,10 +4424,6 @@ export namespace Prisma {
     posts?: boolean | UserCountOutputTypeCountPostsArgs
     postReactions?: boolean | UserCountOutputTypeCountPostReactionsArgs
     privateMessages?: boolean | UserCountOutputTypeCountPrivateMessagesArgs
-    quizAttempts?: boolean | UserCountOutputTypeCountQuizAttemptsArgs
-    quizGames?: boolean | UserCountOutputTypeCountQuizGamesArgs
-    dailyWins?: boolean | UserCountOutputTypeCountDailyWinsArgs
-    quizSuggestions?: boolean | UserCountOutputTypeCountQuizSuggestionsArgs
     rankingArchives?: boolean | UserCountOutputTypeCountRankingArchivesArgs
     submittedResources?: boolean | UserCountOutputTypeCountSubmittedResourcesArgs
     sessions?: boolean | UserCountOutputTypeCountSessionsArgs
@@ -5002,7 +4445,6 @@ export namespace Prisma {
     deletedTopics?: boolean | UserCountOutputTypeCountDeletedTopicsArgs
     deletedPosts?: boolean | UserCountOutputTypeCountDeletedPostsArgs
     lastPostTopics?: boolean | UserCountOutputTypeCountLastPostTopicsArgs
-    bbSchemeStates?: boolean | UserCountOutputTypeCountBbSchemeStatesArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     notificationsCaused?: boolean | UserCountOutputTypeCountNotificationsCausedArgs
   }
@@ -5154,34 +4596,6 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountQuizAttemptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizAttemptWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountQuizGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizGameWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountDailyWinsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizDailyWinnerWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountQuizSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizQuestionSuggestionWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
   export type UserCountOutputTypeCountRankingArchivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: RankingArchiveWhereInput
   }
@@ -5324,13 +4738,6 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountLastPostTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: TopicWhereInput
-  }
-
-  /**
-   * UserCountOutputType without action
-   */
-  export type UserCountOutputTypeCountBbSchemeStatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BBSchemeStateWhereInput
   }
 
   /**
@@ -8183,24 +7590,8 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
-  }
-
-  export type UserAvgAggregateOutputType = {
-    quizTotalScore: number | null
-    quizBestScore: number | null
-    quizStreak: number | null
-    quizAttemptsCount: number | null
-  }
-
-  export type UserSumAggregateOutputType = {
-    quizTotalScore: number | null
-    quizBestScore: number | null
-    quizStreak: number | null
-    quizAttemptsCount: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -8220,10 +7611,6 @@ export namespace Prisma {
     previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
-    quizTotalScore: number | null
-    quizBestScore: number | null
-    quizStreak: number | null
-    quizAttemptsCount: number | null
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
@@ -8251,10 +7638,6 @@ export namespace Prisma {
     previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
-    quizTotalScore: number | null
-    quizBestScore: number | null
-    quizStreak: number | null
-    quizAttemptsCount: number | null
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
@@ -8282,10 +7665,6 @@ export namespace Prisma {
     previousTheme: number
     equipe: number
     ligueCustom: number
-    quizTotalScore: number
-    quizBestScore: number
-    quizStreak: number
-    quizAttemptsCount: number
     legacyId: number
     forumactifName: number
     hasFinishedOnboarding: number
@@ -8297,20 +7676,6 @@ export namespace Prisma {
     _all: number
   }
 
-
-  export type UserAvgAggregateInputType = {
-    quizTotalScore?: true
-    quizBestScore?: true
-    quizStreak?: true
-    quizAttemptsCount?: true
-  }
-
-  export type UserSumAggregateInputType = {
-    quizTotalScore?: true
-    quizBestScore?: true
-    quizStreak?: true
-    quizAttemptsCount?: true
-  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -8329,10 +7694,6 @@ export namespace Prisma {
     previousTheme?: true
     equipe?: true
     ligueCustom?: true
-    quizTotalScore?: true
-    quizBestScore?: true
-    quizStreak?: true
-    quizAttemptsCount?: true
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
@@ -8360,10 +7721,6 @@ export namespace Prisma {
     previousTheme?: true
     equipe?: true
     ligueCustom?: true
-    quizTotalScore?: true
-    quizBestScore?: true
-    quizStreak?: true
-    quizAttemptsCount?: true
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
@@ -8391,10 +7748,6 @@ export namespace Prisma {
     previousTheme?: true
     equipe?: true
     ligueCustom?: true
-    quizTotalScore?: true
-    quizBestScore?: true
-    quizStreak?: true
-    quizAttemptsCount?: true
     legacyId?: true
     forumactifName?: true
     hasFinishedOnboarding?: true
@@ -8444,18 +7797,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: UserAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -8486,8 +7827,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
-    _avg?: UserAvgAggregateInputType
-    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -8509,10 +7848,6 @@ export namespace Prisma {
     previousTheme: string | null
     equipe: string | null
     ligueCustom: string | null
-    quizTotalScore: number
-    quizBestScore: number
-    quizStreak: number
-    quizAttemptsCount: number
     legacyId: string | null
     forumactifName: string | null
     hasFinishedOnboarding: boolean
@@ -8522,8 +7857,6 @@ export namespace Prisma {
     autoFollowTopics: boolean
     forumReadAllAt: Date
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -8559,10 +7892,6 @@ export namespace Prisma {
     previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
-    quizTotalScore?: boolean
-    quizBestScore?: boolean
-    quizStreak?: boolean
-    quizAttemptsCount?: boolean
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
@@ -8590,10 +7919,6 @@ export namespace Prisma {
     posts?: boolean | User$postsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     privateMessages?: boolean | User$privateMessagesArgs<ExtArgs>
-    quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
-    quizGames?: boolean | User$quizGamesArgs<ExtArgs>
-    dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
-    quizSuggestions?: boolean | User$quizSuggestionsArgs<ExtArgs>
     rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
     submittedResources?: boolean | User$submittedResourcesArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -8616,7 +7941,6 @@ export namespace Prisma {
     deletedTopics?: boolean | User$deletedTopicsArgs<ExtArgs>
     deletedPosts?: boolean | User$deletedPostsArgs<ExtArgs>
     lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
-    bbSchemeStates?: boolean | User$bbSchemeStatesArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -8639,10 +7963,6 @@ export namespace Prisma {
     previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
-    quizTotalScore?: boolean
-    quizBestScore?: boolean
-    quizStreak?: boolean
-    quizAttemptsCount?: boolean
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
@@ -8671,10 +7991,6 @@ export namespace Prisma {
     previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
-    quizTotalScore?: boolean
-    quizBestScore?: boolean
-    quizStreak?: boolean
-    quizAttemptsCount?: boolean
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
@@ -8703,10 +8019,6 @@ export namespace Prisma {
     previousTheme?: boolean
     equipe?: boolean
     ligueCustom?: boolean
-    quizTotalScore?: boolean
-    quizBestScore?: boolean
-    quizStreak?: boolean
-    quizAttemptsCount?: boolean
     legacyId?: boolean
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
@@ -8717,7 +8029,7 @@ export namespace Prisma {
     forumReadAllAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8738,10 +8050,6 @@ export namespace Prisma {
     posts?: boolean | User$postsArgs<ExtArgs>
     postReactions?: boolean | User$postReactionsArgs<ExtArgs>
     privateMessages?: boolean | User$privateMessagesArgs<ExtArgs>
-    quizAttempts?: boolean | User$quizAttemptsArgs<ExtArgs>
-    quizGames?: boolean | User$quizGamesArgs<ExtArgs>
-    dailyWins?: boolean | User$dailyWinsArgs<ExtArgs>
-    quizSuggestions?: boolean | User$quizSuggestionsArgs<ExtArgs>
     rankingArchives?: boolean | User$rankingArchivesArgs<ExtArgs>
     submittedResources?: boolean | User$submittedResourcesArgs<ExtArgs>
     sessions?: boolean | User$sessionsArgs<ExtArgs>
@@ -8764,7 +8072,6 @@ export namespace Prisma {
     deletedTopics?: boolean | User$deletedTopicsArgs<ExtArgs>
     deletedPosts?: boolean | User$deletedPostsArgs<ExtArgs>
     lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
-    bbSchemeStates?: boolean | User$bbSchemeStatesArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -8798,10 +8105,6 @@ export namespace Prisma {
       posts: Prisma.$PostPayload<ExtArgs>[]
       postReactions: Prisma.$PostReactionPayload<ExtArgs>[]
       privateMessages: Prisma.$PrivateMessagePayload<ExtArgs>[]
-      quizAttempts: Prisma.$QuizAttemptPayload<ExtArgs>[]
-      quizGames: Prisma.$QuizGamePayload<ExtArgs>[]
-      dailyWins: Prisma.$QuizDailyWinnerPayload<ExtArgs>[]
-      quizSuggestions: Prisma.$QuizQuestionSuggestionPayload<ExtArgs>[]
       rankingArchives: Prisma.$RankingArchivePayload<ExtArgs>[]
       submittedResources: Prisma.$ResourcePayload<ExtArgs>[]
       sessions: Prisma.$SessionPayload<ExtArgs>[]
@@ -8824,7 +8127,6 @@ export namespace Prisma {
       deletedTopics: Prisma.$TopicPayload<ExtArgs>[]
       deletedPosts: Prisma.$PostPayload<ExtArgs>[]
       lastPostTopics: Prisma.$TopicPayload<ExtArgs>[]
-      bbSchemeStates: Prisma.$BBSchemeStatePayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       notificationsCaused: Prisma.$NotificationPayload<ExtArgs>[]
     }
@@ -8845,10 +8147,6 @@ export namespace Prisma {
       previousTheme: string | null
       equipe: string | null
       ligueCustom: string | null
-      quizTotalScore: number
-      quizBestScore: number
-      quizStreak: number
-      quizAttemptsCount: number
       legacyId: string | null
       forumactifName: string | null
       hasFinishedOnboarding: boolean
@@ -9278,10 +8576,6 @@ export namespace Prisma {
     posts<T extends User$postsArgs<ExtArgs> = {}>(args?: Subset<T, User$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     postReactions<T extends User$postReactionsArgs<ExtArgs> = {}>(args?: Subset<T, User$postReactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     privateMessages<T extends User$privateMessagesArgs<ExtArgs> = {}>(args?: Subset<T, User$privateMessagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrivateMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    quizAttempts<T extends User$quizAttemptsArgs<ExtArgs> = {}>(args?: Subset<T, User$quizAttemptsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    quizGames<T extends User$quizGamesArgs<ExtArgs> = {}>(args?: Subset<T, User$quizGamesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    dailyWins<T extends User$dailyWinsArgs<ExtArgs> = {}>(args?: Subset<T, User$dailyWinsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    quizSuggestions<T extends User$quizSuggestionsArgs<ExtArgs> = {}>(args?: Subset<T, User$quizSuggestionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     rankingArchives<T extends User$rankingArchivesArgs<ExtArgs> = {}>(args?: Subset<T, User$rankingArchivesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RankingArchivePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     submittedResources<T extends User$submittedResourcesArgs<ExtArgs> = {}>(args?: Subset<T, User$submittedResourcesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ResourcePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     sessions<T extends User$sessionsArgs<ExtArgs> = {}>(args?: Subset<T, User$sessionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -9304,7 +8598,6 @@ export namespace Prisma {
     deletedTopics<T extends User$deletedTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     deletedPosts<T extends User$deletedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     lastPostTopics<T extends User$lastPostTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$lastPostTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-    bbSchemeStates<T extends User$bbSchemeStatesArgs<ExtArgs> = {}>(args?: Subset<T, User$bbSchemeStatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notificationsCaused<T extends User$notificationsCausedArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsCausedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -9352,10 +8645,6 @@ export namespace Prisma {
     readonly previousTheme: FieldRef<"User", 'String'>
     readonly equipe: FieldRef<"User", 'String'>
     readonly ligueCustom: FieldRef<"User", 'String'>
-    readonly quizTotalScore: FieldRef<"User", 'Int'>
-    readonly quizBestScore: FieldRef<"User", 'Int'>
-    readonly quizStreak: FieldRef<"User", 'Int'>
-    readonly quizAttemptsCount: FieldRef<"User", 'Int'>
     readonly legacyId: FieldRef<"User", 'String'>
     readonly forumactifName: FieldRef<"User", 'String'>
     readonly hasFinishedOnboarding: FieldRef<"User", 'Boolean'>
@@ -10221,102 +9510,6 @@ export namespace Prisma {
   }
 
   /**
-   * User.quizAttempts
-   */
-  export type User$quizAttemptsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    where?: QuizAttemptWhereInput
-    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
-    cursor?: QuizAttemptWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
-  }
-
-  /**
-   * User.quizGames
-   */
-  export type User$quizGamesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    where?: QuizGameWhereInput
-    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
-    cursor?: QuizGameWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
-  }
-
-  /**
-   * User.dailyWins
-   */
-  export type User$dailyWinsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    where?: QuizDailyWinnerWhereInput
-    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
-    cursor?: QuizDailyWinnerWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
-  }
-
-  /**
-   * User.quizSuggestions
-   */
-  export type User$quizSuggestionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    where?: QuizQuestionSuggestionWhereInput
-    orderBy?: QuizQuestionSuggestionOrderByWithRelationInput | QuizQuestionSuggestionOrderByWithRelationInput[]
-    cursor?: QuizQuestionSuggestionWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: QuizQuestionSuggestionScalarFieldEnum | QuizQuestionSuggestionScalarFieldEnum[]
-  }
-
-  /**
    * User.rankingArchives
    */
   export type User$rankingArchivesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10818,30 +10011,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: TopicScalarFieldEnum | TopicScalarFieldEnum[]
-  }
-
-  /**
-   * User.bbSchemeStates
-   */
-  export type User$bbSchemeStatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    where?: BBSchemeStateWhereInput
-    orderBy?: BBSchemeStateOrderByWithRelationInput | BBSchemeStateOrderByWithRelationInput[]
-    cursor?: BBSchemeStateWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BBSchemeStateScalarFieldEnum | BBSchemeStateScalarFieldEnum[]
   }
 
   /**
@@ -50463,5771 +49632,6 @@ export namespace Prisma {
 
 
   /**
-   * Model QuizQuestion
-   */
-
-  export type AggregateQuizQuestion = {
-    _count: QuizQuestionCountAggregateOutputType | null
-    _avg: QuizQuestionAvgAggregateOutputType | null
-    _sum: QuizQuestionSumAggregateOutputType | null
-    _min: QuizQuestionMinAggregateOutputType | null
-    _max: QuizQuestionMaxAggregateOutputType | null
-  }
-
-  export type QuizQuestionAvgAggregateOutputType = {
-    correctIndex: number | null
-    timesCorrect: number | null
-    timesOption0: number | null
-    timesOption1: number | null
-    timesOption2: number | null
-    timesOption3: number | null
-  }
-
-  export type QuizQuestionSumAggregateOutputType = {
-    correctIndex: number | null
-    timesCorrect: number | null
-    timesOption0: number | null
-    timesOption1: number | null
-    timesOption2: number | null
-    timesOption3: number | null
-  }
-
-  export type QuizQuestionMinAggregateOutputType = {
-    id: string | null
-    category: string | null
-    question: string | null
-    imageUrl: string | null
-    options: string | null
-    correctIndex: number | null
-    explanation: string | null
-    timesCorrect: number | null
-    timesOption0: number | null
-    timesOption1: number | null
-    timesOption2: number | null
-    timesOption3: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type QuizQuestionMaxAggregateOutputType = {
-    id: string | null
-    category: string | null
-    question: string | null
-    imageUrl: string | null
-    options: string | null
-    correctIndex: number | null
-    explanation: string | null
-    timesCorrect: number | null
-    timesOption0: number | null
-    timesOption1: number | null
-    timesOption2: number | null
-    timesOption3: number | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type QuizQuestionCountAggregateOutputType = {
-    id: number
-    category: number
-    question: number
-    imageUrl: number
-    options: number
-    correctIndex: number
-    explanation: number
-    timesCorrect: number
-    timesOption0: number
-    timesOption1: number
-    timesOption2: number
-    timesOption3: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type QuizQuestionAvgAggregateInputType = {
-    correctIndex?: true
-    timesCorrect?: true
-    timesOption0?: true
-    timesOption1?: true
-    timesOption2?: true
-    timesOption3?: true
-  }
-
-  export type QuizQuestionSumAggregateInputType = {
-    correctIndex?: true
-    timesCorrect?: true
-    timesOption0?: true
-    timesOption1?: true
-    timesOption2?: true
-    timesOption3?: true
-  }
-
-  export type QuizQuestionMinAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    timesCorrect?: true
-    timesOption0?: true
-    timesOption1?: true
-    timesOption2?: true
-    timesOption3?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type QuizQuestionMaxAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    timesCorrect?: true
-    timesOption0?: true
-    timesOption1?: true
-    timesOption2?: true
-    timesOption3?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type QuizQuestionCountAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    timesCorrect?: true
-    timesOption0?: true
-    timesOption1?: true
-    timesOption2?: true
-    timesOption3?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type QuizQuestionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizQuestion to aggregate.
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestions to fetch.
-     */
-    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: QuizQuestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned QuizQuestions
-    **/
-    _count?: true | QuizQuestionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: QuizQuestionAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: QuizQuestionSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: QuizQuestionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: QuizQuestionMaxAggregateInputType
-  }
-
-  export type GetQuizQuestionAggregateType<T extends QuizQuestionAggregateArgs> = {
-        [P in keyof T & keyof AggregateQuizQuestion]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateQuizQuestion[P]>
-      : GetScalarType<T[P], AggregateQuizQuestion[P]>
-  }
-
-
-
-
-  export type QuizQuestionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizQuestionWhereInput
-    orderBy?: QuizQuestionOrderByWithAggregationInput | QuizQuestionOrderByWithAggregationInput[]
-    by: QuizQuestionScalarFieldEnum[] | QuizQuestionScalarFieldEnum
-    having?: QuizQuestionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: QuizQuestionCountAggregateInputType | true
-    _avg?: QuizQuestionAvgAggregateInputType
-    _sum?: QuizQuestionSumAggregateInputType
-    _min?: QuizQuestionMinAggregateInputType
-    _max?: QuizQuestionMaxAggregateInputType
-  }
-
-  export type QuizQuestionGroupByOutputType = {
-    id: string
-    category: string
-    question: string
-    imageUrl: string | null
-    options: string
-    correctIndex: number
-    explanation: string | null
-    timesCorrect: number
-    timesOption0: number
-    timesOption1: number
-    timesOption2: number
-    timesOption3: number
-    createdAt: Date
-    updatedAt: Date
-    _count: QuizQuestionCountAggregateOutputType | null
-    _avg: QuizQuestionAvgAggregateOutputType | null
-    _sum: QuizQuestionSumAggregateOutputType | null
-    _min: QuizQuestionMinAggregateOutputType | null
-    _max: QuizQuestionMaxAggregateOutputType | null
-  }
-
-  type GetQuizQuestionGroupByPayload<T extends QuizQuestionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<QuizQuestionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof QuizQuestionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], QuizQuestionGroupByOutputType[P]>
-            : GetScalarType<T[P], QuizQuestionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type QuizQuestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    timesCorrect?: boolean
-    timesOption0?: boolean
-    timesOption1?: boolean
-    timesOption2?: boolean
-    timesOption3?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["quizQuestion"]>
-
-  export type QuizQuestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    timesCorrect?: boolean
-    timesOption0?: boolean
-    timesOption1?: boolean
-    timesOption2?: boolean
-    timesOption3?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["quizQuestion"]>
-
-  export type QuizQuestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    timesCorrect?: boolean
-    timesOption0?: boolean
-    timesOption1?: boolean
-    timesOption2?: boolean
-    timesOption3?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }, ExtArgs["result"]["quizQuestion"]>
-
-  export type QuizQuestionSelectScalar = {
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    timesCorrect?: boolean
-    timesOption0?: boolean
-    timesOption1?: boolean
-    timesOption2?: boolean
-    timesOption3?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type QuizQuestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "question" | "imageUrl" | "options" | "correctIndex" | "explanation" | "timesCorrect" | "timesOption0" | "timesOption1" | "timesOption2" | "timesOption3" | "createdAt" | "updatedAt", ExtArgs["result"]["quizQuestion"]>
-
-  export type $QuizQuestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "QuizQuestion"
-    objects: {}
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      category: string
-      question: string
-      imageUrl: string | null
-      options: string
-      correctIndex: number
-      explanation: string | null
-      timesCorrect: number
-      timesOption0: number
-      timesOption1: number
-      timesOption2: number
-      timesOption3: number
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["quizQuestion"]>
-    composites: {}
-  }
-
-  type QuizQuestionGetPayload<S extends boolean | null | undefined | QuizQuestionDefaultArgs> = $Result.GetResult<Prisma.$QuizQuestionPayload, S>
-
-  type QuizQuestionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<QuizQuestionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: QuizQuestionCountAggregateInputType | true
-    }
-
-  export interface QuizQuestionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizQuestion'], meta: { name: 'QuizQuestion' } }
-    /**
-     * Find zero or one QuizQuestion that matches the filter.
-     * @param {QuizQuestionFindUniqueArgs} args - Arguments to find a QuizQuestion
-     * @example
-     * // Get one QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends QuizQuestionFindUniqueArgs>(args: SelectSubset<T, QuizQuestionFindUniqueArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one QuizQuestion that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {QuizQuestionFindUniqueOrThrowArgs} args - Arguments to find a QuizQuestion
-     * @example
-     * // Get one QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends QuizQuestionFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizQuestionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizQuestion that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionFindFirstArgs} args - Arguments to find a QuizQuestion
-     * @example
-     * // Get one QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends QuizQuestionFindFirstArgs>(args?: SelectSubset<T, QuizQuestionFindFirstArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizQuestion that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionFindFirstOrThrowArgs} args - Arguments to find a QuizQuestion
-     * @example
-     * // Get one QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends QuizQuestionFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizQuestionFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more QuizQuestions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all QuizQuestions
-     * const quizQuestions = await prisma.quizQuestion.findMany()
-     * 
-     * // Get first 10 QuizQuestions
-     * const quizQuestions = await prisma.quizQuestion.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const quizQuestionWithIdOnly = await prisma.quizQuestion.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends QuizQuestionFindManyArgs>(args?: SelectSubset<T, QuizQuestionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a QuizQuestion.
-     * @param {QuizQuestionCreateArgs} args - Arguments to create a QuizQuestion.
-     * @example
-     * // Create one QuizQuestion
-     * const QuizQuestion = await prisma.quizQuestion.create({
-     *   data: {
-     *     // ... data to create a QuizQuestion
-     *   }
-     * })
-     * 
-     */
-    create<T extends QuizQuestionCreateArgs>(args: SelectSubset<T, QuizQuestionCreateArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many QuizQuestions.
-     * @param {QuizQuestionCreateManyArgs} args - Arguments to create many QuizQuestions.
-     * @example
-     * // Create many QuizQuestions
-     * const quizQuestion = await prisma.quizQuestion.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends QuizQuestionCreateManyArgs>(args?: SelectSubset<T, QuizQuestionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many QuizQuestions and returns the data saved in the database.
-     * @param {QuizQuestionCreateManyAndReturnArgs} args - Arguments to create many QuizQuestions.
-     * @example
-     * // Create many QuizQuestions
-     * const quizQuestion = await prisma.quizQuestion.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many QuizQuestions and only return the `id`
-     * const quizQuestionWithIdOnly = await prisma.quizQuestion.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends QuizQuestionCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizQuestionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a QuizQuestion.
-     * @param {QuizQuestionDeleteArgs} args - Arguments to delete one QuizQuestion.
-     * @example
-     * // Delete one QuizQuestion
-     * const QuizQuestion = await prisma.quizQuestion.delete({
-     *   where: {
-     *     // ... filter to delete one QuizQuestion
-     *   }
-     * })
-     * 
-     */
-    delete<T extends QuizQuestionDeleteArgs>(args: SelectSubset<T, QuizQuestionDeleteArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one QuizQuestion.
-     * @param {QuizQuestionUpdateArgs} args - Arguments to update one QuizQuestion.
-     * @example
-     * // Update one QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends QuizQuestionUpdateArgs>(args: SelectSubset<T, QuizQuestionUpdateArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more QuizQuestions.
-     * @param {QuizQuestionDeleteManyArgs} args - Arguments to filter QuizQuestions to delete.
-     * @example
-     * // Delete a few QuizQuestions
-     * const { count } = await prisma.quizQuestion.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends QuizQuestionDeleteManyArgs>(args?: SelectSubset<T, QuizQuestionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizQuestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many QuizQuestions
-     * const quizQuestion = await prisma.quizQuestion.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends QuizQuestionUpdateManyArgs>(args: SelectSubset<T, QuizQuestionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizQuestions and returns the data updated in the database.
-     * @param {QuizQuestionUpdateManyAndReturnArgs} args - Arguments to update many QuizQuestions.
-     * @example
-     * // Update many QuizQuestions
-     * const quizQuestion = await prisma.quizQuestion.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more QuizQuestions and only return the `id`
-     * const quizQuestionWithIdOnly = await prisma.quizQuestion.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends QuizQuestionUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizQuestionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one QuizQuestion.
-     * @param {QuizQuestionUpsertArgs} args - Arguments to update or create a QuizQuestion.
-     * @example
-     * // Update or create a QuizQuestion
-     * const quizQuestion = await prisma.quizQuestion.upsert({
-     *   create: {
-     *     // ... data to create a QuizQuestion
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the QuizQuestion we want to update
-     *   }
-     * })
-     */
-    upsert<T extends QuizQuestionUpsertArgs>(args: SelectSubset<T, QuizQuestionUpsertArgs<ExtArgs>>): Prisma__QuizQuestionClient<$Result.GetResult<Prisma.$QuizQuestionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of QuizQuestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionCountArgs} args - Arguments to filter QuizQuestions to count.
-     * @example
-     * // Count the number of QuizQuestions
-     * const count = await prisma.quizQuestion.count({
-     *   where: {
-     *     // ... the filter for the QuizQuestions we want to count
-     *   }
-     * })
-    **/
-    count<T extends QuizQuestionCountArgs>(
-      args?: Subset<T, QuizQuestionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], QuizQuestionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a QuizQuestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends QuizQuestionAggregateArgs>(args: Subset<T, QuizQuestionAggregateArgs>): Prisma.PrismaPromise<GetQuizQuestionAggregateType<T>>
-
-    /**
-     * Group by QuizQuestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends QuizQuestionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: QuizQuestionGroupByArgs['orderBy'] }
-        : { orderBy?: QuizQuestionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, QuizQuestionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizQuestionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the QuizQuestion model
-   */
-  readonly fields: QuizQuestionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for QuizQuestion.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__QuizQuestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the QuizQuestion model
-   */
-  interface QuizQuestionFieldRefs {
-    readonly id: FieldRef<"QuizQuestion", 'String'>
-    readonly category: FieldRef<"QuizQuestion", 'String'>
-    readonly question: FieldRef<"QuizQuestion", 'String'>
-    readonly imageUrl: FieldRef<"QuizQuestion", 'String'>
-    readonly options: FieldRef<"QuizQuestion", 'String'>
-    readonly correctIndex: FieldRef<"QuizQuestion", 'Int'>
-    readonly explanation: FieldRef<"QuizQuestion", 'String'>
-    readonly timesCorrect: FieldRef<"QuizQuestion", 'Int'>
-    readonly timesOption0: FieldRef<"QuizQuestion", 'Int'>
-    readonly timesOption1: FieldRef<"QuizQuestion", 'Int'>
-    readonly timesOption2: FieldRef<"QuizQuestion", 'Int'>
-    readonly timesOption3: FieldRef<"QuizQuestion", 'Int'>
-    readonly createdAt: FieldRef<"QuizQuestion", 'DateTime'>
-    readonly updatedAt: FieldRef<"QuizQuestion", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * QuizQuestion findUnique
-   */
-  export type QuizQuestionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestion to fetch.
-     */
-    where: QuizQuestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestion findUniqueOrThrow
-   */
-  export type QuizQuestionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestion to fetch.
-     */
-    where: QuizQuestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestion findFirst
-   */
-  export type QuizQuestionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestion to fetch.
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestions to fetch.
-     */
-    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizQuestions.
-     */
-    cursor?: QuizQuestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestions.
-     */
-    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestion findFirstOrThrow
-   */
-  export type QuizQuestionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestion to fetch.
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestions to fetch.
-     */
-    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizQuestions.
-     */
-    cursor?: QuizQuestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestions.
-     */
-    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestion findMany
-   */
-  export type QuizQuestionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestions to fetch.
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestions to fetch.
-     */
-    orderBy?: QuizQuestionOrderByWithRelationInput | QuizQuestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing QuizQuestions.
-     */
-    cursor?: QuizQuestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestions.
-     */
-    distinct?: QuizQuestionScalarFieldEnum | QuizQuestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestion create
-   */
-  export type QuizQuestionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * The data needed to create a QuizQuestion.
-     */
-    data: XOR<QuizQuestionCreateInput, QuizQuestionUncheckedCreateInput>
-  }
-
-  /**
-   * QuizQuestion createMany
-   */
-  export type QuizQuestionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many QuizQuestions.
-     */
-    data: QuizQuestionCreateManyInput | QuizQuestionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizQuestion createManyAndReturn
-   */
-  export type QuizQuestionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * The data used to create many QuizQuestions.
-     */
-    data: QuizQuestionCreateManyInput | QuizQuestionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizQuestion update
-   */
-  export type QuizQuestionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * The data needed to update a QuizQuestion.
-     */
-    data: XOR<QuizQuestionUpdateInput, QuizQuestionUncheckedUpdateInput>
-    /**
-     * Choose, which QuizQuestion to update.
-     */
-    where: QuizQuestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestion updateMany
-   */
-  export type QuizQuestionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update QuizQuestions.
-     */
-    data: XOR<QuizQuestionUpdateManyMutationInput, QuizQuestionUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizQuestions to update
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * Limit how many QuizQuestions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizQuestion updateManyAndReturn
-   */
-  export type QuizQuestionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * The data used to update QuizQuestions.
-     */
-    data: XOR<QuizQuestionUpdateManyMutationInput, QuizQuestionUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizQuestions to update
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * Limit how many QuizQuestions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizQuestion upsert
-   */
-  export type QuizQuestionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * The filter to search for the QuizQuestion to update in case it exists.
-     */
-    where: QuizQuestionWhereUniqueInput
-    /**
-     * In case the QuizQuestion found by the `where` argument doesn't exist, create a new QuizQuestion with this data.
-     */
-    create: XOR<QuizQuestionCreateInput, QuizQuestionUncheckedCreateInput>
-    /**
-     * In case the QuizQuestion was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<QuizQuestionUpdateInput, QuizQuestionUncheckedUpdateInput>
-  }
-
-  /**
-   * QuizQuestion delete
-   */
-  export type QuizQuestionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-    /**
-     * Filter which QuizQuestion to delete.
-     */
-    where: QuizQuestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestion deleteMany
-   */
-  export type QuizQuestionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizQuestions to delete
-     */
-    where?: QuizQuestionWhereInput
-    /**
-     * Limit how many QuizQuestions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizQuestion without action
-   */
-  export type QuizQuestionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestion
-     */
-    select?: QuizQuestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestion
-     */
-    omit?: QuizQuestionOmit<ExtArgs> | null
-  }
-
-
-  /**
-   * Model QuizAttempt
-   */
-
-  export type AggregateQuizAttempt = {
-    _count: QuizAttemptCountAggregateOutputType | null
-    _avg: QuizAttemptAvgAggregateOutputType | null
-    _sum: QuizAttemptSumAggregateOutputType | null
-    _min: QuizAttemptMinAggregateOutputType | null
-    _max: QuizAttemptMaxAggregateOutputType | null
-  }
-
-  export type QuizAttemptAvgAggregateOutputType = {
-    score: number | null
-    correct: number | null
-    total: number | null
-    duration: number | null
-    jokersUsed: number | null
-  }
-
-  export type QuizAttemptSumAggregateOutputType = {
-    score: number | null
-    correct: number | null
-    total: number | null
-    duration: number | null
-    jokersUsed: number | null
-  }
-
-  export type QuizAttemptMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    score: number | null
-    correct: number | null
-    total: number | null
-    duration: number | null
-    jokersUsed: number | null
-    createdAt: Date | null
-  }
-
-  export type QuizAttemptMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    score: number | null
-    correct: number | null
-    total: number | null
-    duration: number | null
-    jokersUsed: number | null
-    createdAt: Date | null
-  }
-
-  export type QuizAttemptCountAggregateOutputType = {
-    id: number
-    userId: number
-    score: number
-    correct: number
-    total: number
-    duration: number
-    jokersUsed: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type QuizAttemptAvgAggregateInputType = {
-    score?: true
-    correct?: true
-    total?: true
-    duration?: true
-    jokersUsed?: true
-  }
-
-  export type QuizAttemptSumAggregateInputType = {
-    score?: true
-    correct?: true
-    total?: true
-    duration?: true
-    jokersUsed?: true
-  }
-
-  export type QuizAttemptMinAggregateInputType = {
-    id?: true
-    userId?: true
-    score?: true
-    correct?: true
-    total?: true
-    duration?: true
-    jokersUsed?: true
-    createdAt?: true
-  }
-
-  export type QuizAttemptMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    score?: true
-    correct?: true
-    total?: true
-    duration?: true
-    jokersUsed?: true
-    createdAt?: true
-  }
-
-  export type QuizAttemptCountAggregateInputType = {
-    id?: true
-    userId?: true
-    score?: true
-    correct?: true
-    total?: true
-    duration?: true
-    jokersUsed?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type QuizAttemptAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizAttempt to aggregate.
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizAttempts to fetch.
-     */
-    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: QuizAttemptWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizAttempts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizAttempts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned QuizAttempts
-    **/
-    _count?: true | QuizAttemptCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: QuizAttemptAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: QuizAttemptSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: QuizAttemptMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: QuizAttemptMaxAggregateInputType
-  }
-
-  export type GetQuizAttemptAggregateType<T extends QuizAttemptAggregateArgs> = {
-        [P in keyof T & keyof AggregateQuizAttempt]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateQuizAttempt[P]>
-      : GetScalarType<T[P], AggregateQuizAttempt[P]>
-  }
-
-
-
-
-  export type QuizAttemptGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizAttemptWhereInput
-    orderBy?: QuizAttemptOrderByWithAggregationInput | QuizAttemptOrderByWithAggregationInput[]
-    by: QuizAttemptScalarFieldEnum[] | QuizAttemptScalarFieldEnum
-    having?: QuizAttemptScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: QuizAttemptCountAggregateInputType | true
-    _avg?: QuizAttemptAvgAggregateInputType
-    _sum?: QuizAttemptSumAggregateInputType
-    _min?: QuizAttemptMinAggregateInputType
-    _max?: QuizAttemptMaxAggregateInputType
-  }
-
-  export type QuizAttemptGroupByOutputType = {
-    id: string
-    userId: string
-    score: number
-    correct: number
-    total: number
-    duration: number
-    jokersUsed: number
-    createdAt: Date
-    _count: QuizAttemptCountAggregateOutputType | null
-    _avg: QuizAttemptAvgAggregateOutputType | null
-    _sum: QuizAttemptSumAggregateOutputType | null
-    _min: QuizAttemptMinAggregateOutputType | null
-    _max: QuizAttemptMaxAggregateOutputType | null
-  }
-
-  type GetQuizAttemptGroupByPayload<T extends QuizAttemptGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<QuizAttemptGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof QuizAttemptGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], QuizAttemptGroupByOutputType[P]>
-            : GetScalarType<T[P], QuizAttemptGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type QuizAttemptSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    score?: boolean
-    correct?: boolean
-    total?: boolean
-    duration?: boolean
-    jokersUsed?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizAttempt"]>
-
-  export type QuizAttemptSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    score?: boolean
-    correct?: boolean
-    total?: boolean
-    duration?: boolean
-    jokersUsed?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizAttempt"]>
-
-  export type QuizAttemptSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    score?: boolean
-    correct?: boolean
-    total?: boolean
-    duration?: boolean
-    jokersUsed?: boolean
-    createdAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizAttempt"]>
-
-  export type QuizAttemptSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    score?: boolean
-    correct?: boolean
-    total?: boolean
-    duration?: boolean
-    jokersUsed?: boolean
-    createdAt?: boolean
-  }
-
-  export type QuizAttemptOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "score" | "correct" | "total" | "duration" | "jokersUsed" | "createdAt", ExtArgs["result"]["quizAttempt"]>
-  export type QuizAttemptInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizAttemptIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizAttemptIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $QuizAttemptPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "QuizAttempt"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      score: number
-      correct: number
-      total: number
-      duration: number
-      jokersUsed: number
-      createdAt: Date
-    }, ExtArgs["result"]["quizAttempt"]>
-    composites: {}
-  }
-
-  type QuizAttemptGetPayload<S extends boolean | null | undefined | QuizAttemptDefaultArgs> = $Result.GetResult<Prisma.$QuizAttemptPayload, S>
-
-  type QuizAttemptCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<QuizAttemptFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: QuizAttemptCountAggregateInputType | true
-    }
-
-  export interface QuizAttemptDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizAttempt'], meta: { name: 'QuizAttempt' } }
-    /**
-     * Find zero or one QuizAttempt that matches the filter.
-     * @param {QuizAttemptFindUniqueArgs} args - Arguments to find a QuizAttempt
-     * @example
-     * // Get one QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends QuizAttemptFindUniqueArgs>(args: SelectSubset<T, QuizAttemptFindUniqueArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one QuizAttempt that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {QuizAttemptFindUniqueOrThrowArgs} args - Arguments to find a QuizAttempt
-     * @example
-     * // Get one QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends QuizAttemptFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizAttemptFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizAttempt that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptFindFirstArgs} args - Arguments to find a QuizAttempt
-     * @example
-     * // Get one QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends QuizAttemptFindFirstArgs>(args?: SelectSubset<T, QuizAttemptFindFirstArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizAttempt that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptFindFirstOrThrowArgs} args - Arguments to find a QuizAttempt
-     * @example
-     * // Get one QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends QuizAttemptFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizAttemptFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more QuizAttempts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all QuizAttempts
-     * const quizAttempts = await prisma.quizAttempt.findMany()
-     * 
-     * // Get first 10 QuizAttempts
-     * const quizAttempts = await prisma.quizAttempt.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const quizAttemptWithIdOnly = await prisma.quizAttempt.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends QuizAttemptFindManyArgs>(args?: SelectSubset<T, QuizAttemptFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a QuizAttempt.
-     * @param {QuizAttemptCreateArgs} args - Arguments to create a QuizAttempt.
-     * @example
-     * // Create one QuizAttempt
-     * const QuizAttempt = await prisma.quizAttempt.create({
-     *   data: {
-     *     // ... data to create a QuizAttempt
-     *   }
-     * })
-     * 
-     */
-    create<T extends QuizAttemptCreateArgs>(args: SelectSubset<T, QuizAttemptCreateArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many QuizAttempts.
-     * @param {QuizAttemptCreateManyArgs} args - Arguments to create many QuizAttempts.
-     * @example
-     * // Create many QuizAttempts
-     * const quizAttempt = await prisma.quizAttempt.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends QuizAttemptCreateManyArgs>(args?: SelectSubset<T, QuizAttemptCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many QuizAttempts and returns the data saved in the database.
-     * @param {QuizAttemptCreateManyAndReturnArgs} args - Arguments to create many QuizAttempts.
-     * @example
-     * // Create many QuizAttempts
-     * const quizAttempt = await prisma.quizAttempt.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many QuizAttempts and only return the `id`
-     * const quizAttemptWithIdOnly = await prisma.quizAttempt.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends QuizAttemptCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizAttemptCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a QuizAttempt.
-     * @param {QuizAttemptDeleteArgs} args - Arguments to delete one QuizAttempt.
-     * @example
-     * // Delete one QuizAttempt
-     * const QuizAttempt = await prisma.quizAttempt.delete({
-     *   where: {
-     *     // ... filter to delete one QuizAttempt
-     *   }
-     * })
-     * 
-     */
-    delete<T extends QuizAttemptDeleteArgs>(args: SelectSubset<T, QuizAttemptDeleteArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one QuizAttempt.
-     * @param {QuizAttemptUpdateArgs} args - Arguments to update one QuizAttempt.
-     * @example
-     * // Update one QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends QuizAttemptUpdateArgs>(args: SelectSubset<T, QuizAttemptUpdateArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more QuizAttempts.
-     * @param {QuizAttemptDeleteManyArgs} args - Arguments to filter QuizAttempts to delete.
-     * @example
-     * // Delete a few QuizAttempts
-     * const { count } = await prisma.quizAttempt.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends QuizAttemptDeleteManyArgs>(args?: SelectSubset<T, QuizAttemptDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizAttempts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many QuizAttempts
-     * const quizAttempt = await prisma.quizAttempt.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends QuizAttemptUpdateManyArgs>(args: SelectSubset<T, QuizAttemptUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizAttempts and returns the data updated in the database.
-     * @param {QuizAttemptUpdateManyAndReturnArgs} args - Arguments to update many QuizAttempts.
-     * @example
-     * // Update many QuizAttempts
-     * const quizAttempt = await prisma.quizAttempt.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more QuizAttempts and only return the `id`
-     * const quizAttemptWithIdOnly = await prisma.quizAttempt.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends QuizAttemptUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizAttemptUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one QuizAttempt.
-     * @param {QuizAttemptUpsertArgs} args - Arguments to update or create a QuizAttempt.
-     * @example
-     * // Update or create a QuizAttempt
-     * const quizAttempt = await prisma.quizAttempt.upsert({
-     *   create: {
-     *     // ... data to create a QuizAttempt
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the QuizAttempt we want to update
-     *   }
-     * })
-     */
-    upsert<T extends QuizAttemptUpsertArgs>(args: SelectSubset<T, QuizAttemptUpsertArgs<ExtArgs>>): Prisma__QuizAttemptClient<$Result.GetResult<Prisma.$QuizAttemptPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of QuizAttempts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptCountArgs} args - Arguments to filter QuizAttempts to count.
-     * @example
-     * // Count the number of QuizAttempts
-     * const count = await prisma.quizAttempt.count({
-     *   where: {
-     *     // ... the filter for the QuizAttempts we want to count
-     *   }
-     * })
-    **/
-    count<T extends QuizAttemptCountArgs>(
-      args?: Subset<T, QuizAttemptCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], QuizAttemptCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a QuizAttempt.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends QuizAttemptAggregateArgs>(args: Subset<T, QuizAttemptAggregateArgs>): Prisma.PrismaPromise<GetQuizAttemptAggregateType<T>>
-
-    /**
-     * Group by QuizAttempt.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizAttemptGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends QuizAttemptGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: QuizAttemptGroupByArgs['orderBy'] }
-        : { orderBy?: QuizAttemptGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, QuizAttemptGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizAttemptGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the QuizAttempt model
-   */
-  readonly fields: QuizAttemptFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for QuizAttempt.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__QuizAttemptClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the QuizAttempt model
-   */
-  interface QuizAttemptFieldRefs {
-    readonly id: FieldRef<"QuizAttempt", 'String'>
-    readonly userId: FieldRef<"QuizAttempt", 'String'>
-    readonly score: FieldRef<"QuizAttempt", 'Int'>
-    readonly correct: FieldRef<"QuizAttempt", 'Int'>
-    readonly total: FieldRef<"QuizAttempt", 'Int'>
-    readonly duration: FieldRef<"QuizAttempt", 'Int'>
-    readonly jokersUsed: FieldRef<"QuizAttempt", 'Int'>
-    readonly createdAt: FieldRef<"QuizAttempt", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * QuizAttempt findUnique
-   */
-  export type QuizAttemptFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizAttempt to fetch.
-     */
-    where: QuizAttemptWhereUniqueInput
-  }
-
-  /**
-   * QuizAttempt findUniqueOrThrow
-   */
-  export type QuizAttemptFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizAttempt to fetch.
-     */
-    where: QuizAttemptWhereUniqueInput
-  }
-
-  /**
-   * QuizAttempt findFirst
-   */
-  export type QuizAttemptFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizAttempt to fetch.
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizAttempts to fetch.
-     */
-    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizAttempts.
-     */
-    cursor?: QuizAttemptWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizAttempts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizAttempts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizAttempts.
-     */
-    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
-  }
-
-  /**
-   * QuizAttempt findFirstOrThrow
-   */
-  export type QuizAttemptFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizAttempt to fetch.
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizAttempts to fetch.
-     */
-    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizAttempts.
-     */
-    cursor?: QuizAttemptWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizAttempts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizAttempts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizAttempts.
-     */
-    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
-  }
-
-  /**
-   * QuizAttempt findMany
-   */
-  export type QuizAttemptFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizAttempts to fetch.
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizAttempts to fetch.
-     */
-    orderBy?: QuizAttemptOrderByWithRelationInput | QuizAttemptOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing QuizAttempts.
-     */
-    cursor?: QuizAttemptWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizAttempts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizAttempts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizAttempts.
-     */
-    distinct?: QuizAttemptScalarFieldEnum | QuizAttemptScalarFieldEnum[]
-  }
-
-  /**
-   * QuizAttempt create
-   */
-  export type QuizAttemptCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * The data needed to create a QuizAttempt.
-     */
-    data: XOR<QuizAttemptCreateInput, QuizAttemptUncheckedCreateInput>
-  }
-
-  /**
-   * QuizAttempt createMany
-   */
-  export type QuizAttemptCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many QuizAttempts.
-     */
-    data: QuizAttemptCreateManyInput | QuizAttemptCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizAttempt createManyAndReturn
-   */
-  export type QuizAttemptCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * The data used to create many QuizAttempts.
-     */
-    data: QuizAttemptCreateManyInput | QuizAttemptCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizAttempt update
-   */
-  export type QuizAttemptUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * The data needed to update a QuizAttempt.
-     */
-    data: XOR<QuizAttemptUpdateInput, QuizAttemptUncheckedUpdateInput>
-    /**
-     * Choose, which QuizAttempt to update.
-     */
-    where: QuizAttemptWhereUniqueInput
-  }
-
-  /**
-   * QuizAttempt updateMany
-   */
-  export type QuizAttemptUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update QuizAttempts.
-     */
-    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizAttempts to update
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * Limit how many QuizAttempts to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizAttempt updateManyAndReturn
-   */
-  export type QuizAttemptUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * The data used to update QuizAttempts.
-     */
-    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizAttempts to update
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * Limit how many QuizAttempts to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizAttempt upsert
-   */
-  export type QuizAttemptUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * The filter to search for the QuizAttempt to update in case it exists.
-     */
-    where: QuizAttemptWhereUniqueInput
-    /**
-     * In case the QuizAttempt found by the `where` argument doesn't exist, create a new QuizAttempt with this data.
-     */
-    create: XOR<QuizAttemptCreateInput, QuizAttemptUncheckedCreateInput>
-    /**
-     * In case the QuizAttempt was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<QuizAttemptUpdateInput, QuizAttemptUncheckedUpdateInput>
-  }
-
-  /**
-   * QuizAttempt delete
-   */
-  export type QuizAttemptDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-    /**
-     * Filter which QuizAttempt to delete.
-     */
-    where: QuizAttemptWhereUniqueInput
-  }
-
-  /**
-   * QuizAttempt deleteMany
-   */
-  export type QuizAttemptDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizAttempts to delete
-     */
-    where?: QuizAttemptWhereInput
-    /**
-     * Limit how many QuizAttempts to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizAttempt without action
-   */
-  export type QuizAttemptDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizAttempt
-     */
-    select?: QuizAttemptSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizAttempt
-     */
-    omit?: QuizAttemptOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizAttemptInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model QuizGame
-   */
-
-  export type AggregateQuizGame = {
-    _count: QuizGameCountAggregateOutputType | null
-    _avg: QuizGameAvgAggregateOutputType | null
-    _sum: QuizGameSumAggregateOutputType | null
-    _min: QuizGameMinAggregateOutputType | null
-    _max: QuizGameMaxAggregateOutputType | null
-  }
-
-  export type QuizGameAvgAggregateOutputType = {
-    currentIndex: number | null
-    score: number | null
-    correct: number | null
-  }
-
-  export type QuizGameSumAggregateOutputType = {
-    currentIndex: number | null
-    score: number | null
-    correct: number | null
-  }
-
-  export type QuizGameMinAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    currentIndex: number | null
-    questionServedAt: Date | null
-    score: number | null
-    correct: number | null
-    fiftyUsed: boolean | null
-    communityUsed: boolean | null
-    skipUsed: boolean | null
-    startedAt: Date | null
-  }
-
-  export type QuizGameMaxAggregateOutputType = {
-    id: string | null
-    userId: string | null
-    currentIndex: number | null
-    questionServedAt: Date | null
-    score: number | null
-    correct: number | null
-    fiftyUsed: boolean | null
-    communityUsed: boolean | null
-    skipUsed: boolean | null
-    startedAt: Date | null
-  }
-
-  export type QuizGameCountAggregateOutputType = {
-    id: number
-    userId: number
-    questionIds: number
-    currentIndex: number
-    questionServedAt: number
-    score: number
-    correct: number
-    fiftyUsed: number
-    communityUsed: number
-    skipUsed: number
-    startedAt: number
-    _all: number
-  }
-
-
-  export type QuizGameAvgAggregateInputType = {
-    currentIndex?: true
-    score?: true
-    correct?: true
-  }
-
-  export type QuizGameSumAggregateInputType = {
-    currentIndex?: true
-    score?: true
-    correct?: true
-  }
-
-  export type QuizGameMinAggregateInputType = {
-    id?: true
-    userId?: true
-    currentIndex?: true
-    questionServedAt?: true
-    score?: true
-    correct?: true
-    fiftyUsed?: true
-    communityUsed?: true
-    skipUsed?: true
-    startedAt?: true
-  }
-
-  export type QuizGameMaxAggregateInputType = {
-    id?: true
-    userId?: true
-    currentIndex?: true
-    questionServedAt?: true
-    score?: true
-    correct?: true
-    fiftyUsed?: true
-    communityUsed?: true
-    skipUsed?: true
-    startedAt?: true
-  }
-
-  export type QuizGameCountAggregateInputType = {
-    id?: true
-    userId?: true
-    questionIds?: true
-    currentIndex?: true
-    questionServedAt?: true
-    score?: true
-    correct?: true
-    fiftyUsed?: true
-    communityUsed?: true
-    skipUsed?: true
-    startedAt?: true
-    _all?: true
-  }
-
-  export type QuizGameAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizGame to aggregate.
-     */
-    where?: QuizGameWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizGames to fetch.
-     */
-    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: QuizGameWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizGames from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizGames.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned QuizGames
-    **/
-    _count?: true | QuizGameCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: QuizGameAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: QuizGameSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: QuizGameMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: QuizGameMaxAggregateInputType
-  }
-
-  export type GetQuizGameAggregateType<T extends QuizGameAggregateArgs> = {
-        [P in keyof T & keyof AggregateQuizGame]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateQuizGame[P]>
-      : GetScalarType<T[P], AggregateQuizGame[P]>
-  }
-
-
-
-
-  export type QuizGameGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizGameWhereInput
-    orderBy?: QuizGameOrderByWithAggregationInput | QuizGameOrderByWithAggregationInput[]
-    by: QuizGameScalarFieldEnum[] | QuizGameScalarFieldEnum
-    having?: QuizGameScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: QuizGameCountAggregateInputType | true
-    _avg?: QuizGameAvgAggregateInputType
-    _sum?: QuizGameSumAggregateInputType
-    _min?: QuizGameMinAggregateInputType
-    _max?: QuizGameMaxAggregateInputType
-  }
-
-  export type QuizGameGroupByOutputType = {
-    id: string
-    userId: string
-    questionIds: string[]
-    currentIndex: number
-    questionServedAt: Date | null
-    score: number
-    correct: number
-    fiftyUsed: boolean
-    communityUsed: boolean
-    skipUsed: boolean
-    startedAt: Date
-    _count: QuizGameCountAggregateOutputType | null
-    _avg: QuizGameAvgAggregateOutputType | null
-    _sum: QuizGameSumAggregateOutputType | null
-    _min: QuizGameMinAggregateOutputType | null
-    _max: QuizGameMaxAggregateOutputType | null
-  }
-
-  type GetQuizGameGroupByPayload<T extends QuizGameGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<QuizGameGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof QuizGameGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], QuizGameGroupByOutputType[P]>
-            : GetScalarType<T[P], QuizGameGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type QuizGameSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    questionIds?: boolean
-    currentIndex?: boolean
-    questionServedAt?: boolean
-    score?: boolean
-    correct?: boolean
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizGame"]>
-
-  export type QuizGameSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    questionIds?: boolean
-    currentIndex?: boolean
-    questionServedAt?: boolean
-    score?: boolean
-    correct?: boolean
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizGame"]>
-
-  export type QuizGameSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    userId?: boolean
-    questionIds?: boolean
-    currentIndex?: boolean
-    questionServedAt?: boolean
-    score?: boolean
-    correct?: boolean
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizGame"]>
-
-  export type QuizGameSelectScalar = {
-    id?: boolean
-    userId?: boolean
-    questionIds?: boolean
-    currentIndex?: boolean
-    questionServedAt?: boolean
-    score?: boolean
-    correct?: boolean
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: boolean
-  }
-
-  export type QuizGameOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "questionIds" | "currentIndex" | "questionServedAt" | "score" | "correct" | "fiftyUsed" | "communityUsed" | "skipUsed" | "startedAt", ExtArgs["result"]["quizGame"]>
-  export type QuizGameInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizGameIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizGameIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $QuizGamePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "QuizGame"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      userId: string
-      questionIds: string[]
-      currentIndex: number
-      questionServedAt: Date | null
-      score: number
-      correct: number
-      fiftyUsed: boolean
-      communityUsed: boolean
-      skipUsed: boolean
-      startedAt: Date
-    }, ExtArgs["result"]["quizGame"]>
-    composites: {}
-  }
-
-  type QuizGameGetPayload<S extends boolean | null | undefined | QuizGameDefaultArgs> = $Result.GetResult<Prisma.$QuizGamePayload, S>
-
-  type QuizGameCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<QuizGameFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: QuizGameCountAggregateInputType | true
-    }
-
-  export interface QuizGameDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizGame'], meta: { name: 'QuizGame' } }
-    /**
-     * Find zero or one QuizGame that matches the filter.
-     * @param {QuizGameFindUniqueArgs} args - Arguments to find a QuizGame
-     * @example
-     * // Get one QuizGame
-     * const quizGame = await prisma.quizGame.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends QuizGameFindUniqueArgs>(args: SelectSubset<T, QuizGameFindUniqueArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one QuizGame that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {QuizGameFindUniqueOrThrowArgs} args - Arguments to find a QuizGame
-     * @example
-     * // Get one QuizGame
-     * const quizGame = await prisma.quizGame.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends QuizGameFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizGameFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizGame that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameFindFirstArgs} args - Arguments to find a QuizGame
-     * @example
-     * // Get one QuizGame
-     * const quizGame = await prisma.quizGame.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends QuizGameFindFirstArgs>(args?: SelectSubset<T, QuizGameFindFirstArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizGame that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameFindFirstOrThrowArgs} args - Arguments to find a QuizGame
-     * @example
-     * // Get one QuizGame
-     * const quizGame = await prisma.quizGame.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends QuizGameFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizGameFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more QuizGames that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all QuizGames
-     * const quizGames = await prisma.quizGame.findMany()
-     * 
-     * // Get first 10 QuizGames
-     * const quizGames = await prisma.quizGame.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const quizGameWithIdOnly = await prisma.quizGame.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends QuizGameFindManyArgs>(args?: SelectSubset<T, QuizGameFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a QuizGame.
-     * @param {QuizGameCreateArgs} args - Arguments to create a QuizGame.
-     * @example
-     * // Create one QuizGame
-     * const QuizGame = await prisma.quizGame.create({
-     *   data: {
-     *     // ... data to create a QuizGame
-     *   }
-     * })
-     * 
-     */
-    create<T extends QuizGameCreateArgs>(args: SelectSubset<T, QuizGameCreateArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many QuizGames.
-     * @param {QuizGameCreateManyArgs} args - Arguments to create many QuizGames.
-     * @example
-     * // Create many QuizGames
-     * const quizGame = await prisma.quizGame.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends QuizGameCreateManyArgs>(args?: SelectSubset<T, QuizGameCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many QuizGames and returns the data saved in the database.
-     * @param {QuizGameCreateManyAndReturnArgs} args - Arguments to create many QuizGames.
-     * @example
-     * // Create many QuizGames
-     * const quizGame = await prisma.quizGame.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many QuizGames and only return the `id`
-     * const quizGameWithIdOnly = await prisma.quizGame.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends QuizGameCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizGameCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a QuizGame.
-     * @param {QuizGameDeleteArgs} args - Arguments to delete one QuizGame.
-     * @example
-     * // Delete one QuizGame
-     * const QuizGame = await prisma.quizGame.delete({
-     *   where: {
-     *     // ... filter to delete one QuizGame
-     *   }
-     * })
-     * 
-     */
-    delete<T extends QuizGameDeleteArgs>(args: SelectSubset<T, QuizGameDeleteArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one QuizGame.
-     * @param {QuizGameUpdateArgs} args - Arguments to update one QuizGame.
-     * @example
-     * // Update one QuizGame
-     * const quizGame = await prisma.quizGame.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends QuizGameUpdateArgs>(args: SelectSubset<T, QuizGameUpdateArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more QuizGames.
-     * @param {QuizGameDeleteManyArgs} args - Arguments to filter QuizGames to delete.
-     * @example
-     * // Delete a few QuizGames
-     * const { count } = await prisma.quizGame.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends QuizGameDeleteManyArgs>(args?: SelectSubset<T, QuizGameDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizGames.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many QuizGames
-     * const quizGame = await prisma.quizGame.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends QuizGameUpdateManyArgs>(args: SelectSubset<T, QuizGameUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizGames and returns the data updated in the database.
-     * @param {QuizGameUpdateManyAndReturnArgs} args - Arguments to update many QuizGames.
-     * @example
-     * // Update many QuizGames
-     * const quizGame = await prisma.quizGame.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more QuizGames and only return the `id`
-     * const quizGameWithIdOnly = await prisma.quizGame.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends QuizGameUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizGameUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one QuizGame.
-     * @param {QuizGameUpsertArgs} args - Arguments to update or create a QuizGame.
-     * @example
-     * // Update or create a QuizGame
-     * const quizGame = await prisma.quizGame.upsert({
-     *   create: {
-     *     // ... data to create a QuizGame
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the QuizGame we want to update
-     *   }
-     * })
-     */
-    upsert<T extends QuizGameUpsertArgs>(args: SelectSubset<T, QuizGameUpsertArgs<ExtArgs>>): Prisma__QuizGameClient<$Result.GetResult<Prisma.$QuizGamePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of QuizGames.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameCountArgs} args - Arguments to filter QuizGames to count.
-     * @example
-     * // Count the number of QuizGames
-     * const count = await prisma.quizGame.count({
-     *   where: {
-     *     // ... the filter for the QuizGames we want to count
-     *   }
-     * })
-    **/
-    count<T extends QuizGameCountArgs>(
-      args?: Subset<T, QuizGameCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], QuizGameCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a QuizGame.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends QuizGameAggregateArgs>(args: Subset<T, QuizGameAggregateArgs>): Prisma.PrismaPromise<GetQuizGameAggregateType<T>>
-
-    /**
-     * Group by QuizGame.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizGameGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends QuizGameGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: QuizGameGroupByArgs['orderBy'] }
-        : { orderBy?: QuizGameGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, QuizGameGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizGameGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the QuizGame model
-   */
-  readonly fields: QuizGameFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for QuizGame.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__QuizGameClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the QuizGame model
-   */
-  interface QuizGameFieldRefs {
-    readonly id: FieldRef<"QuizGame", 'String'>
-    readonly userId: FieldRef<"QuizGame", 'String'>
-    readonly questionIds: FieldRef<"QuizGame", 'String[]'>
-    readonly currentIndex: FieldRef<"QuizGame", 'Int'>
-    readonly questionServedAt: FieldRef<"QuizGame", 'DateTime'>
-    readonly score: FieldRef<"QuizGame", 'Int'>
-    readonly correct: FieldRef<"QuizGame", 'Int'>
-    readonly fiftyUsed: FieldRef<"QuizGame", 'Boolean'>
-    readonly communityUsed: FieldRef<"QuizGame", 'Boolean'>
-    readonly skipUsed: FieldRef<"QuizGame", 'Boolean'>
-    readonly startedAt: FieldRef<"QuizGame", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * QuizGame findUnique
-   */
-  export type QuizGameFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizGame to fetch.
-     */
-    where: QuizGameWhereUniqueInput
-  }
-
-  /**
-   * QuizGame findUniqueOrThrow
-   */
-  export type QuizGameFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizGame to fetch.
-     */
-    where: QuizGameWhereUniqueInput
-  }
-
-  /**
-   * QuizGame findFirst
-   */
-  export type QuizGameFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizGame to fetch.
-     */
-    where?: QuizGameWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizGames to fetch.
-     */
-    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizGames.
-     */
-    cursor?: QuizGameWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizGames from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizGames.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizGames.
-     */
-    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
-  }
-
-  /**
-   * QuizGame findFirstOrThrow
-   */
-  export type QuizGameFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizGame to fetch.
-     */
-    where?: QuizGameWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizGames to fetch.
-     */
-    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizGames.
-     */
-    cursor?: QuizGameWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizGames from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizGames.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizGames.
-     */
-    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
-  }
-
-  /**
-   * QuizGame findMany
-   */
-  export type QuizGameFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizGames to fetch.
-     */
-    where?: QuizGameWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizGames to fetch.
-     */
-    orderBy?: QuizGameOrderByWithRelationInput | QuizGameOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing QuizGames.
-     */
-    cursor?: QuizGameWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizGames from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizGames.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizGames.
-     */
-    distinct?: QuizGameScalarFieldEnum | QuizGameScalarFieldEnum[]
-  }
-
-  /**
-   * QuizGame create
-   */
-  export type QuizGameCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * The data needed to create a QuizGame.
-     */
-    data: XOR<QuizGameCreateInput, QuizGameUncheckedCreateInput>
-  }
-
-  /**
-   * QuizGame createMany
-   */
-  export type QuizGameCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many QuizGames.
-     */
-    data: QuizGameCreateManyInput | QuizGameCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizGame createManyAndReturn
-   */
-  export type QuizGameCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * The data used to create many QuizGames.
-     */
-    data: QuizGameCreateManyInput | QuizGameCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizGame update
-   */
-  export type QuizGameUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * The data needed to update a QuizGame.
-     */
-    data: XOR<QuizGameUpdateInput, QuizGameUncheckedUpdateInput>
-    /**
-     * Choose, which QuizGame to update.
-     */
-    where: QuizGameWhereUniqueInput
-  }
-
-  /**
-   * QuizGame updateMany
-   */
-  export type QuizGameUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update QuizGames.
-     */
-    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizGames to update
-     */
-    where?: QuizGameWhereInput
-    /**
-     * Limit how many QuizGames to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizGame updateManyAndReturn
-   */
-  export type QuizGameUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * The data used to update QuizGames.
-     */
-    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizGames to update
-     */
-    where?: QuizGameWhereInput
-    /**
-     * Limit how many QuizGames to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizGame upsert
-   */
-  export type QuizGameUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * The filter to search for the QuizGame to update in case it exists.
-     */
-    where: QuizGameWhereUniqueInput
-    /**
-     * In case the QuizGame found by the `where` argument doesn't exist, create a new QuizGame with this data.
-     */
-    create: XOR<QuizGameCreateInput, QuizGameUncheckedCreateInput>
-    /**
-     * In case the QuizGame was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<QuizGameUpdateInput, QuizGameUncheckedUpdateInput>
-  }
-
-  /**
-   * QuizGame delete
-   */
-  export type QuizGameDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-    /**
-     * Filter which QuizGame to delete.
-     */
-    where: QuizGameWhereUniqueInput
-  }
-
-  /**
-   * QuizGame deleteMany
-   */
-  export type QuizGameDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizGames to delete
-     */
-    where?: QuizGameWhereInput
-    /**
-     * Limit how many QuizGames to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizGame without action
-   */
-  export type QuizGameDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizGame
-     */
-    select?: QuizGameSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizGame
-     */
-    omit?: QuizGameOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizGameInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model QuizDailyWinner
-   */
-
-  export type AggregateQuizDailyWinner = {
-    _count: QuizDailyWinnerCountAggregateOutputType | null
-    _avg: QuizDailyWinnerAvgAggregateOutputType | null
-    _sum: QuizDailyWinnerSumAggregateOutputType | null
-    _min: QuizDailyWinnerMinAggregateOutputType | null
-    _max: QuizDailyWinnerMaxAggregateOutputType | null
-  }
-
-  export type QuizDailyWinnerAvgAggregateOutputType = {
-    score: number | null
-    streak: number | null
-  }
-
-  export type QuizDailyWinnerSumAggregateOutputType = {
-    score: number | null
-    streak: number | null
-  }
-
-  export type QuizDailyWinnerMinAggregateOutputType = {
-    date: Date | null
-    userId: string | null
-    score: number | null
-    streak: number | null
-  }
-
-  export type QuizDailyWinnerMaxAggregateOutputType = {
-    date: Date | null
-    userId: string | null
-    score: number | null
-    streak: number | null
-  }
-
-  export type QuizDailyWinnerCountAggregateOutputType = {
-    date: number
-    userId: number
-    score: number
-    streak: number
-    _all: number
-  }
-
-
-  export type QuizDailyWinnerAvgAggregateInputType = {
-    score?: true
-    streak?: true
-  }
-
-  export type QuizDailyWinnerSumAggregateInputType = {
-    score?: true
-    streak?: true
-  }
-
-  export type QuizDailyWinnerMinAggregateInputType = {
-    date?: true
-    userId?: true
-    score?: true
-    streak?: true
-  }
-
-  export type QuizDailyWinnerMaxAggregateInputType = {
-    date?: true
-    userId?: true
-    score?: true
-    streak?: true
-  }
-
-  export type QuizDailyWinnerCountAggregateInputType = {
-    date?: true
-    userId?: true
-    score?: true
-    streak?: true
-    _all?: true
-  }
-
-  export type QuizDailyWinnerAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizDailyWinner to aggregate.
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizDailyWinners to fetch.
-     */
-    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: QuizDailyWinnerWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizDailyWinners from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizDailyWinners.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned QuizDailyWinners
-    **/
-    _count?: true | QuizDailyWinnerCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: QuizDailyWinnerAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: QuizDailyWinnerSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: QuizDailyWinnerMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: QuizDailyWinnerMaxAggregateInputType
-  }
-
-  export type GetQuizDailyWinnerAggregateType<T extends QuizDailyWinnerAggregateArgs> = {
-        [P in keyof T & keyof AggregateQuizDailyWinner]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateQuizDailyWinner[P]>
-      : GetScalarType<T[P], AggregateQuizDailyWinner[P]>
-  }
-
-
-
-
-  export type QuizDailyWinnerGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizDailyWinnerWhereInput
-    orderBy?: QuizDailyWinnerOrderByWithAggregationInput | QuizDailyWinnerOrderByWithAggregationInput[]
-    by: QuizDailyWinnerScalarFieldEnum[] | QuizDailyWinnerScalarFieldEnum
-    having?: QuizDailyWinnerScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: QuizDailyWinnerCountAggregateInputType | true
-    _avg?: QuizDailyWinnerAvgAggregateInputType
-    _sum?: QuizDailyWinnerSumAggregateInputType
-    _min?: QuizDailyWinnerMinAggregateInputType
-    _max?: QuizDailyWinnerMaxAggregateInputType
-  }
-
-  export type QuizDailyWinnerGroupByOutputType = {
-    date: Date
-    userId: string
-    score: number
-    streak: number
-    _count: QuizDailyWinnerCountAggregateOutputType | null
-    _avg: QuizDailyWinnerAvgAggregateOutputType | null
-    _sum: QuizDailyWinnerSumAggregateOutputType | null
-    _min: QuizDailyWinnerMinAggregateOutputType | null
-    _max: QuizDailyWinnerMaxAggregateOutputType | null
-  }
-
-  type GetQuizDailyWinnerGroupByPayload<T extends QuizDailyWinnerGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<QuizDailyWinnerGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof QuizDailyWinnerGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], QuizDailyWinnerGroupByOutputType[P]>
-            : GetScalarType<T[P], QuizDailyWinnerGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type QuizDailyWinnerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    date?: boolean
-    userId?: boolean
-    score?: boolean
-    streak?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizDailyWinner"]>
-
-  export type QuizDailyWinnerSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    date?: boolean
-    userId?: boolean
-    score?: boolean
-    streak?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizDailyWinner"]>
-
-  export type QuizDailyWinnerSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    date?: boolean
-    userId?: boolean
-    score?: boolean
-    streak?: boolean
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizDailyWinner"]>
-
-  export type QuizDailyWinnerSelectScalar = {
-    date?: boolean
-    userId?: boolean
-    score?: boolean
-    streak?: boolean
-  }
-
-  export type QuizDailyWinnerOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"date" | "userId" | "score" | "streak", ExtArgs["result"]["quizDailyWinner"]>
-  export type QuizDailyWinnerInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizDailyWinnerIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizDailyWinnerIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $QuizDailyWinnerPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "QuizDailyWinner"
-    objects: {
-      user: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      date: Date
-      userId: string
-      score: number
-      streak: number
-    }, ExtArgs["result"]["quizDailyWinner"]>
-    composites: {}
-  }
-
-  type QuizDailyWinnerGetPayload<S extends boolean | null | undefined | QuizDailyWinnerDefaultArgs> = $Result.GetResult<Prisma.$QuizDailyWinnerPayload, S>
-
-  type QuizDailyWinnerCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<QuizDailyWinnerFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: QuizDailyWinnerCountAggregateInputType | true
-    }
-
-  export interface QuizDailyWinnerDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizDailyWinner'], meta: { name: 'QuizDailyWinner' } }
-    /**
-     * Find zero or one QuizDailyWinner that matches the filter.
-     * @param {QuizDailyWinnerFindUniqueArgs} args - Arguments to find a QuizDailyWinner
-     * @example
-     * // Get one QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends QuizDailyWinnerFindUniqueArgs>(args: SelectSubset<T, QuizDailyWinnerFindUniqueArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one QuizDailyWinner that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {QuizDailyWinnerFindUniqueOrThrowArgs} args - Arguments to find a QuizDailyWinner
-     * @example
-     * // Get one QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends QuizDailyWinnerFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizDailyWinner that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerFindFirstArgs} args - Arguments to find a QuizDailyWinner
-     * @example
-     * // Get one QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends QuizDailyWinnerFindFirstArgs>(args?: SelectSubset<T, QuizDailyWinnerFindFirstArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizDailyWinner that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerFindFirstOrThrowArgs} args - Arguments to find a QuizDailyWinner
-     * @example
-     * // Get one QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends QuizDailyWinnerFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more QuizDailyWinners that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all QuizDailyWinners
-     * const quizDailyWinners = await prisma.quizDailyWinner.findMany()
-     * 
-     * // Get first 10 QuizDailyWinners
-     * const quizDailyWinners = await prisma.quizDailyWinner.findMany({ take: 10 })
-     * 
-     * // Only select the `date`
-     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.findMany({ select: { date: true } })
-     * 
-     */
-    findMany<T extends QuizDailyWinnerFindManyArgs>(args?: SelectSubset<T, QuizDailyWinnerFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a QuizDailyWinner.
-     * @param {QuizDailyWinnerCreateArgs} args - Arguments to create a QuizDailyWinner.
-     * @example
-     * // Create one QuizDailyWinner
-     * const QuizDailyWinner = await prisma.quizDailyWinner.create({
-     *   data: {
-     *     // ... data to create a QuizDailyWinner
-     *   }
-     * })
-     * 
-     */
-    create<T extends QuizDailyWinnerCreateArgs>(args: SelectSubset<T, QuizDailyWinnerCreateArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many QuizDailyWinners.
-     * @param {QuizDailyWinnerCreateManyArgs} args - Arguments to create many QuizDailyWinners.
-     * @example
-     * // Create many QuizDailyWinners
-     * const quizDailyWinner = await prisma.quizDailyWinner.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends QuizDailyWinnerCreateManyArgs>(args?: SelectSubset<T, QuizDailyWinnerCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many QuizDailyWinners and returns the data saved in the database.
-     * @param {QuizDailyWinnerCreateManyAndReturnArgs} args - Arguments to create many QuizDailyWinners.
-     * @example
-     * // Create many QuizDailyWinners
-     * const quizDailyWinner = await prisma.quizDailyWinner.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many QuizDailyWinners and only return the `date`
-     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.createManyAndReturn({
-     *   select: { date: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends QuizDailyWinnerCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a QuizDailyWinner.
-     * @param {QuizDailyWinnerDeleteArgs} args - Arguments to delete one QuizDailyWinner.
-     * @example
-     * // Delete one QuizDailyWinner
-     * const QuizDailyWinner = await prisma.quizDailyWinner.delete({
-     *   where: {
-     *     // ... filter to delete one QuizDailyWinner
-     *   }
-     * })
-     * 
-     */
-    delete<T extends QuizDailyWinnerDeleteArgs>(args: SelectSubset<T, QuizDailyWinnerDeleteArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one QuizDailyWinner.
-     * @param {QuizDailyWinnerUpdateArgs} args - Arguments to update one QuizDailyWinner.
-     * @example
-     * // Update one QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends QuizDailyWinnerUpdateArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more QuizDailyWinners.
-     * @param {QuizDailyWinnerDeleteManyArgs} args - Arguments to filter QuizDailyWinners to delete.
-     * @example
-     * // Delete a few QuizDailyWinners
-     * const { count } = await prisma.quizDailyWinner.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends QuizDailyWinnerDeleteManyArgs>(args?: SelectSubset<T, QuizDailyWinnerDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizDailyWinners.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many QuizDailyWinners
-     * const quizDailyWinner = await prisma.quizDailyWinner.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends QuizDailyWinnerUpdateManyArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizDailyWinners and returns the data updated in the database.
-     * @param {QuizDailyWinnerUpdateManyAndReturnArgs} args - Arguments to update many QuizDailyWinners.
-     * @example
-     * // Update many QuizDailyWinners
-     * const quizDailyWinner = await prisma.quizDailyWinner.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more QuizDailyWinners and only return the `date`
-     * const quizDailyWinnerWithDateOnly = await prisma.quizDailyWinner.updateManyAndReturn({
-     *   select: { date: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends QuizDailyWinnerUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one QuizDailyWinner.
-     * @param {QuizDailyWinnerUpsertArgs} args - Arguments to update or create a QuizDailyWinner.
-     * @example
-     * // Update or create a QuizDailyWinner
-     * const quizDailyWinner = await prisma.quizDailyWinner.upsert({
-     *   create: {
-     *     // ... data to create a QuizDailyWinner
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the QuizDailyWinner we want to update
-     *   }
-     * })
-     */
-    upsert<T extends QuizDailyWinnerUpsertArgs>(args: SelectSubset<T, QuizDailyWinnerUpsertArgs<ExtArgs>>): Prisma__QuizDailyWinnerClient<$Result.GetResult<Prisma.$QuizDailyWinnerPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of QuizDailyWinners.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerCountArgs} args - Arguments to filter QuizDailyWinners to count.
-     * @example
-     * // Count the number of QuizDailyWinners
-     * const count = await prisma.quizDailyWinner.count({
-     *   where: {
-     *     // ... the filter for the QuizDailyWinners we want to count
-     *   }
-     * })
-    **/
-    count<T extends QuizDailyWinnerCountArgs>(
-      args?: Subset<T, QuizDailyWinnerCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], QuizDailyWinnerCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a QuizDailyWinner.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends QuizDailyWinnerAggregateArgs>(args: Subset<T, QuizDailyWinnerAggregateArgs>): Prisma.PrismaPromise<GetQuizDailyWinnerAggregateType<T>>
-
-    /**
-     * Group by QuizDailyWinner.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizDailyWinnerGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends QuizDailyWinnerGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: QuizDailyWinnerGroupByArgs['orderBy'] }
-        : { orderBy?: QuizDailyWinnerGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, QuizDailyWinnerGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizDailyWinnerGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the QuizDailyWinner model
-   */
-  readonly fields: QuizDailyWinnerFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for QuizDailyWinner.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__QuizDailyWinnerClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the QuizDailyWinner model
-   */
-  interface QuizDailyWinnerFieldRefs {
-    readonly date: FieldRef<"QuizDailyWinner", 'DateTime'>
-    readonly userId: FieldRef<"QuizDailyWinner", 'String'>
-    readonly score: FieldRef<"QuizDailyWinner", 'Int'>
-    readonly streak: FieldRef<"QuizDailyWinner", 'Int'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * QuizDailyWinner findUnique
-   */
-  export type QuizDailyWinnerFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizDailyWinner to fetch.
-     */
-    where: QuizDailyWinnerWhereUniqueInput
-  }
-
-  /**
-   * QuizDailyWinner findUniqueOrThrow
-   */
-  export type QuizDailyWinnerFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizDailyWinner to fetch.
-     */
-    where: QuizDailyWinnerWhereUniqueInput
-  }
-
-  /**
-   * QuizDailyWinner findFirst
-   */
-  export type QuizDailyWinnerFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizDailyWinner to fetch.
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizDailyWinners to fetch.
-     */
-    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizDailyWinners.
-     */
-    cursor?: QuizDailyWinnerWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizDailyWinners from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizDailyWinners.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizDailyWinners.
-     */
-    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
-  }
-
-  /**
-   * QuizDailyWinner findFirstOrThrow
-   */
-  export type QuizDailyWinnerFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizDailyWinner to fetch.
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizDailyWinners to fetch.
-     */
-    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizDailyWinners.
-     */
-    cursor?: QuizDailyWinnerWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizDailyWinners from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizDailyWinners.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizDailyWinners.
-     */
-    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
-  }
-
-  /**
-   * QuizDailyWinner findMany
-   */
-  export type QuizDailyWinnerFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizDailyWinners to fetch.
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizDailyWinners to fetch.
-     */
-    orderBy?: QuizDailyWinnerOrderByWithRelationInput | QuizDailyWinnerOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing QuizDailyWinners.
-     */
-    cursor?: QuizDailyWinnerWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizDailyWinners from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizDailyWinners.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizDailyWinners.
-     */
-    distinct?: QuizDailyWinnerScalarFieldEnum | QuizDailyWinnerScalarFieldEnum[]
-  }
-
-  /**
-   * QuizDailyWinner create
-   */
-  export type QuizDailyWinnerCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * The data needed to create a QuizDailyWinner.
-     */
-    data: XOR<QuizDailyWinnerCreateInput, QuizDailyWinnerUncheckedCreateInput>
-  }
-
-  /**
-   * QuizDailyWinner createMany
-   */
-  export type QuizDailyWinnerCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many QuizDailyWinners.
-     */
-    data: QuizDailyWinnerCreateManyInput | QuizDailyWinnerCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizDailyWinner createManyAndReturn
-   */
-  export type QuizDailyWinnerCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * The data used to create many QuizDailyWinners.
-     */
-    data: QuizDailyWinnerCreateManyInput | QuizDailyWinnerCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizDailyWinner update
-   */
-  export type QuizDailyWinnerUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * The data needed to update a QuizDailyWinner.
-     */
-    data: XOR<QuizDailyWinnerUpdateInput, QuizDailyWinnerUncheckedUpdateInput>
-    /**
-     * Choose, which QuizDailyWinner to update.
-     */
-    where: QuizDailyWinnerWhereUniqueInput
-  }
-
-  /**
-   * QuizDailyWinner updateMany
-   */
-  export type QuizDailyWinnerUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update QuizDailyWinners.
-     */
-    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizDailyWinners to update
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * Limit how many QuizDailyWinners to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizDailyWinner updateManyAndReturn
-   */
-  export type QuizDailyWinnerUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * The data used to update QuizDailyWinners.
-     */
-    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizDailyWinners to update
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * Limit how many QuizDailyWinners to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizDailyWinner upsert
-   */
-  export type QuizDailyWinnerUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * The filter to search for the QuizDailyWinner to update in case it exists.
-     */
-    where: QuizDailyWinnerWhereUniqueInput
-    /**
-     * In case the QuizDailyWinner found by the `where` argument doesn't exist, create a new QuizDailyWinner with this data.
-     */
-    create: XOR<QuizDailyWinnerCreateInput, QuizDailyWinnerUncheckedCreateInput>
-    /**
-     * In case the QuizDailyWinner was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<QuizDailyWinnerUpdateInput, QuizDailyWinnerUncheckedUpdateInput>
-  }
-
-  /**
-   * QuizDailyWinner delete
-   */
-  export type QuizDailyWinnerDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-    /**
-     * Filter which QuizDailyWinner to delete.
-     */
-    where: QuizDailyWinnerWhereUniqueInput
-  }
-
-  /**
-   * QuizDailyWinner deleteMany
-   */
-  export type QuizDailyWinnerDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizDailyWinners to delete
-     */
-    where?: QuizDailyWinnerWhereInput
-    /**
-     * Limit how many QuizDailyWinners to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizDailyWinner without action
-   */
-  export type QuizDailyWinnerDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizDailyWinner
-     */
-    select?: QuizDailyWinnerSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizDailyWinner
-     */
-    omit?: QuizDailyWinnerOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizDailyWinnerInclude<ExtArgs> | null
-  }
-
-
-  /**
-   * Model QuizQuestionSuggestion
-   */
-
-  export type AggregateQuizQuestionSuggestion = {
-    _count: QuizQuestionSuggestionCountAggregateOutputType | null
-    _avg: QuizQuestionSuggestionAvgAggregateOutputType | null
-    _sum: QuizQuestionSuggestionSumAggregateOutputType | null
-    _min: QuizQuestionSuggestionMinAggregateOutputType | null
-    _max: QuizQuestionSuggestionMaxAggregateOutputType | null
-  }
-
-  export type QuizQuestionSuggestionAvgAggregateOutputType = {
-    correctIndex: number | null
-  }
-
-  export type QuizQuestionSuggestionSumAggregateOutputType = {
-    correctIndex: number | null
-  }
-
-  export type QuizQuestionSuggestionMinAggregateOutputType = {
-    id: string | null
-    category: string | null
-    question: string | null
-    imageUrl: string | null
-    options: string | null
-    correctIndex: number | null
-    explanation: string | null
-    authorId: string | null
-    status: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type QuizQuestionSuggestionMaxAggregateOutputType = {
-    id: string | null
-    category: string | null
-    question: string | null
-    imageUrl: string | null
-    options: string | null
-    correctIndex: number | null
-    explanation: string | null
-    authorId: string | null
-    status: string | null
-    createdAt: Date | null
-    updatedAt: Date | null
-  }
-
-  export type QuizQuestionSuggestionCountAggregateOutputType = {
-    id: number
-    category: number
-    question: number
-    imageUrl: number
-    options: number
-    correctIndex: number
-    explanation: number
-    authorId: number
-    status: number
-    createdAt: number
-    updatedAt: number
-    _all: number
-  }
-
-
-  export type QuizQuestionSuggestionAvgAggregateInputType = {
-    correctIndex?: true
-  }
-
-  export type QuizQuestionSuggestionSumAggregateInputType = {
-    correctIndex?: true
-  }
-
-  export type QuizQuestionSuggestionMinAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    authorId?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type QuizQuestionSuggestionMaxAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    authorId?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-  }
-
-  export type QuizQuestionSuggestionCountAggregateInputType = {
-    id?: true
-    category?: true
-    question?: true
-    imageUrl?: true
-    options?: true
-    correctIndex?: true
-    explanation?: true
-    authorId?: true
-    status?: true
-    createdAt?: true
-    updatedAt?: true
-    _all?: true
-  }
-
-  export type QuizQuestionSuggestionAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizQuestionSuggestion to aggregate.
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestionSuggestions to fetch.
-     */
-    orderBy?: QuizQuestionSuggestionOrderByWithRelationInput | QuizQuestionSuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: QuizQuestionSuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestionSuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestionSuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned QuizQuestionSuggestions
-    **/
-    _count?: true | QuizQuestionSuggestionCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: QuizQuestionSuggestionAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: QuizQuestionSuggestionSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: QuizQuestionSuggestionMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: QuizQuestionSuggestionMaxAggregateInputType
-  }
-
-  export type GetQuizQuestionSuggestionAggregateType<T extends QuizQuestionSuggestionAggregateArgs> = {
-        [P in keyof T & keyof AggregateQuizQuestionSuggestion]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateQuizQuestionSuggestion[P]>
-      : GetScalarType<T[P], AggregateQuizQuestionSuggestion[P]>
-  }
-
-
-
-
-  export type QuizQuestionSuggestionGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: QuizQuestionSuggestionWhereInput
-    orderBy?: QuizQuestionSuggestionOrderByWithAggregationInput | QuizQuestionSuggestionOrderByWithAggregationInput[]
-    by: QuizQuestionSuggestionScalarFieldEnum[] | QuizQuestionSuggestionScalarFieldEnum
-    having?: QuizQuestionSuggestionScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: QuizQuestionSuggestionCountAggregateInputType | true
-    _avg?: QuizQuestionSuggestionAvgAggregateInputType
-    _sum?: QuizQuestionSuggestionSumAggregateInputType
-    _min?: QuizQuestionSuggestionMinAggregateInputType
-    _max?: QuizQuestionSuggestionMaxAggregateInputType
-  }
-
-  export type QuizQuestionSuggestionGroupByOutputType = {
-    id: string
-    category: string
-    question: string
-    imageUrl: string | null
-    options: string
-    correctIndex: number
-    explanation: string | null
-    authorId: string
-    status: string
-    createdAt: Date
-    updatedAt: Date
-    _count: QuizQuestionSuggestionCountAggregateOutputType | null
-    _avg: QuizQuestionSuggestionAvgAggregateOutputType | null
-    _sum: QuizQuestionSuggestionSumAggregateOutputType | null
-    _min: QuizQuestionSuggestionMinAggregateOutputType | null
-    _max: QuizQuestionSuggestionMaxAggregateOutputType | null
-  }
-
-  type GetQuizQuestionSuggestionGroupByPayload<T extends QuizQuestionSuggestionGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<QuizQuestionSuggestionGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof QuizQuestionSuggestionGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], QuizQuestionSuggestionGroupByOutputType[P]>
-            : GetScalarType<T[P], QuizQuestionSuggestionGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type QuizQuestionSuggestionSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    authorId?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizQuestionSuggestion"]>
-
-  export type QuizQuestionSuggestionSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    authorId?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizQuestionSuggestion"]>
-
-  export type QuizQuestionSuggestionSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    authorId?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["quizQuestionSuggestion"]>
-
-  export type QuizQuestionSuggestionSelectScalar = {
-    id?: boolean
-    category?: boolean
-    question?: boolean
-    imageUrl?: boolean
-    options?: boolean
-    correctIndex?: boolean
-    explanation?: boolean
-    authorId?: boolean
-    status?: boolean
-    createdAt?: boolean
-    updatedAt?: boolean
-  }
-
-  export type QuizQuestionSuggestionOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "category" | "question" | "imageUrl" | "options" | "correctIndex" | "explanation" | "authorId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["quizQuestionSuggestion"]>
-  export type QuizQuestionSuggestionInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizQuestionSuggestionIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-  export type QuizQuestionSuggestionIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    author?: boolean | UserDefaultArgs<ExtArgs>
-  }
-
-  export type $QuizQuestionSuggestionPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "QuizQuestionSuggestion"
-    objects: {
-      author: Prisma.$UserPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      category: string
-      question: string
-      imageUrl: string | null
-      options: string
-      correctIndex: number
-      explanation: string | null
-      authorId: string
-      status: string
-      createdAt: Date
-      updatedAt: Date
-    }, ExtArgs["result"]["quizQuestionSuggestion"]>
-    composites: {}
-  }
-
-  type QuizQuestionSuggestionGetPayload<S extends boolean | null | undefined | QuizQuestionSuggestionDefaultArgs> = $Result.GetResult<Prisma.$QuizQuestionSuggestionPayload, S>
-
-  type QuizQuestionSuggestionCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<QuizQuestionSuggestionFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: QuizQuestionSuggestionCountAggregateInputType | true
-    }
-
-  export interface QuizQuestionSuggestionDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['QuizQuestionSuggestion'], meta: { name: 'QuizQuestionSuggestion' } }
-    /**
-     * Find zero or one QuizQuestionSuggestion that matches the filter.
-     * @param {QuizQuestionSuggestionFindUniqueArgs} args - Arguments to find a QuizQuestionSuggestion
-     * @example
-     * // Get one QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends QuizQuestionSuggestionFindUniqueArgs>(args: SelectSubset<T, QuizQuestionSuggestionFindUniqueArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one QuizQuestionSuggestion that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {QuizQuestionSuggestionFindUniqueOrThrowArgs} args - Arguments to find a QuizQuestionSuggestion
-     * @example
-     * // Get one QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends QuizQuestionSuggestionFindUniqueOrThrowArgs>(args: SelectSubset<T, QuizQuestionSuggestionFindUniqueOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizQuestionSuggestion that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionFindFirstArgs} args - Arguments to find a QuizQuestionSuggestion
-     * @example
-     * // Get one QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends QuizQuestionSuggestionFindFirstArgs>(args?: SelectSubset<T, QuizQuestionSuggestionFindFirstArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first QuizQuestionSuggestion that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionFindFirstOrThrowArgs} args - Arguments to find a QuizQuestionSuggestion
-     * @example
-     * // Get one QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends QuizQuestionSuggestionFindFirstOrThrowArgs>(args?: SelectSubset<T, QuizQuestionSuggestionFindFirstOrThrowArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more QuizQuestionSuggestions that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all QuizQuestionSuggestions
-     * const quizQuestionSuggestions = await prisma.quizQuestionSuggestion.findMany()
-     * 
-     * // Get first 10 QuizQuestionSuggestions
-     * const quizQuestionSuggestions = await prisma.quizQuestionSuggestion.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const quizQuestionSuggestionWithIdOnly = await prisma.quizQuestionSuggestion.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends QuizQuestionSuggestionFindManyArgs>(args?: SelectSubset<T, QuizQuestionSuggestionFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a QuizQuestionSuggestion.
-     * @param {QuizQuestionSuggestionCreateArgs} args - Arguments to create a QuizQuestionSuggestion.
-     * @example
-     * // Create one QuizQuestionSuggestion
-     * const QuizQuestionSuggestion = await prisma.quizQuestionSuggestion.create({
-     *   data: {
-     *     // ... data to create a QuizQuestionSuggestion
-     *   }
-     * })
-     * 
-     */
-    create<T extends QuizQuestionSuggestionCreateArgs>(args: SelectSubset<T, QuizQuestionSuggestionCreateArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many QuizQuestionSuggestions.
-     * @param {QuizQuestionSuggestionCreateManyArgs} args - Arguments to create many QuizQuestionSuggestions.
-     * @example
-     * // Create many QuizQuestionSuggestions
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends QuizQuestionSuggestionCreateManyArgs>(args?: SelectSubset<T, QuizQuestionSuggestionCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many QuizQuestionSuggestions and returns the data saved in the database.
-     * @param {QuizQuestionSuggestionCreateManyAndReturnArgs} args - Arguments to create many QuizQuestionSuggestions.
-     * @example
-     * // Create many QuizQuestionSuggestions
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many QuizQuestionSuggestions and only return the `id`
-     * const quizQuestionSuggestionWithIdOnly = await prisma.quizQuestionSuggestion.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends QuizQuestionSuggestionCreateManyAndReturnArgs>(args?: SelectSubset<T, QuizQuestionSuggestionCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a QuizQuestionSuggestion.
-     * @param {QuizQuestionSuggestionDeleteArgs} args - Arguments to delete one QuizQuestionSuggestion.
-     * @example
-     * // Delete one QuizQuestionSuggestion
-     * const QuizQuestionSuggestion = await prisma.quizQuestionSuggestion.delete({
-     *   where: {
-     *     // ... filter to delete one QuizQuestionSuggestion
-     *   }
-     * })
-     * 
-     */
-    delete<T extends QuizQuestionSuggestionDeleteArgs>(args: SelectSubset<T, QuizQuestionSuggestionDeleteArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one QuizQuestionSuggestion.
-     * @param {QuizQuestionSuggestionUpdateArgs} args - Arguments to update one QuizQuestionSuggestion.
-     * @example
-     * // Update one QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends QuizQuestionSuggestionUpdateArgs>(args: SelectSubset<T, QuizQuestionSuggestionUpdateArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more QuizQuestionSuggestions.
-     * @param {QuizQuestionSuggestionDeleteManyArgs} args - Arguments to filter QuizQuestionSuggestions to delete.
-     * @example
-     * // Delete a few QuizQuestionSuggestions
-     * const { count } = await prisma.quizQuestionSuggestion.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends QuizQuestionSuggestionDeleteManyArgs>(args?: SelectSubset<T, QuizQuestionSuggestionDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizQuestionSuggestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many QuizQuestionSuggestions
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends QuizQuestionSuggestionUpdateManyArgs>(args: SelectSubset<T, QuizQuestionSuggestionUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more QuizQuestionSuggestions and returns the data updated in the database.
-     * @param {QuizQuestionSuggestionUpdateManyAndReturnArgs} args - Arguments to update many QuizQuestionSuggestions.
-     * @example
-     * // Update many QuizQuestionSuggestions
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more QuizQuestionSuggestions and only return the `id`
-     * const quizQuestionSuggestionWithIdOnly = await prisma.quizQuestionSuggestion.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends QuizQuestionSuggestionUpdateManyAndReturnArgs>(args: SelectSubset<T, QuizQuestionSuggestionUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one QuizQuestionSuggestion.
-     * @param {QuizQuestionSuggestionUpsertArgs} args - Arguments to update or create a QuizQuestionSuggestion.
-     * @example
-     * // Update or create a QuizQuestionSuggestion
-     * const quizQuestionSuggestion = await prisma.quizQuestionSuggestion.upsert({
-     *   create: {
-     *     // ... data to create a QuizQuestionSuggestion
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the QuizQuestionSuggestion we want to update
-     *   }
-     * })
-     */
-    upsert<T extends QuizQuestionSuggestionUpsertArgs>(args: SelectSubset<T, QuizQuestionSuggestionUpsertArgs<ExtArgs>>): Prisma__QuizQuestionSuggestionClient<$Result.GetResult<Prisma.$QuizQuestionSuggestionPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of QuizQuestionSuggestions.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionCountArgs} args - Arguments to filter QuizQuestionSuggestions to count.
-     * @example
-     * // Count the number of QuizQuestionSuggestions
-     * const count = await prisma.quizQuestionSuggestion.count({
-     *   where: {
-     *     // ... the filter for the QuizQuestionSuggestions we want to count
-     *   }
-     * })
-    **/
-    count<T extends QuizQuestionSuggestionCountArgs>(
-      args?: Subset<T, QuizQuestionSuggestionCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], QuizQuestionSuggestionCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a QuizQuestionSuggestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends QuizQuestionSuggestionAggregateArgs>(args: Subset<T, QuizQuestionSuggestionAggregateArgs>): Prisma.PrismaPromise<GetQuizQuestionSuggestionAggregateType<T>>
-
-    /**
-     * Group by QuizQuestionSuggestion.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {QuizQuestionSuggestionGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends QuizQuestionSuggestionGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: QuizQuestionSuggestionGroupByArgs['orderBy'] }
-        : { orderBy?: QuizQuestionSuggestionGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, QuizQuestionSuggestionGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetQuizQuestionSuggestionGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the QuizQuestionSuggestion model
-   */
-  readonly fields: QuizQuestionSuggestionFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for QuizQuestionSuggestion.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__QuizQuestionSuggestionClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the QuizQuestionSuggestion model
-   */
-  interface QuizQuestionSuggestionFieldRefs {
-    readonly id: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly category: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly question: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly imageUrl: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly options: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly correctIndex: FieldRef<"QuizQuestionSuggestion", 'Int'>
-    readonly explanation: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly authorId: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly status: FieldRef<"QuizQuestionSuggestion", 'String'>
-    readonly createdAt: FieldRef<"QuizQuestionSuggestion", 'DateTime'>
-    readonly updatedAt: FieldRef<"QuizQuestionSuggestion", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * QuizQuestionSuggestion findUnique
-   */
-  export type QuizQuestionSuggestionFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestionSuggestion to fetch.
-     */
-    where: QuizQuestionSuggestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestionSuggestion findUniqueOrThrow
-   */
-  export type QuizQuestionSuggestionFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestionSuggestion to fetch.
-     */
-    where: QuizQuestionSuggestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestionSuggestion findFirst
-   */
-  export type QuizQuestionSuggestionFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestionSuggestion to fetch.
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestionSuggestions to fetch.
-     */
-    orderBy?: QuizQuestionSuggestionOrderByWithRelationInput | QuizQuestionSuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizQuestionSuggestions.
-     */
-    cursor?: QuizQuestionSuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestionSuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestionSuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestionSuggestions.
-     */
-    distinct?: QuizQuestionSuggestionScalarFieldEnum | QuizQuestionSuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestionSuggestion findFirstOrThrow
-   */
-  export type QuizQuestionSuggestionFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestionSuggestion to fetch.
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestionSuggestions to fetch.
-     */
-    orderBy?: QuizQuestionSuggestionOrderByWithRelationInput | QuizQuestionSuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for QuizQuestionSuggestions.
-     */
-    cursor?: QuizQuestionSuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestionSuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestionSuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestionSuggestions.
-     */
-    distinct?: QuizQuestionSuggestionScalarFieldEnum | QuizQuestionSuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestionSuggestion findMany
-   */
-  export type QuizQuestionSuggestionFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter, which QuizQuestionSuggestions to fetch.
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of QuizQuestionSuggestions to fetch.
-     */
-    orderBy?: QuizQuestionSuggestionOrderByWithRelationInput | QuizQuestionSuggestionOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing QuizQuestionSuggestions.
-     */
-    cursor?: QuizQuestionSuggestionWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` QuizQuestionSuggestions from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` QuizQuestionSuggestions.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of QuizQuestionSuggestions.
-     */
-    distinct?: QuizQuestionSuggestionScalarFieldEnum | QuizQuestionSuggestionScalarFieldEnum[]
-  }
-
-  /**
-   * QuizQuestionSuggestion create
-   */
-  export type QuizQuestionSuggestionCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * The data needed to create a QuizQuestionSuggestion.
-     */
-    data: XOR<QuizQuestionSuggestionCreateInput, QuizQuestionSuggestionUncheckedCreateInput>
-  }
-
-  /**
-   * QuizQuestionSuggestion createMany
-   */
-  export type QuizQuestionSuggestionCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many QuizQuestionSuggestions.
-     */
-    data: QuizQuestionSuggestionCreateManyInput | QuizQuestionSuggestionCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * QuizQuestionSuggestion createManyAndReturn
-   */
-  export type QuizQuestionSuggestionCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * The data used to create many QuizQuestionSuggestions.
-     */
-    data: QuizQuestionSuggestionCreateManyInput | QuizQuestionSuggestionCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizQuestionSuggestion update
-   */
-  export type QuizQuestionSuggestionUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * The data needed to update a QuizQuestionSuggestion.
-     */
-    data: XOR<QuizQuestionSuggestionUpdateInput, QuizQuestionSuggestionUncheckedUpdateInput>
-    /**
-     * Choose, which QuizQuestionSuggestion to update.
-     */
-    where: QuizQuestionSuggestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestionSuggestion updateMany
-   */
-  export type QuizQuestionSuggestionUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update QuizQuestionSuggestions.
-     */
-    data: XOR<QuizQuestionSuggestionUpdateManyMutationInput, QuizQuestionSuggestionUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizQuestionSuggestions to update
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * Limit how many QuizQuestionSuggestions to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizQuestionSuggestion updateManyAndReturn
-   */
-  export type QuizQuestionSuggestionUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * The data used to update QuizQuestionSuggestions.
-     */
-    data: XOR<QuizQuestionSuggestionUpdateManyMutationInput, QuizQuestionSuggestionUncheckedUpdateManyInput>
-    /**
-     * Filter which QuizQuestionSuggestions to update
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * Limit how many QuizQuestionSuggestions to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * QuizQuestionSuggestion upsert
-   */
-  export type QuizQuestionSuggestionUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * The filter to search for the QuizQuestionSuggestion to update in case it exists.
-     */
-    where: QuizQuestionSuggestionWhereUniqueInput
-    /**
-     * In case the QuizQuestionSuggestion found by the `where` argument doesn't exist, create a new QuizQuestionSuggestion with this data.
-     */
-    create: XOR<QuizQuestionSuggestionCreateInput, QuizQuestionSuggestionUncheckedCreateInput>
-    /**
-     * In case the QuizQuestionSuggestion was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<QuizQuestionSuggestionUpdateInput, QuizQuestionSuggestionUncheckedUpdateInput>
-  }
-
-  /**
-   * QuizQuestionSuggestion delete
-   */
-  export type QuizQuestionSuggestionDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-    /**
-     * Filter which QuizQuestionSuggestion to delete.
-     */
-    where: QuizQuestionSuggestionWhereUniqueInput
-  }
-
-  /**
-   * QuizQuestionSuggestion deleteMany
-   */
-  export type QuizQuestionSuggestionDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which QuizQuestionSuggestions to delete
-     */
-    where?: QuizQuestionSuggestionWhereInput
-    /**
-     * Limit how many QuizQuestionSuggestions to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * QuizQuestionSuggestion without action
-   */
-  export type QuizQuestionSuggestionDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the QuizQuestionSuggestion
-     */
-    select?: QuizQuestionSuggestionSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the QuizQuestionSuggestion
-     */
-    omit?: QuizQuestionSuggestionOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: QuizQuestionSuggestionInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Model LegacyMember
    */
 
@@ -57237,1088 +50641,6 @@ export namespace Prisma {
      * Omit specific fields from the LegacyMember
      */
     omit?: LegacyMemberOmit<ExtArgs> | null
-  }
-
-
-  /**
-   * Model BBSchemeState
-   */
-
-  export type AggregateBBSchemeState = {
-    _count: BBSchemeStateCountAggregateOutputType | null
-    _min: BBSchemeStateMinAggregateOutputType | null
-    _max: BBSchemeStateMaxAggregateOutputType | null
-  }
-
-  export type BBSchemeStateMinAggregateOutputType = {
-    id: string | null
-    hash: string | null
-    data: string | null
-    creatorId: string | null
-    createdAt: Date | null
-  }
-
-  export type BBSchemeStateMaxAggregateOutputType = {
-    id: string | null
-    hash: string | null
-    data: string | null
-    creatorId: string | null
-    createdAt: Date | null
-  }
-
-  export type BBSchemeStateCountAggregateOutputType = {
-    id: number
-    hash: number
-    data: number
-    creatorId: number
-    createdAt: number
-    _all: number
-  }
-
-
-  export type BBSchemeStateMinAggregateInputType = {
-    id?: true
-    hash?: true
-    data?: true
-    creatorId?: true
-    createdAt?: true
-  }
-
-  export type BBSchemeStateMaxAggregateInputType = {
-    id?: true
-    hash?: true
-    data?: true
-    creatorId?: true
-    createdAt?: true
-  }
-
-  export type BBSchemeStateCountAggregateInputType = {
-    id?: true
-    hash?: true
-    data?: true
-    creatorId?: true
-    createdAt?: true
-    _all?: true
-  }
-
-  export type BBSchemeStateAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BBSchemeState to aggregate.
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BBSchemeStates to fetch.
-     */
-    orderBy?: BBSchemeStateOrderByWithRelationInput | BBSchemeStateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: BBSchemeStateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BBSchemeStates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BBSchemeStates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned BBSchemeStates
-    **/
-    _count?: true | BBSchemeStateCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: BBSchemeStateMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: BBSchemeStateMaxAggregateInputType
-  }
-
-  export type GetBBSchemeStateAggregateType<T extends BBSchemeStateAggregateArgs> = {
-        [P in keyof T & keyof AggregateBBSchemeState]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateBBSchemeState[P]>
-      : GetScalarType<T[P], AggregateBBSchemeState[P]>
-  }
-
-
-
-
-  export type BBSchemeStateGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BBSchemeStateWhereInput
-    orderBy?: BBSchemeStateOrderByWithAggregationInput | BBSchemeStateOrderByWithAggregationInput[]
-    by: BBSchemeStateScalarFieldEnum[] | BBSchemeStateScalarFieldEnum
-    having?: BBSchemeStateScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: BBSchemeStateCountAggregateInputType | true
-    _min?: BBSchemeStateMinAggregateInputType
-    _max?: BBSchemeStateMaxAggregateInputType
-  }
-
-  export type BBSchemeStateGroupByOutputType = {
-    id: string
-    hash: string
-    data: string
-    creatorId: string | null
-    createdAt: Date
-    _count: BBSchemeStateCountAggregateOutputType | null
-    _min: BBSchemeStateMinAggregateOutputType | null
-    _max: BBSchemeStateMaxAggregateOutputType | null
-  }
-
-  type GetBBSchemeStateGroupByPayload<T extends BBSchemeStateGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<BBSchemeStateGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof BBSchemeStateGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], BBSchemeStateGroupByOutputType[P]>
-            : GetScalarType<T[P], BBSchemeStateGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type BBSchemeStateSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    hash?: boolean
-    data?: boolean
-    creatorId?: boolean
-    createdAt?: boolean
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }, ExtArgs["result"]["bBSchemeState"]>
-
-  export type BBSchemeStateSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    hash?: boolean
-    data?: boolean
-    creatorId?: boolean
-    createdAt?: boolean
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }, ExtArgs["result"]["bBSchemeState"]>
-
-  export type BBSchemeStateSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
-    hash?: boolean
-    data?: boolean
-    creatorId?: boolean
-    createdAt?: boolean
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }, ExtArgs["result"]["bBSchemeState"]>
-
-  export type BBSchemeStateSelectScalar = {
-    id?: boolean
-    hash?: boolean
-    data?: boolean
-    creatorId?: boolean
-    createdAt?: boolean
-  }
-
-  export type BBSchemeStateOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "hash" | "data" | "creatorId" | "createdAt", ExtArgs["result"]["bBSchemeState"]>
-  export type BBSchemeStateInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }
-  export type BBSchemeStateIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }
-  export type BBSchemeStateIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    creator?: boolean | BBSchemeState$creatorArgs<ExtArgs>
-  }
-
-  export type $BBSchemeStatePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "BBSchemeState"
-    objects: {
-      creator: Prisma.$UserPayload<ExtArgs> | null
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      id: string
-      hash: string
-      data: string
-      creatorId: string | null
-      createdAt: Date
-    }, ExtArgs["result"]["bBSchemeState"]>
-    composites: {}
-  }
-
-  type BBSchemeStateGetPayload<S extends boolean | null | undefined | BBSchemeStateDefaultArgs> = $Result.GetResult<Prisma.$BBSchemeStatePayload, S>
-
-  type BBSchemeStateCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
-    Omit<BBSchemeStateFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
-      select?: BBSchemeStateCountAggregateInputType | true
-    }
-
-  export interface BBSchemeStateDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['BBSchemeState'], meta: { name: 'BBSchemeState' } }
-    /**
-     * Find zero or one BBSchemeState that matches the filter.
-     * @param {BBSchemeStateFindUniqueArgs} args - Arguments to find a BBSchemeState
-     * @example
-     * // Get one BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUnique<T extends BBSchemeStateFindUniqueArgs>(args: SelectSubset<T, BBSchemeStateFindUniqueArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find one BBSchemeState that matches the filter or throw an error with `error.code='P2025'`
-     * if no matches were found.
-     * @param {BBSchemeStateFindUniqueOrThrowArgs} args - Arguments to find a BBSchemeState
-     * @example
-     * // Get one BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findUniqueOrThrow<T extends BBSchemeStateFindUniqueOrThrowArgs>(args: SelectSubset<T, BBSchemeStateFindUniqueOrThrowArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BBSchemeState that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateFindFirstArgs} args - Arguments to find a BBSchemeState
-     * @example
-     * // Get one BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirst<T extends BBSchemeStateFindFirstArgs>(args?: SelectSubset<T, BBSchemeStateFindFirstArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find the first BBSchemeState that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateFindFirstOrThrowArgs} args - Arguments to find a BBSchemeState
-     * @example
-     * // Get one BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     */
-    findFirstOrThrow<T extends BBSchemeStateFindFirstOrThrowArgs>(args?: SelectSubset<T, BBSchemeStateFindFirstOrThrowArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Find zero or more BBSchemeStates that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all BBSchemeStates
-     * const bBSchemeStates = await prisma.bBSchemeState.findMany()
-     * 
-     * // Get first 10 BBSchemeStates
-     * const bBSchemeStates = await prisma.bBSchemeState.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const bBSchemeStateWithIdOnly = await prisma.bBSchemeState.findMany({ select: { id: true } })
-     * 
-     */
-    findMany<T extends BBSchemeStateFindManyArgs>(args?: SelectSubset<T, BBSchemeStateFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
-
-    /**
-     * Create a BBSchemeState.
-     * @param {BBSchemeStateCreateArgs} args - Arguments to create a BBSchemeState.
-     * @example
-     * // Create one BBSchemeState
-     * const BBSchemeState = await prisma.bBSchemeState.create({
-     *   data: {
-     *     // ... data to create a BBSchemeState
-     *   }
-     * })
-     * 
-     */
-    create<T extends BBSchemeStateCreateArgs>(args: SelectSubset<T, BBSchemeStateCreateArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Create many BBSchemeStates.
-     * @param {BBSchemeStateCreateManyArgs} args - Arguments to create many BBSchemeStates.
-     * @example
-     * // Create many BBSchemeStates
-     * const bBSchemeState = await prisma.bBSchemeState.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-     */
-    createMany<T extends BBSchemeStateCreateManyArgs>(args?: SelectSubset<T, BBSchemeStateCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create many BBSchemeStates and returns the data saved in the database.
-     * @param {BBSchemeStateCreateManyAndReturnArgs} args - Arguments to create many BBSchemeStates.
-     * @example
-     * // Create many BBSchemeStates
-     * const bBSchemeState = await prisma.bBSchemeState.createManyAndReturn({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Create many BBSchemeStates and only return the `id`
-     * const bBSchemeStateWithIdOnly = await prisma.bBSchemeState.createManyAndReturn({
-     *   select: { id: true },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    createManyAndReturn<T extends BBSchemeStateCreateManyAndReturnArgs>(args?: SelectSubset<T, BBSchemeStateCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Delete a BBSchemeState.
-     * @param {BBSchemeStateDeleteArgs} args - Arguments to delete one BBSchemeState.
-     * @example
-     * // Delete one BBSchemeState
-     * const BBSchemeState = await prisma.bBSchemeState.delete({
-     *   where: {
-     *     // ... filter to delete one BBSchemeState
-     *   }
-     * })
-     * 
-     */
-    delete<T extends BBSchemeStateDeleteArgs>(args: SelectSubset<T, BBSchemeStateDeleteArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Update one BBSchemeState.
-     * @param {BBSchemeStateUpdateArgs} args - Arguments to update one BBSchemeState.
-     * @example
-     * // Update one BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    update<T extends BBSchemeStateUpdateArgs>(args: SelectSubset<T, BBSchemeStateUpdateArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-    /**
-     * Delete zero or more BBSchemeStates.
-     * @param {BBSchemeStateDeleteManyArgs} args - Arguments to filter BBSchemeStates to delete.
-     * @example
-     * // Delete a few BBSchemeStates
-     * const { count } = await prisma.bBSchemeState.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-     */
-    deleteMany<T extends BBSchemeStateDeleteManyArgs>(args?: SelectSubset<T, BBSchemeStateDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BBSchemeStates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many BBSchemeStates
-     * const bBSchemeState = await prisma.bBSchemeState.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-     */
-    updateMany<T extends BBSchemeStateUpdateManyArgs>(args: SelectSubset<T, BBSchemeStateUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more BBSchemeStates and returns the data updated in the database.
-     * @param {BBSchemeStateUpdateManyAndReturnArgs} args - Arguments to update many BBSchemeStates.
-     * @example
-     * // Update many BBSchemeStates
-     * const bBSchemeState = await prisma.bBSchemeState.updateManyAndReturn({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * 
-     * // Update zero or more BBSchemeStates and only return the `id`
-     * const bBSchemeStateWithIdOnly = await prisma.bBSchemeState.updateManyAndReturn({
-     *   select: { id: true },
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * 
-     */
-    updateManyAndReturn<T extends BBSchemeStateUpdateManyAndReturnArgs>(args: SelectSubset<T, BBSchemeStateUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
-
-    /**
-     * Create or update one BBSchemeState.
-     * @param {BBSchemeStateUpsertArgs} args - Arguments to update or create a BBSchemeState.
-     * @example
-     * // Update or create a BBSchemeState
-     * const bBSchemeState = await prisma.bBSchemeState.upsert({
-     *   create: {
-     *     // ... data to create a BBSchemeState
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the BBSchemeState we want to update
-     *   }
-     * })
-     */
-    upsert<T extends BBSchemeStateUpsertArgs>(args: SelectSubset<T, BBSchemeStateUpsertArgs<ExtArgs>>): Prisma__BBSchemeStateClient<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
-
-
-    /**
-     * Count the number of BBSchemeStates.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateCountArgs} args - Arguments to filter BBSchemeStates to count.
-     * @example
-     * // Count the number of BBSchemeStates
-     * const count = await prisma.bBSchemeState.count({
-     *   where: {
-     *     // ... the filter for the BBSchemeStates we want to count
-     *   }
-     * })
-    **/
-    count<T extends BBSchemeStateCountArgs>(
-      args?: Subset<T, BBSchemeStateCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], BBSchemeStateCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a BBSchemeState.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends BBSchemeStateAggregateArgs>(args: Subset<T, BBSchemeStateAggregateArgs>): Prisma.PrismaPromise<GetBBSchemeStateAggregateType<T>>
-
-    /**
-     * Group by BBSchemeState.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {BBSchemeStateGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends BBSchemeStateGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: BBSchemeStateGroupByArgs['orderBy'] }
-        : { orderBy?: BBSchemeStateGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, BBSchemeStateGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetBBSchemeStateGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the BBSchemeState model
-   */
-  readonly fields: BBSchemeStateFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for BBSchemeState.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__BBSchemeStateClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: "PrismaPromise"
-    creator<T extends BBSchemeState$creatorArgs<ExtArgs> = {}>(args?: Subset<T, BBSchemeState$creatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
-  }
-
-
-
-
-  /**
-   * Fields of the BBSchemeState model
-   */
-  interface BBSchemeStateFieldRefs {
-    readonly id: FieldRef<"BBSchemeState", 'String'>
-    readonly hash: FieldRef<"BBSchemeState", 'String'>
-    readonly data: FieldRef<"BBSchemeState", 'String'>
-    readonly creatorId: FieldRef<"BBSchemeState", 'String'>
-    readonly createdAt: FieldRef<"BBSchemeState", 'DateTime'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * BBSchemeState findUnique
-   */
-  export type BBSchemeStateFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter, which BBSchemeState to fetch.
-     */
-    where: BBSchemeStateWhereUniqueInput
-  }
-
-  /**
-   * BBSchemeState findUniqueOrThrow
-   */
-  export type BBSchemeStateFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter, which BBSchemeState to fetch.
-     */
-    where: BBSchemeStateWhereUniqueInput
-  }
-
-  /**
-   * BBSchemeState findFirst
-   */
-  export type BBSchemeStateFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter, which BBSchemeState to fetch.
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BBSchemeStates to fetch.
-     */
-    orderBy?: BBSchemeStateOrderByWithRelationInput | BBSchemeStateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BBSchemeStates.
-     */
-    cursor?: BBSchemeStateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BBSchemeStates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BBSchemeStates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BBSchemeStates.
-     */
-    distinct?: BBSchemeStateScalarFieldEnum | BBSchemeStateScalarFieldEnum[]
-  }
-
-  /**
-   * BBSchemeState findFirstOrThrow
-   */
-  export type BBSchemeStateFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter, which BBSchemeState to fetch.
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BBSchemeStates to fetch.
-     */
-    orderBy?: BBSchemeStateOrderByWithRelationInput | BBSchemeStateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for BBSchemeStates.
-     */
-    cursor?: BBSchemeStateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BBSchemeStates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BBSchemeStates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BBSchemeStates.
-     */
-    distinct?: BBSchemeStateScalarFieldEnum | BBSchemeStateScalarFieldEnum[]
-  }
-
-  /**
-   * BBSchemeState findMany
-   */
-  export type BBSchemeStateFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter, which BBSchemeStates to fetch.
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of BBSchemeStates to fetch.
-     */
-    orderBy?: BBSchemeStateOrderByWithRelationInput | BBSchemeStateOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing BBSchemeStates.
-     */
-    cursor?: BBSchemeStateWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` BBSchemeStates from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` BBSchemeStates.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of BBSchemeStates.
-     */
-    distinct?: BBSchemeStateScalarFieldEnum | BBSchemeStateScalarFieldEnum[]
-  }
-
-  /**
-   * BBSchemeState create
-   */
-  export type BBSchemeStateCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * The data needed to create a BBSchemeState.
-     */
-    data: XOR<BBSchemeStateCreateInput, BBSchemeStateUncheckedCreateInput>
-  }
-
-  /**
-   * BBSchemeState createMany
-   */
-  export type BBSchemeStateCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many BBSchemeStates.
-     */
-    data: BBSchemeStateCreateManyInput | BBSchemeStateCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * BBSchemeState createManyAndReturn
-   */
-  export type BBSchemeStateCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelectCreateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * The data used to create many BBSchemeStates.
-     */
-    data: BBSchemeStateCreateManyInput | BBSchemeStateCreateManyInput[]
-    skipDuplicates?: boolean
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateIncludeCreateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BBSchemeState update
-   */
-  export type BBSchemeStateUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * The data needed to update a BBSchemeState.
-     */
-    data: XOR<BBSchemeStateUpdateInput, BBSchemeStateUncheckedUpdateInput>
-    /**
-     * Choose, which BBSchemeState to update.
-     */
-    where: BBSchemeStateWhereUniqueInput
-  }
-
-  /**
-   * BBSchemeState updateMany
-   */
-  export type BBSchemeStateUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update BBSchemeStates.
-     */
-    data: XOR<BBSchemeStateUpdateManyMutationInput, BBSchemeStateUncheckedUpdateManyInput>
-    /**
-     * Filter which BBSchemeStates to update
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * Limit how many BBSchemeStates to update.
-     */
-    limit?: number
-  }
-
-  /**
-   * BBSchemeState updateManyAndReturn
-   */
-  export type BBSchemeStateUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelectUpdateManyAndReturn<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * The data used to update BBSchemeStates.
-     */
-    data: XOR<BBSchemeStateUpdateManyMutationInput, BBSchemeStateUncheckedUpdateManyInput>
-    /**
-     * Filter which BBSchemeStates to update
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * Limit how many BBSchemeStates to update.
-     */
-    limit?: number
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateIncludeUpdateManyAndReturn<ExtArgs> | null
-  }
-
-  /**
-   * BBSchemeState upsert
-   */
-  export type BBSchemeStateUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * The filter to search for the BBSchemeState to update in case it exists.
-     */
-    where: BBSchemeStateWhereUniqueInput
-    /**
-     * In case the BBSchemeState found by the `where` argument doesn't exist, create a new BBSchemeState with this data.
-     */
-    create: XOR<BBSchemeStateCreateInput, BBSchemeStateUncheckedCreateInput>
-    /**
-     * In case the BBSchemeState was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<BBSchemeStateUpdateInput, BBSchemeStateUncheckedUpdateInput>
-  }
-
-  /**
-   * BBSchemeState delete
-   */
-  export type BBSchemeStateDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
-    /**
-     * Filter which BBSchemeState to delete.
-     */
-    where: BBSchemeStateWhereUniqueInput
-  }
-
-  /**
-   * BBSchemeState deleteMany
-   */
-  export type BBSchemeStateDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which BBSchemeStates to delete
-     */
-    where?: BBSchemeStateWhereInput
-    /**
-     * Limit how many BBSchemeStates to delete.
-     */
-    limit?: number
-  }
-
-  /**
-   * BBSchemeState.creator
-   */
-  export type BBSchemeState$creatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the User
-     */
-    select?: UserSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the User
-     */
-    omit?: UserOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: UserInclude<ExtArgs> | null
-    where?: UserWhereInput
-  }
-
-  /**
-   * BBSchemeState without action
-   */
-  export type BBSchemeStateDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the BBSchemeState
-     */
-    select?: BBSchemeStateSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the BBSchemeState
-     */
-    omit?: BBSchemeStateOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BBSchemeStateInclude<ExtArgs> | null
   }
 
 
@@ -59394,10 +51716,6 @@ export namespace Prisma {
     previousTheme: 'previousTheme',
     equipe: 'equipe',
     ligueCustom: 'ligueCustom',
-    quizTotalScore: 'quizTotalScore',
-    quizBestScore: 'quizBestScore',
-    quizStreak: 'quizStreak',
-    quizAttemptsCount: 'quizAttemptsCount',
     legacyId: 'legacyId',
     forumactifName: 'forumactifName',
     hasFinishedOnboarding: 'hasFinishedOnboarding',
@@ -59903,84 +52221,6 @@ export namespace Prisma {
   export type TournamentMatchScalarFieldEnum = (typeof TournamentMatchScalarFieldEnum)[keyof typeof TournamentMatchScalarFieldEnum]
 
 
-  export const QuizQuestionScalarFieldEnum: {
-    id: 'id',
-    category: 'category',
-    question: 'question',
-    imageUrl: 'imageUrl',
-    options: 'options',
-    correctIndex: 'correctIndex',
-    explanation: 'explanation',
-    timesCorrect: 'timesCorrect',
-    timesOption0: 'timesOption0',
-    timesOption1: 'timesOption1',
-    timesOption2: 'timesOption2',
-    timesOption3: 'timesOption3',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type QuizQuestionScalarFieldEnum = (typeof QuizQuestionScalarFieldEnum)[keyof typeof QuizQuestionScalarFieldEnum]
-
-
-  export const QuizAttemptScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    score: 'score',
-    correct: 'correct',
-    total: 'total',
-    duration: 'duration',
-    jokersUsed: 'jokersUsed',
-    createdAt: 'createdAt'
-  };
-
-  export type QuizAttemptScalarFieldEnum = (typeof QuizAttemptScalarFieldEnum)[keyof typeof QuizAttemptScalarFieldEnum]
-
-
-  export const QuizGameScalarFieldEnum: {
-    id: 'id',
-    userId: 'userId',
-    questionIds: 'questionIds',
-    currentIndex: 'currentIndex',
-    questionServedAt: 'questionServedAt',
-    score: 'score',
-    correct: 'correct',
-    fiftyUsed: 'fiftyUsed',
-    communityUsed: 'communityUsed',
-    skipUsed: 'skipUsed',
-    startedAt: 'startedAt'
-  };
-
-  export type QuizGameScalarFieldEnum = (typeof QuizGameScalarFieldEnum)[keyof typeof QuizGameScalarFieldEnum]
-
-
-  export const QuizDailyWinnerScalarFieldEnum: {
-    date: 'date',
-    userId: 'userId',
-    score: 'score',
-    streak: 'streak'
-  };
-
-  export type QuizDailyWinnerScalarFieldEnum = (typeof QuizDailyWinnerScalarFieldEnum)[keyof typeof QuizDailyWinnerScalarFieldEnum]
-
-
-  export const QuizQuestionSuggestionScalarFieldEnum: {
-    id: 'id',
-    category: 'category',
-    question: 'question',
-    imageUrl: 'imageUrl',
-    options: 'options',
-    correctIndex: 'correctIndex',
-    explanation: 'explanation',
-    authorId: 'authorId',
-    status: 'status',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt'
-  };
-
-  export type QuizQuestionSuggestionScalarFieldEnum = (typeof QuizQuestionSuggestionScalarFieldEnum)[keyof typeof QuizQuestionSuggestionScalarFieldEnum]
-
-
   export const LegacyMemberScalarFieldEnum: {
     id: 'id',
     email: 'email',
@@ -59991,17 +52231,6 @@ export namespace Prisma {
   };
 
   export type LegacyMemberScalarFieldEnum = (typeof LegacyMemberScalarFieldEnum)[keyof typeof LegacyMemberScalarFieldEnum]
-
-
-  export const BBSchemeStateScalarFieldEnum: {
-    id: 'id',
-    hash: 'hash',
-    data: 'data',
-    creatorId: 'creatorId',
-    createdAt: 'createdAt'
-  };
-
-  export type BBSchemeStateScalarFieldEnum = (typeof BBSchemeStateScalarFieldEnum)[keyof typeof BBSchemeStateScalarFieldEnum]
 
 
   export const MailLogScalarFieldEnum: {
@@ -60302,10 +52531,6 @@ export namespace Prisma {
     previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
-    quizTotalScore?: IntFilter<"User"> | number
-    quizBestScore?: IntFilter<"User"> | number
-    quizStreak?: IntFilter<"User"> | number
-    quizAttemptsCount?: IntFilter<"User"> | number
     legacyId?: StringNullableFilter<"User"> | string | null
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
@@ -60333,10 +52558,6 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
     privateMessages?: PrivateMessageListRelationFilter
-    quizAttempts?: QuizAttemptListRelationFilter
-    quizGames?: QuizGameListRelationFilter
-    dailyWins?: QuizDailyWinnerListRelationFilter
-    quizSuggestions?: QuizQuestionSuggestionListRelationFilter
     rankingArchives?: RankingArchiveListRelationFilter
     submittedResources?: ResourceListRelationFilter
     sessions?: SessionListRelationFilter
@@ -60359,7 +52580,6 @@ export namespace Prisma {
     deletedTopics?: TopicListRelationFilter
     deletedPosts?: PostListRelationFilter
     lastPostTopics?: TopicListRelationFilter
-    bbSchemeStates?: BBSchemeStateListRelationFilter
     notifications?: NotificationListRelationFilter
     notificationsCaused?: NotificationListRelationFilter
   }
@@ -60381,10 +52601,6 @@ export namespace Prisma {
     previousTheme?: SortOrderInput | SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
     legacyId?: SortOrderInput | SortOrder
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
@@ -60412,10 +52628,6 @@ export namespace Prisma {
     posts?: PostOrderByRelationAggregateInput
     postReactions?: PostReactionOrderByRelationAggregateInput
     privateMessages?: PrivateMessageOrderByRelationAggregateInput
-    quizAttempts?: QuizAttemptOrderByRelationAggregateInput
-    quizGames?: QuizGameOrderByRelationAggregateInput
-    dailyWins?: QuizDailyWinnerOrderByRelationAggregateInput
-    quizSuggestions?: QuizQuestionSuggestionOrderByRelationAggregateInput
     rankingArchives?: RankingArchiveOrderByRelationAggregateInput
     submittedResources?: ResourceOrderByRelationAggregateInput
     sessions?: SessionOrderByRelationAggregateInput
@@ -60438,7 +52650,6 @@ export namespace Prisma {
     deletedTopics?: TopicOrderByRelationAggregateInput
     deletedPosts?: PostOrderByRelationAggregateInput
     lastPostTopics?: TopicOrderByRelationAggregateInput
-    bbSchemeStates?: BBSchemeStateOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     notificationsCaused?: NotificationOrderByRelationAggregateInput
   }
@@ -60464,10 +52675,6 @@ export namespace Prisma {
     previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
-    quizTotalScore?: IntFilter<"User"> | number
-    quizBestScore?: IntFilter<"User"> | number
-    quizStreak?: IntFilter<"User"> | number
-    quizAttemptsCount?: IntFilter<"User"> | number
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     notifPm?: BoolFilter<"User"> | boolean
@@ -60494,10 +52701,6 @@ export namespace Prisma {
     posts?: PostListRelationFilter
     postReactions?: PostReactionListRelationFilter
     privateMessages?: PrivateMessageListRelationFilter
-    quizAttempts?: QuizAttemptListRelationFilter
-    quizGames?: QuizGameListRelationFilter
-    dailyWins?: QuizDailyWinnerListRelationFilter
-    quizSuggestions?: QuizQuestionSuggestionListRelationFilter
     rankingArchives?: RankingArchiveListRelationFilter
     submittedResources?: ResourceListRelationFilter
     sessions?: SessionListRelationFilter
@@ -60520,7 +52723,6 @@ export namespace Prisma {
     deletedTopics?: TopicListRelationFilter
     deletedPosts?: PostListRelationFilter
     lastPostTopics?: TopicListRelationFilter
-    bbSchemeStates?: BBSchemeStateListRelationFilter
     notifications?: NotificationListRelationFilter
     notificationsCaused?: NotificationListRelationFilter
   }, "id" | "email" | "legacyId">
@@ -60542,10 +52744,6 @@ export namespace Prisma {
     previousTheme?: SortOrderInput | SortOrder
     equipe?: SortOrderInput | SortOrder
     ligueCustom?: SortOrderInput | SortOrder
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
     legacyId?: SortOrderInput | SortOrder
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
@@ -60555,10 +52753,8 @@ export namespace Prisma {
     autoFollowTopics?: SortOrder
     forumReadAllAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
-    _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
     _min?: UserMinOrderByAggregateInput
-    _sum?: UserSumOrderByAggregateInput
   }
 
   export type UserScalarWhereWithAggregatesInput = {
@@ -60581,10 +52777,6 @@ export namespace Prisma {
     previousTheme?: StringNullableWithAggregatesFilter<"User"> | string | null
     equipe?: StringNullableWithAggregatesFilter<"User"> | string | null
     ligueCustom?: StringNullableWithAggregatesFilter<"User"> | string | null
-    quizTotalScore?: IntWithAggregatesFilter<"User"> | number
-    quizBestScore?: IntWithAggregatesFilter<"User"> | number
-    quizStreak?: IntWithAggregatesFilter<"User"> | number
-    quizAttemptsCount?: IntWithAggregatesFilter<"User"> | number
     legacyId?: StringNullableWithAggregatesFilter<"User"> | string | null
     forumactifName?: StringNullableWithAggregatesFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolWithAggregatesFilter<"User"> | boolean
@@ -63271,403 +55463,6 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"TournamentMatch"> | Date | string
   }
 
-  export type QuizQuestionWhereInput = {
-    AND?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
-    OR?: QuizQuestionWhereInput[]
-    NOT?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
-    id?: StringFilter<"QuizQuestion"> | string
-    category?: StringFilter<"QuizQuestion"> | string
-    question?: StringFilter<"QuizQuestion"> | string
-    imageUrl?: StringNullableFilter<"QuizQuestion"> | string | null
-    options?: StringFilter<"QuizQuestion"> | string
-    correctIndex?: IntFilter<"QuizQuestion"> | number
-    explanation?: StringNullableFilter<"QuizQuestion"> | string | null
-    timesCorrect?: IntFilter<"QuizQuestion"> | number
-    timesOption0?: IntFilter<"QuizQuestion"> | number
-    timesOption1?: IntFilter<"QuizQuestion"> | number
-    timesOption2?: IntFilter<"QuizQuestion"> | number
-    timesOption3?: IntFilter<"QuizQuestion"> | number
-    createdAt?: DateTimeFilter<"QuizQuestion"> | Date | string
-    updatedAt?: DateTimeFilter<"QuizQuestion"> | Date | string
-  }
-
-  export type QuizQuestionOrderByWithRelationInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrderInput | SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
-    OR?: QuizQuestionWhereInput[]
-    NOT?: QuizQuestionWhereInput | QuizQuestionWhereInput[]
-    category?: StringFilter<"QuizQuestion"> | string
-    question?: StringFilter<"QuizQuestion"> | string
-    imageUrl?: StringNullableFilter<"QuizQuestion"> | string | null
-    options?: StringFilter<"QuizQuestion"> | string
-    correctIndex?: IntFilter<"QuizQuestion"> | number
-    explanation?: StringNullableFilter<"QuizQuestion"> | string | null
-    timesCorrect?: IntFilter<"QuizQuestion"> | number
-    timesOption0?: IntFilter<"QuizQuestion"> | number
-    timesOption1?: IntFilter<"QuizQuestion"> | number
-    timesOption2?: IntFilter<"QuizQuestion"> | number
-    timesOption3?: IntFilter<"QuizQuestion"> | number
-    createdAt?: DateTimeFilter<"QuizQuestion"> | Date | string
-    updatedAt?: DateTimeFilter<"QuizQuestion"> | Date | string
-  }, "id">
-
-  export type QuizQuestionOrderByWithAggregationInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrderInput | SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: QuizQuestionCountOrderByAggregateInput
-    _avg?: QuizQuestionAvgOrderByAggregateInput
-    _max?: QuizQuestionMaxOrderByAggregateInput
-    _min?: QuizQuestionMinOrderByAggregateInput
-    _sum?: QuizQuestionSumOrderByAggregateInput
-  }
-
-  export type QuizQuestionScalarWhereWithAggregatesInput = {
-    AND?: QuizQuestionScalarWhereWithAggregatesInput | QuizQuestionScalarWhereWithAggregatesInput[]
-    OR?: QuizQuestionScalarWhereWithAggregatesInput[]
-    NOT?: QuizQuestionScalarWhereWithAggregatesInput | QuizQuestionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"QuizQuestion"> | string
-    category?: StringWithAggregatesFilter<"QuizQuestion"> | string
-    question?: StringWithAggregatesFilter<"QuizQuestion"> | string
-    imageUrl?: StringNullableWithAggregatesFilter<"QuizQuestion"> | string | null
-    options?: StringWithAggregatesFilter<"QuizQuestion"> | string
-    correctIndex?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    explanation?: StringNullableWithAggregatesFilter<"QuizQuestion"> | string | null
-    timesCorrect?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    timesOption0?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    timesOption1?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    timesOption2?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    timesOption3?: IntWithAggregatesFilter<"QuizQuestion"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"QuizQuestion"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"QuizQuestion"> | Date | string
-  }
-
-  export type QuizAttemptWhereInput = {
-    AND?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
-    OR?: QuizAttemptWhereInput[]
-    NOT?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
-    id?: StringFilter<"QuizAttempt"> | string
-    userId?: StringFilter<"QuizAttempt"> | string
-    score?: IntFilter<"QuizAttempt"> | number
-    correct?: IntFilter<"QuizAttempt"> | number
-    total?: IntFilter<"QuizAttempt"> | number
-    duration?: IntFilter<"QuizAttempt"> | number
-    jokersUsed?: IntFilter<"QuizAttempt"> | number
-    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type QuizAttemptOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-    createdAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type QuizAttemptWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
-    OR?: QuizAttemptWhereInput[]
-    NOT?: QuizAttemptWhereInput | QuizAttemptWhereInput[]
-    userId?: StringFilter<"QuizAttempt"> | string
-    score?: IntFilter<"QuizAttempt"> | number
-    correct?: IntFilter<"QuizAttempt"> | number
-    total?: IntFilter<"QuizAttempt"> | number
-    duration?: IntFilter<"QuizAttempt"> | number
-    jokersUsed?: IntFilter<"QuizAttempt"> | number
-    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type QuizAttemptOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-    createdAt?: SortOrder
-    _count?: QuizAttemptCountOrderByAggregateInput
-    _avg?: QuizAttemptAvgOrderByAggregateInput
-    _max?: QuizAttemptMaxOrderByAggregateInput
-    _min?: QuizAttemptMinOrderByAggregateInput
-    _sum?: QuizAttemptSumOrderByAggregateInput
-  }
-
-  export type QuizAttemptScalarWhereWithAggregatesInput = {
-    AND?: QuizAttemptScalarWhereWithAggregatesInput | QuizAttemptScalarWhereWithAggregatesInput[]
-    OR?: QuizAttemptScalarWhereWithAggregatesInput[]
-    NOT?: QuizAttemptScalarWhereWithAggregatesInput | QuizAttemptScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"QuizAttempt"> | string
-    userId?: StringWithAggregatesFilter<"QuizAttempt"> | string
-    score?: IntWithAggregatesFilter<"QuizAttempt"> | number
-    correct?: IntWithAggregatesFilter<"QuizAttempt"> | number
-    total?: IntWithAggregatesFilter<"QuizAttempt"> | number
-    duration?: IntWithAggregatesFilter<"QuizAttempt"> | number
-    jokersUsed?: IntWithAggregatesFilter<"QuizAttempt"> | number
-    createdAt?: DateTimeWithAggregatesFilter<"QuizAttempt"> | Date | string
-  }
-
-  export type QuizGameWhereInput = {
-    AND?: QuizGameWhereInput | QuizGameWhereInput[]
-    OR?: QuizGameWhereInput[]
-    NOT?: QuizGameWhereInput | QuizGameWhereInput[]
-    id?: StringFilter<"QuizGame"> | string
-    userId?: StringFilter<"QuizGame"> | string
-    questionIds?: StringNullableListFilter<"QuizGame">
-    currentIndex?: IntFilter<"QuizGame"> | number
-    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
-    score?: IntFilter<"QuizGame"> | number
-    correct?: IntFilter<"QuizGame"> | number
-    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
-    communityUsed?: BoolFilter<"QuizGame"> | boolean
-    skipUsed?: BoolFilter<"QuizGame"> | boolean
-    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type QuizGameOrderByWithRelationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    questionIds?: SortOrder
-    currentIndex?: SortOrder
-    questionServedAt?: SortOrderInput | SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    fiftyUsed?: SortOrder
-    communityUsed?: SortOrder
-    skipUsed?: SortOrder
-    startedAt?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type QuizGameWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: QuizGameWhereInput | QuizGameWhereInput[]
-    OR?: QuizGameWhereInput[]
-    NOT?: QuizGameWhereInput | QuizGameWhereInput[]
-    userId?: StringFilter<"QuizGame"> | string
-    questionIds?: StringNullableListFilter<"QuizGame">
-    currentIndex?: IntFilter<"QuizGame"> | number
-    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
-    score?: IntFilter<"QuizGame"> | number
-    correct?: IntFilter<"QuizGame"> | number
-    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
-    communityUsed?: BoolFilter<"QuizGame"> | boolean
-    skipUsed?: BoolFilter<"QuizGame"> | boolean
-    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type QuizGameOrderByWithAggregationInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    questionIds?: SortOrder
-    currentIndex?: SortOrder
-    questionServedAt?: SortOrderInput | SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    fiftyUsed?: SortOrder
-    communityUsed?: SortOrder
-    skipUsed?: SortOrder
-    startedAt?: SortOrder
-    _count?: QuizGameCountOrderByAggregateInput
-    _avg?: QuizGameAvgOrderByAggregateInput
-    _max?: QuizGameMaxOrderByAggregateInput
-    _min?: QuizGameMinOrderByAggregateInput
-    _sum?: QuizGameSumOrderByAggregateInput
-  }
-
-  export type QuizGameScalarWhereWithAggregatesInput = {
-    AND?: QuizGameScalarWhereWithAggregatesInput | QuizGameScalarWhereWithAggregatesInput[]
-    OR?: QuizGameScalarWhereWithAggregatesInput[]
-    NOT?: QuizGameScalarWhereWithAggregatesInput | QuizGameScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"QuizGame"> | string
-    userId?: StringWithAggregatesFilter<"QuizGame"> | string
-    questionIds?: StringNullableListFilter<"QuizGame">
-    currentIndex?: IntWithAggregatesFilter<"QuizGame"> | number
-    questionServedAt?: DateTimeNullableWithAggregatesFilter<"QuizGame"> | Date | string | null
-    score?: IntWithAggregatesFilter<"QuizGame"> | number
-    correct?: IntWithAggregatesFilter<"QuizGame"> | number
-    fiftyUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
-    communityUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
-    skipUsed?: BoolWithAggregatesFilter<"QuizGame"> | boolean
-    startedAt?: DateTimeWithAggregatesFilter<"QuizGame"> | Date | string
-  }
-
-  export type QuizDailyWinnerWhereInput = {
-    AND?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
-    OR?: QuizDailyWinnerWhereInput[]
-    NOT?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
-    date?: DateTimeFilter<"QuizDailyWinner"> | Date | string
-    userId?: StringFilter<"QuizDailyWinner"> | string
-    score?: IntFilter<"QuizDailyWinner"> | number
-    streak?: IntFilter<"QuizDailyWinner"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type QuizDailyWinnerOrderByWithRelationInput = {
-    date?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    streak?: SortOrder
-    user?: UserOrderByWithRelationInput
-  }
-
-  export type QuizDailyWinnerWhereUniqueInput = Prisma.AtLeast<{
-    date?: Date | string
-    AND?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
-    OR?: QuizDailyWinnerWhereInput[]
-    NOT?: QuizDailyWinnerWhereInput | QuizDailyWinnerWhereInput[]
-    userId?: StringFilter<"QuizDailyWinner"> | string
-    score?: IntFilter<"QuizDailyWinner"> | number
-    streak?: IntFilter<"QuizDailyWinner"> | number
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "date">
-
-  export type QuizDailyWinnerOrderByWithAggregationInput = {
-    date?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    streak?: SortOrder
-    _count?: QuizDailyWinnerCountOrderByAggregateInput
-    _avg?: QuizDailyWinnerAvgOrderByAggregateInput
-    _max?: QuizDailyWinnerMaxOrderByAggregateInput
-    _min?: QuizDailyWinnerMinOrderByAggregateInput
-    _sum?: QuizDailyWinnerSumOrderByAggregateInput
-  }
-
-  export type QuizDailyWinnerScalarWhereWithAggregatesInput = {
-    AND?: QuizDailyWinnerScalarWhereWithAggregatesInput | QuizDailyWinnerScalarWhereWithAggregatesInput[]
-    OR?: QuizDailyWinnerScalarWhereWithAggregatesInput[]
-    NOT?: QuizDailyWinnerScalarWhereWithAggregatesInput | QuizDailyWinnerScalarWhereWithAggregatesInput[]
-    date?: DateTimeWithAggregatesFilter<"QuizDailyWinner"> | Date | string
-    userId?: StringWithAggregatesFilter<"QuizDailyWinner"> | string
-    score?: IntWithAggregatesFilter<"QuizDailyWinner"> | number
-    streak?: IntWithAggregatesFilter<"QuizDailyWinner"> | number
-  }
-
-  export type QuizQuestionSuggestionWhereInput = {
-    AND?: QuizQuestionSuggestionWhereInput | QuizQuestionSuggestionWhereInput[]
-    OR?: QuizQuestionSuggestionWhereInput[]
-    NOT?: QuizQuestionSuggestionWhereInput | QuizQuestionSuggestionWhereInput[]
-    id?: StringFilter<"QuizQuestionSuggestion"> | string
-    category?: StringFilter<"QuizQuestionSuggestion"> | string
-    question?: StringFilter<"QuizQuestionSuggestion"> | string
-    imageUrl?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    options?: StringFilter<"QuizQuestionSuggestion"> | string
-    correctIndex?: IntFilter<"QuizQuestionSuggestion"> | number
-    explanation?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    authorId?: StringFilter<"QuizQuestionSuggestion"> | string
-    status?: StringFilter<"QuizQuestionSuggestion"> | string
-    createdAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }
-
-  export type QuizQuestionSuggestionOrderByWithRelationInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrderInput | SortOrder
-    authorId?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    author?: UserOrderByWithRelationInput
-  }
-
-  export type QuizQuestionSuggestionWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    AND?: QuizQuestionSuggestionWhereInput | QuizQuestionSuggestionWhereInput[]
-    OR?: QuizQuestionSuggestionWhereInput[]
-    NOT?: QuizQuestionSuggestionWhereInput | QuizQuestionSuggestionWhereInput[]
-    category?: StringFilter<"QuizQuestionSuggestion"> | string
-    question?: StringFilter<"QuizQuestionSuggestion"> | string
-    imageUrl?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    options?: StringFilter<"QuizQuestionSuggestion"> | string
-    correctIndex?: IntFilter<"QuizQuestionSuggestion"> | number
-    explanation?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    authorId?: StringFilter<"QuizQuestionSuggestion"> | string
-    status?: StringFilter<"QuizQuestionSuggestion"> | string
-    createdAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
-    author?: XOR<UserScalarRelationFilter, UserWhereInput>
-  }, "id">
-
-  export type QuizQuestionSuggestionOrderByWithAggregationInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrderInput | SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrderInput | SortOrder
-    authorId?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-    _count?: QuizQuestionSuggestionCountOrderByAggregateInput
-    _avg?: QuizQuestionSuggestionAvgOrderByAggregateInput
-    _max?: QuizQuestionSuggestionMaxOrderByAggregateInput
-    _min?: QuizQuestionSuggestionMinOrderByAggregateInput
-    _sum?: QuizQuestionSuggestionSumOrderByAggregateInput
-  }
-
-  export type QuizQuestionSuggestionScalarWhereWithAggregatesInput = {
-    AND?: QuizQuestionSuggestionScalarWhereWithAggregatesInput | QuizQuestionSuggestionScalarWhereWithAggregatesInput[]
-    OR?: QuizQuestionSuggestionScalarWhereWithAggregatesInput[]
-    NOT?: QuizQuestionSuggestionScalarWhereWithAggregatesInput | QuizQuestionSuggestionScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    category?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    question?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    imageUrl?: StringNullableWithAggregatesFilter<"QuizQuestionSuggestion"> | string | null
-    options?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    correctIndex?: IntWithAggregatesFilter<"QuizQuestionSuggestion"> | number
-    explanation?: StringNullableWithAggregatesFilter<"QuizQuestionSuggestion"> | string | null
-    authorId?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    status?: StringWithAggregatesFilter<"QuizQuestionSuggestion"> | string
-    createdAt?: DateTimeWithAggregatesFilter<"QuizQuestionSuggestion"> | Date | string
-    updatedAt?: DateTimeWithAggregatesFilter<"QuizQuestionSuggestion"> | Date | string
-  }
-
   export type LegacyMemberWhereInput = {
     AND?: LegacyMemberWhereInput | LegacyMemberWhereInput[]
     OR?: LegacyMemberWhereInput[]
@@ -63723,61 +55518,6 @@ export namespace Prisma {
     nafNumber?: StringNullableWithAggregatesFilter<"LegacyMember"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"LegacyMember"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"LegacyMember"> | Date | string
-  }
-
-  export type BBSchemeStateWhereInput = {
-    AND?: BBSchemeStateWhereInput | BBSchemeStateWhereInput[]
-    OR?: BBSchemeStateWhereInput[]
-    NOT?: BBSchemeStateWhereInput | BBSchemeStateWhereInput[]
-    id?: StringFilter<"BBSchemeState"> | string
-    hash?: StringFilter<"BBSchemeState"> | string
-    data?: StringFilter<"BBSchemeState"> | string
-    creatorId?: StringNullableFilter<"BBSchemeState"> | string | null
-    createdAt?: DateTimeFilter<"BBSchemeState"> | Date | string
-    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }
-
-  export type BBSchemeStateOrderByWithRelationInput = {
-    id?: SortOrder
-    hash?: SortOrder
-    data?: SortOrder
-    creatorId?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    creator?: UserOrderByWithRelationInput
-  }
-
-  export type BBSchemeStateWhereUniqueInput = Prisma.AtLeast<{
-    id?: string
-    hash?: string
-    AND?: BBSchemeStateWhereInput | BBSchemeStateWhereInput[]
-    OR?: BBSchemeStateWhereInput[]
-    NOT?: BBSchemeStateWhereInput | BBSchemeStateWhereInput[]
-    data?: StringFilter<"BBSchemeState"> | string
-    creatorId?: StringNullableFilter<"BBSchemeState"> | string | null
-    createdAt?: DateTimeFilter<"BBSchemeState"> | Date | string
-    creator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
-  }, "id" | "hash">
-
-  export type BBSchemeStateOrderByWithAggregationInput = {
-    id?: SortOrder
-    hash?: SortOrder
-    data?: SortOrder
-    creatorId?: SortOrderInput | SortOrder
-    createdAt?: SortOrder
-    _count?: BBSchemeStateCountOrderByAggregateInput
-    _max?: BBSchemeStateMaxOrderByAggregateInput
-    _min?: BBSchemeStateMinOrderByAggregateInput
-  }
-
-  export type BBSchemeStateScalarWhereWithAggregatesInput = {
-    AND?: BBSchemeStateScalarWhereWithAggregatesInput | BBSchemeStateScalarWhereWithAggregatesInput[]
-    OR?: BBSchemeStateScalarWhereWithAggregatesInput[]
-    NOT?: BBSchemeStateScalarWhereWithAggregatesInput | BBSchemeStateScalarWhereWithAggregatesInput[]
-    id?: StringWithAggregatesFilter<"BBSchemeState"> | string
-    hash?: StringWithAggregatesFilter<"BBSchemeState"> | string
-    data?: StringWithAggregatesFilter<"BBSchemeState"> | string
-    creatorId?: StringNullableWithAggregatesFilter<"BBSchemeState"> | string | null
-    createdAt?: DateTimeWithAggregatesFilter<"BBSchemeState"> | Date | string
   }
 
   export type MailLogWhereInput = {
@@ -64005,10 +55745,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -64036,10 +55772,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -64062,7 +55794,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -64084,10 +55815,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -64115,10 +55842,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -64140,7 +55863,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -64161,10 +55883,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -64192,10 +55910,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -64218,7 +55932,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -64240,10 +55953,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -64271,10 +55980,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -64296,7 +56001,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -64318,10 +56022,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -64348,10 +56048,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -64379,10 +56075,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -67191,443 +58883,6 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type QuizQuestionCreateInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    timesCorrect?: number
-    timesOption0?: number
-    timesOption1?: number
-    timesOption2?: number
-    timesOption3?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionUncheckedCreateInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    timesCorrect?: number
-    timesOption0?: number
-    timesOption1?: number
-    timesOption2?: number
-    timesOption3?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    timesCorrect?: IntFieldUpdateOperationsInput | number
-    timesOption0?: IntFieldUpdateOperationsInput | number
-    timesOption1?: IntFieldUpdateOperationsInput | number
-    timesOption2?: IntFieldUpdateOperationsInput | number
-    timesOption3?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    timesCorrect?: IntFieldUpdateOperationsInput | number
-    timesOption0?: IntFieldUpdateOperationsInput | number
-    timesOption1?: IntFieldUpdateOperationsInput | number
-    timesOption2?: IntFieldUpdateOperationsInput | number
-    timesOption3?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionCreateManyInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    timesCorrect?: number
-    timesOption0?: number
-    timesOption1?: number
-    timesOption2?: number
-    timesOption3?: number
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    timesCorrect?: IntFieldUpdateOperationsInput | number
-    timesOption0?: IntFieldUpdateOperationsInput | number
-    timesOption1?: IntFieldUpdateOperationsInput | number
-    timesOption2?: IntFieldUpdateOperationsInput | number
-    timesOption3?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    timesCorrect?: IntFieldUpdateOperationsInput | number
-    timesOption0?: IntFieldUpdateOperationsInput | number
-    timesOption1?: IntFieldUpdateOperationsInput | number
-    timesOption2?: IntFieldUpdateOperationsInput | number
-    timesOption3?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizAttemptCreateInput = {
-    id?: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-    user: UserCreateNestedOneWithoutQuizAttemptsInput
-  }
-
-  export type QuizAttemptUncheckedCreateInput = {
-    id?: string
-    userId: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-  }
-
-  export type QuizAttemptUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutQuizAttemptsNestedInput
-  }
-
-  export type QuizAttemptUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizAttemptCreateManyInput = {
-    id?: string
-    userId: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-  }
-
-  export type QuizAttemptUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizAttemptUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameCreateInput = {
-    id?: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-    user: UserCreateNestedOneWithoutQuizGamesInput
-  }
-
-  export type QuizGameUncheckedCreateInput = {
-    id?: string
-    userId: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-  }
-
-  export type QuizGameUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutQuizGamesNestedInput
-  }
-
-  export type QuizGameUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameCreateManyInput = {
-    id?: string
-    userId: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-  }
-
-  export type QuizGameUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizDailyWinnerCreateInput = {
-    date: Date | string
-    score: number
-    streak?: number
-    user: UserCreateNestedOneWithoutDailyWinsInput
-  }
-
-  export type QuizDailyWinnerUncheckedCreateInput = {
-    date: Date | string
-    userId: string
-    score: number
-    streak?: number
-  }
-
-  export type QuizDailyWinnerUpdateInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-    user?: UserUpdateOneRequiredWithoutDailyWinsNestedInput
-  }
-
-  export type QuizDailyWinnerUncheckedUpdateInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizDailyWinnerCreateManyInput = {
-    date: Date | string
-    userId: string
-    score: number
-    streak?: number
-  }
-
-  export type QuizDailyWinnerUpdateManyMutationInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizDailyWinnerUncheckedUpdateManyInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    userId?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizQuestionSuggestionCreateInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    author: UserCreateNestedOneWithoutQuizSuggestionsInput
-  }
-
-  export type QuizQuestionSuggestionUncheckedCreateInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    authorId: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionSuggestionUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    author?: UserUpdateOneRequiredWithoutQuizSuggestionsNestedInput
-  }
-
-  export type QuizQuestionSuggestionUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    authorId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionSuggestionCreateManyInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    authorId: string
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionSuggestionUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionSuggestionUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    authorId?: StringFieldUpdateOperationsInput | string
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type LegacyMemberCreateInput = {
     id?: string
     email: string
@@ -67689,61 +58944,6 @@ export namespace Prisma {
     nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BBSchemeStateCreateInput = {
-    id?: string
-    hash: string
-    data: string
-    createdAt?: Date | string
-    creator?: UserCreateNestedOneWithoutBbSchemeStatesInput
-  }
-
-  export type BBSchemeStateUncheckedCreateInput = {
-    id?: string
-    hash: string
-    data: string
-    creatorId?: string | null
-    createdAt?: Date | string
-  }
-
-  export type BBSchemeStateUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    creator?: UserUpdateOneWithoutBbSchemeStatesNestedInput
-  }
-
-  export type BBSchemeStateUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    creatorId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BBSchemeStateCreateManyInput = {
-    id?: string
-    hash: string
-    data: string
-    creatorId?: string | null
-    createdAt?: Date | string
-  }
-
-  export type BBSchemeStateUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BBSchemeStateUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    creatorId?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MailLogCreateInput = {
@@ -68032,17 +59232,6 @@ export namespace Prisma {
     not?: NestedBoolFilter<$PrismaModel> | boolean
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type AccountListRelationFilter = {
     every?: AccountWhereInput
     some?: AccountWhereInput
@@ -68119,30 +59308,6 @@ export namespace Prisma {
     every?: PrivateMessageWhereInput
     some?: PrivateMessageWhereInput
     none?: PrivateMessageWhereInput
-  }
-
-  export type QuizAttemptListRelationFilter = {
-    every?: QuizAttemptWhereInput
-    some?: QuizAttemptWhereInput
-    none?: QuizAttemptWhereInput
-  }
-
-  export type QuizGameListRelationFilter = {
-    every?: QuizGameWhereInput
-    some?: QuizGameWhereInput
-    none?: QuizGameWhereInput
-  }
-
-  export type QuizDailyWinnerListRelationFilter = {
-    every?: QuizDailyWinnerWhereInput
-    some?: QuizDailyWinnerWhereInput
-    none?: QuizDailyWinnerWhereInput
-  }
-
-  export type QuizQuestionSuggestionListRelationFilter = {
-    every?: QuizQuestionSuggestionWhereInput
-    some?: QuizQuestionSuggestionWhereInput
-    none?: QuizQuestionSuggestionWhereInput
   }
 
   export type RankingArchiveListRelationFilter = {
@@ -68228,12 +59393,6 @@ export namespace Prisma {
     isNot?: RoleConfigWhereInput
   }
 
-  export type BBSchemeStateListRelationFilter = {
-    every?: BBSchemeStateWhereInput
-    some?: BBSchemeStateWhereInput
-    none?: BBSchemeStateWhereInput
-  }
-
   export type NotificationListRelationFilter = {
     every?: NotificationWhereInput
     some?: NotificationWhereInput
@@ -68292,22 +59451,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type QuizAttemptOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type QuizGameOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type QuizDailyWinnerOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type RankingArchiveOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -68360,10 +59503,6 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type BBSchemeStateOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
   export type NotificationOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -68385,10 +59524,6 @@ export namespace Prisma {
     previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
@@ -68397,13 +59532,6 @@ export namespace Prisma {
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
     forumReadAllAt?: SortOrder
-  }
-
-  export type UserAvgOrderByAggregateInput = {
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
   }
 
   export type UserMaxOrderByAggregateInput = {
@@ -68423,10 +59551,6 @@ export namespace Prisma {
     previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
@@ -68454,10 +59578,6 @@ export namespace Prisma {
     previousTheme?: SortOrder
     equipe?: SortOrder
     ligueCustom?: SortOrder
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
     legacyId?: SortOrder
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
@@ -68466,13 +59586,6 @@ export namespace Prisma {
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
     forumReadAllAt?: SortOrder
-  }
-
-  export type UserSumOrderByAggregateInput = {
-    quizTotalScore?: SortOrder
-    quizBestScore?: SortOrder
-    quizStreak?: SortOrder
-    quizAttemptsCount?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -68495,22 +59608,6 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type BlockBlockerIdBlockedIdCompoundUniqueInput = {
@@ -68557,6 +59654,17 @@ export namespace Prisma {
     identifier?: SortOrder
     token?: SortOrder
     expires?: SortOrder
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type FloatNullableFilter<$PrismaModel = never> = {
@@ -68776,6 +59884,22 @@ export namespace Prisma {
     priceLodging?: SortOrder
     lat?: SortOrder
     lng?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
@@ -70112,265 +61236,6 @@ export namespace Prisma {
     coach2Casualties?: SortOrder
   }
 
-  export type QuizQuestionCountOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionAvgOrderByAggregateInput = {
-    correctIndex?: SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-  }
-
-  export type QuizQuestionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionMinOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionSumOrderByAggregateInput = {
-    correctIndex?: SortOrder
-    timesCorrect?: SortOrder
-    timesOption0?: SortOrder
-    timesOption1?: SortOrder
-    timesOption2?: SortOrder
-    timesOption3?: SortOrder
-  }
-
-  export type QuizAttemptCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type QuizAttemptAvgOrderByAggregateInput = {
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-  }
-
-  export type QuizAttemptMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type QuizAttemptMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type QuizAttemptSumOrderByAggregateInput = {
-    score?: SortOrder
-    correct?: SortOrder
-    total?: SortOrder
-    duration?: SortOrder
-    jokersUsed?: SortOrder
-  }
-
-  export type StringNullableListFilter<$PrismaModel = never> = {
-    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    has?: string | StringFieldRefInput<$PrismaModel> | null
-    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
-    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
-    isEmpty?: boolean
-  }
-
-  export type QuizGameCountOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    questionIds?: SortOrder
-    currentIndex?: SortOrder
-    questionServedAt?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    fiftyUsed?: SortOrder
-    communityUsed?: SortOrder
-    skipUsed?: SortOrder
-    startedAt?: SortOrder
-  }
-
-  export type QuizGameAvgOrderByAggregateInput = {
-    currentIndex?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-  }
-
-  export type QuizGameMaxOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    currentIndex?: SortOrder
-    questionServedAt?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    fiftyUsed?: SortOrder
-    communityUsed?: SortOrder
-    skipUsed?: SortOrder
-    startedAt?: SortOrder
-  }
-
-  export type QuizGameMinOrderByAggregateInput = {
-    id?: SortOrder
-    userId?: SortOrder
-    currentIndex?: SortOrder
-    questionServedAt?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-    fiftyUsed?: SortOrder
-    communityUsed?: SortOrder
-    skipUsed?: SortOrder
-    startedAt?: SortOrder
-  }
-
-  export type QuizGameSumOrderByAggregateInput = {
-    currentIndex?: SortOrder
-    score?: SortOrder
-    correct?: SortOrder
-  }
-
-  export type QuizDailyWinnerCountOrderByAggregateInput = {
-    date?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    streak?: SortOrder
-  }
-
-  export type QuizDailyWinnerAvgOrderByAggregateInput = {
-    score?: SortOrder
-    streak?: SortOrder
-  }
-
-  export type QuizDailyWinnerMaxOrderByAggregateInput = {
-    date?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    streak?: SortOrder
-  }
-
-  export type QuizDailyWinnerMinOrderByAggregateInput = {
-    date?: SortOrder
-    userId?: SortOrder
-    score?: SortOrder
-    streak?: SortOrder
-  }
-
-  export type QuizDailyWinnerSumOrderByAggregateInput = {
-    score?: SortOrder
-    streak?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionCountOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    authorId?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionAvgOrderByAggregateInput = {
-    correctIndex?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionMaxOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    authorId?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionMinOrderByAggregateInput = {
-    id?: SortOrder
-    category?: SortOrder
-    question?: SortOrder
-    imageUrl?: SortOrder
-    options?: SortOrder
-    correctIndex?: SortOrder
-    explanation?: SortOrder
-    authorId?: SortOrder
-    status?: SortOrder
-    createdAt?: SortOrder
-    updatedAt?: SortOrder
-  }
-
-  export type QuizQuestionSuggestionSumOrderByAggregateInput = {
-    correctIndex?: SortOrder
-  }
-
   export type LegacyMemberCountOrderByAggregateInput = {
     id?: SortOrder
     email?: SortOrder
@@ -70396,30 +61261,6 @@ export namespace Prisma {
     nafNumber?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-  }
-
-  export type BBSchemeStateCountOrderByAggregateInput = {
-    id?: SortOrder
-    hash?: SortOrder
-    data?: SortOrder
-    creatorId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type BBSchemeStateMaxOrderByAggregateInput = {
-    id?: SortOrder
-    hash?: SortOrder
-    data?: SortOrder
-    creatorId?: SortOrder
-    createdAt?: SortOrder
-  }
-
-  export type BBSchemeStateMinOrderByAggregateInput = {
-    id?: SortOrder
-    hash?: SortOrder
-    data?: SortOrder
-    creatorId?: SortOrder
-    createdAt?: SortOrder
   }
 
   export type MailLogCountOrderByAggregateInput = {
@@ -70630,34 +61471,6 @@ export namespace Prisma {
     connect?: PrivateMessageWhereUniqueInput | PrivateMessageWhereUniqueInput[]
   }
 
-  export type QuizAttemptCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
-    createMany?: QuizAttemptCreateManyUserInputEnvelope
-    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-  }
-
-  export type QuizGameCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
-    createMany?: QuizGameCreateManyUserInputEnvelope
-    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-  }
-
-  export type QuizDailyWinnerCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
-    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
-    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-  }
-
-  export type QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput> | QuizQuestionSuggestionCreateWithoutAuthorInput[] | QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput | QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput[]
-    createMany?: QuizQuestionSuggestionCreateManyAuthorInputEnvelope
-    connect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-  }
-
   export type RankingArchiveCreateNestedManyWithoutArchivedByInput = {
     create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
     connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
@@ -70808,13 +61621,6 @@ export namespace Prisma {
     connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
   }
 
-  export type BBSchemeStateCreateNestedManyWithoutCreatorInput = {
-    create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
-    createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
-    connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-  }
-
   export type NotificationCreateNestedManyWithoutUserInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
@@ -70962,34 +61768,6 @@ export namespace Prisma {
     connect?: PrivateMessageWhereUniqueInput | PrivateMessageWhereUniqueInput[]
   }
 
-  export type QuizAttemptUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
-    createMany?: QuizAttemptCreateManyUserInputEnvelope
-    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-  }
-
-  export type QuizGameUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
-    createMany?: QuizGameCreateManyUserInputEnvelope
-    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-  }
-
-  export type QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
-    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
-    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-  }
-
-  export type QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput = {
-    create?: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput> | QuizQuestionSuggestionCreateWithoutAuthorInput[] | QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput | QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput[]
-    createMany?: QuizQuestionSuggestionCreateManyAuthorInputEnvelope
-    connect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-  }
-
   export type RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput = {
     create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
     connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
@@ -71134,13 +61912,6 @@ export namespace Prisma {
     connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
   }
 
-  export type BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput = {
-    create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
-    createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
-    connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-  }
-
   export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
@@ -71161,14 +61932,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type AccountUpdateManyWithoutUserNestedInput = {
@@ -71435,62 +62198,6 @@ export namespace Prisma {
     update?: PrivateMessageUpdateWithWhereUniqueWithoutAuthorInput | PrivateMessageUpdateWithWhereUniqueWithoutAuthorInput[]
     updateMany?: PrivateMessageUpdateManyWithWhereWithoutAuthorInput | PrivateMessageUpdateManyWithWhereWithoutAuthorInput[]
     deleteMany?: PrivateMessageScalarWhereInput | PrivateMessageScalarWhereInput[]
-  }
-
-  export type QuizAttemptUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
-    upsert?: QuizAttemptUpsertWithWhereUniqueWithoutUserInput | QuizAttemptUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizAttemptCreateManyUserInputEnvelope
-    set?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    disconnect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    delete?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
-  }
-
-  export type QuizGameUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
-    upsert?: QuizGameUpsertWithWhereUniqueWithoutUserInput | QuizGameUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizGameCreateManyUserInputEnvelope
-    set?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    disconnect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    delete?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    update?: QuizGameUpdateWithWhereUniqueWithoutUserInput | QuizGameUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizGameUpdateManyWithWhereWithoutUserInput | QuizGameUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
-  }
-
-  export type QuizDailyWinnerUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
-    upsert?: QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
-    set?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    disconnect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    delete?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    update?: QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizDailyWinnerUpdateManyWithWhereWithoutUserInput | QuizDailyWinnerUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
-  }
-
-  export type QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput> | QuizQuestionSuggestionCreateWithoutAuthorInput[] | QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput | QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput[]
-    upsert?: QuizQuestionSuggestionUpsertWithWhereUniqueWithoutAuthorInput | QuizQuestionSuggestionUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: QuizQuestionSuggestionCreateManyAuthorInputEnvelope
-    set?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    disconnect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    delete?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    connect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    update?: QuizQuestionSuggestionUpdateWithWhereUniqueWithoutAuthorInput | QuizQuestionSuggestionUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: QuizQuestionSuggestionUpdateManyWithWhereWithoutAuthorInput | QuizQuestionSuggestionUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: QuizQuestionSuggestionScalarWhereInput | QuizQuestionSuggestionScalarWhereInput[]
   }
 
   export type RankingArchiveUpdateManyWithoutArchivedByNestedInput = {
@@ -71792,20 +62499,6 @@ export namespace Prisma {
     deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
   }
 
-  export type BBSchemeStateUpdateManyWithoutCreatorNestedInput = {
-    create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
-    upsert?: BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput[]
-    createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
-    set?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    disconnect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    delete?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    update?: BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput[]
-    updateMany?: BBSchemeStateUpdateManyWithWhereWithoutCreatorInput | BBSchemeStateUpdateManyWithWhereWithoutCreatorInput[]
-    deleteMany?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
-  }
-
   export type NotificationUpdateManyWithoutUserNestedInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
@@ -72100,62 +62793,6 @@ export namespace Prisma {
     deleteMany?: PrivateMessageScalarWhereInput | PrivateMessageScalarWhereInput[]
   }
 
-  export type QuizAttemptUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput> | QuizAttemptCreateWithoutUserInput[] | QuizAttemptUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizAttemptCreateOrConnectWithoutUserInput | QuizAttemptCreateOrConnectWithoutUserInput[]
-    upsert?: QuizAttemptUpsertWithWhereUniqueWithoutUserInput | QuizAttemptUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizAttemptCreateManyUserInputEnvelope
-    set?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    disconnect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    delete?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    connect?: QuizAttemptWhereUniqueInput | QuizAttemptWhereUniqueInput[]
-    update?: QuizAttemptUpdateWithWhereUniqueWithoutUserInput | QuizAttemptUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizAttemptUpdateManyWithWhereWithoutUserInput | QuizAttemptUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
-  }
-
-  export type QuizGameUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput> | QuizGameCreateWithoutUserInput[] | QuizGameUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizGameCreateOrConnectWithoutUserInput | QuizGameCreateOrConnectWithoutUserInput[]
-    upsert?: QuizGameUpsertWithWhereUniqueWithoutUserInput | QuizGameUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizGameCreateManyUserInputEnvelope
-    set?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    disconnect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    delete?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    connect?: QuizGameWhereUniqueInput | QuizGameWhereUniqueInput[]
-    update?: QuizGameUpdateWithWhereUniqueWithoutUserInput | QuizGameUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizGameUpdateManyWithWhereWithoutUserInput | QuizGameUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
-  }
-
-  export type QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput> | QuizDailyWinnerCreateWithoutUserInput[] | QuizDailyWinnerUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: QuizDailyWinnerCreateOrConnectWithoutUserInput | QuizDailyWinnerCreateOrConnectWithoutUserInput[]
-    upsert?: QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: QuizDailyWinnerCreateManyUserInputEnvelope
-    set?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    disconnect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    delete?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    connect?: QuizDailyWinnerWhereUniqueInput | QuizDailyWinnerWhereUniqueInput[]
-    update?: QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput | QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: QuizDailyWinnerUpdateManyWithWhereWithoutUserInput | QuizDailyWinnerUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
-  }
-
-  export type QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput = {
-    create?: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput> | QuizQuestionSuggestionCreateWithoutAuthorInput[] | QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput[]
-    connectOrCreate?: QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput | QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput[]
-    upsert?: QuizQuestionSuggestionUpsertWithWhereUniqueWithoutAuthorInput | QuizQuestionSuggestionUpsertWithWhereUniqueWithoutAuthorInput[]
-    createMany?: QuizQuestionSuggestionCreateManyAuthorInputEnvelope
-    set?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    disconnect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    delete?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    connect?: QuizQuestionSuggestionWhereUniqueInput | QuizQuestionSuggestionWhereUniqueInput[]
-    update?: QuizQuestionSuggestionUpdateWithWhereUniqueWithoutAuthorInput | QuizQuestionSuggestionUpdateWithWhereUniqueWithoutAuthorInput[]
-    updateMany?: QuizQuestionSuggestionUpdateManyWithWhereWithoutAuthorInput | QuizQuestionSuggestionUpdateManyWithWhereWithoutAuthorInput[]
-    deleteMany?: QuizQuestionSuggestionScalarWhereInput | QuizQuestionSuggestionScalarWhereInput[]
-  }
-
   export type RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput = {
     create?: XOR<RankingArchiveCreateWithoutArchivedByInput, RankingArchiveUncheckedCreateWithoutArchivedByInput> | RankingArchiveCreateWithoutArchivedByInput[] | RankingArchiveUncheckedCreateWithoutArchivedByInput[]
     connectOrCreate?: RankingArchiveCreateOrConnectWithoutArchivedByInput | RankingArchiveCreateOrConnectWithoutArchivedByInput[]
@@ -72447,20 +63084,6 @@ export namespace Prisma {
     deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
   }
 
-  export type BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput = {
-    create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
-    connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
-    upsert?: BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput[]
-    createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
-    set?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    disconnect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    delete?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
-    update?: BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput[]
-    updateMany?: BBSchemeStateUpdateManyWithWhereWithoutCreatorInput | BBSchemeStateUpdateManyWithWhereWithoutCreatorInput[]
-    deleteMany?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
-  }
-
   export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
     connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
@@ -72627,6 +63250,14 @@ export namespace Prisma {
     create?: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput> | UserCreateWithoutCommissairesTournamentsInput[] | UserUncheckedCreateWithoutCommissairesTournamentsInput[]
     connectOrCreate?: UserCreateOrConnectWithoutCommissairesTournamentsInput | UserCreateOrConnectWithoutCommissairesTournamentsInput[]
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
   }
 
   export type NullableFloatFieldUpdateOperationsInput = {
@@ -74715,87 +65346,6 @@ export namespace Prisma {
     update?: XOR<XOR<TournamentRoundUpdateToOneWithWhereWithoutMatchesInput, TournamentRoundUpdateWithoutMatchesInput>, TournamentRoundUncheckedUpdateWithoutMatchesInput>
   }
 
-  export type UserCreateNestedOneWithoutQuizAttemptsInput = {
-    create?: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizAttemptsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutQuizAttemptsNestedInput = {
-    create?: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizAttemptsInput
-    upsert?: UserUpsertWithoutQuizAttemptsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizAttemptsInput, UserUpdateWithoutQuizAttemptsInput>, UserUncheckedUpdateWithoutQuizAttemptsInput>
-  }
-
-  export type QuizGameCreatequestionIdsInput = {
-    set: string[]
-  }
-
-  export type UserCreateNestedOneWithoutQuizGamesInput = {
-    create?: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizGamesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type QuizGameUpdatequestionIdsInput = {
-    set?: string[]
-    push?: string | string[]
-  }
-
-  export type UserUpdateOneRequiredWithoutQuizGamesNestedInput = {
-    create?: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizGamesInput
-    upsert?: UserUpsertWithoutQuizGamesInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizGamesInput, UserUpdateWithoutQuizGamesInput>, UserUncheckedUpdateWithoutQuizGamesInput>
-  }
-
-  export type UserCreateNestedOneWithoutDailyWinsInput = {
-    create?: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDailyWinsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutDailyWinsNestedInput = {
-    create?: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutDailyWinsInput
-    upsert?: UserUpsertWithoutDailyWinsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDailyWinsInput, UserUpdateWithoutDailyWinsInput>, UserUncheckedUpdateWithoutDailyWinsInput>
-  }
-
-  export type UserCreateNestedOneWithoutQuizSuggestionsInput = {
-    create?: XOR<UserCreateWithoutQuizSuggestionsInput, UserUncheckedCreateWithoutQuizSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizSuggestionsInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneRequiredWithoutQuizSuggestionsNestedInput = {
-    create?: XOR<UserCreateWithoutQuizSuggestionsInput, UserUncheckedCreateWithoutQuizSuggestionsInput>
-    connectOrCreate?: UserCreateOrConnectWithoutQuizSuggestionsInput
-    upsert?: UserUpsertWithoutQuizSuggestionsInput
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutQuizSuggestionsInput, UserUpdateWithoutQuizSuggestionsInput>, UserUncheckedUpdateWithoutQuizSuggestionsInput>
-  }
-
-  export type UserCreateNestedOneWithoutBbSchemeStatesInput = {
-    create?: XOR<UserCreateWithoutBbSchemeStatesInput, UserUncheckedCreateWithoutBbSchemeStatesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutBbSchemeStatesInput
-    connect?: UserWhereUniqueInput
-  }
-
-  export type UserUpdateOneWithoutBbSchemeStatesNestedInput = {
-    create?: XOR<UserCreateWithoutBbSchemeStatesInput, UserUncheckedCreateWithoutBbSchemeStatesInput>
-    connectOrCreate?: UserCreateOrConnectWithoutBbSchemeStatesInput
-    upsert?: UserUpsertWithoutBbSchemeStatesInput
-    disconnect?: UserWhereInput | boolean
-    delete?: UserWhereInput | boolean
-    connect?: UserWhereUniqueInput
-    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBbSchemeStatesInput, UserUpdateWithoutBbSchemeStatesInput>, UserUncheckedUpdateWithoutBbSchemeStatesInput>
-  }
-
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -75079,10 +65629,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -75109,10 +65655,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -75135,7 +65677,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -75157,10 +65698,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -75187,10 +65724,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -75212,7 +65745,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -75249,10 +65781,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -75279,10 +65807,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -75305,7 +65829,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -75327,10 +65850,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -75357,10 +65876,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -75382,7 +65897,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -75403,10 +65917,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -75434,10 +65944,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
@@ -75459,7 +65965,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -75481,10 +65986,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -75512,10 +66013,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -75536,7 +66033,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -75573,10 +66069,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -75604,10 +66096,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
@@ -75629,7 +66117,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -75651,10 +66138,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -75682,10 +66165,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75706,7 +66185,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -76348,130 +66826,6 @@ export namespace Prisma {
 
   export type PrivateMessageCreateManyAuthorInputEnvelope = {
     data: PrivateMessageCreateManyAuthorInput | PrivateMessageCreateManyAuthorInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type QuizAttemptCreateWithoutUserInput = {
-    id?: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-  }
-
-  export type QuizAttemptUncheckedCreateWithoutUserInput = {
-    id?: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-  }
-
-  export type QuizAttemptCreateOrConnectWithoutUserInput = {
-    where: QuizAttemptWhereUniqueInput
-    create: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizAttemptCreateManyUserInputEnvelope = {
-    data: QuizAttemptCreateManyUserInput | QuizAttemptCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type QuizGameCreateWithoutUserInput = {
-    id?: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-  }
-
-  export type QuizGameUncheckedCreateWithoutUserInput = {
-    id?: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-  }
-
-  export type QuizGameCreateOrConnectWithoutUserInput = {
-    where: QuizGameWhereUniqueInput
-    create: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizGameCreateManyUserInputEnvelope = {
-    data: QuizGameCreateManyUserInput | QuizGameCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type QuizDailyWinnerCreateWithoutUserInput = {
-    date: Date | string
-    score: number
-    streak?: number
-  }
-
-  export type QuizDailyWinnerUncheckedCreateWithoutUserInput = {
-    date: Date | string
-    score: number
-    streak?: number
-  }
-
-  export type QuizDailyWinnerCreateOrConnectWithoutUserInput = {
-    where: QuizDailyWinnerWhereUniqueInput
-    create: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizDailyWinnerCreateManyUserInputEnvelope = {
-    data: QuizDailyWinnerCreateManyUserInput | QuizDailyWinnerCreateManyUserInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type QuizQuestionSuggestionCreateWithoutAuthorInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-  }
-
-  export type QuizQuestionSuggestionCreateOrConnectWithoutAuthorInput = {
-    where: QuizQuestionSuggestionWhereUniqueInput
-    create: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput>
-  }
-
-  export type QuizQuestionSuggestionCreateManyAuthorInputEnvelope = {
-    data: QuizQuestionSuggestionCreateManyAuthorInput | QuizQuestionSuggestionCreateManyAuthorInput[]
     skipDuplicates?: boolean
   }
 
@@ -77533,30 +67887,6 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type BBSchemeStateCreateWithoutCreatorInput = {
-    id?: string
-    hash: string
-    data: string
-    createdAt?: Date | string
-  }
-
-  export type BBSchemeStateUncheckedCreateWithoutCreatorInput = {
-    id?: string
-    hash: string
-    data: string
-    createdAt?: Date | string
-  }
-
-  export type BBSchemeStateCreateOrConnectWithoutCreatorInput = {
-    where: BBSchemeStateWhereUniqueInput
-    create: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type BBSchemeStateCreateManyCreatorInputEnvelope = {
-    data: BBSchemeStateCreateManyCreatorInput | BBSchemeStateCreateManyCreatorInput[]
-    skipDuplicates?: boolean
-  }
-
   export type NotificationCreateWithoutUserInput = {
     id?: string
     type: string
@@ -78113,128 +68443,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PrivateMessage"> | Date | string
     conversationId?: StringFilter<"PrivateMessage"> | string
     authorId?: StringFilter<"PrivateMessage"> | string
-  }
-
-  export type QuizAttemptUpsertWithWhereUniqueWithoutUserInput = {
-    where: QuizAttemptWhereUniqueInput
-    update: XOR<QuizAttemptUpdateWithoutUserInput, QuizAttemptUncheckedUpdateWithoutUserInput>
-    create: XOR<QuizAttemptCreateWithoutUserInput, QuizAttemptUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizAttemptUpdateWithWhereUniqueWithoutUserInput = {
-    where: QuizAttemptWhereUniqueInput
-    data: XOR<QuizAttemptUpdateWithoutUserInput, QuizAttemptUncheckedUpdateWithoutUserInput>
-  }
-
-  export type QuizAttemptUpdateManyWithWhereWithoutUserInput = {
-    where: QuizAttemptScalarWhereInput
-    data: XOR<QuizAttemptUpdateManyMutationInput, QuizAttemptUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type QuizAttemptScalarWhereInput = {
-    AND?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
-    OR?: QuizAttemptScalarWhereInput[]
-    NOT?: QuizAttemptScalarWhereInput | QuizAttemptScalarWhereInput[]
-    id?: StringFilter<"QuizAttempt"> | string
-    userId?: StringFilter<"QuizAttempt"> | string
-    score?: IntFilter<"QuizAttempt"> | number
-    correct?: IntFilter<"QuizAttempt"> | number
-    total?: IntFilter<"QuizAttempt"> | number
-    duration?: IntFilter<"QuizAttempt"> | number
-    jokersUsed?: IntFilter<"QuizAttempt"> | number
-    createdAt?: DateTimeFilter<"QuizAttempt"> | Date | string
-  }
-
-  export type QuizGameUpsertWithWhereUniqueWithoutUserInput = {
-    where: QuizGameWhereUniqueInput
-    update: XOR<QuizGameUpdateWithoutUserInput, QuizGameUncheckedUpdateWithoutUserInput>
-    create: XOR<QuizGameCreateWithoutUserInput, QuizGameUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizGameUpdateWithWhereUniqueWithoutUserInput = {
-    where: QuizGameWhereUniqueInput
-    data: XOR<QuizGameUpdateWithoutUserInput, QuizGameUncheckedUpdateWithoutUserInput>
-  }
-
-  export type QuizGameUpdateManyWithWhereWithoutUserInput = {
-    where: QuizGameScalarWhereInput
-    data: XOR<QuizGameUpdateManyMutationInput, QuizGameUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type QuizGameScalarWhereInput = {
-    AND?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
-    OR?: QuizGameScalarWhereInput[]
-    NOT?: QuizGameScalarWhereInput | QuizGameScalarWhereInput[]
-    id?: StringFilter<"QuizGame"> | string
-    userId?: StringFilter<"QuizGame"> | string
-    questionIds?: StringNullableListFilter<"QuizGame">
-    currentIndex?: IntFilter<"QuizGame"> | number
-    questionServedAt?: DateTimeNullableFilter<"QuizGame"> | Date | string | null
-    score?: IntFilter<"QuizGame"> | number
-    correct?: IntFilter<"QuizGame"> | number
-    fiftyUsed?: BoolFilter<"QuizGame"> | boolean
-    communityUsed?: BoolFilter<"QuizGame"> | boolean
-    skipUsed?: BoolFilter<"QuizGame"> | boolean
-    startedAt?: DateTimeFilter<"QuizGame"> | Date | string
-  }
-
-  export type QuizDailyWinnerUpsertWithWhereUniqueWithoutUserInput = {
-    where: QuizDailyWinnerWhereUniqueInput
-    update: XOR<QuizDailyWinnerUpdateWithoutUserInput, QuizDailyWinnerUncheckedUpdateWithoutUserInput>
-    create: XOR<QuizDailyWinnerCreateWithoutUserInput, QuizDailyWinnerUncheckedCreateWithoutUserInput>
-  }
-
-  export type QuizDailyWinnerUpdateWithWhereUniqueWithoutUserInput = {
-    where: QuizDailyWinnerWhereUniqueInput
-    data: XOR<QuizDailyWinnerUpdateWithoutUserInput, QuizDailyWinnerUncheckedUpdateWithoutUserInput>
-  }
-
-  export type QuizDailyWinnerUpdateManyWithWhereWithoutUserInput = {
-    where: QuizDailyWinnerScalarWhereInput
-    data: XOR<QuizDailyWinnerUpdateManyMutationInput, QuizDailyWinnerUncheckedUpdateManyWithoutUserInput>
-  }
-
-  export type QuizDailyWinnerScalarWhereInput = {
-    AND?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
-    OR?: QuizDailyWinnerScalarWhereInput[]
-    NOT?: QuizDailyWinnerScalarWhereInput | QuizDailyWinnerScalarWhereInput[]
-    date?: DateTimeFilter<"QuizDailyWinner"> | Date | string
-    userId?: StringFilter<"QuizDailyWinner"> | string
-    score?: IntFilter<"QuizDailyWinner"> | number
-    streak?: IntFilter<"QuizDailyWinner"> | number
-  }
-
-  export type QuizQuestionSuggestionUpsertWithWhereUniqueWithoutAuthorInput = {
-    where: QuizQuestionSuggestionWhereUniqueInput
-    update: XOR<QuizQuestionSuggestionUpdateWithoutAuthorInput, QuizQuestionSuggestionUncheckedUpdateWithoutAuthorInput>
-    create: XOR<QuizQuestionSuggestionCreateWithoutAuthorInput, QuizQuestionSuggestionUncheckedCreateWithoutAuthorInput>
-  }
-
-  export type QuizQuestionSuggestionUpdateWithWhereUniqueWithoutAuthorInput = {
-    where: QuizQuestionSuggestionWhereUniqueInput
-    data: XOR<QuizQuestionSuggestionUpdateWithoutAuthorInput, QuizQuestionSuggestionUncheckedUpdateWithoutAuthorInput>
-  }
-
-  export type QuizQuestionSuggestionUpdateManyWithWhereWithoutAuthorInput = {
-    where: QuizQuestionSuggestionScalarWhereInput
-    data: XOR<QuizQuestionSuggestionUpdateManyMutationInput, QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorInput>
-  }
-
-  export type QuizQuestionSuggestionScalarWhereInput = {
-    AND?: QuizQuestionSuggestionScalarWhereInput | QuizQuestionSuggestionScalarWhereInput[]
-    OR?: QuizQuestionSuggestionScalarWhereInput[]
-    NOT?: QuizQuestionSuggestionScalarWhereInput | QuizQuestionSuggestionScalarWhereInput[]
-    id?: StringFilter<"QuizQuestionSuggestion"> | string
-    category?: StringFilter<"QuizQuestionSuggestion"> | string
-    question?: StringFilter<"QuizQuestionSuggestion"> | string
-    imageUrl?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    options?: StringFilter<"QuizQuestionSuggestion"> | string
-    correctIndex?: IntFilter<"QuizQuestionSuggestion"> | number
-    explanation?: StringNullableFilter<"QuizQuestionSuggestion"> | string | null
-    authorId?: StringFilter<"QuizQuestionSuggestion"> | string
-    status?: StringFilter<"QuizQuestionSuggestion"> | string
-    createdAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
-    updatedAt?: DateTimeFilter<"QuizQuestionSuggestion"> | Date | string
   }
 
   export type RankingArchiveUpsertWithWhereUniqueWithoutArchivedByInput = {
@@ -78823,33 +69031,6 @@ export namespace Prisma {
     data: XOR<TopicUpdateManyMutationInput, TopicUncheckedUpdateManyWithoutLastPostAuthorInput>
   }
 
-  export type BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput = {
-    where: BBSchemeStateWhereUniqueInput
-    update: XOR<BBSchemeStateUpdateWithoutCreatorInput, BBSchemeStateUncheckedUpdateWithoutCreatorInput>
-    create: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput = {
-    where: BBSchemeStateWhereUniqueInput
-    data: XOR<BBSchemeStateUpdateWithoutCreatorInput, BBSchemeStateUncheckedUpdateWithoutCreatorInput>
-  }
-
-  export type BBSchemeStateUpdateManyWithWhereWithoutCreatorInput = {
-    where: BBSchemeStateScalarWhereInput
-    data: XOR<BBSchemeStateUpdateManyMutationInput, BBSchemeStateUncheckedUpdateManyWithoutCreatorInput>
-  }
-
-  export type BBSchemeStateScalarWhereInput = {
-    AND?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
-    OR?: BBSchemeStateScalarWhereInput[]
-    NOT?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
-    id?: StringFilter<"BBSchemeState"> | string
-    hash?: StringFilter<"BBSchemeState"> | string
-    data?: StringFilter<"BBSchemeState"> | string
-    creatorId?: StringNullableFilter<"BBSchemeState"> | string | null
-    createdAt?: DateTimeFilter<"BBSchemeState"> | Date | string
-  }
-
   export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
     where: NotificationWhereUniqueInput
     update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
@@ -78913,10 +69094,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -78943,10 +69120,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -78969,7 +69142,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -78991,10 +69163,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79021,10 +69189,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -79046,7 +69210,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -79072,10 +69235,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79102,10 +69261,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -79128,7 +69283,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -79150,10 +69304,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79180,10 +69330,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -79205,7 +69351,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -79242,10 +69387,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -79272,10 +69413,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -79298,7 +69435,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -79320,10 +69456,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -79350,10 +69482,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -79375,7 +69503,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -79407,10 +69534,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -79437,10 +69560,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -79463,7 +69582,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -79485,10 +69603,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -79515,10 +69629,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -79540,7 +69650,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -79561,10 +69670,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79592,10 +69697,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -79617,7 +69718,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -79639,10 +69739,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79670,10 +69766,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -79694,7 +69786,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -79824,10 +69915,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79855,10 +69942,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -79880,7 +69963,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -79902,10 +69984,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -79933,10 +70011,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -79957,7 +70031,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -80131,10 +70204,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -80162,10 +70231,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -80187,7 +70252,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -80209,10 +70273,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -80240,10 +70300,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -80264,7 +70320,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -80301,10 +70356,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -80332,10 +70383,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -80357,7 +70404,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -80379,10 +70425,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -80410,10 +70452,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -80434,7 +70472,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -80582,10 +70619,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -80613,10 +70646,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -80638,7 +70667,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -80660,10 +70688,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -80691,10 +70715,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -80715,7 +70735,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -80845,10 +70864,6 @@ export namespace Prisma {
     previousTheme?: StringNullableFilter<"User"> | string | null
     equipe?: StringNullableFilter<"User"> | string | null
     ligueCustom?: StringNullableFilter<"User"> | string | null
-    quizTotalScore?: IntFilter<"User"> | number
-    quizBestScore?: IntFilter<"User"> | number
-    quizStreak?: IntFilter<"User"> | number
-    quizAttemptsCount?: IntFilter<"User"> | number
     legacyId?: StringNullableFilter<"User"> | string | null
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
@@ -81199,10 +71214,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81230,10 +71241,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -81255,7 +71262,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -81277,10 +71283,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81308,10 +71310,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -81332,7 +71330,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -81358,10 +71355,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81389,10 +71382,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -81414,7 +71403,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -81436,10 +71424,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81467,10 +71451,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -81491,7 +71471,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -81680,10 +71659,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81711,10 +71686,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -81736,7 +71707,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -81758,10 +71728,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -81789,10 +71755,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -81813,7 +71775,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -81957,10 +71918,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -81988,10 +71945,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -82013,7 +71966,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -82035,10 +71987,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -82066,10 +72014,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -82090,7 +72034,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -82122,10 +72065,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -82153,10 +72092,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -82178,7 +72113,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -82200,10 +72134,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -82231,10 +72161,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -82255,7 +72181,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -82424,10 +72349,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -82455,10 +72376,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -82480,7 +72397,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -82502,10 +72418,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -82533,10 +72445,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -82557,7 +72465,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -82665,10 +72572,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -82696,10 +72599,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -82721,7 +72620,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -82743,10 +72641,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -82774,10 +72668,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -82798,7 +72688,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -82850,10 +72739,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -82880,10 +72765,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -82906,7 +72787,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -82928,10 +72808,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -82958,10 +72834,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -82983,7 +72855,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -83009,10 +72880,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -83039,10 +72906,6 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -83065,7 +72928,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -83087,10 +72949,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -83117,10 +72975,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -83142,7 +72996,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -83290,10 +73143,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83321,10 +73170,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -83346,7 +73191,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -83368,10 +73212,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83399,10 +73239,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -83423,7 +73259,6 @@ export namespace Prisma {
     cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -83471,10 +73306,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83501,10 +73332,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -83527,7 +73354,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -83549,10 +73375,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83579,10 +73401,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -83604,7 +73422,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -83636,10 +73453,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83666,10 +73479,6 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -83692,7 +73501,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -83714,10 +73522,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -83744,10 +73548,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -83769,7 +73569,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -83883,10 +73682,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -83913,10 +73708,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -83939,7 +73730,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -83961,10 +73751,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -83991,10 +73777,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -84016,7 +73798,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -84042,10 +73823,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -84072,10 +73849,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -84098,7 +73871,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -84120,10 +73892,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -84150,10 +73918,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -84175,7 +73939,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -84296,10 +74059,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84326,10 +74085,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -84352,7 +74107,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -84374,10 +74128,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84404,10 +74154,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -84429,7 +74175,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -84461,10 +74206,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84491,10 +74232,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -84517,7 +74254,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -84539,10 +74275,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84569,10 +74301,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -84594,7 +74322,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -84663,10 +74390,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -84693,10 +74416,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -84719,7 +74438,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -84741,10 +74459,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -84771,10 +74485,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -84796,7 +74506,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -84866,10 +74575,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84896,10 +74601,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -84922,7 +74623,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -84944,10 +74644,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -84974,10 +74670,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -84999,7 +74691,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -85059,10 +74750,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -85089,10 +74776,6 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -85115,7 +74798,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -85137,10 +74819,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -85167,10 +74845,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -85192,7 +74866,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -85262,10 +74935,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -85292,10 +74961,6 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -85318,7 +74983,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -85340,10 +75004,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -85370,10 +75030,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -85395,7 +75051,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -85510,10 +75165,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -85541,10 +75192,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -85566,7 +75213,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -85588,10 +75234,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -85619,10 +75261,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -85643,7 +75281,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -85741,10 +75378,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -85772,10 +75405,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -85797,7 +75426,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -85819,10 +75447,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -85850,10 +75474,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -85874,7 +75494,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -85895,10 +75514,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -85925,10 +75540,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -85951,7 +75562,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -85973,10 +75583,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86003,10 +75609,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -86028,7 +75630,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -86054,10 +75655,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86084,10 +75681,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -86110,7 +75703,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -86132,10 +75724,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86162,10 +75750,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -86187,7 +75771,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -86267,10 +75850,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -86297,10 +75876,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -86323,7 +75898,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -86345,10 +75919,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -86375,10 +75945,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -86400,7 +75966,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -86432,10 +75997,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -86462,10 +76023,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -86488,7 +76045,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -86510,10 +76066,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -86540,10 +76092,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -86565,7 +76113,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -86635,10 +76182,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86666,10 +76209,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -86692,7 +76231,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
@@ -86713,10 +76251,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86744,10 +76278,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -86769,7 +76299,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
@@ -86794,10 +76323,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86825,10 +76350,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -86851,7 +76372,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
   }
 
@@ -86872,10 +76392,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -86903,10 +76419,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -86928,7 +76440,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -87095,10 +76606,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87126,10 +76633,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -87152,7 +76655,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
@@ -87173,10 +76675,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87204,10 +76702,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -87229,7 +76723,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
@@ -87260,10 +76753,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87291,10 +76780,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -87317,7 +76802,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
   }
 
@@ -87338,10 +76822,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87369,10 +76849,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -87394,7 +76870,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -87563,10 +77038,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -87593,10 +77064,6 @@ export namespace Prisma {
     moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
     posts?: PostCreateNestedManyWithoutAuthorInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -87619,7 +77086,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -87641,10 +77107,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -87671,10 +77133,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -87696,7 +77154,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -87776,10 +77233,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87806,10 +77259,6 @@ export namespace Prisma {
     moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
     posts?: PostUpdateManyWithoutAuthorNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -87832,7 +77281,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -87854,10 +77302,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -87884,10 +77328,6 @@ export namespace Prisma {
     moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -87909,7 +77349,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -87979,10 +77418,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88010,10 +77445,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -88035,7 +77466,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -88056,10 +77486,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88087,10 +77513,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -88112,7 +77534,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -88214,10 +77635,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88245,10 +77662,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -88270,7 +77683,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -88292,10 +77704,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88323,10 +77731,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -88347,7 +77751,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -88445,10 +77848,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -88476,10 +77875,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -88501,7 +77896,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -88523,10 +77917,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -88554,10 +77944,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -88578,7 +77964,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -88599,10 +77984,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88630,10 +78011,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
@@ -88655,7 +78032,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -88677,10 +78053,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88708,10 +78080,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -88732,7 +78100,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -88769,10 +78136,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -88800,10 +78163,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
@@ -88825,7 +78184,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -88847,10 +78205,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -88878,10 +78232,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -88902,7 +78252,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -88923,10 +78272,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -88954,10 +78299,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -88979,7 +78320,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -89001,10 +78341,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -89032,10 +78368,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -89056,7 +78388,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -89208,10 +78539,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -89239,10 +78566,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -89264,7 +78587,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -89286,10 +78608,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -89317,10 +78635,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -89341,7 +78655,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -89483,10 +78796,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -89514,10 +78823,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -89539,7 +78844,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -89561,10 +78865,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -89592,10 +78892,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -89616,7 +78912,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -89788,10 +79083,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -89819,10 +79110,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -89844,7 +79131,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -89866,10 +79152,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -89897,10 +79179,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -89921,7 +79199,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -90079,10 +79356,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -90110,10 +79383,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -90135,7 +79404,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -90157,10 +79425,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -90188,10 +79452,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -90212,7 +79472,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -90276,10 +79535,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -90307,10 +79562,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -90332,7 +79583,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -90354,10 +79604,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -90385,10 +79631,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -90409,7 +79651,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -90463,10 +79704,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -90494,10 +79731,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -90519,7 +79752,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -90541,10 +79773,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -90572,10 +79800,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -90596,7 +79820,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -90748,10 +79971,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -90779,10 +79998,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -90804,7 +80019,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -90826,10 +80040,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -90857,10 +80067,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -90881,7 +80087,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -91072,10 +80277,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -91102,10 +80303,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -91128,7 +80325,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -91150,10 +80346,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -91180,10 +80372,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -91205,7 +80393,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -91231,10 +80418,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -91261,10 +80444,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -91287,7 +80466,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -91309,10 +80487,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -91339,10 +80513,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -91364,7 +80534,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -91495,10 +80664,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -91525,10 +80690,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -91551,7 +80712,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -91573,10 +80733,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -91603,10 +80759,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -91628,7 +80780,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -91660,10 +80811,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -91690,10 +80837,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -91716,7 +80859,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -91738,10 +80880,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -91768,10 +80906,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -91793,7 +80927,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -91907,10 +81040,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -91937,10 +81066,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -91963,7 +81088,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -91985,10 +81109,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92015,10 +81135,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -92040,7 +81156,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -92114,10 +81229,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -92144,10 +81255,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -92170,7 +81277,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -92192,10 +81298,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -92222,10 +81324,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -92247,7 +81345,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -92353,10 +81450,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92383,10 +81476,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -92409,7 +81498,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -92431,10 +81519,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92461,10 +81545,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -92486,7 +81566,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -92632,10 +81711,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92663,10 +81738,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -92688,7 +81759,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -92710,10 +81780,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92741,10 +81807,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -92765,7 +81827,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -92791,10 +81852,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92822,10 +81879,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -92847,7 +81900,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -92869,10 +81921,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -92900,10 +81948,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -92924,7 +81968,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -92977,10 +82020,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93007,10 +82046,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -93033,7 +82068,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -93055,10 +82089,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93085,10 +82115,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -93110,7 +82136,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -93179,10 +82204,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93209,10 +82230,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -93235,7 +82252,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -93257,10 +82273,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93287,10 +82299,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -93312,7 +82320,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -93338,10 +82345,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93368,10 +82371,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -93394,7 +82393,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -93416,10 +82414,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93446,10 +82440,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -93471,7 +82461,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -93508,10 +82497,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93538,10 +82523,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -93564,7 +82545,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -93586,10 +82566,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93616,10 +82592,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -93641,7 +82613,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -93673,10 +82644,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93703,10 +82670,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -93729,7 +82692,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -93751,10 +82713,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -93781,10 +82739,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -93806,7 +82760,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -93827,10 +82780,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93857,10 +82806,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -93883,7 +82828,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -93905,10 +82849,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -93935,10 +82875,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -93960,7 +82896,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -93997,10 +82932,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94027,10 +82958,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -94053,7 +82980,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -94075,10 +83001,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94105,10 +83027,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -94130,7 +83048,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -94151,10 +83068,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -94182,10 +83095,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     sessions?: SessionCreateNestedManyWithoutUserInput
     topics?: TopicCreateNestedManyWithoutAuthorInput
@@ -94207,7 +83116,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -94229,10 +83137,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -94260,10 +83164,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
     topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
@@ -94284,7 +83184,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -94336,10 +83235,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94367,10 +83262,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
     topics?: TopicUpdateManyWithoutAuthorNestedInput
@@ -94392,7 +83283,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -94414,10 +83304,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94445,10 +83331,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
     topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
@@ -94469,7 +83351,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -94561,10 +83442,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -94592,10 +83469,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -94617,7 +83490,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -94639,10 +83511,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -94670,10 +83538,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -94694,7 +83558,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -94846,10 +83709,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94877,10 +83736,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -94902,7 +83757,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -94924,10 +83778,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -94955,10 +83805,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -94979,7 +83825,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -95413,10 +84258,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -95444,10 +84285,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -95469,7 +84306,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -95491,10 +84327,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -95522,10 +84354,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -95546,7 +84374,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -95572,10 +84399,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -95603,10 +84426,6 @@ export namespace Prisma {
     posts?: PostCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
     sessions?: SessionCreateNestedManyWithoutUserInput
@@ -95628,7 +84447,6 @@ export namespace Prisma {
     deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
@@ -95650,10 +84468,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -95681,10 +84495,6 @@ export namespace Prisma {
     posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
     postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
     privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
     rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
     submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
     sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
@@ -95705,7 +84515,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
@@ -95759,10 +84568,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -95790,10 +84595,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -95815,7 +84616,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -95837,10 +84637,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -95868,10 +84664,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -95892,7 +84684,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -95924,10 +84715,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -95955,10 +84742,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -95980,7 +84763,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -96002,10 +84784,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -96033,10 +84811,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -96057,7 +84831,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -96083,1626 +84856,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tournamentId?: StringFieldUpdateOperationsInput | string
     roundNumber?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type UserCreateWithoutQuizAttemptsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
-    articles?: ArticleCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
-    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
-    blocks?: BlockCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    topics?: TopicCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewCreateNestedManyWithoutUserInput
-    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
-    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
-  }
-
-  export type UserUncheckedCreateWithoutQuizAttemptsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
-    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
-    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
-    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
-    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
-    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
-  }
-
-  export type UserCreateOrConnectWithoutQuizAttemptsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
-  }
-
-  export type UserUpsertWithoutQuizAttemptsInput = {
-    update: XOR<UserUpdateWithoutQuizAttemptsInput, UserUncheckedUpdateWithoutQuizAttemptsInput>
-    create: XOR<UserCreateWithoutQuizAttemptsInput, UserUncheckedCreateWithoutQuizAttemptsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutQuizAttemptsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutQuizAttemptsInput, UserUncheckedUpdateWithoutQuizAttemptsInput>
-  }
-
-  export type UserUpdateWithoutQuizAttemptsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    topics?: TopicUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
-    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutQuizAttemptsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserCreateWithoutQuizGamesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
-    articles?: ArticleCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
-    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
-    blocks?: BlockCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    topics?: TopicCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewCreateNestedManyWithoutUserInput
-    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
-    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
-  }
-
-  export type UserUncheckedCreateWithoutQuizGamesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
-    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
-    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
-    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
-    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
-    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
-  }
-
-  export type UserCreateOrConnectWithoutQuizGamesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
-  }
-
-  export type UserUpsertWithoutQuizGamesInput = {
-    update: XOR<UserUpdateWithoutQuizGamesInput, UserUncheckedUpdateWithoutQuizGamesInput>
-    create: XOR<UserCreateWithoutQuizGamesInput, UserUncheckedCreateWithoutQuizGamesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutQuizGamesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutQuizGamesInput, UserUncheckedUpdateWithoutQuizGamesInput>
-  }
-
-  export type UserUpdateWithoutQuizGamesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    topics?: TopicUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
-    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutQuizGamesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserCreateWithoutDailyWinsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
-    articles?: ArticleCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
-    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
-    blocks?: BlockCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    topics?: TopicCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewCreateNestedManyWithoutUserInput
-    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
-    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
-  }
-
-  export type UserUncheckedCreateWithoutDailyWinsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
-    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
-    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
-    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
-    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
-    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
-  }
-
-  export type UserCreateOrConnectWithoutDailyWinsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
-  }
-
-  export type UserUpsertWithoutDailyWinsInput = {
-    update: XOR<UserUpdateWithoutDailyWinsInput, UserUncheckedUpdateWithoutDailyWinsInput>
-    create: XOR<UserCreateWithoutDailyWinsInput, UserUncheckedCreateWithoutDailyWinsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutDailyWinsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutDailyWinsInput, UserUncheckedUpdateWithoutDailyWinsInput>
-  }
-
-  export type UserUpdateWithoutDailyWinsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    topics?: TopicUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
-    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutDailyWinsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserCreateWithoutQuizSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
-    articles?: ArticleCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
-    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
-    blocks?: BlockCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    topics?: TopicCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewCreateNestedManyWithoutUserInput
-    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
-    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
-  }
-
-  export type UserUncheckedCreateWithoutQuizSuggestionsInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
-    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
-    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
-    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
-    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
-    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
-  }
-
-  export type UserCreateOrConnectWithoutQuizSuggestionsInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutQuizSuggestionsInput, UserUncheckedCreateWithoutQuizSuggestionsInput>
-  }
-
-  export type UserUpsertWithoutQuizSuggestionsInput = {
-    update: XOR<UserUpdateWithoutQuizSuggestionsInput, UserUncheckedUpdateWithoutQuizSuggestionsInput>
-    create: XOR<UserCreateWithoutQuizSuggestionsInput, UserUncheckedCreateWithoutQuizSuggestionsInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutQuizSuggestionsInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutQuizSuggestionsInput, UserUncheckedUpdateWithoutQuizSuggestionsInput>
-  }
-
-  export type UserUpdateWithoutQuizSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    topics?: TopicUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
-    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutQuizSuggestionsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserCreateWithoutBbSchemeStatesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
-    articles?: ArticleCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
-    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
-    blocks?: BlockCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
-    posts?: PostCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
-    sessions?: SessionCreateNestedManyWithoutUserInput
-    topics?: TopicCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewCreateNestedManyWithoutUserInput
-    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
-    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
-    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
-    notifications?: NotificationCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
-  }
-
-  export type UserUncheckedCreateWithoutBbSchemeStatesInput = {
-    id?: string
-    name?: string | null
-    email?: string | null
-    emailVerified?: Date | string | null
-    image?: string | null
-    role?: string
-    nafNumber?: string | null
-    region?: string | null
-    signature?: string | null
-    isBanned?: boolean
-    banReason?: string | null
-    avatarFrame?: string | null
-    theme?: string
-    previousTheme?: string | null
-    equipe?: string | null
-    ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
-    legacyId?: string | null
-    forumactifName?: string | null
-    hasFinishedOnboarding?: boolean
-    notifPm?: boolean
-    notifFollowedTopic?: boolean
-    notifNewsletter?: boolean
-    autoFollowTopics?: boolean
-    forumReadAllAt?: Date | string
-    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
-    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
-    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
-    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
-    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
-    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
-    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
-    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
-    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
-    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
-    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
-    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
-    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
-    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
-    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
-    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
-    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
-    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
-    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
-    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
-    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
-    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
-    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
-    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
-    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
-    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
-    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
-    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
-    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
-    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
-    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
-    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
-    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
-    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
-    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
-    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
-    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
-    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
-    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
-    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
-    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
-    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
-    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
-    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
-  }
-
-  export type UserCreateOrConnectWithoutBbSchemeStatesInput = {
-    where: UserWhereUniqueInput
-    create: XOR<UserCreateWithoutBbSchemeStatesInput, UserUncheckedCreateWithoutBbSchemeStatesInput>
-  }
-
-  export type UserUpsertWithoutBbSchemeStatesInput = {
-    update: XOR<UserUpdateWithoutBbSchemeStatesInput, UserUncheckedUpdateWithoutBbSchemeStatesInput>
-    create: XOR<UserCreateWithoutBbSchemeStatesInput, UserUncheckedCreateWithoutBbSchemeStatesInput>
-    where?: UserWhereInput
-  }
-
-  export type UserUpdateToOneWithWhereWithoutBbSchemeStatesInput = {
-    where?: UserWhereInput
-    data: XOR<UserUpdateWithoutBbSchemeStatesInput, UserUncheckedUpdateWithoutBbSchemeStatesInput>
-  }
-
-  export type UserUpdateWithoutBbSchemeStatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
-    posts?: PostUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUpdateManyWithoutUserNestedInput
-    topics?: TopicUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
-    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
-    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    notifications?: NotificationUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
-  }
-
-  export type UserUncheckedUpdateWithoutBbSchemeStatesInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    name?: NullableStringFieldUpdateOperationsInput | string | null
-    email?: NullableStringFieldUpdateOperationsInput | string | null
-    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    image?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: StringFieldUpdateOperationsInput | string
-    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
-    region?: NullableStringFieldUpdateOperationsInput | string | null
-    signature?: NullableStringFieldUpdateOperationsInput | string | null
-    isBanned?: BoolFieldUpdateOperationsInput | boolean
-    banReason?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
-    theme?: StringFieldUpdateOperationsInput | string
-    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
-    equipe?: NullableStringFieldUpdateOperationsInput | string | null
-    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
-    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
-    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
-    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
-    notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
-    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
-    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
-    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
-    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
-    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
-    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
-    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
-    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
-    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
-    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
-    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
-    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
-    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
-    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
-    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
-    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
-    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
-    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
-    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
-    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
-    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
-    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
-    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
-    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
-    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
-    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
-    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
-    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
-    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
-    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
-    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
-    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
-    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
-    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
-    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
-    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
-    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
-    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
-    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
-    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
-    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
-    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
-    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -97908,48 +85061,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     conversationId: string
-  }
-
-  export type QuizAttemptCreateManyUserInput = {
-    id?: string
-    score: number
-    correct: number
-    total?: number
-    duration: number
-    jokersUsed?: number
-    createdAt?: Date | string
-  }
-
-  export type QuizGameCreateManyUserInput = {
-    id?: string
-    questionIds?: QuizGameCreatequestionIdsInput | string[]
-    currentIndex?: number
-    questionServedAt?: Date | string | null
-    score?: number
-    correct?: number
-    fiftyUsed?: boolean
-    communityUsed?: boolean
-    skipUsed?: boolean
-    startedAt?: Date | string
-  }
-
-  export type QuizDailyWinnerCreateManyUserInput = {
-    date: Date | string
-    score: number
-    streak?: number
-  }
-
-  export type QuizQuestionSuggestionCreateManyAuthorInput = {
-    id?: string
-    category: string
-    question: string
-    imageUrl?: string | null
-    options: string
-    correctIndex: number
-    explanation?: string | null
-    status?: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
   }
 
   export type RankingArchiveCreateManyArchivedByInput = {
@@ -98240,13 +85351,6 @@ export namespace Prisma {
     deletionReason?: string | null
     lastPostAt?: Date | string
     lastPostId?: string | null
-  }
-
-  export type BBSchemeStateCreateManyCreatorInput = {
-    id?: string
-    hash: string
-    data: string
-    createdAt?: Date | string
   }
 
   export type NotificationCreateManyUserInput = {
@@ -98924,132 +86028,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversationId?: StringFieldUpdateOperationsInput | string
-  }
-
-  export type QuizAttemptUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizAttemptUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizAttemptUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    total?: IntFieldUpdateOperationsInput | number
-    duration?: IntFieldUpdateOperationsInput | number
-    jokersUsed?: IntFieldUpdateOperationsInput | number
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameUncheckedUpdateWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizGameUncheckedUpdateManyWithoutUserInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    questionIds?: QuizGameUpdatequestionIdsInput | string[]
-    currentIndex?: IntFieldUpdateOperationsInput | number
-    questionServedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
-    score?: IntFieldUpdateOperationsInput | number
-    correct?: IntFieldUpdateOperationsInput | number
-    fiftyUsed?: BoolFieldUpdateOperationsInput | boolean
-    communityUsed?: BoolFieldUpdateOperationsInput | boolean
-    skipUsed?: BoolFieldUpdateOperationsInput | boolean
-    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizDailyWinnerUpdateWithoutUserInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizDailyWinnerUncheckedUpdateWithoutUserInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizDailyWinnerUncheckedUpdateManyWithoutUserInput = {
-    date?: DateTimeFieldUpdateOperationsInput | Date | string
-    score?: IntFieldUpdateOperationsInput | number
-    streak?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type QuizQuestionSuggestionUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionSuggestionUncheckedUpdateWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    category?: StringFieldUpdateOperationsInput | string
-    question?: StringFieldUpdateOperationsInput | string
-    imageUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    options?: StringFieldUpdateOperationsInput | string
-    correctIndex?: IntFieldUpdateOperationsInput | number
-    explanation?: NullableStringFieldUpdateOperationsInput | string | null
-    status?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type RankingArchiveUpdateWithoutArchivedByInput = {
@@ -100269,27 +87247,6 @@ export namespace Prisma {
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
-  export type BBSchemeStateUpdateWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BBSchemeStateUncheckedUpdateWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
-  export type BBSchemeStateUncheckedUpdateManyWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    hash?: StringFieldUpdateOperationsInput | string
-    data?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-  }
-
   export type NotificationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
@@ -100564,10 +87521,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -100595,10 +87548,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -100620,7 +87569,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -100642,10 +87590,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -100673,10 +87617,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -100697,7 +87637,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -100719,10 +87658,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -101315,10 +88250,6 @@ export namespace Prisma {
     previousTheme?: string | null
     equipe?: string | null
     ligueCustom?: string | null
-    quizTotalScore?: number
-    quizBestScore?: number
-    quizStreak?: number
-    quizAttemptsCount?: number
     legacyId?: string | null
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
@@ -101345,10 +88276,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -101376,10 +88303,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -101401,7 +88324,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -101422,10 +88344,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -101453,10 +88371,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -101478,7 +88392,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -101499,10 +88412,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -101905,10 +88814,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -101936,10 +88841,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -101961,7 +88862,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -101983,10 +88883,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -102014,10 +88910,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -102038,7 +88930,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -102060,10 +88951,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -102090,10 +88977,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -102121,10 +89004,6 @@ export namespace Prisma {
     posts?: PostUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUpdateManyWithoutUserNestedInput
@@ -102146,7 +89025,6 @@ export namespace Prisma {
     deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
@@ -102168,10 +89046,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
@@ -102199,10 +89073,6 @@ export namespace Prisma {
     posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
     postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
     privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
-    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
-    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
-    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
-    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
     rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
     submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
     sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
@@ -102223,7 +89093,6 @@ export namespace Prisma {
     deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
-    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
@@ -102245,10 +89114,6 @@ export namespace Prisma {
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
     equipe?: NullableStringFieldUpdateOperationsInput | string | null
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
-    quizTotalScore?: IntFieldUpdateOperationsInput | number
-    quizBestScore?: IntFieldUpdateOperationsInput | number
-    quizStreak?: IntFieldUpdateOperationsInput | number
-    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean

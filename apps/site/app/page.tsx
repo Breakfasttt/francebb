@@ -165,8 +165,6 @@ export default async function Home() {
       links: [
         { label: "Jouer à Blood Bowl !", description: "Le guide du débutant", href: "/jouer" },
         { label: "Ressources", description: "Règles, aides de jeu, outils", href: "/ressources" },
-        { label: "Quizz", description: "Testez vos connaissances", href: "/bbquizz" },
-        { label: "BBScheme", description: "Tableau tactique", href: "/bbscheme" },
       ],
     },
     {

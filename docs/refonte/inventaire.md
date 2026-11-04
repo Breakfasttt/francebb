@@ -322,6 +322,8 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 
 ## 14. BBQuizz
 
+*Depuis la carte 180, le quiz n'est plus dans le site : il est en attente dans l'application `apps/bbquizz`, avec son test (`apps/bbquizz/quiz-en-attente/tests/bbquizz.spec.ts`). Cette section garde la trace de la refonte.*
+
 - [x] [membre] `/bbquizz` : « Jouer », « Proposer une question ». *Le bouton pour jouer s'appelle « Commencer le quizz ! ». Le test vérifie aussi qu'un visiteur est envoyé vers la connexion et qu'un membre ne voit ni « Éditer » ni « Valider ».*
 - [x] [modo] `/bbquizz` : « Éditer », « Valider ». *Depuis la refonte, ces deux actions sont dans le menu « Gestion du quizz » (« Éditer les questions », « Valider les propositions »).*
 - [x] [membre] Partie : 20 questions, chronomètre, 4 réponses, jokers 50/50, appel à la communauté et passer, explication, « Suivant », écran de fin avec « Rejouer ». *Le test joue deux questions d'une vraie partie de 20 (score, chronomètre, les trois jokers, « Suivant »), puis une partie d'une seule question enregistrée pour le test, pour vérifier les points gagnés, l'explication, l'écran de fin, « Rejouer » et l'enregistrement du score. Le passage automatique à la question suivante après 5 secondes et la fin du temps de réponse ne sont pas vérifiés à part. Avant la refonte, « Suivant » s'appelait « Continuer » et « Rejouer » « Recommencer une partie ».*

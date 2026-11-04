@@ -60,8 +60,6 @@ const GROUPS: { who: string; userId: string | null; paths: string[] }[] = [
       "/notifications",
       "/profile",
       `/spy/${E2E.targetId}`,
-      "/bbscheme",
-      "/bbquizz",
       "/moderation",
     ],
   },

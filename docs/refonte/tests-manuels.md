@@ -220,6 +220,8 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 
 ## 17. BBQuizz
 
+*Sans objet depuis la carte 180 : le quiz a quitté le site et attend sa relance dans l'application `apps/bbquizz`.*
+
 - [ ] **Téléphone, membre.** `/bbquizz` : jouer une partie entière ; la question, le chronomètre, le score et les quatre réponses tiennent dans l'écran.
 - [ ] **Téléphone, membre.** Essayer les trois jokers, laisser filer le temps sur une question, attendre le passage automatique après une réponse, puis « Rejouer ».
 - [ ] **Téléphone, membre.** Changer d'onglet dans le classement (« Du jour », « Semaine », « Panthéon »).

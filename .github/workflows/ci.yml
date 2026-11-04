@@ -1,5 +1,6 @@
 # CI bbfrance : vérifications lancées par GitHub à chaque envoi de code (push) et chaque Pull Request.
 # Kanban, migrations, types, qualité (ESLint), build, tests du site et test de connexion via le hub.
+# Les quatre applications (site, hub, BBScheme, BBQuizz) passent par les étapes de migrations, de types et de build.
 # Les bases de test sont des serveurs Postgres locaux lancés par `prisma dev` (scripts/local-postgres.mjs), jamais une base réelle.
 name: CI
 
@@ -35,6 +36,8 @@ jobs:
         run: pnpm kanban
       - run: pnpm --filter @bbfrance/site exec prisma generate
       - run: pnpm --filter @bbfrance/hub exec prisma generate
+      - run: pnpm --filter @bbfrance/bbscheme exec prisma generate
+      - run: pnpm --filter @bbfrance/bbquizz exec prisma generate
       - name: Site : migrations à jour du schéma (aucune migration oubliée)
         working-directory: apps/site
         run: |
@@ -45,6 +48,16 @@ jobs:
         run: |
           node scripts/generate-schema.mjs
           git diff --exit-code prisma/schema.prisma
+          export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
+          pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+      - name: Application BBScheme : migrations à jour du schéma (carte 179)
+        working-directory: apps/bbscheme
+        run: |
+          export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
+          pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
+      - name: Application BBQuizz : migrations à jour du schéma (carte 180)
+        working-directory: apps/bbquizz
+        run: |
           export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
       - name: Typecheck

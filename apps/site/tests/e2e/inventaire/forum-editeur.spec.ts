@@ -247,7 +247,7 @@ test.describe("2 éditeur BBCode : outils", () => {
     await expect(textarea).toHaveValue(`Bonjour [mention=${TARGET.id}]${TARGET.name}[/mention] `);
   });
 
-  test("[membre] image (adresse, options, envoi de fichier), galerie, vidéo YouTube, schéma BBScheme", async ({ page }, testInfo) => {
+  test("[membre] image (adresse, options, envoi de fichier), galerie, vidéo YouTube, pas d'outil BBScheme", async ({ page }, testInfo) => {
     // Envoi d'image simulé par le serveur en test (carte 141) : aucune image ne part vraiment
     const textarea = await openReply(page);
 
@@ -300,18 +300,11 @@ test.describe("2 éditeur BBCode : outils", () => {
     await visibleButton(page, "Insérer la vidéo").click();
     await expect(textarea).toHaveValue("[youtube align=right wrap=yes thumb=no]dQw4w9WgXcQ[/youtube]");
 
-    // Schéma BBScheme, à l'horizontale puis à la verticale
-    await textarea.fill("");
-    await applyTool(page, "Schéma BBScheme");
-    await field(page, "Adresse ou identifiant du schéma").fill("schema123");
-    await visibleButton(page, "Insérer le schéma").click();
-    await expect(textarea).toHaveValue("[bbscheme]schema123[/bbscheme]");
-    await textarea.fill("");
-    await applyTool(page, "Schéma BBScheme");
-    await field(page, "Adresse ou identifiant du schéma").fill("schema123");
-    await visibleButton(page, "Vertical").click();
-    await visibleButton(page, "Insérer le schéma").click();
-    await expect(textarea).toHaveValue("[bbscheme=vertical]schema123[/bbscheme]");
+    // Plus d'outil « Schéma BBScheme » depuis que l'éditeur de schémas a quitté le site (carte 179). Les schémas déjà
+    // publiés restent affichés (smoke.spec.ts).
+    await page.getByRole("button", { name: MORE_TOOLS }).filter({ visible: true }).first().click();
+    await expect(visibleButton(page, "Vidéo YouTube")).toBeVisible();
+    await expect(page.getByRole("button", { name: "Schéma BBScheme" })).toHaveCount(0);
   });
 
   test("[membre] spoiler (titre facultatif), accordéon, smileys", async ({ page }, testInfo) => {

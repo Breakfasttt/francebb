@@ -41,10 +41,17 @@ export const E2E = {
   // Carte 060 : modérateur banni, créé par son test, que le modérateur « Modo E2E » (même rang) ne doit pas pouvoir débannir
   bannedModoId: "e2e_banned_modo",
   bannedModoName: "Modérateur banni E2E",
-  // Cartes 061 et 024 : sujet dont le message contient un schéma BBScheme (plateau vide), créé par globalSetup
+  // Cartes 061 et 024 : sujet dont le message contient un schéma BBScheme (plateau vide), créé par globalSetup.
+  // Depuis la carte 179, le schéma n'est plus dans la base du site : il est servi par le faux serveur BBScheme des
+  // tests (fakeBbschemeServer.mjs, lancé par playwright.config.ts).
   bbschemeTopicId: "e2e_audit_bbscheme_topic",
   bbschemeBoardId: "e2e_audit_board",
+  // Carte 179 : second schéma du même message, inconnu du faux serveur BBScheme, pour vérifier « Schéma indisponible »
+  bbschemeMissingBoardId: "e2e_missing_board",
 };
+
+/** Port du faux serveur BBScheme des tests (carte 179), qui joue le rôle de l'application apps/bbscheme. */
+export const E2E_BBSCHEME_PORT = 3199;
 
 /** Les 8 thèmes du site, dans l'ordre des captures de référence. */
 export const E2E_THEMES = ["vestiaire", "default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];

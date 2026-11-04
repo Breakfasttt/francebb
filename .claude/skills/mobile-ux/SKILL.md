@@ -48,7 +48,7 @@ Une page qui colle sa propre barre en bas (« Répondre » et la pagination d'un
 
 ## Écrans plein écran
 
-- **Écrans de rédaction** (répondre, modifier un message, nouveau sujet, tournois, ligues, articles, ressources, archives du classement, propositions du quizz) : la barre basse est retirée grâce à leur adresse, reconnue par `isComposePath` dans `navItems.ts`. Une nouvelle adresse de rédaction doit y être ajoutée, sinon la barre basse recouvre la barre d'envoi. Leur mise en page passe par `ComposeScreen` et `ComposeActionBar` (`app/forum/component/ComposeScreen.tsx`). L'éditeur BBScheme (`/bbscheme`) n'a pas non plus de barre basse.
+- **Écrans de rédaction** (répondre, modifier un message, nouveau sujet, tournois, ligues, articles, ressources, archives du classement) : la barre basse est retirée grâce à leur adresse, reconnue par `isComposePath` dans `navItems.ts`. Une nouvelle adresse de rédaction doit y être ajoutée, sinon la barre basse recouvre la barre d'envoi. Leur mise en page passe par `ComposeScreen` et `ComposeActionBar` (`app/forum/component/ComposeScreen.tsx`).
 - **Écran plein écran sans adresse propre** (conversation de la messagerie ouverte par `?id=`, carte en plein écran) : il pose l'attribut `data-fullscreen` sur son cadre. `AppShell.css` retire alors la barre basse et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
 
 ## Onglets d'une page
@@ -73,8 +73,8 @@ Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/r
 
 ## Titre de page et bouton retour
 
-Le bouton retour (`BackButton`, 44 pixels sur téléphone) est affiché sur place, à gauche du titre de la page, à toutes les tailles d'écran (carte 156). `ForumListHeader` (forum), `ComposeScreen` et `PageHeader` (mentions légales) le font ; les fiches d'un article et d'une ligue ont un lien « Tous les articles » ou « Toutes les ligues » au-dessus du contenu, et BBScheme le met en tête de sa barre d'outils.
+Le bouton retour (`BackButton`, 44 pixels sur téléphone) est affiché sur place, à gauche du titre de la page, à toutes les tailles d'écran (carte 156). `ForumListHeader` (forum), `ComposeScreen` et `PageHeader` (mentions légales) le font ; les fiches d'un article et d'une ligue ont un lien « Tous les articles » ou « Toutes les ligues » au-dessus du contenu.
 
 ## Pages impossibles sur téléphone
 
-Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher un message clair avec `EmptyState` de `@bbfrance/ui` (« Optimisé pour ordinateur ou tablette »). Aucune page n'est dans ce cas aujourd'hui : même l'éditeur BBScheme a son interface téléphone (terrain entre une barre compacte d'outils et une barre basse pour les réserves et l'animation).
+Si une fonctionnalité ne peut vraiment pas fonctionner sur téléphone, afficher un message clair avec `EmptyState` de `@bbfrance/ui` (« Optimisé pour ordinateur ou tablette »). Aucune page n'est dans ce cas aujourd'hui.

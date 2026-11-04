@@ -12,7 +12,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const TYPED = ["apps/site", "apps/hub", "packages/ui", "packages/bbscheme-player"];
+const TYPED = ["apps/site", "apps/hub", "apps/bbscheme", "apps/bbquizz", "packages/ui", "packages/bbscheme-player"];
 
 /** Lance une commande dans un dossier ; renvoie son code de sortie, sa sortie et sa durée. */
 function run(label, command, cwd) {

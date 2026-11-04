@@ -33,7 +33,7 @@ test.describe("coquille : visiteur", () => {
       await expect(page.getByRole("region", { name: "Outils du forum" }).getByRole("link", { name: "Recherche avancée" })).toBeVisible();
       await openMore(page);
       const panel = page.getByRole("dialog", { name: "Plus" });
-      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "BBScheme", "Quizz", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "GitHub"]) {
+      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "GitHub"]) {
         await expect(panel.getByRole("link", { name: label })).toBeVisible();
       }
       await expect(panel.getByRole("radiogroup", { name: "Thème du site" }).getByRole("radio")).toHaveCount(8);
@@ -47,7 +47,7 @@ test.describe("coquille : visiteur", () => {
         await expect(page.getByRole("contentinfo").getByRole("link", { name: label })).toBeVisible();
       }
       await page.getByRole("button", { name: "Plus de rubriques" }).click();
-      for (const label of ["Carte", "BBScheme", "Quizz", "Classement", "Jouer", "Statistiques", "Médias"]) {
+      for (const label of ["Carte", "Classement", "Jouer", "Statistiques", "Médias"]) {
         await expect(page.getByRole("menuitem", { name: label })).toBeVisible();
       }
       await page.keyboard.press("Escape");

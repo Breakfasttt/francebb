@@ -503,14 +503,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     setActiveTool(null);
   };
 
-  const submitBBScheme = () => {
-    if (!toolInputUrl.trim()) return;
-    const tag = toolInputAlign === "left" ? "[bbscheme=vertical]" : "[bbscheme]";
-    insertTag(`${tag}${toolInputUrl.trim()}[/bbscheme]`, "");
-    setToolInputUrl("");
-    setActiveTool(null);
-  };
-
   const fieldId = (suffix: string) => `${uid}-${suffix}`;
 
   /** Options communes à l'image et à la vidéo : alignement, taille réduite, habillage du texte. */
@@ -685,28 +677,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             {mediaOptions}
             <Button type="button" variant="primary" size="tap" onClick={submitYoutube}>
               Insérer la vidéo
-            </Button>
-          </div>
-        );
-      case "bbscheme":
-        return (
-          <div className="flex flex-col gap-4">
-            <Field label="Adresse ou identifiant du schéma" htmlFor={fieldId("bbscheme")} hint="L'identifiant est extrait automatiquement de l'adresse de partage.">
-              <Input id={fieldId("bbscheme")} type="text" placeholder="https://…/bbscheme?id=…" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} data-autofocus />
-            </Field>
-            <div className="flex flex-col gap-1.5">
-              <OptionLabel>Format</OptionLabel>
-              <div className="flex flex-wrap gap-2">
-                <ToggleChip pressed={toolInputAlign !== "left"} onClick={() => setToolInputAlign("center")}>
-                  Horizontal
-                </ToggleChip>
-                <ToggleChip pressed={toolInputAlign === "left"} onClick={() => setToolInputAlign("left")}>
-                  Vertical
-                </ToggleChip>
-              </div>
-            </div>
-            <Button type="button" variant="primary" size="tap" onClick={submitBBScheme}>
-              Insérer le schéma
             </Button>
           </div>
         );

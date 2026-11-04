@@ -20,7 +20,7 @@ const URL_MAX_LENGTH = 2000;
 
 /**
  * Vrai si `value` est une adresse web complète en `http://` ou `https://`, ou, quand `allowInternal` est vrai, une
- * adresse interne du site qui commence par une seule barre oblique (`/bbscheme`). Une adresse comme
+ * adresse interne du site qui commence par une seule barre oblique (`/jouer`). Une adresse comme
  * `javascript:alert(1)` exécuterait du code au clic : elle est toujours refusée. `//autre-site.fr` et `/\autre-site.fr`
  * aussi, car le navigateur les comprend comme des liens vers un autre site.
  */

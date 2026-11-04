@@ -1,0 +1,2 @@
+# Fichier géré par Prisma : type de base utilisé par les migrations
+provider = "postgresql"

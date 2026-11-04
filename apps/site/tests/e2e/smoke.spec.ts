@@ -4,7 +4,7 @@
 import { test, expect } from "@playwright/test";
 import { E2E, loginAs } from "./fixtures";
 
-const PUBLIC_PAGES = ["/", "/forum", "/tournois", "/classement", "/bbscheme", "/articles", "/ressources"];
+const PUBLIC_PAGES = ["/", "/forum", "/tournois", "/classement", "/articles", "/ressources"];
 
 for (const path of PUBLIC_PAGES) {
   test(`page publique ${path} répond sans erreur`, async ({ page }) => {
@@ -24,7 +24,8 @@ test("le forum affiche la catégorie et le topic", async ({ page }) => {
   await expect(page.getByText(E2E.postContent)).toBeVisible();
 });
 
-// Carte 024 : la balise [bbscheme] d'un message affiche le lecteur venu du paquet @bbfrance/bbscheme-player
+// Carte 024 : la balise [bbscheme] d'un message affiche le lecteur venu du paquet @bbfrance/bbscheme-player.
+// Depuis la carte 179, le schéma vient de l'application BBScheme, jouée en test par tests/e2e/fakeBbschemeServer.mjs.
 test("un message contenant [bbscheme] affiche le lecteur", async ({ page }) => {
   const pageErrors: string[] = [];
   page.on("pageerror", (error) => pageErrors.push(error.message));
@@ -44,6 +45,32 @@ test("un message contenant [bbscheme] affiche le lecteur", async ({ page }) => {
     expect((playerBox?.x ?? 0) + (playerBox?.width ?? 0)).toBeLessThanOrEqual(viewport.width);
   }
   expect(pageErrors).toEqual([]);
+});
+
+// Carte 179 : un schéma que l'application BBScheme ne connaît pas (ou application arrêtée) affiche « Schéma indisponible »,
+// lisible sans zoom, sans casser la page ; le lecteur n'a plus de bouton « Ouvrir dans l'éditeur », éditeur oblige.
+test("un schéma introuvable affiche « Schéma indisponible »", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.goto(`/forum/topic/${E2E.bbschemeTopicId}`);
+  const missing = page.locator(`bb-scheme[data-board-id="${E2E.bbschemeMissingBoardId}"]`);
+  await expect(missing.getByText("Schéma indisponible")).toBeVisible({ timeout: 20_000 });
+  const fontSize = await missing.getByText("Schéma indisponible").evaluate((element) => parseFloat(getComputedStyle(element).fontSize));
+  expect(fontSize).toBeGreaterThanOrEqual(16);
+  await expect(page.locator("bb-scheme .bb-player-root")).toHaveCount(1);
+  await expect(page.getByRole("button", { name: "Ouvrir dans l'éditeur BBScheme" })).toHaveCount(0);
+  expect(pageErrors).toEqual([]);
+});
+
+test("l'ancienne adresse de l'éditeur /bbscheme donne la page introuvable", async ({ page }) => {
+  const response = await page.goto("/bbscheme");
+  expect(response?.status()).toBe(404);
+});
+
+// Carte 180 : le quiz est parti dans l'application apps/bbquizz, son ancienne adresse n'existe plus dans le site
+test("l'ancienne adresse du quiz /bbquizz donne la page introuvable", async ({ page }) => {
+  const response = await page.goto("/bbquizz");
+  expect(response?.status()).toBe(404);
 });
 
 test("un coach connecté peut répondre à un topic", async ({ page }) => {

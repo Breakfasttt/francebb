@@ -1,6 +1,6 @@
 # apps/site — le site BBFrance
 
-Le site Next.js 16 : forum, tournois, profils, messagerie, classement, quiz, BBScheme… Les règles générales sont dans `.claude/CLAUDE.md`, `README.md` et `ARCHITECTURE.md` (à la racine du dépôt). Chaque fonctionnalité a sa fiche dans `docs/features/`.
+Le site Next.js 16 : forum, tournois, profils, messagerie, classement, affichage des schémas BBScheme… Le quiz et l'éditeur BBScheme sont des applications à part (`apps/bbquizz`, `apps/bbscheme`, ADR-0008). Les règles générales sont dans `.claude/CLAUDE.md`, `README.md` et `ARCHITECTURE.md` (à la racine du dépôt). Chaque fonctionnalité a sa fiche dans `docs/features/`.
 
 ## Commandes, à lancer depuis ce dossier
 

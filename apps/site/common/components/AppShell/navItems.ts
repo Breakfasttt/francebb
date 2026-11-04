@@ -3,8 +3,8 @@
  * et la barre haute (ordinateur). Ajouter une page au menu = une ligne ici.
  */
 import {
-  BarChart3, BookOpen, Dices, FileText, HelpCircle, Home, LayoutGrid, Map, Mail, MessageSquare, PlaySquare,
-  Shield, Trophy, Medal, PenTool, type LucideIcon,
+  BarChart3, BookOpen, Dices, FileText, Home, LayoutGrid, Map, Mail, MessageSquare, PlaySquare,
+  Shield, Trophy, Medal, type LucideIcon,
 } from "lucide-react";
 
 export interface NavItem {
@@ -27,8 +27,6 @@ export const MORE_NAV: NavItem[] = [
   { label: "Carte", href: "/carte", icon: Map },
   { label: "Articles", href: "/articles", icon: FileText },
   { label: "Ressources", href: "/ressources", icon: BookOpen },
-  { label: "BBScheme", href: "/bbscheme", icon: PenTool },
-  { label: "Quizz", href: "/bbquizz", icon: HelpCircle },
   { label: "Classement", href: "/classement", icon: Medal },
   { label: "Jouer", href: "/jouer", icon: Dices },
   { label: "Statistiques", href: "/statistiques", icon: BarChart3 },
@@ -60,12 +58,11 @@ export function isActive(pathname: string, href: string): boolean {
  * Depuis la carte 094, les écrans de création (`/ligues/create`) et de modification (`/ligue/edit/[id]`) d'une ligue ;
  * depuis la carte 095, ceux d'un article (`/articles/create`, `/articles/edit/[id]`) ; depuis la carte 096, ceux d'une
  * ressource (`/ressources/submit`, `/ressources/edit/[id]`) ; depuis la carte 097, l'éditeur d'archives du classement
- * (`/classement/edit-archive`) ; depuis la carte 098, la proposition d'une question du quizz (`/bbquizz/proposer`) et
- * la gestion des questions (`/bbquizz/editer`, liste comprise, car son formulaire s'ouvre par le paramètre `?edit=`).
+ * (`/classement/edit-archive`). Les écrans du quiz (carte 098) sont partis avec lui dans apps/bbquizz (carte 180).
  * Un écran plein écran qui n'a pas sa propre adresse (une conversation de la messagerie, ouverte par `?id=`, carte 093)
  * pose plutôt l'attribut `data-fullscreen`, qui retire la barre basse par le CSS (AppShell.css).
  */
 export function isComposePath(pathname: string): boolean {
   return /^\/forum\/(topic\/[^/]+\/reply|post\/[^/]+\/edit|new-topic|new-tournament|edit-tournament\/[^/]+|tournament\/[^/]+\/results)\/?$/.test(pathname)
-    || /^\/(ligues\/create|ligue\/edit\/[^/]+|articles\/create|articles\/edit\/[^/]+|ressources\/submit|ressources\/edit\/[^/]+|classement\/edit-archive|bbquizz\/proposer|bbquizz\/editer)\/?$/.test(pathname);
+    || /^\/(ligues\/create|ligue\/edit\/[^/]+|articles\/create|articles\/edit\/[^/]+|ressources\/submit|ressources\/edit\/[^/]+|classement\/edit-archive)\/?$/.test(pathname);
 }

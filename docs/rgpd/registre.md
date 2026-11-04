@@ -39,9 +39,9 @@ BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel e
 
 | Point | Contenu |
 |---|---|
-| But | Forum, tournois, articles, ligues, messagerie, BBQuizz, BBScheme. |
+| But | Forum, tournois, articles, ligues, messagerie, BBScheme. |
 | Base légale | Exécution du service demandé par le coach. |
-| Données | Copie du profil du passeport ; réglages propres au site (thème, signature, notifications, équipe, ligues) ; contributions (sujets, messages, articles, ressources) ; messages privés ; inscriptions et résultats de tournoi ; scores du quiz. |
+| Données | Copie du profil du passeport ; réglages propres au site (thème, signature, notifications, équipe, ligues) ; contributions (sujets, messages, articles, ressources) ; messages privés ; inscriptions et résultats de tournoi. Depuis la carte 180, les parties et les scores du quiz BBQuizz ne sont plus dans la base du site mais dans celle de l'application BBQuizz, en attente : leur effacement à la suppression du compte et leur export seront branchés à sa relance. |
 | Durée | Tant que le compte existe. |
 | Après suppression | Données privées effacées. Contributions publiques gardées sous le nom « Coach Inconnu » ; résultats et matchs de tournoi gardés sous le nom « Coach anonyme », sans NAF (intérêt légitime : l'historique sportif de la communauté). |
 

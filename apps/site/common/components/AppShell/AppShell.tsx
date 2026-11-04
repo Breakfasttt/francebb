@@ -7,8 +7,8 @@
  * - Ordinateur : barre haute avec les destinations principales, un menu « Plus », les pastilles et le menu du compte.
  * La cloche (carte 167) mène à la page /notifications ; sa pastille compte les notifications non lues. Sur téléphone,
  * elle est dans la barre haute, pour ne pas ajouter un sixième onglet à la barre basse.
- * La barre basse se cache pendant la saisie (clavier ouvert), sur l'éditeur BBScheme et sur les écrans de rédaction du
- * forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran.
+ * La barre basse se cache pendant la saisie (clavier ouvert) et sur les écrans de rédaction du forum (répondre,
+ * modifier un message, nouveau sujet), qui occupent tout l'écran.
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -101,8 +101,9 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   const { unreadCount, notificationCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
   const isHome = pathname === "/";
-  // Écrans plein écran sans barre basse : l'éditeur BBScheme et les écrans de rédaction du forum (carte 087)
-  const immersive = pathname.startsWith("/bbscheme") || isComposePath(pathname);
+  // Écrans plein écran sans barre basse : les écrans de rédaction du forum (carte 087). L'éditeur BBScheme, qui en
+  // faisait partie, a quitté le site (carte 179).
+  const immersive = isComposePath(pathname);
   const [moreOpen, setMoreOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const closeMore = useCallback(() => setMoreOpen(false), []);

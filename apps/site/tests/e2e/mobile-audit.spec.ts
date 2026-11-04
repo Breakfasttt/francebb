@@ -112,15 +112,6 @@ const PAGES: { path: string; connected: boolean; as?: Visitor; openFilters?: boo
   { path: "/profile?tab=ressources", connected: true },
   { path: `/spy/${E2E.targetId}`, connected: true },
   { path: "/membres", connected: true, openFilters: true },
-  { path: "/bbscheme", connected: false },
-  // Carte 100 : le lecteur seul (mode embed, affiché dans une iframe), posé par-dessus la coquille du site
-  { path: `/bbscheme?id=${E2E.bbschemeBoardId}&embed=true`, connected: false },
-  { path: "/bbquizz", connected: true },
-  // Carte 098 : la proposition d'une question, la validation (une proposition de l'audit, voir plus bas) et la gestion
-  // des questions (sans question en base : le jeu utilise alors les questions de départ, ce que suppose security.spec.ts)
-  { path: "/bbquizz/proposer", connected: true },
-  { path: "/bbquizz/valider", connected: true },
-  { path: "/bbquizz/editer", connected: true },
   { path: "/jouer", connected: false },
   { path: "/mentions-legales", connected: false },
   { path: "/auth/login", connected: false },
@@ -318,18 +309,6 @@ test.describe("audit mobile", () => {
             { id: "NAF-1", name: "Modo E2E", nafNumber: "12345", userId: E2E.modoId, totalPoints: 148.75, count: 5, bestResults },
             { id: "NAME-long", name: "Coach invité au très long pseudonyme de l'audit", nafNumber: null, userId: null, totalPoints: 42.1234, count: 1, bestResults: [] },
           ]),
-        },
-      });
-    });
-    // Carte 098 : une proposition de question en attente, avec de longues réponses, pour mesurer /bbquizz/valider
-    await withTestDb(async (prisma) => {
-      if (await prisma.quizQuestionSuggestion.findUnique({ where: { id: "e2e_audit_quiz_suggestion" } })) return;
-      await prisma.quizQuestionSuggestion.create({
-        data: {
-          id: "e2e_audit_quiz_suggestion", authorId: E2E.coachId, category: "Règles",
-          question: "Question de l'audit mobile : que se passe-t-il quand un joueur rate une Esquive dans une zone de tacle adverse ?",
-          options: JSON.stringify(["Il tombe et l'équipe subit un turnover", "Rien, il recommence", "Il est expulsé", "Il perd une case de mouvement"]),
-          correctIndex: 0, explanation: "Un joueur qui rate son jet tombe : c'est un turnover, la main passe à l'adversaire.",
         },
       });
     });

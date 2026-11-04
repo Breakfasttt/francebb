@@ -12,9 +12,9 @@ const eslintConfig = defineConfig([
     files: ["**/*.{ts,tsx,js,jsx,mjs}"],
     rules: {
       // Frontière entre applications : le site n'importe jamais le code d'une autre
-      // application (hub, futur BBScheme). Ce qui est partagé passe par packages/.
+      // application (hub, BBScheme). Ce qui est partagé passe par packages/.
       // Sont refusés : le nom de paquet d'une autre application, un chemin qui passe par
-      // « apps/ », et un chemin relatif qui remonte jusqu'au dossier du hub.
+      // « apps/ », et un chemin relatif qui remonte jusqu'au dossier du hub ou de BBScheme.
       "no-restricted-imports": [
         "error",
         {
@@ -24,7 +24,7 @@ const eslintConfig = defineConfig([
               message: "Une application n'importe pas le code d'une autre : passer par un paquet de packages/.",
             },
             {
-              regex: "(^|/)apps/|^(\\.\\./)+hub(/|$)",
+              regex: "(^|/)apps/|^(\\.\\./)+(hub|bbscheme)(/|$)",
               message: "Une application n'importe pas le code d'une autre : passer par un paquet de packages/.",
             },
           ],

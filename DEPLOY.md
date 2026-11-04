@@ -108,6 +108,67 @@ Le script peut être relancé sans risque : il complète ce qui manque sans dupl
 
 ---
 
+## Étape 5 bis (une seule fois) : reprise des données de la bêta
+
+L'ancienne production (la bêta, base SQLite chez Turso) a été arrêtée le 4 novembre 2026. Sa copie, `docs/backup-db/bbfrance-db-backup-20261104.db`, reste sur le poste du responsable : elle contient des données personnelles et ne doit jamais être enregistrée dans git. Le script `apps/site/scripts/import-beta-backup.ts` (carte 178) en recopie les membres et les données utiles dans la nouvelle base. Il ne se lance qu'une fois, par le responsable ou avec son accord exprès.
+
+**Ce qui est repris** : les membres, avec leur rôle, leur bannissement éventuel et leurs liaisons Discord ou Google (ils retrouvent leur compte en se reconnectant) ; les rôles, les réglages du site et les données de référence qui manqueraient ; les ligues avec leurs membres et commissaires ; les ressources, les articles, leurs étiquettes et réactions ; les archives du classement. Les schémas BBScheme ne vont plus dans la base du site depuis la carte 179 : ils sont repris dans la base de l'application BBScheme (étape 5 ter). Les données du quiz (questions, parties, scores des membres) non plus depuis la carte 180 : elles sont reprises dans la base de l'application BBQuizz (étape 5 quater). Tous les membres passent au thème « vestiaire », et leur ancien thème est gardé pour que le bandeau du nouveau look leur propose d'y revenir.
+
+**Ce qui n'est pas repris** : les messages privés et les conversations ; les sujets et messages du forum, et ce qui en dépend (le tournoi, ses inscriptions, les réactions, mentions et lectures) ; le journal de modération et les signalements ; les sessions et jetons de connexion.
+
+Dans l'ordre :
+
+1. Avoir une base Neon neuve (étape 3), à jour de ses migrations (le premier déploiement de l'étape 4 les applique), et ses données de base (étape 5).
+2. Sur Neon, créer une branche de sauvegarde (**Branches** > **Create branch**, nom `avant-reprise-beta`).
+3. Depuis le dossier `apps/site`, lancer le script avec l'adresse de la base Neon et le chemin de la copie :
+   ```bash
+   DATABASE_URL="postgresql://…(adresse Neon)…" npx tsx scripts/import-beta-backup.ts ../../docs/backup-db/bbfrance-db-backup-20261104.db
+   ```
+   Sous Windows PowerShell : `$env:DATABASE_URL="postgresql://…"; npx tsx scripts/import-beta-backup.ts ../../docs/backup-db/bbfrance-db-backup-20261104.db`
+4. Lire le résumé affiché à la fin : pour chaque table, le nombre de lignes lues, créées, mises à jour, inchangées et ignorées, avec la raison. Une donnée déjà créée par firstSetup (même rôle, même donnée de référence) n'est pas dupliquée : la version de firstSetup est gardée. Relancer le script ne crée rien de plus ; il ne supprime jamais rien.
+5. Une fois la reprise vérifiée sur le site, supprimer le script `apps/site/scripts/import-beta-backup.ts` du dépôt (carte 178).
+
+---
+
+## Étape 5 ter : l'application BBScheme (carte 179)
+
+Les schémas tactiques BBScheme, affichés dans les messages par la balise `[bbscheme]`, ne sont plus dans la base du site : ils sont rangés dans la base de l'application `apps/bbscheme`, qui les donne au site par l'adresse `GET /api/boards/<identifiant>`. Décision : [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md). L'éditeur est en attente : l'application ne sert qu'une page « BBScheme revient bientôt » et cette adresse de lecture.
+
+**Ordre obligatoire** : l'application BBScheme et sa base doivent être en ligne, avec les schémas, **avant** que le site reçoive la migration `20261105100000_bbscheme_hors_du_site`, qui supprime la table `BBSchemeState` de la base du site. Cette migration est appliquée automatiquement par le déploiement du site (`vercel-build`) : ne pas déployer cette version du site avant la fin des points 1 à 5.
+
+1. **Une base Neon de plus**, pour l'application BBScheme (jamais celle du site ni celle du hub).
+2. **Un projet Vercel de plus**, *Root Directory* = `apps/bbscheme`, avec la seule variable `BBSCHEME_DATABASE_URL` (adresse de cette base). Le premier déploiement crée la table (`vercel-build` lance `prisma migrate deploy`). Noter l'adresse publique de l'application, par exemple `https://bbscheme.bbfrance.fr`.
+3. **Reprendre les schémas de la bêta**, depuis le dossier `apps/bbscheme` (une seule fois, par le responsable) :
+   ```bash
+   BBSCHEME_DATABASE_URL="postgresql://…(base BBScheme)…" npx tsx scripts/import-beta-backup.ts ../../docs/backup-db/bbfrance-db-backup-20261104.db
+   ```
+   Le résumé doit annoncer 13 schémas lus et 13 créés (ou inchangés si le script a déjà tourné) ; le relancer ne crée rien de plus. Une fois la reprise vérifiée, supprimer le script du dépôt.
+4. **Schémas déjà dans la base du site** : si la base Neon du site existait déjà avec des schémas, créer une branche de sauvegarde Neon du site (`avant-bbscheme-hors-du-site`), compter ses lignes (`SELECT COUNT(*) FROM "BBSchemeState";` dans l'éditeur SQL de Neon), les copier dans la base BBScheme (même identifiant, même empreinte) et vérifier que la base BBScheme en compte au moins autant. Une base du site neuve n'en contient aucun.
+5. **Vérifier** : `https://<adresse de l'application>/api/boards/<identifiant d'un schéma>` répond par `{"data": …}`.
+6. **Site** : ajouter sur le projet Vercel du site la variable `BBSCHEME_URL` = l'adresse de l'application, sans `/` final, puis déployer la nouvelle version du site. Un message qui contient `[bbscheme]` doit afficher le schéma. Si l'application est arrêtée ou si `BBSCHEME_URL` manque, il affiche « Schéma indisponible », sans gêner le reste du site.
+
+Les bibliothèques `html2canvas` et `gifshot` (export GIF de l'éditeur) ont quitté le site pour l'application BBScheme.
+
+---
+
+## Étape 5 quater : l'application BBQuizz (carte 180)
+
+Le quiz BBQuizz n'est plus dans le site : ses questions, ses parties et les scores des joueurs sont rangés dans la base de l'application `apps/bbquizz`. Décision : [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md). Le quiz est en attente : l'application ne sert qu'une page « Le quiz revient bientôt », et le site n'a plus aucun lien vers elle. Les questions de départ ne sont plus chargées par `firstSetup.ts` du site.
+
+**Ordre obligatoire** : la base de l'application BBQuizz doit exister et avoir reçu les données du quiz **avant** que le site reçoive la migration `20261105120000_quiz_hors_du_site`, qui supprime de la base du site les cinq tables du quiz et les quatre colonnes de scores de la fiche des membres (`quizTotalScore`, `quizBestScore`, `quizStreak`, `quizAttemptsCount`). Cette migration est appliquée automatiquement par le déploiement du site (`vercel-build`) : ne pas déployer cette version du site avant la fin des points 1 à 4.
+
+1. **Une base Neon de plus**, pour l'application BBQuizz (jamais celle du site, du hub ni de BBScheme).
+2. **Un projet Vercel de plus**, *Root Directory* = `apps/bbquizz`, avec la seule variable `BBQUIZZ_DATABASE_URL` (adresse de cette base). Le premier déploiement crée les tables (`vercel-build` lance `prisma migrate deploy`). L'application peut aussi attendre la relance du quiz pour être mise en ligne : seule sa base est indispensable avant la migration du site (créer alors les tables depuis `apps/bbquizz` avec `BBQUIZZ_DATABASE_URL="…" npx prisma migrate deploy`).
+3. **Reprendre les données du quiz de la bêta**, depuis le dossier `apps/bbquizz` (une seule fois, par le responsable) :
+   ```bash
+   BBQUIZZ_DATABASE_URL="postgresql://…(base BBQuizz)…" npx tsx scripts/import-beta-backup.ts ../../docs/backup-db/bbfrance-db-backup-20261104.db
+   ```
+   Le résumé doit annoncer 340 questions lues, dont 339 créées et 1 ignorée (un texte en double dans la sauvegarde), 7 parties terminées et les scores de 4 joueurs (ou « inchangées » si le script a déjà tourné) ; le relancer ne crée rien de plus. Une fois la reprise vérifiée, supprimer le script du dépôt.
+4. **Données du quiz déjà dans la base du site** : si la base Neon du site existait déjà, créer une branche de sauvegarde Neon du site (`avant-quiz-hors-du-site`) et compter ses lignes dans l'éditeur SQL de Neon (`SELECT COUNT(*) FROM "QuizQuestion";`, de même pour `QuizAttempt`, `QuizGame`, `QuizDailyWinner`, `QuizQuestionSuggestion`, et `SELECT COUNT(*) FROM "User" WHERE "quizAttemptsCount" > 0;`). Les questions créées par l'ancien `firstSetup.ts` sont déjà dans la base BBQuizz (même texte) ; toute autre ligne doit y être copiée (même identifiant ; les scores des membres dans `QuizPlayerStats`) avant de continuer. Une base du site neuve, préparée par le nouveau `firstSetup.ts`, n'en contient aucune.
+5. **Site** : déployer la nouvelle version du site. Le menu et l'accueil n'ont plus d'entrée « Quizz », et `/bbquizz` donne la page introuvable.
+
+---
+
 ## Étape 6 (facultative) : un nom de domaine
 
 1. Acheter un domaine (OVH, Gandi…), puis sur Vercel : **Settings** > **Domains** > **Add**.

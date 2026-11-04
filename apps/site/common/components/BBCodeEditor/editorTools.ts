@@ -13,7 +13,6 @@ import {
   Bold,
   ChevronDown,
   Code,
-  DraftingCompass,
   Ghost,
   Hash,
   Image as ImageIcon,
@@ -49,8 +48,7 @@ export type PanelToolId =
   | "accordion"
   | "list"
   | "align"
-  | "typo"
-  | "bbscheme";
+  | "typo";
 
 export type EditorTool =
   | { id: string; label: string; icon: LucideIcon; kind: "insert"; open: string; close: string }
@@ -86,7 +84,6 @@ const TOOLS = {
   mention: { id: "mention", label: "Mentionner un membre", icon: AtSign, kind: "panel" },
   gallery: { id: "gallery", label: "Galerie d'images", icon: LayoutGrid, kind: "panel" },
   youtube: { id: "youtube", label: "Vidéo YouTube", icon: Youtube, kind: "panel" },
-  bbscheme: { id: "bbscheme", label: "Schéma BBScheme", icon: DraftingCompass, kind: "panel" },
   smileys: { id: "smileys", label: "Smileys", icon: Smile, kind: "panel" },
   ai: { id: "ai", label: "Assistant de mise en forme par IA", icon: Sparkles, kind: "ai" },
 } satisfies Record<string, EditorTool>;
@@ -108,7 +105,7 @@ export const PRIMARY_TOOLS: { tool: EditorTool; desktopOnly?: boolean }[] = [
 export const MORE_TOOL_GROUPS: { title: string; tools: EditorTool[] }[] = [
   { title: "Texte", tools: [TOOLS.underline, TOOLS.strike, TOOLS.size, TOOLS.color, TOOLS.typo, TOOLS.align] },
   { title: "Blocs", tools: [TOOLS.spoiler, TOOLS.list, TOOLS.table, TOOLS.hr, TOOLS.code, TOOLS.accordion] },
-  { title: "Liens et médias", tools: [TOOLS.topic, TOOLS.mention, TOOLS.gallery, TOOLS.youtube, TOOLS.bbscheme] },
+  { title: "Liens et médias", tools: [TOOLS.topic, TOOLS.mention, TOOLS.gallery, TOOLS.youtube] },
   { title: "Aide", tools: [TOOLS.ai] },
 ];
 

@@ -193,14 +193,14 @@ export default function RessourcesPage() {
 }
 
 /**
- * Droits sur une ressource, inchangés depuis avant la refonte : un outil officiel (ou bbscheme) n'est modifiable que par
+ * Droits sur une ressource, inchangés depuis avant la refonte : un outil officiel n'est modifiable que par
  * un administrateur et ne peut pas être supprimé ; les autres ressources sont modifiables et supprimables par leur
  * auteur et par la modération.
  */
 function rights(resource: ResourceListItem, user: { id?: string; role?: string } | undefined) {
   const isAuthor = !!user?.id && user.id === resource.authorId;
   const isMod = isModerator(user?.role);
-  const isSystem = resource.isSystem || resource.id === "bbscheme";
+  const isSystem = resource.isSystem;
   return {
     canEdit: isSystem ? isAdmin(user?.role) : isMod || isAuthor,
     canDelete: !isSystem && (isMod || isAuthor),

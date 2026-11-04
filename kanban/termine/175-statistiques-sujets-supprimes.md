@@ -20,3 +20,5 @@ Exclure les sujets et messages supprimés, les membres bannis et le compte fant�
 ## Résultat
 
 Les compteurs de `/statistiques` ne prennent plus en compte les sujets supprimés, les messages supprimés (ni ceux qui appartiennent à un sujet supprimé), les membres bannis et le compte fantôme (identifiant `GHOST_USER_ID`, réutilisé depuis `lib/rankingCoach.ts`). Le total des vues ignore aussi les sujets supprimés. La carte « Quota restant » et la constante Resend ont disparu de la console d'administration, car le site envoie ses courriels par SMTP et ne connaît pas de plafond ; le nombre de courriels du mois reste affiché. La fiche `docs/features/classement-statistiques/README.md` est à jour.
+
+Correction après coup : le test « /statistiques » de `tests/e2e/inventaire/accueil.spec.ts` cherchait encore « Quota restant » ; il vérifie maintenant les autres chiffres réservés. Les 4 tests des statistiques passent.

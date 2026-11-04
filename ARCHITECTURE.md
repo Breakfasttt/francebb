@@ -8,10 +8,12 @@ Ce document dit **comment le code est organisé et quelles règles respecter** q
 |---|---|---|
 | `apps/site` | Le site BBFrance (Next.js) | En ligne |
 | `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
+| `apps/bbscheme` | Les schémas tactiques BBScheme, avec leur propre base ; donne un schéma au site par `GET /api/boards/:id` (carte 179, [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : l'éditeur est rangé dans `editeur-en-attente/`, à relancer (carte 071) |
+| `apps/bbquizz` | Le quiz BBQuizz, avec sa propre base (questions, parties, scores des joueurs) ; le site n'a plus de lien vers lui (carte 180, [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : le code du quiz est rangé dans `quiz-en-attente/`, à relancer plus tard |
 | `packages/ui` | Composants d'interface partagés (shadcn/ui) et variables de couleur des 8 thèmes | Utilisé par le site et le hub |
-| `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types (carte 024) | Utilisé par le site (messages du forum et éditeur `/bbscheme`) |
+| `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types (carte 024) | Utilisé par le site (messages du forum) et par l'éditeur en attente |
 
-Plus tard : `apps/bbscheme` (éditeur BBScheme en application séparée).
+Le site lit un schéma auprès de l'application BBScheme depuis son serveur, avec le réglage `BBSCHEME_URL` (`apps/site/lib/bbschemeBoard.ts`) ; si elle ne répond pas, le lecteur affiche « Schéma indisponible ».
 
 **Frontière** : une application n'importe jamais le code d'une autre. Ce qui est partagé passe par `packages/`.
 

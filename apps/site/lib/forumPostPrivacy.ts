@@ -10,7 +10,7 @@
  *    (`canQuotePost`) : la citation recopierait le texte caché dans un nouveau message visible de tous.
  * 2. On ne charge d'un membre que ce qui est affiché (`select` de Prisma, la bibliothèque qui lit la base) : jamais la
  *    fiche complète, qui contient le motif de bannissement, les préférences de notification, l'identifiant sur
- *    l'ancien forum, les scores du quiz…
+ *    l'ancien forum…
  *
  * Ce fichier n'a pas la mention « use server » : ses constantes et fonctions s'utilisent seulement côté serveur, par
  * les pages et par les actions du forum. Il n'importe aucun autre fichier du site, pour que les tests unitaires

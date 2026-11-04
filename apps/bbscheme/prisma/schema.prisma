@@ -1,0 +1,23 @@
+// Base de l'application BBScheme (carte 179, ADR-0008), distincte de celle du site et de celle du hub.
+// Elle ne contient que les schémas tactiques enregistrés par l'éditeur BBScheme.
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./generated-client"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+/// Un schéma tactique enregistré (plateau, pions, dessins et images de l'animation), au format JSON.
+model BBSchemeState {
+  id        String   @id @default(cuid())
+  /// Empreinte MD5 du contenu : deux enregistrements identiques donnent le même schéma, sans doublon.
+  hash      String   @unique
+  data      String
+  /// Identifiant du membre qui l'a créé (identifiant du site, puis du hub à la relance), sans lien avec une table de
+  /// membres : cette base n'en a pas. Vide si le schéma a été créé sans compte.
+  creatorId String?
+  createdAt DateTime @default(now())
+}

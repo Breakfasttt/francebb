@@ -1,5 +1,4 @@
 import { PrismaPg } from "@prisma/adapter-pg";
-import { questions as quizQuestions } from "../app/bbquizz/data/questions";
 import { PrismaClient } from "./generated-client";
 import fs from "fs";
 import path from "path";
@@ -300,22 +299,8 @@ async function firstSetup() {
     });
   }
 
-  // 6. Questions du Quiz
-  console.log("--- Configuration des questions du quiz...");
-  const currentQuestionsCount = await prisma.quizQuestion.count();
-  if (currentQuestionsCount === 0) {
-    for (const q of quizQuestions) {
-      await prisma.quizQuestion.create({
-        data: {
-          category: q.category,
-          question: q.question,
-          options: JSON.stringify(q.options),
-          correctIndex: q.correctIndex,
-          explanation: q.explanation || null
-        }
-      });
-    }
-  }
+  // 6. Les questions du quiz ne sont plus chargées ici : elles sont parties avec le quiz dans l'application
+  // apps/bbquizz (carte 180).
 
   // 7. Paramètres du site (Guide du Débutant)
   console.log("--- Configuration des paramètres du site (Guide)...");

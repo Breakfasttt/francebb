@@ -36,9 +36,9 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 ## Paquet BBScheme (`packages/bbscheme-player`, `@bbfrance/bbscheme-player`)
 | Besoin | Utiliser |
 |---|---|
-| Afficher un plateau BBScheme enregistré (lecture animée) | `BBSchemePlayer` ; lui passer `loadBoard={getBoardState}` (action serveur de `app/bbscheme/actions.ts`) |
+| Afficher un plateau BBScheme enregistré (lecture animée) | `BBSchemePlayer` ; lui passer `loadBoard={getBoardState}` (action serveur de `app/bbschemeBoardActions.ts`, qui lit le schéma auprès de l'application BBScheme). `editorUrl` facultatif : affiche le bouton « Ouvrir dans l'éditeur » |
 | Terrain et pions d'un plateau | `Pitch`, `Token` |
-| Types d'un plateau | `TokenData`, `BoardFrame`, `DrawingPath`, `PlayerRosterInfo`, `RosterData`, `ToolType`… (plus dans `app/bbscheme/page.tsx`) |
+| Types d'un plateau | `TokenData`, `BoardFrame`, `DrawingPath`, `PlayerRosterInfo`, `RosterData`, `ToolType`… (l'éditeur, en attente, est dans `apps/bbscheme/editeur-en-attente/`) |
 
 ## Composants du site (`apps/site/common/components/`, sauf mention d'un autre dossier)
 | Besoin | Utiliser |
@@ -71,7 +71,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Détection mobile | `common/hooks/useIsMobile.ts` (`useIsMobile()` et la constante `MOBILE_BREAKPOINT`, seuil unique de 1024 pixels) |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
 | Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur (carte 141) |
-| Zoom au pincement à deux doigts sur un cadre qui défile | `common/hooks/usePinchZoom.ts` (`usePinchZoom(ref, { zoom, min, max, onZoomChange })`) |
+| Zoom au pincement à deux doigts sur un cadre qui défile | `usePinchZoom(ref, { zoom, min, max, onZoomChange })`, parti avec l'éditeur BBScheme dans `apps/bbscheme/editeur-en-attente/hooks/` (carte 179) : le déplacer dans un paquet partagé avant de s'en servir dans le site |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
 | Fermer les signalements en attente d'un contenu après une action de modération | `lib/moderationReports.ts` (`closePendingReports`), interne au serveur |
 | Supprimer un compte membre (contenus publics rattachés au compte fantôme) | `lib/accountDeletion.ts` (`anonymizeAndDeleteUser`), interne au serveur ; l'appelant vérifie les droits |

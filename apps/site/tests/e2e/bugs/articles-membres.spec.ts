@@ -56,7 +56,7 @@ const SECRETIVE = {
 };
 const SECRET_MARKERS = [
   SECRETIVE.signature, SECRETIVE.equipe, SECRETIVE.ligueCustom, SECRETIVE.forumactifName, SECRETIVE.legacyId,
-  SECRETIVE.banReason, "secret-bam@e2e.test", "notifNewsletter", "quizTotalScore",
+  SECRETIVE.banReason, "secret-bam@e2e.test", "notifNewsletter",
 ];
 const USERS = [COACH, ADMIN, NEWBIE, NEWBIE_EVIL, SECRETIVE];
 
@@ -286,8 +286,7 @@ test.describe("carte 140 : page et modification d'un article", () => {
   test("un schéma BBScheme inséré dans un article est animé par le lecteur", async ({ page }) => {
     await page.goto(`/articles/${SCHEME_ARTICLE.id}`, { waitUntil: "networkidle" });
     // Les commandes du lecteur n'existent que s'il a été lancé
-    await expect(page.getByRole("button", { name: "Ouvrir dans l'éditeur BBScheme" })).toBeVisible({ timeout: 20_000 });
-    await expect(page.getByRole("button", { name: "Pivoter le terrain" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Pivoter le terrain" })).toBeVisible({ timeout: 20_000 });
   });
 
   test("la fenêtre de modération d'un article parle d'« article »", async ({ page }) => {
@@ -320,7 +319,7 @@ test.describe("en taille téléphone", () => {
     expect((await ligueLink.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
 
     await page.goto(`/articles/${SCHEME_ARTICLE.id}`, { waitUntil: "networkidle" });
-    await expect(page.getByRole("button", { name: "Ouvrir dans l'éditeur BBScheme" })).toBeVisible({ timeout: 20_000 });
+    await expect(page.getByRole("button", { name: "Pivoter le terrain" })).toBeVisible({ timeout: 20_000 });
     await expectNoHorizontalScroll(page);
 
     await loginAs(page, COACH.id);

@@ -159,10 +159,6 @@ exports.Prisma.UserScalarFieldEnum = {
   previousTheme: 'previousTheme',
   equipe: 'equipe',
   ligueCustom: 'ligueCustom',
-  quizTotalScore: 'quizTotalScore',
-  quizBestScore: 'quizBestScore',
-  quizStreak: 'quizStreak',
-  quizAttemptsCount: 'quizAttemptsCount',
   legacyId: 'legacyId',
   forumactifName: 'forumactifName',
   hasFinishedOnboarding: 'hasFinishedOnboarding',
@@ -563,69 +559,6 @@ exports.Prisma.TournamentMatchScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.QuizQuestionScalarFieldEnum = {
-  id: 'id',
-  category: 'category',
-  question: 'question',
-  imageUrl: 'imageUrl',
-  options: 'options',
-  correctIndex: 'correctIndex',
-  explanation: 'explanation',
-  timesCorrect: 'timesCorrect',
-  timesOption0: 'timesOption0',
-  timesOption1: 'timesOption1',
-  timesOption2: 'timesOption2',
-  timesOption3: 'timesOption3',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
-exports.Prisma.QuizAttemptScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  score: 'score',
-  correct: 'correct',
-  total: 'total',
-  duration: 'duration',
-  jokersUsed: 'jokersUsed',
-  createdAt: 'createdAt'
-};
-
-exports.Prisma.QuizGameScalarFieldEnum = {
-  id: 'id',
-  userId: 'userId',
-  questionIds: 'questionIds',
-  currentIndex: 'currentIndex',
-  questionServedAt: 'questionServedAt',
-  score: 'score',
-  correct: 'correct',
-  fiftyUsed: 'fiftyUsed',
-  communityUsed: 'communityUsed',
-  skipUsed: 'skipUsed',
-  startedAt: 'startedAt'
-};
-
-exports.Prisma.QuizDailyWinnerScalarFieldEnum = {
-  date: 'date',
-  userId: 'userId',
-  score: 'score',
-  streak: 'streak'
-};
-
-exports.Prisma.QuizQuestionSuggestionScalarFieldEnum = {
-  id: 'id',
-  category: 'category',
-  question: 'question',
-  imageUrl: 'imageUrl',
-  options: 'options',
-  correctIndex: 'correctIndex',
-  explanation: 'explanation',
-  authorId: 'authorId',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.LegacyMemberScalarFieldEnum = {
   id: 'id',
   email: 'email',
@@ -633,14 +566,6 @@ exports.Prisma.LegacyMemberScalarFieldEnum = {
   nafNumber: 'nafNumber',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
-};
-
-exports.Prisma.BBSchemeStateScalarFieldEnum = {
-  id: 'id',
-  hash: 'hash',
-  data: 'data',
-  creatorId: 'creatorId',
-  createdAt: 'createdAt'
 };
 
 exports.Prisma.MailLogScalarFieldEnum = {
@@ -718,13 +643,7 @@ exports.Prisma.ModelName = {
   TournamentResult: 'TournamentResult',
   TournamentRound: 'TournamentRound',
   TournamentMatch: 'TournamentMatch',
-  QuizQuestion: 'QuizQuestion',
-  QuizAttempt: 'QuizAttempt',
-  QuizGame: 'QuizGame',
-  QuizDailyWinner: 'QuizDailyWinner',
-  QuizQuestionSuggestion: 'QuizQuestionSuggestion',
   LegacyMember: 'LegacyMember',
-  BBSchemeState: 'BBSchemeState',
   MailLog: 'MailLog'
 };
 
