@@ -89,11 +89,19 @@ Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`
 
 ## Vérifier son travail
 
+Les tests ont trois niveaux (carte 157), du plus rapide au plus complet :
+
+1. **Pendant le développement** : `pnpm check`, environ une minute, sans serveur ni navigateur.
+2. **À la fin d'une carte** : `pnpm --filter @bbfrance/site test:parcours`, environ une minute et demie. Le serveur de développement du site doit être arrêté : Next.js refuse d'en démarrer un second dans le même dossier.
+3. **Seulement à la demande du responsable** : `pnpm test:e2e`, la suite complète, environ 20 minutes.
+
 | Commande | Ce qu'elle vérifie |
 |---|---|
+| `pnpm check` | Niveau 1 : types TypeScript de chaque application et paquet, puis le cliquet ESLint. Ni serveur ni navigateur |
+| `pnpm --filter @bbfrance/site test:parcours` | Niveau 2 : parcours de fin de carte. Une seule session de navigateur visite les pages principales (en visiteur, en modérateur puis en administrateur), en taille téléphone puis ordinateur : page sans erreur, rien qui dépasse à droite, boutons d'au moins 44 pixels. Résumé dans `apps/site/logs/parcours.txt` |
 | `pnpm typecheck` | Pas d'incohérence de types dans le code TypeScript |
 | `pnpm lint:ratchet` | Qualité du code (ESLint) du site et des deux paquets (`packages/ui`, `packages/bbscheme-player`). Le nombre d'erreurs ne doit jamais augmenter, plafond par cible |
-| `pnpm test:e2e` | Parcours essentiels du site (lire le forum, répondre, se connecter…), joués dans un vrai navigateur sur une base de test locale recréée vide à chaque fois |
+| `pnpm test:e2e` | Niveau 3, à la demande : la suite complète. Chaque cas est un test indépendant (lire le forum, répondre, se connecter…), joué dans un vrai navigateur, en taille ordinateur et téléphone, sur une base de test locale recréée vide à chaque fois |
 | `pnpm --filter @bbfrance/site lighthouse` | Fluidité sur téléphone : note Lighthouse sur 100 des pages principales, mesurée sur la version de production du site (environ 5 minutes, résultats dans `apps/site/logs/lighthouse/`) |
 | `pnpm --filter @bbfrance/site temps-reponse` | Temps de réponse du serveur (délai avant le premier octet) de 5 pages sur la version de production, médiane de 5 mesures ; avertit au-dessus de 1000 ms, sans échouer (environ 2 minutes, rapport `apps/site/logs/temps-reponse-AAAA-MM-JJ.txt`) |
 | `pnpm --filter @bbfrance/hub test:sso` | Connexion au site via le hub, de bout en bout |

@@ -23,6 +23,7 @@ Ce fichier ne contient que ce qui est propre au travail de l'IA. Les règles du 
 - **Avant de coder une carte** : rappeler son objectif, présenter le plan (fichiers, étapes) et **attendre la validation du user**.
 - **Décision importante** (connexion des membres, base de données, bibliothèque majeure, découpage d'application, organisation du projet) : utiliser `/council`, qui produit un ADR.
 - **Fin d'une carte** : utiliser `/ship` (vérifications, test mobile, fiche de fonctionnalité, rangement de la carte).
+- **Tests en trois niveaux** (carte 157) : `pnpm check` pendant le développement ; `pnpm --filter @bbfrance/site test:parcours` en fin de carte ; la suite complète `pnpm test:e2e`, ou une longue série de tests ciblés, **seulement si le user la demande**.
 - Ne modifier que les fichiers utiles à la carte. Un refactor ou un renommage hors carte se propose, il ne se fait pas.
 - Avant de supprimer du code, lister ce qui l'utilise. Pour déplacer du code, le copier à l'identique, sans le réécrire.
 - Un changement de mise en ligne se répercute dans `DEPLOY.md`.

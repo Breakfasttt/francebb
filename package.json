@@ -9,6 +9,7 @@
     "start": "pnpm --filter @bbfrance/site start",
     "typecheck": "turbo run typecheck",
     "lint:ratchet": "turbo run lint:ratchet",
+    "check": "node scripts/check.mjs",
     "test:e2e": "turbo run test:e2e",
     "kanban": "node scripts/kanban.mjs"
   },

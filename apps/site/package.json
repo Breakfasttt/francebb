@@ -10,6 +10,7 @@
     "lint:ratchet": "node scripts/lint-ratchet.mjs",
     "typecheck": "tsc --noEmit",
     "test:e2e": "node scripts/e2e-db.mjs && playwright test",
+    "test:parcours": "node scripts/e2e-db.mjs && playwright test -c playwright.parcours.config.ts",
     "lighthouse": "node scripts/e2e-db.mjs && playwright test -c playwright.lighthouse.config.ts lighthouse-mobile",
     "temps-reponse": "node scripts/e2e-db.mjs && playwright test -c playwright.lighthouse.config.ts temps-reponse",
     "db:start": "node ../../scripts/local-postgres.mjs start site",
