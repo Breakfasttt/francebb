@@ -23,7 +23,8 @@ import {
   Upload,
   Save,
   GripVertical,
-  AlertTriangle
+  AlertTriangle,
+  ShieldCheck
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { Button, Card, ConfirmDialog, Input, Tabs, TabsContent, TabsList, TabsTrigger, cn, toast } from "@bbfrance/ui";
@@ -46,7 +47,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import UserMapper from '@/common/components/UserMapper/UserMapper';
-import { calculateCdfPoints, CdfTournamentType } from '@/common/utils/cdf';
+import { calculateCdfPoints, cdfRoundsCount, isValidRank, CdfTournamentType } from '@/common/utils/cdf';
 import { ComposeActionBar } from '@/app/forum/component/ComposeScreen';
 
 interface TournamentResultsEditorProps {
@@ -270,17 +271,17 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
   useEffect(() => {
     if (tournament.isCDF && results.length > 0) {
       const numParticipants = results.length;
-      const roundsAtVenue = parseInt(tournament.days || "1") * 3;
-      const numRounds = tournament.totalMatches || roundsAtVenue || 5; 
+      const numRounds = cdfRoundsCount(tournament.totalMatches, rounds.length, tournament.days);
       const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
 
       const updatedResults = results.map((res: any) => {
-        const newPoints = calculateCdfPoints(
+        // Rang vide : 0 point affiché, et l'enregistrement sera refusé par le serveur (carte 162)
+        const newPoints = isValidRank(res.rank) ? calculateCdfPoints(
           typeCDF,
           numRounds,
           numParticipants,
-          res.rank || 0
-        );
+          Number(res.rank)
+        ) : 0;
         if (res.points !== newPoints) {
           return { ...res, points: newPoints };
         }
@@ -299,6 +300,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     tournament.typeCDF, 
     tournament.totalMatches, 
     tournament.days, 
+    rounds.length,
     results.map((r: any) => `${r.coachName}-${r.rank}`).join(',')
   ]);
 
@@ -352,13 +354,12 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         // Force recalculation of points for newResults to ensure they are visible immediately
         if (tournament.isCDF) {
           const numParticipants = newResults.length;
-          const roundsAtVenue = parseInt(tournament.days || "1") * 3;
-          const numRounds = tournament.totalMatches || roundsAtVenue || 5;
+          const numRounds = cdfRoundsCount(tournament.totalMatches, data.rounds.length, tournament.days);
           const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
 
           newResults = newResults.map((res: any) => ({
             ...res,
-            points: calculateCdfPoints(typeCDF, numRounds, numParticipants, res.rank || 0)
+            points: isValidRank(res.rank) ? calculateCdfPoints(typeCDF, numRounds, numParticipants, Number(res.rank)) : 0
           }));
         }
 
@@ -476,16 +477,15 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     // ou on recalcule simplement les points CDF immédiatement ici
     if (field === 'rank' && tournament.isCDF) {
        const numParticipants = updatedResults.length;
-       const roundsAtVenue = parseInt(tournament.days || "1") * 3;
-       const numRounds = tournament.totalMatches || roundsAtVenue || 5;
+       const numRounds = cdfRoundsCount(tournament.totalMatches, rounds.length, tournament.days);
        const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
 
-       updatedResults[index].points = calculateCdfPoints(
+       updatedResults[index].points = isValidRank(value) ? calculateCdfPoints(
          typeCDF,
          numRounds,
          numParticipants,
-         Number(value) || 0
-       );
+         Number(value)
+       ) : 0;
     }
 
     setResults(updatedResults);
@@ -536,6 +536,18 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
           Le classement doit être contrôlé et ajusté manuellement après l&apos;import.
         </p>
       </Card>
+
+      {tournament.isCDF && (
+        // Carte 162 : les résultats d'un tournoi de la Coupe de France passent par la modération avant de compter
+        <Card className="flex items-start gap-3 p-3 text-sm">
+          <ShieldCheck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-bb-accent-text" />
+          <p className="m-0 text-bb-text">
+            <strong>Tournoi de la Coupe de France :</strong> chaque coach doit avoir un rang. Une fois publiés, les résultats
+            comptent au classement national seulement après leur validation par un modérateur ou un administrateur.
+            Modifier des résultats déjà validés retire la validation.
+          </p>
+        </Card>
+      )}
 
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'ranking' | 'matches')} className="flex flex-col gap-4">
         <TabsList aria-label="Saisie des résultats">

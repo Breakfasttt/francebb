@@ -1,5 +1,14 @@
 import nodemailer from "nodemailer";
 import { prisma } from "./prisma";
+import { escapeHtml, escapeHtmlMultiline } from "./htmlEscape";
+import { stripBBCode } from "./bbcode";
+
+/**
+ * Règle de ce fichier (carte 167) : toute valeur venue d'un membre ou de la base (titre de sujet, pseudo, extrait de
+ * message, nom de forum, de tournoi ou de ville) passe par `escapeHtml` avant d'être insérée dans le HTML d'un e-mail.
+ * Les identifiants placés dans une adresse passent par `encodeURIComponent`.
+ */
+export { escapeHtml };
 
 /**
  * Configuration du transporteur Nodemailer
@@ -25,7 +34,8 @@ interface SendMailOptions {
 }
 
 /**
- * Envoie un email stylisé
+ * Envoie un email stylisé. Ne lève jamais d'erreur : renvoie `{ success: false }` si l'envoi échoue. L'appelant doit
+ * donc lire `success` pour savoir si l'e-mail est parti (une annonce à tous les membres compte ainsi ses échecs).
  */
 export async function sendMail({ to, subject, html, text }: SendMailOptions) {
   try {
@@ -59,7 +69,8 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
 }
 
 /**
- * Template de base pour les emails BBFrance
+ * Template de base pour les emails BBFrance. `content` est du HTML déjà prêt (les valeurs qu'il contient ont été
+ * neutralisées par l'appelant) ; `title` est un simple texte, neutralisé ici.
  */
 export function getEmailTemplate(content: string, title: string) {
   return `
@@ -84,7 +95,7 @@ export function getEmailTemplate(content: string, title: string) {
             <h1>BBFrance</h1>
           </div>
           <div class="content">
-            <h2 style="color: #1d3557; margin-top: 0;">${title}</h2>
+            <h2 style="color: #1d3557; margin-top: 0;">${escapeHtml(title)}</h2>
             ${content}
           </div>
           <div class="footer">
@@ -102,15 +113,15 @@ export function getEmailTemplate(content: string, title: string) {
  */
 export async function sendPmNotification(toEmail: string, senderName: string, messagePreview: string, conversationId?: string) {
   const title = "Nouveau Message Privé";
-  const link = conversationId 
-    ? `${process.env.AUTH_URL}/messagerie?id=${conversationId}`
+  const link = conversationId
+    ? `${process.env.AUTH_URL}/messagerie?id=${encodeURIComponent(conversationId)}`
     : `${process.env.AUTH_URL}/messagerie`;
 
   const content = `
     <p>Bonjour,</p>
-    <p><strong class="accent">${senderName}</strong> vous a envoyé un nouveau message privé sur BBFrance :</p>
+    <p><strong class="accent">${escapeHtml(senderName)}</strong> vous a envoyé un nouveau message privé sur BBFrance :</p>
     <div style="background: #f9f9f9; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; font-style: italic;">
-      "${messagePreview}"
+      "${escapeHtml(messagePreview)}"
     </div>
     <a href="${link}" class="btn">Répondre sur le site</a>
   `;
@@ -122,33 +133,15 @@ export async function sendPmNotification(toEmail: string, senderName: string, me
 }
 
 /**
- * Envoie un email de notification pour une mention
- */
-export async function sendMentionNotification(toEmail: string, authorName: string, topicTitle: string, topicId: string) {
-  const title = "Vous avez été mentionné !";
-  const content = `
-    <p>Bonjour,</p>
-    <p><strong class="accent">${authorName}</strong> vous a mentionné dans une discussion sur le forum :</p>
-    <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">Sujet : ${topicTitle}</p>
-    <a href="${process.env.AUTH_URL}/forum/topic/${topicId}" class="btn">Voir la discussion</a>
-  `;
-  return sendMail({
-    to: toEmail,
-    subject: `[BBFrance] ${authorName} vous a mentionné dans "${topicTitle}"`,
-    html: getEmailTemplate(content, title),
-  });
-}
-
-/**
  * Envoie un email de notification pour une réponse à un sujet suivi
  */
 export async function sendFollowNotification(toEmail: string, authorName: string, topicTitle: string, topicId: string) {
   const title = "Nouvelle réponse";
   const content = `
     <p>Bonjour,</p>
-    <p>Un nouveau message a été posté par <strong class="accent">${authorName}</strong> dans un sujet que vous suivez :</p>
-    <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">${topicTitle}</p>
-    <a href="${process.env.AUTH_URL}/forum/topic/${topicId}" class="btn">Consulter la réponse</a>
+    <p>Un nouveau message a été posté par <strong class="accent">${escapeHtml(authorName)}</strong> dans un sujet que vous suivez :</p>
+    <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">${escapeHtml(topicTitle)}</p>
+    <a href="${process.env.AUTH_URL}/forum/topic/${encodeURIComponent(topicId)}" class="btn">Consulter la réponse</a>
   `;
   return sendMail({
     to: toEmail,
@@ -163,16 +156,16 @@ export async function sendFollowNotification(toEmail: string, authorName: string
 export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
   const topicsHtml = topics.map(t => `
     <div style="padding: 10px; border-bottom: 1px solid #eee; margin-bottom: 10px;">
-      <a href="${process.env.AUTH_URL}/forum/topic/${t.id}" style="color: #1d3557; font-weight: bold; text-decoration: none; font-size: 16px;">${t.title}</a><br/>
-      <small style="color: #777;">${t.views} vues • Dans ${t.forum.name}</small>
+      <a href="${process.env.AUTH_URL}/forum/topic/${encodeURIComponent(t.id)}" style="color: #1d3557; font-weight: bold; text-decoration: none; font-size: 16px;">${escapeHtml(t.title)}</a><br/>
+      <small style="color: #777;">${escapeHtml(t.views)} vues • Dans ${escapeHtml(t.forum.name)}</small>
     </div>
   `).join("");
 
   const tournamentsHtml = tournaments.map(t => `
     <div style="padding: 10px; background: #f1f3f5; border-radius: 8px; margin-bottom: 10px; border-left: 4px solid #e63946;">
-      <strong style="color: #1d3557;">${t.name}</strong><br/>
-      <small style="color: #555;">📍 ${t.ville || t.location} • 📅 ${new Date(t.date).toLocaleDateString('fr-FR')}</small><br/>
-      <a href="${process.env.AUTH_URL}/forum/topic/${t.topic?.id || ''}" style="color: #e63946; font-size: 12px; font-weight: bold; text-decoration: none;">Voir le détail →</a>
+      <strong style="color: #1d3557;">${escapeHtml(t.name)}</strong><br/>
+      <small style="color: #555;">📍 ${escapeHtml(t.ville || t.location)} • 📅 ${new Date(t.date).toLocaleDateString('fr-FR')}</small><br/>
+      <a href="${process.env.AUTH_URL}/forum/topic/${encodeURIComponent(t.topic?.id || '')}" style="color: #e63946; font-size: 12px; font-weight: bold; text-decoration: none;">Voir le détail →</a>
     </div>
   `).join("");
 
@@ -191,4 +184,13 @@ export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
   `;
 
   return getEmailTemplate(content, "Gazette de BBFrance");
+}
+
+/**
+ * Corps d'une annonce de l'administration (carte 167) : le texte est écrit avec l'éditeur BBCode du site. Les balises
+ * BBCode sont retirées (un e-mail ne sait pas afficher un spoiler ou une galerie), puis le texte est neutralisé ; ses
+ * retours à la ligne sont gardés.
+ */
+export function getAnnouncementTemplate(text: string) {
+  return getEmailTemplate(`<p>${escapeHtmlMultiline(stripBBCode(text))}</p>`, "Annonce Officielle BBFrance");
 }

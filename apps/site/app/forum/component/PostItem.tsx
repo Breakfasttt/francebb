@@ -11,6 +11,7 @@
  * - Corps du message en 16 pixels, largeur de lecture limitée à environ 70 caractères ; citations sur fond de surface ;
  *   signature séparée par un filet.
  * - Sous le message, toujours visibles : les réactions et le bouton « Citer » (PostActions).
+ * - Message supprimé (carte 165) : la mention dit qui l'a supprimé, son auteur ou la modération (avec la raison).
  * - États conservés : message supprimé, auteur bloqué ou banni (masqué, avec « Afficher le message »), message modéré,
  *   premier message d'un tournoi mis en valeur sur les pages suivantes.
  */
@@ -22,17 +23,41 @@ import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import { getRoleLabel, isModerator } from "@/lib/roles";
 import PostActions from "./PostActions";
 import PostMoreMenu from "./PostMoreMenu";
-import PostAuthorSheet from "./PostAuthorSheet";
+import PostAuthorSheet, { type PostAuthor } from "./PostAuthorSheet";
+import { SplitPostCheckbox } from "./TopicTools";
+import { postDeletedBy } from "@/lib/forumDeletion";
+import type { QuoteStatusMap } from "@/lib/bbcode";
+
+/**
+ * Un message tel que la page du sujet le confie à ce composant. Le texte (`content`) est déjà vidé quand le lecteur
+ * n'a pas le droit de le lire, et l'auteur ne contient que les champs affichés (voir lib/forumPostPrivacy.ts).
+ */
+export interface TopicPost {
+  id: string;
+  authorId: string;
+  content: string;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  isDeleted: boolean;
+  /** Membre qui a supprimé le message (carte 165) : différent de l'auteur quand c'est la modération. */
+  deletedById?: string | null;
+  /** Raison donnée par la modération quand elle a supprimé le message. */
+  deletionReason?: string | null;
+  isModerated: boolean;
+  moderationReason: string | null;
+  moderator: { name: string | null } | null;
+  reactions: { emoji: string; userId: string }[];
+  author: PostAuthor & { role: string; signature?: string | null };
+}
 
 interface PostItemProps {
   // Message lu par la page serveur, avec son auteur (ligues, nombre de messages), son modérateur et ses réactions
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  post: any;
+  post: TopicPost;
   index: number;
   topicId: string;
   currentUserId?: string;
   isUserModerator: boolean;
-  quoteStatusMap: Record<string, { isDeleted: boolean; isModerated: boolean }>;
+  quoteStatusMap: QuoteStatusMap;
   safeCurrentPage: number;
   regionLabels: Record<string, string>;
   // Libellés des rôles personnalisés (nom du rôle -> libellé), chargés une seule fois par la page sujet
@@ -44,6 +69,8 @@ interface PostItemProps {
   isBlocked?: boolean;
   // Faux quand le membre ne peut pas répondre (sujet ou forum verrouillé) : le bouton « Citer » est alors masqué
   canReply?: boolean;
+  // Le sujet a d'autres messages que le premier : l'auteur ne peut alors plus supprimer le premier (carte 165)
+  topicHasReplies?: boolean;
 }
 
 /** Date et heure à la française, comme avant la refonte (« 12 mars 2026 à 10:00 »). */
@@ -73,6 +100,7 @@ const PostItem: React.FC<PostItemProps> = ({
   firstPostId,
   isBlocked = false,
   canReply = true,
+  topicHasReplies = true,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
   const [authorOpen, setAuthorOpen] = useState(false);
@@ -87,6 +115,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const isEdited = new Date(post.updatedAt).getTime() > new Date(post.createdAt).getTime() + 1000;
   const isHidden = (isBlocked || isBannedAuthor) && !isRevealed;
   const isFirstTournamentPost = isTournament && post.id === firstPostId;
+  const deletedBy = postDeletedBy(post);
   const openAuthor = () => setAuthorOpen(true);
 
   const avatar = (size: number) => (
@@ -96,7 +125,7 @@ const PostItem: React.FC<PostItemProps> = ({
       postCount={postCount}
       size={size}
       isBanned={isBannedAuthor}
-      selectedRank={author.avatarFrame}
+      selectedRank={author.avatarFrame as Rank | null}
       isModerator={isAuthorModerator}
     />
   );
@@ -147,6 +176,9 @@ const PostItem: React.FC<PostItemProps> = ({
           </p>
         </div>
 
+        {/* Mode « scission » d'un modérateur (carte 169) : case pour choisir ce message */}
+        {!isFirstPostAlwaysVisible && <SplitPostCheckbox postId={post.id} isFirstPost={index === 0} />}
+
         <PostMoreMenu
           postId={post.id}
           topicId={topicId}
@@ -157,6 +189,11 @@ const PostItem: React.FC<PostItemProps> = ({
           isModerator={isUserModerator}
           isModerated={!!post.isModerated}
           showContentActions={!post.isDeleted && !isHidden}
+          isDeletedByModeration={deletedBy === "moderation"}
+          // `index` compte depuis le début du sujet : 0 est son premier message, quelle que soit la page
+          isFirstPost={index === 0}
+          topicHasReplies={topicHasReplies}
+          isTournament={isTournament || isFirstPostAlwaysVisible}
           editHref={isFirstTournamentPost && tournamentId ? `/forum/edit-tournament/${tournamentId}` : `/forum/post/${post.id}/edit`}
           editLabel={isFirstTournamentPost ? "Modifier le tournoi" : "Modifier"}
         />
@@ -165,7 +202,9 @@ const PostItem: React.FC<PostItemProps> = ({
       <div className="px-3 pt-2 pb-3 lg:pr-6 lg:pb-4 lg:pl-[92px]">
         {post.isDeleted ? (
           <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-4 text-center text-sm text-bb-text-muted italic">
-            Ce message a été supprimé par son auteur
+            {deletedBy === "moderation"
+              ? `Ce message a été supprimé par la modération${post.deletionReason ? `, raison : ${post.deletionReason}` : ""}`
+              : "Ce message a été supprimé par son auteur"}
           </p>
         ) : isHidden ? (
           <div className="flex flex-col items-center gap-3 rounded-bb-md border border-dashed border-bb-border bg-bb-surface-2 px-4 py-6 text-center">
@@ -238,7 +277,10 @@ const PostItem: React.FC<PostItemProps> = ({
               initialReactions={post.reactions}
               currentUserId={currentUserId}
               topicId={topicId}
-              canQuote={canReply}
+              // Un message masqué par la modération ne se cite pas, même par un modérateur : la citation recopierait
+              // le texte caché dans un message visible de tous (carte 164)
+              canQuote={canReply && !post.isModerated}
+              canReact={canReply}
             />
           </>
         )}

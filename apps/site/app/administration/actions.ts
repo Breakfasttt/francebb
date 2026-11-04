@@ -1,53 +1,9 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
-import { prisma } from "@/lib/prisma";
+import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
-
-export async function resetDatabase(phrase: string) {
-  const session = await getActiveSession();
-  const userRole = (session?.user as any)?.role;
-  if (!userRole || getRolePower(userRole) < ROLE_POWER.SUPERADMIN) {
-    return { success: false, error: "Accès refusé. Seul un SUPERADMIN peut détruire le site." };
-  }
-  
-  if (phrase !== "JE COMPRENDS LES RISQUES") {
-    return { success: false, error: "Phrase de sécurité invalide." };
-  }
-
-  try {
-    await prisma.$transaction([
-      prisma.postReaction.deleteMany(),
-      prisma.mention.deleteMany(),
-      prisma.topicView.deleteMany(),
-      prisma.privateMessage.deleteMany(),
-      prisma.conversation.deleteMany(),
-      prisma.post.deleteMany(),
-      prisma.topic.deleteMany(),
-      prisma.forum.deleteMany(),
-      prisma.category.deleteMany(),
-      prisma.tournament.deleteMany(),
-      prisma.user.deleteMany({
-        where: { role: { not: "SUPERADMIN" } }
-      })
-    ]);
-
-    // On recrée la structure minimale pour que le front ne crash pas
-    const defaultCat = await prisma.category.create({
-      data: { name: "Archives d'un Monde Déchu", order: 1 }
-    });
-    
-    await prisma.forum.create({
-      data: { name: "Vestiges", categoryId: defaultCat.id, description: "Survivre après l'apocalypse." }
-    });
-
-    return { success: true };
-  } catch (error: any) {
-    console.error("Factory Reset Error:", error);
-    return { success: false, error: error.message || "Erreur critique de la BDD." };
-  }
-}
 
 export async function searchCoaches(query: string = "", page: number = 1, pageSize: number = 20) {
   const session = await getActiveSession();
@@ -459,7 +415,9 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
 }
 
 /**
- * Envoie un email d'information forcé à TOUS les coachs de la plateforme.
+ * Envoie une annonce par e-mail aux coachs non bannis qui acceptent la préférence « Newsletter et annonces »
+ * (`notifNewsletter`, carte 167). Le texte est neutralisé avant d'être inséré dans l'e-mail. Seuls les e-mails
+ * réellement partis sont comptés dans `count` : `sendMail` renvoie `{ success: false }` en cas d'échec, sans erreur.
  */
 export async function sendGlobalInfoMail(subject: string, content: string) {
   const session = await getActiveSession();
@@ -472,30 +430,27 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
     return { success: false, error: "Sujet et contenu requis." };
   }
 
-  const users = await prisma.user.findMany({
-    where: { email: { not: null }, isBanned: false },
+  const users = await prismaWithEmail.user.findMany({
+    where: { email: { not: null }, isBanned: false, notifNewsletter: true },
     select: { email: true }
   });
 
-  const { sendMail, getEmailTemplate } = await import("@/lib/mail");
-  const html = getEmailTemplate(content, "Annonce Officielle BBFrance");
+  const { sendMail, getAnnouncementTemplate } = await import("@/lib/mail");
+  const html = getAnnouncementTemplate(content);
 
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   let successCount = 0;
   for (const user of users) {
-    try {
-      await sendMail({
-        to: user.email!,
-        subject: `[BBFrance Info] ${subject}`,
-        html
-      });
-      successCount++;
-      // Attendre 500ms entre chaque envoi pour le débit SMTP
-      await sleep(500);
-    } catch (e) {
-      console.error(`Erreur mail à ${user.email}:`, e);
-    }
+    const result = await sendMail({
+      to: user.email!,
+      subject: `[BBFrance Info] ${subject}`,
+      html
+    });
+    if (result.success) successCount++;
+    else console.error(`Erreur mail à ${user.email}:`, result.error);
+    // Attendre 500ms entre chaque envoi pour le débit SMTP
+    await sleep(500);
   }
 
   return { success: true, count: successCount, total: users.length };

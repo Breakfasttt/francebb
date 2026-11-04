@@ -1,10 +1,9 @@
 "use client";
 
 /**
- * Onglet « Annonces par e-mail » de l'administration (refonte, carte 099) : envoyer une annonce à tous les coachs non
- * bannis. Ce type d'e-mail ignore les préférences des membres (lettre d'information refusée…) : il est réservé aux
- * informations capitales. L'envoi est confirmé dans une fenêtre (« Oui, diffuser »), puis l'écran « Diffusion
- * terminée » donne le nombre d'e-mails partis. L'action `sendGlobalInfoMail` est inchangée.
+ * Onglet « Annonces par e-mail » de l'administration (refonte, carte 099) : envoyer une annonce aux coachs non bannis
+ * qui acceptent la préférence « Newsletter et annonces » de leur profil (carte 167). L'envoi est confirmé dans une
+ * fenêtre (« Oui, diffuser »), puis l'écran « Diffusion terminée » donne le nombre d'e-mails réellement partis.
  */
 import { useState, useTransition } from "react";
 import { AlertTriangle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
@@ -74,8 +73,8 @@ export default function InfoMailsTab() {
         <div role="note" className="flex gap-3 rounded-bb-md border border-bb-warning-text px-3 py-2.5 text-[0.95rem] text-bb-text">
           <AlertTriangle size={20} className="mt-0.5 shrink-0 text-bb-warning-text" aria-hidden="true" />
           <p className="m-0">
-            <strong>Attention :</strong> ces e-mails partent à tous les coachs, même à ceux qui ont refusé les lettres
-            d&apos;information. À réserver aux informations capitales.
+            <strong>Attention :</strong> ces e-mails partent à tous les coachs qui acceptent « Newsletter et annonces »
+            dans leur profil. À réserver aux informations importantes.
           </p>
         </div>
 

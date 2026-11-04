@@ -4,6 +4,7 @@
  * est affiché au-dessus de la carte. Les données lues sont les mêmes qu'avant la refonte.
  */
 import { prisma } from "@/lib/prisma";
+import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import CarteClient from "./component/CarteClient";
 
@@ -15,7 +16,9 @@ export default async function CartePage() {
       where: {
         date: { gte: new Date() },
         isFinished: false,
-        isCancelled: false
+        isCancelled: false,
+        // Pas de tournoi dont le sujet du forum est supprimé (carte 165)
+        ...TOURNAMENT_TOPIC_NOT_DELETED
       },
       take: 100,
       select: {

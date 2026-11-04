@@ -2,6 +2,7 @@
  * Vérification rapide du code (niveau 1 des tests, carte 157) : `pnpm check` à la racine du dépôt.
  * Pas de serveur ni de navigateur : on vérifie seulement que le code est correct, en une minute environ.
  * - Vérification des types TypeScript (`tsc --noEmit`) dans chaque application et chaque paquet, en même temps ;
+ * - les tests unitaires du site (`pnpm test:unit` dans apps/site : fonctions isolées comme le moteur BBCode, sans navigateur) ;
  * - puis le cliquet ESLint (apps/site/scripts/lint-ratchet.mjs : le nombre d'erreurs ne doit pas dépasser son plafond).
  * À lancer pendant le développement, à chaque étape. Les tests du site dans un navigateur se lancent à part :
  * `pnpm test:parcours` en fin de carte (niveau 2), `pnpm test:e2e` seulement à la demande (niveau 3).
@@ -34,9 +35,11 @@ function report({ label, code, output, seconds }) {
 const start = Date.now();
 const types = await Promise.all(TYPED.map((dir) => run(`types ${dir}`, "npx tsc --noEmit", dir)));
 types.forEach(report);
+const unit = await run("tests unitaires apps/site", "node --experimental-strip-types --no-warnings --test tests/unit/*.test.mjs", "apps/site");
+report(unit);
 const lint = await run("ESLint (cliquet)", "node scripts/lint-ratchet.mjs", "apps/site");
 report(lint);
 
-const failed = [...types, lint].filter((result) => result.code !== 0);
+const failed = [...types, unit, lint].filter((result) => result.code !== 0);
 console.log(`\n${failed.length === 0 ? "Tout est correct" : `${failed.length} vérification(s) en échec`} — ${((Date.now() - start) / 1000).toFixed(0)} s au total.`);
 process.exit(failed.length === 0 ? 0 : 1);

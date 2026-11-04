@@ -10,7 +10,7 @@ import { Button } from "@bbfrance/ui";
 import { ForumRow, UnreadDot } from "@/app/forum/component/ForumListItems";
 
 // Données minimales d'une catégorie de l'accueil du forum (chargées par app/forum/page.tsx).
-// updatedAt peut arriver en string : unstable_cache sérialise en JSON.
+// lastPostAt peut arriver en string : unstable_cache sérialise en JSON.
 export interface ForumIndexCategory {
   id: string;
   name: string;
@@ -21,7 +21,7 @@ export interface ForumIndexCategory {
     isLocked: boolean;
     isTournamentForum: boolean;
     _count: { topics: number };
-    topics: { title: string; updatedAt: Date | string; tournamentId: string | null; author: { name: string | null } }[];
+    topics: { title: string; lastPostAt: Date | string; tournamentId: string | null; lastPostAuthor: { name: string | null } | null }[];
     subForums: { id: string }[];
   }[];
 }
@@ -72,8 +72,8 @@ export default function ForumCategory({ category, unreadForumIds }: CategoryProp
                   lastTopic: lastTopic && {
                     title: lastTopic.title,
                     isTournament: !!lastTopic.tournamentId,
-                    authorName: lastTopic.author.name,
-                    date: lastTopic.updatedAt,
+                    lastPostAuthorName: lastTopic.lastPostAuthor?.name ?? null,
+                    lastPostAt: lastTopic.lastPostAt,
                   },
                 }}
               />

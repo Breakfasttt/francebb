@@ -94,7 +94,7 @@ test.beforeAll(async () => {
         views: ROOT_TOPIC.views,
         createdAt: ago(800),
         // Date du dernier message affichée dans le résultat (midi, pour ne pas dépendre du fuseau horaire)
-        updatedAt: new Date("2026-03-15T12:00:00Z"),
+        lastPostAt: new Date("2026-03-15T12:00:00Z"),
       },
     });
     await prisma.tournament.create({

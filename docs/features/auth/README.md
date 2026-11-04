@@ -39,6 +39,8 @@ Utilisation dans une action serveur : `const session = await getActiveSession();
 
 ## Les pièges
 
+- **Adresse e-mail vérifiée obligatoire (carte 160).** La connexion directe rattache un compte Discord ou Google à un membre existant qui a la même adresse (`allowDangerousEmailAccountLinking`). Ce n'est sûr que si Discord (`profile.verified`) ou Google (`profile.email_verified`) certifie l'adresse : le rappel `signIn` refuse sinon, avec la page d'erreur `EmailNotVerified`. Sans ce contrôle, n'importe qui pouvait prendre le compte d'un membre en créant un compte Discord à son adresse. La connexion directe disparaîtra quand le hub sera en ligne (carte 161).
+- **Membre supprimé ou base injoignable (carte 160).** Le rappel `jwt` renvoie `null` si le membre n'existe plus : Auth.js efface alors le cookie et la session est fermée. Si la base ne répond pas, le rôle est ramené à « coach » pour cette lecture. Avant, le jeton gardait son ancien rôle jusqu'à 30 jours.
 - Toute action serveur qui lit ou écrit pour un membre passe par `getActiveSession()`, jamais `auth()` directement (exceptions : `app/debugActions.ts` et `app/auth/login/actions.ts`). Depuis la carte 052, les pages serveur font de même ; seules `/auth/login` et `/banned` utilisent `getSession()` (session brute, bannis compris), car elles concernent justement les bannis.
 - Le lien vers la page de connexion porte l'adresse de retour dans `?callbackUrl=` : c'est le seul nom que lit `/auth/login`. Plusieurs pages utilisaient `?callback=`, ignoré, et le membre revenait à l'accueil au lieu de la page demandée (corrigé par la carte 052).
 - Le rôle admin ou modérateur se vérifie **côté serveur**, jamais seulement dans la page.

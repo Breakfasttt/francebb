@@ -11,6 +11,8 @@ import { isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
 import { toggleBanUser } from "@/app/membres/actions";
+import { stripBBCode } from "@/lib/bbcode";
+import { forumPostHrefFor } from "@/lib/forumPostLink";
 
 /**
  * Créer un nouveau signalement.
@@ -71,8 +73,132 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
   return { logs, total };
 }
 
+/** Longueur de l'extrait du contenu signalé, en caractères. */
+const EXCERPT_LENGTH = 200;
+
+/**
+ * Contenu visé par un signalement, tel que l'écran de modération l'affiche (carte 168).
+ * - `title` : titre du sujet, de l'article ou de la ligue, ou pseudo du coach signalé ;
+ * - `excerpt` : début du texte, sans BBCode (le code de mise en forme du forum), 200 caractères au plus ;
+ * - `authorName` : auteur du message, du sujet ou de l'article, créateur de la ligue ;
+ * - `url` : adresse où voir le contenu (pour un message, la bonne page du sujet, avec l'ancre du message) ;
+ * - `gone` : le contenu n'existe plus ou a été supprimé ; le signalement n'a plus qu'à être fermé ;
+ * - `hidden` : le contenu est déjà masqué par la modération (message ou article), ou le coach est banni.
+ */
+export interface ReportTarget {
+  title: string | null;
+  excerpt: string | null;
+  authorName: string | null;
+  url: string | null;
+  gone: boolean;
+  hidden: boolean;
+}
+
+/** Contenu introuvable : effacé depuis le signalement. */
+const GONE_TARGET: ReportTarget = { title: null, excerpt: null, authorName: null, url: null, gone: true, hidden: false };
+
+/** Texte brut d'un contenu BBCode, coupé à la longueur de l'extrait. */
+function excerptOf(content: string | null | undefined): string | null {
+  if (!content) return null;
+  const plain = stripBBCode(content).replace(/\s+/g, " ").trim();
+  if (!plain) return null;
+  return plain.length > EXCERPT_LENGTH ? `${plain.slice(0, EXCERPT_LENGTH).trimEnd()}…` : plain;
+}
+
+/**
+ * Charge les contenus visés par les signalements d'une page de la liste (au plus 10), selon leur type.
+ * Un contenu introuvable est renvoyé comme `gone` : il a été effacé depuis le signalement.
+ */
+async function loadReportTargets(targetType: string, ids: string[]): Promise<Map<string, ReportTarget>> {
+  const targets = new Map<string, ReportTarget>();
+  if (ids.length === 0) return targets;
+
+  if (targetType === "POST") {
+    const posts = await prisma.post.findMany({
+      where: { id: { in: ids } },
+      select: {
+        id: true, content: true, createdAt: true, topicId: true, isDeleted: true, isModerated: true,
+        author: { select: { name: true } },
+        topic: { select: { title: true, isDeleted: true } },
+      },
+    });
+    // Adresse de chaque message sur la bonne page de son sujet (lib/forumPostLink.ts, carte 169), une requête après
+    // l'autre : la base locale de développement refuse les requêtes simultanées
+    for (const post of posts) {
+      targets.set(post.id, {
+        title: post.topic.title,
+        excerpt: excerptOf(post.content),
+        authorName: post.author.name,
+        url: await forumPostHrefFor(post.topicId, post),
+        gone: post.isDeleted || post.topic.isDeleted,
+        hidden: post.isModerated,
+      });
+    }
+  } else if (targetType === "TOPIC") {
+    const topics = await prisma.topic.findMany({
+      where: { id: { in: ids } },
+      select: {
+        id: true, title: true, isDeleted: true,
+        author: { select: { name: true } },
+        // Premier message du sujet, pour l'extrait
+        posts: { orderBy: [{ createdAt: "asc" }, { id: "asc" }], take: 1, select: { content: true } },
+      },
+    });
+    for (const topic of topics) {
+      targets.set(topic.id, {
+        title: topic.title,
+        excerpt: excerptOf(topic.posts[0]?.content),
+        authorName: topic.author.name,
+        url: `/forum/topic/${topic.id}`,
+        gone: topic.isDeleted,
+        hidden: false,
+      });
+    }
+  } else if (targetType === "USER") {
+    const users = await prisma.user.findMany({ where: { id: { in: ids } }, select: { id: true, name: true, isBanned: true } });
+    for (const user of users) {
+      targets.set(user.id, { title: user.name, excerpt: null, authorName: null, url: `/spy/${user.id}`, gone: false, hidden: user.isBanned });
+    }
+  } else if (targetType === "ARTICLE") {
+    const articles = await prisma.article.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, title: true, content: true, isModerated: true, author: { select: { name: true } } },
+    });
+    for (const article of articles) {
+      targets.set(article.id, {
+        title: article.title,
+        excerpt: excerptOf(article.content),
+        authorName: article.author.name,
+        url: `/articles/${article.id}`,
+        gone: false,
+        hidden: article.isModerated,
+      });
+    }
+  } else if (targetType === "LIGUE") {
+    const ligues = await prisma.ligue.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, name: true, description: true, creator: { select: { name: true } } },
+    });
+    for (const ligue of ligues) {
+      targets.set(ligue.id, {
+        title: ligue.name,
+        excerpt: excerptOf(ligue.description),
+        authorName: ligue.creator.name,
+        url: `/ligue/${ligue.id}`,
+        gone: false,
+        hidden: false,
+      });
+    }
+  }
+
+  for (const id of ids) if (!targets.has(id)) targets.set(id, GONE_TARGET);
+  return targets;
+}
+
 /**
  * Récupérer les signalements groupés par cible pour un type spécifique avec pagination.
+ * Chaque groupe porte aussi le contenu visé (`target`, carte 168) : titre, extrait, auteur, adresse, et s'il a été
+ * supprimé ou masqué entre-temps.
  */
 export async function getPendingReportsByType(targetType: string, page = 1, pageSize = 10) {
   const session = await getActiveSession();
@@ -90,7 +216,14 @@ export async function getPendingReportsByType(targetType: string, page = 1, page
   });
 
   // Groupement manuel pour afficher "X signalements pour cet item"
-  const grouped: Record<string, any> = {};
+  const grouped: Record<string, {
+    targetId: string;
+    targetType: string;
+    reports: typeof reports;
+    count: number;
+    firstReason: string;
+    createdAt: Date;
+  }> = {};
   for (const report of reports) {
     if (!grouped[report.targetId]) {
       grouped[report.targetId] = {
@@ -106,9 +239,11 @@ export async function getPendingReportsByType(targetType: string, page = 1, page
     grouped[report.targetId].count++;
   }
 
-  const allGroups = Object.values(grouped).sort((a: any, b: any) => b.createdAt.getTime() - a.createdAt.getTime());
+  const allGroups = Object.values(grouped).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   const total = allGroups.length;
-  const groups = allGroups.slice((page - 1) * pageSize, page * pageSize);
+  const pageGroups = allGroups.slice((page - 1) * pageSize, page * pageSize);
+  const targets = await loadReportTargets(targetType, pageGroups.map((group) => group.targetId));
+  const groups = pageGroups.map((group) => ({ ...group, target: targets.get(group.targetId) ?? GONE_TARGET }));
 
   return { groups, total };
 }

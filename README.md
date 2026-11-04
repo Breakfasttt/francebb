@@ -47,6 +47,7 @@ Chaque règle n'est écrite qu'à un seul endroit :
 | `docs/adr/` | Les décisions importantes et leurs raisons (voir « ADR » dans le glossaire) |
 | `docs/GLOSSAIRE.md` | Les mots techniques expliqués |
 | `docs/bilans/` | Comptes rendus des séances de travail |
+| `docs/audits/` | Audits complets du site (sécurité, bugs, confort), datés |
 | `kanban/` | Les tâches, rangées par état (à faire, en cours, terminé…) |
 | `scripts/` | Petits outils du dépôt (vérification du kanban, envoi vers `master`) |
 | `.claude/` | Consignes et outils de l'IA qui aide au développement |

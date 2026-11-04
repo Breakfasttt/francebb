@@ -12,6 +12,7 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { DateBlock, placeText, topicHref } from "@/app/tournois/component/TournamentListItems";
 import { prisma } from "@/lib/prisma";
+import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
 import { Button, cn } from "@bbfrance/ui";
 import { ChevronRight, ExternalLink, MessageSquare, Plus } from "lucide-react";
@@ -24,7 +25,8 @@ import Link from "next/link";
 const getCachedTournaments = unstable_cache(
   async () => {
     return prisma.tournament.findMany({
-      where: { date: { gte: new Date() }, isFinished: false, isCancelled: false },
+      // Pas de tournoi dont le sujet du forum est supprimé (carte 165)
+      where: { date: { gte: new Date() }, isFinished: false, isCancelled: false, ...TOURNAMENT_TOPIC_NOT_DELETED },
       orderBy: { date: 'asc' },
       take: 3,
       include: { organizer: { select: { name: true } }, topic: { select: { id: true } }, _count: TAKEN_PLACES_COUNT }

@@ -85,7 +85,10 @@ test.beforeAll(async () => {
         signature: SIGNATURE,
       },
     });
-    await prisma.user.create({ data: { id: READER.id, name: READER.name, email: "lecteur-sujet@e2e.test", hasFinishedOnboarding: true } });
+    // Date « tout est lu avant le… » ancienne (carte 166) : sans visite enregistrée, tout le sujet est non lu pour lui
+    await prisma.user.create({
+      data: { id: READER.id, name: READER.name, email: "lecteur-sujet@e2e.test", hasFinishedOnboarding: true, forumReadAllAt: new Date("2020-01-01T00:00:00Z") },
+    });
     await prisma.user.create({ data: { id: BLOCKED.id, name: BLOCKED.name, email: "bloque-sujet@e2e.test", hasFinishedOnboarding: true } });
     await prisma.ligue.create({ data: { ...LIGUE, creatorId: AUTHOR.id, members: { connect: { id: AUTHOR.id } } } });
     await prisma.block.create({ data: { blockerId: READER.id, blockedId: BLOCKED.id } });
@@ -304,7 +307,7 @@ test.describe("3.3 lecture et navigation", () => {
       const read = await prisma.post.findUnique({ where: { id: postId(22) }, select: { createdAt: true } });
       await prisma.topicView.update({
         where: { userId_topicId: { userId: READER.id, topicId: TOPIC.id } },
-        data: { lastViewedAt: read!.createdAt, lastPostId: postId(22) },
+        data: { lastReadPostAt: read!.createdAt, lastPostId: postId(22) },
       });
     });
     await page.goto(`/forum/topic/${TOPIC.id}`, { waitUntil: "networkidle" });
@@ -480,7 +483,9 @@ test.describe("3.3 un message", () => {
     await page.goto(topicUrl(TOPIC.id, "?page=2"), { waitUntil: "networkidle" });
     await expect.poll(() => withTestDb((prisma) => prisma.topicView.count({ where: { userId: READER.id, topicId: TOPIC.id } })), { timeout: 30_000 }).toBe(1);
     await (await postAction(page, postCard(page, postId(25)), "Marquer comme non lu à partir d'ici")).click();
-    await page.waitForURL(/\/forum$/);
+    // Le membre reste sur le sujet, avec une notification (carte 169) ; avant, il était renvoyé à l'accueil du forum
+    await expect(page.getByText("Sujet marqué comme non lu à partir de ce message.").filter({ visible: true }).first()).toBeVisible();
+    await expect(page).toHaveURL(new RegExp(`/forum/topic/${TOPIC.id}\\?page=2`));
     await page.goto(`/forum/topic/${TOPIC.id}`, { waitUntil: "networkidle" });
     await expect(page).toHaveURL(new RegExp(`\\?page=2#post-${postId(25)}$`));
   });
@@ -648,7 +653,8 @@ test.describe("2 rendu des messages", () => {
     const post = postCard(page, postId(2));
     await expect(post.getByText("Citation").first()).toBeVisible();
     await expect(post.getByRole("link", { name: `@${AUTHOR.name}` }).first()).toHaveAttribute("href", `/spy/${AUTHOR.id}`);
-    await expect(post.getByRole("link", { name: "Voir le message" }).first()).toHaveAttribute("href", `#post-${postId(1)}`);
+    // Lien permanent du message cité (carte 169), qui mène à la bonne page du sujet même depuis une autre page
+    await expect(post.getByRole("link", { name: "Voir le message" }).first()).toHaveAttribute("href", `/forum/post/${postId(1)}`);
     await expect(post.getByText("Ce message a été supprimé par son auteur")).toBeVisible();
     await expect(post.getByText("Le contenu de ce message a été masqué par la modération.")).toBeVisible();
     await expect(post.getByRole("link", { name: `@${READER.name}` })).toHaveAttribute("href", `/spy/${READER.id}`);
@@ -844,7 +850,8 @@ test.describe("3.3 outils du sujet", () => {
     await closePanels(page);
   });
 
-  test("[modo] supprimer le sujet avec avertissement : le tournoi lié disparaît aussi", async ({ page }) => {
+  // Suppression douce (carte 165) : le sujet et son tournoi restent en base, marqués supprimés, et se restaurent
+  test("[modo] supprimer le sujet avec une raison, puis le restaurer : rien n'est effacé", async ({ page }) => {
     await withTestDb(async (prisma) => {
       await prisma.tournament.create({
         data: { id: DELETABLE.tournament, name: "Tournoi à supprimer", date: new Date("2027-06-01T09:00:00Z"), location: "Nantes", organizerId: AUTHOR.id },
@@ -864,17 +871,113 @@ test.describe("3.3 outils du sujet", () => {
     await loginAs(page, E2E.modoId);
     await page.goto(topicUrl(DELETABLE.topic), { waitUntil: "networkidle" });
     await (await findTool(page, "button", /^Supprimer (le )?sujet$/)).click();
-    const dialog = page.getByRole("dialog", { name: "Suppression du sujet" });
+    const dialog = page.getByRole("dialog", { name: "Supprimer le sujet" });
     await expect(dialog).toBeVisible();
-    await expect(dialog.getByText(/définitivement supprimés/)).toBeVisible();
-    await dialog.getByRole("button", { name: "Confirmer la suppression" }).click();
+    await expect(dialog.getByText(/Rien n'est effacé/)).toBeVisible();
+    await dialog.getByLabel(/Raison de la suppression/).fill("Sujet de test");
+    await dialog.getByRole("button", { name: "Supprimer le sujet" }).click();
     await page.waitForURL(/\/forum\?deletedTopic=/);
 
     const left = await withTestDb(async (prisma) => ({
-      topics: await prisma.topic.count({ where: { id: DELETABLE.topic } }),
+      topic: await prisma.topic.findUnique({ where: { id: DELETABLE.topic }, select: { isDeleted: true, deletionReason: true } }),
       tournaments: await prisma.tournament.count({ where: { id: DELETABLE.tournament } }),
     }));
-    expect(left).toEqual({ topics: 0, tournaments: 0 });
+    expect(left).toEqual({ topic: { isDeleted: true, deletionReason: "Sujet de test" }, tournaments: 1 });
+
+    // Le modérateur voit encore le sujet, avec le bandeau et « Restaurer le sujet »
+    await page.goto(topicUrl(DELETABLE.topic), { waitUntil: "networkidle" });
+    await expect(page.getByText("Sujet supprimé", { exact: true })).toBeVisible();
+    await page.getByRole("button", { name: "Restaurer le sujet" }).filter({ visible: true }).first().click();
+    await page.getByRole("dialog", { name: "Restaurer le sujet" }).getByRole("button", { name: "Restaurer le sujet" }).click();
+    await expect(page.getByText("Sujet supprimé", { exact: true })).toHaveCount(0, { timeout: 20_000 });
+    const restored = await withTestDb((prisma) => prisma.topic.findUnique({ where: { id: DELETABLE.topic }, select: { isDeleted: true } }));
+    expect(restored).toEqual({ isDeleted: false });
+  });
+
+  // Carte 169 : scinder un sujet (messages cochés vers un nouveau sujet), puis fusionner le nouveau sujet dans l'ancien
+  test("[modo] scinder un sujet, puis fusionner le nouveau sujet dans l'ancien", async ({ page }, testInfo) => {
+    const suffix = testInfo.project.name.replace(/\W/g, "");
+    const source = { id: `e2e_suj_scinder_${suffix}`, title: `Inv sujet à scinder ${suffix}` };
+    const splitPost = (n: number) => `e2e_suj_scinder_${suffix}_p${n}`;
+    const newTitle = `Inv sujet scindé ${suffix}`;
+    await withTestDb(async (prisma) => {
+      await prisma.topic.create({ data: { id: source.id, title: source.title, forumId: E2E.forumId, authorId: AUTHOR.id, createdAt: new Date(Date.now() - 60 * 60_000) } });
+      for (let n = 1; n <= 4; n++) {
+        await prisma.post.create({
+          data: { id: splitPost(n), topicId: source.id, authorId: n === 3 ? READER.id : AUTHOR.id, content: `Message ${n} à scinder`, createdAt: new Date(Date.now() - (60 - n) * 60_000) },
+        });
+      }
+    });
+
+    let newTopicId: string | undefined;
+    try {
+      await loginAs(page, E2E.modoId);
+      await page.goto(topicUrl(source.id), { waitUntil: "networkidle" });
+      await (await findTool(page, "button", "Scinder le sujet")).click();
+      await closePanels(page);
+      // Le premier message reste dans le sujet : il n'a pas de case
+      await expect(postCard(page, splitPost(1)).getByRole("checkbox")).toHaveCount(0);
+      await postCard(page, splitPost(3)).getByRole("checkbox", { name: "Déplacer ce message vers le nouveau sujet" }).check();
+      await postCard(page, splitPost(4)).getByRole("checkbox", { name: "Déplacer ce message vers le nouveau sujet" }).check();
+      // Barre collée en bas sur téléphone, colonne des outils sur ordinateur
+      await expect(page.getByText("2 messages choisis").filter({ visible: true }).first()).toBeVisible();
+      const scinder = page.getByRole("button", { name: /^Scinder les messages choisis/ }).filter({ visible: true }).first();
+      expect((await scinder.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
+      await scinder.click();
+
+      const splitDialog = page.getByRole("dialog", { name: "Scinder le sujet" });
+      await expect(splitDialog).toBeVisible();
+      await splitDialog.getByLabel("Titre du nouveau sujet").fill(newTitle);
+      await expect(splitDialog.getByLabel("Forum du nouveau sujet")).toHaveValue(E2E.forumId);
+      await splitDialog.getByRole("button", { name: "Créer le nouveau sujet" }).click();
+      await page.waitForURL((url) => url.pathname.startsWith("/forum/topic/") && !url.pathname.endsWith(source.id));
+
+      const afterSplit = await withTestDb(async (prisma) => {
+        const created = await prisma.topic.findFirst({ where: { title: newTitle }, select: { id: true, authorId: true, lastPostId: true } });
+        const sourceTopic = await prisma.topic.findUnique({ where: { id: source.id }, select: { lastPostId: true } });
+        return {
+          created,
+          sourceLast: sourceTopic?.lastPostId,
+          sourcePosts: await prisma.post.count({ where: { topicId: source.id } }),
+          newPosts: created ? await prisma.post.count({ where: { topicId: created.id } }) : 0,
+        };
+      });
+      newTopicId = afterSplit.created?.id;
+      // Le nouveau sujet a pour auteur celui du plus ancien message déplacé ; les deux sujets ont leur dernier message à jour
+      expect(afterSplit).toEqual({
+        created: { id: newTopicId, authorId: READER.id, lastPostId: splitPost(4) },
+        sourceLast: splitPost(2),
+        sourcePosts: 2,
+        newPosts: 2,
+      });
+
+      // Fusion du nouveau sujet dans l'ancien, cherché par son titre
+      await (await findTool(page, "button", "Fusionner avec un autre sujet")).click();
+      const mergeDialog = page.getByRole("dialog", { name: "Fusionner avec un autre sujet" });
+      await expect(mergeDialog).toBeVisible();
+      await mergeDialog.getByLabel("Sujet d'arrivée").fill(source.title);
+      await mergeDialog.getByRole("button", { name: new RegExp(source.title) }).click();
+      await mergeDialog.getByRole("button", { name: /^Fusionner dans/ }).click();
+      await page.waitForURL(new RegExp(`/forum/topic/${source.id}`));
+
+      const afterMerge = await withTestDb(async (prisma) => ({
+        sourcePosts: await prisma.post.count({ where: { topicId: source.id } }),
+        sourceLast: (await prisma.topic.findUnique({ where: { id: source.id }, select: { lastPostId: true } }))?.lastPostId,
+        merged: await prisma.topic.findUnique({ where: { id: newTopicId }, select: { isDeleted: true } }),
+        logs: await prisma.moderationLog.count({ where: { targetId: source.id, action: { in: ["TOPIC_SPLIT", "TOPIC_MERGED"] } } }),
+      }));
+      expect(afterMerge).toEqual({ sourcePosts: 4, sourceLast: splitPost(4), merged: { isDeleted: true }, logs: 2 });
+    } finally {
+      await withTestDb(async (prisma) => {
+        const ids = [source.id, ...(newTopicId ? [newTopicId] : [])];
+        await prisma.moderationLog.deleteMany({ where: { targetId: { in: ids } } });
+        await prisma.notification.deleteMany({ where: { topicId: { in: ids } } });
+        await prisma.topicView.deleteMany({ where: { topicId: { in: ids } } });
+        await prisma.topicFollow.deleteMany({ where: { topicId: { in: ids } } });
+        await prisma.post.deleteMany({ where: { topicId: { in: ids } } });
+        await prisma.topic.deleteMany({ where: { id: { in: ids } } });
+      });
+    }
   });
 
   test("[membre] et [visiteur] n'ont pas les outils de modération", async ({ page }) => {

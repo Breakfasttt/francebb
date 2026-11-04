@@ -91,6 +91,8 @@ export default async function globalSetup() {
       title: E2E.topicTitle,
       forumId: forum.id,
       authorId: E2E.coachId,
+      // Auteur du dernier message, affiché dans les listes (« Dernier : … », carte 166)
+      lastPostAuthorId: E2E.coachId,
       posts: { create: { content: E2E.postContent, authorId: E2E.coachId } },
     },
   });
@@ -114,6 +116,7 @@ export default async function globalSetup() {
       title: E2E.secretTopicTitle,
       forumId: secretForum.id,
       authorId: E2E.modoId,
+      lastPostAuthorId: E2E.modoId,
       posts: { create: { content: "Message réservé aux modérateurs", authorId: E2E.modoId } },
     },
   });
@@ -132,6 +135,7 @@ export default async function globalSetup() {
       title: "Schéma BBScheme de l'audit",
       forumId: forum.id,
       authorId: E2E.coachId,
+      lastPostAuthorId: E2E.coachId,
       posts: { create: { content: `Voici le schéma : [bbscheme]${E2E.bbschemeBoardId}[/bbscheme]`, authorId: E2E.coachId } },
     },
   });

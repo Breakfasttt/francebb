@@ -8,7 +8,8 @@ import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { revalidatePath } from "next/cache";
 import { isModerator } from "@/lib/roles";
-import { calculateCdfPoints, CdfTournamentType } from "@/common/utils/cdf";
+import { calculateCdfPoints, cdfRoundsCount, isValidRank, CdfTournamentType } from "@/common/utils/cdf";
+import { logModerationAction } from "@/lib/moderationLog";
 
 /**
  * Marque un tournoi comme terminé.
@@ -117,8 +118,16 @@ export async function saveTournamentResults(tournamentId: string, data: { result
   // Points CDF recalculés ici avec la formule officielle (common/utils/cdf.ts), sans faire confiance
   // aux points envoyés par le navigateur. Mêmes paramètres que l'éditeur de résultats.
   const cdfType = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
-  const cdfRounds = tournament.totalMatches || parseInt(tournament.days || "1") * 3 || 5;
+  const cdfRounds = cdfRoundsCount(tournament.totalMatches, data.rounds.length, tournament.days);
   const cdfParticipants = data.results.length;
+
+  // Tournoi CDF : chaque coach doit avoir un rang (carte 162). Un rang vide donnait auparavant les points du vainqueur.
+  if (tournament.isCDF) {
+    const withoutRank = data.results.find((res) => !isValidRank(res.rank));
+    if (withoutRank) {
+      return { error: `Le rang de ${withoutRank.coachName || "un coach"} est vide ou invalide : chaque coach d'un tournoi CDF doit avoir un rang (1, 2, 3…).` };
+    }
+  }
 
   try {
     // Utilisation d'une transaction pour tout mettre à jour proprement
@@ -140,7 +149,7 @@ export async function saveTournamentResults(tournamentId: string, data: { result
             losses: Number(res.losses) || 0,
             casualties: Number(res.casualties) || 0,
             points: tournament.isCDF
-              ? calculateCdfPoints(cdfType, cdfRounds, cdfParticipants, Number(res.rank) || 0)
+              ? calculateCdfPoints(cdfType, cdfRounds, cdfParticipants, Number(res.rank))
               : Number(res.points) || 0,
             rank: res.rank ? Number(res.rank) : null,
             autoCalculate: res.autoCalculate ?? true
@@ -180,10 +189,11 @@ export async function saveTournamentResults(tournamentId: string, data: { result
         });
       }
 
-      // 4. Marquer le tournoi comme terminé
+      // 4. Marquer le tournoi comme terminé. Des résultats modifiés doivent être revalidés par la modération avant de
+      // compter de nouveau au classement CDF (carte 162) : la validation précédente est retirée.
       await tx.tournament.update({
         where: { id: tournamentId },
-        data: { isFinished: true }
+        data: { isFinished: true, cdfValidatedAt: null, cdfValidatedById: null }
       });
     });
 
@@ -353,10 +363,10 @@ export async function clearTournamentResults(tournamentId: string) {
       await tx.tournamentResult.deleteMany({ where: { tournamentId } });
       await tx.tournamentRound.deleteMany({ where: { tournamentId } });
 
-      // 2. Remettre le tournoi comme non terminé (optionnel mais logique après vidage)
+      // 2. Remettre le tournoi comme non terminé (optionnel mais logique après vidage), sans validation CDF (carte 162)
       await tx.tournament.update({
         where: { id: tournamentId },
-        data: { isFinished: false }
+        data: { isFinished: false, cdfValidatedAt: null, cdfValidatedById: null }
       });
     });
 
@@ -371,4 +381,50 @@ export async function clearTournamentResults(tournamentId: string) {
     console.error("Erreur clearTournamentResults:", error);
     return { error: error.message || "Erreur interne" };
   }
+}
+
+/**
+ * Valide (validate = true) ou retire la validation (validate = false) des résultats d'un tournoi de la Coupe de France
+ * (carte 162). Réservé aux modérateurs et aux administrateurs : leur rôle est relu en base à chaque lecture de la
+ * session (auth.ts). Seuls les résultats validés comptent au classement national (app/classement/actions.ts).
+ * L'action est notée au journal de modération.
+ */
+export async function setCdfValidation(tournamentId: string, validate: boolean): Promise<{ success: true } | { error: string }> {
+  const session = await getActiveSession();
+  if (!session?.user?.id) return { error: "Vous devez être connecté." };
+  if (!isModerator(session.user.role)) {
+    return { error: "Seuls les modérateurs et les administrateurs peuvent valider les résultats d'un tournoi CDF." };
+  }
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    select: { id: true, name: true, isCDF: true, isFinished: true, isCancelled: true, topic: { select: { id: true } }, _count: { select: { results: true } } }
+  });
+  if (!tournament) return { error: "Tournoi introuvable." };
+  if (!tournament.isCDF) return { error: "Ce tournoi ne compte pas pour la Coupe de France." };
+  if (validate) {
+    if (tournament.isCancelled) return { error: "Ce tournoi est annulé : ses résultats ne peuvent pas compter au classement." };
+    if (!tournament.isFinished || tournament._count.results === 0) {
+      return { error: "Les résultats de ce tournoi n'ont pas encore été publiés." };
+    }
+  }
+
+  await prisma.tournament.update({
+    where: { id: tournamentId },
+    data: validate
+      ? { cdfValidatedAt: new Date(), cdfValidatedById: session.user.id }
+      : { cdfValidatedAt: null, cdfValidatedById: null }
+  });
+
+  await logModerationAction(
+    validate ? "TOURNAMENT_CDF_VALIDATED" : "TOURNAMENT_CDF_UNVALIDATED",
+    tournament.topic?.id,
+    tournament.topic ? "TOPIC" : undefined,
+    `Tournoi « ${tournament.name} »`
+  );
+
+  revalidatePath("/classement");
+  revalidatePath(`/forum/tournament/${tournamentId}/results/view`);
+  if (tournament.topic?.id) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+  return { success: true };
 }

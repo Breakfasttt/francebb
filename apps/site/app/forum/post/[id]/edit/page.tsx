@@ -43,7 +43,8 @@ export default async function EditPostPage({
     }
   });
 
-  if (!post) notFound();
+  // Un message d'un sujet supprimé (carte 165) ne se modifie plus : le sujet est introuvable pour les membres
+  if (!post || post.topic.isDeleted) notFound();
   const { roles } = await getForumAccess();
   if (!canAccessForum(post.topic.forum, roles)) notFound();
 

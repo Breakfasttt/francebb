@@ -70,6 +70,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
       <TournamentForm 
         forumId={forumId}
         userCanStick={userCanStick}
+        canSetCdf={userCanStick}
         referenceData={{
           franceRegions,
           gameEditions,

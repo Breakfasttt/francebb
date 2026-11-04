@@ -150,16 +150,19 @@ test.describe("Inventaire : profil et membres", () => {
       for (let n = 1; n <= TOPICS; n++) {
         const at = new Date(now - n * 60_000);
         await prisma.topic.create({
-          data: { id: topicId(n), title: topicTitle(n), forumId: FORUM.id, authorId: OTHER.id, createdAt: at, updatedAt: at },
+          data: { id: topicId(n), title: topicTitle(n), forumId: FORUM.id, authorId: OTHER.id, createdAt: at, updatedAt: at, lastPostAt: at },
         });
         await prisma.topicFollow.create({ data: { userId: ME.id, topicId: topicId(n) } });
         // Tous lus sauf le sujet 01
-        if (n !== 1) await prisma.topicView.create({ data: { userId: ME.id, topicId: topicId(n), lastViewedAt: new Date(now + 60_000) } });
+        if (n !== 1) {
+          await prisma.topicView.create({ data: { userId: ME.id, topicId: topicId(n), lastViewedAt: new Date(now + 60_000), lastReadPostAt: new Date(now + 60_000) } });
+        }
       }
       await prisma.post.create({ data: { topicId: topicId(1), authorId: ME.id, content: "Inv Prf message de Moi", createdAt: new Date(now - 30_000) } });
       await prisma.post.create({ data: { topicId: topicId(2), authorId: OTHER.id, content: "Inv Prf message de l'autre", createdAt: new Date(now - 30_000) } });
-      // Les messages ont changé la date des sujets : on la remet
-      for (const n of [1, 2]) await prisma.topic.update({ where: { id: topicId(n) }, data: { updatedAt: new Date(now - n * 60_000) } });
+      // Le sujet 01, jamais ouvert, doit rester non lu : la date « tout est lu avant le… » de « Moi » (carte 166) est
+      // donc ramenée avant les sujets
+      await prisma.user.update({ where: { id: ME.id }, data: { forumReadAllAt: new Date(now - 60 * 60_000) } });
 
       // 7 articles de « Moi » (le 7 est le plus ancien : seul en page 2) et 1 de l'autre membre
       for (let n = 1; n <= ARTICLES; n++) {
@@ -368,15 +371,17 @@ test.describe("Inventaire : profil et membres", () => {
     // Le dernier moyen de connexion ne peut pas être délié
     await expect(main.getByRole("button", { name: "Délier Discord" })).toBeDisabled();
 
-    // Interrupteurs de notification par email
+    // Interrupteurs de notification : e-mails et suivi automatique des sujets (carte 167 : plus d'interrupteur « Mentions »,
+    // les mentions ne s'affichent que sous la cloche du site)
     const notif = (name: RegExp) => main.getByRole("checkbox", { name }).or(main.getByRole("switch", { name }));
-    for (const name of [/^Messages privés$/i, /^Mentions$/, /^Sujets suivis$/, /^Newsletter/]) {
+    for (const name of [/^Messages privés$/i, /^Sujets suivis$/, /^Newsletter/, /^Suivre automatiquement mes sujets$/]) {
       await expect(notif(name)).toBeChecked();
     }
+    await expect(notif(/^Mentions$/)).toHaveCount(0);
     // Clic envoyé directement à l'interrupteur (l'ancienne case à cocher est invisible, sous son dessin)
-    await notif(/^Mentions$/).dispatchEvent("click");
-    await expect(notif(/^Mentions$/)).not.toBeChecked();
-    await expect.poll(() => db(async (prisma) => (await prisma.user.findUnique({ where: { id: ME.id } }))?.notifMention)).toBe(false);
+    await notif(/^Suivre automatiquement mes sujets$/).dispatchEvent("click");
+    await expect(notif(/^Suivre automatiquement mes sujets$/)).not.toBeChecked();
+    await expect.poll(() => db(async (prisma) => (await prisma.user.findUnique({ where: { id: ME.id } }))?.autoFollowTopics)).toBe(false);
 
     // Développement : newsletter de test
     await expect(main.getByRole("button", { name: "Envoyer une newsletter de test" })).toBeVisible();

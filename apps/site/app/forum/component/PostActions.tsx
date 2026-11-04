@@ -23,9 +23,11 @@ interface PostActionsProps {
   topicId: string;
   // Faux quand le membre ne peut pas répondre au sujet : « Citer » est alors masqué
   canQuote?: boolean;
+  // Faux quand le sujet est fermé pour ce membre (verrouillé, archivé) : les réactions sont seulement affichées
+  canReact?: boolean;
 }
 
-export default function PostActions({ postId, authorId, authorName, content, initialReactions, currentUserId, topicId, canQuote = true }: PostActionsProps) {
+export default function PostActions({ postId, authorId, authorName, content, initialReactions, currentUserId, topicId, canQuote = true, canReact = true }: PostActionsProps) {
   const handleQuote = () => {
     const quoteContent = `[quote=${authorId}|${postId}|${authorName}]${content}[/quote]\n`;
     const quickReply = document.getElementById("quick-reply-area");
@@ -42,7 +44,7 @@ export default function PostActions({ postId, authorId, authorName, content, ini
 
   return (
     <div className="mt-3 flex flex-wrap items-center justify-between gap-2">
-      <PostReactions postId={postId} initialReactions={initialReactions} currentUserId={currentUserId} />
+      <PostReactions postId={postId} initialReactions={initialReactions} currentUserId={currentUserId} canReact={canReact} />
       {currentUserId && canQuote && (
         <Button type="button" variant="quiet" size="tap" onClick={handleQuote} className="ml-auto text-bb-text">
           <MessageSquareQuote size={18} aria-hidden="true" /> Citer

@@ -12,6 +12,7 @@ import { SearchX } from "lucide-react";
 import { Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
+import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { canonicalRegion, DEPARTMENTS_BY_REGION, withoutAccents } from "@/lib/france";
 import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
@@ -78,7 +79,8 @@ export default async function TournamentsPage({
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 
-  const where: any = {};
+  // Un tournoi dont le sujet du forum est supprimé (carte 165) n'est plus listé
+  const where: any = { ...TOURNAMENT_TOPIC_NOT_DELETED };
 
   if (!showHistory) {
     where.isFinished = false;

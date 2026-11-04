@@ -43,6 +43,7 @@ export async function GET(
         notifMention: isSelf || isMod,
         notifFollowedTopic: isSelf || isMod,
         notifNewsletter: isSelf || isMod,
+        autoFollowTopics: isSelf || isMod,
         accounts: (isSelf || isMod) ? {
           select: {
             provider: true

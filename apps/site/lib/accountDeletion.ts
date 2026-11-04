@@ -9,10 +9,9 @@
  * Fichier volontairement PAS « use server » : fonction interne, l'appelant vérifie les droits.
  */
 import { prisma, prismaWithEmail } from "@/lib/prisma";
-
-const GHOST_USER_ID = "ghost_coach";
-// Nom affiché à la place d'un coach supprimé dans les résultats et les matchs de tournoi
-export const ANONYMOUS_COACH_NAME = "Coach anonyme";
+// Identifiant du compte fantôme et nom anonyme d'un coach supprimé : définis avec les règles du classement, qui
+// doit reconnaître et écarter ces résultats (carte 163)
+import { ANONYMOUS_COACH_NAME, GHOST_USER_ID, anonymousCoachName } from "@/lib/rankingCoach";
 
 /**
  * Anonymise puis supprime le membre `userId`. Si `keepUserRecord` vaut true (Super Admin qui supprime
@@ -64,6 +63,11 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
         where: { authorId: userId },
         data: { authorId: ghostId }
       });
+      // Auteur du dernier message d'un sujet (« Dernier : … » des listes du forum, carte 166)
+      await tx.topic.updateMany({
+        where: { lastPostAuthorId: userId },
+        data: { lastPostAuthorId: ghostId }
+      });
 
       await tx.post.updateMany({
         where: { authorId: userId },
@@ -92,12 +96,34 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
 
       // Résultats et matchs de tournoi : historique gardé, nom et NAF remplacés par un pseudonyme (carte 124).
       // Les résultats importés sans lien vers le compte sont retrouvés par le numéro NAF.
-      await tx.tournamentResult.updateMany({
+      // Chaque résultat reçoit son propre nom anonyme (« Coach anonyme 7f3a », carte 163) : la base interdit deux
+      // résultats au même nom dans un tournoi, et un nom commun faisait échouer la suppression du deuxième coach
+      // d'un même tournoi (ou d'un coach présent deux fois dans un tournoi).
+      const anonymizedResults = await tx.tournamentResult.findMany({
         where: { OR: [{ userId }, ...(identity?.nafNumber ? [{ nafNumber: identity.nafNumber }] : [])] },
-        data: { coachName: ANONYMOUS_COACH_NAME, nafNumber: null }
+        select: { id: true, tournamentId: true }
       });
-      await tx.tournamentMatch.updateMany({ where: { coach1UserId: userId }, data: { coach1Name: ANONYMOUS_COACH_NAME } });
-      await tx.tournamentMatch.updateMany({ where: { coach2UserId: userId }, data: { coach2Name: ANONYMOUS_COACH_NAME } });
+      // Nom anonyme du coach dans chaque tournoi, repris dans ses matchs pour que les deux listes concordent
+      const anonymousNameByTournament = new Map<string, string>();
+      for (const result of anonymizedResults) {
+        const name = anonymousCoachName(result.id);
+        if (!anonymousNameByTournament.has(result.tournamentId)) anonymousNameByTournament.set(result.tournamentId, name);
+        await tx.tournamentResult.update({ where: { id: result.id }, data: { coachName: name, nafNumber: null } });
+      }
+      const matches = await tx.tournamentMatch.findMany({
+        where: { OR: [{ coach1UserId: userId }, { coach2UserId: userId }] },
+        select: { id: true, coach1UserId: true, coach2UserId: true, round: { select: { tournamentId: true } } }
+      });
+      for (const match of matches) {
+        const name = anonymousNameByTournament.get(match.round.tournamentId) ?? ANONYMOUS_COACH_NAME;
+        await tx.tournamentMatch.update({
+          where: { id: match.id },
+          data: {
+            ...(match.coach1UserId === userId ? { coach1Name: name } : {}),
+            ...(match.coach2UserId === userId ? { coach2Name: name } : {})
+          }
+        });
+      }
 
       await tx.tournamentResult.updateMany({
         where: { userId },

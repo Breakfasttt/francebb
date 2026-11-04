@@ -13,7 +13,7 @@ export async function exportMember(userId: string) {
     select: {
       id: true, name: true, email: true, image: true, role: true, nafNumber: true, region: true, equipe: true, ligueCustom: true,
       signature: true, theme: true, avatarFrame: true, forumactifName: true, notifPm: true, notifMention: true,
-      notifFollowedTopic: true, notifNewsletter: true, quizTotalScore: true, quizBestScore: true, quizStreak: true,
+      notifFollowedTopic: true, notifNewsletter: true, autoFollowTopics: true, quizTotalScore: true, quizBestScore: true, quizStreak: true,
       quizAttemptsCount: true, ligues: { select: { name: true } },
     },
   });

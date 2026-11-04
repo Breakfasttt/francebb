@@ -89,6 +89,14 @@ export type TopicView = $Result.DefaultSelection<Prisma.$TopicViewPayload>
  */
 export type Mention = $Result.DefaultSelection<Prisma.$MentionPayload>
 /**
+ * Model Notification
+ * Notification affichée dans le site, sous la cloche de la barre (carte 167). Une ligne par événement à signaler
+ * au membre `userId` : une mention dans un message, une réponse dans un sujet suivi, ou un message privé.
+ * Les réponses d'un même sujet suivi et les messages d'une même conversation sont regroupés : tant qu'une
+ * notification de ce sujet ou de cette conversation n'est pas lue, aucune autre n'est créée.
+ */
+export type Notification = $Result.DefaultSelection<Prisma.$NotificationPayload>
+/**
  * Model PostReaction
  * 
  */
@@ -539,6 +547,16 @@ export class PrismaClient<
     * ```
     */
   get mention(): Prisma.MentionDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.notification`: Exposes CRUD operations for the **Notification** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Notifications
+    * const notifications = await prisma.notification.findMany()
+    * ```
+    */
+  get notification(): Prisma.NotificationDelegate<ExtArgs, ClientOptions>;
 
   /**
    * `prisma.postReaction`: Exposes CRUD operations for the **PostReaction** model.
@@ -1278,6 +1296,7 @@ export namespace Prisma {
     PrivateMessage: 'PrivateMessage',
     TopicView: 'TopicView',
     Mention: 'Mention',
+    Notification: 'Notification',
     PostReaction: 'PostReaction',
     RoleConfig: 'RoleConfig',
     TopicFollow: 'TopicFollow',
@@ -1322,7 +1341,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizGame" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "quizQuestion" | "quizAttempt" | "quizGame" | "quizDailyWinner" | "quizQuestionSuggestion" | "legacyMember" | "bBSchemeState" | "mailLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2433,6 +2452,80 @@ export namespace Prisma {
           count: {
             args: Prisma.MentionCountArgs<ExtArgs>
             result: $Utils.Optional<MentionCountAggregateOutputType> | number
+          }
+        }
+      }
+      Notification: {
+        payload: Prisma.$NotificationPayload<ExtArgs>
+        fields: Prisma.NotificationFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.NotificationFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.NotificationFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findFirst: {
+            args: Prisma.NotificationFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.NotificationFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          findMany: {
+            args: Prisma.NotificationFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          create: {
+            args: Prisma.NotificationCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          createMany: {
+            args: Prisma.NotificationCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.NotificationCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          delete: {
+            args: Prisma.NotificationDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          update: {
+            args: Prisma.NotificationUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          deleteMany: {
+            args: Prisma.NotificationDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.NotificationUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.NotificationUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>[]
+          }
+          upsert: {
+            args: Prisma.NotificationUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$NotificationPayload>
+          }
+          aggregate: {
+            args: Prisma.NotificationAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateNotification>
+          }
+          groupBy: {
+            args: Prisma.NotificationGroupByArgs<ExtArgs>
+            result: $Utils.Optional<NotificationGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.NotificationCountArgs<ExtArgs>
+            result: $Utils.Optional<NotificationCountAggregateOutputType> | number
           }
         }
       }
@@ -4705,6 +4798,7 @@ export namespace Prisma {
     privateMessage?: PrivateMessageOmit
     topicView?: TopicViewOmit
     mention?: MentionOmit
+    notification?: NotificationOmit
     postReaction?: PostReactionOmit
     roleConfig?: RoleConfigOmit
     topicFollow?: TopicFollowOmit
@@ -4854,7 +4948,13 @@ export namespace Prisma {
     commissaireLigues: number
     ligues: number
     commissairesTournaments: number
+    cdfValidatedTournaments: number
+    deletedTopics: number
+    deletedPosts: number
+    lastPostTopics: number
     bbSchemeStates: number
+    notifications: number
+    notificationsCaused: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4898,7 +4998,13 @@ export namespace Prisma {
     commissaireLigues?: boolean | UserCountOutputTypeCountCommissaireLiguesArgs
     ligues?: boolean | UserCountOutputTypeCountLiguesArgs
     commissairesTournaments?: boolean | UserCountOutputTypeCountCommissairesTournamentsArgs
+    cdfValidatedTournaments?: boolean | UserCountOutputTypeCountCdfValidatedTournamentsArgs
+    deletedTopics?: boolean | UserCountOutputTypeCountDeletedTopicsArgs
+    deletedPosts?: boolean | UserCountOutputTypeCountDeletedPostsArgs
+    lastPostTopics?: boolean | UserCountOutputTypeCountLastPostTopicsArgs
     bbSchemeStates?: boolean | UserCountOutputTypeCountBbSchemeStatesArgs
+    notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
+    notificationsCaused?: boolean | UserCountOutputTypeCountNotificationsCausedArgs
   }
 
   // Custom InputTypes
@@ -5195,8 +5301,50 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountCdfValidatedTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TournamentWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeletedTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TopicWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountDeletedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: PostWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountLastPostTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TopicWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountBbSchemeStatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BBSchemeStateWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountNotificationsCausedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
 
@@ -5355,12 +5503,14 @@ export namespace Prisma {
     posts: number
     follows: number
     topicViews: number
+    notifications: number
   }
 
   export type TopicCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | TopicCountOutputTypeCountPostsArgs
     follows?: boolean | TopicCountOutputTypeCountFollowsArgs
     topicViews?: boolean | TopicCountOutputTypeCountTopicViewsArgs
+    notifications?: boolean | TopicCountOutputTypeCountNotificationsArgs
   }
 
   // Custom InputTypes
@@ -5395,6 +5545,13 @@ export namespace Prisma {
     where?: TopicViewWhereInput
   }
 
+  /**
+   * TopicCountOutputType without action
+   */
+  export type TopicCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
 
   /**
    * Count Type PostCountOutputType
@@ -5403,11 +5560,13 @@ export namespace Prisma {
   export type PostCountOutputType = {
     mentions: number
     reactions: number
+    notifications: number
   }
 
   export type PostCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     mentions?: boolean | PostCountOutputTypeCountMentionsArgs
     reactions?: boolean | PostCountOutputTypeCountReactionsArgs
+    notifications?: boolean | PostCountOutputTypeCountNotificationsArgs
   }
 
   // Custom InputTypes
@@ -5435,6 +5594,13 @@ export namespace Prisma {
     where?: PostReactionWhereInput
   }
 
+  /**
+   * PostCountOutputType without action
+   */
+  export type PostCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+  }
+
 
   /**
    * Count Type ConversationCountOutputType
@@ -5443,11 +5609,13 @@ export namespace Prisma {
   export type ConversationCountOutputType = {
     messages: number
     participants: number
+    notifications: number
   }
 
   export type ConversationCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     messages?: boolean | ConversationCountOutputTypeCountMessagesArgs
     participants?: boolean | ConversationCountOutputTypeCountParticipantsArgs
+    notifications?: boolean | ConversationCountOutputTypeCountNotificationsArgs
   }
 
   // Custom InputTypes
@@ -5473,6 +5641,13 @@ export namespace Prisma {
    */
   export type ConversationCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ConversationParticipantWhereInput
+  }
+
+  /**
+   * ConversationCountOutputType without action
+   */
+  export type ConversationCountOutputTypeCountNotificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
   }
 
 
@@ -8056,6 +8231,8 @@ export namespace Prisma {
     notifMention: boolean | null
     notifFollowedTopic: boolean | null
     notifNewsletter: boolean | null
+    autoFollowTopics: boolean | null
+    forumReadAllAt: Date | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -8086,6 +8263,8 @@ export namespace Prisma {
     notifMention: boolean | null
     notifFollowedTopic: boolean | null
     notifNewsletter: boolean | null
+    autoFollowTopics: boolean | null
+    forumReadAllAt: Date | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -8116,6 +8295,8 @@ export namespace Prisma {
     notifMention: number
     notifFollowedTopic: number
     notifNewsletter: number
+    autoFollowTopics: number
+    forumReadAllAt: number
     _all: number
   }
 
@@ -8162,6 +8343,8 @@ export namespace Prisma {
     notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
+    autoFollowTopics?: true
+    forumReadAllAt?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -8192,6 +8375,8 @@ export namespace Prisma {
     notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
+    autoFollowTopics?: true
+    forumReadAllAt?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -8222,6 +8407,8 @@ export namespace Prisma {
     notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
+    autoFollowTopics?: true
+    forumReadAllAt?: true
     _all?: true
   }
 
@@ -8339,6 +8526,8 @@ export namespace Prisma {
     notifMention: boolean
     notifFollowedTopic: boolean
     notifNewsletter: boolean
+    autoFollowTopics: boolean
+    forumReadAllAt: Date
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
     _sum: UserSumAggregateOutputType | null
@@ -8388,6 +8577,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: boolean
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
     articles?: boolean | User$articlesArgs<ExtArgs>
@@ -8429,7 +8620,13 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    cdfValidatedTournaments?: boolean | User$cdfValidatedTournamentsArgs<ExtArgs>
+    deletedTopics?: boolean | User$deletedTopicsArgs<ExtArgs>
+    deletedPosts?: boolean | User$deletedPostsArgs<ExtArgs>
+    lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
     bbSchemeStates?: boolean | User$bbSchemeStatesArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8461,6 +8658,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8492,6 +8691,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: boolean
     roleConfig?: boolean | RoleConfigDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8523,9 +8724,11 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8568,7 +8771,13 @@ export namespace Prisma {
     commissaireLigues?: boolean | User$commissaireLiguesArgs<ExtArgs>
     ligues?: boolean | User$liguesArgs<ExtArgs>
     commissairesTournaments?: boolean | User$commissairesTournamentsArgs<ExtArgs>
+    cdfValidatedTournaments?: boolean | User$cdfValidatedTournamentsArgs<ExtArgs>
+    deletedTopics?: boolean | User$deletedTopicsArgs<ExtArgs>
+    deletedPosts?: boolean | User$deletedPostsArgs<ExtArgs>
+    lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
     bbSchemeStates?: boolean | User$bbSchemeStatesArgs<ExtArgs>
+    notifications?: boolean | User$notificationsArgs<ExtArgs>
+    notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8622,7 +8831,13 @@ export namespace Prisma {
       commissaireLigues: Prisma.$LiguePayload<ExtArgs>[]
       ligues: Prisma.$LiguePayload<ExtArgs>[]
       commissairesTournaments: Prisma.$TournamentPayload<ExtArgs>[]
+      cdfValidatedTournaments: Prisma.$TournamentPayload<ExtArgs>[]
+      deletedTopics: Prisma.$TopicPayload<ExtArgs>[]
+      deletedPosts: Prisma.$PostPayload<ExtArgs>[]
+      lastPostTopics: Prisma.$TopicPayload<ExtArgs>[]
       bbSchemeStates: Prisma.$BBSchemeStatePayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
+      notificationsCaused: Prisma.$NotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8652,6 +8867,16 @@ export namespace Prisma {
       notifMention: boolean
       notifFollowedTopic: boolean
       notifNewsletter: boolean
+      /**
+       * Abonnement automatique (carte 167) : le membre suit tout seul un sujet qu'il crée ou auquel il répond. Activé par défaut,
+       * désactivable dans les préférences de notification du profil.
+       */
+      autoFollowTopics: boolean
+      /**
+       * Date avant laquelle tout le forum compte comme lu pour ce membre (carte 166) : sa date d'inscription, puis la date
+       * du dernier « Tout marquer lu ». Un sujet que le membre a déjà ouvert suit plutôt sa position de lecture (TopicView).
+       */
+      forumReadAllAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -9087,7 +9312,13 @@ export namespace Prisma {
     commissaireLigues<T extends User$commissaireLiguesArgs<ExtArgs> = {}>(args?: Subset<T, User$commissaireLiguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     ligues<T extends User$liguesArgs<ExtArgs> = {}>(args?: Subset<T, User$liguesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     commissairesTournaments<T extends User$commissairesTournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$commissairesTournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    cdfValidatedTournaments<T extends User$cdfValidatedTournamentsArgs<ExtArgs> = {}>(args?: Subset<T, User$cdfValidatedTournamentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deletedTopics<T extends User$deletedTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    deletedPosts<T extends User$deletedPostsArgs<ExtArgs> = {}>(args?: Subset<T, User$deletedPostsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    lastPostTopics<T extends User$lastPostTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$lastPostTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     bbSchemeStates<T extends User$bbSchemeStatesArgs<ExtArgs> = {}>(args?: Subset<T, User$bbSchemeStatesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BBSchemeStatePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notificationsCaused<T extends User$notificationsCausedArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsCausedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9144,6 +9375,8 @@ export namespace Prisma {
     readonly notifMention: FieldRef<"User", 'Boolean'>
     readonly notifFollowedTopic: FieldRef<"User", 'Boolean'>
     readonly notifNewsletter: FieldRef<"User", 'Boolean'>
+    readonly autoFollowTopics: FieldRef<"User", 'Boolean'>
+    readonly forumReadAllAt: FieldRef<"User", 'DateTime'>
   }
     
 
@@ -10505,6 +10738,102 @@ export namespace Prisma {
   }
 
   /**
+   * User.cdfValidatedTournaments
+   */
+  export type User$cdfValidatedTournamentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Tournament
+     */
+    select?: TournamentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Tournament
+     */
+    omit?: TournamentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TournamentInclude<ExtArgs> | null
+    where?: TournamentWhereInput
+    orderBy?: TournamentOrderByWithRelationInput | TournamentOrderByWithRelationInput[]
+    cursor?: TournamentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TournamentScalarFieldEnum | TournamentScalarFieldEnum[]
+  }
+
+  /**
+   * User.deletedTopics
+   */
+  export type User$deletedTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Topic
+     */
+    select?: TopicSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Topic
+     */
+    omit?: TopicOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicInclude<ExtArgs> | null
+    where?: TopicWhereInput
+    orderBy?: TopicOrderByWithRelationInput | TopicOrderByWithRelationInput[]
+    cursor?: TopicWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TopicScalarFieldEnum | TopicScalarFieldEnum[]
+  }
+
+  /**
+   * User.deletedPosts
+   */
+  export type User$deletedPostsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+    orderBy?: PostOrderByWithRelationInput | PostOrderByWithRelationInput[]
+    cursor?: PostWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: PostScalarFieldEnum | PostScalarFieldEnum[]
+  }
+
+  /**
+   * User.lastPostTopics
+   */
+  export type User$lastPostTopicsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Topic
+     */
+    select?: TopicSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Topic
+     */
+    omit?: TopicOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicInclude<ExtArgs> | null
+    where?: TopicWhereInput
+    orderBy?: TopicOrderByWithRelationInput | TopicOrderByWithRelationInput[]
+    cursor?: TopicWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TopicScalarFieldEnum | TopicScalarFieldEnum[]
+  }
+
+  /**
    * User.bbSchemeStates
    */
   export type User$bbSchemeStatesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10526,6 +10855,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BBSchemeStateScalarFieldEnum | BBSchemeStateScalarFieldEnum[]
+  }
+
+  /**
+   * User.notifications
+   */
+  export type User$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.notificationsCaused
+   */
+  export type User$notificationsCausedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -12649,6 +13026,8 @@ export namespace Prisma {
     registrationsLocked: boolean | null
     typeCDF: string | null
     tournamentType: string | null
+    cdfValidatedAt: Date | null
+    cdfValidatedById: string | null
   }
 
   export type TournamentMaxAggregateOutputType = {
@@ -12696,6 +13075,8 @@ export namespace Prisma {
     registrationsLocked: boolean | null
     typeCDF: string | null
     tournamentType: string | null
+    cdfValidatedAt: Date | null
+    cdfValidatedById: string | null
   }
 
   export type TournamentCountAggregateOutputType = {
@@ -12743,6 +13124,8 @@ export namespace Prisma {
     registrationsLocked: number
     typeCDF: number
     tournamentType: number
+    cdfValidatedAt: number
+    cdfValidatedById: number
     _all: number
   }
 
@@ -12818,6 +13201,8 @@ export namespace Prisma {
     registrationsLocked?: true
     typeCDF?: true
     tournamentType?: true
+    cdfValidatedAt?: true
+    cdfValidatedById?: true
   }
 
   export type TournamentMaxAggregateInputType = {
@@ -12865,6 +13250,8 @@ export namespace Prisma {
     registrationsLocked?: true
     typeCDF?: true
     tournamentType?: true
+    cdfValidatedAt?: true
+    cdfValidatedById?: true
   }
 
   export type TournamentCountAggregateInputType = {
@@ -12912,6 +13299,8 @@ export namespace Prisma {
     registrationsLocked?: true
     typeCDF?: true
     tournamentType?: true
+    cdfValidatedAt?: true
+    cdfValidatedById?: true
     _all?: true
   }
 
@@ -13046,6 +13435,8 @@ export namespace Prisma {
     registrationsLocked: boolean
     typeCDF: string | null
     tournamentType: string | null
+    cdfValidatedAt: Date | null
+    cdfValidatedById: string | null
     _count: TournamentCountAggregateOutputType | null
     _avg: TournamentAvgAggregateOutputType | null
     _sum: TournamentSumAggregateOutputType | null
@@ -13112,6 +13503,9 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: boolean
     tournamentType?: boolean
+    cdfValidatedAt?: boolean
+    cdfValidatedById?: boolean
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
@@ -13169,6 +13563,9 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: boolean
     tournamentType?: boolean
+    cdfValidatedAt?: boolean
+    cdfValidatedById?: boolean
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -13218,6 +13615,9 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: boolean
     tournamentType?: boolean
+    cdfValidatedAt?: boolean
+    cdfValidatedById?: boolean
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["tournament"]>
@@ -13267,10 +13667,13 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: boolean
     tournamentType?: boolean
+    cdfValidatedAt?: boolean
+    cdfValidatedById?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked" | "typeCDF" | "tournamentType", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked" | "typeCDF" | "tournamentType" | "cdfValidatedAt" | "cdfValidatedById", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
@@ -13283,10 +13686,12 @@ export namespace Prisma {
     _count?: boolean | TournamentCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TournamentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }
   export type TournamentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     ligue?: boolean | Tournament$ligueArgs<ExtArgs>
     organizer?: boolean | UserDefaultArgs<ExtArgs>
   }
@@ -13294,6 +13699,7 @@ export namespace Prisma {
   export type $TournamentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Tournament"
     objects: {
+      cdfValidatedBy: Prisma.$UserPayload<ExtArgs> | null
       topic: Prisma.$TopicPayload<ExtArgs> | null
       ligue: Prisma.$LiguePayload<ExtArgs> | null
       organizer: Prisma.$UserPayload<ExtArgs>
@@ -13349,6 +13755,15 @@ export namespace Prisma {
       registrationsLocked: boolean
       typeCDF: string | null
       tournamentType: string | null
+      /**
+       * Date à laquelle un modérateur ou un administrateur a validé les résultats CDF (carte 162). Vide : résultats en
+       * attente de validation, qui ne comptent pas au classement national. Modifier les résultats vide de nouveau ce champ.
+       */
+      cdfValidatedAt: Date | null
+      /**
+       * Membre de la modération qui a validé les résultats CDF (vidé si son compte est supprimé).
+       */
+      cdfValidatedById: string | null
     }, ExtArgs["result"]["tournament"]>
     composites: {}
   }
@@ -13743,6 +14158,7 @@ export namespace Prisma {
    */
   export interface Prisma__TournamentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    cdfValidatedBy<T extends Tournament$cdfValidatedByArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$cdfValidatedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     topic<T extends Tournament$topicArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$topicArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     ligue<T extends Tournament$ligueArgs<ExtArgs> = {}>(args?: Subset<T, Tournament$ligueArgs<ExtArgs>>): Prisma__LigueClient<$Result.GetResult<Prisma.$LiguePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     organizer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
@@ -13825,6 +14241,8 @@ export namespace Prisma {
     readonly registrationsLocked: FieldRef<"Tournament", 'Boolean'>
     readonly typeCDF: FieldRef<"Tournament", 'String'>
     readonly tournamentType: FieldRef<"Tournament", 'String'>
+    readonly cdfValidatedAt: FieldRef<"Tournament", 'DateTime'>
+    readonly cdfValidatedById: FieldRef<"Tournament", 'String'>
   }
     
 
@@ -14223,6 +14641,25 @@ export namespace Prisma {
      * Limit how many Tournaments to delete.
      */
     limit?: number
+  }
+
+  /**
+   * Tournament.cdfValidatedBy
+   */
+  export type Tournament$cdfValidatedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
   }
 
   /**
@@ -16847,6 +17284,13 @@ export namespace Prisma {
     authorId: string | null
     tournamentId: string | null
     legacyId: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
+    lastPostAt: Date | null
+    lastPostId: string | null
+    lastPostAuthorId: string | null
   }
 
   export type TopicMaxAggregateOutputType = {
@@ -16862,6 +17306,13 @@ export namespace Prisma {
     authorId: string | null
     tournamentId: string | null
     legacyId: string | null
+    isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
+    lastPostAt: Date | null
+    lastPostId: string | null
+    lastPostAuthorId: string | null
   }
 
   export type TopicCountAggregateOutputType = {
@@ -16877,6 +17328,13 @@ export namespace Prisma {
     authorId: number
     tournamentId: number
     legacyId: number
+    isDeleted: number
+    deletedAt: number
+    deletedById: number
+    deletionReason: number
+    lastPostAt: number
+    lastPostId: number
+    lastPostAuthorId: number
     _all: number
   }
 
@@ -16902,6 +17360,13 @@ export namespace Prisma {
     authorId?: true
     tournamentId?: true
     legacyId?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
+    lastPostAt?: true
+    lastPostId?: true
+    lastPostAuthorId?: true
   }
 
   export type TopicMaxAggregateInputType = {
@@ -16917,6 +17382,13 @@ export namespace Prisma {
     authorId?: true
     tournamentId?: true
     legacyId?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
+    lastPostAt?: true
+    lastPostId?: true
+    lastPostAuthorId?: true
   }
 
   export type TopicCountAggregateInputType = {
@@ -16932,6 +17404,13 @@ export namespace Prisma {
     authorId?: true
     tournamentId?: true
     legacyId?: true
+    isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
+    lastPostAt?: true
+    lastPostId?: true
+    lastPostAuthorId?: true
     _all?: true
   }
 
@@ -17034,6 +17513,13 @@ export namespace Prisma {
     authorId: string
     tournamentId: string | null
     legacyId: string | null
+    isDeleted: boolean
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
+    lastPostAt: Date
+    lastPostId: string | null
+    lastPostAuthorId: string | null
     _count: TopicCountAggregateOutputType | null
     _avg: TopicAvgAggregateOutputType | null
     _sum: TopicSumAggregateOutputType | null
@@ -17068,12 +17554,22 @@ export namespace Prisma {
     authorId?: boolean
     tournamentId?: boolean
     legacyId?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
+    lastPostAt?: boolean
+    lastPostId?: boolean
+    lastPostAuthorId?: boolean
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     follows?: boolean | Topic$followsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
+    notifications?: boolean | Topic$notificationsArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topic"]>
 
@@ -17090,6 +17586,15 @@ export namespace Prisma {
     authorId?: boolean
     tournamentId?: boolean
     legacyId?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
+    lastPostAt?: boolean
+    lastPostId?: boolean
+    lastPostAuthorId?: boolean
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
@@ -17108,6 +17613,15 @@ export namespace Prisma {
     authorId?: boolean
     tournamentId?: boolean
     legacyId?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
+    lastPostAt?: boolean
+    lastPostId?: boolean
+    lastPostAuthorId?: boolean
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
@@ -17126,24 +17640,38 @@ export namespace Prisma {
     authorId?: boolean
     tournamentId?: boolean
     legacyId?: boolean
+    isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
+    lastPostAt?: boolean
+    lastPostId?: boolean
+    lastPostAuthorId?: boolean
   }
 
-  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId" | "tournamentId" | "legacyId", ExtArgs["result"]["topic"]>
+  export type TopicOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "isLocked" | "isSticky" | "isArchived" | "createdAt" | "updatedAt" | "views" | "forumId" | "authorId" | "tournamentId" | "legacyId" | "isDeleted" | "deletedAt" | "deletedById" | "deletionReason" | "lastPostAt" | "lastPostId" | "lastPostAuthorId", ExtArgs["result"]["topic"]>
   export type TopicInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     posts?: boolean | Topic$postsArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
     follows?: boolean | Topic$followsArgs<ExtArgs>
     topicViews?: boolean | Topic$topicViewsArgs<ExtArgs>
+    notifications?: boolean | Topic$notificationsArgs<ExtArgs>
     _count?: boolean | TopicCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type TopicIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
   }
   export type TopicIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Topic$deletedByArgs<ExtArgs>
+    lastPostAuthor?: boolean | Topic$lastPostAuthorArgs<ExtArgs>
     tournament?: boolean | Topic$tournamentArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     forum?: boolean | ForumDefaultArgs<ExtArgs>
@@ -17152,12 +17680,15 @@ export namespace Prisma {
   export type $TopicPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Topic"
     objects: {
+      deletedBy: Prisma.$UserPayload<ExtArgs> | null
+      lastPostAuthor: Prisma.$UserPayload<ExtArgs> | null
       posts: Prisma.$PostPayload<ExtArgs>[]
       tournament: Prisma.$TournamentPayload<ExtArgs> | null
       author: Prisma.$UserPayload<ExtArgs>
       forum: Prisma.$ForumPayload<ExtArgs>
       follows: Prisma.$TopicFollowPayload<ExtArgs>[]
       topicViews: Prisma.$TopicViewPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -17172,6 +17703,31 @@ export namespace Prisma {
       authorId: string
       tournamentId: string | null
       legacyId: string | null
+      /**
+       * Suppression douce (carte 165) : le sujet est caché partout sauf aux modérateurs, qui peuvent le restaurer.
+       * Rien n'est effacé de la base : messages, tournoi et inscriptions restent en place.
+       */
+      isDeleted: boolean
+      /**
+       * Date de la suppression (vide si le sujet n'est pas supprimé).
+       */
+      deletedAt: Date | null
+      /**
+       * Membre qui a supprimé le sujet : un modérateur, ou l'auteur qui a supprimé le premier message d'un sujet sans réponse.
+       */
+      deletedById: string | null
+      /**
+       * Raison donnée par le modérateur (vide quand c'est l'auteur qui a supprimé).
+       */
+      deletionReason: string | null
+      /**
+       * Dernier message visible du sujet (carte 166) : sa date, son identifiant et son auteur. Seuls la création, la
+       * suppression et la restauration d'un message les changent. Le tri des listes, le non-lu et « Dernier : … » s'en
+       * servent, jamais `updatedAt`, qui bouge aussi quand on épingle, déplace ou renomme le sujet.
+       */
+      lastPostAt: Date
+      lastPostId: string | null
+      lastPostAuthorId: string | null
     }, ExtArgs["result"]["topic"]>
     composites: {}
   }
@@ -17566,12 +18122,15 @@ export namespace Prisma {
    */
   export interface Prisma__TopicClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    deletedBy<T extends Topic$deletedByArgs<ExtArgs> = {}>(args?: Subset<T, Topic$deletedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    lastPostAuthor<T extends Topic$lastPostAuthorArgs<ExtArgs> = {}>(args?: Subset<T, Topic$lastPostAuthorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     posts<T extends Topic$postsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$postsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     tournament<T extends Topic$tournamentArgs<ExtArgs> = {}>(args?: Subset<T, Topic$tournamentArgs<ExtArgs>>): Prisma__TournamentClient<$Result.GetResult<Prisma.$TournamentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     forum<T extends ForumDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ForumDefaultArgs<ExtArgs>>): Prisma__ForumClient<$Result.GetResult<Prisma.$ForumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     follows<T extends Topic$followsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$followsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicFollowPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     topicViews<T extends Topic$topicViewsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$topicViewsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicViewPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends Topic$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Topic$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -17613,6 +18172,13 @@ export namespace Prisma {
     readonly authorId: FieldRef<"Topic", 'String'>
     readonly tournamentId: FieldRef<"Topic", 'String'>
     readonly legacyId: FieldRef<"Topic", 'String'>
+    readonly isDeleted: FieldRef<"Topic", 'Boolean'>
+    readonly deletedAt: FieldRef<"Topic", 'DateTime'>
+    readonly deletedById: FieldRef<"Topic", 'String'>
+    readonly deletionReason: FieldRef<"Topic", 'String'>
+    readonly lastPostAt: FieldRef<"Topic", 'DateTime'>
+    readonly lastPostId: FieldRef<"Topic", 'String'>
+    readonly lastPostAuthorId: FieldRef<"Topic", 'String'>
   }
     
 
@@ -18014,6 +18580,44 @@ export namespace Prisma {
   }
 
   /**
+   * Topic.deletedBy
+   */
+  export type Topic$deletedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Topic.lastPostAuthor
+   */
+  export type Topic$lastPostAuthorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Topic.posts
    */
   export type Topic$postsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18105,6 +18709,30 @@ export namespace Prisma {
   }
 
   /**
+   * Topic.notifications
+   */
+  export type Topic$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * Topic without action
    */
   export type TopicDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18144,6 +18772,9 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
     legacyId: string | null
   }
 
@@ -18158,6 +18789,9 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean | null
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
     legacyId: string | null
   }
 
@@ -18172,6 +18806,9 @@ export namespace Prisma {
     moderationReason: number
     moderatedBy: number
     isDeleted: number
+    deletedAt: number
+    deletedById: number
+    deletionReason: number
     legacyId: number
     _all: number
   }
@@ -18188,6 +18825,9 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
     legacyId?: true
   }
 
@@ -18202,6 +18842,9 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
     legacyId?: true
   }
 
@@ -18216,6 +18859,9 @@ export namespace Prisma {
     moderationReason?: true
     moderatedBy?: true
     isDeleted?: true
+    deletedAt?: true
+    deletedById?: true
+    deletionReason?: true
     legacyId?: true
     _all?: true
   }
@@ -18303,6 +18949,9 @@ export namespace Prisma {
     moderationReason: string | null
     moderatedBy: string | null
     isDeleted: boolean
+    deletedAt: Date | null
+    deletedById: string | null
+    deletionReason: string | null
     legacyId: string | null
     _count: PostCountAggregateOutputType | null
     _min: PostMinAggregateOutputType | null
@@ -18334,12 +18983,17 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
     legacyId?: boolean
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     reactions?: boolean | Post$reactionsArgs<ExtArgs>
+    notifications?: boolean | Post$notificationsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["post"]>
 
@@ -18354,7 +19008,11 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
     legacyId?: boolean
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -18371,7 +19029,11 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
     legacyId?: boolean
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -18388,24 +19050,31 @@ export namespace Prisma {
     moderationReason?: boolean
     moderatedBy?: boolean
     isDeleted?: boolean
+    deletedAt?: boolean
+    deletedById?: boolean
+    deletionReason?: boolean
     legacyId?: boolean
   }
 
-  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "isDeleted" | "legacyId", ExtArgs["result"]["post"]>
+  export type PostOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "updatedAt" | "topicId" | "authorId" | "isModerated" | "moderationReason" | "moderatedBy" | "isDeleted" | "deletedAt" | "deletedById" | "deletionReason" | "legacyId", ExtArgs["result"]["post"]>
   export type PostInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     mentions?: boolean | Post$mentionsArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     reactions?: boolean | Post$reactionsArgs<ExtArgs>
+    notifications?: boolean | Post$notificationsArgs<ExtArgs>
     _count?: boolean | PostCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type PostIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
   }
   export type PostIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    deletedBy?: boolean | Post$deletedByArgs<ExtArgs>
     moderator?: boolean | Post$moderatorArgs<ExtArgs>
     author?: boolean | UserDefaultArgs<ExtArgs>
     topic?: boolean | TopicDefaultArgs<ExtArgs>
@@ -18414,11 +19083,13 @@ export namespace Prisma {
   export type $PostPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Post"
     objects: {
+      deletedBy: Prisma.$UserPayload<ExtArgs> | null
       mentions: Prisma.$MentionPayload<ExtArgs>[]
       moderator: Prisma.$UserPayload<ExtArgs> | null
       author: Prisma.$UserPayload<ExtArgs>
       topic: Prisma.$TopicPayload<ExtArgs>
       reactions: Prisma.$PostReactionPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18431,6 +19102,19 @@ export namespace Prisma {
       moderationReason: string | null
       moderatedBy: string | null
       isDeleted: boolean
+      /**
+       * Date de la suppression douce du message (carte 165 ; vide pour les messages supprimés avant cette carte).
+       */
+      deletedAt: Date | null
+      /**
+       * Membre qui a supprimé le message. Différent de l'auteur : supprimé par la modération. Égal à l'auteur, ou vide
+       * (messages supprimés avant la carte 165) : supprimé par son auteur.
+       */
+      deletedById: string | null
+      /**
+       * Raison de la suppression, obligatoire quand c'est la modération qui supprime.
+       */
+      deletionReason: string | null
       legacyId: string | null
     }, ExtArgs["result"]["post"]>
     composites: {}
@@ -18826,11 +19510,13 @@ export namespace Prisma {
    */
   export interface Prisma__PostClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
+    deletedBy<T extends Post$deletedByArgs<ExtArgs> = {}>(args?: Subset<T, Post$deletedByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     mentions<T extends Post$mentionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$mentionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MentionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     moderator<T extends Post$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, Post$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     author<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     topic<T extends TopicDefaultArgs<ExtArgs> = {}>(args?: Subset<T, TopicDefaultArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     reactions<T extends Post$reactionsArgs<ExtArgs> = {}>(args?: Subset<T, Post$reactionsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PostReactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends Post$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Post$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18870,6 +19556,9 @@ export namespace Prisma {
     readonly moderationReason: FieldRef<"Post", 'String'>
     readonly moderatedBy: FieldRef<"Post", 'String'>
     readonly isDeleted: FieldRef<"Post", 'Boolean'>
+    readonly deletedAt: FieldRef<"Post", 'DateTime'>
+    readonly deletedById: FieldRef<"Post", 'String'>
+    readonly deletionReason: FieldRef<"Post", 'String'>
     readonly legacyId: FieldRef<"Post", 'String'>
   }
     
@@ -19272,6 +19961,25 @@ export namespace Prisma {
   }
 
   /**
+   * Post.deletedBy
+   */
+  export type Post$deletedByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * Post.mentions
    */
   export type Post$mentionsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19336,6 +20044,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: PostReactionScalarFieldEnum | PostReactionScalarFieldEnum[]
+  }
+
+  /**
+   * Post.notifications
+   */
+  export type Post$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
   }
 
   /**
@@ -19557,6 +20289,7 @@ export namespace Prisma {
     user1?: boolean | Conversation$user1Args<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
     participants?: boolean | Conversation$participantsArgs<ExtArgs>
+    notifications?: boolean | Conversation$notificationsArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversation"]>
 
@@ -19606,6 +20339,7 @@ export namespace Prisma {
     user1?: boolean | Conversation$user1Args<ExtArgs>
     messages?: boolean | Conversation$messagesArgs<ExtArgs>
     participants?: boolean | Conversation$participantsArgs<ExtArgs>
+    notifications?: boolean | Conversation$notificationsArgs<ExtArgs>
     _count?: boolean | ConversationCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ConversationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19624,6 +20358,7 @@ export namespace Prisma {
       user1: Prisma.$UserPayload<ExtArgs> | null
       messages: Prisma.$PrivateMessagePayload<ExtArgs>[]
       participants: Prisma.$ConversationParticipantPayload<ExtArgs>[]
+      notifications: Prisma.$NotificationPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20033,6 +20768,7 @@ export namespace Prisma {
     user1<T extends Conversation$user1Args<ExtArgs> = {}>(args?: Subset<T, Conversation$user1Args<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     messages<T extends Conversation$messagesArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$messagesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$PrivateMessagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     participants<T extends Conversation$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ConversationParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    notifications<T extends Conversation$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, Conversation$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -20558,6 +21294,30 @@ export namespace Prisma {
   }
 
   /**
+   * Conversation.notifications
+   */
+  export type Conversation$notificationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    cursor?: NotificationWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
    * Conversation without action
    */
   export type ConversationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20593,6 +21353,7 @@ export namespace Prisma {
     joinedAt: Date | null
     deletedAt: Date | null
     isAdmin: boolean | null
+    lastReadAt: Date | null
   }
 
   export type ConversationParticipantMaxAggregateOutputType = {
@@ -20602,6 +21363,7 @@ export namespace Prisma {
     joinedAt: Date | null
     deletedAt: Date | null
     isAdmin: boolean | null
+    lastReadAt: Date | null
   }
 
   export type ConversationParticipantCountAggregateOutputType = {
@@ -20611,6 +21373,7 @@ export namespace Prisma {
     joinedAt: number
     deletedAt: number
     isAdmin: number
+    lastReadAt: number
     _all: number
   }
 
@@ -20622,6 +21385,7 @@ export namespace Prisma {
     joinedAt?: true
     deletedAt?: true
     isAdmin?: true
+    lastReadAt?: true
   }
 
   export type ConversationParticipantMaxAggregateInputType = {
@@ -20631,6 +21395,7 @@ export namespace Prisma {
     joinedAt?: true
     deletedAt?: true
     isAdmin?: true
+    lastReadAt?: true
   }
 
   export type ConversationParticipantCountAggregateInputType = {
@@ -20640,6 +21405,7 @@ export namespace Prisma {
     joinedAt?: true
     deletedAt?: true
     isAdmin?: true
+    lastReadAt?: true
     _all?: true
   }
 
@@ -20722,6 +21488,7 @@ export namespace Prisma {
     joinedAt: Date
     deletedAt: Date | null
     isAdmin: boolean
+    lastReadAt: Date | null
     _count: ConversationParticipantCountAggregateOutputType | null
     _min: ConversationParticipantMinAggregateOutputType | null
     _max: ConversationParticipantMaxAggregateOutputType | null
@@ -20748,6 +21515,7 @@ export namespace Prisma {
     joinedAt?: boolean
     deletedAt?: boolean
     isAdmin?: boolean
+    lastReadAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversationParticipant"]>
@@ -20759,6 +21527,7 @@ export namespace Prisma {
     joinedAt?: boolean
     deletedAt?: boolean
     isAdmin?: boolean
+    lastReadAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversationParticipant"]>
@@ -20770,6 +21539,7 @@ export namespace Prisma {
     joinedAt?: boolean
     deletedAt?: boolean
     isAdmin?: boolean
+    lastReadAt?: boolean
     user?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["conversationParticipant"]>
@@ -20781,9 +21551,10 @@ export namespace Prisma {
     joinedAt?: boolean
     deletedAt?: boolean
     isAdmin?: boolean
+    lastReadAt?: boolean
   }
 
-  export type ConversationParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "conversationId" | "joinedAt" | "deletedAt" | "isAdmin", ExtArgs["result"]["conversationParticipant"]>
+  export type ConversationParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "conversationId" | "joinedAt" | "deletedAt" | "isAdmin" | "lastReadAt", ExtArgs["result"]["conversationParticipant"]>
   export type ConversationParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
@@ -20810,6 +21581,11 @@ export namespace Prisma {
       joinedAt: Date
       deletedAt: Date | null
       isAdmin: boolean
+      /**
+       * Date jusqu'à laquelle ce participant a lu la conversation (carte 170). Les messages des autres écrits après
+       * cette date sont ses non-lus. Vide : il n'a encore rien lu, tous les messages des autres sont non lus.
+       */
+      lastReadAt: Date | null
     }, ExtArgs["result"]["conversationParticipant"]>
     composites: {}
   }
@@ -21241,6 +22017,7 @@ export namespace Prisma {
     readonly joinedAt: FieldRef<"ConversationParticipant", 'DateTime'>
     readonly deletedAt: FieldRef<"ConversationParticipant", 'DateTime'>
     readonly isAdmin: FieldRef<"ConversationParticipant", 'Boolean'>
+    readonly lastReadAt: FieldRef<"ConversationParticipant", 'DateTime'>
   }
     
 
@@ -21893,6 +22670,10 @@ export namespace Prisma {
       createdAt: Date
       conversationId: string
       authorId: string
+      /**
+       * Ancien marqueur de lecture, commun à tous les participants : il n'est plus lu ni écrit depuis la carte 170,
+       * qui le remplace par ConversationParticipant.lastReadAt. Gardé en base en attendant l'accord pour le supprimer.
+       */
       readAt: Date | null
     }, ExtArgs["result"]["privateMessage"]>
     composites: {}
@@ -22759,6 +23540,7 @@ export namespace Prisma {
     topicId: string | null
     lastViewedAt: Date | null
     lastPostId: string | null
+    lastReadPostAt: Date | null
   }
 
   export type TopicViewMaxAggregateOutputType = {
@@ -22766,6 +23548,7 @@ export namespace Prisma {
     topicId: string | null
     lastViewedAt: Date | null
     lastPostId: string | null
+    lastReadPostAt: Date | null
   }
 
   export type TopicViewCountAggregateOutputType = {
@@ -22773,6 +23556,7 @@ export namespace Prisma {
     topicId: number
     lastViewedAt: number
     lastPostId: number
+    lastReadPostAt: number
     _all: number
   }
 
@@ -22782,6 +23566,7 @@ export namespace Prisma {
     topicId?: true
     lastViewedAt?: true
     lastPostId?: true
+    lastReadPostAt?: true
   }
 
   export type TopicViewMaxAggregateInputType = {
@@ -22789,6 +23574,7 @@ export namespace Prisma {
     topicId?: true
     lastViewedAt?: true
     lastPostId?: true
+    lastReadPostAt?: true
   }
 
   export type TopicViewCountAggregateInputType = {
@@ -22796,6 +23582,7 @@ export namespace Prisma {
     topicId?: true
     lastViewedAt?: true
     lastPostId?: true
+    lastReadPostAt?: true
     _all?: true
   }
 
@@ -22876,6 +23663,7 @@ export namespace Prisma {
     topicId: string
     lastViewedAt: Date
     lastPostId: string | null
+    lastReadPostAt: Date
     _count: TopicViewCountAggregateOutputType | null
     _min: TopicViewMinAggregateOutputType | null
     _max: TopicViewMaxAggregateOutputType | null
@@ -22900,6 +23688,7 @@ export namespace Prisma {
     topicId?: boolean
     lastViewedAt?: boolean
     lastPostId?: boolean
+    lastReadPostAt?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -22909,6 +23698,7 @@ export namespace Prisma {
     topicId?: boolean
     lastViewedAt?: boolean
     lastPostId?: boolean
+    lastReadPostAt?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -22918,6 +23708,7 @@ export namespace Prisma {
     topicId?: boolean
     lastViewedAt?: boolean
     lastPostId?: boolean
+    lastReadPostAt?: boolean
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["topicView"]>
@@ -22927,9 +23718,10 @@ export namespace Prisma {
     topicId?: boolean
     lastViewedAt?: boolean
     lastPostId?: boolean
+    lastReadPostAt?: boolean
   }
 
-  export type TopicViewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "topicId" | "lastViewedAt" | "lastPostId", ExtArgs["result"]["topicView"]>
+  export type TopicViewOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "topicId" | "lastViewedAt" | "lastPostId" | "lastReadPostAt", ExtArgs["result"]["topicView"]>
   export type TopicViewInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     topic?: boolean | TopicDefaultArgs<ExtArgs>
     user?: boolean | UserDefaultArgs<ExtArgs>
@@ -22952,8 +23744,17 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       userId: string
       topicId: string
+      /**
+       * Date de la dernière visite du sujet (sert aussi au compte des membres en ligne des statistiques).
+       */
       lastViewedAt: Date
+      /**
+       * Position de lecture (carte 166) : le dernier message lu, repéré par sa date de création (`lastReadPostAt`) et
+       * son identifiant (`lastPostId`, vide quand tout est lu jusqu'à cette date). Elle n'avance que jusqu'au dernier
+       * message affiché et ne recule jamais, sauf par « Marquer non lu à partir d'ici ».
+       */
       lastPostId: string | null
+      lastReadPostAt: Date
     }, ExtArgs["result"]["topicView"]>
     composites: {}
   }
@@ -23383,6 +24184,7 @@ export namespace Prisma {
     readonly topicId: FieldRef<"TopicView", 'String'>
     readonly lastViewedAt: FieldRef<"TopicView", 'DateTime'>
     readonly lastPostId: FieldRef<"TopicView", 'String'>
+    readonly lastReadPostAt: FieldRef<"TopicView", 'DateTime'>
   }
     
 
@@ -24891,6 +25693,1244 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: MentionInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Notification
+   */
+
+  export type AggregateNotification = {
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  export type NotificationMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    topicId: string | null
+    postId: string | null
+    conversationId: string | null
+    actorId: string | null
+    readAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type NotificationMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    type: string | null
+    topicId: string | null
+    postId: string | null
+    conversationId: string | null
+    actorId: string | null
+    readAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type NotificationCountAggregateOutputType = {
+    id: number
+    userId: number
+    type: number
+    topicId: number
+    postId: number
+    conversationId: number
+    actorId: number
+    readAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type NotificationMinAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    topicId?: true
+    postId?: true
+    conversationId?: true
+    actorId?: true
+    readAt?: true
+    createdAt?: true
+  }
+
+  export type NotificationMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    topicId?: true
+    postId?: true
+    conversationId?: true
+    actorId?: true
+    readAt?: true
+    createdAt?: true
+  }
+
+  export type NotificationCountAggregateInputType = {
+    id?: true
+    userId?: true
+    type?: true
+    topicId?: true
+    postId?: true
+    conversationId?: true
+    actorId?: true
+    readAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type NotificationAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notification to aggregate.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Notifications
+    **/
+    _count?: true | NotificationCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: NotificationMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type GetNotificationAggregateType<T extends NotificationAggregateArgs> = {
+        [P in keyof T & keyof AggregateNotification]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateNotification[P]>
+      : GetScalarType<T[P], AggregateNotification[P]>
+  }
+
+
+
+
+  export type NotificationGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: NotificationWhereInput
+    orderBy?: NotificationOrderByWithAggregationInput | NotificationOrderByWithAggregationInput[]
+    by: NotificationScalarFieldEnum[] | NotificationScalarFieldEnum
+    having?: NotificationScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: NotificationCountAggregateInputType | true
+    _min?: NotificationMinAggregateInputType
+    _max?: NotificationMaxAggregateInputType
+  }
+
+  export type NotificationGroupByOutputType = {
+    id: string
+    userId: string
+    type: string
+    topicId: string | null
+    postId: string | null
+    conversationId: string | null
+    actorId: string | null
+    readAt: Date | null
+    createdAt: Date
+    _count: NotificationCountAggregateOutputType | null
+    _min: NotificationMinAggregateOutputType | null
+    _max: NotificationMaxAggregateOutputType | null
+  }
+
+  type GetNotificationGroupByPayload<T extends NotificationGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<NotificationGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof NotificationGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+            : GetScalarType<T[P], NotificationGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type NotificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    topicId?: boolean
+    postId?: boolean
+    conversationId?: boolean
+    actorId?: boolean
+    readAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    topicId?: boolean
+    postId?: boolean
+    conversationId?: boolean
+    actorId?: boolean
+    readAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    topicId?: boolean
+    postId?: boolean
+    conversationId?: boolean
+    actorId?: boolean
+    readAt?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }, ExtArgs["result"]["notification"]>
+
+  export type NotificationSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    type?: boolean
+    topicId?: boolean
+    postId?: boolean
+    conversationId?: boolean
+    actorId?: boolean
+    readAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type NotificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "type" | "topicId" | "postId" | "conversationId" | "actorId" | "readAt" | "createdAt", ExtArgs["result"]["notification"]>
+  export type NotificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }
+  export type NotificationIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }
+  export type NotificationIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    actor?: boolean | Notification$actorArgs<ExtArgs>
+    topic?: boolean | Notification$topicArgs<ExtArgs>
+    post?: boolean | Notification$postArgs<ExtArgs>
+    conversation?: boolean | Notification$conversationArgs<ExtArgs>
+  }
+
+  export type $NotificationPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Notification"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      actor: Prisma.$UserPayload<ExtArgs> | null
+      topic: Prisma.$TopicPayload<ExtArgs> | null
+      post: Prisma.$PostPayload<ExtArgs> | null
+      conversation: Prisma.$ConversationPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      /**
+       * Membre qui reçoit la notification.
+       */
+      userId: string
+      /**
+       * MENTION, FOLLOWED_REPLY (réponse dans un sujet suivi) ou PRIVATE_MESSAGE.
+       */
+      type: string
+      topicId: string | null
+      /**
+       * Message du forum concerné : celui qui mentionne le membre, ou la première réponse non lue d'un sujet suivi.
+       */
+      postId: string | null
+      conversationId: string | null
+      /**
+       * Membre à l'origine de la notification (auteur du message) ; vide si son compte a été supprimé.
+       */
+      actorId: string | null
+      /**
+       * Date de lecture ; vide tant que la notification n'est pas lue.
+       */
+      readAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["notification"]>
+    composites: {}
+  }
+
+  type NotificationGetPayload<S extends boolean | null | undefined | NotificationDefaultArgs> = $Result.GetResult<Prisma.$NotificationPayload, S>
+
+  type NotificationCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<NotificationFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: NotificationCountAggregateInputType | true
+    }
+
+  export interface NotificationDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Notification'], meta: { name: 'Notification' } }
+    /**
+     * Find zero or one Notification that matches the filter.
+     * @param {NotificationFindUniqueArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends NotificationFindUniqueArgs>(args: SelectSubset<T, NotificationFindUniqueArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Notification that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {NotificationFindUniqueOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends NotificationFindUniqueOrThrowArgs>(args: SelectSubset<T, NotificationFindUniqueOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends NotificationFindFirstArgs>(args?: SelectSubset<T, NotificationFindFirstArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Notification that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindFirstOrThrowArgs} args - Arguments to find a Notification
+     * @example
+     * // Get one Notification
+     * const notification = await prisma.notification.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends NotificationFindFirstOrThrowArgs>(args?: SelectSubset<T, NotificationFindFirstOrThrowArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Notifications that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Notifications
+     * const notifications = await prisma.notification.findMany()
+     * 
+     * // Get first 10 Notifications
+     * const notifications = await prisma.notification.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const notificationWithIdOnly = await prisma.notification.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends NotificationFindManyArgs>(args?: SelectSubset<T, NotificationFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Notification.
+     * @param {NotificationCreateArgs} args - Arguments to create a Notification.
+     * @example
+     * // Create one Notification
+     * const Notification = await prisma.notification.create({
+     *   data: {
+     *     // ... data to create a Notification
+     *   }
+     * })
+     * 
+     */
+    create<T extends NotificationCreateArgs>(args: SelectSubset<T, NotificationCreateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Notifications.
+     * @param {NotificationCreateManyArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends NotificationCreateManyArgs>(args?: SelectSubset<T, NotificationCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Notifications and returns the data saved in the database.
+     * @param {NotificationCreateManyAndReturnArgs} args - Arguments to create many Notifications.
+     * @example
+     * // Create many Notifications
+     * const notification = await prisma.notification.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends NotificationCreateManyAndReturnArgs>(args?: SelectSubset<T, NotificationCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Notification.
+     * @param {NotificationDeleteArgs} args - Arguments to delete one Notification.
+     * @example
+     * // Delete one Notification
+     * const Notification = await prisma.notification.delete({
+     *   where: {
+     *     // ... filter to delete one Notification
+     *   }
+     * })
+     * 
+     */
+    delete<T extends NotificationDeleteArgs>(args: SelectSubset<T, NotificationDeleteArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Notification.
+     * @param {NotificationUpdateArgs} args - Arguments to update one Notification.
+     * @example
+     * // Update one Notification
+     * const notification = await prisma.notification.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends NotificationUpdateArgs>(args: SelectSubset<T, NotificationUpdateArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Notifications.
+     * @param {NotificationDeleteManyArgs} args - Arguments to filter Notifications to delete.
+     * @example
+     * // Delete a few Notifications
+     * const { count } = await prisma.notification.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends NotificationDeleteManyArgs>(args?: SelectSubset<T, NotificationDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends NotificationUpdateManyArgs>(args: SelectSubset<T, NotificationUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Notifications and returns the data updated in the database.
+     * @param {NotificationUpdateManyAndReturnArgs} args - Arguments to update many Notifications.
+     * @example
+     * // Update many Notifications
+     * const notification = await prisma.notification.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Notifications and only return the `id`
+     * const notificationWithIdOnly = await prisma.notification.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends NotificationUpdateManyAndReturnArgs>(args: SelectSubset<T, NotificationUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Notification.
+     * @param {NotificationUpsertArgs} args - Arguments to update or create a Notification.
+     * @example
+     * // Update or create a Notification
+     * const notification = await prisma.notification.upsert({
+     *   create: {
+     *     // ... data to create a Notification
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Notification we want to update
+     *   }
+     * })
+     */
+    upsert<T extends NotificationUpsertArgs>(args: SelectSubset<T, NotificationUpsertArgs<ExtArgs>>): Prisma__NotificationClient<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Notifications.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationCountArgs} args - Arguments to filter Notifications to count.
+     * @example
+     * // Count the number of Notifications
+     * const count = await prisma.notification.count({
+     *   where: {
+     *     // ... the filter for the Notifications we want to count
+     *   }
+     * })
+    **/
+    count<T extends NotificationCountArgs>(
+      args?: Subset<T, NotificationCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], NotificationCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends NotificationAggregateArgs>(args: Subset<T, NotificationAggregateArgs>): Prisma.PrismaPromise<GetNotificationAggregateType<T>>
+
+    /**
+     * Group by Notification.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {NotificationGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends NotificationGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: NotificationGroupByArgs['orderBy'] }
+        : { orderBy?: NotificationGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, NotificationGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetNotificationGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Notification model
+   */
+  readonly fields: NotificationFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Notification.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__NotificationClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    actor<T extends Notification$actorArgs<ExtArgs> = {}>(args?: Subset<T, Notification$actorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    topic<T extends Notification$topicArgs<ExtArgs> = {}>(args?: Subset<T, Notification$topicArgs<ExtArgs>>): Prisma__TopicClient<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    post<T extends Notification$postArgs<ExtArgs> = {}>(args?: Subset<T, Notification$postArgs<ExtArgs>>): Prisma__PostClient<$Result.GetResult<Prisma.$PostPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    conversation<T extends Notification$conversationArgs<ExtArgs> = {}>(args?: Subset<T, Notification$conversationArgs<ExtArgs>>): Prisma__ConversationClient<$Result.GetResult<Prisma.$ConversationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Notification model
+   */
+  interface NotificationFieldRefs {
+    readonly id: FieldRef<"Notification", 'String'>
+    readonly userId: FieldRef<"Notification", 'String'>
+    readonly type: FieldRef<"Notification", 'String'>
+    readonly topicId: FieldRef<"Notification", 'String'>
+    readonly postId: FieldRef<"Notification", 'String'>
+    readonly conversationId: FieldRef<"Notification", 'String'>
+    readonly actorId: FieldRef<"Notification", 'String'>
+    readonly readAt: FieldRef<"Notification", 'DateTime'>
+    readonly createdAt: FieldRef<"Notification", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Notification findUnique
+   */
+  export type NotificationFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findUniqueOrThrow
+   */
+  export type NotificationFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification findFirst
+   */
+  export type NotificationFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findFirstOrThrow
+   */
+  export type NotificationFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notification to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification findMany
+   */
+  export type NotificationFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter, which Notifications to fetch.
+     */
+    where?: NotificationWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Notifications to fetch.
+     */
+    orderBy?: NotificationOrderByWithRelationInput | NotificationOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Notifications.
+     */
+    cursor?: NotificationWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Notifications from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Notifications.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Notifications.
+     */
+    distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * Notification create
+   */
+  export type NotificationCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Notification.
+     */
+    data: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+  }
+
+  /**
+   * Notification createMany
+   */
+  export type NotificationCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Notification createManyAndReturn
+   */
+  export type NotificationCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to create many Notifications.
+     */
+    data: NotificationCreateManyInput | NotificationCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification update
+   */
+  export type NotificationUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Notification.
+     */
+    data: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+    /**
+     * Choose, which Notification to update.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification updateMany
+   */
+  export type NotificationUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification updateManyAndReturn
+   */
+  export type NotificationUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * The data used to update Notifications.
+     */
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyInput>
+    /**
+     * Filter which Notifications to update
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Notification upsert
+   */
+  export type NotificationUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Notification to update in case it exists.
+     */
+    where: NotificationWhereUniqueInput
+    /**
+     * In case the Notification found by the `where` argument doesn't exist, create a new Notification with this data.
+     */
+    create: XOR<NotificationCreateInput, NotificationUncheckedCreateInput>
+    /**
+     * In case the Notification was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<NotificationUpdateInput, NotificationUncheckedUpdateInput>
+  }
+
+  /**
+   * Notification delete
+   */
+  export type NotificationDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
+    /**
+     * Filter which Notification to delete.
+     */
+    where: NotificationWhereUniqueInput
+  }
+
+  /**
+   * Notification deleteMany
+   */
+  export type NotificationDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Notifications to delete
+     */
+    where?: NotificationWhereInput
+    /**
+     * Limit how many Notifications to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Notification.actor
+   */
+  export type Notification$actorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Notification.topic
+   */
+  export type Notification$topicArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Topic
+     */
+    select?: TopicSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Topic
+     */
+    omit?: TopicOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TopicInclude<ExtArgs> | null
+    where?: TopicWhereInput
+  }
+
+  /**
+   * Notification.post
+   */
+  export type Notification$postArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Post
+     */
+    select?: PostSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Post
+     */
+    omit?: PostOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: PostInclude<ExtArgs> | null
+    where?: PostWhereInput
+  }
+
+  /**
+   * Notification.conversation
+   */
+  export type Notification$conversationArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Conversation
+     */
+    select?: ConversationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Conversation
+     */
+    omit?: ConversationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ConversationInclude<ExtArgs> | null
+    where?: ConversationWhereInput
+  }
+
+  /**
+   * Notification without action
+   */
+  export type NotificationDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Notification
+     */
+    select?: NotificationSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Notification
+     */
+    omit?: NotificationOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: NotificationInclude<ExtArgs> | null
   }
 
 
@@ -57394,7 +59434,9 @@ export namespace Prisma {
     notifPm: 'notifPm',
     notifMention: 'notifMention',
     notifFollowedTopic: 'notifFollowedTopic',
-    notifNewsletter: 'notifNewsletter'
+    notifNewsletter: 'notifNewsletter',
+    autoFollowTopics: 'autoFollowTopics',
+    forumReadAllAt: 'forumReadAllAt'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -57462,7 +59504,9 @@ export namespace Prisma {
     lng: 'lng',
     registrationsLocked: 'registrationsLocked',
     typeCDF: 'typeCDF',
-    tournamentType: 'tournamentType'
+    tournamentType: 'tournamentType',
+    cdfValidatedAt: 'cdfValidatedAt',
+    cdfValidatedById: 'cdfValidatedById'
   };
 
   export type TournamentScalarFieldEnum = (typeof TournamentScalarFieldEnum)[keyof typeof TournamentScalarFieldEnum]
@@ -57508,7 +59552,14 @@ export namespace Prisma {
     forumId: 'forumId',
     authorId: 'authorId',
     tournamentId: 'tournamentId',
-    legacyId: 'legacyId'
+    legacyId: 'legacyId',
+    isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedById: 'deletedById',
+    deletionReason: 'deletionReason',
+    lastPostAt: 'lastPostAt',
+    lastPostId: 'lastPostId',
+    lastPostAuthorId: 'lastPostAuthorId'
   };
 
   export type TopicScalarFieldEnum = (typeof TopicScalarFieldEnum)[keyof typeof TopicScalarFieldEnum]
@@ -57525,6 +59576,9 @@ export namespace Prisma {
     moderationReason: 'moderationReason',
     moderatedBy: 'moderatedBy',
     isDeleted: 'isDeleted',
+    deletedAt: 'deletedAt',
+    deletedById: 'deletedById',
+    deletionReason: 'deletionReason',
     legacyId: 'legacyId'
   };
 
@@ -57552,7 +59606,8 @@ export namespace Prisma {
     conversationId: 'conversationId',
     joinedAt: 'joinedAt',
     deletedAt: 'deletedAt',
-    isAdmin: 'isAdmin'
+    isAdmin: 'isAdmin',
+    lastReadAt: 'lastReadAt'
   };
 
   export type ConversationParticipantScalarFieldEnum = (typeof ConversationParticipantScalarFieldEnum)[keyof typeof ConversationParticipantScalarFieldEnum]
@@ -57574,7 +59629,8 @@ export namespace Prisma {
     userId: 'userId',
     topicId: 'topicId',
     lastViewedAt: 'lastViewedAt',
-    lastPostId: 'lastPostId'
+    lastPostId: 'lastPostId',
+    lastReadPostAt: 'lastReadPostAt'
   };
 
   export type TopicViewScalarFieldEnum = (typeof TopicViewScalarFieldEnum)[keyof typeof TopicViewScalarFieldEnum]
@@ -57590,6 +59646,21 @@ export namespace Prisma {
   };
 
   export type MentionScalarFieldEnum = (typeof MentionScalarFieldEnum)[keyof typeof MentionScalarFieldEnum]
+
+
+  export const NotificationScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    type: 'type',
+    topicId: 'topicId',
+    postId: 'postId',
+    conversationId: 'conversationId',
+    actorId: 'actorId',
+    readAt: 'readAt',
+    createdAt: 'createdAt'
+  };
+
+  export type NotificationScalarFieldEnum = (typeof NotificationScalarFieldEnum)[keyof typeof NotificationScalarFieldEnum]
 
 
   export const PostReactionScalarFieldEnum: {
@@ -58274,6 +60345,8 @@ export namespace Prisma {
     notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
+    autoFollowTopics?: BoolFilter<"User"> | boolean
+    forumReadAllAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -58315,7 +60388,13 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    cdfValidatedTournaments?: TournamentListRelationFilter
+    deletedTopics?: TopicListRelationFilter
+    deletedPosts?: PostListRelationFilter
+    lastPostTopics?: TopicListRelationFilter
     bbSchemeStates?: BBSchemeStateListRelationFilter
+    notifications?: NotificationListRelationFilter
+    notificationsCaused?: NotificationListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -58346,6 +60425,8 @@ export namespace Prisma {
     notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
+    autoFollowTopics?: SortOrder
+    forumReadAllAt?: SortOrder
     accounts?: AccountOrderByRelationAggregateInput
     moderatedArticles?: ArticleOrderByRelationAggregateInput
     articles?: ArticleOrderByRelationAggregateInput
@@ -58387,7 +60468,13 @@ export namespace Prisma {
     commissaireLigues?: LigueOrderByRelationAggregateInput
     ligues?: LigueOrderByRelationAggregateInput
     commissairesTournaments?: TournamentOrderByRelationAggregateInput
+    cdfValidatedTournaments?: TournamentOrderByRelationAggregateInput
+    deletedTopics?: TopicOrderByRelationAggregateInput
+    deletedPosts?: PostOrderByRelationAggregateInput
+    lastPostTopics?: TopicOrderByRelationAggregateInput
     bbSchemeStates?: BBSchemeStateOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
+    notificationsCaused?: NotificationOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -58421,6 +60508,8 @@ export namespace Prisma {
     notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
+    autoFollowTopics?: BoolFilter<"User"> | boolean
+    forumReadAllAt?: DateTimeFilter<"User"> | Date | string
     accounts?: AccountListRelationFilter
     moderatedArticles?: ArticleListRelationFilter
     articles?: ArticleListRelationFilter
@@ -58462,7 +60551,13 @@ export namespace Prisma {
     commissaireLigues?: LigueListRelationFilter
     ligues?: LigueListRelationFilter
     commissairesTournaments?: TournamentListRelationFilter
+    cdfValidatedTournaments?: TournamentListRelationFilter
+    deletedTopics?: TopicListRelationFilter
+    deletedPosts?: PostListRelationFilter
+    lastPostTopics?: TopicListRelationFilter
     bbSchemeStates?: BBSchemeStateListRelationFilter
+    notifications?: NotificationListRelationFilter
+    notificationsCaused?: NotificationListRelationFilter
   }, "id" | "email" | "legacyId">
 
   export type UserOrderByWithAggregationInput = {
@@ -58493,6 +60588,8 @@ export namespace Prisma {
     notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
+    autoFollowTopics?: SortOrder
+    forumReadAllAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -58531,6 +60628,8 @@ export namespace Prisma {
     notifMention?: BoolWithAggregatesFilter<"User"> | boolean
     notifFollowedTopic?: BoolWithAggregatesFilter<"User"> | boolean
     notifNewsletter?: BoolWithAggregatesFilter<"User"> | boolean
+    autoFollowTopics?: BoolWithAggregatesFilter<"User"> | boolean
+    forumReadAllAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
   export type BlockWhereInput = {
@@ -58673,6 +60772,9 @@ export namespace Prisma {
     registrationsLocked?: BoolFilter<"Tournament"> | boolean
     typeCDF?: StringNullableFilter<"Tournament"> | string | null
     tournamentType?: StringNullableFilter<"Tournament"> | string | null
+    cdfValidatedAt?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    cdfValidatedById?: StringNullableFilter<"Tournament"> | string | null
+    cdfValidatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
     ligue?: XOR<LigueNullableScalarRelationFilter, LigueWhereInput> | null
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -58729,6 +60831,9 @@ export namespace Prisma {
     registrationsLocked?: SortOrder
     typeCDF?: SortOrderInput | SortOrder
     tournamentType?: SortOrderInput | SortOrder
+    cdfValidatedAt?: SortOrderInput | SortOrder
+    cdfValidatedById?: SortOrderInput | SortOrder
+    cdfValidatedBy?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
     ligue?: LigueOrderByWithRelationInput
     organizer?: UserOrderByWithRelationInput
@@ -58788,6 +60893,9 @@ export namespace Prisma {
     registrationsLocked?: BoolFilter<"Tournament"> | boolean
     typeCDF?: StringNullableFilter<"Tournament"> | string | null
     tournamentType?: StringNullableFilter<"Tournament"> | string | null
+    cdfValidatedAt?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    cdfValidatedById?: StringNullableFilter<"Tournament"> | string | null
+    cdfValidatedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
     ligue?: XOR<LigueNullableScalarRelationFilter, LigueWhereInput> | null
     organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
@@ -58844,6 +60952,8 @@ export namespace Prisma {
     registrationsLocked?: SortOrder
     typeCDF?: SortOrderInput | SortOrder
     tournamentType?: SortOrderInput | SortOrder
+    cdfValidatedAt?: SortOrderInput | SortOrder
+    cdfValidatedById?: SortOrderInput | SortOrder
     _count?: TournamentCountOrderByAggregateInput
     _avg?: TournamentAvgOrderByAggregateInput
     _max?: TournamentMaxOrderByAggregateInput
@@ -58899,6 +61009,8 @@ export namespace Prisma {
     registrationsLocked?: BoolWithAggregatesFilter<"Tournament"> | boolean
     typeCDF?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     tournamentType?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
+    cdfValidatedAt?: DateTimeNullableWithAggregatesFilter<"Tournament"> | Date | string | null
+    cdfValidatedById?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
   }
 
   export type CategoryWhereInput = {
@@ -59070,12 +61182,22 @@ export namespace Prisma {
     authorId?: StringFilter<"Topic"> | string
     tournamentId?: StringNullableFilter<"Topic"> | string | null
     legacyId?: StringNullableFilter<"Topic"> | string | null
+    isDeleted?: BoolFilter<"Topic"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Topic"> | Date | string | null
+    deletedById?: StringNullableFilter<"Topic"> | string | null
+    deletionReason?: StringNullableFilter<"Topic"> | string | null
+    lastPostAt?: DateTimeFilter<"Topic"> | Date | string
+    lastPostId?: StringNullableFilter<"Topic"> | string | null
+    lastPostAuthorId?: StringNullableFilter<"Topic"> | string | null
+    deletedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    lastPostAuthor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     posts?: PostListRelationFilter
     tournament?: XOR<TournamentNullableScalarRelationFilter, TournamentWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     follows?: TopicFollowListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    notifications?: NotificationListRelationFilter
   }
 
   export type TopicOrderByWithRelationInput = {
@@ -59091,12 +61213,22 @@ export namespace Prisma {
     authorId?: SortOrder
     tournamentId?: SortOrderInput | SortOrder
     legacyId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletionReason?: SortOrderInput | SortOrder
+    lastPostAt?: SortOrder
+    lastPostId?: SortOrderInput | SortOrder
+    lastPostAuthorId?: SortOrderInput | SortOrder
+    deletedBy?: UserOrderByWithRelationInput
+    lastPostAuthor?: UserOrderByWithRelationInput
     posts?: PostOrderByRelationAggregateInput
     tournament?: TournamentOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
     forum?: ForumOrderByWithRelationInput
     follows?: TopicFollowOrderByRelationAggregateInput
     topicViews?: TopicViewOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
   }
 
   export type TopicWhereUniqueInput = Prisma.AtLeast<{
@@ -59115,12 +61247,22 @@ export namespace Prisma {
     views?: IntFilter<"Topic"> | number
     forumId?: StringFilter<"Topic"> | string
     authorId?: StringFilter<"Topic"> | string
+    isDeleted?: BoolFilter<"Topic"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Topic"> | Date | string | null
+    deletedById?: StringNullableFilter<"Topic"> | string | null
+    deletionReason?: StringNullableFilter<"Topic"> | string | null
+    lastPostAt?: DateTimeFilter<"Topic"> | Date | string
+    lastPostId?: StringNullableFilter<"Topic"> | string | null
+    lastPostAuthorId?: StringNullableFilter<"Topic"> | string | null
+    deletedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    lastPostAuthor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     posts?: PostListRelationFilter
     tournament?: XOR<TournamentNullableScalarRelationFilter, TournamentWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
     follows?: TopicFollowListRelationFilter
     topicViews?: TopicViewListRelationFilter
+    notifications?: NotificationListRelationFilter
   }, "id" | "tournamentId" | "legacyId">
 
   export type TopicOrderByWithAggregationInput = {
@@ -59136,6 +61278,13 @@ export namespace Prisma {
     authorId?: SortOrder
     tournamentId?: SortOrderInput | SortOrder
     legacyId?: SortOrderInput | SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletionReason?: SortOrderInput | SortOrder
+    lastPostAt?: SortOrder
+    lastPostId?: SortOrderInput | SortOrder
+    lastPostAuthorId?: SortOrderInput | SortOrder
     _count?: TopicCountOrderByAggregateInput
     _avg?: TopicAvgOrderByAggregateInput
     _max?: TopicMaxOrderByAggregateInput
@@ -59159,6 +61308,13 @@ export namespace Prisma {
     authorId?: StringWithAggregatesFilter<"Topic"> | string
     tournamentId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
     legacyId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
+    isDeleted?: BoolWithAggregatesFilter<"Topic"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Topic"> | Date | string | null
+    deletedById?: StringNullableWithAggregatesFilter<"Topic"> | string | null
+    deletionReason?: StringNullableWithAggregatesFilter<"Topic"> | string | null
+    lastPostAt?: DateTimeWithAggregatesFilter<"Topic"> | Date | string
+    lastPostId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
+    lastPostAuthorId?: StringNullableWithAggregatesFilter<"Topic"> | string | null
   }
 
   export type PostWhereInput = {
@@ -59175,12 +61331,17 @@ export namespace Prisma {
     moderationReason?: StringNullableFilter<"Post"> | string | null
     moderatedBy?: StringNullableFilter<"Post"> | string | null
     isDeleted?: BoolFilter<"Post"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    deletedById?: StringNullableFilter<"Post"> | string | null
+    deletionReason?: StringNullableFilter<"Post"> | string | null
     legacyId?: StringNullableFilter<"Post"> | string | null
+    deletedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     mentions?: MentionListRelationFilter
     moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     reactions?: PostReactionListRelationFilter
+    notifications?: NotificationListRelationFilter
   }
 
   export type PostOrderByWithRelationInput = {
@@ -59194,12 +61355,17 @@ export namespace Prisma {
     moderationReason?: SortOrderInput | SortOrder
     moderatedBy?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletionReason?: SortOrderInput | SortOrder
     legacyId?: SortOrderInput | SortOrder
+    deletedBy?: UserOrderByWithRelationInput
     mentions?: MentionOrderByRelationAggregateInput
     moderator?: UserOrderByWithRelationInput
     author?: UserOrderByWithRelationInput
     topic?: TopicOrderByWithRelationInput
     reactions?: PostReactionOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
   }
 
   export type PostWhereUniqueInput = Prisma.AtLeast<{
@@ -59217,11 +61383,16 @@ export namespace Prisma {
     moderationReason?: StringNullableFilter<"Post"> | string | null
     moderatedBy?: StringNullableFilter<"Post"> | string | null
     isDeleted?: BoolFilter<"Post"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    deletedById?: StringNullableFilter<"Post"> | string | null
+    deletionReason?: StringNullableFilter<"Post"> | string | null
+    deletedBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     mentions?: MentionListRelationFilter
     moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     reactions?: PostReactionListRelationFilter
+    notifications?: NotificationListRelationFilter
   }, "id" | "legacyId">
 
   export type PostOrderByWithAggregationInput = {
@@ -59235,6 +61406,9 @@ export namespace Prisma {
     moderationReason?: SortOrderInput | SortOrder
     moderatedBy?: SortOrderInput | SortOrder
     isDeleted?: SortOrder
+    deletedAt?: SortOrderInput | SortOrder
+    deletedById?: SortOrderInput | SortOrder
+    deletionReason?: SortOrderInput | SortOrder
     legacyId?: SortOrderInput | SortOrder
     _count?: PostCountOrderByAggregateInput
     _max?: PostMaxOrderByAggregateInput
@@ -59255,6 +61429,9 @@ export namespace Prisma {
     moderationReason?: StringNullableWithAggregatesFilter<"Post"> | string | null
     moderatedBy?: StringNullableWithAggregatesFilter<"Post"> | string | null
     isDeleted?: BoolWithAggregatesFilter<"Post"> | boolean
+    deletedAt?: DateTimeNullableWithAggregatesFilter<"Post"> | Date | string | null
+    deletedById?: StringNullableWithAggregatesFilter<"Post"> | string | null
+    deletionReason?: StringNullableWithAggregatesFilter<"Post"> | string | null
     legacyId?: StringNullableWithAggregatesFilter<"Post"> | string | null
   }
 
@@ -59275,6 +61452,7 @@ export namespace Prisma {
     user1?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     messages?: PrivateMessageListRelationFilter
     participants?: ConversationParticipantListRelationFilter
+    notifications?: NotificationListRelationFilter
   }
 
   export type ConversationOrderByWithRelationInput = {
@@ -59291,6 +61469,7 @@ export namespace Prisma {
     user1?: UserOrderByWithRelationInput
     messages?: PrivateMessageOrderByRelationAggregateInput
     participants?: ConversationParticipantOrderByRelationAggregateInput
+    notifications?: NotificationOrderByRelationAggregateInput
   }
 
   export type ConversationWhereUniqueInput = Prisma.AtLeast<{
@@ -59310,6 +61489,7 @@ export namespace Prisma {
     user1?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     messages?: PrivateMessageListRelationFilter
     participants?: ConversationParticipantListRelationFilter
+    notifications?: NotificationListRelationFilter
   }, "id">
 
   export type ConversationOrderByWithAggregationInput = {
@@ -59352,6 +61532,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
     isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
+    lastReadAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
   }
@@ -59363,6 +61544,7 @@ export namespace Prisma {
     joinedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     isAdmin?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
     user?: UserOrderByWithRelationInput
     conversation?: ConversationOrderByWithRelationInput
   }
@@ -59378,6 +61560,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
     isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
+    lastReadAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
   }, "id" | "userId_conversationId">
@@ -59389,6 +61572,7 @@ export namespace Prisma {
     joinedAt?: SortOrder
     deletedAt?: SortOrderInput | SortOrder
     isAdmin?: SortOrder
+    lastReadAt?: SortOrderInput | SortOrder
     _count?: ConversationParticipantCountOrderByAggregateInput
     _max?: ConversationParticipantMaxOrderByAggregateInput
     _min?: ConversationParticipantMinOrderByAggregateInput
@@ -59404,6 +61588,7 @@ export namespace Prisma {
     joinedAt?: DateTimeWithAggregatesFilter<"ConversationParticipant"> | Date | string
     deletedAt?: DateTimeNullableWithAggregatesFilter<"ConversationParticipant"> | Date | string | null
     isAdmin?: BoolWithAggregatesFilter<"ConversationParticipant"> | boolean
+    lastReadAt?: DateTimeNullableWithAggregatesFilter<"ConversationParticipant"> | Date | string | null
   }
 
   export type PrivateMessageWhereInput = {
@@ -59477,6 +61662,7 @@ export namespace Prisma {
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
     lastPostId?: StringNullableFilter<"TopicView"> | string | null
+    lastReadPostAt?: DateTimeFilter<"TopicView"> | Date | string
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }
@@ -59486,6 +61672,7 @@ export namespace Prisma {
     topicId?: SortOrder
     lastViewedAt?: SortOrder
     lastPostId?: SortOrderInput | SortOrder
+    lastReadPostAt?: SortOrder
     topic?: TopicOrderByWithRelationInput
     user?: UserOrderByWithRelationInput
   }
@@ -59499,6 +61686,7 @@ export namespace Prisma {
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
     lastPostId?: StringNullableFilter<"TopicView"> | string | null
+    lastReadPostAt?: DateTimeFilter<"TopicView"> | Date | string
     topic?: XOR<TopicScalarRelationFilter, TopicWhereInput>
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
   }, "userId_topicId">
@@ -59508,6 +61696,7 @@ export namespace Prisma {
     topicId?: SortOrder
     lastViewedAt?: SortOrder
     lastPostId?: SortOrderInput | SortOrder
+    lastReadPostAt?: SortOrder
     _count?: TopicViewCountOrderByAggregateInput
     _max?: TopicViewMaxOrderByAggregateInput
     _min?: TopicViewMinOrderByAggregateInput
@@ -59521,6 +61710,7 @@ export namespace Prisma {
     topicId?: StringWithAggregatesFilter<"TopicView"> | string
     lastViewedAt?: DateTimeWithAggregatesFilter<"TopicView"> | Date | string
     lastPostId?: StringNullableWithAggregatesFilter<"TopicView"> | string | null
+    lastReadPostAt?: DateTimeWithAggregatesFilter<"TopicView"> | Date | string
   }
 
   export type MentionWhereInput = {
@@ -59588,6 +61778,93 @@ export namespace Prisma {
     mentionerId?: StringWithAggregatesFilter<"Mention"> | string
     mentionedUserId?: StringWithAggregatesFilter<"Mention"> | string
     readAt?: DateTimeNullableWithAggregatesFilter<"Mention"> | Date | string | null
+  }
+
+  export type NotificationWhereInput = {
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    topicId?: StringNullableFilter<"Notification"> | string | null
+    postId?: StringNullableFilter<"Notification"> | string | null
+    conversationId?: StringNullableFilter<"Notification"> | string | null
+    actorId?: StringNullableFilter<"Notification"> | string | null
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    actor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+    conversation?: XOR<ConversationNullableScalarRelationFilter, ConversationWhereInput> | null
+  }
+
+  export type NotificationOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    topicId?: SortOrderInput | SortOrder
+    postId?: SortOrderInput | SortOrder
+    conversationId?: SortOrderInput | SortOrder
+    actorId?: SortOrderInput | SortOrder
+    readAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    actor?: UserOrderByWithRelationInput
+    topic?: TopicOrderByWithRelationInput
+    post?: PostOrderByWithRelationInput
+    conversation?: ConversationOrderByWithRelationInput
+  }
+
+  export type NotificationWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: NotificationWhereInput | NotificationWhereInput[]
+    OR?: NotificationWhereInput[]
+    NOT?: NotificationWhereInput | NotificationWhereInput[]
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    topicId?: StringNullableFilter<"Notification"> | string | null
+    postId?: StringNullableFilter<"Notification"> | string | null
+    conversationId?: StringNullableFilter<"Notification"> | string | null
+    actorId?: StringNullableFilter<"Notification"> | string | null
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    actor?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    topic?: XOR<TopicNullableScalarRelationFilter, TopicWhereInput> | null
+    post?: XOR<PostNullableScalarRelationFilter, PostWhereInput> | null
+    conversation?: XOR<ConversationNullableScalarRelationFilter, ConversationWhereInput> | null
+  }, "id">
+
+  export type NotificationOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    topicId?: SortOrderInput | SortOrder
+    postId?: SortOrderInput | SortOrder
+    conversationId?: SortOrderInput | SortOrder
+    actorId?: SortOrderInput | SortOrder
+    readAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: NotificationCountOrderByAggregateInput
+    _max?: NotificationMaxOrderByAggregateInput
+    _min?: NotificationMinOrderByAggregateInput
+  }
+
+  export type NotificationScalarWhereWithAggregatesInput = {
+    AND?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    OR?: NotificationScalarWhereWithAggregatesInput[]
+    NOT?: NotificationScalarWhereWithAggregatesInput | NotificationScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Notification"> | string
+    userId?: StringWithAggregatesFilter<"Notification"> | string
+    type?: StringWithAggregatesFilter<"Notification"> | string
+    topicId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    postId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    conversationId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    actorId?: StringNullableWithAggregatesFilter<"Notification"> | string | null
+    readAt?: DateTimeNullableWithAggregatesFilter<"Notification"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Notification"> | Date | string
   }
 
   export type PostReactionWhereInput = {
@@ -61781,6 +64058,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -61822,7 +64101,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -61853,6 +64138,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -61893,7 +64180,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserUpdateInput = {
@@ -61923,6 +64216,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -61964,7 +64259,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -61995,6 +64296,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -62035,7 +64338,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -62066,6 +64375,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
   }
 
   export type UserUpdateManyMutationInput = {
@@ -62095,6 +64406,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUncheckedUpdateManyInput = {
@@ -62125,6 +64438,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BlockCreateInput = {
@@ -62252,6 +64567,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -62308,6 +64625,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -62360,6 +64679,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -62416,6 +64737,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -62470,6 +64793,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
   }
 
   export type TournamentUpdateManyMutationInput = {
@@ -62515,6 +64840,7 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TournamentUncheckedUpdateManyInput = {
@@ -62562,6 +64888,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type CategoryCreateInput = {
@@ -62738,12 +65066,20 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateInput = {
@@ -62759,9 +65095,17 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUpdateInput = {
@@ -62774,12 +65118,20 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateInput = {
@@ -62795,9 +65147,17 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicCreateManyInput = {
@@ -62813,6 +65173,13 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
   }
 
   export type TopicUpdateManyMutationInput = {
@@ -62825,6 +65192,11 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicUncheckedUpdateManyInput = {
@@ -62840,6 +65212,13 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateInput = {
@@ -62850,12 +65229,16 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
     reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateInput = {
@@ -62869,9 +65252,13 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostUpdateInput = {
@@ -62882,12 +65269,16 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateInput = {
@@ -62901,9 +65292,13 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostCreateManyInput = {
@@ -62917,6 +65312,9 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
   }
 
@@ -62928,6 +65326,8 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -62942,6 +65342,9 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -62957,6 +65360,7 @@ export namespace Prisma {
     user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    notifications?: NotificationCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateInput = {
@@ -62971,6 +65375,7 @@ export namespace Prisma {
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUpdateInput = {
@@ -62985,6 +65390,7 @@ export namespace Prisma {
     user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateInput = {
@@ -62999,6 +65405,7 @@ export namespace Prisma {
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationCreateManyInput = {
@@ -63040,6 +65447,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
     user: UserCreateNestedOneWithoutConversationParticipantsInput
     conversation: ConversationCreateNestedOneWithoutParticipantsInput
   }
@@ -63051,6 +65459,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
   }
 
   export type ConversationParticipantUpdateInput = {
@@ -63058,6 +65467,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutConversationParticipantsNestedInput
     conversation?: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
   }
@@ -63069,6 +65479,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationParticipantCreateManyInput = {
@@ -63078,6 +65489,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
   }
 
   export type ConversationParticipantUpdateManyMutationInput = {
@@ -63085,6 +65497,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationParticipantUncheckedUpdateManyInput = {
@@ -63094,6 +65507,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageCreateInput = {
@@ -63160,6 +65574,7 @@ export namespace Prisma {
   export type TopicViewCreateInput = {
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
     topic: TopicCreateNestedOneWithoutTopicViewsInput
     user: UserCreateNestedOneWithoutTopicViewsInput
   }
@@ -63169,11 +65584,13 @@ export namespace Prisma {
     topicId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
   }
 
   export type TopicViewUpdateInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topic?: TopicUpdateOneRequiredWithoutTopicViewsNestedInput
     user?: UserUpdateOneRequiredWithoutTopicViewsNestedInput
   }
@@ -63183,6 +65600,7 @@ export namespace Prisma {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TopicViewCreateManyInput = {
@@ -63190,11 +65608,13 @@ export namespace Prisma {
     topicId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
   }
 
   export type TopicViewUpdateManyMutationInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TopicViewUncheckedUpdateManyInput = {
@@ -63202,6 +65622,7 @@ export namespace Prisma {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MentionCreateInput = {
@@ -63262,6 +65683,85 @@ export namespace Prisma {
     mentionerId?: StringFieldUpdateOperationsInput | string
     mentionedUserId?: StringFieldUpdateOperationsInput | string
     readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificationCreateInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    actor?: UserCreateNestedOneWithoutNotificationsCausedInput
+    topic?: TopicCreateNestedOneWithoutNotificationsInput
+    post?: PostCreateNestedOneWithoutNotificationsInput
+    conversation?: ConversationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    actor?: UserUpdateOneWithoutNotificationsCausedNestedInput
+    topic?: TopicUpdateOneWithoutNotificationsNestedInput
+    post?: PostUpdateOneWithoutNotificationsNestedInput
+    conversation?: ConversationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationCreateManyInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type PostReactionCreateInput = {
@@ -65790,6 +68290,12 @@ export namespace Prisma {
     none?: BBSchemeStateWhereInput
   }
 
+  export type NotificationListRelationFilter = {
+    every?: NotificationWhereInput
+    some?: NotificationWhereInput
+    none?: NotificationWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -65914,6 +68420,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type NotificationOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -65942,6 +68452,8 @@ export namespace Prisma {
     notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
+    autoFollowTopics?: SortOrder
+    forumReadAllAt?: SortOrder
   }
 
   export type UserAvgOrderByAggregateInput = {
@@ -65979,6 +68491,8 @@ export namespace Prisma {
     notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
+    autoFollowTopics?: SortOrder
+    forumReadAllAt?: SortOrder
   }
 
   export type UserMinOrderByAggregateInput = {
@@ -66009,6 +68523,8 @@ export namespace Prisma {
     notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
+    autoFollowTopics?: SortOrder
+    forumReadAllAt?: SortOrder
   }
 
   export type UserSumOrderByAggregateInput = {
@@ -66113,6 +68629,11 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type UserNullableScalarRelationFilter = {
+    is?: UserWhereInput | null
+    isNot?: UserWhereInput | null
+  }
+
   export type TopicNullableScalarRelationFilter = {
     is?: TopicWhereInput | null
     isNot?: TopicWhereInput | null
@@ -66188,6 +68709,8 @@ export namespace Prisma {
     registrationsLocked?: SortOrder
     typeCDF?: SortOrder
     tournamentType?: SortOrder
+    cdfValidatedAt?: SortOrder
+    cdfValidatedById?: SortOrder
   }
 
   export type TournamentAvgOrderByAggregateInput = {
@@ -66248,6 +68771,8 @@ export namespace Prisma {
     registrationsLocked?: SortOrder
     typeCDF?: SortOrder
     tournamentType?: SortOrder
+    cdfValidatedAt?: SortOrder
+    cdfValidatedById?: SortOrder
   }
 
   export type TournamentMinOrderByAggregateInput = {
@@ -66295,6 +68820,8 @@ export namespace Prisma {
     registrationsLocked?: SortOrder
     typeCDF?: SortOrder
     tournamentType?: SortOrder
+    cdfValidatedAt?: SortOrder
+    cdfValidatedById?: SortOrder
   }
 
   export type TournamentSumOrderByAggregateInput = {
@@ -66451,6 +68978,13 @@ export namespace Prisma {
     authorId?: SortOrder
     tournamentId?: SortOrder
     legacyId?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
+    lastPostAt?: SortOrder
+    lastPostId?: SortOrder
+    lastPostAuthorId?: SortOrder
   }
 
   export type TopicAvgOrderByAggregateInput = {
@@ -66470,6 +69004,13 @@ export namespace Prisma {
     authorId?: SortOrder
     tournamentId?: SortOrder
     legacyId?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
+    lastPostAt?: SortOrder
+    lastPostId?: SortOrder
+    lastPostAuthorId?: SortOrder
   }
 
   export type TopicMinOrderByAggregateInput = {
@@ -66485,15 +69026,17 @@ export namespace Prisma {
     authorId?: SortOrder
     tournamentId?: SortOrder
     legacyId?: SortOrder
+    isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
+    lastPostAt?: SortOrder
+    lastPostId?: SortOrder
+    lastPostAuthorId?: SortOrder
   }
 
   export type TopicSumOrderByAggregateInput = {
     views?: SortOrder
-  }
-
-  export type UserNullableScalarRelationFilter = {
-    is?: UserWhereInput | null
-    isNot?: UserWhereInput | null
   }
 
   export type TopicScalarRelationFilter = {
@@ -66512,6 +69055,9 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
     legacyId?: SortOrder
   }
 
@@ -66526,6 +69072,9 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
     legacyId?: SortOrder
   }
 
@@ -66540,6 +69089,9 @@ export namespace Prisma {
     moderationReason?: SortOrder
     moderatedBy?: SortOrder
     isDeleted?: SortOrder
+    deletedAt?: SortOrder
+    deletedById?: SortOrder
+    deletionReason?: SortOrder
     legacyId?: SortOrder
   }
 
@@ -66596,6 +69148,7 @@ export namespace Prisma {
     joinedAt?: SortOrder
     deletedAt?: SortOrder
     isAdmin?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type ConversationParticipantMaxOrderByAggregateInput = {
@@ -66605,6 +69158,7 @@ export namespace Prisma {
     joinedAt?: SortOrder
     deletedAt?: SortOrder
     isAdmin?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type ConversationParticipantMinOrderByAggregateInput = {
@@ -66614,6 +69168,7 @@ export namespace Prisma {
     joinedAt?: SortOrder
     deletedAt?: SortOrder
     isAdmin?: SortOrder
+    lastReadAt?: SortOrder
   }
 
   export type PrivateMessageCountOrderByAggregateInput = {
@@ -66653,6 +69208,7 @@ export namespace Prisma {
     topicId?: SortOrder
     lastViewedAt?: SortOrder
     lastPostId?: SortOrder
+    lastReadPostAt?: SortOrder
   }
 
   export type TopicViewMaxOrderByAggregateInput = {
@@ -66660,6 +69216,7 @@ export namespace Prisma {
     topicId?: SortOrder
     lastViewedAt?: SortOrder
     lastPostId?: SortOrder
+    lastReadPostAt?: SortOrder
   }
 
   export type TopicViewMinOrderByAggregateInput = {
@@ -66667,6 +69224,7 @@ export namespace Prisma {
     topicId?: SortOrder
     lastViewedAt?: SortOrder
     lastPostId?: SortOrder
+    lastReadPostAt?: SortOrder
   }
 
   export type PostScalarRelationFilter = {
@@ -66704,6 +69262,52 @@ export namespace Prisma {
     mentionerId?: SortOrder
     mentionedUserId?: SortOrder
     readAt?: SortOrder
+  }
+
+  export type PostNullableScalarRelationFilter = {
+    is?: PostWhereInput | null
+    isNot?: PostWhereInput | null
+  }
+
+  export type ConversationNullableScalarRelationFilter = {
+    is?: ConversationWhereInput | null
+    isNot?: ConversationWhereInput | null
+  }
+
+  export type NotificationCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    topicId?: SortOrder
+    postId?: SortOrder
+    conversationId?: SortOrder
+    actorId?: SortOrder
+    readAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    topicId?: SortOrder
+    postId?: SortOrder
+    conversationId?: SortOrder
+    actorId?: SortOrder
+    readAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type NotificationMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    type?: SortOrder
+    topicId?: SortOrder
+    postId?: SortOrder
+    conversationId?: SortOrder
+    actorId?: SortOrder
+    readAt?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type PostReactionPostIdUserIdEmojiCompoundUniqueInput = {
@@ -68238,11 +70842,53 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
+  export type TournamentCreateNestedManyWithoutCdfValidatedByInput = {
+    create?: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput> | TournamentCreateWithoutCdfValidatedByInput[] | TournamentUncheckedCreateWithoutCdfValidatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCdfValidatedByInput | TournamentCreateOrConnectWithoutCdfValidatedByInput[]
+    createMany?: TournamentCreateManyCdfValidatedByInputEnvelope
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
+  export type TopicCreateNestedManyWithoutDeletedByInput = {
+    create?: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput> | TopicCreateWithoutDeletedByInput[] | TopicUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutDeletedByInput | TopicCreateOrConnectWithoutDeletedByInput[]
+    createMany?: TopicCreateManyDeletedByInputEnvelope
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+  }
+
+  export type PostCreateNestedManyWithoutDeletedByInput = {
+    create?: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput> | PostCreateWithoutDeletedByInput[] | PostUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutDeletedByInput | PostCreateOrConnectWithoutDeletedByInput[]
+    createMany?: PostCreateManyDeletedByInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type TopicCreateNestedManyWithoutLastPostAuthorInput = {
+    create?: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput> | TopicCreateWithoutLastPostAuthorInput[] | TopicUncheckedCreateWithoutLastPostAuthorInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutLastPostAuthorInput | TopicCreateOrConnectWithoutLastPostAuthorInput[]
+    createMany?: TopicCreateManyLastPostAuthorInputEnvelope
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+  }
+
   export type BBSchemeStateCreateNestedManyWithoutCreatorInput = {
     create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
     createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
     connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type NotificationCreateNestedManyWithoutActorInput = {
+    create?: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput> | NotificationCreateWithoutActorInput[] | NotificationUncheckedCreateWithoutActorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutActorInput | NotificationCreateOrConnectWithoutActorInput[]
+    createMany?: NotificationCreateManyActorInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
@@ -68522,11 +71168,53 @@ export namespace Prisma {
     connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
   }
 
+  export type TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput = {
+    create?: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput> | TournamentCreateWithoutCdfValidatedByInput[] | TournamentUncheckedCreateWithoutCdfValidatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCdfValidatedByInput | TournamentCreateOrConnectWithoutCdfValidatedByInput[]
+    createMany?: TournamentCreateManyCdfValidatedByInputEnvelope
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+  }
+
+  export type TopicUncheckedCreateNestedManyWithoutDeletedByInput = {
+    create?: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput> | TopicCreateWithoutDeletedByInput[] | TopicUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutDeletedByInput | TopicCreateOrConnectWithoutDeletedByInput[]
+    createMany?: TopicCreateManyDeletedByInputEnvelope
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+  }
+
+  export type PostUncheckedCreateNestedManyWithoutDeletedByInput = {
+    create?: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput> | PostCreateWithoutDeletedByInput[] | PostUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutDeletedByInput | PostCreateOrConnectWithoutDeletedByInput[]
+    createMany?: PostCreateManyDeletedByInputEnvelope
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+  }
+
+  export type TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput = {
+    create?: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput> | TopicCreateWithoutLastPostAuthorInput[] | TopicUncheckedCreateWithoutLastPostAuthorInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutLastPostAuthorInput | TopicCreateOrConnectWithoutLastPostAuthorInput[]
+    createMany?: TopicCreateManyLastPostAuthorInputEnvelope
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+  }
+
   export type BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
     createMany?: BBSchemeStateCreateManyCreatorInputEnvelope
     connect?: BBSchemeStateWhereUniqueInput | BBSchemeStateWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutActorInput = {
+    create?: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput> | NotificationCreateWithoutActorInput[] | NotificationUncheckedCreateWithoutActorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutActorInput | NotificationCreateOrConnectWithoutActorInput[]
+    createMany?: NotificationCreateManyActorInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -69110,6 +71798,62 @@ export namespace Prisma {
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
   }
 
+  export type TournamentUpdateManyWithoutCdfValidatedByNestedInput = {
+    create?: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput> | TournamentCreateWithoutCdfValidatedByInput[] | TournamentUncheckedCreateWithoutCdfValidatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCdfValidatedByInput | TournamentCreateOrConnectWithoutCdfValidatedByInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCdfValidatedByInput | TournamentUpsertWithWhereUniqueWithoutCdfValidatedByInput[]
+    createMany?: TournamentCreateManyCdfValidatedByInputEnvelope
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCdfValidatedByInput | TournamentUpdateWithWhereUniqueWithoutCdfValidatedByInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCdfValidatedByInput | TournamentUpdateManyWithWhereWithoutCdfValidatedByInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
+  export type TopicUpdateManyWithoutDeletedByNestedInput = {
+    create?: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput> | TopicCreateWithoutDeletedByInput[] | TopicUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutDeletedByInput | TopicCreateOrConnectWithoutDeletedByInput[]
+    upsert?: TopicUpsertWithWhereUniqueWithoutDeletedByInput | TopicUpsertWithWhereUniqueWithoutDeletedByInput[]
+    createMany?: TopicCreateManyDeletedByInputEnvelope
+    set?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    disconnect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    delete?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    update?: TopicUpdateWithWhereUniqueWithoutDeletedByInput | TopicUpdateWithWhereUniqueWithoutDeletedByInput[]
+    updateMany?: TopicUpdateManyWithWhereWithoutDeletedByInput | TopicUpdateManyWithWhereWithoutDeletedByInput[]
+    deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
+  }
+
+  export type PostUpdateManyWithoutDeletedByNestedInput = {
+    create?: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput> | PostCreateWithoutDeletedByInput[] | PostUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutDeletedByInput | PostCreateOrConnectWithoutDeletedByInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutDeletedByInput | PostUpsertWithWhereUniqueWithoutDeletedByInput[]
+    createMany?: PostCreateManyDeletedByInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutDeletedByInput | PostUpdateWithWhereUniqueWithoutDeletedByInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutDeletedByInput | PostUpdateManyWithWhereWithoutDeletedByInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type TopicUpdateManyWithoutLastPostAuthorNestedInput = {
+    create?: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput> | TopicCreateWithoutLastPostAuthorInput[] | TopicUncheckedCreateWithoutLastPostAuthorInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutLastPostAuthorInput | TopicCreateOrConnectWithoutLastPostAuthorInput[]
+    upsert?: TopicUpsertWithWhereUniqueWithoutLastPostAuthorInput | TopicUpsertWithWhereUniqueWithoutLastPostAuthorInput[]
+    createMany?: TopicCreateManyLastPostAuthorInputEnvelope
+    set?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    disconnect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    delete?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    update?: TopicUpdateWithWhereUniqueWithoutLastPostAuthorInput | TopicUpdateWithWhereUniqueWithoutLastPostAuthorInput[]
+    updateMany?: TopicUpdateManyWithWhereWithoutLastPostAuthorInput | TopicUpdateManyWithWhereWithoutLastPostAuthorInput[]
+    deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
+  }
+
   export type BBSchemeStateUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
@@ -69122,6 +71866,34 @@ export namespace Prisma {
     update?: BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput[]
     updateMany?: BBSchemeStateUpdateManyWithWhereWithoutCreatorInput | BBSchemeStateUpdateManyWithWhereWithoutCreatorInput[]
     deleteMany?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type NotificationUpdateManyWithoutActorNestedInput = {
+    create?: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput> | NotificationCreateWithoutActorInput[] | NotificationUncheckedCreateWithoutActorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutActorInput | NotificationCreateOrConnectWithoutActorInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutActorInput | NotificationUpsertWithWhereUniqueWithoutActorInput[]
+    createMany?: NotificationCreateManyActorInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutActorInput | NotificationUpdateWithWhereUniqueWithoutActorInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutActorInput | NotificationUpdateManyWithWhereWithoutActorInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
@@ -69681,6 +72453,62 @@ export namespace Prisma {
     deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
   }
 
+  export type TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput = {
+    create?: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput> | TournamentCreateWithoutCdfValidatedByInput[] | TournamentUncheckedCreateWithoutCdfValidatedByInput[]
+    connectOrCreate?: TournamentCreateOrConnectWithoutCdfValidatedByInput | TournamentCreateOrConnectWithoutCdfValidatedByInput[]
+    upsert?: TournamentUpsertWithWhereUniqueWithoutCdfValidatedByInput | TournamentUpsertWithWhereUniqueWithoutCdfValidatedByInput[]
+    createMany?: TournamentCreateManyCdfValidatedByInputEnvelope
+    set?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    disconnect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    delete?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    connect?: TournamentWhereUniqueInput | TournamentWhereUniqueInput[]
+    update?: TournamentUpdateWithWhereUniqueWithoutCdfValidatedByInput | TournamentUpdateWithWhereUniqueWithoutCdfValidatedByInput[]
+    updateMany?: TournamentUpdateManyWithWhereWithoutCdfValidatedByInput | TournamentUpdateManyWithWhereWithoutCdfValidatedByInput[]
+    deleteMany?: TournamentScalarWhereInput | TournamentScalarWhereInput[]
+  }
+
+  export type TopicUncheckedUpdateManyWithoutDeletedByNestedInput = {
+    create?: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput> | TopicCreateWithoutDeletedByInput[] | TopicUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutDeletedByInput | TopicCreateOrConnectWithoutDeletedByInput[]
+    upsert?: TopicUpsertWithWhereUniqueWithoutDeletedByInput | TopicUpsertWithWhereUniqueWithoutDeletedByInput[]
+    createMany?: TopicCreateManyDeletedByInputEnvelope
+    set?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    disconnect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    delete?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    update?: TopicUpdateWithWhereUniqueWithoutDeletedByInput | TopicUpdateWithWhereUniqueWithoutDeletedByInput[]
+    updateMany?: TopicUpdateManyWithWhereWithoutDeletedByInput | TopicUpdateManyWithWhereWithoutDeletedByInput[]
+    deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
+  }
+
+  export type PostUncheckedUpdateManyWithoutDeletedByNestedInput = {
+    create?: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput> | PostCreateWithoutDeletedByInput[] | PostUncheckedCreateWithoutDeletedByInput[]
+    connectOrCreate?: PostCreateOrConnectWithoutDeletedByInput | PostCreateOrConnectWithoutDeletedByInput[]
+    upsert?: PostUpsertWithWhereUniqueWithoutDeletedByInput | PostUpsertWithWhereUniqueWithoutDeletedByInput[]
+    createMany?: PostCreateManyDeletedByInputEnvelope
+    set?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    disconnect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    delete?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    connect?: PostWhereUniqueInput | PostWhereUniqueInput[]
+    update?: PostUpdateWithWhereUniqueWithoutDeletedByInput | PostUpdateWithWhereUniqueWithoutDeletedByInput[]
+    updateMany?: PostUpdateManyWithWhereWithoutDeletedByInput | PostUpdateManyWithWhereWithoutDeletedByInput[]
+    deleteMany?: PostScalarWhereInput | PostScalarWhereInput[]
+  }
+
+  export type TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput = {
+    create?: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput> | TopicCreateWithoutLastPostAuthorInput[] | TopicUncheckedCreateWithoutLastPostAuthorInput[]
+    connectOrCreate?: TopicCreateOrConnectWithoutLastPostAuthorInput | TopicCreateOrConnectWithoutLastPostAuthorInput[]
+    upsert?: TopicUpsertWithWhereUniqueWithoutLastPostAuthorInput | TopicUpsertWithWhereUniqueWithoutLastPostAuthorInput[]
+    createMany?: TopicCreateManyLastPostAuthorInputEnvelope
+    set?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    disconnect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    delete?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    connect?: TopicWhereUniqueInput | TopicWhereUniqueInput[]
+    update?: TopicUpdateWithWhereUniqueWithoutLastPostAuthorInput | TopicUpdateWithWhereUniqueWithoutLastPostAuthorInput[]
+    updateMany?: TopicUpdateManyWithWhereWithoutLastPostAuthorInput | TopicUpdateManyWithWhereWithoutLastPostAuthorInput[]
+    deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
+  }
+
   export type BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<BBSchemeStateCreateWithoutCreatorInput, BBSchemeStateUncheckedCreateWithoutCreatorInput> | BBSchemeStateCreateWithoutCreatorInput[] | BBSchemeStateUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BBSchemeStateCreateOrConnectWithoutCreatorInput | BBSchemeStateCreateOrConnectWithoutCreatorInput[]
@@ -69693,6 +72521,34 @@ export namespace Prisma {
     update?: BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput | BBSchemeStateUpdateWithWhereUniqueWithoutCreatorInput[]
     updateMany?: BBSchemeStateUpdateManyWithWhereWithoutCreatorInput | BBSchemeStateUpdateManyWithWhereWithoutCreatorInput[]
     deleteMany?: BBSchemeStateScalarWhereInput | BBSchemeStateScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput> | NotificationCreateWithoutUserInput[] | NotificationUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutUserInput | NotificationCreateOrConnectWithoutUserInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutUserInput | NotificationUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: NotificationCreateManyUserInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutUserInput | NotificationUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutUserInput | NotificationUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutActorNestedInput = {
+    create?: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput> | NotificationCreateWithoutActorInput[] | NotificationUncheckedCreateWithoutActorInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutActorInput | NotificationCreateOrConnectWithoutActorInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutActorInput | NotificationUpsertWithWhereUniqueWithoutActorInput[]
+    createMany?: NotificationCreateManyActorInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutActorInput | NotificationUpdateWithWhereUniqueWithoutActorInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutActorInput | NotificationUpdateManyWithWhereWithoutActorInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBlockedByInput = {
@@ -69721,6 +72577,12 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutBlocksInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBlocksInput, UserUpdateWithoutBlocksInput>, UserUncheckedUpdateWithoutBlocksInput>
+  }
+
+  export type UserCreateNestedOneWithoutCdfValidatedTournamentsInput = {
+    create?: XOR<UserCreateWithoutCdfValidatedTournamentsInput, UserUncheckedCreateWithoutCdfValidatedTournamentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCdfValidatedTournamentsInput
+    connect?: UserWhereUniqueInput
   }
 
   export type TopicCreateNestedOneWithoutTournamentInput = {
@@ -69835,6 +72697,16 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type UserUpdateOneWithoutCdfValidatedTournamentsNestedInput = {
+    create?: XOR<UserCreateWithoutCdfValidatedTournamentsInput, UserUncheckedCreateWithoutCdfValidatedTournamentsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCdfValidatedTournamentsInput
+    upsert?: UserUpsertWithoutCdfValidatedTournamentsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCdfValidatedTournamentsInput, UserUpdateWithoutCdfValidatedTournamentsInput>, UserUncheckedUpdateWithoutCdfValidatedTournamentsInput>
   }
 
   export type TopicUpdateOneWithoutTournamentNestedInput = {
@@ -70199,6 +73071,18 @@ export namespace Prisma {
     deleteMany?: TopicScalarWhereInput | TopicScalarWhereInput[]
   }
 
+  export type UserCreateNestedOneWithoutDeletedTopicsInput = {
+    create?: XOR<UserCreateWithoutDeletedTopicsInput, UserUncheckedCreateWithoutDeletedTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeletedTopicsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutLastPostTopicsInput = {
+    create?: XOR<UserCreateWithoutLastPostTopicsInput, UserUncheckedCreateWithoutLastPostTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLastPostTopicsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type PostCreateNestedManyWithoutTopicInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -70238,6 +73122,13 @@ export namespace Prisma {
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutTopicInput = {
+    create?: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput> | NotificationCreateWithoutTopicInput[] | NotificationUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTopicInput | NotificationCreateOrConnectWithoutTopicInput[]
+    createMany?: NotificationCreateManyTopicInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type PostUncheckedCreateNestedManyWithoutTopicInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -70257,6 +73148,33 @@ export namespace Prisma {
     connectOrCreate?: TopicViewCreateOrConnectWithoutTopicInput | TopicViewCreateOrConnectWithoutTopicInput[]
     createMany?: TopicViewCreateManyTopicInputEnvelope
     connect?: TopicViewWhereUniqueInput | TopicViewWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutTopicInput = {
+    create?: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput> | NotificationCreateWithoutTopicInput[] | NotificationUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTopicInput | NotificationCreateOrConnectWithoutTopicInput[]
+    createMany?: NotificationCreateManyTopicInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutDeletedTopicsNestedInput = {
+    create?: XOR<UserCreateWithoutDeletedTopicsInput, UserUncheckedCreateWithoutDeletedTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeletedTopicsInput
+    upsert?: UserUpsertWithoutDeletedTopicsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeletedTopicsInput, UserUpdateWithoutDeletedTopicsInput>, UserUncheckedUpdateWithoutDeletedTopicsInput>
+  }
+
+  export type UserUpdateOneWithoutLastPostTopicsNestedInput = {
+    create?: XOR<UserCreateWithoutLastPostTopicsInput, UserUncheckedCreateWithoutLastPostTopicsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutLastPostTopicsInput
+    upsert?: UserUpsertWithoutLastPostTopicsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutLastPostTopicsInput, UserUpdateWithoutLastPostTopicsInput>, UserUncheckedUpdateWithoutLastPostTopicsInput>
   }
 
   export type PostUpdateManyWithoutTopicNestedInput = {
@@ -70327,6 +73245,20 @@ export namespace Prisma {
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput> | NotificationCreateWithoutTopicInput[] | NotificationUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTopicInput | NotificationCreateOrConnectWithoutTopicInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTopicInput | NotificationUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: NotificationCreateManyTopicInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTopicInput | NotificationUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTopicInput | NotificationUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type PostUncheckedUpdateManyWithoutTopicNestedInput = {
     create?: XOR<PostCreateWithoutTopicInput, PostUncheckedCreateWithoutTopicInput> | PostCreateWithoutTopicInput[] | PostUncheckedCreateWithoutTopicInput[]
     connectOrCreate?: PostCreateOrConnectWithoutTopicInput | PostCreateOrConnectWithoutTopicInput[]
@@ -70369,6 +73301,26 @@ export namespace Prisma {
     deleteMany?: TopicViewScalarWhereInput | TopicViewScalarWhereInput[]
   }
 
+  export type NotificationUncheckedUpdateManyWithoutTopicNestedInput = {
+    create?: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput> | NotificationCreateWithoutTopicInput[] | NotificationUncheckedCreateWithoutTopicInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutTopicInput | NotificationCreateOrConnectWithoutTopicInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutTopicInput | NotificationUpsertWithWhereUniqueWithoutTopicInput[]
+    createMany?: NotificationCreateManyTopicInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutTopicInput | NotificationUpdateWithWhereUniqueWithoutTopicInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutTopicInput | NotificationUpdateManyWithWhereWithoutTopicInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutDeletedPostsInput = {
+    create?: XOR<UserCreateWithoutDeletedPostsInput, UserUncheckedCreateWithoutDeletedPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeletedPostsInput
+    connect?: UserWhereUniqueInput
+  }
+
   export type MentionCreateNestedManyWithoutPostInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
@@ -70401,6 +73353,13 @@ export namespace Prisma {
     connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutPostInput = {
+    create?: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput> | NotificationCreateWithoutPostInput[] | NotificationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutPostInput | NotificationCreateOrConnectWithoutPostInput[]
+    createMany?: NotificationCreateManyPostInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type MentionUncheckedCreateNestedManyWithoutPostInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
@@ -70413,6 +73372,23 @@ export namespace Prisma {
     connectOrCreate?: PostReactionCreateOrConnectWithoutPostInput | PostReactionCreateOrConnectWithoutPostInput[]
     createMany?: PostReactionCreateManyPostInputEnvelope
     connect?: PostReactionWhereUniqueInput | PostReactionWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutPostInput = {
+    create?: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput> | NotificationCreateWithoutPostInput[] | NotificationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutPostInput | NotificationCreateOrConnectWithoutPostInput[]
+    createMany?: NotificationCreateManyPostInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutDeletedPostsNestedInput = {
+    create?: XOR<UserCreateWithoutDeletedPostsInput, UserUncheckedCreateWithoutDeletedPostsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutDeletedPostsInput
+    upsert?: UserUpsertWithoutDeletedPostsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutDeletedPostsInput, UserUpdateWithoutDeletedPostsInput>, UserUncheckedUpdateWithoutDeletedPostsInput>
   }
 
   export type MentionUpdateManyWithoutPostNestedInput = {
@@ -70469,6 +73445,20 @@ export namespace Prisma {
     deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutPostNestedInput = {
+    create?: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput> | NotificationCreateWithoutPostInput[] | NotificationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutPostInput | NotificationCreateOrConnectWithoutPostInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutPostInput | NotificationUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: NotificationCreateManyPostInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutPostInput | NotificationUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutPostInput | NotificationUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type MentionUncheckedUpdateManyWithoutPostNestedInput = {
     create?: XOR<MentionCreateWithoutPostInput, MentionUncheckedCreateWithoutPostInput> | MentionCreateWithoutPostInput[] | MentionUncheckedCreateWithoutPostInput[]
     connectOrCreate?: MentionCreateOrConnectWithoutPostInput | MentionCreateOrConnectWithoutPostInput[]
@@ -70497,6 +73487,20 @@ export namespace Prisma {
     deleteMany?: PostReactionScalarWhereInput | PostReactionScalarWhereInput[]
   }
 
+  export type NotificationUncheckedUpdateManyWithoutPostNestedInput = {
+    create?: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput> | NotificationCreateWithoutPostInput[] | NotificationUncheckedCreateWithoutPostInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutPostInput | NotificationCreateOrConnectWithoutPostInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutPostInput | NotificationUpsertWithWhereUniqueWithoutPostInput[]
+    createMany?: NotificationCreateManyPostInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutPostInput | NotificationUpdateWithWhereUniqueWithoutPostInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutPostInput | NotificationUpdateManyWithWhereWithoutPostInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutUser2ConversationsInput = {
     create?: XOR<UserCreateWithoutUser2ConversationsInput, UserUncheckedCreateWithoutUser2ConversationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutUser2ConversationsInput
@@ -70523,6 +73527,13 @@ export namespace Prisma {
     connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
   }
 
+  export type NotificationCreateNestedManyWithoutConversationInput = {
+    create?: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput> | NotificationCreateWithoutConversationInput[] | NotificationUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutConversationInput | NotificationCreateOrConnectWithoutConversationInput[]
+    createMany?: NotificationCreateManyConversationInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
   export type PrivateMessageUncheckedCreateNestedManyWithoutConversationInput = {
     create?: XOR<PrivateMessageCreateWithoutConversationInput, PrivateMessageUncheckedCreateWithoutConversationInput> | PrivateMessageCreateWithoutConversationInput[] | PrivateMessageUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: PrivateMessageCreateOrConnectWithoutConversationInput | PrivateMessageCreateOrConnectWithoutConversationInput[]
@@ -70535,6 +73546,13 @@ export namespace Prisma {
     connectOrCreate?: ConversationParticipantCreateOrConnectWithoutConversationInput | ConversationParticipantCreateOrConnectWithoutConversationInput[]
     createMany?: ConversationParticipantCreateManyConversationInputEnvelope
     connect?: ConversationParticipantWhereUniqueInput | ConversationParticipantWhereUniqueInput[]
+  }
+
+  export type NotificationUncheckedCreateNestedManyWithoutConversationInput = {
+    create?: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput> | NotificationCreateWithoutConversationInput[] | NotificationUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutConversationInput | NotificationCreateOrConnectWithoutConversationInput[]
+    createMany?: NotificationCreateManyConversationInputEnvelope
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
   export type UserUpdateOneWithoutUser2ConversationsNestedInput = {
@@ -70585,6 +73603,20 @@ export namespace Prisma {
     deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
   }
 
+  export type NotificationUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput> | NotificationCreateWithoutConversationInput[] | NotificationUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutConversationInput | NotificationCreateOrConnectWithoutConversationInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutConversationInput | NotificationUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: NotificationCreateManyConversationInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutConversationInput | NotificationUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutConversationInput | NotificationUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
   export type PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput = {
     create?: XOR<PrivateMessageCreateWithoutConversationInput, PrivateMessageUncheckedCreateWithoutConversationInput> | PrivateMessageCreateWithoutConversationInput[] | PrivateMessageUncheckedCreateWithoutConversationInput[]
     connectOrCreate?: PrivateMessageCreateOrConnectWithoutConversationInput | PrivateMessageCreateOrConnectWithoutConversationInput[]
@@ -70611,6 +73643,20 @@ export namespace Prisma {
     update?: ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput | ConversationParticipantUpdateWithWhereUniqueWithoutConversationInput[]
     updateMany?: ConversationParticipantUpdateManyWithWhereWithoutConversationInput | ConversationParticipantUpdateManyWithWhereWithoutConversationInput[]
     deleteMany?: ConversationParticipantScalarWhereInput | ConversationParticipantScalarWhereInput[]
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutConversationNestedInput = {
+    create?: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput> | NotificationCreateWithoutConversationInput[] | NotificationUncheckedCreateWithoutConversationInput[]
+    connectOrCreate?: NotificationCreateOrConnectWithoutConversationInput | NotificationCreateOrConnectWithoutConversationInput[]
+    upsert?: NotificationUpsertWithWhereUniqueWithoutConversationInput | NotificationUpsertWithWhereUniqueWithoutConversationInput[]
+    createMany?: NotificationCreateManyConversationInputEnvelope
+    set?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    disconnect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    delete?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+    update?: NotificationUpdateWithWhereUniqueWithoutConversationInput | NotificationUpdateWithWhereUniqueWithoutConversationInput[]
+    updateMany?: NotificationUpdateManyWithWhereWithoutConversationInput | NotificationUpdateManyWithWhereWithoutConversationInput[]
+    deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutConversationParticipantsInput = {
@@ -70737,6 +73783,84 @@ export namespace Prisma {
     upsert?: PostUpsertWithoutMentionsInput
     connect?: PostWhereUniqueInput
     update?: XOR<XOR<PostUpdateToOneWithWhereWithoutMentionsInput, PostUpdateWithoutMentionsInput>, PostUncheckedUpdateWithoutMentionsInput>
+  }
+
+  export type UserCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutNotificationsCausedInput = {
+    create?: XOR<UserCreateWithoutNotificationsCausedInput, UserUncheckedCreateWithoutNotificationsCausedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsCausedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TopicCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<TopicCreateWithoutNotificationsInput, TopicUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutNotificationsInput
+    connect?: TopicWhereUniqueInput
+  }
+
+  export type PostCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<PostCreateWithoutNotificationsInput, PostUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutNotificationsInput
+    connect?: PostWhereUniqueInput
+  }
+
+  export type ConversationCreateNestedOneWithoutNotificationsInput = {
+    create?: XOR<ConversationCreateWithoutNotificationsInput, ConversationUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutNotificationsInput
+    connect?: ConversationWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutNotificationsNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsInput
+    upsert?: UserUpsertWithoutNotificationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsInput, UserUpdateWithoutNotificationsInput>, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateOneWithoutNotificationsCausedNestedInput = {
+    create?: XOR<UserCreateWithoutNotificationsCausedInput, UserUncheckedCreateWithoutNotificationsCausedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutNotificationsCausedInput
+    upsert?: UserUpsertWithoutNotificationsCausedInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutNotificationsCausedInput, UserUpdateWithoutNotificationsCausedInput>, UserUncheckedUpdateWithoutNotificationsCausedInput>
+  }
+
+  export type TopicUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<TopicCreateWithoutNotificationsInput, TopicUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: TopicCreateOrConnectWithoutNotificationsInput
+    upsert?: TopicUpsertWithoutNotificationsInput
+    disconnect?: TopicWhereInput | boolean
+    delete?: TopicWhereInput | boolean
+    connect?: TopicWhereUniqueInput
+    update?: XOR<XOR<TopicUpdateToOneWithWhereWithoutNotificationsInput, TopicUpdateWithoutNotificationsInput>, TopicUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type PostUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<PostCreateWithoutNotificationsInput, PostUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: PostCreateOrConnectWithoutNotificationsInput
+    upsert?: PostUpsertWithoutNotificationsInput
+    disconnect?: PostWhereInput | boolean
+    delete?: PostWhereInput | boolean
+    connect?: PostWhereUniqueInput
+    update?: XOR<XOR<PostUpdateToOneWithWhereWithoutNotificationsInput, PostUpdateWithoutNotificationsInput>, PostUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type ConversationUpdateOneWithoutNotificationsNestedInput = {
+    create?: XOR<ConversationCreateWithoutNotificationsInput, ConversationUncheckedCreateWithoutNotificationsInput>
+    connectOrCreate?: ConversationCreateOrConnectWithoutNotificationsInput
+    upsert?: ConversationUpsertWithoutNotificationsInput
+    disconnect?: ConversationWhereInput | boolean
+    delete?: ConversationWhereInput | boolean
+    connect?: ConversationWhereUniqueInput
+    update?: XOR<XOR<ConversationUpdateToOneWithWhereWithoutNotificationsInput, ConversationUpdateWithoutNotificationsInput>, ConversationUncheckedUpdateWithoutNotificationsInput>
   }
 
   export type UserCreateNestedOneWithoutPostReactionsInput = {
@@ -72028,6 +75152,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -72068,7 +75194,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -72099,6 +75231,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -72138,7 +75272,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -72184,6 +75324,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -72224,7 +75366,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -72255,6 +75403,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -72294,7 +75444,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -72324,6 +75480,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -72364,7 +75522,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -72395,6 +75559,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -72434,7 +75600,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -72480,6 +75652,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -72520,7 +75694,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -72551,6 +75731,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -72590,7 +75772,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -72790,6 +75978,7 @@ export namespace Prisma {
     user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    notifications?: NotificationCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutUser2Input = {
@@ -72803,6 +75992,7 @@ export namespace Prisma {
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutUser2Input = {
@@ -72826,6 +76016,7 @@ export namespace Prisma {
     user2?: UserCreateNestedOneWithoutUser2ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    notifications?: NotificationCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutUser1Input = {
@@ -72839,6 +76030,7 @@ export namespace Prisma {
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutUser1Input = {
@@ -72856,6 +76048,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
     conversation: ConversationCreateNestedOneWithoutParticipantsInput
   }
 
@@ -72865,6 +76058,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
   }
 
   export type ConversationParticipantCreateOrConnectWithoutUserInput = {
@@ -73091,11 +76285,15 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
     reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutModeratorInput = {
@@ -73108,9 +76306,13 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutModeratorInput = {
@@ -73131,11 +76333,15 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
     reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutAuthorInput = {
@@ -73148,9 +76354,13 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutAuthorInput = {
@@ -73433,11 +76643,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutAuthorInput = {
@@ -73452,9 +76670,17 @@ export namespace Prisma {
     forumId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutAuthorInput = {
@@ -73488,6 +76714,7 @@ export namespace Prisma {
   export type TopicViewCreateWithoutUserInput = {
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
     topic: TopicCreateNestedOneWithoutTopicViewsInput
   }
 
@@ -73495,6 +76722,7 @@ export namespace Prisma {
     topicId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
   }
 
   export type TopicViewCreateOrConnectWithoutUserInput = {
@@ -73550,6 +76778,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     mercenaries?: TournamentMercenaryCreateNestedManyWithoutTournamentInput
@@ -73604,6 +76834,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -74013,6 +77245,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -74068,6 +77302,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -74079,6 +77315,294 @@ export namespace Prisma {
   export type TournamentCreateOrConnectWithoutCommissairesInput = {
     where: TournamentWhereUniqueInput
     create: XOR<TournamentCreateWithoutCommissairesInput, TournamentUncheckedCreateWithoutCommissairesInput>
+  }
+
+  export type TournamentCreateWithoutCdfValidatedByInput = {
+    id?: string
+    name: string
+    date: Date | string
+    endDate?: Date | string | null
+    location: string
+    address?: string | null
+    gmapsUrl?: string | null
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    regionNAF?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
+    ligueCustom?: string | null
+    lat?: number | null
+    lng?: number | null
+    registrationsLocked?: boolean
+    typeCDF?: string | null
+    tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    topic?: TopicCreateNestedOneWithoutTournamentInput
+    ligue?: LigueCreateNestedOneWithoutTournamentsInput
+    organizer: UserCreateNestedOneWithoutTournamentsInput
+    mercenaries?: TournamentMercenaryCreateNestedManyWithoutTournamentInput
+    registrations?: TournamentRegistrationCreateNestedManyWithoutTournamentInput
+    results?: TournamentResultCreateNestedManyWithoutTournamentInput
+    rounds?: TournamentRoundCreateNestedManyWithoutTournamentInput
+    teams?: TournamentTeamCreateNestedManyWithoutTournamentInput
+    commissaires?: UserCreateNestedManyWithoutCommissairesTournamentsInput
+  }
+
+  export type TournamentUncheckedCreateWithoutCdfValidatedByInput = {
+    id?: string
+    name: string
+    date: Date | string
+    endDate?: Date | string | null
+    location: string
+    address?: string | null
+    gmapsUrl?: string | null
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    regionNAF?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
+    organizerId: string
+    ligueId?: string | null
+    ligueCustom?: string | null
+    lat?: number | null
+    lng?: number | null
+    registrationsLocked?: boolean
+    typeCDF?: string | null
+    tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
+    mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
+    registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
+    results?: TournamentResultUncheckedCreateNestedManyWithoutTournamentInput
+    rounds?: TournamentRoundUncheckedCreateNestedManyWithoutTournamentInput
+    teams?: TournamentTeamUncheckedCreateNestedManyWithoutTournamentInput
+    commissaires?: UserUncheckedCreateNestedManyWithoutCommissairesTournamentsInput
+  }
+
+  export type TournamentCreateOrConnectWithoutCdfValidatedByInput = {
+    where: TournamentWhereUniqueInput
+    create: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput>
+  }
+
+  export type TournamentCreateManyCdfValidatedByInputEnvelope = {
+    data: TournamentCreateManyCdfValidatedByInput | TournamentCreateManyCdfValidatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TopicCreateWithoutDeletedByInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
+    posts?: PostCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
+    author: UserCreateNestedOneWithoutTopicsInput
+    forum: ForumCreateNestedOneWithoutTopicsInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicUncheckedCreateWithoutDeletedByInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    tournamentId?: string | null
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
+    posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicCreateOrConnectWithoutDeletedByInput = {
+    where: TopicWhereUniqueInput
+    create: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput>
+  }
+
+  export type TopicCreateManyDeletedByInputEnvelope = {
+    data: TopicCreateManyDeletedByInput | TopicCreateManyDeletedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type PostCreateWithoutDeletedByInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    legacyId?: string | null
+    mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    author: UserCreateNestedOneWithoutPostsInput
+    topic: TopicCreateNestedOneWithoutPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutDeletedByInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    legacyId?: string | null
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutDeletedByInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput>
+  }
+
+  export type PostCreateManyDeletedByInputEnvelope = {
+    data: PostCreateManyDeletedByInput | PostCreateManyDeletedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type TopicCreateWithoutLastPostAuthorInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    posts?: PostCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
+    author: UserCreateNestedOneWithoutTopicsInput
+    forum: ForumCreateNestedOneWithoutTopicsInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicUncheckedCreateWithoutLastPostAuthorInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    tournamentId?: string | null
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicCreateOrConnectWithoutLastPostAuthorInput = {
+    where: TopicWhereUniqueInput
+    create: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput>
+  }
+
+  export type TopicCreateManyLastPostAuthorInputEnvelope = {
+    data: TopicCreateManyLastPostAuthorInput | TopicCreateManyLastPostAuthorInput[]
+    skipDuplicates?: boolean
   }
 
   export type BBSchemeStateCreateWithoutCreatorInput = {
@@ -74102,6 +77626,70 @@ export namespace Prisma {
 
   export type BBSchemeStateCreateManyCreatorInputEnvelope = {
     data: BBSchemeStateCreateManyCreatorInput | BBSchemeStateCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutUserInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    actor?: UserCreateNestedOneWithoutNotificationsCausedInput
+    topic?: TopicCreateNestedOneWithoutNotificationsInput
+    post?: PostCreateNestedOneWithoutNotificationsInput
+    conversation?: ConversationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutUserInput = {
+    id?: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationCreateManyUserInputEnvelope = {
+    data: NotificationCreateManyUserInput | NotificationCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutActorInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    topic?: TopicCreateNestedOneWithoutNotificationsInput
+    post?: PostCreateNestedOneWithoutNotificationsInput
+    conversation?: ConversationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutActorInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutActorInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput>
+  }
+
+  export type NotificationCreateManyActorInputEnvelope = {
+    data: NotificationCreateManyActorInput | NotificationCreateManyActorInput[]
     skipDuplicates?: boolean
   }
 
@@ -74330,6 +77918,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFilter<"ConversationParticipant"> | Date | string
     deletedAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
     isAdmin?: BoolFilter<"ConversationParticipant"> | boolean
+    lastReadAt?: DateTimeNullableFilter<"ConversationParticipant"> | Date | string | null
   }
 
   export type LigueUpsertWithWhereUniqueWithoutCreatorInput = {
@@ -74522,6 +78111,9 @@ export namespace Prisma {
     moderationReason?: StringNullableFilter<"Post"> | string | null
     moderatedBy?: StringNullableFilter<"Post"> | string | null
     isDeleted?: BoolFilter<"Post"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Post"> | Date | string | null
+    deletedById?: StringNullableFilter<"Post"> | string | null
+    deletionReason?: StringNullableFilter<"Post"> | string | null
     legacyId?: StringNullableFilter<"Post"> | string | null
   }
 
@@ -74837,6 +78429,13 @@ export namespace Prisma {
     authorId?: StringFilter<"Topic"> | string
     tournamentId?: StringNullableFilter<"Topic"> | string | null
     legacyId?: StringNullableFilter<"Topic"> | string | null
+    isDeleted?: BoolFilter<"Topic"> | boolean
+    deletedAt?: DateTimeNullableFilter<"Topic"> | Date | string | null
+    deletedById?: StringNullableFilter<"Topic"> | string | null
+    deletionReason?: StringNullableFilter<"Topic"> | string | null
+    lastPostAt?: DateTimeFilter<"Topic"> | Date | string
+    lastPostId?: StringNullableFilter<"Topic"> | string | null
+    lastPostAuthorId?: StringNullableFilter<"Topic"> | string | null
   }
 
   export type TopicFollowUpsertWithWhereUniqueWithoutUserInput = {
@@ -74887,6 +78486,7 @@ export namespace Prisma {
     topicId?: StringFilter<"TopicView"> | string
     lastViewedAt?: DateTimeFilter<"TopicView"> | Date | string
     lastPostId?: StringNullableFilter<"TopicView"> | string | null
+    lastReadPostAt?: DateTimeFilter<"TopicView"> | Date | string
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutOrganizerInput = {
@@ -74953,6 +78553,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFilter<"Tournament"> | boolean
     typeCDF?: StringNullableFilter<"Tournament"> | string | null
     tournamentType?: StringNullableFilter<"Tournament"> | string | null
+    cdfValidatedAt?: DateTimeNullableFilter<"Tournament"> | Date | string | null
+    cdfValidatedById?: StringNullableFilter<"Tournament"> | string | null
   }
 
   export type TournamentMatchUpsertWithWhereUniqueWithoutCoach2UserInput = {
@@ -75230,6 +78832,70 @@ export namespace Prisma {
     data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCommissairesInput>
   }
 
+  export type TournamentUpsertWithWhereUniqueWithoutCdfValidatedByInput = {
+    where: TournamentWhereUniqueInput
+    update: XOR<TournamentUpdateWithoutCdfValidatedByInput, TournamentUncheckedUpdateWithoutCdfValidatedByInput>
+    create: XOR<TournamentCreateWithoutCdfValidatedByInput, TournamentUncheckedCreateWithoutCdfValidatedByInput>
+  }
+
+  export type TournamentUpdateWithWhereUniqueWithoutCdfValidatedByInput = {
+    where: TournamentWhereUniqueInput
+    data: XOR<TournamentUpdateWithoutCdfValidatedByInput, TournamentUncheckedUpdateWithoutCdfValidatedByInput>
+  }
+
+  export type TournamentUpdateManyWithWhereWithoutCdfValidatedByInput = {
+    where: TournamentScalarWhereInput
+    data: XOR<TournamentUpdateManyMutationInput, TournamentUncheckedUpdateManyWithoutCdfValidatedByInput>
+  }
+
+  export type TopicUpsertWithWhereUniqueWithoutDeletedByInput = {
+    where: TopicWhereUniqueInput
+    update: XOR<TopicUpdateWithoutDeletedByInput, TopicUncheckedUpdateWithoutDeletedByInput>
+    create: XOR<TopicCreateWithoutDeletedByInput, TopicUncheckedCreateWithoutDeletedByInput>
+  }
+
+  export type TopicUpdateWithWhereUniqueWithoutDeletedByInput = {
+    where: TopicWhereUniqueInput
+    data: XOR<TopicUpdateWithoutDeletedByInput, TopicUncheckedUpdateWithoutDeletedByInput>
+  }
+
+  export type TopicUpdateManyWithWhereWithoutDeletedByInput = {
+    where: TopicScalarWhereInput
+    data: XOR<TopicUpdateManyMutationInput, TopicUncheckedUpdateManyWithoutDeletedByInput>
+  }
+
+  export type PostUpsertWithWhereUniqueWithoutDeletedByInput = {
+    where: PostWhereUniqueInput
+    update: XOR<PostUpdateWithoutDeletedByInput, PostUncheckedUpdateWithoutDeletedByInput>
+    create: XOR<PostCreateWithoutDeletedByInput, PostUncheckedCreateWithoutDeletedByInput>
+  }
+
+  export type PostUpdateWithWhereUniqueWithoutDeletedByInput = {
+    where: PostWhereUniqueInput
+    data: XOR<PostUpdateWithoutDeletedByInput, PostUncheckedUpdateWithoutDeletedByInput>
+  }
+
+  export type PostUpdateManyWithWhereWithoutDeletedByInput = {
+    where: PostScalarWhereInput
+    data: XOR<PostUpdateManyMutationInput, PostUncheckedUpdateManyWithoutDeletedByInput>
+  }
+
+  export type TopicUpsertWithWhereUniqueWithoutLastPostAuthorInput = {
+    where: TopicWhereUniqueInput
+    update: XOR<TopicUpdateWithoutLastPostAuthorInput, TopicUncheckedUpdateWithoutLastPostAuthorInput>
+    create: XOR<TopicCreateWithoutLastPostAuthorInput, TopicUncheckedCreateWithoutLastPostAuthorInput>
+  }
+
+  export type TopicUpdateWithWhereUniqueWithoutLastPostAuthorInput = {
+    where: TopicWhereUniqueInput
+    data: XOR<TopicUpdateWithoutLastPostAuthorInput, TopicUncheckedUpdateWithoutLastPostAuthorInput>
+  }
+
+  export type TopicUpdateManyWithWhereWithoutLastPostAuthorInput = {
+    where: TopicScalarWhereInput
+    data: XOR<TopicUpdateManyMutationInput, TopicUncheckedUpdateManyWithoutLastPostAuthorInput>
+  }
+
   export type BBSchemeStateUpsertWithWhereUniqueWithoutCreatorInput = {
     where: BBSchemeStateWhereUniqueInput
     update: XOR<BBSchemeStateUpdateWithoutCreatorInput, BBSchemeStateUncheckedUpdateWithoutCreatorInput>
@@ -75255,6 +78921,53 @@ export namespace Prisma {
     data?: StringFilter<"BBSchemeState"> | string
     creatorId?: StringNullableFilter<"BBSchemeState"> | string | null
     createdAt?: DateTimeFilter<"BBSchemeState"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+    create: XOR<NotificationCreateWithoutUserInput, NotificationUncheckedCreateWithoutUserInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutUserInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutUserInput, NotificationUncheckedUpdateWithoutUserInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutUserInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type NotificationScalarWhereInput = {
+    AND?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    OR?: NotificationScalarWhereInput[]
+    NOT?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+    id?: StringFilter<"Notification"> | string
+    userId?: StringFilter<"Notification"> | string
+    type?: StringFilter<"Notification"> | string
+    topicId?: StringNullableFilter<"Notification"> | string | null
+    postId?: StringNullableFilter<"Notification"> | string | null
+    conversationId?: StringNullableFilter<"Notification"> | string | null
+    actorId?: StringNullableFilter<"Notification"> | string | null
+    readAt?: DateTimeNullableFilter<"Notification"> | Date | string | null
+    createdAt?: DateTimeFilter<"Notification"> | Date | string
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutActorInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutActorInput, NotificationUncheckedUpdateWithoutActorInput>
+    create: XOR<NotificationCreateWithoutActorInput, NotificationUncheckedCreateWithoutActorInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutActorInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutActorInput, NotificationUncheckedUpdateWithoutActorInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutActorInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutActorInput>
   }
 
   export type UserCreateWithoutBlockedByInput = {
@@ -75284,6 +78997,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75324,7 +79039,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -75355,6 +79076,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -75394,7 +79117,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -75429,6 +79158,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -75469,7 +79200,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -75500,6 +79237,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -75539,7 +79278,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -75585,6 +79330,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75625,7 +79372,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -75656,6 +79409,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75695,7 +79450,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutBlocksInput = {
@@ -75736,6 +79497,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -75776,7 +79539,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -75807,6 +79576,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -75846,7 +79617,174 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserCreateWithoutCdfValidatedTournamentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+  }
+
+  export type UserUncheckedCreateWithoutCdfValidatedTournamentsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+  }
+
+  export type UserCreateOrConnectWithoutCdfValidatedTournamentsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCdfValidatedTournamentsInput, UserUncheckedCreateWithoutCdfValidatedTournamentsInput>
   }
 
   export type TopicCreateWithoutTournamentInput = {
@@ -75859,11 +79797,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutTournamentInput = {
@@ -75878,9 +79824,17 @@ export namespace Prisma {
     forumId: string
     authorId: string
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutTournamentInput = {
@@ -75964,6 +79918,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76004,7 +79960,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -76035,6 +79997,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76074,7 +80038,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -76257,6 +80227,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -76297,7 +80269,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -76328,6 +80306,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -76367,12 +80347,185 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
     where: UserWhereUniqueInput
     create: XOR<UserCreateWithoutCommissairesTournamentsInput, UserUncheckedCreateWithoutCommissairesTournamentsInput>
+  }
+
+  export type UserUpsertWithoutCdfValidatedTournamentsInput = {
+    update: XOR<UserUpdateWithoutCdfValidatedTournamentsInput, UserUncheckedUpdateWithoutCdfValidatedTournamentsInput>
+    create: XOR<UserCreateWithoutCdfValidatedTournamentsInput, UserUncheckedCreateWithoutCdfValidatedTournamentsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCdfValidatedTournamentsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCdfValidatedTournamentsInput, UserUncheckedUpdateWithoutCdfValidatedTournamentsInput>
+  }
+
+  export type UserUpdateWithoutCdfValidatedTournamentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCdfValidatedTournamentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -76396,11 +80549,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutTournamentInput = {
@@ -76415,9 +80576,17 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type LigueUpsertWithoutTournamentsInput = {
@@ -76513,6 +80682,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -76553,7 +80724,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -76584,6 +80761,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -76623,7 +80802,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentMercenaryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -76762,6 +80947,8 @@ export namespace Prisma {
     notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
+    autoFollowTopics?: BoolFilter<"User"> | boolean
+    forumReadAllAt?: DateTimeFilter<"User"> | Date | string
   }
 
   export type ForumCreateWithoutCategoryInput = {
@@ -76938,11 +81125,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutForumInput = {
@@ -76957,9 +81152,17 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutForumInput = {
@@ -77072,6 +81275,328 @@ export namespace Prisma {
     data: XOR<TopicUpdateManyMutationInput, TopicUncheckedUpdateManyWithoutForumInput>
   }
 
+  export type UserCreateWithoutDeletedTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+  }
+
+  export type UserUncheckedCreateWithoutDeletedTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+  }
+
+  export type UserCreateOrConnectWithoutDeletedTopicsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeletedTopicsInput, UserUncheckedCreateWithoutDeletedTopicsInput>
+  }
+
+  export type UserCreateWithoutLastPostTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+  }
+
+  export type UserUncheckedCreateWithoutLastPostTopicsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+  }
+
+  export type UserCreateOrConnectWithoutLastPostTopicsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutLastPostTopicsInput, UserUncheckedCreateWithoutLastPostTopicsInput>
+  }
+
   export type PostCreateWithoutTopicInput = {
     id?: string
     content: string
@@ -77080,11 +81605,15 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutTopicInput = {
@@ -77097,9 +81626,13 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutTopicInput = {
@@ -77155,6 +81688,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
     mercenaries?: TournamentMercenaryCreateNestedManyWithoutTournamentInput
@@ -77210,6 +81745,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
     results?: TournamentResultUncheckedCreateNestedManyWithoutTournamentInput
@@ -77250,6 +81787,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77290,7 +81829,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -77321,6 +81866,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77360,7 +81907,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -77422,6 +81975,7 @@ export namespace Prisma {
   export type TopicViewCreateWithoutTopicInput = {
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
     user: UserCreateNestedOneWithoutTopicViewsInput
   }
 
@@ -77429,6 +81983,7 @@ export namespace Prisma {
     userId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
   }
 
   export type TopicViewCreateOrConnectWithoutTopicInput = {
@@ -77439,6 +81994,372 @@ export namespace Prisma {
   export type TopicViewCreateManyTopicInputEnvelope = {
     data: TopicViewCreateManyTopicInput | TopicViewCreateManyTopicInput[]
     skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutTopicInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    actor?: UserCreateNestedOneWithoutNotificationsCausedInput
+    post?: PostCreateNestedOneWithoutNotificationsInput
+    conversation?: ConversationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutTopicInput = {
+    id?: string
+    userId: string
+    type: string
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutTopicInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput>
+  }
+
+  export type NotificationCreateManyTopicInputEnvelope = {
+    data: NotificationCreateManyTopicInput | NotificationCreateManyTopicInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutDeletedTopicsInput = {
+    update: XOR<UserUpdateWithoutDeletedTopicsInput, UserUncheckedUpdateWithoutDeletedTopicsInput>
+    create: XOR<UserCreateWithoutDeletedTopicsInput, UserUncheckedCreateWithoutDeletedTopicsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDeletedTopicsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDeletedTopicsInput, UserUncheckedUpdateWithoutDeletedTopicsInput>
+  }
+
+  export type UserUpdateWithoutDeletedTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDeletedTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUpsertWithoutLastPostTopicsInput = {
+    update: XOR<UserUpdateWithoutLastPostTopicsInput, UserUncheckedUpdateWithoutLastPostTopicsInput>
+    create: XOR<UserCreateWithoutLastPostTopicsInput, UserUncheckedCreateWithoutLastPostTopicsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutLastPostTopicsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutLastPostTopicsInput, UserUncheckedUpdateWithoutLastPostTopicsInput>
+  }
+
+  export type UserUpdateWithoutLastPostTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutLastPostTopicsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -77511,6 +82432,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     mercenaries?: TournamentMercenaryUpdateManyWithoutTournamentNestedInput
@@ -77566,6 +82489,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
     results?: TournamentResultUncheckedUpdateManyWithoutTournamentNestedInput
@@ -77612,6 +82537,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -77652,7 +82579,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -77683,6 +82616,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -77722,7 +82657,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -77796,6 +82737,183 @@ export namespace Prisma {
     data: XOR<TopicViewUpdateManyMutationInput, TopicViewUncheckedUpdateManyWithoutTopicInput>
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutTopicInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutTopicInput, NotificationUncheckedUpdateWithoutTopicInput>
+    create: XOR<NotificationCreateWithoutTopicInput, NotificationUncheckedCreateWithoutTopicInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutTopicInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutTopicInput, NotificationUncheckedUpdateWithoutTopicInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutTopicInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutTopicInput>
+  }
+
+  export type UserCreateWithoutDeletedPostsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+  }
+
+  export type UserUncheckedCreateWithoutDeletedPostsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+  }
+
+  export type UserCreateOrConnectWithoutDeletedPostsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutDeletedPostsInput, UserUncheckedCreateWithoutDeletedPostsInput>
+  }
+
   export type MentionCreateWithoutPostInput = {
     id?: string
     createdAt?: Date | string
@@ -77849,6 +82967,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -77889,7 +83009,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -77920,6 +83046,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -77959,7 +83087,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -77994,6 +83128,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78034,7 +83170,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -78065,6 +83207,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78104,7 +83248,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -78122,11 +83272,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutPostsInput = {
@@ -78142,8 +83300,16 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutPostsInput = {
@@ -78173,6 +83339,205 @@ export namespace Prisma {
   export type PostReactionCreateManyPostInputEnvelope = {
     data: PostReactionCreateManyPostInput | PostReactionCreateManyPostInput[]
     skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutPostInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    actor?: UserCreateNestedOneWithoutNotificationsCausedInput
+    topic?: TopicCreateNestedOneWithoutNotificationsInput
+    conversation?: ConversationCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutPostInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutPostInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput>
+  }
+
+  export type NotificationCreateManyPostInputEnvelope = {
+    data: NotificationCreateManyPostInput | NotificationCreateManyPostInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutDeletedPostsInput = {
+    update: XOR<UserUpdateWithoutDeletedPostsInput, UserUncheckedUpdateWithoutDeletedPostsInput>
+    create: XOR<UserCreateWithoutDeletedPostsInput, UserUncheckedCreateWithoutDeletedPostsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutDeletedPostsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutDeletedPostsInput, UserUncheckedUpdateWithoutDeletedPostsInput>
+  }
+
+  export type UserUpdateWithoutDeletedPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutDeletedPostsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -78229,6 +83594,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78269,7 +83636,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -78300,6 +83673,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78339,7 +83714,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -78380,6 +83761,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78420,7 +83803,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -78451,6 +83840,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -78490,7 +83881,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -78514,11 +83911,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutPostsInput = {
@@ -78534,8 +83939,16 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type PostReactionUpsertWithWhereUniqueWithoutPostInput = {
@@ -78552,6 +83965,22 @@ export namespace Prisma {
   export type PostReactionUpdateManyWithWhereWithoutPostInput = {
     where: PostReactionScalarWhereInput
     data: XOR<PostReactionUpdateManyMutationInput, PostReactionUncheckedUpdateManyWithoutPostInput>
+  }
+
+  export type NotificationUpsertWithWhereUniqueWithoutPostInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutPostInput, NotificationUncheckedUpdateWithoutPostInput>
+    create: XOR<NotificationCreateWithoutPostInput, NotificationUncheckedCreateWithoutPostInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutPostInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutPostInput, NotificationUncheckedUpdateWithoutPostInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutPostInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutPostInput>
   }
 
   export type UserCreateWithoutUser2ConversationsInput = {
@@ -78581,6 +84010,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78621,7 +84052,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -78652,6 +84089,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78691,7 +84130,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -78726,6 +84171,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -78766,7 +84213,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -78797,6 +84250,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -78836,7 +84291,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -78875,6 +84336,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
     user: UserCreateNestedOneWithoutConversationParticipantsInput
   }
 
@@ -78884,6 +84346,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
   }
 
   export type ConversationParticipantCreateOrConnectWithoutConversationInput = {
@@ -78893,6 +84356,38 @@ export namespace Prisma {
 
   export type ConversationParticipantCreateManyConversationInputEnvelope = {
     data: ConversationParticipantCreateManyConversationInput | ConversationParticipantCreateManyConversationInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type NotificationCreateWithoutConversationInput = {
+    id?: string
+    type: string
+    readAt?: Date | string | null
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutNotificationsInput
+    actor?: UserCreateNestedOneWithoutNotificationsCausedInput
+    topic?: TopicCreateNestedOneWithoutNotificationsInput
+    post?: PostCreateNestedOneWithoutNotificationsInput
+  }
+
+  export type NotificationUncheckedCreateWithoutConversationInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateOrConnectWithoutConversationInput = {
+    where: NotificationWhereUniqueInput
+    create: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput>
+  }
+
+  export type NotificationCreateManyConversationInputEnvelope = {
+    data: NotificationCreateManyConversationInput | NotificationCreateManyConversationInput[]
     skipDuplicates?: boolean
   }
 
@@ -78934,6 +84429,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -78974,7 +84471,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -79005,6 +84508,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79044,7 +84549,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutUser1ConversationsInput = {
@@ -79085,6 +84596,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79125,7 +84638,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -79156,6 +84675,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79195,7 +84716,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -79230,6 +84757,22 @@ export namespace Prisma {
     data: XOR<ConversationParticipantUpdateManyMutationInput, ConversationParticipantUncheckedUpdateManyWithoutConversationInput>
   }
 
+  export type NotificationUpsertWithWhereUniqueWithoutConversationInput = {
+    where: NotificationWhereUniqueInput
+    update: XOR<NotificationUpdateWithoutConversationInput, NotificationUncheckedUpdateWithoutConversationInput>
+    create: XOR<NotificationCreateWithoutConversationInput, NotificationUncheckedCreateWithoutConversationInput>
+  }
+
+  export type NotificationUpdateWithWhereUniqueWithoutConversationInput = {
+    where: NotificationWhereUniqueInput
+    data: XOR<NotificationUpdateWithoutConversationInput, NotificationUncheckedUpdateWithoutConversationInput>
+  }
+
+  export type NotificationUpdateManyWithWhereWithoutConversationInput = {
+    where: NotificationScalarWhereInput
+    data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutConversationInput>
+  }
+
   export type UserCreateWithoutConversationParticipantsInput = {
     id?: string
     name?: string | null
@@ -79257,6 +84800,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79297,7 +84842,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutConversationParticipantsInput = {
@@ -79328,6 +84879,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79367,7 +84920,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutConversationParticipantsInput = {
@@ -79386,6 +84945,7 @@ export namespace Prisma {
     user2?: UserCreateNestedOneWithoutUser2ConversationsInput
     user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+    notifications?: NotificationCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutParticipantsInput = {
@@ -79399,6 +84959,7 @@ export namespace Prisma {
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
     messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutParticipantsInput = {
@@ -79444,6 +85005,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79484,7 +85047,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
@@ -79515,6 +85084,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79554,7 +85125,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ConversationUpsertWithoutParticipantsInput = {
@@ -79579,6 +85156,7 @@ export namespace Prisma {
     user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
     user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutParticipantsInput = {
@@ -79592,6 +85170,7 @@ export namespace Prisma {
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type UserCreateWithoutPrivateMessagesInput = {
@@ -79621,6 +85200,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -79661,7 +85242,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -79692,6 +85279,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -79731,7 +85320,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -79750,6 +85345,7 @@ export namespace Prisma {
     user2?: UserCreateNestedOneWithoutUser2ConversationsInput
     user1?: UserCreateNestedOneWithoutUser1ConversationsInput
     participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+    notifications?: NotificationCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationUncheckedCreateWithoutMessagesInput = {
@@ -79763,6 +85359,7 @@ export namespace Prisma {
     user1DeletedAt?: Date | string | null
     user2DeletedAt?: Date | string | null
     participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutConversationInput
   }
 
   export type ConversationCreateOrConnectWithoutMessagesInput = {
@@ -79808,6 +85405,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -79848,7 +85447,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -79879,6 +85484,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -79918,7 +85525,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ConversationUpsertWithoutMessagesInput = {
@@ -79943,6 +85556,7 @@ export namespace Prisma {
     user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
     user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutMessagesInput = {
@@ -79956,6 +85570,7 @@ export namespace Prisma {
     user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type TopicCreateWithoutTopicViewsInput = {
@@ -79968,11 +85583,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutTopicViewsInput = {
@@ -79988,8 +85611,16 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutTopicViewsInput = {
@@ -80024,6 +85655,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80064,7 +85697,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -80095,6 +85734,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80134,7 +85775,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -80163,11 +85810,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutTopicViewsInput = {
@@ -80183,8 +85838,16 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type UserUpsertWithoutTopicViewsInput = {
@@ -80225,6 +85888,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -80265,7 +85930,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -80296,6 +85967,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80335,7 +86008,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutMentionsReceivedInput = {
@@ -80365,6 +86044,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80405,7 +86086,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -80436,6 +86123,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80475,7 +86164,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -80510,6 +86205,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -80550,7 +86247,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -80581,6 +86284,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -80620,7 +86325,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -80636,11 +86347,15 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
     reactions?: PostReactionCreateNestedManyWithoutPostInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutMentionsInput = {
@@ -80654,8 +86369,12 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutMentionsInput = {
@@ -80701,6 +86420,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -80741,7 +86462,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -80772,6 +86499,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80811,7 +86540,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -80852,6 +86587,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -80892,7 +86629,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -80923,6 +86666,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -80962,7 +86707,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type PostUpsertWithoutMentionsInput = {
@@ -80984,11 +86735,15 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutMentionsInput = {
@@ -81002,8 +86757,948 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type UserCreateWithoutNotificationsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserCreateWithoutNotificationsCausedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutNotificationsCausedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    quizTotalScore?: number
+    quizBestScore?: number
+    quizStreak?: number
+    quizAttemptsCount?: number
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifMention?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    quizAttempts?: QuizAttemptUncheckedCreateNestedManyWithoutUserInput
+    quizGames?: QuizGameUncheckedCreateNestedManyWithoutUserInput
+    dailyWins?: QuizDailyWinnerUncheckedCreateNestedManyWithoutUserInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutNotificationsCausedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutNotificationsCausedInput, UserUncheckedCreateWithoutNotificationsCausedInput>
+  }
+
+  export type TopicCreateWithoutNotificationsInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
+    posts?: PostCreateNestedManyWithoutTopicInput
+    tournament?: TournamentCreateNestedOneWithoutTopicInput
+    author: UserCreateNestedOneWithoutTopicsInput
+    forum: ForumCreateNestedOneWithoutTopicsInput
+    follows?: TopicFollowCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    tournamentId?: string | null
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
+    posts?: PostUncheckedCreateNestedManyWithoutTopicInput
+    follows?: TopicFollowUncheckedCreateNestedManyWithoutTopicInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+  }
+
+  export type TopicCreateOrConnectWithoutNotificationsInput = {
+    where: TopicWhereUniqueInput
+    create: XOR<TopicCreateWithoutNotificationsInput, TopicUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type PostCreateWithoutNotificationsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    isModerated?: boolean
+    moderationReason?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
+    mentions?: MentionCreateNestedManyWithoutPostInput
+    moderator?: UserCreateNestedOneWithoutModeratedPostsInput
+    author: UserCreateNestedOneWithoutPostsInput
+    topic: TopicCreateNestedOneWithoutPostsInput
+    reactions?: PostReactionCreateNestedManyWithoutPostInput
+  }
+
+  export type PostUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    legacyId?: string | null
+    mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    reactions?: PostReactionUncheckedCreateNestedManyWithoutPostInput
+  }
+
+  export type PostCreateOrConnectWithoutNotificationsInput = {
+    where: PostWhereUniqueInput
+    create: XOR<PostCreateWithoutNotificationsInput, PostUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type ConversationCreateWithoutNotificationsInput = {
+    id?: string
+    name?: string | null
+    isGroup?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
+    user2?: UserCreateNestedOneWithoutUser2ConversationsInput
+    user1?: UserCreateNestedOneWithoutUser1ConversationsInput
+    messages?: PrivateMessageCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationUncheckedCreateWithoutNotificationsInput = {
+    id?: string
+    name?: string | null
+    isGroup?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user1Id?: string | null
+    user2Id?: string | null
+    user1DeletedAt?: Date | string | null
+    user2DeletedAt?: Date | string | null
+    messages?: PrivateMessageUncheckedCreateNestedManyWithoutConversationInput
+    participants?: ConversationParticipantUncheckedCreateNestedManyWithoutConversationInput
+  }
+
+  export type ConversationCreateOrConnectWithoutNotificationsInput = {
+    where: ConversationWhereUniqueInput
+    create: XOR<ConversationCreateWithoutNotificationsInput, ConversationUncheckedCreateWithoutNotificationsInput>
+  }
+
+  export type UserUpsertWithoutNotificationsInput = {
+    update: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<UserCreateWithoutNotificationsInput, UserUncheckedCreateWithoutNotificationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsInput, UserUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type UserUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+  }
+
+  export type UserUpsertWithoutNotificationsCausedInput = {
+    update: XOR<UserUpdateWithoutNotificationsCausedInput, UserUncheckedUpdateWithoutNotificationsCausedInput>
+    create: XOR<UserCreateWithoutNotificationsCausedInput, UserUncheckedCreateWithoutNotificationsCausedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutNotificationsCausedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutNotificationsCausedInput, UserUncheckedUpdateWithoutNotificationsCausedInput>
+  }
+
+  export type UserUpdateWithoutNotificationsCausedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    quizTotalScore?: IntFieldUpdateOperationsInput | number
+    quizBestScore?: IntFieldUpdateOperationsInput | number
+    quizStreak?: IntFieldUpdateOperationsInput | number
+    quizAttemptsCount?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifMention?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    quizAttempts?: QuizAttemptUncheckedUpdateManyWithoutUserNestedInput
+    quizGames?: QuizGameUncheckedUpdateManyWithoutUserNestedInput
+    dailyWins?: QuizDailyWinnerUncheckedUpdateManyWithoutUserNestedInput
+    quizSuggestions?: QuizQuestionSuggestionUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type TopicUpsertWithoutNotificationsInput = {
+    update: XOR<TopicUpdateWithoutNotificationsInput, TopicUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<TopicCreateWithoutNotificationsInput, TopicUncheckedCreateWithoutNotificationsInput>
+    where?: TopicWhereInput
+  }
+
+  export type TopicUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: TopicWhereInput
+    data: XOR<TopicUpdateWithoutNotificationsInput, TopicUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type TopicUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
+    posts?: PostUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
+    author?: UserUpdateOneRequiredWithoutTopicsNestedInput
+    forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
+    posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
+  export type PostUpsertWithoutNotificationsInput = {
+    update: XOR<PostUpdateWithoutNotificationsInput, PostUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<PostCreateWithoutNotificationsInput, PostUncheckedCreateWithoutNotificationsInput>
+    where?: PostWhereInput
+  }
+
+  export type PostUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: PostWhereInput
+    data: XOR<PostUpdateWithoutNotificationsInput, PostUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type PostUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
+    mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type ConversationUpsertWithoutNotificationsInput = {
+    update: XOR<ConversationUpdateWithoutNotificationsInput, ConversationUncheckedUpdateWithoutNotificationsInput>
+    create: XOR<ConversationCreateWithoutNotificationsInput, ConversationUncheckedCreateWithoutNotificationsInput>
+    where?: ConversationWhereInput
+  }
+
+  export type ConversationUpdateToOneWithWhereWithoutNotificationsInput = {
+    where?: ConversationWhereInput
+    data: XOR<ConversationUpdateWithoutNotificationsInput, ConversationUncheckedUpdateWithoutNotificationsInput>
+  }
+
+  export type ConversationUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
+    user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
+    messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+  }
+
+  export type ConversationUncheckedUpdateWithoutNotificationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    isGroup?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user1Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user2Id?: NullableStringFieldUpdateOperationsInput | string | null
+    user1DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
+    participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type UserCreateWithoutPostReactionsInput = {
@@ -81033,6 +87728,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81073,7 +87770,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -81104,6 +87807,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -81143,7 +87848,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -81159,11 +87870,15 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
     legacyId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedPostsInput
     mentions?: MentionCreateNestedManyWithoutPostInput
     moderator?: UserCreateNestedOneWithoutModeratedPostsInput
     author: UserCreateNestedOneWithoutPostsInput
     topic: TopicCreateNestedOneWithoutPostsInput
+    notifications?: NotificationCreateNestedManyWithoutPostInput
   }
 
   export type PostUncheckedCreateWithoutReactionsInput = {
@@ -81177,8 +87892,12 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
     mentions?: MentionUncheckedCreateNestedManyWithoutPostInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutPostInput
   }
 
   export type PostCreateOrConnectWithoutReactionsInput = {
@@ -81224,6 +87943,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81264,7 +87985,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -81295,6 +88022,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -81334,7 +88063,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type PostUpsertWithoutReactionsInput = {
@@ -81356,11 +88091,15 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutReactionsInput = {
@@ -81374,8 +88113,12 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type UserCreateWithoutRoleConfigInput = {
@@ -81405,6 +88148,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81445,7 +88190,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -81475,6 +88226,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -81515,7 +88268,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -81554,11 +88313,19 @@ export namespace Prisma {
     updatedAt?: Date | string
     views?: number
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    deletedBy?: UserCreateNestedOneWithoutDeletedTopicsInput
+    lastPostAuthor?: UserCreateNestedOneWithoutLastPostTopicsInput
     posts?: PostCreateNestedManyWithoutTopicInput
     tournament?: TournamentCreateNestedOneWithoutTopicInput
     author: UserCreateNestedOneWithoutTopicsInput
     forum: ForumCreateNestedOneWithoutTopicsInput
     topicViews?: TopicViewCreateNestedManyWithoutTopicInput
+    notifications?: NotificationCreateNestedManyWithoutTopicInput
   }
 
   export type TopicUncheckedCreateWithoutFollowsInput = {
@@ -81574,8 +88341,16 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
     posts?: PostUncheckedCreateNestedManyWithoutTopicInput
     topicViews?: TopicViewUncheckedCreateNestedManyWithoutTopicInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutTopicInput
   }
 
   export type TopicCreateOrConnectWithoutFollowsInput = {
@@ -81610,6 +88385,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81650,7 +88427,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -81681,6 +88464,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -81720,7 +88505,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -81749,11 +88540,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutFollowsInput = {
@@ -81769,8 +88568,16 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type UserUpsertWithoutFollowedTopicsInput = {
@@ -81811,6 +88618,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -81851,7 +88660,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -81882,6 +88697,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -81921,7 +88738,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutRankingArchivesInput = {
@@ -81951,6 +88774,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -81991,7 +88816,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutRankingArchivesInput = {
@@ -82022,6 +88853,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -82061,7 +88894,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutRankingArchivesInput = {
@@ -82107,6 +88946,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -82147,7 +88988,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRankingArchivesInput = {
@@ -82178,6 +89025,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -82217,7 +89066,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutTournamentRegistrationsInput = {
@@ -82247,6 +89102,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -82287,7 +89144,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -82318,6 +89181,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -82357,7 +89222,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -82408,6 +89279,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -82463,6 +89336,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     results?: TournamentResultUncheckedCreateNestedManyWithoutTournamentInput
@@ -82514,6 +89389,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -82554,7 +89431,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -82585,6 +89468,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -82624,7 +89509,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentUpsertWithoutRegistrationsInput = {
@@ -82681,6 +89572,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -82736,6 +89629,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     results?: TournamentResultUncheckedUpdateManyWithoutTournamentNestedInput
@@ -82771,6 +89666,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -82811,7 +89708,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -82842,6 +89745,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -82881,7 +89786,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -82932,6 +89843,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -82987,6 +89900,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -83058,6 +89973,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -83098,7 +90015,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -83129,6 +90052,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -83168,7 +90093,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentUpsertWithoutTeamsInput = {
@@ -83225,6 +90156,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -83280,6 +90213,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -83331,6 +90266,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -83371,7 +90308,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -83402,6 +90345,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -83441,7 +90386,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -83514,6 +90465,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -83554,7 +90507,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -83585,6 +90544,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -83624,7 +90585,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentTeamUpsertWithoutMembersInput = {
@@ -83687,6 +90654,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -83727,7 +90696,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -83758,6 +90733,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -83797,7 +90774,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -83848,6 +90831,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -83903,6 +90888,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
     results?: TournamentResultUncheckedCreateNestedManyWithoutTournamentInput
@@ -83954,6 +90941,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -83994,7 +90983,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -84025,6 +91020,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -84064,7 +91061,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentUpsertWithoutMercenariesInput = {
@@ -84121,6 +91124,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -84176,6 +91181,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
     results?: TournamentResultUncheckedUpdateManyWithoutTournamentNestedInput
@@ -84260,6 +91267,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -84300,7 +91309,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -84331,6 +91346,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -84370,7 +91387,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -84405,6 +91428,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
@@ -84445,7 +91470,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -84476,6 +91507,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
@@ -84515,7 +91548,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -84655,6 +91694,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -84695,7 +91736,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -84726,6 +91773,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -84765,7 +91814,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutArticlesInput = {
@@ -84806,6 +91861,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
@@ -84846,7 +91903,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -84877,6 +91940,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
@@ -84916,7 +91981,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
@@ -85039,6 +92110,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -85079,7 +92152,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -85110,6 +92189,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -85149,7 +92230,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -85232,6 +92319,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -85272,7 +92361,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -85303,6 +92398,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -85342,7 +92439,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ArticleUpsertWithoutReactionsInput = {
@@ -85457,6 +92560,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -85497,7 +92602,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -85528,6 +92639,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -85567,7 +92680,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -85618,6 +92737,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
     mercenaries?: TournamentMercenaryCreateNestedManyWithoutTournamentInput
@@ -85672,6 +92793,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -85718,6 +92841,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -85758,7 +92883,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -85789,6 +92920,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -85828,7 +92961,13 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -85863,6 +93002,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -85903,7 +93044,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -85934,6 +93081,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -85973,7 +93122,13 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -86035,6 +93190,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -86075,7 +93232,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -86106,6 +93269,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -86145,7 +93310,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutLigueInput = {
@@ -86223,6 +93394,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -86263,7 +93436,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -86294,6 +93473,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -86333,7 +93514,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -86368,6 +93555,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -86408,7 +93597,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -86439,6 +93634,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -86478,7 +93675,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -86524,6 +93727,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -86564,7 +93769,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -86595,6 +93806,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -86634,7 +93847,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutReportsMadeInput = {
@@ -86675,6 +93894,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -86715,7 +93936,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -86746,6 +93973,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -86785,7 +94014,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -86815,6 +94050,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -86855,7 +94092,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -86886,6 +94129,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -86925,7 +94170,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -86971,6 +94222,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -87011,7 +94264,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -87042,6 +94301,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -87081,7 +94342,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutSubmittedResourcesInput = {
@@ -87111,6 +94378,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -87151,7 +94420,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
@@ -87182,6 +94457,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -87221,7 +94498,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
@@ -87282,6 +94565,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -87322,7 +94607,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
@@ -87353,6 +94644,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -87392,7 +94685,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
@@ -87493,6 +94792,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -87533,7 +94834,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentResultsInput = {
@@ -87564,6 +94871,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -87603,7 +94912,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentResultsInput = {
@@ -87654,6 +94969,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -87709,6 +95026,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -87760,6 +95079,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -87800,7 +95121,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentResultsInput = {
@@ -87831,6 +95158,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -87870,7 +95199,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentUpsertWithoutResultsInput = {
@@ -87927,6 +95262,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -87982,6 +95319,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -88073,6 +95412,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedBy?: UserCreateNestedOneWithoutCdfValidatedTournamentsInput
     topic?: TopicCreateNestedOneWithoutTournamentInput
     ligue?: LigueCreateNestedOneWithoutTournamentsInput
     organizer: UserCreateNestedOneWithoutTournamentsInput
@@ -88128,6 +95469,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
     topic?: TopicUncheckedCreateNestedOneWithoutTournamentInput
     mercenaries?: TournamentMercenaryUncheckedCreateNestedManyWithoutTournamentInput
     registrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutTournamentInput
@@ -88211,6 +95554,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -88266,6 +95611,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -88301,6 +95648,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -88341,7 +95690,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach2Input = {
@@ -88372,6 +95727,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -88411,7 +95768,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach2Input = {
@@ -88446,6 +95809,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -88486,7 +95851,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach1Input = {
@@ -88517,6 +95888,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -88556,7 +95929,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach1Input = {
@@ -88619,6 +95998,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -88659,7 +96040,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach2Input = {
@@ -88690,6 +96077,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -88729,7 +96118,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUpsertWithoutMatchesAsCoach1Input = {
@@ -88770,6 +96165,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -88810,7 +96207,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach1Input = {
@@ -88841,6 +96244,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -88880,7 +96285,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type TournamentRoundUpsertWithoutMatchesInput = {
@@ -88933,6 +96344,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -88973,7 +96386,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutQuizAttemptsInput = {
@@ -89004,6 +96423,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -89043,7 +96464,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutQuizAttemptsInput = {
@@ -89089,6 +96516,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -89129,7 +96558,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizAttemptsInput = {
@@ -89160,6 +96595,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -89199,7 +96636,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutQuizGamesInput = {
@@ -89229,6 +96672,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -89269,7 +96714,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutQuizGamesInput = {
@@ -89300,6 +96751,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -89339,7 +96792,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutQuizGamesInput = {
@@ -89385,6 +96844,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -89425,7 +96886,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizGamesInput = {
@@ -89456,6 +96923,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -89495,7 +96964,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutDailyWinsInput = {
@@ -89525,6 +97000,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -89565,7 +97042,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutDailyWinsInput = {
@@ -89596,6 +97079,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -89635,7 +97120,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutDailyWinsInput = {
@@ -89681,6 +97172,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -89721,7 +97214,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDailyWinsInput = {
@@ -89752,6 +97251,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -89791,7 +97292,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutQuizSuggestionsInput = {
@@ -89821,6 +97328,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -89861,7 +97370,13 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutQuizSuggestionsInput = {
@@ -89892,6 +97407,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -89931,7 +97448,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     bbSchemeStates?: BBSchemeStateUncheckedCreateNestedManyWithoutCreatorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutQuizSuggestionsInput = {
@@ -89977,6 +97500,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -90017,7 +97542,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutQuizSuggestionsInput = {
@@ -90048,6 +97579,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -90087,7 +97620,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserCreateWithoutBbSchemeStatesInput = {
@@ -90117,6 +97656,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
     articles?: ArticleCreateNestedManyWithoutAuthorInput
@@ -90158,6 +97699,12 @@ export namespace Prisma {
     commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
     ligues?: LigueCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
   }
 
   export type UserUncheckedCreateWithoutBbSchemeStatesInput = {
@@ -90188,6 +97735,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
     accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
     moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
     articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
@@ -90228,6 +97777,12 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
     ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
     commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
   }
 
   export type UserCreateOrConnectWithoutBbSchemeStatesInput = {
@@ -90273,6 +97828,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -90314,6 +97871,12 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBbSchemeStatesInput = {
@@ -90344,6 +97907,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -90384,6 +97949,12 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -90473,6 +98044,7 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
   }
 
   export type LigueCreateManyCreatorInput = {
@@ -90554,6 +98126,9 @@ export namespace Prisma {
     isModerated?: boolean
     moderationReason?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
   }
 
@@ -90567,6 +98142,9 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
   }
 
@@ -90666,6 +98244,13 @@ export namespace Prisma {
     forumId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
   }
 
   export type TopicFollowCreateManyUserInput = {
@@ -90676,6 +98261,7 @@ export namespace Prisma {
     topicId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
   }
 
   export type TournamentCreateManyOrganizerInput = {
@@ -90722,6 +98308,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
   }
 
   export type TournamentMatchCreateManyCoach2UserInput = {
@@ -90801,10 +98389,138 @@ export namespace Prisma {
     teamId: string
   }
 
+  export type TournamentCreateManyCdfValidatedByInput = {
+    id?: string
+    name: string
+    date: Date | string
+    endDate?: Date | string | null
+    location: string
+    address?: string | null
+    gmapsUrl?: string | null
+    ville?: string | null
+    departement?: string | null
+    region?: string | null
+    regionNAF?: string | null
+    description?: string | null
+    maxParticipants?: number | null
+    currentParticipants?: number
+    preRegistered?: number
+    isTeam?: boolean
+    coachsPerTeam?: number
+    days?: string | null
+    totalMatches?: number | null
+    price?: number | null
+    priceMeals?: number | null
+    priceLodging?: number | null
+    structure?: string | null
+    lodgingAtVenue?: boolean
+    ruleset?: string | null
+    mealsIncluded?: boolean
+    fridayArrival?: boolean
+    gameEdition?: string | null
+    platform?: string | null
+    isNAF?: boolean
+    isCDF?: boolean
+    isCGO?: boolean
+    isTGE?: boolean
+    isTSC?: boolean
+    isFinished?: boolean
+    isCancelled?: boolean
+    organizerId: string
+    ligueId?: string | null
+    ligueCustom?: string | null
+    lat?: number | null
+    lng?: number | null
+    registrationsLocked?: boolean
+    typeCDF?: string | null
+    tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+  }
+
+  export type TopicCreateManyDeletedByInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    tournamentId?: string | null
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
+  }
+
+  export type PostCreateManyDeletedByInput = {
+    id?: string
+    content: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    topicId: string
+    authorId: string
+    isModerated?: boolean
+    moderationReason?: string | null
+    moderatedBy?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletionReason?: string | null
+    legacyId?: string | null
+  }
+
+  export type TopicCreateManyLastPostAuthorInput = {
+    id?: string
+    title: string
+    isLocked?: boolean
+    isSticky?: boolean
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    views?: number
+    forumId: string
+    authorId: string
+    tournamentId?: string | null
+    legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+  }
+
   export type BBSchemeStateCreateManyCreatorInput = {
     id?: string
     hash: string
     data: string
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateManyUserInput = {
+    id?: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type NotificationCreateManyActorInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    conversationId?: string | null
+    readAt?: Date | string | null
     createdAt?: Date | string
   }
 
@@ -91004,6 +98720,7 @@ export namespace Prisma {
     user1?: UserUpdateOneWithoutUser1ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutUser2Input = {
@@ -91017,6 +98734,7 @@ export namespace Prisma {
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutUser2Input = {
@@ -91041,6 +98759,7 @@ export namespace Prisma {
     user2?: UserUpdateOneWithoutUser2ConversationsNestedInput
     messages?: PrivateMessageUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateWithoutUser1Input = {
@@ -91054,6 +98773,7 @@ export namespace Prisma {
     user2DeletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     messages?: PrivateMessageUncheckedUpdateManyWithoutConversationNestedInput
     participants?: ConversationParticipantUncheckedUpdateManyWithoutConversationNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutConversationNestedInput
   }
 
   export type ConversationUncheckedUpdateManyWithoutUser1Input = {
@@ -91072,6 +98792,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     conversation?: ConversationUpdateOneRequiredWithoutParticipantsNestedInput
   }
 
@@ -91081,6 +98802,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationParticipantUncheckedUpdateManyWithoutUserInput = {
@@ -91089,6 +98811,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type LigueUpdateWithoutCreatorInput = {
@@ -91314,11 +99037,15 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutModeratorInput = {
@@ -91331,9 +99058,13 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutModeratorInput = {
@@ -91346,6 +99077,9 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -91357,11 +99091,15 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
     reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutAuthorInput = {
@@ -91374,9 +99112,13 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutAuthorInput = {
@@ -91389,6 +99131,9 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -91656,11 +99401,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutAuthorInput = {
@@ -91675,9 +99428,17 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateManyWithoutAuthorInput = {
@@ -91692,6 +99453,13 @@ export namespace Prisma {
     forumId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TopicFollowUpdateWithoutUserInput = {
@@ -91709,6 +99477,7 @@ export namespace Prisma {
   export type TopicViewUpdateWithoutUserInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
     topic?: TopicUpdateOneRequiredWithoutTopicViewsNestedInput
   }
 
@@ -91716,12 +99485,14 @@ export namespace Prisma {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TopicViewUncheckedUpdateManyWithoutUserInput = {
     topicId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TournamentUpdateWithoutOrganizerInput = {
@@ -91767,6 +99538,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     mercenaries?: TournamentMercenaryUpdateManyWithoutTournamentNestedInput
@@ -91821,6 +99594,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -91874,6 +99649,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type TournamentMatchUpdateWithoutCoach2UserInput = {
@@ -92278,6 +100055,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     ligue?: LigueUpdateOneWithoutTournamentsNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
@@ -92333,6 +100112,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -92386,6 +100167,362 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TournamentUpdateWithoutCdfValidatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
+    typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
+    tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    topic?: TopicUpdateOneWithoutTournamentNestedInput
+    ligue?: LigueUpdateOneWithoutTournamentsNestedInput
+    organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
+    mercenaries?: TournamentMercenaryUpdateManyWithoutTournamentNestedInput
+    registrations?: TournamentRegistrationUpdateManyWithoutTournamentNestedInput
+    results?: TournamentResultUpdateManyWithoutTournamentNestedInput
+    rounds?: TournamentRoundUpdateManyWithoutTournamentNestedInput
+    teams?: TournamentTeamUpdateManyWithoutTournamentNestedInput
+    commissaires?: UserUpdateManyWithoutCommissairesTournamentsNestedInput
+  }
+
+  export type TournamentUncheckedUpdateWithoutCdfValidatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: StringFieldUpdateOperationsInput | string
+    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
+    typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
+    tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
+    mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
+    registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
+    results?: TournamentResultUncheckedUpdateManyWithoutTournamentNestedInput
+    rounds?: TournamentRoundUncheckedUpdateManyWithoutTournamentNestedInput
+    teams?: TournamentTeamUncheckedUpdateManyWithoutTournamentNestedInput
+    commissaires?: UserUncheckedUpdateManyWithoutCommissairesTournamentsNestedInput
+  }
+
+  export type TournamentUncheckedUpdateManyWithoutCdfValidatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    gmapsUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    departement?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    regionNAF?: NullableStringFieldUpdateOperationsInput | string | null
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    maxParticipants?: NullableIntFieldUpdateOperationsInput | number | null
+    currentParticipants?: IntFieldUpdateOperationsInput | number
+    preRegistered?: IntFieldUpdateOperationsInput | number
+    isTeam?: BoolFieldUpdateOperationsInput | boolean
+    coachsPerTeam?: IntFieldUpdateOperationsInput | number
+    days?: NullableStringFieldUpdateOperationsInput | string | null
+    totalMatches?: NullableIntFieldUpdateOperationsInput | number | null
+    price?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceMeals?: NullableFloatFieldUpdateOperationsInput | number | null
+    priceLodging?: NullableFloatFieldUpdateOperationsInput | number | null
+    structure?: NullableStringFieldUpdateOperationsInput | string | null
+    lodgingAtVenue?: BoolFieldUpdateOperationsInput | boolean
+    ruleset?: NullableStringFieldUpdateOperationsInput | string | null
+    mealsIncluded?: BoolFieldUpdateOperationsInput | boolean
+    fridayArrival?: BoolFieldUpdateOperationsInput | boolean
+    gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
+    platform?: NullableStringFieldUpdateOperationsInput | string | null
+    isNAF?: BoolFieldUpdateOperationsInput | boolean
+    isCDF?: BoolFieldUpdateOperationsInput | boolean
+    isCGO?: BoolFieldUpdateOperationsInput | boolean
+    isTGE?: BoolFieldUpdateOperationsInput | boolean
+    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    isFinished?: BoolFieldUpdateOperationsInput | boolean
+    isCancelled?: BoolFieldUpdateOperationsInput | boolean
+    organizerId?: StringFieldUpdateOperationsInput | string
+    ligueId?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    lat?: NullableFloatFieldUpdateOperationsInput | number | null
+    lng?: NullableFloatFieldUpdateOperationsInput | number | null
+    registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
+    typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
+    tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type TopicUpdateWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
+    posts?: PostUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
+    author?: UserUpdateOneRequiredWithoutTopicsNestedInput
+    forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
+    posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateManyWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PostUpdateWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    mentions?: MentionUpdateManyWithoutPostNestedInput
+    moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
+    author?: UserUpdateOneRequiredWithoutPostsNestedInput
+    topic?: TopicUpdateOneRequiredWithoutPostsNestedInput
+    reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
+    reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
+  }
+
+  export type PostUncheckedUpdateManyWithoutDeletedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    content?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    topicId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    isModerated?: BoolFieldUpdateOperationsInput | boolean
+    moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
+    moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type TopicUpdateWithoutLastPostAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    posts?: PostUpdateManyWithoutTopicNestedInput
+    tournament?: TournamentUpdateOneWithoutTopicNestedInput
+    author?: UserUpdateOneRequiredWithoutTopicsNestedInput
+    forum?: ForumUpdateOneRequiredWithoutTopicsNestedInput
+    follows?: TopicFollowUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateWithoutLastPostAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
+    follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
+  }
+
+  export type TopicUncheckedUpdateManyWithoutLastPostAuthorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isSticky?: BoolFieldUpdateOperationsInput | boolean
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    views?: IntFieldUpdateOperationsInput | number
+    forumId?: StringFieldUpdateOperationsInput | string
+    authorId?: StringFieldUpdateOperationsInput | string
+    tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BBSchemeStateUpdateWithoutCreatorInput = {
@@ -92406,6 +100543,72 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     hash?: StringFieldUpdateOperationsInput | string
     data?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    actor?: UserUpdateOneWithoutNotificationsCausedNestedInput
+    topic?: TopicUpdateOneWithoutNotificationsNestedInput
+    post?: PostUpdateOneWithoutNotificationsNestedInput
+    conversation?: ConversationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutActorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    topic?: TopicUpdateOneWithoutNotificationsNestedInput
+    post?: PostUpdateOneWithoutNotificationsNestedInput
+    conversation?: ConversationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutActorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutActorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -92628,6 +100831,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -92668,7 +100873,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -92699,6 +100910,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -92738,7 +100951,13 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -92769,6 +100988,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ForumCreateManyCategoryInput = {
@@ -92847,6 +101068,13 @@ export namespace Prisma {
     authorId: string
     tournamentId?: string | null
     legacyId?: string | null
+    isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
+    lastPostAt?: Date | string
+    lastPostId?: string | null
+    lastPostAuthorId?: string | null
   }
 
   export type ForumUpdateWithoutParentForumInput = {
@@ -92899,11 +101127,19 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     views?: IntFieldUpdateOperationsInput | number
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedTopicsNestedInput
+    lastPostAuthor?: UserUpdateOneWithoutLastPostTopicsNestedInput
     posts?: PostUpdateManyWithoutTopicNestedInput
     tournament?: TournamentUpdateOneWithoutTopicNestedInput
     author?: UserUpdateOneRequiredWithoutTopicsNestedInput
     follows?: TopicFollowUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateWithoutForumInput = {
@@ -92918,9 +101154,17 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
     posts?: PostUncheckedUpdateManyWithoutTopicNestedInput
     follows?: TopicFollowUncheckedUpdateManyWithoutTopicNestedInput
     topicViews?: TopicViewUncheckedUpdateManyWithoutTopicNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutTopicNestedInput
   }
 
   export type TopicUncheckedUpdateManyWithoutForumInput = {
@@ -92935,6 +101179,13 @@ export namespace Prisma {
     authorId?: StringFieldUpdateOperationsInput | string
     tournamentId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastPostAuthorId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type PostCreateManyTopicInput = {
@@ -92947,6 +101198,9 @@ export namespace Prisma {
     moderationReason?: string | null
     moderatedBy?: string | null
     isDeleted?: boolean
+    deletedAt?: Date | string | null
+    deletedById?: string | null
+    deletionReason?: string | null
     legacyId?: string | null
   }
 
@@ -92958,6 +101212,18 @@ export namespace Prisma {
     userId: string
     lastViewedAt?: Date | string
     lastPostId?: string | null
+    lastReadPostAt: Date | string
+  }
+
+  export type NotificationCreateManyTopicInput = {
+    id?: string
+    userId: string
+    type: string
+    postId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type PostUpdateWithoutTopicInput = {
@@ -92968,11 +101234,15 @@ export namespace Prisma {
     isModerated?: BoolFieldUpdateOperationsInput | boolean
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    deletedBy?: UserUpdateOneWithoutDeletedPostsNestedInput
     mentions?: MentionUpdateManyWithoutPostNestedInput
     moderator?: UserUpdateOneWithoutModeratedPostsNestedInput
     author?: UserUpdateOneRequiredWithoutPostsNestedInput
     reactions?: PostReactionUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateWithoutTopicInput = {
@@ -92985,9 +101255,13 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     mentions?: MentionUncheckedUpdateManyWithoutPostNestedInput
     reactions?: PostReactionUncheckedUpdateManyWithoutPostNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutPostNestedInput
   }
 
   export type PostUncheckedUpdateManyWithoutTopicInput = {
@@ -93000,6 +101274,9 @@ export namespace Prisma {
     moderationReason?: NullableStringFieldUpdateOperationsInput | string | null
     moderatedBy?: NullableStringFieldUpdateOperationsInput | string | null
     isDeleted?: BoolFieldUpdateOperationsInput | boolean
+    deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deletedById?: NullableStringFieldUpdateOperationsInput | string | null
+    deletionReason?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
@@ -93018,6 +101295,7 @@ export namespace Prisma {
   export type TopicViewUpdateWithoutTopicInput = {
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutTopicViewsNestedInput
   }
 
@@ -93025,12 +101303,47 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TopicViewUncheckedUpdateManyWithoutTopicInput = {
     userId?: StringFieldUpdateOperationsInput | string
     lastViewedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     lastPostId?: NullableStringFieldUpdateOperationsInput | string | null
+    lastReadPostAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUpdateWithoutTopicInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    actor?: UserUpdateOneWithoutNotificationsCausedNestedInput
+    post?: PostUpdateOneWithoutNotificationsNestedInput
+    conversation?: ConversationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutTopicInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutTopicInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type MentionCreateManyPostInput = {
@@ -93046,6 +101359,17 @@ export namespace Prisma {
     emoji: string
     createdAt?: Date | string
     userId: string
+  }
+
+  export type NotificationCreateManyPostInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    conversationId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type MentionUpdateWithoutPostInput = {
@@ -93093,6 +101417,39 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type NotificationUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    actor?: UserUpdateOneWithoutNotificationsCausedNestedInput
+    topic?: TopicUpdateOneWithoutNotificationsNestedInput
+    conversation?: ConversationUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutPostInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    conversationId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type PrivateMessageCreateManyConversationInput = {
     id?: string
     content: string
@@ -93107,6 +101464,18 @@ export namespace Prisma {
     joinedAt?: Date | string
     deletedAt?: Date | string | null
     isAdmin?: boolean
+    lastReadAt?: Date | string | null
+  }
+
+  export type NotificationCreateManyConversationInput = {
+    id?: string
+    userId: string
+    type: string
+    topicId?: string | null
+    postId?: string | null
+    actorId?: string | null
+    readAt?: Date | string | null
+    createdAt?: Date | string
   }
 
   export type PrivateMessageUpdateWithoutConversationInput = {
@@ -93138,6 +101507,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     user?: UserUpdateOneRequiredWithoutConversationParticipantsNestedInput
   }
 
@@ -93147,6 +101517,7 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationParticipantUncheckedUpdateManyWithoutConversationInput = {
@@ -93155,6 +101526,40 @@ export namespace Prisma {
     joinedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     deletedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     isAdmin?: BoolFieldUpdateOperationsInput | boolean
+    lastReadAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type NotificationUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutNotificationsNestedInput
+    actor?: UserUpdateOneWithoutNotificationsCausedNestedInput
+    topic?: TopicUpdateOneWithoutNotificationsNestedInput
+    post?: PostUpdateOneWithoutNotificationsNestedInput
+  }
+
+  export type NotificationUncheckedUpdateWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type NotificationUncheckedUpdateManyWithoutConversationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    type?: StringFieldUpdateOperationsInput | string
+    topicId?: NullableStringFieldUpdateOperationsInput | string | null
+    postId?: NullableStringFieldUpdateOperationsInput | string | null
+    actorId?: NullableStringFieldUpdateOperationsInput | string | null
+    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyRoleConfigInput = {
@@ -93184,6 +101589,8 @@ export namespace Prisma {
     notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
   }
 
   export type UserUpdateWithoutRoleConfigInput = {
@@ -93213,6 +101620,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -93253,7 +101662,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -93283,6 +101698,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -93323,7 +101740,13 @@ export namespace Prisma {
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -93353,6 +101776,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TournamentTeamMemberCreateManyTeamInput = {
@@ -93523,6 +101948,8 @@ export namespace Prisma {
     registrationsLocked?: boolean
     typeCDF?: string | null
     tournamentType?: string | null
+    cdfValidatedAt?: Date | string | null
+    cdfValidatedById?: string | null
   }
 
   export type ArticleUpdateWithoutLigueInput = {
@@ -93614,6 +102041,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedBy?: UserUpdateOneWithoutCdfValidatedTournamentsNestedInput
     topic?: TopicUpdateOneWithoutTournamentNestedInput
     organizer?: UserUpdateOneRequiredWithoutTournamentsNestedInput
     mercenaries?: TournamentMercenaryUpdateManyWithoutTournamentNestedInput
@@ -93668,6 +102097,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
     topic?: TopicUncheckedUpdateOneWithoutTournamentNestedInput
     mercenaries?: TournamentMercenaryUncheckedUpdateManyWithoutTournamentNestedInput
     registrations?: TournamentRegistrationUncheckedUpdateManyWithoutTournamentNestedInput
@@ -93721,6 +102152,8 @@ export namespace Prisma {
     registrationsLocked?: BoolFieldUpdateOperationsInput | boolean
     typeCDF?: NullableStringFieldUpdateOperationsInput | string | null
     tournamentType?: NullableStringFieldUpdateOperationsInput | string | null
+    cdfValidatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    cdfValidatedById?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type UserUpdateWithoutCommissaireLiguesInput = {
@@ -93750,6 +102183,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -93790,7 +102225,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     ligues?: LigueUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -93821,6 +102262,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -93860,7 +102303,13 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -93891,6 +102340,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserUpdateWithoutLiguesInput = {
@@ -93920,6 +102371,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUpdateManyWithoutAuthorNestedInput
@@ -93960,7 +102413,13 @@ export namespace Prisma {
     roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
     commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -93991,6 +102450,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
     accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
     moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
     articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
@@ -94030,7 +102491,13 @@ export namespace Prisma {
     teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
     commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
     commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     bbSchemeStates?: BBSchemeStateUncheckedUpdateManyWithoutCreatorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {
@@ -94061,6 +102528,8 @@ export namespace Prisma {
     notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ResourceTagUpdateWithoutResourcesInput = {

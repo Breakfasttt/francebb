@@ -23,9 +23,10 @@ import { test, expect, type Page } from "@playwright/test";
 import { E2E, loginAs, withTestDb } from "../e2e/fixtures";
 import { measure } from "../e2e/mobileMeasure";
 
-/** Administrateur et article créés par le parcours (le jeu de données de test n'en contient pas). */
+/** Administrateur, article et notification créés par le parcours (le jeu de données de test n'en contient pas). */
 const ADMIN_ID = "e2e_parcours_admin";
 const ARTICLE_ID = "e2e_parcours_article";
+const NOTIFICATION_ID = "e2e_parcours_notification";
 
 const PHONE = { width: 390, height: 844 };
 const DESKTOP = { width: 1280, height: 800 };
@@ -56,6 +57,7 @@ const GROUPS: { who: string; userId: string | null; paths: string[] }[] = [
       "/ressources",
       "/membres",
       "/messagerie",
+      "/notifications",
       "/profile",
       `/spy/${E2E.targetId}`,
       "/bbscheme",
@@ -99,6 +101,13 @@ test.beforeAll(async () => {
       where: { id: ARTICLE_ID },
       update: {},
       create: { id: ARTICLE_ID, title: "Article du parcours", content: "[b]Texte[/b] de l'article du parcours.", authorId: E2E.coachId },
+    });
+    // Une mention non lue pour le modérateur, pour que la page /notifications ait une ligne et la cloche une pastille
+    const post = await prisma.post.findFirst({ where: { topicId: E2E.topicId }, select: { id: true } });
+    await prisma.notification.upsert({
+      where: { id: NOTIFICATION_ID },
+      update: { readAt: null },
+      create: { id: NOTIFICATION_ID, userId: E2E.modoId, type: "MENTION", topicId: E2E.topicId, postId: post?.id, actorId: E2E.coachId },
     });
   });
 });

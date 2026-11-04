@@ -8,12 +8,20 @@ import { getActiveSession } from "@/lib/authGuard";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { sendMentionNotification, sendFollowNotification } from "@/lib/mail";
+import { followTopicAutomatically, markTopicNotificationsRead, notifyFollowers, notifyMentions } from "@/lib/notifications";
 import { getUnreadState } from "@/app/forum/unreadState";
-import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
+import { getForumAccess, forumAccessWhere, topicAccessWhere, FORUM_ACCESS_SELECT } from "@/lib/forumAccess";
 import { logModerationAction } from "@/lib/moderationLog";
+import { closePendingReports } from "@/lib/moderationReports";
+import { hidePostContent, PUBLIC_MEMBER_SELECT } from "@/lib/forumPostPrivacy";
+import { canRestorePost, decidePostDeletion, topicDeletionRefusal } from "@/lib/forumDeletion";
+import { advanceReadPosition, isTopicUnread, shouldCountTopicView, type ReadPosition } from "@/lib/forumReadPosition";
+import { refreshTopicLastPost } from "@/lib/forumTopicLastPost";
+import { forumPostPage } from "@/lib/forumPostLink";
+import { closedTopicMessage, isAllowedReaction, isTopicClosedFor, postContentError, topicTitleError } from "@/lib/forumWriteRules";
+import type { QuoteStatusMap } from "@/lib/bbcode";
 import type { ActionResult } from "@/lib/actionResult";
 
 export async function getUnreadMessagesCount() {
@@ -66,59 +74,86 @@ async function findAccessiblePost(postId: string) {
       topicId: true,
       createdAt: true,
       isDeleted: true,
-      topic: { select: { forumId: true, isLocked: true, forum: { select: { isLocked: true } } } },
+      deletedById: true,
+      topic: { select: { forumId: true, title: true, tournamentId: true, isLocked: true, isArchived: true, forum: { select: { isLocked: true } } } },
     },
   });
 }
 
-/** Vrai si le sujet ou son forum est verrouillé pour ce membre (les modérateurs passent outre). */
-function isLockedFor(post: { topic: { isLocked: boolean; forum: { isLocked: boolean } } }, role: string | undefined) {
-  return (post.topic.isLocked || post.topic.forum.isLocked) && !isModerator(role);
+/** État d'écriture d'un sujet lu avec son forum, tel que l'attendent les règles de lib/forumWriteRules.ts. */
+function writeState(topic: { isLocked: boolean; isArchived: boolean; forum: { isLocked: boolean } }) {
+  return { isLocked: topic.isLocked, isArchived: topic.isArchived, forumIsLocked: topic.forum.isLocked };
 }
 
-export async function markTopicAsRead(topicId: string) {
+/**
+ * Vrai si le sujet est fermé pour ce membre : verrouillé, archivé (carte 169) ou rangé dans un forum verrouillé. Les
+ * modérateurs passent outre.
+ */
+function isLockedFor(post: { topic: { isLocked: boolean; isArchived: boolean; forum: { isLocked: boolean } } }, role: string | undefined) {
+  return isTopicClosedFor(writeState(post.topic), isModerator(role));
+}
+
+/** Ajoute une vue au compteur du sujet, en SQL direct pour ne pas changer sa date de dernière modification (`updatedAt`). */
+async function countTopicView(topicId: string) {
+  await prisma.$executeRaw`UPDATE "Topic" SET "views" = Coalesce("views", 0) + 1 WHERE "id" = ${topicId}`;
+}
+
+/**
+ * Enregistre la lecture d'un sujet (carte 166). `shownPostId` est le dernier message affiché sur la page : la position
+ * de lecture avance jusqu'à lui, jamais plus loin (lire la page 1 d'un long sujet ne marque pas la suite comme lue) et
+ * jamais en arrière (revenir sur une page déjà lue ne fait pas perdre la suite). Sans `shownPostId` (bouton « Marquer
+ * comme lu » de la page des non-lus), tout le sujet est marqué lu, jusqu'à son dernier message.
+ * Compte aussi une vue du sujet, mais une seule par visite (règle `shouldCountTopicView`, carte 169). `firstViewInTab`
+ * vaut vrai quand l'onglet du visiteur n'avait pas encore ouvert ce sujet ; il ne sert que pour les visiteurs.
+ */
+export async function markTopicAsRead(topicId: string, shownPostId?: string, firstViewInTab = false) {
   // Un sujet inexistant ou réservé à un autre rôle n'est ni compté ni marqué comme lu
   const { roles } = await getForumAccess();
-  const topic = await prisma.topic.findFirst({ where: { id: topicId, ...topicAccessWhere(roles) }, select: { id: true } });
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, ...topicAccessWhere(roles) },
+    select: { id: true, lastPostAt: true, lastPostId: true },
+  });
   if (!topic) return;
 
-  // Increment views safely using RAW SQL to avoid triggering Prisma's @updatedAt (which makes topics 'unread')
-  await prisma.$executeRaw`UPDATE "Topic" SET "views" = Coalesce("views", 0) + 1 WHERE "id" = ${topicId}`;
-
   const session = await getActiveSession();
-  if (!session?.user?.id) return;
+  if (!session?.user?.id) {
+    // Un visiteur compte une vue la première fois qu'il ouvre le sujet dans cet onglet (mémoire de l'onglet, voir
+    // MarkAsRead) : feuilleter les pages ou recharger ne compte plus (carte 169)
+    if (firstViewInTab) await countTopicView(topicId);
+    return;
+  }
+  const userId = session.user.id;
 
-  // Sécurité : éviter crash sur session périmée après import/suppression de BDD
-  const userExists = await prisma.user.findUnique({
-    where: { id: session.user.id },
-    select: { id: true }
-  });
-  if (!userExists) return;
+  // Le message affiché doit appartenir à ce sujet ; sinon, rien n'est enregistré
+  let shown: ReadPosition;
+  if (shownPostId) {
+    const post = await prisma.post.findFirst({ where: { id: shownPostId, topicId }, select: { id: true, createdAt: true } });
+    if (!post) return;
+    shown = { at: post.createdAt, postId: post.id };
+  } else {
+    shown = { at: topic.lastPostAt, postId: topic.lastPostId };
+  }
 
-  // Find the latest post to store its ID and timestamp
-  const latestPost = await prisma.post.findFirst({
-    where: { topicId },
-    orderBy: [{ createdAt: 'desc' }, { id: 'desc' }]
-  });
+  // La lecture existante (s'il y en a une) et l'existence du membre (session périmée après une remise à zéro de la base)
+  const [user, view] = await Promise.all([
+    prisma.user.findUnique({ where: { id: userId }, select: { id: true } }),
+    prisma.topicView.findUnique({ where: { userId_topicId: { userId, topicId } }, select: { lastReadPostAt: true, lastPostId: true, lastViewedAt: true } }),
+  ]);
+  if (!user) return;
 
+  const next = advanceReadPosition(view && { at: view.lastReadPostAt, postId: view.lastPostId }, shown);
+  const now = new Date();
+  // Une vue par membre et par visite où il lit du nouveau (carte 169), au lieu d'une vue par page affichée
+  if (shouldCountTopicView(view?.lastViewedAt ?? null, next !== null, now)) await countTopicView(topicId);
   await prisma.topicView.upsert({
-    where: {
-      userId_topicId: {
-        userId: session.user.id,
-        topicId: topicId
-      }
-    },
-    update: {
-      lastViewedAt: new Date(),
-      lastPostId: latestPost?.id || null
-    },
-    create: {
-      userId: session.user.id,
-      topicId: topicId,
-      lastViewedAt: new Date(),
-      lastPostId: latestPost?.id || null
-    }
+    where: { userId_topicId: { userId, topicId } },
+    // La date de visite change toujours ; la position seulement si elle avance
+    update: next ? { lastViewedAt: now, lastReadPostAt: next.at, lastPostId: next.postId } : { lastViewedAt: now },
+    create: { userId, topicId, lastViewedAt: now, lastReadPostAt: shown.at, lastPostId: shown.postId },
   });
+  // Les notifications de ce sujet (mention, réponse suivie) dont le message est sur la page affichée, ou avant, sont
+  // lues (carte 167)
+  await markTopicNotificationsRead(userId, topicId, shown.at);
   // Pas de revalidatePath : appelée à chaque ouverture de topic, elle faisait re-rendre toute la page
   // (~40 requêtes). Les listes du forum sont rendues à chaque visite, le non-lu y est donc déjà à jour.
 }
@@ -134,8 +169,8 @@ export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
   });
   if (!userExists) return;
 
-  const currentPost = await prisma.post.findUnique({
-    where: { id: postId },
+  const currentPost = await prisma.post.findFirst({
+    where: { id: postId, topicId },
     select: { createdAt: true, id: true }
   });
 
@@ -157,26 +192,17 @@ export async function markTopicAsUnreadFrom(topicId: string, postId: string) {
     orderBy: [{ createdAt: 'desc' }, { id: 'desc' }]
   });
 
-  if (previousPost) {
-    await prisma.topicView.upsert({
-      where: { userId_topicId: { userId: session.user.id, topicId } },
-      update: { 
-        lastViewedAt: previousPost.createdAt, 
-        lastPostId: previousPost.id 
-      },
-      create: { 
-        userId: session.user.id, 
-        topicId, 
-        lastViewedAt: previousPost.createdAt, 
-        lastPostId: previousPost.id 
-      }
-    });
-  } else {
-    // No preceding post -> marking from the very first post as unread
-    await prisma.topicView.deleteMany({
-      where: { userId: session.user.id, topicId }
-    });
-  }
+  // Seul cas où la position de lecture recule (carte 166). Sans message précédent, la position est ramenée avant le
+  // tout premier message (date zéro) : supprimer la ligne ne suffirait plus, car le sujet suivrait alors la date
+  // « tout est lu avant le… » du membre et pourrait rester lu.
+  const position = previousPost
+    ? { lastReadPostAt: previousPost.createdAt, lastPostId: previousPost.id }
+    : { lastReadPostAt: new Date(0), lastPostId: null };
+  await prisma.topicView.upsert({
+    where: { userId_topicId: { userId: session.user.id, topicId } },
+    update: position,
+    create: { userId: session.user.id, topicId, ...position }
+  });
 
   revalidatePath(`/forum/topic/${topicId}`);
   revalidatePath("/forum/unread");
@@ -191,56 +217,36 @@ export async function getUnreadTopicsCount() {
   const { count } = await getUnreadState(session.user.id);
   return count;
 }
+/**
+ * Sujets non lus du membre, page par page, du plus récent au plus ancien dernier message. La liste des sujets non lus
+ * vient de `getUnreadState` (une requête, partagée avec le reste de la page) ; seuls les sujets de la page sont lus en
+ * détail.
+ */
 export async function getUnreadTopics(page: number = 1, limit: number = 20) {
   const session = await getActiveSession();
   if (!session?.user?.id) return { topics: [], total: 0 };
 
-  const userId = session.user.id;
-  const skip = (page - 1) * limit;
+  const { topicIds } = await getUnreadState(session.user.id);
+  const pageIds = topicIds.slice((page - 1) * limit, page * limit);
 
-  // Récupérer tous les sujets potentiels (non archivés)
-  // On récupère uniquement le minimum pour le filtrage
-  const { roles } = await getForumAccess();
-  const allTopics = await prisma.topic.findMany({
-    where: { isArchived: false, ...topicAccessWhere(roles) },
+  const rows = pageIds.length === 0 ? [] : await prisma.topic.findMany({
+    where: { id: { in: pageIds } },
     select: {
       id: true,
-      updatedAt: true,
-      topicViews: {
-        where: { userId },
-        select: { lastViewedAt: true }
-      }
-    },
-    orderBy: { updatedAt: "desc" }
-  });
-
-  // Filtrer les IDs non lus
-  const unreadIds = allTopics
-    .filter(topic => {
-      const view = topic.topicViews[0];
-      if (!view) return true; // Jamais lu
-      return topic.updatedAt > view.lastViewedAt; // Mis à jour depuis la dernière lecture
-    })
-    .map(t => t.id);
-
-  const total = unreadIds.length;
-  const paginatedIds = unreadIds.slice(skip, skip + limit);
-
-  // Récupérer les données complètes pour les IDs de la page courante
-  const topics = await prisma.topic.findMany({
-    where: { id: { in: paginatedIds } },
-    include: {
-      author: true,
-      forum: true,
+      title: true,
+      tournamentId: true,
+      lastPostAt: true,
+      author: { select: PUBLIC_MEMBER_SELECT },
+      lastPostAuthor: { select: { name: true } },
+      forum: { select: { name: true } },
       _count: { select: { posts: true } },
-      topicViews: {
-        where: { userId }
-      }
     },
-    orderBy: { updatedAt: "desc" }
   });
+  // Même ordre que la liste des non-lus
+  const byId = new Map(rows.map((topic) => [topic.id, topic]));
+  const topics = pageIds.flatMap((id) => byId.get(id) ?? []);
 
-  return { topics, total };
+  return { topics, total: topicIds.length };
 }
 
 export async function getSubForumCount(parentForumId: string) {
@@ -352,12 +358,14 @@ export async function getQuoteStatusMap(contents: string[]) {
 
   const posts = await prisma.post.findMany({
     where: { id: { in: Array.from(postIds) } },
-    select: { id: true, isDeleted: true, isModerated: true }
+    select: { id: true, isDeleted: true, isModerated: true, authorId: true, author: { select: { name: true } } }
   });
 
-  const map: Record<string, { isDeleted: boolean, isModerated: boolean }> = {};
+  // L'auteur réel du message cité (carte 169) : parseBBCode n'affiche « Par @… » que si la balise désigne bien cet
+  // auteur, et avec son vrai pseudo. Une citation écrite à la main et attribuée à un autre membre perd donc cet onglet.
+  const map: QuoteStatusMap = {};
   for (const p of posts) {
-    map[p.id] = { isDeleted: p.isDeleted, isModerated: p.isModerated };
+    map[p.id] = { isDeleted: p.isDeleted, isModerated: p.isModerated, authorId: p.authorId, authorName: p.author.name };
   }
   return map;
 }
@@ -379,6 +387,17 @@ export async function getAllForums() {
   });
 }
 
+/**
+ * Supprime un forum vide et ses sous-forums vides (modérateurs). Depuis la carte 169 :
+ * - un forum qui contient encore des sujets, dans lui-même ou dans un de ses sous-forums, est refusé avec un message
+ *   clair : il faut d'abord déplacer ses sujets. Les sujets supprimés comptent aussi, car la suppression des sujets est
+ *   douce (carte 165) : ils restent en base pour pouvoir être restaurés, avec leurs messages et leur tournoi. Avant,
+ *   cette action effaçait réellement tous les sujets et messages, et laissait derrière elle les tournois, avec des liens
+ *   morts ;
+ * - la suppression des sous-forums et du forum se fait dans une transaction : une panne au milieu ne laisse plus un
+ *   forum à moitié vidé.
+ * C'est la même règle que la suppression d'un forum depuis l'administration (`app/administration/actionsStructure.ts`).
+ */
 export async function deleteForum(forumId: string, forumName: string): Promise<ActionResult> {
   const session = await getActiveSession();
   const userRole = session?.user?.role;
@@ -387,51 +406,38 @@ export async function deleteForum(forumId: string, forumName: string): Promise<A
     return { success: false, error: "Seuls les modérateurs peuvent supprimer des forums." };
   }
 
-  // Deleting a forum requires deleting all its content manually since we don't have cascade delete in schema
-  // We need to handle sub-forums too
-  const subForums = await prisma.forum.findMany({
-    where: { parentForumId: forumId },
-    select: { id: true }
-  });
+  const forum = await prisma.forum.findUnique({ where: { id: forumId }, select: { id: true, parentForumId: true } });
+  if (!forum) return { success: false, error: "Forum introuvable." };
 
-  const allForumIds = [forumId, ...subForums.map(sf => sf.id)];
+  // Le forum et tous ses sous-forums, sur autant de niveaux qu'il y en a (une requête par niveau)
+  const allForumIds = [forumId];
+  let level = [forumId];
+  while (level.length > 0) {
+    const children = await prisma.forum.findMany({ where: { parentForumId: { in: level } }, select: { id: true } });
+    level = children.map((child) => child.id).filter((id) => !allForumIds.includes(id));
+    allForumIds.push(...level);
+  }
 
-  // 1. Delete all TopicViews for topics in these forums
-  await prisma.topicView.deleteMany({
-    where: {
-      topic: {
-        forumId: { in: allForumIds }
-      }
-    }
-  });
+  const visibleTopics = await prisma.topic.count({ where: { forumId: { in: allForumIds }, isDeleted: false } });
+  const deletedTopics = await prisma.topic.count({ where: { forumId: { in: allForumIds }, isDeleted: true } });
+  if (visibleTopics > 0) {
+    return {
+      success: false,
+      error: `Ce forum contient encore ${visibleTopics} sujet${visibleTopics > 1 ? "s" : ""} (sous-forums compris). Déplacez-les d'abord vers un autre forum, ou supprimez-les.`,
+    };
+  }
+  if (deletedTopics > 0) {
+    return {
+      success: false,
+      error: `Ce forum contient ${deletedTopics} sujet${deletedTopics > 1 ? "s" : ""} supprimé${deletedTopics > 1 ? "s" : ""}, gardé${deletedTopics > 1 ? "s" : ""} pour pouvoir être restauré${deletedTopics > 1 ? "s" : ""}. Restaurez-les et déplacez-les vers un autre forum avant de supprimer celui-ci.`,
+    };
+  }
 
-  // 2. Delete all posts in these forums
-  await prisma.post.deleteMany({
-    where: {
-      topic: {
-        forumId: { in: allForumIds }
-      }
-    }
-  });
-
-  // 3. Delete all topics in these forums
-  await prisma.topic.deleteMany({
-    where: {
-      forumId: { in: allForumIds }
-    }
-  });
-
-  // 4. Delete sub-forums
-  await prisma.forum.deleteMany({
-    where: {
-      parentForumId: forumId
-    }
-  });
-
-  // 5. Delete the forum itself
-  const deletedForum = await prisma.forum.delete({
-    where: { id: forumId }
-  });
+  // Les sous-forums d'abord, des plus profonds aux plus proches, puis le forum lui-même
+  await prisma.$transaction([
+    ...allForumIds.slice(1).reverse().map((id) => prisma.forum.delete({ where: { id } })),
+    prisma.forum.delete({ where: { id: forumId } }),
+  ]);
 
   await logModerationAction(
     "FORUM_DELETED",
@@ -441,8 +447,9 @@ export async function deleteForum(forumId: string, forumName: string): Promise<A
   );
 
   revalidatePath("/forum");
-  if (deletedForum.parentForumId) {
-    revalidatePath(`/forum/${deletedForum.parentForumId}`);
+  updateTag("forum-categories");
+  if (forum.parentForumId) {
+    revalidatePath(`/forum/${forum.parentForumId}`);
   }
 
   redirect(`/forum?deletedForum=${encodeURIComponent(forumName)}`);
@@ -468,12 +475,15 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
   if (!title || !content || !forumId) {
     return { success: false, error: "Le titre et le message du sujet sont obligatoires." };
   }
+  // Titre de 3 à 150 caractères, message non vide et de 30 000 caractères au plus (carte 169)
+  const textError = topicTitleError(title) ?? postContentError(content);
+  if (textError) return { success: false, error: textError };
 
   // Vérifier l'accès (rôle), si le forum est locké ou un forum de tournoi
   const { roles } = await getForumAccess();
   const forum = await prisma.forum.findFirst({
     where: { id: forumId, ...forumAccessWhere(roles) },
-    select: { isLocked: true, isTournamentForum: true }
+    select: { isLocked: true, isTournamentForum: true, ...FORUM_ACCESS_SELECT }
   });
   if (!forum) return { success: false, error: "Forum introuvable." };
 
@@ -487,6 +497,13 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
     const tDateStr = formData.get("tDate") as string;
     const tEndDateStr = formData.get("tEndDate") as string;
     if (!tDateStr) return { success: false, error: "La date de début du tournoi est obligatoire." };
+
+    // Seuls les modérateurs et les administrateurs accréditent un tournoi de la Coupe de France (carte 162) : la case
+    // n'est pas affichée aux autres, et le serveur refuse la demande si elle arrive quand même.
+    const wantsCdf = formData.get("isCDF") === "on";
+    if (wantsCdf && !isModerator(session.user.role)) {
+      return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
+    }
     
     const startDate = new Date(tDateStr);
     const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
@@ -550,8 +567,8 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
       lodgingAtVenue: formData.get("tLodging") === "on",
       fridayArrival: formData.get("tFriday") === "on",
       isNAF: formData.get("isNAF") === "on",
-      isCDF: formData.get("isCDF") === "on",
-      typeCDF: formData.get("isCDF") === "on" ? (formData.get("typeCDF") as string || "INDIVIDUEL") : "INDIVIDUEL",
+      isCDF: wantsCdf,
+      typeCDF: wantsCdf ? (formData.get("typeCDF") as string || "INDIVIDUEL") : "INDIVIDUEL",
       isCGO: formData.get("isCGO") === "on",
       isTGE: formData.get("isTGE") === "on",
       isTSC: formData.get("isTSC") === "on",
@@ -576,7 +593,7 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
 
     const newTopic = await tx.topic.create({
       data: {
-        title,
+        title: title.trim(),
         forumId,
         authorId: session.user.id,
         isSticky: isSticky && isModerator(session.user.role),
@@ -585,7 +602,7 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
       }
     });
 
-    await tx.post.create({
+    const firstPost = await tx.post.create({
       data: {
         content,
         topicId: newTopic.id,
@@ -593,8 +610,25 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
       }
     });
 
-    return newTopic;
+    // Dernier message du sujet (carte 166), et position de lecture de l'auteur : son sujet n'est pas non lu pour lui
+    await tx.topic.update({
+      where: { id: newTopic.id },
+      data: { lastPostAt: firstPost.createdAt, lastPostId: firstPost.id, lastPostAuthorId: session.user.id }
+    });
+    await tx.topicView.create({
+      data: { userId: session.user.id, topicId: newTopic.id, lastReadPostAt: firstPost.createdAt, lastPostId: firstPost.id }
+    });
+
+    return { ...newTopic, firstPostId: firstPost.id };
   });
+
+  // Mentions du premier message et abonnement automatique de l'auteur (carte 167). Un échec ici n'annule pas le sujet.
+  try {
+    await notifyMentions({ postId: topic.firstPostId, topicId: topic.id, forum, authorId: session.user.id, content });
+    await followTopicAutomatically(session.user.id, topic.id);
+  } catch (error) {
+    console.error("createTopic notifications error:", error);
+  }
 
   revalidatePath(`/forum/${forumId}`);
   revalidatePath("/forum/unread");
@@ -608,19 +642,22 @@ export async function createPost(topicId: string, content: string): Promise<Acti
   if (!session?.user?.id) {
     return { success: false, error: "Vous devez être connecté pour répondre." };
   }
-  if (!content) return { success: false, error: "Le contenu est obligatoire." };
+  // Message non vide et de 30 000 caractères au plus (carte 169)
+  const contentError = postContentError(content);
+  if (contentError) return { success: false, error: contentError };
 
-  // Vérifier l'accès (rôle) et si le topic ou le forum est locké
+  // Vérifier l'accès (rôle) et si le sujet est verrouillé ou archivé, ou son forum verrouillé
   const { roles } = await getForumAccess();
   const topic = await prisma.topic.findFirst({
     where: { id: topicId, ...topicAccessWhere(roles) },
-    include: { forum: { select: { isLocked: true } } }
+    include: { forum: { select: { isLocked: true, ...FORUM_ACCESS_SELECT } } }
   });
 
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
-  if ((topic.isLocked || topic.forum.isLocked) && !isModerator(session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus y répondre." };
+  // Un sujet archivé est fermé comme un sujet verrouillé (carte 169) : avant, il acceptait des réponses invisibles
+  if (isTopicClosedFor(writeState(topic), isModerator(session.user.role))) {
+    return { success: false, error: closedTopicMessage(writeState(topic)) };
   }
 
   const post = await prisma.post.create({
@@ -631,91 +668,40 @@ export async function createPost(topicId: string, content: string): Promise<Acti
     }
   });
 
-  // 1. Détection des mentions via Regex
-  const mentionRegex = /\[mention=([a-zA-Z0-9_-]+)\]/gi;
-  const mentionedIds = new Set<string>();
-  let match;
-  while ((match = mentionRegex.exec(content)) !== null) {
-    if (match[1] !== session.user.id) {
-      mentionedIds.add(match[1]);
-    }
-  }
+  // Dernier message du sujet (carte 166) : sert au tri des listes, au non-lu et à « Dernier : … »
+  // (sans effet si un message plus récent, envoyé au même moment, est déjà enregistré)
+  await prisma.topic.updateMany({
+    where: { id: topicId, lastPostAt: { lte: post.createdAt } },
+    data: { lastPostAt: post.createdAt, lastPostId: post.id, lastPostAuthorId: session.user.id }
+  });
 
-  // 2. Tâches asynchrones parallélisées (Notifications et Updates)
-  const taskPromises = [];
+  // Position de lecture de l'auteur : sa propre réponse ne rend pas le sujet non lu pour lui
+  const authorPosition = { lastReadPostAt: post.createdAt, lastPostId: post.id };
+  await prisma.topicView.upsert({
+    where: { userId_topicId: { userId: session.user.id, topicId } },
+    update: authorPosition,
+    create: { userId: session.user.id, topicId, ...authorPosition }
+  });
 
-  // Mentions
-  if (mentionedIds.size > 0) {
-    taskPromises.push((async () => {
-      const mentionedUsers = await prisma.user.findMany({
-        where: { id: { in: Array.from(mentionedIds) } },
-        select: { id: true, email: true, notifMention: true }
-      });
-
-      // Une requête par lot (post neuf : pas de doublon possible sur @@unique([postId, mentionedUserId]))
-      const [, followerRows] = await Promise.all([
-        prisma.mention.createMany({
-          data: mentionedUsers.map((mUser) => ({
-            postId: post.id,
-            mentionedUserId: mUser.id,
-            mentionerId: session.user.id
-          }))
-        }).catch(() => null),
-        prisma.topicFollow.findMany({
-          where: { topicId, userId: { in: mentionedUsers.map((mUser) => mUser.id) } },
-          select: { userId: true }
-        })
-      ]);
-      const followerIds = new Set(followerRows.map((row) => row.userId));
-
-      for (const mUser of mentionedUsers) {
-        // Les abonnés reçoivent déjà la notification de suivi
-        if (mUser.email && mUser.notifMention && !followerIds.has(mUser.id)) {
-          sendMentionNotification(mUser.email, session.user.name || "Un coach", topic.title, topicId);
-        }
-      }
-    })());
-  }
-
-  // Suivis de sujet
-  taskPromises.push((async () => {
-    const followers = await prisma.topicFollow.findMany({
-      where: { 
-        topicId,
-        userId: { not: session.user.id }
-      },
-      include: {
-        user: { select: { email: true, notifFollowedTopic: true } }
-      }
+  // Notifications (carte 167) : mentions de la réponse, puis abonnés du sujet (un membre mentionné ne reçoit pas en plus
+  // la notification de suivi). Les droits sur le forum et les blocages sont vérifiés pour chaque destinataire, et les
+  // e-mails partent après la réponse au membre, avec after(). Les requêtes se suivent au lieu d'être lancées ensemble :
+  // la base locale de développement ne sait pas traiter plusieurs requêtes à la fois. Un échec ici n'annule pas la
+  // réponse.
+  try {
+    const mentioned = await notifyMentions({ postId: post.id, topicId, forum: topic.forum, authorId: session.user.id, content });
+    await notifyFollowers({
+      postId: post.id,
+      topic: { id: topicId, title: topic.title, previousLastPostAt: topic.lastPostAt },
+      forum: topic.forum,
+      author: { id: session.user.id, name: session.user.name || "Un coach" },
+      skipUserIds: mentioned,
     });
-
-    const notified = followers.filter((follow) => follow.user.email && follow.user.notifFollowedTopic);
-    const views = notified.length > 0
-      ? await prisma.topicView.findMany({
-          where: { topicId, userId: { in: notified.map((follow) => follow.userId) } },
-          select: { userId: true, lastViewedAt: true }
-        })
-      : [];
-    const lastViewByUser = new Map(views.map((view) => [view.userId, view.lastViewedAt]));
-
-    for (const follow of notified) {
-      if (follow.user.email) {
-        const lastViewedAt = lastViewByUser.get(follow.userId);
-        if (!lastViewedAt || lastViewedAt >= topic.updatedAt) {
-          sendFollowNotification(follow.user.email, session.user.name || "Un coach", topic.title, topicId);
-        }
-      }
-    }
-  })());
-
-  // Mise à jour du topic (bubble up)
-  taskPromises.push(prisma.topic.update({
-    where: { id: topicId },
-    data: { updatedAt: new Date() }
-  }));
-
-  // Attendre toutes les opérations DB/Notifications avant de répondre
-  await Promise.all(taskPromises);
+    // Abonnement automatique de l'auteur, après le calcul des abonnés (il n'est jamais prévenu de sa propre réponse)
+    await followTopicAutomatically(session.user.id, topicId);
+  } catch (error) {
+    console.error("createPost notifications error:", error);
+  }
 
   revalidatePath(`/forum/topic/${topicId}`);
   return { success: true, postId: post.id };
@@ -727,6 +713,9 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     return { success: false, error: "Vous devez être connecté pour modifier un message." };
   }
 
+  const contentError = postContentError(content);
+  if (contentError) return { success: false, error: contentError };
+
   const existingPost = await findAccessiblePost(postId);
 
   if (!existingPost) return { success: false, error: "Message introuvable." };
@@ -734,7 +723,7 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce message." };
   }
   if (isLockedFor(existingPost, session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus modifier ce message." };
+    return { success: false, error: "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus modifier ce message." };
   }
 
   await prisma.post.update({
@@ -742,42 +731,52 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     data: { content, updatedAt: new Date() }
   });
 
-  // Calcul de la page pour le retour
-  const countBefore = await prisma.post.count({
-    where: {
-      topicId: existingPost.topicId,
-      OR: [
-        { createdAt: { lt: existingPost.createdAt } },
-        {
-          createdAt: existingPost.createdAt,
-          id: { lt: existingPost.id }
-        }
-      ]
+  // Une mention ajoutée en modifiant le message prévient le membre mentionné (carte 167) ; les membres déjà mentionnés
+  // dans ce message ne sont pas prévenus une deuxième fois. La mention est attribuée à l'auteur du message.
+  try {
+    const forum = await prisma.forum.findUnique({ where: { id: existingPost.topic.forumId }, select: FORUM_ACCESS_SELECT });
+    if (forum) {
+      await notifyMentions({ postId, topicId: existingPost.topicId, forum, authorId: existingPost.authorId, content });
     }
-  });
-  const POSTS_PER_PAGE = 20;
-  const page = Math.floor(countBefore / POSTS_PER_PAGE) + 1;
+  } catch (error) {
+    console.error("updatePost notifications error:", error);
+  }
+
+  // Page du sujet où revenir après l'enregistrement
+  const page = await forumPostPage(existingPost.topicId, existingPost);
 
   revalidatePath(`/forum/topic/${existingPost.topicId}`);
   return { success: true, topicId: existingPost.topicId, page };
 }
 
+/**
+ * Un message du forum, pour la citation de la page Répondre. Comme toute action serveur, elle peut être appelée
+ * directement depuis le navigateur : le texte d'un message supprimé, ou masqué pour un lecteur qui n'est ni son auteur
+ * ni modérateur, est donc vidé ici, et l'auteur se réduit à son identifiant, son pseudo et son avatar (carte 164).
+ */
 export async function getPostById(postId: string) {
-  const { roles } = await getForumAccess();
-  return await prisma.post.findFirst({
+  const [{ roles }, session] = await Promise.all([getForumAccess(), getActiveSession()]);
+  const post = await prisma.post.findFirst({
     where: { id: postId, topic: topicAccessWhere(roles) },
-    include: { author: true, topic: true }
+    include: { author: { select: PUBLIC_MEMBER_SELECT } }
   });
+  return post ? hidePostContent(post, { id: session?.user?.id, isModerator: isModerator(session?.user?.role) }) : null;
 }
 
+/**
+ * Les derniers messages d'un sujet, pour le rappel sous l'éditeur. Même protection que `getPostById` : texte vidé
+ * pour un message supprimé ou masqué, auteur réduit au pseudo et à l'avatar.
+ */
 export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
-  const { roles } = await getForumAccess();
-  return await prisma.post.findMany({
+  const [{ roles }, session] = await Promise.all([getForumAccess(), getActiveSession()]);
+  const posts = await prisma.post.findMany({
     where: { topicId, topic: topicAccessWhere(roles) },
     take: limit,
     orderBy: { createdAt: "desc" },
-    include: { author: true }
+    include: { author: { select: PUBLIC_MEMBER_SELECT } }
   });
+  const viewer = { id: session?.user?.id, isModerator: isModerator(session?.user?.role) };
+  return posts.map(post => hidePostContent(post, viewer));
 }
 
 export async function moderatePost(postId: string, reason: string): Promise<ActionResult> {
@@ -810,6 +809,8 @@ export async function moderatePost(postId: string, reason: string): Promise<Acti
     "POST",
     `Message modéré. Raison : ${reason}`
   );
+  // Le message masqué n'a plus besoin d'être traité : ses signalements en attente se ferment (carte 168)
+  await closePendingReports("POST", [postId], session.user.id);
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   return { success: true };
@@ -848,42 +849,111 @@ export async function unmoderatePost(postId: string): Promise<ActionResult> {
   return { success: true };
 }
 
-export async function deletePost(postId: string): Promise<ActionResult> {
+/**
+ * Supprime un message, en suppression douce (carte 165) : le message reste en base, marqué supprimé avec la date,
+ * le membre qui l'a supprimé et, pour la modération, la raison. Son texte n'est plus montré à personne.
+ * - L'auteur supprime son message sans raison. S'il s'agit du premier message d'un sujet resté sans réponse, c'est
+ *   le sujet entier qui est supprimé ; s'il y a des réponses, c'est refusé.
+ * - Un modérateur supprime le message d'un autre membre (un spam, par exemple) avec une raison obligatoire, et peut
+ *   ensuite le restaurer (`restorePost`).
+ * Les règles elles-mêmes sont dans lib/forumDeletion.ts.
+ */
+export async function deletePost(postId: string, reason?: string): Promise<ActionResult & { topicDeleted?: boolean; topicTitle?: string }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
     return { success: false, error: "Vous devez être connecté." };
   }
+  const userId = session.user.id;
 
   const post = await findAccessiblePost(postId);
 
   if (!post) return { success: false, error: "Message introuvable." };
   if (isLockedFor(post, session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé. Vous ne pouvez plus supprimer ce message." };
+    return { success: false, error: "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus supprimer ce message." };
   }
 
-  // Check if it's the author
-  // NOTE: User said ONLY the creator can delete it. 
-  // Modérateurs can moderate but not delete (based on requirement 6).
-  if (post.authorId !== session.user.id) {
-    return { success: false, error: "Seul l'auteur peut supprimer son message." };
+  // Le premier message du sujet (même ordre que la page du sujet) et le nombre de réponses encore visibles
+  const [firstPost, otherVisiblePosts] = await Promise.all([
+    prisma.post.findFirst({ where: { topicId: post.topicId }, orderBy: [{ createdAt: "asc" }, { id: "asc" }], select: { id: true } }),
+    prisma.post.count({ where: { topicId: post.topicId, isDeleted: false, id: { not: postId } } }),
+  ]);
+
+  const decision = decidePostDeletion({
+    viewerId: userId,
+    viewerIsModerator: isModerator(session.user.role),
+    post,
+    isFirstPost: firstPost?.id === postId,
+    otherVisiblePosts,
+    topicHasTournament: !!post.topic.tournamentId,
+    reason,
+  });
+  if (decision.kind === "refuse") return { success: false, error: decision.error };
+
+  if (decision.kind === "deleteTopic") {
+    // Premier message d'un sujet sans réponse : le sujet entier disparaît (suppression douce, restaurable)
+    await markTopicDeleted(post.topicId, userId, null);
+    await logModerationAction(
+      "TOPIC_DELETED",
+      post.topicId,
+      "TOPIC",
+      `Sujet supprimé par son auteur (premier message supprimé, aucune réponse) : ${post.topic.title}`
+    );
+    // Le sujet et son premier message ont disparu : leurs signalements en attente se ferment (carte 168)
+    await closePendingReports("TOPIC", [post.topicId], userId);
+    await closePendingReports("POST", [postId], userId);
+    revalidateTopicLists(post.topic.forumId, post.topicId);
+    return { success: true, topicDeleted: true, topicTitle: post.topic.title };
   }
 
-  // Soft delete: just mark the post as isDeleted
+  const cleanReason = decision.byModeration ? (reason ?? "").trim() : null;
   await prisma.post.update({
     where: { id: postId },
-    data: { isDeleted: true }
+    data: { isDeleted: true, deletedAt: new Date(), deletedById: userId, deletionReason: cleanReason }
   });
+  // Le message supprimé était peut-être le dernier du sujet
+  await refreshTopicLastPost(post.topicId);
 
-  // Log de la suppression (même si c'est par l'auteur, c'est utile à l'historique)
+  // Trace au journal de modération, aussi quand c'est l'auteur qui supprime : utile pour l'historique
   await logModerationAction(
-    "POST_MODERATED", // On réutilise ce type pour charger le log si on n'en a pas de spécifique, mais on précise dans les détails
+    "POST_DELETED",
     postId,
     "POST",
-    `Suppression du message par l'auteur`
+    decision.byModeration ? `Message supprimé par la modération. Raison : ${cleanReason}` : "Message supprimé par son auteur"
   );
+  // Le message supprimé n'a plus besoin d'être traité : ses signalements en attente se ferment (carte 168)
+  await closePendingReports("POST", [postId], userId);
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   revalidatePath(`/forum/${post.topic.forumId}`);
+  return { success: true };
+}
+
+/**
+ * Restaure un message supprimé par la modération (carte 165). Réservé aux modérateurs. Un message que son auteur a
+ * lui-même supprimé n'est pas restaurable : c'était sa décision.
+ */
+export async function restorePost(postId: string): Promise<ActionResult> {
+  const session = await getActiveSession();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    return { success: false, error: "Seuls les modérateurs peuvent restaurer un message." };
+  }
+
+  const post = await findAccessiblePost(postId);
+  if (!post) return { success: false, error: "Message introuvable." };
+  if (!canRestorePost(post, true)) {
+    return { success: false, error: "Seul un message supprimé par la modération peut être restauré." };
+  }
+
+  await prisma.post.update({
+    where: { id: postId },
+    data: { isDeleted: false, deletedAt: null, deletedById: null, deletionReason: null }
+  });
+  // Le message restauré redevient peut-être le dernier du sujet
+  await refreshTopicLastPost(post.topicId);
+
+  await logModerationAction("POST_RESTORED", postId, "POST", "Message supprimé par la modération restauré");
+
+  revalidatePath(`/forum/topic/${post.topicId}`);
   return { success: true };
 }
 
@@ -899,39 +969,16 @@ export async function markAllTopicsAsRead() {
   if (!userExists) return { success: false, error: "Utilisateur introuvable" };
 
   try {
-    // Uniquement les sujets que ce membre peut voir : les archivés et les forums réservés à d'autres rôles sont exclus
-    const { roles } = await getForumAccess();
-    const topics = await prisma.topic.findMany({
-      where: { isArchived: false, ...topicAccessWhere(roles) },
-      select: {
-        id: true,
-        updatedAt: true,
-        topicViews: {
-          where: { userId: session.user.id },
-          select: { lastViewedAt: true }
-        }
-      }
-    });
-
+    // Carte 166 : au lieu d'une ligne par sujet, une date « tout est lu avant le… » pour le membre, et la position de
+    // lecture des sujets déjà ouverts amenée à la même date (sinon ils suivraient encore leur ancienne position)
     const now = new Date();
-    const toUpdate = topics.filter(t => !t.topicViews[0] || t.topicViews[0].lastViewedAt < t.updatedAt);
-
-    if (toUpdate.length > 0) {
-      await prisma.$transaction(
-        toUpdate.map(t => 
-          prisma.topicView.upsert({
-            where: {
-              userId_topicId: {
-                userId: session.user.id,
-                topicId: t.id
-              }
-            },
-            update: { lastViewedAt: now },
-            create: { userId: session.user.id, topicId: t.id, lastViewedAt: now }
-          })
-        )
-      );
-    }
+    await prisma.$transaction([
+      prisma.user.update({ where: { id: session.user.id }, data: { forumReadAllAt: now } }),
+      prisma.topicView.updateMany({
+        where: { userId: session.user.id, lastReadPostAt: { lt: now } },
+        data: { lastReadPostAt: now, lastPostId: null }
+      }),
+    ]);
 
     revalidatePath("/forum");
     return { success: true };
@@ -970,46 +1017,109 @@ export async function togglePinTopic(topicId: string): Promise<ActionResult> {
   return { success: true };
 }
 
-export async function deleteTopicPermanent(topicId: string, topicTitle: string): Promise<ActionResult> {
+/**
+ * Marque un sujet supprimé, ou le restaure (carte 165). La mise à jour passe par une requête SQL directe, comme le
+ * compteur de vues de `markTopicAsRead` : la date de dernière modification du sujet (`updatedAt`) ne bouge pas. Depuis
+ * la carte 166, le non-lu et le tri des listes suivent le dernier message (`lastPostAt`), que la suppression d'un sujet
+ * ne change pas (ses messages restent en place) : le sujet restauré ne redevient pas « non lu » et ne remonte pas.
+ */
+async function markTopicDeleted(topicId: string, deletedById: string, reason: string | null) {
+  await prisma.$executeRaw`UPDATE "Topic" SET "isDeleted" = true, "deletedAt" = NOW(), "deletedById" = ${deletedById}, "deletionReason" = ${reason} WHERE "id" = ${topicId}`;
+}
+
+async function markTopicRestored(topicId: string) {
+  await prisma.$executeRaw`UPDATE "Topic" SET "isDeleted" = false, "deletedAt" = NULL, "deletedById" = NULL, "deletionReason" = NULL WHERE "id" = ${topicId}`;
+}
+
+/**
+ * Renouvelle les pages et les caches qui listent des sujets ou des tournois, après la suppression ou la restauration
+ * d'un sujet : le forum, l'accueil du forum (cache « forum-categories »), les non-lus, les tournois et l'accueil du
+ * site (cache « home-tournaments »).
+ */
+function revalidateTopicLists(forumId: string, topicId: string) {
+  revalidatePath(`/forum/${forumId}`);
+  revalidatePath(`/forum/topic/${topicId}`);
+  revalidatePath("/forum");
+  revalidatePath("/forum/unread");
+  revalidatePath("/tournois");
+  updateTag("forum-categories");
+  updateTag("home-tournaments");
+}
+
+/**
+ * Supprime un sujet, en suppression douce (carte 165) : réservé aux modérateurs, avec une raison, inscrit au journal
+ * et restaurable (`restoreTopic`). Rien n'est effacé : les messages, le tournoi et ses inscriptions restent en base.
+ * Le sujet disparaît des listes, des non-lus, de la recherche et du profil ; un membre qui l'ouvre tombe sur une page
+ * introuvable, un modérateur le voit avec un bandeau « Sujet supprimé ».
+ * Un sujet qui porte un tournoi ayant des résultats publiés est refusé : il faut d'abord annuler le tournoi.
+ */
+export async function deleteTopic(topicId: string, reason: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non connecté." };
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId }
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, ...topicAccessWhere(roles) },
+    select: {
+      title: true,
+      forumId: true,
+      isDeleted: true,
+      tournament: { select: { isCancelled: true, _count: { select: { results: true } } } },
+    },
   });
 
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
-  const isAuthor = topic.authorId === session.user.id;
-  const isMod = isModerator(session.user.role);
-
-  if (!isAuthor && !isMod) {
-    return { success: false, error: "Action non autorisée." };
-  }
-
-  // Si le sujet est lié à un tournoi, on doit aussi supprimer le tournoi
-  // ce qui supprimera par cascade les résultats, inscriptions, etc. (Action Critique)
-  await prisma.$transaction(async (tx) => {
-    await tx.topicView.deleteMany({ where: { topicId } });
-    await tx.post.deleteMany({ where: { topicId } });
-    await tx.topic.delete({ where: { id: topicId } });
-
-    if (topic.tournamentId) {
-      await tx.tournament.delete({ where: { id: topic.tournamentId } });
-    }
+  const refusal = topicDeletionRefusal({
+    viewerIsModerator: isModerator(session.user.role),
+    isDeleted: topic.isDeleted,
+    tournament: topic.tournament ? { isCancelled: topic.tournament.isCancelled, resultCount: topic.tournament._count.results } : null,
   });
+  if (refusal) return { success: false, error: refusal };
+  const cleanReason = reason?.trim();
+  if (!cleanReason) return { success: false, error: "Indiquez la raison de la suppression." };
+
+  await markTopicDeleted(topicId, session.user.id, cleanReason);
 
   await logModerationAction(
     "TOPIC_DELETED",
     topicId,
     "TOPIC",
-    `Suppression définitive du sujet${topic.tournamentId ? " et de son tournoi" : ""} : ${topicTitle}`
+    `Sujet supprimé${topic.tournament ? " (son tournoi n'est plus affiché)" : ""} : ${topic.title}. Raison : ${cleanReason}`
   );
+  // Le sujet supprimé n'a plus besoin d'être traité : ses signalements en attente se ferment (carte 168). Ceux de ses
+  // messages restent ouverts ; l'écran de modération les montre comme « contenu déjà supprimé », avec « Fermer ».
+  await closePendingReports("TOPIC", [topicId], session.user.id);
 
-  revalidatePath(`/forum/${topic.forumId}`);
-  revalidatePath("/tournois");
-  revalidatePath("/classement");
-  redirect(`/forum?deletedTopic=${encodeURIComponent(topicTitle)}`);
+  revalidateTopicLists(topic.forumId, topicId);
+  redirect(`/forum?deletedTopic=${encodeURIComponent(topic.title)}`);
+}
+
+/** Restaure un sujet supprimé (carte 165), avec tous ses messages. Réservé aux modérateurs. */
+export async function restoreTopic(topicId: string): Promise<ActionResult> {
+  const session = await getActiveSession();
+  if (!session?.user?.id || !isModerator(session.user.role)) {
+    return { success: false, error: "Seuls les modérateurs peuvent restaurer un sujet." };
+  }
+
+  // Un sujet supprimé n'est pas trouvé par topicAccessWhere : seul l'accès au forum est vérifié ici
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, isDeleted: true, forum: forumAccessWhere(roles) },
+    select: { title: true, forumId: true },
+  });
+  if (!topic) return { success: false, error: "Sujet supprimé introuvable." };
+  // Un sujet fusionné dans un autre (carte 169) n'a plus de messages : le restaurer donnerait un sujet vide
+  const postCount = await prisma.post.count({ where: { topicId } });
+  if (postCount === 0) {
+    return { success: false, error: "Ce sujet a été fusionné dans un autre : ses messages n'y sont plus, il ne peut pas être restauré." };
+  }
+
+  await markTopicRestored(topicId);
+  await logModerationAction("TOPIC_RESTORED", topicId, "TOPIC", `Sujet restauré : ${topic.title}`);
+
+  revalidateTopicLists(topic.forumId, topicId);
+  return { success: true };
 }
 
 export async function moveTopic(topicId: string, newForumId: string): Promise<ActionResult> {
@@ -1046,33 +1156,54 @@ export async function moveTopic(topicId: string, newForumId: string): Promise<Ac
   return { success: true };
 }
 
+/**
+ * Renomme un sujet : son auteur ou un modérateur. Depuis la carte 169, le titre doit compter de 3 à 150 caractères
+ * (avant, un titre vide était accepté), et un sujet verrouillé ou archivé, ou rangé dans un forum verrouillé, ne peut
+ * plus être renommé que par un modérateur.
+ */
 export async function updateTopicTitle(topicId: string, title: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
     return { success: false, error: "Vous devez être connecté." };
   }
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId },
-    select: { authorId: true }
+  const titleError = topicTitleError(title);
+  if (titleError) return { success: false, error: titleError };
+
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, ...topicAccessWhere(roles) },
+    select: { authorId: true, isLocked: true, isArchived: true, forum: { select: { isLocked: true } } }
   });
 
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
   const sessionUser = session.user as { id: string; role: string };
-  if (topic.authorId !== sessionUser.id && !isModerator(sessionUser.role)) {
+  const viewerIsModerator = isModerator(sessionUser.role);
+  if (topic.authorId !== sessionUser.id && !viewerIsModerator) {
     return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce sujet." };
+  }
+  if (isTopicClosedFor(writeState(topic), viewerIsModerator)) {
+    return { success: false, error: "Ce sujet est verrouillé ou archivé : seul un modérateur peut encore le renommer." };
   }
 
   await prisma.topic.update({
     where: { id: topicId },
-    data: { title }
+    data: { title: title.trim() }
   });
 
   revalidatePath(`/forum/topic/${topicId}`);
   return { success: true };
 }
 
+/**
+ * Ajoute, remplace ou retire la réaction du membre sur un message : un membre n'a qu'une réaction par message. Depuis
+ * la carte 169 :
+ * - l'émoji doit être l'un de ceux proposés à l'écran (`REACTION_EMOJIS`) ; retirer une ancienne réaction reste possible ;
+ * - un sujet archivé refuse les réactions, comme un sujet verrouillé ;
+ * - les appels d'un même membre sur un même message passent l'un après l'autre (verrou de la base, voir plus bas) :
+ *   un double appui ne crée plus deux réactions.
+ */
 export async function togglePostReaction(postId: string, emoji: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
@@ -1082,43 +1213,29 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
   const target = await findAccessiblePost(postId);
   if (!target || target.isDeleted) return { success: false, error: "Message introuvable." };
   if (isLockedFor(target, session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé." };
+    return { success: false, error: closedTopicMessage(writeState(target.topic)) };
   }
 
-  const existing = await prisma.postReaction.findFirst({
-    where: {
-      postId,
-      userId
+  const lockKey = `reaction:${postId}:${userId}`;
+  const outcome = await prisma.$transaction(async (tx) => {
+    // Verrou de la base propre à ce membre et à ce message, rendu à la fin de la transaction : un second appel lancé
+    // au même moment (double appui) attend que le premier soit enregistré, puis voit sa réaction
+    await tx.$queryRaw`SELECT pg_advisory_xact_lock(hashtext(${lockKey}))::text AS locked`;
+    const existing = await tx.postReaction.findMany({ where: { postId, userId }, select: { id: true, emoji: true } });
+
+    if (existing.some((reaction) => reaction.emoji === emoji)) {
+      // Même émoji : la réaction est retirée (et un éventuel doublon ancien avec elle)
+      await tx.postReaction.deleteMany({ where: { postId, userId } });
+      return "removed";
     }
+    if (!isAllowedReaction(emoji)) return "refused";
+    await tx.postReaction.deleteMany({ where: { postId, userId } });
+    await tx.postReaction.create({ data: { postId, userId, emoji } });
+    return "set";
   });
+  if (outcome === "refused") return { success: false, error: "Cette réaction n'est pas proposée." };
 
-  if (existing) {
-    if (existing.emoji === emoji) {
-      await prisma.postReaction.delete({ where: { id: existing.id } });
-    } else {
-      await prisma.postReaction.update({
-        where: { id: existing.id },
-        data: { emoji }
-      });
-    }
-  } else {
-    await prisma.postReaction.create({
-      data: {
-        postId,
-        userId,
-        emoji
-      }
-    });
-  }
-
-  const post = await prisma.post.findUnique({
-    where: { id: postId },
-    select: { topicId: true }
-  });
-
-  if (post) {
-    revalidatePath(`/forum/topic/${post.topicId}`);
-  }
+  revalidatePath(`/forum/topic/${target.topicId}`);
   return { success: true };
 }
 
@@ -1178,7 +1295,8 @@ export async function isFollowingTopic(topicId: string) {
 }
 
 /**
- * Basculer le suivi d'un sujet.
+ * Basculer le suivi d'un sujet. On ne peut suivre qu'un sujet accessible à son rôle et non supprimé (carte 167) ;
+ * arrêter de suivre reste toujours possible.
  */
 export async function toggleFollowTopic(topicId: string) {
   const session = await getActiveSession();
@@ -1186,6 +1304,8 @@ export async function toggleFollowTopic(topicId: string) {
   if (!userId) return { success: false, error: "Non autorisé", isFollowing: false };
 
   try {
+    const { roles } = await getForumAccess();
+    const accessible = await prisma.topic.findFirst({ where: { id: topicId, ...topicAccessWhere(roles) }, select: { id: true } });
     const isAlreadyFollowing = await isFollowingTopic(topicId);
 
     if (isAlreadyFollowing) {
@@ -1201,6 +1321,7 @@ export async function toggleFollowTopic(topicId: string) {
       return { success: true, isFollowing: false };
     }
 
+    if (!accessible) return { success: false, error: "Sujet introuvable.", isFollowing: false };
     await (prisma as any).topicFollow.create({
       data: {
         userId,
@@ -1230,47 +1351,39 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
     const { roles } = await getForumAccess();
     const followWhere = { userId, topic: topicAccessWhere(roles) };
 
-    // 1. Get total count
-    const totalCount = await (prisma as any).topicFollow.count({
-      where: followWhere
-    });
+    const [totalCount, follows, user] = await Promise.all([
+      prisma.topicFollow.count({ where: followWhere }),
+      prisma.topicFollow.findMany({
+        where: followWhere,
+        skip,
+        take: limit,
+        select: {
+          topic: {
+            select: {
+              id: true,
+              title: true,
+              forumId: true,
+              lastPostAt: true,
+              topicViews: { where: { userId }, select: { lastReadPostAt: true, lastPostId: true } },
+            },
+          },
+        },
+        // Du plus récent au plus ancien dernier message (carte 166)
+        orderBy: { topic: { lastPostAt: "desc" } },
+      }),
+      prisma.user.findUnique({ where: { id: userId }, select: { forumReadAllAt: true } }),
+    ]);
     const totalPages = Math.ceil(totalCount / limit);
+    const readAllAt = user?.forumReadAllAt ?? new Date(0);
 
-    // 2. Get paginated results with included Topic and TopicView
-    const follows = await (prisma as any).topicFollow.findMany({
-      where: followWhere,
-      skip,
-      take: limit,
-      include: {
-        topic: {
-          include: {
-            topicViews: {
-              where: { userId }
-            }
-          }
-        }
-      },
-      orderBy: {
-        topic: {
-           updatedAt: 'desc'
-        }
-      }
-    });
-
-    const topics = follows.map((f: any) => {
-      const topic = f.topic;
-      const view = topic.topicViews?.[0];
-      
-      const topicDate = new Date(topic.updatedAt);
-      const viewDate = view ? new Date(view.lastViewedAt) : null;
-      const isUnread = !viewDate || topicDate.getTime() > viewDate.getTime();
-      
+    const topics = follows.map(({ topic }) => {
+      const view = topic.topicViews[0];
       return {
         id: topic.id,
         title: topic.title,
-        updatedAt: topicDate,
+        lastPostAt: topic.lastPostAt,
         forumId: topic.forumId,
-        isUnread: isUnread,
+        isUnread: isTopicUnread(topic.lastPostAt, view ? { at: view.lastReadPostAt, postId: view.lastPostId } : null, readAllAt),
       };
     });
 
@@ -1404,6 +1517,9 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   if (!title || !content || !tDateStr) {
     return { success: false, error: "Titre, contenu et date de début sont obligatoires." };
   }
+  // Mêmes limites que pour un sujet ordinaire (carte 169)
+  const textError = topicTitleError(title) ?? postContentError(content);
+  if (textError) return { success: false, error: textError };
 
   const startDate = new Date(tDateStr);
   const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
@@ -1420,6 +1536,20 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   const tLngForm = formData.get("tLng") as string;
   let lat = tLatForm ? parseFloat(tLatForm) : null;
   let lng = tLngForm ? parseFloat(tLngForm) : null;
+
+  // Case « CDF » : seuls les modérateurs et les administrateurs la changent (carte 162). Pour les autres, le tournoi
+  // garde son statut CDF ; seul le type de classement CDF suit le format (individuel ou par équipes) choisi dans le
+  // formulaire. Retirer ou remettre la case annule une éventuelle validation des résultats par la modération.
+  const wantsCdf = formData.get("isCDF") === "on";
+  if (wantsCdf && !tournament.isCDF && !isMod) {
+    return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
+  }
+  const isCdfNew = isMod ? wantsCdf : tournament.isCDF;
+  const cdfUpdate = {
+    isCDF: isCdfNew,
+    typeCDF: isCdfNew ? (formData.get("typeCDF") as string || tournament.typeCDF || "INDIVIDUEL") : "INDIVIDUEL",
+    ...(isCdfNew !== tournament.isCDF ? { cdfValidatedAt: null, cdfValidatedById: null } : {})
+  };
 
   // Mise à jour du tournoi
   const updateData: any = {
@@ -1452,8 +1582,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     lodgingAtVenue: formData.get("tLodging") === "on",
     fridayArrival: formData.get("tFriday") === "on",
     isNAF: formData.get("isNAF") === "on",
-    isCDF: formData.get("isCDF") === "on",
-    typeCDF: formData.get("isCDF") === "on" ? (formData.get("typeCDF") as string || "INDIVIDUEL") : "INDIVIDUEL",
+    ...cdfUpdate,
     isCGO: formData.get("isCGO") === "on",
     isTGE: formData.get("isTGE") === "on",
     isTSC: formData.get("isTSC") === "on",

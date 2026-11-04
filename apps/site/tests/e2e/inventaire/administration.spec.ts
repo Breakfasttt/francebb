@@ -197,7 +197,7 @@ test("accès : un visiteur est envoyé vers la connexion, un modérateur est ren
   await expect(page).not.toHaveURL(/\/administration/);
 });
 
-test("onglets gardés dans l'adresse ; « Zone de danger » réservée au super administrateur", async ({ page }) => {
+test("onglets gardés dans l'adresse ; plus de « Zone de danger », même pour le super administrateur (carte 158)", async ({ page }) => {
   await loginAs(page, ADMIN.id);
   await page.goto("/administration", { waitUntil: "networkidle" });
 
@@ -212,8 +212,7 @@ test("onglets gardés dans l'adresse ; « Zone de danger » réservée au super 
   await page.context().clearCookies();
   await loginAs(page, SA.id);
   await page.goto("/administration?tab=general", { waitUntil: "networkidle" });
-  await (await adminTab(page, RESET_TAB)).click();
-  await expect(page).toHaveURL(/[?&]tab=reset/);
+  await expect(await adminTab(page, RESET_TAB)).toHaveCount(0);
 });
 
 test("general : lien d'invitation Discord", async ({ page }) => {
@@ -401,34 +400,3 @@ test("info-mails : objet et message, puis confirmation « Oui, diffuser » (annu
   await expect(dialog).toBeHidden();
 });
 
-test("reset : réservé au super administrateur, bouton désactivé tant que la phrase n'est pas exacte (jamais déclenché)", async ({ page }) => {
-  await loginAs(page, ADMIN.id);
-  await page.goto("/administration?tab=reset", { waitUntil: "networkidle" });
-  await expect(page.getByRole("button", { name: "Remise à zéro du site" })).toHaveCount(0);
-
-  await page.context().clearCookies();
-  await loginAs(page, SA.id);
-  await page.goto("/administration?tab=reset", { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: "Remise à zéro du site" }).click();
-
-  const boxes = page.getByRole("checkbox");
-  await expect(boxes).toHaveCount(3);
-  const confirm = page.getByRole("button", { name: "Remettre le site à zéro" });
-  const phrase = page.getByRole("textbox", { name: "Phrase de confirmation" });
-
-  // Phrase exacte mais cases non cochées : désactivé
-  await phrase.fill("JE COMPRENDS LES RISQUES");
-  await expect(confirm).toBeDisabled();
-  for (let i = 0; i < 3; i++) await boxes.nth(i).check();
-  // Cases cochées, phrase inexacte : désactivé
-  for (const wrong of ["", "JE COMPRENDS", "je comprends les risques", "JE COMPRENDS LES RISQUES "]) {
-    await phrase.fill(wrong);
-    await expect(confirm).toBeDisabled();
-  }
-  // Phrase exacte : le bouton devient utilisable (le test ne clique jamais dessus)
-  await phrase.fill("JE COMPRENDS LES RISQUES");
-  await expect(confirm).toBeEnabled();
-  await phrase.fill("");
-  await page.getByRole("button", { name: /^Annuler$/i }).click();
-  await expect(confirm).toBeHidden();
-});

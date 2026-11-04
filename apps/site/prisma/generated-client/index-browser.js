@@ -169,7 +169,9 @@ exports.Prisma.UserScalarFieldEnum = {
   notifPm: 'notifPm',
   notifMention: 'notifMention',
   notifFollowedTopic: 'notifFollowedTopic',
-  notifNewsletter: 'notifNewsletter'
+  notifNewsletter: 'notifNewsletter',
+  autoFollowTopics: 'autoFollowTopics',
+  forumReadAllAt: 'forumReadAllAt'
 };
 
 exports.Prisma.BlockScalarFieldEnum = {
@@ -228,7 +230,9 @@ exports.Prisma.TournamentScalarFieldEnum = {
   lng: 'lng',
   registrationsLocked: 'registrationsLocked',
   typeCDF: 'typeCDF',
-  tournamentType: 'tournamentType'
+  tournamentType: 'tournamentType',
+  cdfValidatedAt: 'cdfValidatedAt',
+  cdfValidatedById: 'cdfValidatedById'
 };
 
 exports.Prisma.CategoryScalarFieldEnum = {
@@ -265,7 +269,14 @@ exports.Prisma.TopicScalarFieldEnum = {
   forumId: 'forumId',
   authorId: 'authorId',
   tournamentId: 'tournamentId',
-  legacyId: 'legacyId'
+  legacyId: 'legacyId',
+  isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedById: 'deletedById',
+  deletionReason: 'deletionReason',
+  lastPostAt: 'lastPostAt',
+  lastPostId: 'lastPostId',
+  lastPostAuthorId: 'lastPostAuthorId'
 };
 
 exports.Prisma.PostScalarFieldEnum = {
@@ -279,6 +290,9 @@ exports.Prisma.PostScalarFieldEnum = {
   moderationReason: 'moderationReason',
   moderatedBy: 'moderatedBy',
   isDeleted: 'isDeleted',
+  deletedAt: 'deletedAt',
+  deletedById: 'deletedById',
+  deletionReason: 'deletionReason',
   legacyId: 'legacyId'
 };
 
@@ -300,7 +314,8 @@ exports.Prisma.ConversationParticipantScalarFieldEnum = {
   conversationId: 'conversationId',
   joinedAt: 'joinedAt',
   deletedAt: 'deletedAt',
-  isAdmin: 'isAdmin'
+  isAdmin: 'isAdmin',
+  lastReadAt: 'lastReadAt'
 };
 
 exports.Prisma.PrivateMessageScalarFieldEnum = {
@@ -316,7 +331,8 @@ exports.Prisma.TopicViewScalarFieldEnum = {
   userId: 'userId',
   topicId: 'topicId',
   lastViewedAt: 'lastViewedAt',
-  lastPostId: 'lastPostId'
+  lastPostId: 'lastPostId',
+  lastReadPostAt: 'lastReadPostAt'
 };
 
 exports.Prisma.MentionScalarFieldEnum = {
@@ -326,6 +342,18 @@ exports.Prisma.MentionScalarFieldEnum = {
   mentionerId: 'mentionerId',
   mentionedUserId: 'mentionedUserId',
   readAt: 'readAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  type: 'type',
+  topicId: 'topicId',
+  postId: 'postId',
+  conversationId: 'conversationId',
+  actorId: 'actorId',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.PostReactionScalarFieldEnum = {
@@ -670,6 +698,7 @@ exports.Prisma.ModelName = {
   PrivateMessage: 'PrivateMessage',
   TopicView: 'TopicView',
   Mention: 'Mention',
+  Notification: 'Notification',
   PostReaction: 'PostReaction',
   RoleConfig: 'RoleConfig',
   TopicFollow: 'TopicFollow',

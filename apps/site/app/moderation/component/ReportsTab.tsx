@@ -2,24 +2,36 @@
 
 /**
  * Onglet d'une liste de signalements de la modération (refonte, carte 099) : messages, sujets, coachs, articles ou
- * ligues signalés. Les signalements sont regroupés par contenu visé (une fiche par contenu, avec le nombre de
- * signalements). « Détails » montre chaque signalement l'un après l'autre (auteur, date, raison, précision) ;
- * « Marquer comme traité » ferme tous les signalements du contenu, avec un commentaire facultatif écrit au journal.
- * Le menu « ⋯ » (« Plus d'actions sur ce signalement ») propose « Ignorer le signalement » : les signalements sont
- * fermés comme ignorés (statut IGNORED, ligne « Signalement ignoré » au journal), par exemple pour un signalement
- * abusif ; la même fenêtre de confirmation demande un commentaire facultatif (carte 144).
- * Les actions `getPendingReportsByType` et `resolveReportsAction` sont inchangées.
+ * ligues signalés. Les signalements sont regroupés par contenu visé : une fiche par contenu, sur téléphone comme sur
+ * ordinateur, avec le nombre de signalements.
+ *
+ * Depuis la carte 168, la fiche montre le contenu lui-même : son titre, son auteur et un extrait de 200 caractères en
+ * texte brut, plus la raison, le premier membre qui l'a signalé et la date. Ses boutons :
+ * - « Voir dans le sujet » (un message), « Voir le profil » (un coach) ou « Voir » : ouvre le contenu dans le même
+ *   onglet ; pour un message, à la bonne page du sujet, directement sur le message ;
+ * - « Masquer » (un message pas encore masqué) : ouvre la fenêtre « Modérer le message » ; une fois le message masqué,
+ *   ses signalements se ferment d'eux-mêmes (`moderatePost`, app/forum/actions.ts) ;
+ * - « Ignorer » : ferme les signalements sans agir sur le contenu (statut IGNORED, ligne « Signalement ignoré » au
+ *   journal), avec un commentaire facultatif (carte 144) ;
+ * - « Marquer comme traité » : ferme les signalements après une action faite ailleurs, avec un commentaire facultatif.
+ *   Pour un message, il est rangé dans le menu « ⋯ », puisque « Masquer » le remplace le plus souvent ;
+ * - « Détails » : chaque signalement l'un après l'autre (auteur, date, raison, précision).
+ * Un contenu supprimé depuis le signalement s'affiche « Contenu déjà supprimé », avec le bouton « Fermer le
+ * signalement ». La suppression d'un message ou d'un sujet ferme d'ailleurs ses signalements d'elle-même : ce cas ne
+ * concerne que les contenus supprimés autrement (avant la carte 168, ou un message dont le sujet a été supprimé).
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  AlertTriangle, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, ExternalLink, Hash,
-  EyeOff, MessageSquare, ShieldAlert, Trophy, Users,
+  AlertTriangle, ArrowRight, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, EyeOff,
+  MessageSquare, ShieldAlert, Trash2, Trophy, Users, X,
 } from "lucide-react";
 import { ActionMenu, Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import ModerationModal from "@/app/forum/component/ModerationModal";
+import { moderatePost } from "@/app/forum/actions";
 import { getPendingReportsByType, resolveReportsAction } from "../actions";
 
 interface ReportsTabProps {
@@ -39,9 +51,31 @@ const ICONS = {
   MESSAGE: MessageSquare,
 } as const;
 
+/** Nom du type de contenu, affiché en étiquette sur la fiche. */
+const TYPE_LABELS = {
+  POST: "Message",
+  TOPIC: "Sujet",
+  USER: "Coach",
+  ARTICLE: "Article",
+  LIGUE: "Ligue",
+  MESSAGE: "Message privé",
+} as const;
+
+/** Mots qui présentent l'auteur du contenu, selon son type. */
+const AUTHOR_WORDS = {
+  POST: "Message de",
+  TOPIC: "Sujet ouvert par",
+  USER: "",
+  ARTICLE: "Article de",
+  LIGUE: "Ligue créée par",
+  MESSAGE: "Message de",
+} as const;
+
+/** Un groupe de signalements (même contenu visé), tel que le renvoie `getPendingReportsByType`. */
+type ReportGroup = Awaited<ReturnType<typeof getPendingReportsByType>>["groups"][number];
+
 export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- groupes renvoyés par getPendingReportsByType
-  const [reportGroups, setReportGroups] = useState<any[]>([]);
+  const [reportGroups, setReportGroups] = useState<ReportGroup[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [activeDetailIndex, setActiveDetailIndex] = useState(0);
@@ -53,6 +87,8 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
   const [confirmTargetId, setConfirmTargetId] = useState<string | null>(null);
   // Action confirmée : « Marquer comme traité » (RESOLVE) ou « Ignorer » (IGNORE)
   const [confirmAction, setConfirmAction] = useState<"RESOLVE" | "IGNORE">("RESOLVE");
+  // Message à masquer (fenêtre « Modérer le message » ouverte)
+  const [hideTarget, setHideTarget] = useState<{ postId: string; authorName: string } | null>(null);
 
   const fetchReports = async () => {
     setLoading(true);
@@ -77,6 +113,12 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     }
   };
 
+  /** Après une action réussie : la liste et les compteurs des onglets sont relus. */
+  const refreshAfterAction = () => {
+    fetchReports();
+    onActionSuccess?.();
+  };
+
   const openConfirm = (targetId: string, action: "RESOLVE" | "IGNORE" = "RESOLVE") => {
     setReportComment("");
     setConfirmAction(action);
@@ -91,8 +133,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     setResolving(false);
     if (res.success) {
       toast.success(confirmAction === "IGNORE" ? "Signalement ignoré" : "Signalement marqué comme traité");
-      fetchReports();
-      onActionSuccess?.();
+      refreshAfterAction();
       setConfirmTargetId(null);
       setReportComment("");
     } else {
@@ -100,13 +141,28 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     }
   };
 
-  const getTargetUrl = (targetId: string) => {
-    switch (type) {
-      case "TOPIC": return `/forum/topic/${targetId}`;
-      case "USER": return `/spy/${targetId}`;
-      case "ARTICLE": return `/articles/${targetId}`;
-      case "LIGUE": return `/ligue/${targetId}`;
-      default: return null;
+  // « Masquer » : le message est masqué avec la raison donnée ; le serveur ferme alors ses signalements
+  const onHideConfirm = async (reason: string) => {
+    if (!hideTarget) return;
+    const res = await moderatePost(hideTarget.postId, reason);
+    if (!res.success) {
+      toast.error(res.error || "Le message n'a pas pu être masqué.");
+      return;
+    }
+    toast.success("Message masqué, signalement fermé");
+    refreshAfterAction();
+  };
+
+  // Contenu déjà supprimé : le signalement est fermé directement, sans fenêtre de confirmation
+  const closeGoneReports = async (targetId: string) => {
+    setResolving(true);
+    const res = await resolveReportsAction(targetId, type, "RESOLVE", "Contenu déjà supprimé : signalement fermé");
+    setResolving(false);
+    if (res.success) {
+      toast.success("Signalement fermé");
+      refreshAfterAction();
+    } else {
+      toast.error("Erreur serveur");
     }
   };
 
@@ -132,45 +188,105 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
       ) : (
         <div className={`flex flex-col gap-3 ${loading ? "opacity-60" : ""}`}>
           {reportGroups.map((group) => {
-            const targetUrl = getTargetUrl(group.targetId);
+            const target = group.target;
             const expanded = expandedId === group.targetId;
             const report = expanded ? group.reports[activeDetailIndex] : null;
             const detailsId = `report-details-${group.targetId}`;
+            const firstReport = group.reports[0];
+            const others = group.count - 1;
+            const canHide = type === "POST" && !target.hidden;
+            const viewLabel = type === "POST" ? "Voir dans le sujet" : type === "USER" ? "Voir le profil" : "Voir";
             return (
               <Card key={group.targetId} className="overflow-hidden">
                 <article aria-label={`Signalement : ${group.firstReason}`}>
                   <div className="flex flex-col gap-3 p-4">
-                    <div className="flex flex-col gap-1">
-                      <span className="text-sm font-semibold text-bb-text-muted">Raison</span>
-                      <p className="m-0 text-base font-bold break-words text-bb-text">{group.firstReason}</p>
-                    </div>
-                    <div className="flex flex-wrap items-center gap-2 text-sm text-bb-text-muted">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="neutral">{TYPE_LABELS[type]}</Badge>
                       <Badge variant="danger">
                         <ShieldAlert size={12} aria-hidden="true" />
                         {group.count} signalement{group.count > 1 ? "s" : ""}
                       </Badge>
-                      <span className="inline-flex items-center gap-1">
-                        <Clock size={14} aria-hidden="true" />
-                        {format(new Date(group.createdAt), "dd MMM HH:mm", { locale: fr })}
-                      </span>
-                      <span className="inline-flex items-center gap-1" title={group.targetId}>
-                        <Hash size={14} aria-hidden="true" />
-                        Contenu {group.targetId.substring(0, 8)}…
-                      </span>
+                      {target.hidden && !target.gone && <Badge variant="neutral">{type === "USER" ? "Banni" : "Déjà masqué"}</Badge>}
                     </div>
 
+                    <div className="flex flex-col gap-1">
+                      <span className="text-sm font-semibold text-bb-text-muted">Raison</span>
+                      <p className="m-0 text-base font-bold break-words text-bb-text">{group.firstReason}</p>
+                      <p className="m-0 text-sm text-bb-text-muted">
+                        <Clock size={14} aria-hidden="true" className="mr-1 inline align-[-2px]" />
+                        Signalé par <span className="font-semibold text-bb-text">{firstReport?.reporter.name ?? "un membre"}</span>
+                        {others > 0 && ` et ${others} autre${others > 1 ? "s" : ""}`}, le{" "}
+                        {format(new Date(group.createdAt), "d MMM yyyy à HH:mm", { locale: fr })}
+                      </p>
+                    </div>
+
+                    {target.gone ? (
+                      <p className="m-0 flex items-center gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2 text-[0.95rem] text-bb-text">
+                        <Trash2 size={16} aria-hidden="true" className="shrink-0 text-bb-text-muted" />
+                        Contenu déjà supprimé : il ne reste qu&apos;à fermer le signalement.
+                      </p>
+                    ) : (
+                      <div className="flex flex-col gap-1 rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2">
+                        {target.title && (
+                          <p className="m-0 font-semibold break-words text-bb-text">
+                            {type === "POST" ? `Dans le sujet « ${target.title} »` : target.title}
+                          </p>
+                        )}
+                        {target.authorName && AUTHOR_WORDS[type] && (
+                          <p className="m-0 text-sm text-bb-text-muted">
+                            {AUTHOR_WORDS[type]} <span className="font-semibold text-bb-text">{target.authorName}</span>
+                          </p>
+                        )}
+                        {target.excerpt && (
+                          <blockquote className="m-0 border-l-[3px] border-bb-border pl-3 text-[0.95rem] break-words text-bb-text">
+                            {target.excerpt}
+                          </blockquote>
+                        )}
+                      </div>
+                    )}
+
                     <div className="flex flex-wrap gap-2">
-                      {targetUrl && (
-                        <Button asChild variant="secondary" size="tap">
-                          <Link href={targetUrl} target="_blank">
-                            <ExternalLink size={16} aria-hidden="true" />
-                            Voir
-                          </Link>
+                      {target.gone ? (
+                        <Button type="button" variant="primary" size="tap" disabled={resolving} onClick={() => closeGoneReports(group.targetId)}>
+                          <X size={16} aria-hidden="true" />
+                          Fermer le signalement
                         </Button>
+                      ) : (
+                        <>
+                          {target.url && (
+                            <Button asChild variant="secondary" size="tap">
+                              <Link href={target.url}>
+                                <ArrowRight size={16} aria-hidden="true" />
+                                {viewLabel}
+                              </Link>
+                            </Button>
+                          )}
+                          {canHide && (
+                            <Button
+                              type="button"
+                              variant="danger"
+                              size="tap"
+                              onClick={() => setHideTarget({ postId: group.targetId, authorName: target.authorName ?? "un membre" })}
+                            >
+                              <EyeOff size={16} aria-hidden="true" />
+                              Masquer
+                            </Button>
+                          )}
+                          <Button type="button" variant="secondary" size="tap" onClick={() => openConfirm(group.targetId, "IGNORE")}>
+                            <X size={16} aria-hidden="true" />
+                            Ignorer
+                          </Button>
+                          {type !== "POST" && (
+                            <Button type="button" variant="primary" size="tap" onClick={() => openConfirm(group.targetId)}>
+                              <Check size={16} aria-hidden="true" />
+                              Marquer comme traité
+                            </Button>
+                          )}
+                        </>
                       )}
                       <Button
                         type="button"
-                        variant="secondary"
+                        variant="quiet"
                         size="tap"
                         aria-expanded={expanded}
                         aria-controls={detailsId}
@@ -179,21 +295,19 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                         {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
                         Détails
                       </Button>
-                      <ActionMenu
-                        label="Plus d'actions sur ce signalement"
-                        title="Actions sur le signalement"
-                        items={[
-                          {
-                            label: "Ignorer le signalement",
-                            icon: <EyeOff size={18} aria-hidden="true" />,
-                            onSelect: () => openConfirm(group.targetId, "IGNORE"),
-                          },
-                        ]}
-                      />
-                      <Button type="button" variant="primary" size="tap" className="w-full lg:ml-auto lg:w-auto" onClick={() => openConfirm(group.targetId)}>
-                        <Check size={16} aria-hidden="true" />
-                        Marquer comme traité
-                      </Button>
+                      {type === "POST" && !target.gone && (
+                        <ActionMenu
+                          label="Plus d'actions sur ce signalement"
+                          title="Actions sur le signalement"
+                          items={[
+                            {
+                              label: "Marquer comme traité",
+                              icon: <Check size={18} aria-hidden="true" />,
+                              onSelect: () => openConfirm(group.targetId),
+                            },
+                          ]}
+                        />
+                      )}
                     </div>
                   </div>
 
@@ -285,6 +399,13 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
           <span className="self-end text-sm text-bb-text-muted">{reportComment.length}/200</span>
         </div>
       </ConfirmDialog>
+
+      <ModerationModal
+        isOpen={hideTarget !== null}
+        onClose={() => setHideTarget(null)}
+        onConfirm={onHideConfirm}
+        authorName={hideTarget?.authorName ?? ""}
+      />
     </div>
   );
 }

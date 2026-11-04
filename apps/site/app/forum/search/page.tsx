@@ -3,7 +3,8 @@
  * 20 par page, un par ligne : titre du sujet (avec un trophée pour un tournoi), forum, auteur, ancienneté, extrait du
  * message avec les mots cherchés surlignés, vues du sujet, date du dernier message et bouton « Voir ».
  * La recherche elle-même (filtres, droits d'accès aux forums, calcul de la page du sujet où se trouve chaque message)
- * est la même qu'avant la refonte ; seul l'affichage change.
+ * est la même qu'avant la refonte ; seul l'affichage change. Depuis la carte 169, un mot trouvé dans le titre d'un
+ * sujet ne ramène que son premier message, et une page illisible dans l'adresse donne la page 1.
  */
 import Link from "next/link";
 import { Eye, SearchX, Trophy } from "lucide-react";
@@ -15,6 +16,7 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { isModerator } from "@/lib/roles";
+import { forumPostHrefFor } from "@/lib/forumPostLink";
 import type { Prisma } from "@/prisma/generated-client";
 import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
@@ -28,6 +30,26 @@ function getDescendantForumIds(allForums: { id: string; parentForumId: string | 
     ids = ids.concat(getDescendantForumIds(allForums, child.id));
   }
   return ids;
+}
+
+/** Nombre maximum de sujets dont le titre contient le mot cherché, pris en compte dans les résultats. */
+const TITLE_MATCH_LIMIT = 500;
+
+/**
+ * Premier message (non supprimé) de chaque sujet dont le titre contient `q`, sans tenir compte des majuscules : c'est
+ * lui qui représente le sujet dans les résultats. Les droits d'accès et les autres filtres sont appliqués ensuite, par
+ * la requête principale. Les caractères « % » et « _ », qui ont un sens spécial pour ILIKE, sont cherchés tels quels.
+ */
+async function firstPostsOfTopicsTitled(q: string): Promise<string[]> {
+  const pattern = `%${q.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
+  const rows = await prisma.$queryRaw<{ id: string }[]>`
+    SELECT DISTINCT ON (p."topicId") p."id"
+    FROM "Post" AS p
+    JOIN "Topic" AS t ON t."id" = p."topicId"
+    WHERE t."title" ILIKE ${pattern} AND t."isDeleted" = false AND p."isDeleted" = false
+    ORDER BY p."topicId", p."createdAt" ASC, p."id" ASC
+    LIMIT ${TITLE_MATCH_LIMIT}`;
+  return rows.map((row) => row.id);
 }
 
 /** Nombre de caractères gardés de part et d'autre du mot cherché dans l'extrait. */
@@ -69,11 +91,10 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const authorQuery = (params.author as string) || "";
   const dateStr = (params.date as string) || "all";
   const sortBy = (params.sortBy as string) || "desc";
-  const page = parseInt((params.page as string) || "1", 10);
+  // Un numéro de page absent ou illisible (« ?page=abc ») donne la page 1
+  const page = Math.max(1, parseInt((params.page as string) || "1", 10) || 1);
 
   const POSTS_PER_PAGE = 20;
-  // Nombre de messages par page dans un sujet (même valeur que la page du sujet).
-  const TOPIC_POSTS_PER_PAGE = 20;
   const skip = (page - 1) * POSTS_PER_PAGE;
 
   // 1. Forums proposés dans la liste du filtre
@@ -116,9 +137,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   }
 
   if (q) {
+    // Un mot trouvé dans le titre d'un sujet ne ramène que le premier message de ce sujet (carte 169) : avant, chercher
+    // « Nuffle » ramenait les 300 messages du sujet « Nuffle ». Les messages qui contiennent eux-mêmes le mot restent
+    // tous trouvés.
+    const titleMatches = await firstPostsOfTopicsTitled(q);
     whereClause.OR = [
       { content: { contains: q, mode: "insensitive" } },
-      { topic: { title: { contains: q, mode: "insensitive" } } }
+      ...(titleMatches.length > 0 ? [{ id: { in: titleMatches } }] : [])
     ];
   }
 
@@ -167,28 +192,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   const totalPages = Math.max(1, Math.ceil(totalMatches / POSTS_PER_PAGE));
 
-  // Lien vers chaque message : on compte les messages qui le précèdent dans son sujet
-  // (même ordre que la page du sujet : date de création puis identifiant) pour en
-  // déduire la page du sujet qui le contient. Une requête de comptage par résultat, 20 au plus.
-  const topicPageByPostId = new Map<string, number>();
-  const countsBefore = await Promise.all(
-    posts.map(post =>
-      prisma.post.count({
-        where: {
-          topicId: post.topicId,
-          OR: [
-            { createdAt: { lt: post.createdAt } },
-            { createdAt: post.createdAt, id: { lt: post.id } }
-          ]
-        }
-      })
-    )
-  );
-  posts.forEach((post, i) => {
-    topicPageByPostId.set(post.id, Math.floor(countsBefore[i] / TOPIC_POSTS_PER_PAGE) + 1);
-  });
-  const postHref = (post: { id: string; topicId: string }) =>
-    `/forum/topic/${post.topicId}?page=${topicPageByPostId.get(post.id) ?? 1}#post-${post.id}`;
+  // Lien vers chaque message, sur la bonne page de son sujet (lib/forumPostLink.ts) : une requête de comptage par
+  // résultat, 20 au plus, l'une après l'autre (la base locale de développement refuse les requêtes simultanées)
+  const hrefByPostId = new Map<string, string>();
+  for (const post of posts) {
+    hrefByPostId.set(post.id, await forumPostHrefFor(post.topicId, post));
+  }
+  const postHref = (post: { id: string; topicId: string }) => hrefByPostId.get(post.id) ?? `/forum/topic/${post.topicId}`;
 
   // Adresse d'une page de résultats : mêmes paramètres qu'avant la refonte, encodés proprement
   const pageHref = (target: number) => {
@@ -242,7 +252,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                   {posts.map((post) => {
                     const href = postHref(post);
                     const createdAt = new Date(post.createdAt);
-                    const lastPostAt = new Date(post.topic.updatedAt);
+                    const lastPostAt = new Date(post.topic.lastPostAt);
                     return (
                       <li key={post.id} className="flex items-start gap-3 border-b border-bb-border p-3 last:border-b-0 lg:px-4">
                         <div className="flex min-w-0 flex-1 flex-col gap-1.5">

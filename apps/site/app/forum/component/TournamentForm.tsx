@@ -32,6 +32,8 @@ const MapPicker = dynamic(() => import("./MapPicker"), {
 interface TournamentFormProps {
   forumId: string;
   userCanStick: boolean;
+  /** Vrai pour un modérateur ou un administrateur : seuls eux voient et changent la case « CDF » (carte 162). */
+  canSetCdf: boolean;
   referenceData: {
     franceRegions: any[];
     gameEditions: any[];
@@ -128,7 +130,7 @@ function CheckRow({ name, label, icon, checked, defaultChecked, onChange }: {
 
 const hint = "m-0 text-sm text-bb-text-muted";
 
-export default function TournamentForm({ forumId, userCanStick, referenceData, initialData }: TournamentFormProps) {
+export default function TournamentForm({ forumId, userCanStick, canSetCdf, referenceData, initialData }: TournamentFormProps) {
   const isEdit = !!initialData;
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isTeam, setIsTeam] = useState(initialData?.isTeam ?? false);
@@ -370,7 +372,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
             <fieldset className="m-0 border-0 p-0">
               <legend className="mb-2 p-0 text-sm font-semibold text-bb-text">Le tournoi compte pour</legend>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                {['NAF', 'CDF', 'CGO', 'TGE', 'TSC'].map(c => (
+                {(canSetCdf ? ['NAF', 'CDF', 'CGO', 'TGE', 'TSC'] : ['NAF', 'CGO', 'TGE', 'TSC']).map(c => (
                   <label
                     key={c}
                     className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 px-2 font-bold text-bb-text has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft has-[:checked]:text-bb-accent-text"
@@ -388,6 +390,13 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
                   </label>
                 ))}
               </div>
+              {!canSetCdf && (
+                <p className={cn(hint, "mt-2")}>
+                  {isCDF
+                    ? "Ce tournoi compte pour la Coupe de France (CDF). Seuls les modérateurs et les administrateurs peuvent changer ce choix."
+                    : "La Coupe de France (CDF) est accordée par les modérateurs et les administrateurs : demandez-leur de l'ajouter à votre tournoi."}
+                </p>
+              )}
             </fieldset>
 
             {isCDF && (
@@ -400,7 +409,7 @@ export default function TournamentForm({ forumId, userCanStick, referenceData, i
               </div>
             )}
 
-            <Field label="Nombre de rondes (total)" htmlFor="tTotalMatches" hint="Par défaut : 3 rondes par jour. Saisissez une valeur pour forcer le calcul CDF.">
+            <Field label="Nombre de rondes (total)" htmlFor="tTotalMatches" hint="Sert au calcul des points CDF. Sans valeur, le site prend le nombre de rondes saisies avec les résultats, ou à défaut 3 rondes par jour.">
               <Input id="tTotalMatches" type="number" name="tTotalMatches" defaultValue={initialData?.totalMatches ?? ""} placeholder="Ex : 5" min={1} className="sm:max-w-40" {...numeric} />
             </Field>
           </Block>

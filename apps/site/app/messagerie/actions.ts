@@ -4,8 +4,9 @@ import { getActiveSession } from "@/lib/authGuard";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { sendPmNotification } from "@/lib/mail";
+import { markConversationNotificationsRead, notifyPrivateMessage } from "@/lib/notifications";
 import { encrypt, decrypt } from "@/lib/crypto";
+import { countUnreadByConversation } from "@/lib/unreadMessages";
 import type { ActionResult } from "@/lib/actionResult";
 
 const CONVERSATION_LIMIT = 50;
@@ -72,16 +73,6 @@ export async function getConversations(page = 1) {
             include: {
                 author: { select: { name: true } }
             }
-          },
-          _count: {
-            select: {
-              messages: {
-                where: {
-                  authorId: { not: userId },
-                  readAt: null
-                }
-              }
-            }
           }
         }
       }
@@ -95,13 +86,17 @@ export async function getConversations(page = 1) {
     take: CONVERSATIONS_PER_PAGE
   });
 
+  // Non-lus propres à ce membre, calculés d'après sa date de lecture (carte 170). La liste les lit dans
+  // `_count.messages`, la forme qu'avait l'ancien compteur.
+  const unreadByConversation = await countUnreadByConversation(userId, participants.map(p => p.conversationId));
+
   const conversations = participants.map(p => {
     const conv = withoutLeftMembers(p.conversation);
     // Déchiffrer le dernier message
     if (conv.messages.length > 0) {
       conv.messages[0].content = decrypt(conv.messages[0].content);
     }
-    return conv;
+    return { ...conv, _count: { messages: unreadByConversation.get(p.conversationId) ?? 0 } };
   });
 
   const total = await prisma.conversationParticipant.count({
@@ -150,15 +145,14 @@ export async function getConversationMessages(conversationId: string, page = 1) 
     }
   });
 
-  // Marquer comme lu
-  await prisma.privateMessage.updateMany({
-    where: {
-      conversationId,
-      authorId: { not: userId },
-      readAt: null
-    },
-    data: { readAt: new Date() }
+  // Marquer comme lu, pour ce membre seulement : il avance sa propre date de lecture (carte 170). Les autres
+  // participants gardent leurs non-lus.
+  await prisma.conversationParticipant.update({
+    where: { id: participant.id },
+    data: { lastReadAt: new Date() }
   });
+  // La notification de cette conversation, sous la cloche, est lue aussi (carte 167)
+  await markConversationNotificationsRead(userId, conversationId);
 
   // Récupérer les infos de la conversation pour le header
   const conversation = await prisma.conversation.findUnique({
@@ -232,34 +226,26 @@ export async function sendMessage(conversationId: string, content: string): Prom
     });
   }
 
-  // Notification par mail aux autres participants (si notif active)
-  const others = await prisma.conversationParticipant.findMany({
-    where: { 
-        conversationId, 
+  // Notification dans le site et e-mail aux autres participants encore présents (carte 167 ; e-mail seulement si le
+  // membre l'accepte, et pour le premier message non lu). Un échec ici n'annule pas l'envoi du message.
+  try {
+    const others = await prisma.conversationParticipant.findMany({
+      where: {
+        conversationId,
         userId: { not: userId },
-        // Pas de mail aux membres qui ont quitté le groupe
+        // Pas de notification aux membres qui ont quitté le groupe
         deletedAt: null
-    },
-    include: { user: { select: { email: true, notifPm: true, name: true } } }
-  });
-
-  const senderName = session.user.name || "Un coach";
-
-  for (const p of others) {
-    if (p.user.email && p.user.notifPm) {
-      // Uniquement si c'est le PREMIER message non lu pour ce participant (évite le spam)
-      const unreadCountForRecipient = await prisma.privateMessage.count({
-        where: { 
-          conversationId, 
-          readAt: null,
-          authorId: { not: p.userId } // On compte les messages qu'il n'a pas lus
-        }
-      });
-
-      if (unreadCountForRecipient === 1) {
-        sendPmNotification(p.user.email, senderName, content.substring(0, 100), conversationId);
-      }
-    }
+      },
+      select: { userId: true, lastReadAt: true }
+    });
+    await notifyPrivateMessage({
+      conversationId,
+      author: { id: userId, name: session.user.name || "Un coach" },
+      preview: content.substring(0, 100),
+      recipients: others
+    });
+  } catch (error) {
+    console.error("sendMessage notifications error:", error);
   }
 
   revalidatePath("/messagerie");
@@ -289,12 +275,17 @@ export async function startConversation(userIds: string[], name?: string): Promi
         return { success: false, error: `Vous avez atteint la limite de ${CONVERSATION_LIMIT} conversations.` };
     }
 
-    // Si c'est un 1v1, vérifier si elle existe déjà
+    // Si c'est un 1v1, vérifier si elle existe déjà. Elle doit compter exactement ces deux membres : chacun des deux y
+    // a sa participation, et personne d'autre (carte 170). Avant, une conversation où il ne restait qu'un seul des deux
+    // (l'autre ayant supprimé son compte) était reprise : le destinataire n'y était jamais ajouté, et un tiers pouvait
+    // recevoir l'identifiant de la conversation vide d'un autre membre. Une participation marquée « partie »
+    // (`deletedAt`) compte encore : dans une conversation à deux, partir revient seulement à la retirer de sa liste.
     if (!isGroup && allParticipants.length === 2) {
         const existing = await prisma.conversation.findFirst({
             where: {
                 isGroup: false,
-                participants: { every: { userId: { in: allParticipants } } }
+                AND: allParticipants.map(uid => ({ participants: { some: { userId: uid } } })),
+                participants: { none: { userId: { notIn: allParticipants } } }
             }
         });
 
@@ -316,7 +307,9 @@ export async function startConversation(userIds: string[], name?: string): Promi
             participants: {
                 create: allParticipants.map(uid => ({
                     userId: uid,
-                    isAdmin: uid === myId
+                    isAdmin: uid === myId,
+                    // La conversation est neuve : rien à lire pour son créateur
+                    lastReadAt: uid === myId ? new Date() : null
                 }))
             }
         }
@@ -334,18 +327,21 @@ export async function leaveConversation(conversationId: string): Promise<ActionR
     const userId = session?.user?.id;
     if (!userId) return { success: false, error: "Non autorisé" };
 
-    await prisma.conversationParticipant.update({
-        where: { userId_conversationId: { userId, conversationId } },
+    // Quitter marque seulement le départ (`deletedAt`), comme pour les groupes (carte 136) : la conversation
+    // disparaît de la liste de ce membre, mais reste intacte pour les autres.
+    const left = await prisma.conversationParticipant.updateMany({
+        where: { userId, conversationId },
         data: { deletedAt: new Date() }
     });
+    if (left.count === 0) return { success: false, error: "Accès refusé" };
 
-    // Vérifier combien de participants restent (non "deleted")
+    // La conversation et ses messages ne sont supprimés que lorsque plus personne n'y est présent (carte 170). Avant,
+    // elle l'était dès qu'il ne restait qu'un participant : quitter une conversation à deux l'effaçait aussi chez l'autre.
     const remainingCount = await prisma.conversationParticipant.count({
         where: { conversationId, deletedAt: null }
     });
 
-    if (remainingCount <= 1) {
-        // Suppression automatique si 1 ou 0 membre
+    if (remainingCount === 0) {
         await prisma.conversation.delete({ where: { id: conversationId } });
     }
 
@@ -424,10 +420,13 @@ export async function inviteToGroup(conversationId: string, userIds: string[]): 
     // Un membre qui avait quitté le groupe et qu'on invite à nouveau y revient (carte 136 : les membres partis ne sont
     // plus affichés, la fenêtre d'invitation les propose donc de nouveau)
     const leftIds = existing.filter(e => e.deletedAt).map(e => e.userId);
+    // Le membre invité de nouveau, comme le nouveau venu ci-dessous, part de l'invitation pour ses non-lus : les
+    // messages déjà échangés ne lui sont pas signalés comme non lus (carte 170).
+    const now = new Date();
     if (leftIds.length > 0) {
         await prisma.conversationParticipant.updateMany({
             where: { conversationId, userId: { in: leftIds } },
-            data: { deletedAt: null }
+            data: { deletedAt: null, lastReadAt: now }
         });
     }
     const toAdd = [...new Set(userIds.filter(uid => !existingIds.has(uid)))];
@@ -437,7 +436,8 @@ export async function inviteToGroup(conversationId: string, userIds: string[]): 
             data: toAdd.map(uid => ({
                 userId: uid,
                 conversationId,
-                isAdmin: false
+                isAdmin: false,
+                lastReadAt: now
             }))
         });
     }

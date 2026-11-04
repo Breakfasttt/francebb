@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect } from "react";
-import { parseBBCode } from "@/lib/bbcode";
+import { parseBBCode, type QuoteStatusMap } from "@/lib/bbcode";
 import { BBSchemePlayer } from "@bbfrance/bbscheme-player";
 import { getBoardState } from "@/app/bbscheme/actions";
 
 interface BBCodeContentProps {
   content: string;
-  quoteStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>;
+  quoteStatusMap?: QuoteStatusMap;
   currentUserId?: string;
   style?: React.CSSProperties;
   className?: string;

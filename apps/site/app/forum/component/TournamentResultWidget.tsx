@@ -5,11 +5,14 @@
  * fois déplié, il montre le classement et, si des rondes ont été saisies, les matchs ronde par ronde (onglets
  * « Classement » et « Matchs »). Sans résultat publié, il n'apparaît que pour qui peut les publier, avec le lien
  * « Publier les résultats ». Le classement est en lignes : sur téléphone, le roster passe sous le nom du coach.
+ * Pour un tournoi de la Coupe de France, un bandeau sous le titre dit si les résultats sont validés par la modération
+ * ou en attente, avec le bouton de validation pour les modérateurs (CdfValidationPanel, carte 162).
  */
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { ChevronDown, ChevronLeft, ChevronRight, Edit2, Swords, Trophy } from 'lucide-react';
 import { Avatar, Button, Card, Tabs, TabsContent, TabsList, TabsTrigger, cn } from "@bbfrance/ui";
+import CdfValidationPanel from "@/app/forum/component/CdfValidationPanel";
 
 interface TournamentMatch {
   id: string;
@@ -50,6 +53,11 @@ interface TournamentResultWidgetProps {
   results: TournamentResult[];
   rounds: TournamentRound[];
   canEdit: boolean;
+  /**
+   * Tournoi de la Coupe de France seulement (carte 162) : date de validation des résultats par la modération (vide
+   * tant qu'ils sont en attente) et droit de les valider (modérateurs et administrateurs).
+   */
+  cdf?: { validatedAt: Date | string | null; canValidate: boolean };
 }
 
 /**
@@ -102,7 +110,7 @@ export function ResultsRanking({ results }: { results: TournamentResult[] }) {
   );
 }
 
-export default function TournamentResultWidget({ tournamentId, results, rounds, canEdit }: TournamentResultWidgetProps) {
+export default function TournamentResultWidget({ tournamentId, results, rounds, canEdit, cdf }: TournamentResultWidgetProps) {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -188,6 +196,13 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
           </Button>
         )}
       </div>
+
+      {/* Tournoi CDF : où en est la validation des résultats, visible sans déplier le bloc (carte 162) */}
+      {cdf && hasResults && (
+        <div className="px-3 pb-3 lg:px-4 lg:pb-4">
+          <CdfValidationPanel tournamentId={tournamentId} validatedAt={cdf.validatedAt} canValidate={cdf.canValidate} />
+        </div>
+      )}
 
       {isExpanded && (
         <div className="border-t border-bb-border p-3 lg:p-4">

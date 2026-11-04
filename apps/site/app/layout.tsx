@@ -16,6 +16,7 @@ import AppShell from "@/common/components/AppShell/AppShell";
 import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
 import { getNavCounts } from "@/common/components/AppShell/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
+import BBCodeInteractions from "@/common/components/BBCodeContent/BBCodeInteractions";
 import "./tailwind.css";
 
 
@@ -69,6 +70,7 @@ export default async function RootLayout({
           <DebugThemeWidget />
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
+          <BBCodeInteractions />
           
           <AppShell
             user={user ? { id: user.id, name: user.name, image: user.image } : null}

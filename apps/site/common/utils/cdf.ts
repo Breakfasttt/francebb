@@ -69,3 +69,33 @@ export function calculateCdfPoints(
 
   return parseFloat(points.toFixed(4));
 }
+
+/**
+ * Nombre de rondes utilisé dans le calcul des points CDF (carte 162), dans cet ordre de préférence :
+ * 1. le nombre de rondes annoncé par l'organisateur dans la fiche du tournoi (`totalMatches`) ;
+ * 2. sinon, le nombre de rondes saisies avec les résultats (onglet « Matchs ») ;
+ * 3. sinon seulement, une estimation de 3 rondes par jour de tournoi ;
+ * 4. et 5 rondes si même la durée est inconnue.
+ * Avant la carte 162, les rondes saisies avec les résultats étaient ignorées et l'estimation de 3 par jour l'emportait.
+ */
+export function cdfRoundsCount(
+  totalMatches: number | null | undefined,
+  enteredRounds: number,
+  days: string | null | undefined
+): number {
+  if (totalMatches && totalMatches > 0) return totalMatches;
+  if (enteredRounds > 0) return enteredRounds;
+  const estimated = parseInt(days || "1", 10) * 3;
+  return estimated > 0 ? estimated : 5;
+}
+
+/**
+ * Vrai si le rang saisi est un nombre entier à partir de 1. Un rang vide, nul ou négatif est refusé à l'enregistrement
+ * des résultats d'un tournoi CDF (carte 162) : auparavant, le calcul le ramenait à 1 et le coach recevait les points
+ * du vainqueur.
+ */
+export function isValidRank(rank: unknown): boolean {
+  if (rank === null || rank === undefined || rank === "") return false;
+  const value = Number(rank);
+  return Number.isInteger(value) && value >= 1;
+}

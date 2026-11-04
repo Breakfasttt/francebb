@@ -8,6 +8,7 @@ import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { isAdmin, isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
+import { GHOST_USER_ID, isAnonymizedResult, rankingCoachKey } from "@/lib/rankingCoach";
 
 export type RankingFilter = 
   | string // CDF_2026, CDF_2025, ROLLING, ROSTER (année en cours), ROSTER_2025, HOF, ARCHIVES
@@ -23,8 +24,11 @@ export async function getRankingYears() {
   const [tournaments, archives] = await Promise.all([
     prisma.tournament.findMany({
       where: {
+        // Mêmes tournois que ceux comptés par getRanking : CDF, terminés, non annulés et validés par la modération
         isCDF: true,
         isFinished: true,
+        isCancelled: false,
+        cdfValidatedAt: { not: null },
         results: { some: {} }
       },
       select: { endDate: true, date: true }
@@ -98,9 +102,12 @@ export async function getRanking(filter: RankingFilter) {
 
   const results = await prisma.tournamentResult.findMany({
     where: {
+      // Un tournoi compte s'il est CDF, terminé, non annulé et validé par un modérateur ou un administrateur (carte 162)
       tournament: {
         isCDF: true,
         isFinished: true,
+        isCancelled: false,
+        cdfValidatedAt: { not: null },
         OR: [
           { endDate: { 
               gte: startDate, 
@@ -115,7 +122,10 @@ export async function getRanking(filter: RankingFilter) {
           ] }
         ],
       },
-      points: { gt: 0 }
+      points: { gt: 0 },
+      // Les résultats des comptes supprimés (rattachés au compte fantôme) ne comptent pas (carte 163). Ceux qui ont
+      // seulement été renommés « Coach anonyme » sont écartés plus bas, par isAnonymizedResult.
+      OR: [{ userId: null }, { userId: { not: GHOST_USER_ID } }]
     },
     include: {
       user: true,
@@ -128,19 +138,21 @@ export async function getRanking(filter: RankingFilter) {
     }
   });
 
+  const rankedResults = results.filter((res) => !isAnonymizedResult(res));
+
   if (groupByRoster) {
-    return calculateRosterRanking(results);
+    return calculateRosterRanking(rankedResults);
   }
 
-  return calculateStandardRanking(results, useTopX);
+  return calculateStandardRanking(rankedResults, useTopX);
 }
 
 function calculateStandardRanking(results: any[], topX: number) {
   const coachMap = new Map<string, any>();
 
   results.forEach(res => {
-    // Clé d'identification : NAF # prioritaire, sinon Coach Name
-    const coachKey = res.nafNumber ? `NAF-${res.nafNumber}` : `NAME-${res.coachName}`;
+    // Un coach est reconnu par son compte, puis son numéro NAF, puis son nom (carte 163, lib/rankingCoach.ts)
+    const coachKey = rankingCoachKey(res);
     
     if (!coachMap.has(coachKey)) {
       coachMap.set(coachKey, {
@@ -159,6 +171,7 @@ function calculateStandardRanking(results: any[], topX: number) {
       current.userId = res.userId;
       current.name = res.user?.name || res.coachName;
     }
+    if (res.nafNumber && !current.nafNumber) current.nafNumber = res.nafNumber;
 
     current.results.push({
       points: res.points,
@@ -194,7 +207,7 @@ function calculateRosterRanking(results: any[]) {
 
   results.forEach(res => {
     if (!res.roster) return;
-    const coachKey = res.nafNumber ? `NAF-${res.nafNumber}` : `NAME-${res.coachName}`;
+    const coachKey = rankingCoachKey(res);
     const key = `${coachKey}-${res.roster}`;
 
     if (!coachRosterMap.has(key)) {

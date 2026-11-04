@@ -18,6 +18,7 @@ import { unstable_cache } from "next/cache";
 
 // Structure du forum partagée par tous les visiteurs d'un même niveau d'accès (rôles accessibles, lib/forumAccess.ts) :
 // seul le dernier topic de chaque forum est chargé. L'état « non lu », propre à chaque user, est calculé hors cache.
+// Supprimer ou restaurer un sujet (carte 165) renouvelle ce cache par son étiquette « forum-categories ».
 const getCachedCategories = unstable_cache(
   async (roles: string[]): Promise<ForumIndexCategory[]> => {
     const accessible = { allowedRoles: { in: roles } };
@@ -36,12 +37,14 @@ const getCachedCategories = unstable_cache(
             description: true,
             isLocked: true,
             isTournamentForum: true,
-            _count: { select: { topics: true } },
+            // Les sujets supprimés (carte 165) ne comptent pas et ne sont jamais « dernier sujet »
+            _count: { select: { topics: { where: { isDeleted: false } } } },
             topics: {
-              where: { isArchived: false },
-              orderBy: { updatedAt: "desc" },
+              where: { isArchived: false, isDeleted: false },
+              // Le sujet au dernier message le plus récent (carte 166), avec l'auteur de ce message
+              orderBy: { lastPostAt: "desc" },
               take: 1,
-              select: { title: true, updatedAt: true, tournamentId: true, author: { select: { name: true } } },
+              select: { title: true, lastPostAt: true, tournamentId: true, lastPostAuthor: { select: { name: true } } },
             },
             subForums: { where: accessible, select: { id: true } },
           },
@@ -49,7 +52,7 @@ const getCachedCategories = unstable_cache(
       },
     });
   },
-  ["forum-categories-list-v3"],
+  ["forum-categories-list-v5"],
   { revalidate: 60, tags: ["forum-categories"] }
 );
 

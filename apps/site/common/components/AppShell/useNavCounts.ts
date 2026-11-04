@@ -20,5 +20,5 @@ export function useNavCounts(counts?: Promise<NavCounts>): NavCounts {
       active = false;
     };
   }, [counts]);
-  return resolved && resolved.source === counts ? resolved.value : { unreadCount: 0, pendingModCount: 0 };
+  return resolved && resolved.source === counts ? resolved.value : { unreadCount: 0, notificationCount: 0, pendingModCount: 0 };
 }

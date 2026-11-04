@@ -448,7 +448,6 @@ test.describe("4 tournois : création et modification", () => {
       ["spinbutton", /Nombre de coachs max/],
       ["spinbutton", /Nombre de rondes/],
       ["checkbox", /^NAF$/],
-      ["checkbox", /^CDF$/],
       ["checkbox", /^CGO$/],
       ["checkbox", /^TGE$/],
       ["checkbox", /^TSC$/],
@@ -468,6 +467,8 @@ test.describe("4 tournois : création et modification", () => {
     for (const [role, name] of fields) {
       await expect(page.getByRole(role as "textbox", { name }).first(), `${role} ${name}`).toBeAttached();
     }
+    // La case « CDF » (Coupe de France) est réservée aux modérateurs et aux administrateurs (carte 162)
+    await expect(page.getByRole("checkbox", { name: /^CDF$/ })).toHaveCount(0);
     // Les dates sont des champs de date
     await expect(page.getByLabel(/^Date de début/).first()).toHaveAttribute("type", "date");
     // Ligue organisatrice et commissaires : champs de recherche

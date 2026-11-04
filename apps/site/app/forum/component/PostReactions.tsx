@@ -4,12 +4,15 @@
  * Réactions d'un message (refonte, carte 086) : une pastille par émoji avec son compteur, celle du membre mise en
  * valeur, et un bouton d'ajout qui ouvre le choix de 10 émojis. Un membre n'a qu'une réaction par message : un autre
  * émoji remplace la sienne, le même émoji la retire. L'écran se met à jour tout de suite et revient en arrière si le
- * serveur refuse. Un visiteur voit les pastilles mais ne peut pas réagir.
+ * serveur refuse. Un visiteur voit les pastilles mais ne peut pas réagir ; un membre non plus, quand le sujet est
+ * verrouillé ou archivé (carte 169, prop `canReact`). La liste des émojis vient de lib/forumWriteRules.ts, que le
+ * serveur vérifie aussi.
  */
 import { useState, useTransition, useEffect } from "react";
 import { SmilePlus } from "lucide-react";
 import { togglePostReaction } from "@/app/forum/actions";
 import { Button, cn, toast } from "@bbfrance/ui";
+import { REACTION_EMOJIS } from "@/lib/forumWriteRules";
 
 interface Reaction {
   emoji: string;
@@ -20,11 +23,12 @@ interface PostReactionsProps {
   postId: string;
   initialReactions: Reaction[];
   currentUserId?: string;
+  /** Faux quand le sujet est fermé pour ce membre (verrouillé, archivé) : les réactions sont seulement affichées. */
+  canReact?: boolean;
 }
 
-const COMMON_EMOJIS = ["👍", "❤️", "😂", "😢", "😡", "🔥", "👀", "🎉", "👎", "🍻"];
-
-export default function PostReactions({ postId, initialReactions, currentUserId }: PostReactionsProps) {
+export default function PostReactions({ postId, initialReactions, currentUserId, canReact: canReactProp = true }: PostReactionsProps) {
+  const canReact = !!currentUserId && canReactProp;
   const [isPending, startTransition] = useTransition();
   const [showPicker, setShowPicker] = useState(false);
 
@@ -96,7 +100,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
           onClick={() => handleToggle(emoji)}
           aria-pressed={hasReacted}
           title={hasReacted ? "Retirer votre réaction" : "Réagir"}
-          disabled={isPending || !currentUserId}
+          disabled={isPending || !canReact}
           className={cn(
             "min-h-11 gap-1.5 rounded-full border px-3 text-sm disabled:opacity-100 lg:min-h-9",
             hasReacted
@@ -109,7 +113,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
         </Button>
       ))}
 
-      {currentUserId && (
+      {canReact && (
         <div className="relative">
           <Button
             type="button"
@@ -133,13 +137,14 @@ export default function PostReactions({ postId, initialReactions, currentUserId 
                 aria-label="Choisir une réaction"
                 className="absolute bottom-[calc(100%+8px)] left-0 z-10 grid w-max grid-cols-5 gap-1 rounded-bb-md border border-bb-border bg-bb-surface p-1.5 shadow-bb"
               >
-                {COMMON_EMOJIS.map(emoji => (
+                {REACTION_EMOJIS.map(emoji => (
                   <Button
                     key={emoji}
                     type="button"
                     variant="quiet"
                     size="tap-icon"
                     onClick={() => handleToggle(emoji)}
+                    disabled={isPending}
                     className="text-xl"
                   >
                     {emoji}

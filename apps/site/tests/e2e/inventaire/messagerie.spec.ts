@@ -89,11 +89,13 @@ test.describe("Inventaire : messagerie", () => {
       });
 
       const now = Date.now();
-      // Conversation à deux, la plus récente : 31 messages, les deux derniers (de l'autre membre) non lus
+      // Conversation à deux, la plus récente : 31 messages, les deux derniers (de l'autre membre) non lus. Chaque
+      // participant a sa date de lecture (carte 170) : celle de « Moi » tombe entre l'avant-dernier message lu
+      // (il y a 3 minutes) et le premier non lu (il y a 2 minutes).
       await prisma.conversation.create({
         data: {
           id: DUO.id, isGroup: false, updatedAt: new Date(now),
-          participants: { create: [{ userId: ME.id, isAdmin: true }, { userId: OTHER.id }] },
+          participants: { create: [{ userId: ME.id, isAdmin: true, lastReadAt: new Date(now - 150_000) }, { userId: OTHER.id }] },
         },
       });
       for (let n = 1; n <= MESSAGES; n++) {
@@ -103,7 +105,6 @@ test.describe("Inventaire : messagerie", () => {
             conversationId: DUO.id, content: messageText(n),
             authorId: unread || n % 2 === 0 ? OTHER.id : ME.id,
             createdAt: new Date(now - (MESSAGES - n + 1) * 60_000),
-            readAt: unread ? null : new Date(now - 60_000),
           },
         });
       }
@@ -114,8 +115,8 @@ test.describe("Inventaire : messagerie", () => {
         await prisma.conversation.create({
           data: {
             id: group.id, name: group.name, isGroup: true,
-            participants: { create: [{ userId: ME.id, isAdmin: true }, { userId: OTHER.id }, { userId: THIRD.id }] },
-            messages: { create: { content: `Inv Msg bienvenue dans ${group.name}`, authorId: OTHER.id, createdAt: new Date(now - (index + 2) * 60 * 60_000), readAt: new Date(now) } },
+            participants: { create: [{ userId: ME.id, isAdmin: true, lastReadAt: new Date(now) }, { userId: OTHER.id }, { userId: THIRD.id }] },
+            messages: { create: { content: `Inv Msg bienvenue dans ${group.name}`, authorId: OTHER.id, createdAt: new Date(now - (index + 2) * 60 * 60_000) } },
           },
         });
         await prisma.conversation.update({ where: { id: group.id }, data: { updatedAt: new Date(now - (index + 1) * 60_000) } });
@@ -212,8 +213,14 @@ test.describe("Inventaire : messagerie", () => {
     await expect(main.getByText(messageText(2), { exact: true })).toHaveCount(1);
     await expect(main.getByText(messageText(1), { exact: true })).toHaveCount(0);
 
-    // Marqués comme lus à l'ouverture
-    await expect.poll(() => db((prisma) => prisma.privateMessage.count({ where: { conversationId: DUO.id, readAt: null } }))).toBe(0);
+    // Marqués comme lus à l'ouverture : la date de lecture de « Moi » dépasse le dernier message (carte 170)
+    await expect.poll(() => db(async (prisma) => {
+      const [me, last] = await Promise.all([
+        prisma.conversationParticipant.findUnique({ where: { userId_conversationId: { userId: ME.id, conversationId: DUO.id } } }),
+        prisma.privateMessage.findFirst({ where: { conversationId: DUO.id }, orderBy: { createdAt: "desc" } }),
+      ]);
+      return !!me?.lastReadAt && !!last && me.lastReadAt >= last.createdAt;
+    })).toBe(true);
 
     // Un message arrivé pendant la lecture apparaît sans recharger la page (rafraîchissement toutes les 10 secondes)
     await db((prisma) => prisma.privateMessage.create({ data: { conversationId: DUO.id, authorId: OTHER.id, content: "Inv Msg arrivé pendant la lecture" } }));

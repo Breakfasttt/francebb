@@ -6,7 +6,10 @@
  *   aux applications, les appareils connectés et la suppression du compte ;
  * - « Moyens de connexion » : l'adresse email (lien magique), Discord et Google, avec « Associer » ou « Délier »
  *   (le dernier moyen de connexion ne peut pas être délié) ;
- * - « Notifications par email » : un interrupteur par type de courriel, enregistré à chaque changement ; en
+ * - « Notifications » : un interrupteur par type de courriel (messages privés, sujets suivis, annonces) et
+ *   l'abonnement automatique aux sujets que l'on crée ou auxquels on répond (carte 167), enregistrés à chaque
+ *   changement. Les mentions n'envoient plus d'e-mail : elles s'affichent seulement sous la cloche du site, d'où la
+ *   disparition de l'interrupteur « Mentions » (la colonne `notifMention` reste en base, sans effet) ; en
  *   développement, l'envoi d'une newsletter de test ;
  * - « Zone de danger » : « Supprimer mon compte », avec deux confirmations (hors mode hub).
  * Les actions serveur sont inchangées.
@@ -22,20 +25,24 @@ interface ProfileSettingsProps {
     email?: string | null;
     accounts?: { provider: string }[];
     notifPm?: boolean;
-    notifMention?: boolean;
     notifFollowedTopic?: boolean;
     notifNewsletter?: boolean;
+    autoFollowTopics?: boolean;
   };
   onUpdate?: () => void;
 }
 
-type NotifKey = "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter";
+type NotifKey = "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics";
 
 const NOTIFICATIONS: { id: NotifKey; label: string; desc: string }[] = [
-  { id: "notifPm", label: "Messages privés", desc: "Un nouveau message dans votre messagerie." },
-  { id: "notifMention", label: "Mentions", desc: "Quelqu'un vous cite dans un sujet." },
-  { id: "notifFollowedTopic", label: "Sujets suivis", desc: "Un nouveau message dans un sujet que vous suivez." },
-  { id: "notifNewsletter", label: "Newsletter et annonces", desc: "Les informations importantes sur le site." },
+  { id: "notifPm", label: "Messages privés", desc: "Un e-mail pour un nouveau message dans votre messagerie." },
+  { id: "notifFollowedTopic", label: "Sujets suivis", desc: "Un e-mail pour un nouveau message dans un sujet que vous suivez." },
+  { id: "notifNewsletter", label: "Newsletter et annonces", desc: "Les e-mails d'information importants sur le site." },
+  {
+    id: "autoFollowTopics",
+    label: "Suivre automatiquement mes sujets",
+    desc: "Suivre les sujets que vous créez et ceux auxquels vous répondez.",
+  },
 ];
 
 export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps) {
@@ -56,9 +63,9 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
 
   const [notifSettings, setNotifSettings] = useState<Record<NotifKey, boolean>>({
     notifPm: user.notifPm ?? true,
-    notifMention: user.notifMention ?? true,
     notifFollowedTopic: user.notifFollowedTopic ?? true,
     notifNewsletter: user.notifNewsletter ?? true,
+    autoFollowTopics: user.autoFollowTopics ?? true,
   });
 
   const handleUpdateNotif = (key: NotifKey, value: boolean) => {
@@ -199,12 +206,16 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         </ul>
       </Card>
 
-      {/* Notifications par email */}
+      {/* Notifications : e-mails et abonnement automatique (carte 167) */}
       <Card className="overflow-hidden">
         <CardHeader>
           <Bell size={18} className="text-bb-text-muted" aria-hidden="true" />
-          <CardTitle>Notifications par email</CardTitle>
+          <CardTitle>Notifications</CardTitle>
         </CardHeader>
+        <p className="m-0 border-b border-bb-border px-4 py-3 text-sm text-bb-text-muted">
+          Les mentions, les réponses dans vos sujets suivis et les messages privés s&apos;affichent toujours sous la cloche du
+          site. Ces réglages choisissent les e-mails que vous recevez en plus, et le suivi automatique des sujets.
+        </p>
         <ul className="m-0 list-none p-0">
           {NOTIFICATIONS.map((item) => (
             <li key={item.id} className={`${row} flex-nowrap`}>

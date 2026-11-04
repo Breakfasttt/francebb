@@ -3,6 +3,7 @@
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
+import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { revalidatePath } from "next/cache";
 import { encrypt, decrypt } from "@/lib/crypto";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
@@ -229,19 +230,30 @@ export async function getPreviousTheme(): Promise<string | null> {
   return previous && isSiteTheme(previous) && previous !== "vestiaire" ? previous : null;
 }
 
+/**
+ * Préférences de notification du profil : e-mails des messages privés, des sujets suivis et des annonces, et
+ * abonnement automatique aux sujets (carte 167). Seuls ces quatre champs sont enregistrés, et seulement s'ils valent
+ * vrai ou faux. La préférence des e-mails de mention (`notifMention`) n'a plus d'effet depuis la carte 167 : elle
+ * n'est plus modifiable.
+ */
 export async function updateNotificationSettings(settings: {
   notifPm: boolean;
-  notifMention: boolean;
   notifFollowedTopic: boolean;
   notifNewsletter: boolean;
+  autoFollowTopics: boolean;
 }): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non connecté" };
 
+  const keys = ["notifPm", "notifFollowedTopic", "notifNewsletter", "autoFollowTopics"] as const;
+  if (keys.some((key) => typeof settings?.[key] !== "boolean")) {
+    return { success: false, error: "Préférences invalides" };
+  }
+
   try {
     await prisma.user.update({
       where: { id: session.user.id },
-      data: settings
+      data: Object.fromEntries(keys.map((key) => [key, settings[key]]))
     });
 
     revalidatePath("/profile");
@@ -293,7 +305,8 @@ export async function sendTestNewsletter() {
 
   // 2. Récupérer les 3 prochains tournois
   const upcomingTournaments = await prisma.tournament.findMany({
-    where: { date: { gte: new Date() } },
+    // Pas de tournoi dont le sujet du forum est supprimé (carte 165)
+    where: { date: { gte: new Date() }, ...TOURNAMENT_TOPIC_NOT_DELETED },
     take: 3,
     orderBy: { date: "asc" },
     include: { topic: { select: { id: true } } }

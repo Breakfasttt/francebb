@@ -2,8 +2,8 @@
 
 /**
  * Onglet « Sujets suivis » du profil (refonte, carte 092) : les sujets que le membre suit, du plus récent au plus
- * ancien, 20 par page. Une pastille « Non lu » signale un sujet qui a reçu un message depuis la dernière visite.
- * Chaque ligne mène au sujet. Les données viennent de l'action `getFollowedTopics` (inchangée).
+ * ancien dernier message, 20 par page. Une pastille « Non lu » signale un sujet qui a reçu un message depuis la dernière
+ * lecture. Chaque ligne mène au sujet. Les données viennent de l'action `getFollowedTopics`.
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -13,7 +13,7 @@ import { Bookmark, ChevronRight } from "lucide-react";
 import { Card, CardHeader, CardTitle, EmptyState, PageNav, Skeleton } from "@bbfrance/ui";
 import { getFollowedTopics } from "@/app/forum/actions";
 
-type FollowedTopic = { id: string; title: string; updatedAt: Date; forumId: string; isUnread: boolean };
+type FollowedTopic = { id: string; title: string; lastPostAt: Date; forumId: string; isUnread: boolean };
 
 export default function ProfileFollowedTopics() {
   const [page, setPage] = useState(1);
@@ -63,7 +63,7 @@ export default function ProfileFollowedTopics() {
                   <span className="flex min-w-0 flex-1 flex-col">
                     <span className={`truncate text-[0.95rem] ${topic.isUnread ? "font-bold" : "font-semibold"}`}>{topic.title}</span>
                     <span className="text-sm text-bb-text-muted">
-                      {topic.updatedAt ? `Mis à jour ${formatDistanceToNow(new Date(topic.updatedAt), { addSuffix: true, locale: fr })}` : ""}
+                      Dernier message {formatDistanceToNow(new Date(topic.lastPostAt), { addSuffix: true, locale: fr })}
                     </span>
                   </span>
                   <ChevronRight size={18} className="shrink-0 text-bb-text-muted" aria-hidden="true" />

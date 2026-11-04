@@ -17,6 +17,9 @@
  * Carte 144 : trois tests de plus, chacun avec ses propres données (nommées « Inv Mod … » elles aussi) : « Ignorer »
  * un signalement depuis le menu « ⋯ », l'ouverture du journal qui n'écrit plus de ligne de purge vide, et l'ordre
  * stable de la liste des bannis d'une page à l'autre (11 bannis datés du lendemain, à la même seconde).
+ *
+ * Carte 168 : un test de plus, un message signalé dans le sujet « Inv Mod » : sa fiche montre l'extrait, l'auteur et
+ * un lien vers le message dans le même onglet, et « Masquer » masque le message et ferme le signalement.
  */
 import { test, expect, type Locator, type Page } from "@playwright/test";
 import { E2E, loginAs, withTestDb } from "../fixtures";
@@ -58,6 +61,10 @@ const USER_IDS = [MODO.id, ADMIN.id, REPORTER_1.id, REPORTER_2.id, BANNED.id];
 /** Sujet signalé puis ignoré (carte 144). */
 const IGNORED_TOPIC = { id: "e2e_invmod_topic_ign", title: "Inv Mod Sujet à ignorer" };
 const IGNORED_REASON = "Inv Mod raison d'un signalement abusif";
+
+/** Réponse du sujet signalé, signalée à son tour puis masquée depuis l'écran de modération (carte 168). */
+const REPORTED_POST = { id: "e2e_invmod_post", text: "Inv Mod texte du message signalé" };
+const POST_REASON = "Inv Mod raison d'un message signalé";
 
 /** Lot de 11 bannis datés du lendemain à la même seconde : seul l'identifiant les départage (carte 144). */
 const BANNED_LOT = Array.from({ length: 11 }, (_, i) => {
@@ -377,6 +384,48 @@ test("« Ignorer » un signalement depuis le menu « ⋯ » : il est classé com
     expect(reports.map((report) => report.status)).toEqual(["IGNORED"]);
     const log = await prisma.moderationLog.findFirst({ where: { action: "REPORT_IGNORED", targetId: IGNORED_TOPIC.id, moderatorId: MODO.id } });
     expect(log?.details).toBe("Inv Mod signalement sans fondement");
+  });
+});
+
+test("message signalé : extrait, auteur, lien vers le message dans le même onglet, puis « Masquer » ferme le signalement (carte 168)", async ({ page }) => {
+  // Données propres à ce test, remises à zéro à chaque lancement (ordinateur puis téléphone) : une réponse dans le
+  // sujet signalé, écrite en BBCode, et un signalement de cette réponse
+  await db(async (prisma) => {
+    await prisma.moderationReport.deleteMany({ where: { targetId: REPORTED_POST.id } });
+    await prisma.post.upsert({
+      where: { id: REPORTED_POST.id },
+      update: { isModerated: false, moderationReason: null, moderatedBy: null },
+      create: { id: REPORTED_POST.id, topicId: TOPIC.id, authorId: REPORTER_1.id, content: `[b]${REPORTED_POST.text}[/b]` },
+    });
+    await prisma.moderationReport.create({ data: { reason: POST_REASON, reporterId: REPORTER_2.id, targetId: REPORTED_POST.id, targetType: "POST" } });
+  });
+
+  await loginAs(page, MODO.id);
+  await page.goto("/moderation?tab=reports_post", { waitUntil: "networkidle" });
+  const card = entry(page, POST_REASON);
+  await expect(card).toBeVisible();
+  // Le texte du message, sans ses balises BBCode, son auteur et le membre qui l'a signalé
+  await expect(card).toContainText(REPORTED_POST.text);
+  await expect(card).not.toContainText("[b]");
+  await expect(card).toContainText(REPORTER_1.name);
+  await expect(card).toContainText(REPORTER_2.name);
+  // Lien vers la bonne page du sujet, sur le message, sans ouvrir de nouvel onglet
+  const view = card.getByRole("link", { name: "Voir dans le sujet" });
+  await expect(view).toHaveAttribute("href", `/forum/topic/${TOPIC.id}?page=1#post-${REPORTED_POST.id}`);
+  await expect(view).not.toHaveAttribute("target", "_blank");
+
+  // « Masquer » : la fenêtre de modération demande une raison ; le message est masqué et le signalement se ferme
+  await card.getByRole("button", { name: "Masquer" }).click();
+  const dialog = page.getByRole("dialog", { name: /Modérer le message/ });
+  await dialog.getByRole("textbox", { name: /Raison de la modération/ }).fill("Inv Mod message masqué");
+  await dialog.getByRole("button", { name: /Confirmer la modération/ }).click();
+  await expect(page.getByText("Message masqué, signalement fermé")).toBeVisible();
+  await expect(entry(page, POST_REASON)).toHaveCount(0);
+
+  await db(async (prisma) => {
+    expect((await prisma.post.findUnique({ where: { id: REPORTED_POST.id } }))?.isModerated).toBe(true);
+    const reports = await prisma.moderationReport.findMany({ where: { targetId: REPORTED_POST.id } });
+    expect(reports.map((report) => report.status)).toEqual(["RESOLVED"]);
   });
 });
 

@@ -40,13 +40,32 @@ function sanitizeUrl(url: string, base: string = "#"): string {
 }
 
 /**
+ * Une valeur recopiée dans un attribut HTML (adresse d'image, de lien, identifiant) ne doit contenir aucun
+ * caractère capable de fermer l'attribut ou d'ouvrir une balise. Le texte du membre est déjà échappé à l'étape 1 :
+ * ces caractères ne peuvent donc venir que du HTML produit par une autre balise imbriquée, par exemple
+ * [img][color=…]…[/color][/img]. C'était la faille de la carte 159 (audit du 4 novembre 2026, section 2.1).
+ */
+function isAttributeSafe(value: string): boolean {
+  return !/[<>"'`]/.test(value);
+}
+
+/** Adresse sûre pour un attribut href ou src : refusée (« # ») si elle contient du HTML produit par une autre balise. */
+function safeAttributeUrl(url: string): string {
+  return isAttributeSafe(url) ? sanitizeUrl(url) : "#";
+}
+
+/** Identifiant (membre, message, schéma) : lettres, chiffres, tiret et soulignement seulement. */
+const SAFE_ID = /^[a-zA-Z0-9_-]+$/;
+
+/**
  * A simple helper to sanitize styles (color/size) to prevent CSS injection
  */
 function sanitizeStyle(value: string, type: 'color' | 'size'): string {
   const v = value.trim().split(';')[0]; // On ne prend que la première instruction CSS
   if (type === 'color') {
     // Regex simple pour hex, rgb, hsl ou noms de couleurs
-    if (/^(#[0-9a-f]{3,8}|[a-z]{3,20}|rgba?\(.*\)|hsla?\(.*\))$/i.test(v)) return v;
+    // rgb() et hsl() : seulement des chiffres, virgules, espaces, points, % et / entre les parenthèses (carte 159)
+    if (/^(#[0-9a-f]{3,8}|[a-z]{3,20}|(rgba?|hsla?)\([\d\s.,%/]+\))$/i.test(v)) return v;
   } else if (type === 'size') {
     // On autorise chiffres + unités simples (% em rem px)
     if (/^[0-9.]+(%|em|rem|px|pt|vh|vw)?$/i.test(v)) return v;
@@ -55,9 +74,43 @@ function sanitizeStyle(value: string, type: 'color' | 'size'): string {
 }
 
 /**
+ * État des messages cités, calculé par le serveur (`getQuoteStatusMap`, app/forum/actions.ts) et indexé par
+ * l'identifiant du message. `authorId` et `authorName` (carte 169) sont l'auteur réel du message cité.
+ */
+export type QuoteStatusMap = Record<string, { isDeleted: boolean; isModerated: boolean; authorId?: string; authorName?: string | null }>;
+
+/**
+ * Onglet « Par @… » d'une citation (carte 169) : à qui l'attribuer, ou `null` pour ne pas l'afficher.
+ * - Sans état des messages cités (aperçu de l'éditeur, messagerie, ligues), rien n'est vérifiable : la balise est
+ *   affichée telle qu'elle est écrite, comme avant. `userName` est alors déjà échappé (étape 1 de parseBBCode).
+ * - Avec cet état (pages du forum), l'onglet n'est affiché que si la citation désigne un message existant, écrit par le
+ *   membre nommé dans la balise ; le pseudo affiché est alors celui de la base. Une citation écrite à la main sous la
+ *   forme [quote=idDuMembre|idDuMessage|Pseudo] ne peut donc plus attribuer un faux texte à un autre membre.
+ */
+export function quoteAuthorTab(
+  userId: string | undefined,
+  postId: string | undefined,
+  userName: string | undefined,
+  postStatusMap?: QuoteStatusMap
+): { id: string; name: string } | null {
+  if (!userId || !SAFE_ID.test(userId)) return null;
+  if (!postStatusMap) return { id: userId, name: userName || userId };
+  const status = postId ? postStatusMap[postId] : undefined;
+  if (!status || status.authorId !== userId) return null;
+  // Le pseudo lu dans la base n'est pas passé par l'échappement du texte du message (étape 1 de parseBBCode) : il
+  // l'est ici, avant d'être inséré dans la page
+  return { id: userId, name: status.authorName ? escapeHtmlText(status.authorName) : userName || userId };
+}
+
+/** Neutralise les caractères HTML d'un texte, comme l'étape 1 de parseBBCode. */
+function escapeHtmlText(value: string): string {
+  return value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
+/**
  * A simple BBCode parser that escapes HTML to prevent XSS and replaces known tags.
  */
-export function parseBBCode(text: string, postStatusMap?: Record<string, { isDeleted: boolean, isModerated: boolean }>, currentUserId?: string): string {
+export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, currentUserId?: string): string {
   if (!text) return "";
 
   // 1. Escape basic HTML tags to prevent XSS
@@ -131,16 +184,19 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
       const parts = boardId.split("id=");
       if (parts[1]) boardId = parts[1].split("&")[0];
     }
+    if (!SAFE_ID.test(boardId)) return "";
     const safeLayout = layout || 'horizontal';
     // Utilisation d'un élément personnalisé pour une hydratation robuste
     return `<bb-scheme data-board-id="${boardId}" data-layout="${safeLayout}" style="display: block; min-height: 150px; margin: 1rem 0;"></bb-scheme>`;
   });
 
-  // 3. Spoilers (Body-First structure for persistent size)
+  // 3. Spoilers (Body-First structure for persistent size). Aucun attribut onclick : l'ouverture et la fermeture
+  // passent par un seul écouteur (common/components/BBCodeContent/BBCodeInteractions.tsx), ce qui permet une politique
+  // de sécurité du contenu stricte (carte 159).
   while (/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i.test(html)) {
     html = html.replace(/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i, (match, title, content) => {
       const trimmedContent = content.trim();
-      return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box" onclick="this.classList.add('revealed')"><div class="bb-spoiler-body">${trimmedContent}<button class="bb-spoiler-rehide" title="Recouvrir le bloc" onclick="event.stopPropagation(); this.closest('.bb-spoiler-box').classList.remove('revealed');">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
+      return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box"><div class="bb-spoiler-body">${trimmedContent}<button type="button" class="bb-spoiler-rehide" title="Recouvrir le bloc">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
     });
   }
 
@@ -167,14 +223,17 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
       const displayContent = (quoteContent || content).trim();
       const tabs = [];
       tabs.push(`<div style="background: var(--bb-accent); color: var(--bb-on-accent); padding: 0.35rem 1rem; font-size: 0.7rem; font-weight: 800; text-transform: uppercase; border-radius: 8px 8px 0 0; letter-spacing: 0.5px; border: 1px solid var(--bb-accent); border-bottom: none; display: flex; align-items: center;">Citation ${userId ? '' : ' '}</div>`);
-      if (userId) {
-        const isMe = currentUserId === userId;
-        const profileHref = isMe ? '/profile' : `/spy/${userId}`;
-        const displayName = userName || userId;
+      const author = quoteAuthorTab(userId, postId, userName, postStatusMap);
+      if (author) {
+        const isMe = currentUserId === author.id;
+        const profileHref = isMe ? '/profile' : `/spy/${author.id}`;
+        const displayName = author.name;
         tabs.push(`<div style="background: var(--bb-surface-2); border: 1px solid var(--bb-border); border-bottom: none; color: var(--bb-text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;">Par&nbsp;<a href="${profileHref}" target="_blank" style="color: var(--bb-accent-text); text-decoration: none; font-weight: 800;">@${displayName}</a></div>`);
       }
       if (postId) {
-        tabs.push(`<div style="background: var(--bb-surface-2); border: 1px solid var(--bb-border); border-bottom: none; color: var(--bb-text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="#post-${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
+        // Lien permanent (carte 169) : /forum/post/<message> renvoie à la bonne page du sujet, même si le message cité
+        // n'est pas sur la page affichée (avant, l'ancre « #post-… » ne marchait que sur la même page)
+        tabs.push(`<div style="background: var(--bb-surface-2); border: 1px solid var(--bb-border); border-bottom: none; color: var(--bb-text-muted); padding: 0.35rem 1rem; font-size: 0.7rem; border-radius: 8px 8px 0 0; font-weight: 600; margin-left: -1px; display: flex; align-items: center;"><a href="/forum/post/${postId}" style="color: inherit; text-decoration: none;">Voir le message</a></div>`);
       }
       return `<div class="bb-quote-wrapper" style="margin: 1rem 0; display: flex; flex-direction: column;"><div style="display: flex; align-items: stretch; position: relative; z-index: 2; margin-bottom: -1px;">${tabs.join("")}</div><blockquote style='border: 1px solid var(--bb-border); border-left: 4px solid var(--bb-accent); background: var(--bb-surface-2); padding: 0.8rem 1.2rem; margin: 0; border-radius: 0 8px 8px 8px; font-style: italic; color: var(--bb-text-muted); position: relative; z-index: 1;'>${displayContent}</blockquote></div>`;
     });
@@ -182,10 +241,10 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
 
   // 6. Links
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, (match, url, content) => {
-    return `<a href="${sanitizeUrl(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--bb-accent-text); text-decoration:underline;">${content}</a>`;
+    return `<a href="${safeAttributeUrl(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--bb-accent-text); text-decoration:underline;">${content}</a>`;
   });
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, (match, url) => {
-    const safeUrl = sanitizeUrl(url);
+    const safeUrl = safeAttributeUrl(url);
     return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="color:var(--bb-accent-text); text-decoration:underline;">${url}</a>`;
   });
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "<a href=\"/forum/topic/$1\" target=\"_blank\" rel=\"noopener noreferrer\" style=\"color:var(--bb-accent-text); text-decoration:none; font-weight:600; padding: 0.1rem 0.4rem; background: var(--bb-accent-soft); border-radius: 4px;\">📌 $2</a>");
@@ -199,6 +258,7 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   html = html.replace(
     /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\](.*?)\[\/img\]/gi,
     (match, align, wrap, thumb, url) => {
+      if (!isAttributeSafe(url)) return "";
       const safeUrl = sanitizeUrl(url);
       const isThumb = thumb !== "no";
       let style = "max-width:100%; border-radius:8px;";
@@ -280,8 +340,8 @@ export function parseBBCode(text: string, postStatusMap?: Record<string, { isDel
   // 11. Gallery [gallery]URL1,URL2,URL3[/gallery]
   while (/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i.test(html)) {
     html = html.replace(/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i, (match, cols, content) => {
-      const urls = content.trim().split(/[\n,]/).map((u: string) => u.trim()).filter((u: string) => u);
-      const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${url}" alt="Gallery" loading="lazy" /></div>`).join("");
+      const urls = content.trim().split(/[\n,]/).map((u: string) => u.trim()).filter((u: string) => u && isAttributeSafe(u));
+      const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${sanitizeUrl(url)}" alt="Gallery" loading="lazy" /></div>`).join("");
       return `<div class="bb-gallery">${images}</div>`;
     });
   }

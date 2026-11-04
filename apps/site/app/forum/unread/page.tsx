@@ -1,6 +1,6 @@
 /**
- * Sujets non lus du membre (refonte, carte 085) : une ligne par sujet (titre, forum, auteur, messages, date du
- * dernier message) avec un bouton pour le marquer comme lu, « Tout marquer comme lu » en tête, 20 sujets par page.
+ * Sujets non lus du membre (refonte, carte 085) : une ligne par sujet (titre, forum, auteur du sujet, messages, auteur, date et
+ * heure du dernier message) avec un bouton pour le marquer comme lu, « Tout marquer comme lu » en tête, 20 sujets par page.
  */
 import Link from "next/link";
 import { getActiveSession } from "@/lib/authGuard";
@@ -10,7 +10,7 @@ import { Avatar, Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
 import ForumListHeader from "../component/ForumListHeader";
-import { UnreadDot } from "../component/ForumListItems";
+import { UnreadDot, frenchDateTime } from "../component/ForumListItems";
 import MarkAllAsReadButton from "../component/MarkAllAsReadButton";
 import MarkTopicReadButton from "./component/MarkTopicReadButton";
 
@@ -18,16 +18,14 @@ export const dynamic = "force-dynamic";
 
 const POSTS_PER_PAGE = 20;
 
-/** Date et heure courtes du dernier message (« 12 mars, 18:30 »). */
-const lastActivity = (date: Date) =>
-  new Date(date).toLocaleDateString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
 
 export default async function UnreadPostsPage({ searchParams }: { searchParams: Promise<{ page?: string }> }) {
   const session = await getActiveSession();
   if (!session) redirect("/auth/login?callbackUrl=/forum/unread");
 
   const { page: pageStr } = await searchParams;
-  const currentPage = Math.max(1, parseInt(pageStr || "1", 10));
+  // Un numéro de page illisible (« ?page=abc ») donne la page 1 : avant la carte 169, il donnait une page cassée
+  const currentPage = Math.max(1, parseInt(pageStr || "1", 10) || 1);
   const { topics: unreadTopics, total } = await getUnreadTopics(currentPage, POSTS_PER_PAGE);
   const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
@@ -72,7 +70,13 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
                         <span className="lg:w-24 lg:text-right">
                           {topic._count.posts} {topic._count.posts > 1 ? "messages" : "message"}
                         </span>
-                        <span className="lg:w-36 lg:text-right">{lastActivity(topic.updatedAt)}</span>
+                        <span className="flex min-w-0 flex-wrap gap-x-1 lg:w-40 lg:flex-col lg:text-right">
+                          <span className="min-w-0 truncate">Dernier : {topic.lastPostAuthor?.name ?? "Anonyme"}</span>
+                          <span>
+                            <span className="lg:hidden">· </span>
+                            {frenchDateTime(topic.lastPostAt)}
+                          </span>
+                        </span>
                       </span>
                     </span>
                   </Link>

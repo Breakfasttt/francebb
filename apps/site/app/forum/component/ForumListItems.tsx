@@ -12,6 +12,13 @@ import { parseInlineBBCode } from "@/lib/bbcode";
 /** Date courte à la française (jj/mm/aaaa), comme dans le reste du forum. */
 export const frenchDate = (date: Date | string) => new Date(date).toLocaleDateString("fr-FR");
 
+/**
+ * Date et heure courtes à la française (« 04/11/2026 18:42 »), à l'heure de Paris : le serveur qui affiche la page
+ * peut tourner à l'heure universelle, qui a une ou deux heures d'écart.
+ */
+export const frenchDateTime = (date: Date | string) =>
+  new Date(date).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short", timeZone: "Europe/Paris" });
+
 /** Point bleu signalant du contenu non lu. Il porte un nom lisible par les lecteurs d'écran. */
 export function UnreadDot({ className = "" }: { className?: string }) {
   return <span role="img" aria-label="Messages non lus" className={`inline-block size-2.5 shrink-0 rounded-full bg-bb-unread ${className}`} />;
@@ -54,14 +61,16 @@ export interface ForumRowData {
     title: string;
     isTournament: boolean;
     tournament?: TournamentState | null;
-    authorName: string | null;
-    date: Date | string;
+    /** Auteur et date du dernier message du sujet (carte 166). */
+    lastPostAuthorName: string | null;
+    lastPostAt: Date | string;
   };
 }
 
 /**
  * Ligne d'un forum : icône carrée (trophée pour un forum de tournois, dossier sinon), nom (gras s'il contient du
- * non-lu), cadenas, description, dernier sujet sur une ligne tronquée, puis « N sujets · par X · date ».
+ * non-lu), cadenas, description, dernier sujet sur une ligne tronquée, puis « N sujets · Dernier : X · date et heure »
+ * (auteur et date du dernier message de ce sujet).
  */
 export function ForumRow({ forum }: { forum: ForumRowData }) {
   const { lastTopic } = forum;
@@ -94,7 +103,7 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
         )}
         <span className="text-[0.8125rem] text-bb-text-muted">
           {forum.topicCount} {forum.topicCount > 1 ? "sujets" : "sujet"}
-          {lastTopic && ` · par ${lastTopic.authorName ?? "Anonyme"} · ${frenchDate(lastTopic.date)}`}
+          {lastTopic && ` · Dernier : ${lastTopic.lastPostAuthorName ?? "Anonyme"} · ${frenchDateTime(lastTopic.lastPostAt)}`}
         </span>
       </span>
       {forum.hasNew && <UnreadDot className="mt-2" />}
@@ -112,15 +121,18 @@ export interface TopicRowData {
   hasNew: boolean;
   author: { name: string | null; image?: string | null };
   createdAt: Date | string;
-  updatedAt: Date | string;
+  /** Auteur et date du dernier message (carte 166). */
+  lastPostAuthorName: string | null;
+  lastPostAt: Date | string;
   postCount: number;
   views: number;
 }
 
 /**
  * Ligne d'un sujet, à la manière de Discourse : avatar de l'auteur, titre dominant (gras s'il est non lu), marques
- * épinglé / tournoi / verrouillé, badge de statut du tournoi, « par X · date », puis messages, vues et dernière
- * activité. Sur téléphone, ces trois chiffres passent sous le titre ; sur ordinateur, ils forment des colonnes.
+ * épinglé / tournoi / verrouillé, badge de statut du tournoi, « par X · date », puis messages, vues et dernier
+ * message (« Dernier : auteur », date et heure). Sur téléphone, ces informations passent sous le titre ; sur
+ * ordinateur, elles forment des colonnes.
  */
 export function TopicRow({ topic }: { topic: TopicRowData }) {
   const plural = (count: number, word: string) => `${count.toLocaleString("fr-FR")} ${word}${count > 1 ? "s" : ""}`;
@@ -150,9 +162,12 @@ export function TopicRow({ topic }: { topic: TopicRowData }) {
         <span className="flex flex-wrap gap-x-3 text-[0.8125rem] text-bb-text-muted lg:flex-nowrap lg:gap-0 lg:text-sm">
           <span className="lg:w-24 lg:text-right">{plural(topic.postCount, "message")}</span>
           <span className="lg:w-20 lg:text-right">{plural(topic.views, "vue")}</span>
-          <span className="lg:w-28 lg:text-right">
-            <span className="lg:sr-only">Activité </span>
-            {frenchDate(topic.updatedAt)}
+          <span className="flex min-w-0 flex-wrap gap-x-1 lg:w-40 lg:flex-col lg:text-right">
+            <span className="min-w-0 truncate">Dernier : {topic.lastPostAuthorName ?? "Anonyme"}</span>
+            <span>
+              <span className="lg:hidden">· </span>
+              {frenchDateTime(topic.lastPostAt)}
+            </span>
           </span>
         </span>
       </span>

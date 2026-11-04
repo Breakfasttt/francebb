@@ -69,7 +69,18 @@ export function ComposeActionBar({ children, className }: { children: ReactNode;
   );
 }
 
-type RecapPost = { id: string; content: string; author: { name: string | null; image: string | null } };
+type RecapPost = {
+  id: string;
+  // Vide quand le message est supprimé, ou masqué pour un lecteur qui n'est ni son auteur ni modérateur (carte 164)
+  content: string;
+  isDeleted?: boolean;
+  isModerated?: boolean;
+  author: { name: string | null; image: string | null };
+};
+
+/** Phrase affichée à la place du texte d'un message que le lecteur n'a pas le droit de lire. */
+const hiddenRecapText = (post: RecapPost) =>
+  post.isDeleted ? "Ce message a été supprimé par son auteur." : "Le contenu de ce message a été masqué par la modération.";
 
 /**
  * « Rappel des derniers messages » sous l'éditeur : les 3 derniers messages du sujet, coupés à quelques lignes.
@@ -104,10 +115,14 @@ export function RecentPostsRecap({
                   {isEditing && <span className="block text-xs font-normal text-bb-accent-text">(Ce message)</span>}
                 </p>
               </div>
-              <div
-                className="max-h-24 min-w-0 flex-1 overflow-hidden text-[0.95rem] break-words text-bb-text-muted [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]"
-                dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap, currentUserId) }}
-              />
+              {(post.isDeleted || post.isModerated) && !post.content ? (
+                <p className="m-0 min-w-0 flex-1 text-sm text-bb-text-muted italic">{hiddenRecapText(post)}</p>
+              ) : (
+                <div
+                  className="max-h-24 min-w-0 flex-1 overflow-hidden text-[0.95rem] break-words text-bb-text-muted [mask-image:linear-gradient(to_bottom,black_70%,transparent_100%)]"
+                  dangerouslySetInnerHTML={{ __html: parseBBCode(post.content, quoteStatusMap, currentUserId) }}
+                />
+              )}
             </Card>
           );
         })}

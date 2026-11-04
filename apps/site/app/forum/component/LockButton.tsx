@@ -10,10 +10,12 @@ interface LockButtonProps {
   id: string;
   type: "forum" | "topic";
   isLocked: boolean;
+  /** Appelée après un changement réussi : les outils du sujet s'en servent pour fermer leur panneau (carte 168). */
+  onDone?: () => void;
 }
 
 /** Bouton « Verrouiller » ou « Déverrouiller » un forum ou un sujet, dans les outils des modérateurs. */
-export default function LockButton({ id, type, isLocked }: LockButtonProps) {
+export default function LockButton({ id, type, isLocked, onDone }: LockButtonProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -26,6 +28,7 @@ export default function LockButton({ id, type, isLocked }: LockButtonProps) {
           return;
         }
         toast.success(isLocked ? `${type === "forum" ? "Forum" : "Sujet"} déverrouillé` : `${type === "forum" ? "Forum" : "Sujet"} verrouillé`);
+        onDone?.();
         router.refresh();
       } catch (error) {
         toast.error(error instanceof Error ? error.message : "Une erreur est survenue");

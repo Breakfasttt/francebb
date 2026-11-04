@@ -5,6 +5,7 @@ import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseInlineBBCode } from "@/lib/bbcode";
+import { canQuotePost } from "@/lib/forumPostPrivacy";
 import ReplyForm from "@/app/forum/component/ReplyForm";
 import ComposeScreen, { RecentPostsRecap } from "@/app/forum/component/ComposeScreen";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu et le rappel des messages
@@ -13,7 +14,7 @@ export const dynamic = "force-dynamic";
 
 /**
  * Page de réponse à un sujet (carte 087 : écran de rédaction plein écran sur téléphone, voir ComposeScreen).
- * `?quotePostId=` préremplit l'éditeur avec la citation du message demandé.
+ * `?quotePostId=` préremplit l'éditeur avec la citation du message demandé, sauf s'il est supprimé ou masqué.
  */
 export default async function ReplyPage({
   params,
@@ -44,21 +45,24 @@ export default async function ReplyPage({
     }
   });
 
-  if (!topic) notFound();
+  // Un sujet supprimé (carte 165) n'accepte plus de réponse
+  if (!topic || topic.isDeleted) notFound();
   const { roles } = await getForumAccess();
   if (!canAccessForum(topic.forum, roles)) notFound();
 
   // Carte 149 : un sujet verrouillé (ou un sujet d'un forum verrouillé) n'accepte que les réponses des modérateurs.
   // Un membre ordinaire est renvoyé vers le sujet avant d'écrire, au lieu d'être refusé à l'envoi.
-  if ((topic.isLocked || topic.forum.isLocked) && !isModerator(session.user.role)) {
+  // Carte 169 : un sujet archivé est fermé de la même façon.
+  if ((topic.isLocked || topic.isArchived || topic.forum.isLocked) && !isModerator(session.user.role)) {
     redirect(`/forum/topic/${id}`);
   }
 
-  // Citation demandée
+  // Citation demandée. Un message supprimé ou masqué par la modération ne se cite pas (carte 164) : l'adresse
+  // ?quotePostId= est alors ignorée et l'éditeur s'ouvre vide.
   let quoteData = null;
   if (quotePostId) {
     const post = await getPostById(quotePostId);
-    if (post && post.topicId === id) {
+    if (post && post.topicId === id && canQuotePost(post)) {
       quoteData = {
         postId: post.id,
         author: post.authorId,

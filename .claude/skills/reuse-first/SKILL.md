@@ -73,6 +73,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur (carte 141) |
 | Zoom au pincement à deux doigts sur un cadre qui défile | `common/hooks/usePinchZoom.ts` (`usePinchZoom(ref, { zoom, min, max, onZoomChange })`) |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
+| Fermer les signalements en attente d'un contenu après une action de modération | `lib/moderationReports.ts` (`closePendingReports`), interne au serveur |
 | Supprimer un compte membre (contenus publics rattachés au compte fantôme) | `lib/accountDeletion.ts` (`anonymizeAndDeleteUser`), interne au serveur ; l'appelant vérifie les droits |
 | Adresse de retour après connexion | `lib/safeRedirect.ts` (`safeCallbackUrl`) |
 | Rechercher des membres | `lib/userSearch.ts` (`userSearchWhere`) ; actions `searchUsersAction` (forum), `searchUsers` (messagerie) |
@@ -81,11 +82,18 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Rôles et niveau de pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
 | Libellé lisible d'un rôle, rôles personnalisés compris | `getRoleLabel(role, labels)` de `lib/roles.ts`, avec `labels` lus par `getRoleLabelMap()` (`lib/roleLabels.ts`, serveur) ou l'action `getRoleLabels` (`app/profile/actions.ts`, composant client) |
 | Accès forum par rôle (`allowedRoles`) | `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`) — toute requête catégorie/forum/topic/post |
+| Champs d'un membre envoyés au navigateur, texte d'un message supprimé ou masqué, citation autorisée | `lib/forumPostPrivacy.ts` (`POST_AUTHOR_SELECT`, `PUBLIC_MEMBER_SELECT`, `POST_MODERATOR_SELECT`, `hidePostContent`, `canQuotePost`) |
 | Client Prisma | `lib/prisma.ts` → `prisma` (ne renvoie jamais `User.email`) ; `prismaWithEmail` réservé à la connexion et aux mails |
 | BBCode → HTML | `lib/bbcode.ts` |
 | Chiffrement | `lib/crypto.ts` |
 | Départements / régions | `lib/france.ts` |
-| Mail | `lib/mail.ts` |
+| Mail | `lib/mail.ts` ; toute valeur insérée dans le HTML d'un e-mail passe par `escapeHtml` (`lib/htmlEscape.ts`, carte 167) ; un e-mail envoyé par une action part dans `after()` de `next/server` |
+| Notifications sous la cloche (mention, réponse dans un sujet suivi, message privé), abonnement automatique à un sujet | `lib/notifications.ts` (`notifyMentions`, `notifyFollowers`, `notifyPrivateMessage`, `followTopicAutomatically`, `visibleNotificationsWhere`), carte 167 |
+| Mentions d'un message (sans doublon, 10 au plus) | `extractMentionIds` de `lib/mentionRules.ts` |
+| Adresse d'un message du forum sur la bonne page de son sujet (`?page=N#post-<id>`) | `forumPostHref`, `forumPostHrefFor` (message déjà lu) et `forumPostPage` de `lib/forumPostLink.ts` ; dans du HTML ou un lien sans calcul, le lien permanent `/forum/post/<id>` (carte 169) |
+| Longueur d'un titre ou d'un message du forum, sujet fermé (verrouillé, archivé), émojis de réaction | `lib/forumWriteRules.ts` (`topicTitleError`, `postContentError`, `isTopicClosedFor`, `REACTION_EMOJIS`), carte 169 |
+| Recalculer le dernier message d'un sujet après avoir ajouté, retiré ou déplacé des messages | `refreshTopicLastPost` de `lib/forumTopicLastPost.ts`, interne au serveur (accepte le client d'une transaction) |
+| Rôles accessibles à un autre membre que le visiteur (droits d'un destinataire) | `loadRolePowers` et `accessibleRolesFor` de `lib/forumAccess.ts`, avec `canAccessForum` et `FORUM_ACCESS_SELECT` |
 | Données de référence | `lib/referenceData.ts` |
 | Config site | `lib/siteConfig.ts` |
 | Liste des 8 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |

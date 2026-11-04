@@ -91,6 +91,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
       <TournamentForm 
         forumId={forum.id}
         userCanStick={isMod}
+        canSetCdf={isMod}
         referenceData={{
           franceRegions,
           gameEditions,

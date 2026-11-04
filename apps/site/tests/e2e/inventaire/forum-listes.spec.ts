@@ -5,7 +5,8 @@
  * classe CSS : le test doit passer sans modification avant et après la refonte de ces écrans.
  *
  * Données préparées par le test (et supprimées à la fin) :
- * - un lecteur sans aucune visite enregistrée, pour qui tous les sujets sont non lus ;
+ * - un lecteur sans aucune visite enregistrée, et dont la date « tout est lu avant le… » (carte 166) est ancienne :
+ *   tous les sujets sont non lus pour lui ;
  * - sous le forum « E2E Forum », onze sous-forums : un forum de tournois avec 35 sujets (dont un épinglé,
  *   un verrouillé, un tournoi annulé et un archivé), un forum vide, un forum verrouillé et huit forums de remplissage.
  *
@@ -27,6 +28,8 @@ const LOCKED_FORUM = { id: "e2e_inv_verrou", name: "Inv Forum Verrouillé" };
 const FILLER_COUNT = 8;
 const TOURNAMENT_ID = "e2e_inv_tournoi";
 const REGULAR_TOPICS = 31;
+/** Date « tout est lu avant le… » du lecteur, antérieure à tous les sujets du test. */
+const READER_READ_ALL_AT = new Date("2020-01-01T00:00:00Z");
 
 /** Supprime tout ce que ce test a créé (y compris un reste d'un lancement interrompu). */
 async function cleanUp() {
@@ -46,7 +49,9 @@ async function cleanUp() {
 test.beforeAll(async () => {
   await cleanUp();
   await withTestDb(async (prisma) => {
-    await prisma.user.create({ data: { id: READER_ID, name: "Lecteur Inventaire", email: "lecteur-inventaire@e2e.test", hasFinishedOnboarding: true } });
+    await prisma.user.create({
+      data: { id: READER_ID, name: "Lecteur Inventaire", email: "lecteur-inventaire@e2e.test", hasFinishedOnboarding: true, forumReadAllAt: READER_READ_ALL_AT },
+    });
 
     // Dates dans le passé : un sujet daté du futur resterait « non lu » même après « Tout marquer comme lu »
     const now = Date.now() - 2 * 60 * 60_000;
@@ -71,6 +76,9 @@ test.beforeAll(async () => {
           authorId: E2E.coachId,
           createdAt: updatedAt,
           updatedAt,
+          // Dernier message (carte 166) : c'est lui qui range les sujets et décide du non-lu
+          lastPostAt: updatedAt,
+          lastPostAuthorId: E2E.coachId,
           views: 42,
           posts: { create: { content: `Message de ${title}`, authorId: E2E.coachId } },
           ...extra,
@@ -131,8 +139,12 @@ async function shownTopicTitles(page: Page): Promise<string[]> {
 /** Liens vers un sujet visibles dans la page (une ligne de liste par sujet). */
 const topicLinks = (page: Page) => page.locator('a[href^="/forum/topic/"]').filter({ visible: true });
 
-/** Remet le lecteur dans l'état « rien n'a été lu ». */
-const resetReader = () => withTestDb((prisma) => prisma.topicView.deleteMany({ where: { userId: READER_ID } }));
+/** Remet le lecteur dans l'état « rien n'a été lu » (« Tout marquer comme lu » change sa date « tout est lu avant le… »). */
+const resetReader = () =>
+  withTestDb(async (prisma) => {
+    await prisma.topicView.deleteMany({ where: { userId: READER_ID } });
+    await prisma.user.update({ where: { id: READER_ID }, data: { forumReadAllAt: READER_READ_ALL_AT } });
+  });
 
 const DATE = /\d{2}\/\d{2}\/\d{4}/;
 
@@ -163,7 +175,8 @@ test.describe("3.1 accueil du forum", () => {
     if (!isPhone(page)) {
       // Nombre de sujets, et dernier sujet avec son auteur et sa date (avant la refonte, absents sur téléphone)
       await expect(forumLink.getByText(/\d+\s*sujets?/)).toBeVisible();
-      await expect(forumLink).toContainText(/Par\s+Coach E2E/i);
+      // Auteur du dernier message du dernier sujet (carte 166) : d'autres tests peuvent écrire dans ce forum en même temps
+      await expect(forumLink).toContainText(/Dernier\s*:\s*\S+/);
       await expect(forumLink).toContainText(DATE);
     }
     await page.screenshot({ path: testInfo.outputPath("accueil-visiteur.png"), fullPage: true });
@@ -292,7 +305,8 @@ test.describe("3.2 un forum", () => {
       await expect(tournamentSub.getByText(/\d+\s*sujets?/)).toBeVisible();
       await expect(tournamentSub.getByText(/Inv tournoi annulé/)).toBeVisible();
       await expect(tournamentSub.getByText("Annulé", { exact: true })).toBeVisible();
-      await expect(tournamentSub).toContainText(/Par\s+Coach E2E/i);
+      // Auteur du dernier message du dernier sujet (carte 166)
+      await expect(tournamentSub).toContainText(/Dernier\s*:\s*Coach E2E/);
       await expect(emptySub.getByText("Aucun sujet")).toBeVisible();
     }
 
@@ -379,20 +393,34 @@ test.describe("3.2 un forum", () => {
     await closeMore(page);
     await expectForumLock(throwaway.id, false);
 
+    // Carte 169 : un forum qui contient encore un sujet n'est pas supprimé (avant, ses sujets étaient effacés)
     await page.reload({ waitUntil: "networkidle" });
     await (await findAction(page, "button", /Supprimer/)).click();
-    const dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
+    let dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
+    await expect(dialog).toBeVisible();
+    await dialog.getByRole("button", { name: "Confirmer" }).click();
+    await expect(page.getByText(/contient encore 1 sujet/).filter({ visible: true }).first()).toBeVisible();
+    expect(await withTestDb((prisma) => prisma.topic.count({ where: { id: "e2e_inv_topic_jetable" } }))).toBe(1);
+
+    // Une fois le sujet parti ailleurs (ici, effacé par le test), le forum vide et son sous-forum sont supprimés
+    await withTestDb(async (prisma) => {
+      await prisma.topicView.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
+      await prisma.topicFollow.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
+      await prisma.notification.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
+      await prisma.post.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
+      await prisma.topic.delete({ where: { id: "e2e_inv_topic_jetable" } });
+    });
+    await page.reload({ waitUntil: "networkidle" });
+    await (await findAction(page, "button", /Supprimer/)).click();
+    dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Confirmer" }).click();
     await page.waitForURL(/\/forum\?deletedForum=/);
     await expect(page.getByText(/Forum supprimé/)).toBeVisible();
 
-    // Le forum, son sous-forum et son sujet ont disparu
-    const left = await withTestDb(async (prisma) => ({
-      forums: await prisma.forum.count({ where: { id: { in: [throwaway.id, "e2e_inv_jetable_sous"] } } }),
-      topics: await prisma.topic.count({ where: { id: "e2e_inv_topic_jetable" } }),
-    }));
-    expect(left).toEqual({ forums: 0, topics: 0 });
+    // Le forum et son sous-forum ont disparu
+    const left = await withTestDb((prisma) => prisma.forum.count({ where: { id: { in: [throwaway.id, "e2e_inv_jetable_sous"] } } }));
+    expect(left).toBe(0);
   });
 });
 

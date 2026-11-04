@@ -21,6 +21,9 @@ export default async function AuthErrorPage(props: {
         return "L'accès vous a été refusé.";
       case "Verification":
         return "Le lien magique a expiré ou a déjà été utilisé.";
+      case "EmailNotVerified":
+        // Carte 160 : Discord ou Google indique que l'adresse du compte n'a pas été confirmée
+        return "L'adresse e-mail de ce compte n'est pas encore confirmée chez Discord ou Google. Confirmez-la chez eux, puis réessayez.";
       default:
         return "Une erreur inattendue est survenue lors de l'authentification.";
     }

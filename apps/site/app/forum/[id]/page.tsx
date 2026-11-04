@@ -28,7 +28,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   const userId = session?.user?.id;
   const { id } = await params;
   const { page: pageStr } = await searchParams;
-  const currentPage = Math.max(1, parseInt(pageStr || "1", 10));
+  const currentPage = Math.max(1, parseInt(pageStr || "1", 10) || 1);
   const skip = (currentPage - 1) * TOPICS_PER_PAGE;
 
   // Fetch forum meta + sub-forums (always all, capped at 10 in display)
@@ -41,15 +41,17 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         orderBy: { order: "asc" },
         take: MAX_SUBFORUMS,
         include: {
-          _count: { select: { topics: true } },
+          // Les sujets supprimés (carte 165) ne comptent pas
+          _count: { select: { topics: { where: { isDeleted: false } } } },
           topics: {
-            where: { isArchived: false },
-            orderBy: { updatedAt: "desc" },
+            where: { isArchived: false, isDeleted: false },
+            // Le sujet au dernier message le plus récent (carte 166), avec l'auteur de ce message
+            orderBy: { lastPostAt: "desc" },
             take: 1,
             select: {
               title: true,
-              updatedAt: true,
-              author: { select: { name: true } },
+              lastPostAt: true,
+              lastPostAuthor: { select: { name: true } },
               tournament: { select: { date: true, isCancelled: true, isFinished: true } }
             }
           }
@@ -69,25 +71,26 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     notFound();
   }
 
-  // Topics paginés + total (mêmes critères : les archivés ne comptent pas) + non-lus des sous-forums, en parallèle
-  const listWhere = { forumId: id, isArchived: false };
+  // Topics paginés + total (mêmes critères : les archivés et les supprimés ne comptent pas) + non-lus du membre
+  // (sujets de la page et sous-forums), calculés par la base en une requête (unreadState.ts)
+  const listWhere = { forumId: id, isArchived: false, isDeleted: false };
   const [totalTopics, topics, unread] = await Promise.all([
     prisma.topic.count({ where: listWhere }),
     prisma.topic.findMany({
     where: listWhere,
     orderBy: [
       { isSticky: "desc" },
-      { updatedAt: "desc" }
+      // Dernier message, jamais `updatedAt` : épingler ou renommer un sujet ne doit pas le faire remonter (carte 166)
+      { lastPostAt: "desc" },
+      { id: "desc" }
     ],
     skip,
     take: TOPICS_PER_PAGE,
     include: {
       author: { select: { name: true, image: true } },
+      lastPostAuthor: { select: { name: true } },
       _count: {
         select: { posts: true }
-      },
-      topicViews: {
-        where: { userId: userId || "" }
       },
       tournament: { select: { date: true, isCancelled: true, isFinished: true } }
     }
@@ -96,10 +99,9 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   ]);
   const totalPages = Math.max(1, Math.ceil(totalTopics / TOPICS_PER_PAGE));
 
-  const forumHasNew = userId ? topics.some(topic => {
-    const view = topic.topicViews[0];
-    return !view || topic.updatedAt > view.lastViewedAt;
-  }) : false;
+  const isUnread = (topicId: string) => unread?.unreadTopicIds.has(topicId) ?? false;
+  // Point bleu du titre : ce forum contient un sujet non lu, sur cette page ou une autre
+  const forumHasNew = unread?.unreadForumIds.has(id) ?? false;
 
   const breadcrumbs = [];
   if (forum.parentForum) {
@@ -162,8 +164,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                         title: lastTopic.title,
                         isTournament: !!lastTopic.tournament,
                         tournament: lastTopic.tournament,
-                        authorName: lastTopic.author.name,
-                        date: lastTopic.updatedAt,
+                        lastPostAuthorName: lastTopic.lastPostAuthor?.name ?? null,
+                        lastPostAt: lastTopic.lastPostAt,
                       },
                     }}
                   />
@@ -178,11 +180,10 @@ export default async function ForumDetailPage({ params, searchParams }: { params
               <span className="flex-1 pl-[52px]">Sujet</span>
               <span className="w-24 text-right">Messages</span>
               <span className="w-20 text-right">Vues</span>
-              <span className="w-28 text-right">Activité</span>
+              <span className="w-40 text-right">Dernier message</span>
             </div>
             {topics.length > 0 ? (
               topics.map((topic) => {
-                const topicView = topic.topicViews[0];
                 return (
                   <TopicRow
                     key={topic.id}
@@ -193,10 +194,11 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                       isLocked: topic.isLocked,
                       isTournament: !!topic.tournamentId,
                       tournament: topic.tournament,
-                      hasNew: userId ? !topicView || topic.updatedAt > topicView.lastViewedAt : false,
+                      hasNew: isUnread(topic.id),
                       author: topic.author,
                       createdAt: topic.createdAt,
-                      updatedAt: topic.updatedAt,
+                      lastPostAuthorName: topic.lastPostAuthor?.name ?? null,
+                      lastPostAt: topic.lastPostAt,
                       postCount: topic._count.posts,
                       views: topic.views || 0,
                     }}

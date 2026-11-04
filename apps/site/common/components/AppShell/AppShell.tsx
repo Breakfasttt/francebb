@@ -2,16 +2,18 @@
 
 /**
  * Nouvelle coquille du site (ADR 0006, carte 081) : ce qui entoure chaque page.
- * - Téléphone : petite barre haute (bouton retour de la page, logo, connexion) et barre basse à cinq onglets
+ * - Téléphone : petite barre haute (logo, cloche des notifications ou connexion) et barre basse à cinq onglets
  *   (Accueil, Forum, Tournois, Messages, Plus) ; « Plus » ouvre le panneau du reste du site.
  * - Ordinateur : barre haute avec les destinations principales, un menu « Plus », les pastilles et le menu du compte.
+ * La cloche (carte 167) mène à la page /notifications ; sa pastille compte les notifications non lues. Sur téléphone,
+ * elle est dans la barre haute, pour ne pas ajouter un sixième onglet à la barre basse.
  * La barre basse se cache pendant la saisie (clavier ouvert), sur l'éditeur BBScheme et sur les écrans de rédaction du
  * forum (répondre, modifier un message, nouveau sujet), qui occupent tout l'écran.
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
+import { Bell, ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
 import { ActionMenu, Avatar, Button, CountBadge, Sheet, SheetContent, cn } from "@bbfrance/ui";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import type { NavCounts } from "./navCounts";
@@ -80,8 +82,23 @@ const navLinkClass = (active: boolean) =>
 const iconLinkClass =
   "relative inline-flex size-11 items-center justify-center rounded-bb-md text-bb-nav-text hover:text-bb-nav-active";
 
+/** Cloche des notifications (carte 167), carré de 44 pixels avec la pastille du nombre de notifications non lues. */
+function NotificationBell({ count, active }: { count: number; active: boolean }) {
+  return (
+    <Link
+      href="/notifications"
+      aria-label={`Notifications, ${count} non lue(s)`}
+      aria-current={active ? "page" : undefined}
+      className={cn(iconLinkClass, active && "text-bb-nav-active")}
+    >
+      <Bell size={22} aria-hidden="true" />
+      <CountBadge count={count} className="absolute top-1 right-0.5" aria-hidden="true" />
+    </Link>
+  );
+}
+
 export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: AppShellProps) {
-  const { unreadCount, pendingModCount } = useNavCounts(counts);
+  const { unreadCount, notificationCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
   const isHome = pathname === "/";
   // Écrans plein écran sans barre basse : l'éditeur BBScheme et les écrans de rédaction du forum (carte 087)
@@ -102,6 +119,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
           {/* SiteLogo est lui-même un lien vers l'accueil */}
           {!isHome && <SiteLogo scale={0.5} />}
           <div className="flex-1" />
+          {user && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
           {!user && (
             <Button asChild variant="primary" size="tap">
               <Link href="/auth/login">
@@ -133,6 +151,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
 
           {user ? (
             <div className="flex items-center gap-1">
+              <NotificationBell count={notificationCount} active={pathname === "/notifications"} />
               <Link href="/messagerie" aria-label={`Messagerie, ${unreadCount} message(s) non lu(s)`} className={iconLinkClass}>
                 <Mail size={22} aria-hidden="true" />
                 <CountBadge count={unreadCount} className="absolute top-1 right-0.5" aria-hidden="true" />

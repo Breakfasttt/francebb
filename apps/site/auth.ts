@@ -56,7 +56,11 @@ const hubProviders = isHubAuthMode
 /**
  * Connexion directe du site (Discord, Google, lien par email), utilisée seulement hors mode hub.
  * En mode hub, ces moyens passent tous par le hub (carte 073) : les garder ici laisserait une seconde porte
- * d'entrée qui contourne le hub (bannissement global, déconnexion globale).
+ * d'entrée qui contourne le hub (bannissement global, déconnexion globale). Décision du responsable
+ * (4 novembre 2026) : cette connexion directe disparaîtra dès que le hub sera en ligne (carte 161).
+ *
+ * allowDangerousEmailAccountLinking rattache un compte Discord ou Google à un membre existant qui a la même adresse.
+ * Ce n'est sûr que si l'adresse est vérifiée chez Discord ou Google : le rappel signIn refuse sinon (carte 160).
  */
 const directProviders = isHubAuthMode
   ? []
@@ -117,8 +121,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     ...authConfig.callbacks,
     async signIn({ user, account, profile }) {
-      // Hub : refuser un compte dont l'email n'est pas certifié (sinon rattachement à un membre usurpable)
+      // Refuser un compte dont l'email n'est pas certifié : sinon, il serait rattaché à un membre existant qui a la
+      // même adresse, et n'importe qui pourrait prendre son compte (hub, puis Discord et Google, carte 160).
       if (account?.provider === "hub" && profile?.email_verified !== true) return false;
+      if (account?.provider === "discord" && (profile as { verified?: boolean } | undefined)?.verified !== true) {
+        return "/auth/error?error=EmailNotVerified";
+      }
+      if (account?.provider === "google" && profile?.email_verified !== true) {
+        return "/auth/error?error=EmailNotVerified";
+      }
       if (!user?.email || !user?.id) return true;
       
       const superAdminEmails = (process.env.SUPERADMIN_EMAILS || "")
@@ -170,15 +181,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
           });
           
-          if (dbUser) {
-            updatedToken.role = dbUser.role;
-            updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
-            updatedToken.theme = dbUser.theme || DEFAULT_SITE_THEME;
-            updatedToken.name = dbUser.name;
-            updatedToken.isBanned = dbUser.isBanned;
-          }
+          // Membre supprimé entre-temps : la session est fermée (carte 160). Avant, le jeton gardait son ancien rôle
+          // jusqu'à son expiration (30 jours), et un administrateur supprimé gardait ses droits.
+          if (!dbUser) return null;
+          updatedToken.role = dbUser.role;
+          updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
+          updatedToken.theme = dbUser.theme || DEFAULT_SITE_THEME;
+          updatedToken.name = dbUser.name;
+          updatedToken.isBanned = dbUser.isBanned;
         } catch (error) {
+          // Base injoignable : dans le doute, pas de droits supérieurs à ceux d'un coach (carte 160). Le cookie peut
+          // garder ce rôle réduit un instant ; dès que la base répond, le vrai rôle est relu à la lecture suivante.
           console.error("Auth: Error refreshing user data from DB in JWT callback", error);
+          return { ...updatedToken, role: "COACH" };
         }
       }
 

@@ -29,6 +29,7 @@ const ACTION_LABELS: Record<string, string> = {
   FORUM_DELETED: "Forum supprimé",
   // Sujets
   TOPIC_DELETED: "Sujet supprimé",
+  TOPIC_RESTORED: "Sujet restauré",
   TOPIC_PINNED: "Sujet épinglé",
   TOPIC_UNPINNED: "Sujet désépinglé",
   TOPIC_MOVED: "Sujet déplacé",
@@ -36,9 +37,13 @@ const ACTION_LABELS: Record<string, string> = {
   TOPIC_UNARCHIVED: "Sujet désarchivé",
   TOPIC_LOCKED: "Sujet verrouillé",
   TOPIC_UNLOCKED: "Sujet déverrouillé",
+  TOPIC_SPLIT: "Sujet scindé",
+  TOPIC_MERGED: "Sujets fusionnés",
   // Messages
   POST_MODERATED: "Message modéré",
-  POST_UNMODERATED: "Message restauré",
+  POST_UNMODERATED: "Modération du message annulée",
+  POST_DELETED: "Message supprimé",
+  POST_RESTORED: "Message restauré",
   // Membres
   USER_ROLE_CHANGED: "Rôle modifié",
   USER_BANNED: "Utilisateur banni",
@@ -60,6 +65,9 @@ const ACTION_LABELS: Record<string, string> = {
   // Signalements
   REPORT_IGNORED: "Signalement ignoré",
   REPORT_RESOLVED: "Signalement traité",
+  // Tournois de la Coupe de France (carte 162)
+  TOURNAMENT_CDF_VALIDATED: "Résultats CDF validés",
+  TOURNAMENT_CDF_UNVALIDATED: "Validation CDF retirée",
 };
 
 /** Nom lisible du type d'élément visé. */
@@ -92,14 +100,8 @@ const getTargetUrl = (log: any): string | null => {
     case "USER": return `/spy/${log.targetId}`;
     case "ARTICLE": return `/articles/${log.targetId}`;
     case "LIGUE": return `/ligue/${log.targetId}`;
-    case "POST": {
-      // Le sujet du message n'est connu que s'il a été noté dans les détails
-      try {
-        const details = JSON.parse(log.details || "{}");
-        if (details.topicId) return `/forum/topic/${details.topicId}#post-${log.targetId}`;
-      } catch {}
-      return null;
-    }
+    // Lien permanent du message (carte 169) : il mène à la bonne page de son sujet, même après un déplacement
+    case "POST": return `/forum/post/${log.targetId}`;
     default: return null;
   }
 };

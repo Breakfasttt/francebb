@@ -62,6 +62,12 @@ model User {
   notifMention            Boolean                  @default(true)
   notifFollowedTopic      Boolean                  @default(true)
   notifNewsletter         Boolean                  @default(true)
+  /// Abonnement automatique (carte 167) : le membre suit tout seul un sujet qu'il crée ou auquel il répond. Activé par défaut,
+  /// désactivable dans les préférences de notification du profil.
+  autoFollowTopics        Boolean                  @default(true)
+  /// Date avant laquelle tout le forum compte comme lu pour ce membre (carte 166) : sa date d'inscription, puis la date
+  /// du dernier « Tout marquer lu ». Un sujet que le membre a déjà ouvert suit plutôt sa position de lecture (TopicView).
+  forumReadAllAt          DateTime                 @default(now())
   accounts                Account[]
   moderatedArticles       Article[]                @relation("ModeratedArticles")
   articles                Article[]
@@ -103,7 +109,13 @@ model User {
   commissaireLigues       Ligue[]                  @relation("LigueCommissaires")
   ligues                  Ligue[]                  @relation("LigueMembers")
   commissairesTournaments Tournament[]             @relation("TournamentCommissaires")
+  cdfValidatedTournaments  Tournament[]              @relation("TournamentCdfValidator")
+  deletedTopics            Topic[]                   @relation("DeletedTopics")
+  deletedPosts             Post[]                    @relation("DeletedPosts")
+  lastPostTopics           Topic[]                   @relation("LastPostTopics")
   bbSchemeStates          BBSchemeState[]
+  notifications           Notification[]           @relation("NotificationsReceived")
+  notificationsCaused     Notification[]           @relation("NotificationsCaused")
 
   @@index([role])
 }
@@ -171,6 +183,12 @@ model Tournament {
   registrationsLocked Boolean                  @default(false)
   typeCDF             String?                  @default("INDIVIDUEL")
   tournamentType      String?                  @default("SWISS")
+  /// Date à laquelle un modérateur ou un administrateur a validé les résultats CDF (carte 162). Vide : résultats en
+  /// attente de validation, qui ne comptent pas au classement national. Modifier les résultats vide de nouveau ce champ.
+  cdfValidatedAt      DateTime?
+  /// Membre de la modération qui a validé les résultats CDF (vidé si son compte est supprimé).
+  cdfValidatedById    String?
+  cdfValidatedBy      User?                    @relation("TournamentCdfValidator", fields: [cdfValidatedById], references: [id], onDelete: SetNull)
   topic               Topic?
   ligue               Ligue?                   @relation("LigueTournaments", fields: [ligueId], references: [id])
   organizer           User                     @relation(fields: [organizerId], references: [id])
@@ -228,15 +246,34 @@ model Topic {
   authorId     String
   tournamentId String?       @unique
   legacyId     String?       @unique
+  /// Suppression douce (carte 165) : le sujet est caché partout sauf aux modérateurs, qui peuvent le restaurer.
+  /// Rien n'est effacé de la base : messages, tournoi et inscriptions restent en place.
+  isDeleted      Boolean       @default(false)
+  /// Date de la suppression (vide si le sujet n'est pas supprimé).
+  deletedAt      DateTime?
+  /// Membre qui a supprimé le sujet : un modérateur, ou l'auteur qui a supprimé le premier message d'un sujet sans réponse.
+  deletedById    String?
+  /// Raison donnée par le modérateur (vide quand c'est l'auteur qui a supprimé).
+  deletionReason String?
+  deletedBy      User?         @relation("DeletedTopics", fields: [deletedById], references: [id], onDelete: SetNull)
+  /// Dernier message visible du sujet (carte 166) : sa date, son identifiant et son auteur. Seuls la création, la
+  /// suppression et la restauration d'un message les changent. Le tri des listes, le non-lu et « Dernier : … » s'en
+  /// servent, jamais `updatedAt`, qui bouge aussi quand on épingle, déplace ou renomme le sujet.
+  lastPostAt       DateTime      @default(now())
+  lastPostId       String?
+  lastPostAuthorId String?
+  lastPostAuthor   User?         @relation("LastPostTopics", fields: [lastPostAuthorId], references: [id], onDelete: SetNull)
   posts        Post[]
   tournament   Tournament?   @relation(fields: [tournamentId], references: [id])
   author       User          @relation(fields: [authorId], references: [id])
   forum        Forum         @relation(fields: [forumId], references: [id])
   follows      TopicFollow[]
   topicViews   TopicView[]
+  notifications Notification[]
 
   @@index([forumId])
   @@index([authorId])
+  @@index([forumId, isArchived, isSticky, lastPostAt])
 }
 
 model Post {
@@ -250,15 +287,25 @@ model Post {
   moderationReason String?
   moderatedBy      String?
   isDeleted        Boolean        @default(false)
+  /// Date de la suppression douce du message (carte 165 ; vide pour les messages supprimés avant cette carte).
+  deletedAt        DateTime?
+  /// Membre qui a supprimé le message. Différent de l'auteur : supprimé par la modération. Égal à l'auteur, ou vide
+  /// (messages supprimés avant la carte 165) : supprimé par son auteur.
+  deletedById      String?
+  /// Raison de la suppression, obligatoire quand c'est la modération qui supprime.
+  deletionReason   String?
+  deletedBy        User?          @relation("DeletedPosts", fields: [deletedById], references: [id], onDelete: SetNull)
   legacyId         String?        @unique
   mentions         Mention[]
   moderator        User?          @relation("ModeratedPosts", fields: [moderatedBy], references: [id])
   author           User           @relation(fields: [authorId], references: [id])
   topic            Topic          @relation(fields: [topicId], references: [id])
   reactions        PostReaction[]
+  notifications    Notification[]
 
   @@index([topicId])
   @@index([authorId])
+  @@index([topicId, createdAt, id])
 }
 
 model Conversation {
@@ -275,6 +322,7 @@ model Conversation {
   user1          User?            @relation("User1Conversations", fields: [user1Id], references: [id])
   messages       PrivateMessage[]
   participants   ConversationParticipant[]
+  notifications  Notification[]
 
   @@index([user1Id])
   @@index([user2Id])
@@ -287,6 +335,9 @@ model ConversationParticipant {
   joinedAt       DateTime     @default(now())
   deletedAt      DateTime?
   isAdmin        Boolean      @default(false)
+  /// Date jusqu'à laquelle ce participant a lu la conversation (carte 170). Les messages des autres écrits après
+  /// cette date sont ses non-lus. Vide : il n'a encore rien lu, tous les messages des autres sont non lus.
+  lastReadAt     DateTime?
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
@@ -301,6 +352,8 @@ model PrivateMessage {
   createdAt      DateTime     @default(now())
   conversationId String
   authorId       String
+  /// Ancien marqueur de lecture, commun à tous les participants : il n'est plus lu ni écrit depuis la carte 170,
+  /// qui le remplace par ConversationParticipant.lastReadAt. Gardé en base en attendant l'accord pour le supprimer.
   readAt         DateTime?
   author         User         @relation("SentPrivateMessages", fields: [authorId], references: [id])
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
@@ -312,12 +365,18 @@ model PrivateMessage {
 model TopicView {
   userId       String
   topicId      String
+  /// Date de la dernière visite du sujet (sert aussi au compte des membres en ligne des statistiques).
   lastViewedAt DateTime @default(now())
+  /// Position de lecture (carte 166) : le dernier message lu, repéré par sa date de création (`lastReadPostAt`) et
+  /// son identifiant (`lastPostId`, vide quand tout est lu jusqu'à cette date). Elle n'avance que jusqu'au dernier
+  /// message affiché et ne recule jamais, sauf par « Marquer non lu à partir d'ici ».
   lastPostId   String?
+  lastReadPostAt DateTime
   topic        Topic    @relation(fields: [topicId], references: [id], onDelete: Cascade)
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, topicId])
+  @@index([topicId])
 }
 
 model Mention {
@@ -335,6 +394,37 @@ model Mention {
   @@index([mentionedUserId])
   @@index([mentionerId])
   @@index([postId])
+}
+
+/// Notification affichée dans le site, sous la cloche de la barre (carte 167). Une ligne par événement à signaler
+/// au membre `userId` : une mention dans un message, une réponse dans un sujet suivi, ou un message privé.
+/// Les réponses d'un même sujet suivi et les messages d'une même conversation sont regroupés : tant qu'une
+/// notification de ce sujet ou de cette conversation n'est pas lue, aucune autre n'est créée.
+model Notification {
+  id             String        @id @default(cuid())
+  /// Membre qui reçoit la notification.
+  userId         String
+  /// MENTION, FOLLOWED_REPLY (réponse dans un sujet suivi) ou PRIVATE_MESSAGE.
+  type           String
+  topicId        String?
+  /// Message du forum concerné : celui qui mentionne le membre, ou la première réponse non lue d'un sujet suivi.
+  postId         String?
+  conversationId String?
+  /// Membre à l'origine de la notification (auteur du message) ; vide si son compte a été supprimé.
+  actorId        String?
+  /// Date de lecture ; vide tant que la notification n'est pas lue.
+  readAt         DateTime?
+  createdAt      DateTime      @default(now())
+  user           User          @relation("NotificationsReceived", fields: [userId], references: [id], onDelete: Cascade)
+  actor          User?         @relation("NotificationsCaused", fields: [actorId], references: [id], onDelete: SetNull)
+  topic          Topic?        @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  post           Post?         @relation(fields: [postId], references: [id], onDelete: Cascade)
+  conversation   Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@index([userId, readAt, createdAt])
+  @@index([topicId])
+  @@index([postId])
+  @@index([conversationId])
 }
 
 model PostReaction {
@@ -367,6 +457,7 @@ model TopicFollow {
   user    User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, topicId])
+  @@index([topicId])
 }
 
 model RankingArchive {
@@ -546,6 +637,9 @@ model ModerationLog {
   targetType  String?
   createdAt   DateTime @default(now())
   moderator   User     @relation(fields: [moderatorId], references: [id])
+
+  @@index([targetId])
+  @@index([createdAt])
 }
 
 model Resource {
@@ -743,4 +837,3 @@ enum PaymentStatus {
   GUEST
   DEPANNAGE
 }
-
