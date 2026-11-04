@@ -1,6 +1,6 @@
 /**
  * Accueil du forum (refonte, carte 085) : catégories repliables en cartes, un bandeau pour le membre qui a du non-lu,
- * et la colonne d'actions (à droite sur ordinateur, dans « Cette page » du panneau « Plus » sur téléphone).
+ * un bandeau de bienvenue pour le visiteur non connecté (carte 185), et la colonne d'actions (à droite sur ordinateur, dans « Cette page » du panneau « Plus » sur téléphone).
  */
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
@@ -11,6 +11,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import ForumCategory, { type ForumIndexCategory } from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
+import { ForumVisitorBanner } from "@/app/forum/component/ForumVisitorInvite";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess } from "@/lib/forumAccess";
 
@@ -81,6 +82,8 @@ export default async function ForumPage() {
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
         <div className="flex min-w-0 flex-col gap-4">
           <DeletionToast />
+          {/* Visiteur non connecté : bandeau d'accueil qui explique le site et invite à créer un compte (carte 185) */}
+          {!userId && <ForumVisitorBanner />}
           {unreadCount > 0 && (
             <Link
               href="/forum/unread"

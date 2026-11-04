@@ -5,17 +5,23 @@
  * Carte de la refonte (carte 086) autour de l'éditeur BBCode (refait à la carte 087).
  * Après l'envoi, l'éditeur est vidé, la page est rafraîchie, puis elle défile jusqu'au nouveau message, mis en valeur
  * par une animation (classe new-post-fade-in de app/globals.css). Un refus du serveur garde le texte en place.
+ * Le texte en cours est gardé en brouillon dans le navigateur (carte 181, crochet useDraft) et effacé après l'envoi.
+ * « Citer » ajoute la citation à la fin du texte sans faire défiler la page (carte 183). La réponse rapide monte aussi le
+ * bouton « Citer la sélection » (QuoteSelectionButton) : il n'existe que là où le coach peut répondre.
  */
 import { useState } from "react";
 import { MessageSquare, Send } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Button, Card, toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
+import DraftBanner from "@/common/components/DraftBanner/DraftBanner";
+import { useDraft } from "@/common/hooks/useDraft";
 import { createPost } from "@/app/forum/actions";
+import QuoteSelectionButton from "@/app/forum/component/QuoteSelectionButton";
 
 export default function QuickReply({ topicId }: { topicId: string }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [resetKey, setResetKey] = useState(0);
+  const draft = useDraft(`quick-reply:${topicId}`);
   const router = useRouter();
 
   const handleSubmit = () => {
@@ -31,7 +37,7 @@ export default function QuickReply({ topicId }: { topicId: string }) {
           toast.error(res.error || "Erreur lors de l'envoi de la réponse.");
           return;
         }
-        setResetKey((prev) => prev + 1);
+        draft.discard();
         router.refresh();
 
         // Le nouveau message apparaît après le rafraîchissement : on le cherche pendant 5 secondes au plus
@@ -56,17 +62,23 @@ export default function QuickReply({ topicId }: { topicId: string }) {
   };
 
   return (
-    <Card id="quick-reply-area" className="scroll-mt-20 p-3 lg:p-5">
-      <h2 className="m-0 mb-3 flex items-center gap-2 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">
-        <MessageSquare size={20} aria-hidden="true" className="text-bb-accent-text" />
-        Votre réponse
-      </h2>
+    <>
+      <Card id="quick-reply-area" className="scroll-mt-20 p-3 lg:p-5">
+        <h2 className="m-0 mb-3 flex items-center gap-2 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">
+          <MessageSquare size={20} aria-hidden="true" className="text-bb-accent-text" />
+          Votre réponse
+        </h2>
 
-      <BBCodeEditor key={resetKey} name="content" defaultValue="" placeholder="Écrivez votre réponse ici..." rows={6} />
+        <DraftBanner draft={draft} />
+        <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Écrivez votre réponse ici..." rows={6} />
 
-      <Button type="button" variant="primary" size="tap" className="mt-4 w-full" onClick={handleSubmit} disabled={isSubmitting}>
-        <Send size={18} aria-hidden="true" /> {isSubmitting ? "Envoi en cours…" : "Envoyer ma réponse"}
-      </Button>
-    </Card>
+        <Button type="button" variant="primary" size="tap" className="mt-4 w-full" onClick={handleSubmit} disabled={isSubmitting}>
+          <Send size={18} aria-hidden="true" /> {isSubmitting ? "Envoi en cours…" : "Envoyer ma réponse"}
+        </Button>
+      </Card>
+
+      {/* Hors de la carte : un fond en verre dépoli empêcherait de placer le bouton à un endroit fixe de l'écran */}
+      <QuoteSelectionButton />
+    </>
   );
 }

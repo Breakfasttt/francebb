@@ -813,9 +813,13 @@ export function TopicToolsButton() {
   );
 }
 
-/** Pagination compacte : « ‹ Page 3 sur 5 › » et un accès direct au dernier message. */
+/**
+ * Pagination compacte : flèches « première page », « précédente », « suivante » et accès direct au dernier message. Depuis la carte 182,
+ * « Page 3 sur 5 » ouvre un panneau avec « Première page », « Dernier message » et la liste des pages.
+ */
 export function TopicPageNav({ className }: { className?: string }) {
   const t = useTools();
+  const router = useRouter();
   if (t.totalPages <= 1) return null;
   return (
     <PageNav
@@ -823,6 +827,8 @@ export function TopicPageNav({ className }: { className?: string }) {
       totalPages={t.totalPages}
       hrefFor={(page) => pageHref(t.topicId, page)}
       lastHref={t.lastHref}
+      showFirst
+      pagePicker={{ lastLabel: "Dernier message", onLastClick: t.goToLast, navigate: router.push }}
       linkComponent={Link}
       className={className}
     />
@@ -858,8 +864,13 @@ export function TopicReplyBar() {
       {!replyOnScreen && (
         <div data-page-bottom-bar className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[4000] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden [html[data-typing=true]_&]:hidden">
           <div className="mx-auto flex max-w-[1232px] items-center justify-between gap-2">
-            {/* Pagination resserrée (le texte « Page N sur M » perd sa largeur minimale) pour tenir sur 360 pixels */}
-            {t.totalPages > 1 ? <TopicPageNav className="min-w-0 gap-0 border-0 bg-transparent p-0 [&>span]:min-w-0 [&>span]:px-1.5" /> : <span />}
+            {/* Pagination resserrée pour tenir sur 360 pixels : le bouton « Page N sur M » perd sa largeur minimale et
+                peut passer sur deux lignes quand les numéros sont longs (« Page 15 sur 15 » à côté de « Répondre ») */}
+            {t.totalPages > 1 ? (
+              <TopicPageNav className="min-w-0 gap-0 border-0 bg-transparent p-0 [&>button]:min-w-0 [&>button]:px-1.5 [&>button]:leading-tight [&>button]:whitespace-normal" />
+            ) : (
+              <span />
+            )}
             {t.canReply && (
               <Button type="button" variant="primary" size="tap" onClick={t.scrollToReply} className="min-w-11 shrink-0 max-[374px]:px-3">
                 <MessageSquare size={18} aria-hidden="true" />

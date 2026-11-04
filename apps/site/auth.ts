@@ -113,6 +113,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (!user) return null;
           return user;
         } catch (error) {
+          // Connexion de développement seulement : sans ce journal, une panne de la base passait pour un simple refus
+          console.error("Auth: dev-login database error", error);
           return null;
         }
       },

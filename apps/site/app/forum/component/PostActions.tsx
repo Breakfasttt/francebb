@@ -3,15 +3,18 @@
 /**
  * Pied d'un message (refonte, carte 086) : les actions principales, toujours visibles.
  * - Les réactions (PostReactions), à gauche.
- * - « Citer », à droite, pour un membre : insère la citation dans la réponse rapide (événement bbcode-insert-text
- *   écouté par l'éditeur BBCode) puis fait défiler jusqu'à elle ; s'il n'y a aucune zone de réponse dans la page,
- *   mène à la page de réponse avec ?quotePostId=. « Citer » n'apparaît pas quand le membre ne peut pas répondre
- *   (sujet ou forum verrouillé, sauf pour un modérateur) : le bouton ne mènerait qu'à une impasse.
+ * - « Citer », à droite, pour un membre : ajoute la citation du message, sans les citations qu'il contient déjà, à la
+ *   fin de la réponse rapide (carte 183). La page ne défile pas : une notification « Citation ajoutée » propose
+ *   « Voir ma réponse ». S'il n'y a aucune zone de réponse dans la page, mène à la page de réponse avec ?quotePostId=.
+ *   « Citer » n'apparaît pas quand le membre ne peut pas répondre (sujet ou forum verrouillé, sauf pour un
+ *   modérateur) : le bouton ne mènerait qu'à une impasse. Pour citer un passage seulement : QuoteSelectionButton.
  * Les actions rares (modifier, supprimer, modérer…) sont dans le menu « ⋯ » de l'en-tête (PostMoreMenu).
  */
 import { MessageSquareQuote } from "lucide-react";
 import { Button } from "@bbfrance/ui";
 import PostReactions from "@/app/forum/component/PostReactions";
+import { sendQuoteToQuickReply } from "@/app/forum/component/QuoteSelectionButton";
+import { buildFullPostQuote } from "@/lib/forumQuote";
 
 interface PostActionsProps {
   postId: string;
@@ -29,12 +32,8 @@ interface PostActionsProps {
 
 export default function PostActions({ postId, authorId, authorName, content, initialReactions, currentUserId, topicId, canQuote = true, canReact = true }: PostActionsProps) {
   const handleQuote = () => {
-    const quoteContent = `[quote=${authorId}|${postId}|${authorName}]${content}[/quote]\n`;
-    const quickReply = document.getElementById("quick-reply-area");
-    if (quickReply) {
-      window.dispatchEvent(new CustomEvent("bbcode-insert-text", { detail: quoteContent }));
-      quickReply.scrollIntoView({ behavior: "smooth" });
-    } else {
+    const quote = buildFullPostQuote({ authorId, postId, authorName }, content);
+    if (!sendQuoteToQuickReply(quote)) {
       window.location.href = `/forum/topic/${topicId}/reply?quotePostId=${postId}`;
     }
   };

@@ -337,6 +337,59 @@ test.describe("3.3 lecture et navigation", () => {
     await expect(pager.getByRole("button", { name: "3", exact: true }).and(pager.locator(":disabled")).or(pager.getByText("Page 3 sur 3"))).toBeVisible();
   });
 
+  test("[tous] « Page N sur M » ouvre le choix d'une page ; « Première page » et « Dernier message » (carte 182)", async ({ page }, testInfo) => {
+    // Téléphone : la largeur la plus étroite visée par le site, pour vérifier que la barre du bas tient sans défilement
+    if (isPhone(page)) await page.setViewportSize({ width: 360, height: 780 });
+    await page.goto(topicUrl(TOPIC.id, "?page=3"), { waitUntil: "networkidle" });
+    const pager = page.getByRole("navigation", { name: "Pagination" }).filter({ visible: true }).first();
+    await expect(pager.getByRole("link", { name: "Première page" })).toHaveAttribute("href", `/forum/topic/${TOPIC.id}?page=1`);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+    await page.screenshot({ path: testInfo.outputPath("barre-pages.png"), fullPage: false });
+
+    await pager.getByRole("button", { name: "Page 3 sur 3 : choisir une page" }).click();
+    const dialog = page.getByRole("dialog", { name: "Choisir une page" });
+    await expect(dialog).toBeVisible();
+    await expect(dialog.getByRole("link", { name: "Dernier message" })).toHaveAttribute("href", `/forum/topic/${TOPIC.id}?page=3#post-${postId(45)}`);
+    await expect(dialog.getByRole("link", { name: "Page 3, page actuelle" })).toHaveAttribute("aria-current", "page");
+    await page.screenshot({ path: testInfo.outputPath("choix-page.png"), fullPage: false });
+
+    // De la dernière page à la première en deux appuis
+    await dialog.getByRole("link", { name: "Première page" }).click();
+    await expect(page).toHaveURL(/[?]page=1$/);
+    await expect(postCard(page, postId(1))).toBeVisible();
+    await expect(dialog).toBeHidden();
+
+    // Téléphone, membre connecté : la barre du bas porte aussi « Répondre » ; elle tient sans déborder de 360 à 412 pixels
+    if (isPhone(page)) {
+      await loginAs(page, READER.id);
+      for (const width of [360, 375, 412]) {
+        await page.setViewportSize({ width, height: 780 });
+        await page.goto(topicUrl(TOPIC.id, "?page=3"), { waitUntil: "networkidle" });
+        await page.evaluate(() => window.scrollTo(0, 0));
+        const bar = page.locator("[data-page-bottom-bar]");
+        await expect(bar.getByRole("button", { name: "Répondre" })).toBeVisible();
+        const right = await bar.evaluate((el) => Math.max(...[...el.querySelectorAll("a, button")].map((b) => b.getBoundingClientRect().right)));
+        expect(right).toBeLessThanOrEqual(width);
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+        await page.screenshot({ path: testInfo.outputPath(`barre-membre-${width}.png`), fullPage: false });
+      }
+    }
+  });
+
+  test("[visiteur] « Envie de participer ? » en bas du sujet, avec retour au sujet après la connexion (carte 185)", async ({ page }) => {
+    await page.goto(topicUrl(TOPIC.id, "?page=2"), { waitUntil: "networkidle" });
+    const invite = page.getByRole("region", { name: "Envie de participer ?" });
+    await expect(invite).toBeVisible();
+    await expect(invite.getByRole("link", { name: "Se connecter ou créer un compte" })).toHaveAttribute(
+      "href",
+      `/auth/login?callbackUrl=${encodeURIComponent(`/forum/topic/${TOPIC.id}?page=2`)}`
+    );
+    // Un membre connecté ne voit pas l'encart
+    await loginAs(page, READER.id);
+    await page.goto(topicUrl(), { waitUntil: "networkidle" });
+    await expect(page.getByRole("region", { name: "Envie de participer ?" })).toHaveCount(0);
+  });
+
   test("[tous] titre, badge « ARCHIVÉ », nom du forum, retour au forum et fil d'Ariane", async ({ page }) => {
     await setTopic(TOPIC.id, { isArchived: true });
     try {
@@ -600,7 +653,7 @@ test.describe("3.3 un message", () => {
       .toBe(0);
   });
 
-  test("[membre] « Citer » remplit la réponse rapide ; sujet verrouillé : défile jusqu'à l'encart", async ({ page }) => {
+  test("[membre] « Citer » ajoute la citation sans ses citations, garde la position et le brouillon (carte 183)", async ({ page }) => {
     await expect(async () => {
       await page.goto(topicUrl(), { waitUntil: "networkidle" });
       await expect(page.getByRole("button", { name: "Citer" })).toHaveCount(0);
@@ -608,15 +661,96 @@ test.describe("3.3 un message", () => {
 
     await loginAs(page, READER.id);
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
-    await postCard(page, postId(1)).getByRole("button", { name: "Citer" }).click();
+    // Un brouillon déjà tapé : la citation s'ajoute à la fin, sans le remplacer
     const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
-    await expect(editor).toHaveValue(new RegExp(`\\[quote=${AUTHOR.id}\\|${postId(1)}\\|${AUTHOR.name}\\]Premier message`));
+    await editor.fill("Mon brouillon");
+
+    await postCard(page, postId(1)).scrollIntoViewIfNeeded();
+    const before = await page.evaluate(() => window.scrollY);
+    await postCard(page, postId(1)).getByRole("button", { name: "Citer" }).click();
+    await expect(page.getByText("Citation ajoutée").first()).toBeVisible();
+    await expect(editor).toHaveValue(new RegExp(`^Mon brouillon\\n\\[quote=${AUTHOR.id}\\|${postId(1)}\\|${AUTHOR.name}\\]Premier message`));
+    // La page n'a pas défilé jusqu'à la réponse : la position de lecture est gardée
+    expect(Math.abs((await page.evaluate(() => window.scrollY)) - before)).toBeLessThan(5);
+    await expect(page.locator("#quick-reply-area")).not.toBeInViewport();
+
+    // Le message n°2 contient trois citations : elles ne sont pas recopiées, seul son propre texte l'est
+    await postCard(page, postId(2)).getByRole("button", { name: "Citer" }).click();
+    await expect(editor).toHaveValue(new RegExp(`\\[quote=${E2E.modoId}\\|${postId(2)}\\|[^\\]]*\\]Bonjour \\[mention=`));
+    const value = await editor.inputValue();
+    expect(value).not.toContain("Contenu supprimé e2e");
+    expect(value).not.toContain(`[quote=${AUTHOR.id}|${postId(6)}]`);
+
+    // « Voir ma réponse » mène à la réponse rapide
+    await expect(page.getByRole("button", { name: "Voir ma réponse" })).toHaveCount(1);
+    await page.getByRole("button", { name: "Voir ma réponse" }).dispatchEvent("click");
     await expect(page.locator("#quick-reply-area")).toBeInViewport();
+
+    // ?quotePostId= : même règle sur la page de réponse
+    await page.goto(`/forum/topic/${TOPIC.id}/reply?quotePostId=${postId(2)}`, { waitUntil: "networkidle" });
+    const replyEditor = page.locator('textarea[name="content"]');
+    await expect(replyEditor).toHaveValue(new RegExp(`^\\[quote=${E2E.modoId}\\|${postId(2)}\\|[^\\]]*\\]Bonjour \\[mention=`));
+    expect(await replyEditor.inputValue()).not.toContain("Contenu supprimé e2e");
 
     // Sujet verrouillé : un membre qui ne peut pas répondre ne voit plus « Citer » (carte 111)
     await page.goto(topicUrl(LOCKED_TOPIC), { waitUntil: "networkidle" });
     await expect(postCard(page, "e2e_suj_v01")).toBeVisible();
     await expect(postCard(page, "e2e_suj_v01").getByRole("button", { name: "Citer" })).toHaveCount(0);
+  });
+
+  test("[membre] « Citer la sélection » ne cite que le passage sélectionné dans un seul message (carte 183)", async ({ page }) => {
+    await loginAs(page, READER.id);
+    await page.goto(topicUrl(), { waitUntil: "networkidle" });
+    const quoteSelection = page.getByRole("button", { name: "Citer la sélection" });
+
+    /** Sélectionne, comme le ferait le coach, un passage du texte affiché d'un message (ou de deux messages). */
+    const select = (fromPost: string, fromText: string, toPost: string, toText: string) =>
+      page.evaluate(
+        ({ fromPost, fromText, toPost, toText }) => {
+          const textNode = (post: string, text: string) => {
+            const root = document.querySelector(`[id="post-${post}"] [data-quote-post-id]`) ?? document.querySelector(`[id="post-${post}"]`)!;
+            const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+            for (let node = walker.nextNode(); node; node = walker.nextNode()) {
+              const at = node.textContent!.indexOf(text);
+              if (at >= 0) return { node, at };
+            }
+            throw new Error(`Texte introuvable : ${text}`);
+          };
+          const from = textNode(fromPost, fromText);
+          const to = textNode(toPost, toText);
+          const range = document.createRange();
+          range.setStart(from.node, from.at);
+          range.setEnd(to.node, to.at + toText.length);
+          const selection = window.getSelection()!;
+          selection.removeAllRanges();
+          selection.addRange(range);
+        },
+        { fromPost, fromText, toPost, toText }
+      );
+
+    // Sélection à cheval sur deux messages : pas de bouton
+    await postCard(page, postId(9)).scrollIntoViewIfNeeded();
+    await select(postId(9), "numéro 9", postId(10), "numéro 10");
+    await page.waitForTimeout(500);
+    await expect(quoteSelection).toHaveCount(0);
+
+    // Un message masqué par la modération ne se cite pas : il n'est pas marqué comme citable
+    await expect(postCard(page, postId(5)).locator("[data-quote-post-id]")).toHaveCount(0);
+
+    // Passage d'un seul message : le bouton apparaît à l'écran, à 44 pixels de haut au moins
+    await select(postId(10), "numéro 10 du sujet", postId(10), "numéro 10 du sujet");
+    await expect(quoteSelection).toBeVisible();
+    await expect(quoteSelection).toBeInViewport();
+    expect((await quoteSelection.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    // Clic envoyé directement : sur la version de développement, les boutons « Dev Theme » et « Dev Auth » occupent le
+    // bas de l'écran du téléphone (ils n'existent pas sur le site en ligne)
+    await quoteSelection.dispatchEvent("click");
+
+    const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
+    // Le message n°10 est du coach de test : seul le passage sélectionné est cité, en texte brut
+    await expect(editor).toHaveValue(new RegExp(`^\\[quote=${E2E.coachId}\\|${postId(10)}\\|[^\\]]*\\]numéro 10 du sujet\\[/quote\\]\\n$`));
+    await expect(page.getByText("Citation ajoutée").first()).toBeVisible();
+    await expect(quoteSelection).toHaveCount(0);
   });
 
   test("[auteur, modo] « Modifier » (tournoi : page du tournoi) ; [auteur] « Supprimer » avec confirmation", async ({ page }) => {

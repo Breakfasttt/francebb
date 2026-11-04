@@ -269,14 +269,25 @@ test.describe("2 éditeur BBCode : outils", () => {
     await visibleButton(page, "Insérer l'image").click();
     await expect(textarea).toHaveValue("[img align=left wrap=yes thumb=no]https://img.example/b.png[/img]");
 
-    // Envoi d'un fichier depuis l'appareil (à droite)
+    // Envoi d'un fichier depuis l'appareil (à droite) : bouton « Choisir des photos » en premier (carte 184)
     await textarea.fill("");
     await applyTool(page, "Ajouter une image");
     await visibleButton(page, "Droite").click();
     const chooser = page.waitForEvent("filechooser");
-    await visibleButton(page, "Envoyer une image depuis l'appareil").click();
+    await visibleButton(page, "Choisir des photos").click();
     await (await chooser).setFiles({ name: "envoi.png", mimeType: "image/png", buffer: Buffer.from([137, 80, 78, 71]) });
     await expect(textarea).toHaveValue("[img align=right wrap=no]https://i.ibb.co/e2e/envoi.png[/img]");
+
+    // Plusieurs photos d'un coup : elles deviennent une galerie (carte 184)
+    await textarea.fill("");
+    await applyTool(page, "Ajouter une image");
+    const multiChooser = page.waitForEvent("filechooser");
+    await visibleButton(page, "Choisir des photos").click();
+    await (await multiChooser).setFiles([
+      { name: "photo1.png", mimeType: "image/png", buffer: Buffer.from([137, 80, 78, 71]) },
+      { name: "photo2.png", mimeType: "image/png", buffer: Buffer.from([137, 80, 78, 71]) },
+    ]);
+    await expect(textarea).toHaveValue("[gallery]https://i.ibb.co/e2e/photo1.png,https://i.ibb.co/e2e/photo2.png[/gallery]");
 
     // Galerie
     await textarea.fill("");
@@ -411,6 +422,35 @@ test.describe("3.4 page de réponse", () => {
     await visibleButton(page, "Publier ma réponse").click();
     await page.waitForURL(new RegExp(`/forum/topic/${TOPIC.id}(\\?|$)`));
     await expect(page.getByText("Réponse publiée par l'inventaire de l'éditeur")).toBeVisible({ timeout: 20_000 });
+  });
+
+  test("[membre] brouillon retrouvé après un rechargement, confirmation de « Annuler », « Effacer » (carte 181)", async ({ page }) => {
+    await loginAs(page, WRITER.id);
+    await page.goto(`/forum/topic/${TOPIC.id}?page=1`, { waitUntil: "networkidle" });
+    await page.goto(`/forum/topic/${TOPIC.id}/reply`, { waitUntil: "networkidle" });
+    const textarea = page.getByRole("textbox", { name: REPLY_PLACEHOLDER });
+    await textarea.fill("Brouillon de l'inventaire");
+    // Le brouillon est enregistré une seconde après la dernière frappe
+    await expect
+      .poll(() => page.evaluate(() => Object.keys(localStorage).some((key) => key.startsWith("bbfrance:draft:"))))
+      .toBe(true);
+
+    // Le rechargement est voulu : si le navigateur demande « Quitter la page ? » (événement beforeunload), on accepte.
+    // Sans cela, Playwright refuse la fenêtre et le rechargement est annulé.
+    page.on("dialog", (dialog) => dialog.accept());
+    await page.reload({ waitUntil: "networkidle" });
+    await expect(textarea).toHaveValue("Brouillon de l'inventaire");
+    await expect(page.getByText("Brouillon restauré")).toBeVisible();
+
+    // « Annuler » demande confirmation ; « Continuer à écrire » garde le texte
+    await visibleButton(page, "Annuler").click();
+    await visibleButton(page, "Continuer à écrire").click();
+    await expect(textarea).toHaveValue("Brouillon de l'inventaire");
+
+    // « Effacer » oublie le brouillon et vide la zone
+    await visibleButton(page, "Effacer le brouillon").click();
+    await expect(textarea).toHaveValue("");
+    await expect(page.getByText("Brouillon restauré")).toHaveCount(0);
   });
 
   test("[membre] ?quotePostId= préremplit la citation", async ({ page }) => {

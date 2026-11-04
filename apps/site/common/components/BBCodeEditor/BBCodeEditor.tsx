@@ -17,12 +17,20 @@
  * - `screen` : sur téléphone, la barre d'outils reste collée en haut de l'écran pendant que la zone de texte grandit
  *   avec le message (pages de réponse, de modification et de nouveau sujet, qui occupent tout l'écran).
  *
+ * Carte 184 : l'outil Image commence par un gros bouton « Choisir des photos » ; sur téléphone, le champ d'adresse
+ * ne prend plus le focus (le clavier ne s'ouvre plus). Plusieurs photos se choisissent d'un coup : elles partent une
+ * par une, la progression s'affiche (« Envoi 2 sur 4… »), puis elles sont insérées en galerie (`[gallery]`). Une
+ * photo trop grande est réduite avant l'envoi (`common/utils/photoUpload.ts`).
+ *
  * Ce qui ne change pas : la zone de texte garde l'attribut `name` (les formulaires lisent son contenu avec
- * FormData), et l'événement `bbcode-insert-text` (envoyé par « Citer ») insère son texte au curseur.
+ * FormData), et l'événement `bbcode-insert-text` (envoyé par « Citer ») ajoute son texte à la fin (carte 183).
  */
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
 import SmileyGrid from "@/common/components/SmileyGrid/SmileyGrid";
 import { uploadImageFile } from "@/common/utils/imageUpload";
+import { IMAGE_UPLOAD_MAX_BYTES } from "@/common/utils/imageUploadLimits";
+import { galleryTag, photoFailureMessage, shrinkPhoto, uploadProgressLabel } from "@/common/utils/photoUpload";
+import { appendQuote } from "@/lib/forumQuote";
 import {
   Avatar,
   Button,
@@ -40,7 +48,7 @@ import {
   useMediaQuery,
   DESKTOP_QUERY,
 } from "@bbfrance/ui";
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Eye, List, ListOrdered, Loader2, Plus, Subscript, Superscript, Upload, X } from "lucide-react";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Eye, ImagePlus, List, ListOrdered, Loader2, Plus, Subscript, Superscript, X } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import AIAssistantSheet from "./AIAssistantSheet";
 import { buildAIPrompt } from "./aiPrompt";
@@ -100,7 +108,9 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const uid = useId();
   const [content, setContent] = useState(defaultValue);
   const [isPreview, setIsPreview] = useState(false);
-  const [isUploading, setIsUploading] = useState(false);
+  // Envoi de photos en cours : numéro de la photo envoyée et nombre total (null quand rien ne part)
+  const [uploadProgress, setUploadProgress] = useState<{ current: number; total: number } | null>(null);
+  const isUploading = uploadProgress !== null;
   const [activeTool, setActiveTool] = useState<PanelToolId | null>(null);
   const [moreOpen, setMoreOpen] = useState(false);
   const [toolInputThumb, setToolInputThumb] = useState(true);
@@ -250,7 +260,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
-    const text = content;
+    // Texte lu dans la zone elle-même : un envoi de photos peut se terminer après que le membre a continué d'écrire
+    const text = textarea.value;
     const before = text.substring(0, start);
     const selected = text.substring(start, end);
     const after = text.substring(end, text.length);
@@ -268,17 +279,19 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }, 0);
   };
 
-  // Texte inséré depuis l'extérieur de l'éditeur (bouton « Citer » d'un message du forum)
+  // Texte envoyé depuis l'extérieur de l'éditeur (bouton « Citer » d'un message du forum, carte 183) : il s'ajoute à
+  // la fin du texte déjà écrit, sans rien remplacer. L'éditeur ne prend pas le focus : la page ne défile pas et le
+  // clavier du téléphone ne s'ouvre pas, le coach garde sa position de lecture.
   useEffect(() => {
     const handleRemoteInsert = (e: Event) => {
       const textToInsert = (e as CustomEvent<string>).detail;
       if (textToInsert) {
-        insertTag(textToInsert, "");
+        handleContentChange(appendQuote(textareaRef.current?.value ?? content, textToInsert));
       }
     };
     window.addEventListener("bbcode-insert-text", handleRemoteInsert);
     return () => window.removeEventListener("bbcode-insert-text", handleRemoteInsert);
-    // insertTag lit le texte courant : l'écouteur est réinstallé à chaque changement du texte, comme avant la refonte
+    // L'écouteur lit le texte courant : il est réinstallé à chaque changement du texte, comme avant la refonte
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content]);
 
@@ -477,22 +490,35 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     setTimeout(() => textareaRef.current?.focus(), 0);
   };
 
+  /**
+   * Photos choisies sur l'appareil : réduites si besoin, envoyées une par une (progression affichée), puis insérées.
+   * Une seule photo devient une balise [img] avec les options choisies ; plusieurs deviennent une galerie.
+   */
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setIsUploading(true);
+    const files = Array.from(e.target.files ?? []);
+    if (fileInputRef.current) fileInputRef.current.value = "";
+    if (files.length === 0) return;
+    const urls: string[] = [];
+    const errors: string[] = [];
     try {
-      const result = await uploadImageFile(file);
-      if (result.success && result.url) {
-        insertTag(mediaTag("img", result.url), "");
-        resetMediaOptions();
-        showToast("Image envoyée avec succès !", "success");
-      } else {
-        showToast(result.error || "L'envoi de l'image a échoué.", "error");
+      for (const [index, file] of files.entries()) {
+        setUploadProgress({ current: index + 1, total: files.length });
+        const photo = await shrinkPhoto(file, IMAGE_UPLOAD_MAX_BYTES);
+        const result = await uploadImageFile(photo);
+        if (result.success && result.url) urls.push(result.url);
+        else errors.push(result.error || "L'envoi de l'image a échoué.");
       }
     } finally {
-      setIsUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+      setUploadProgress(null);
+    }
+    if (urls.length > 0) {
+      insertTag(urls.length === 1 ? mediaTag("img", urls[0]) : galleryTag(urls), "");
+      resetMediaOptions();
+    }
+    if (errors.length > 0) {
+      showToast(photoFailureMessage(errors.length, files.length, errors[0]), "error");
+    } else {
+      showToast(urls.length > 1 ? `${urls.length} photos ajoutées en galerie.` : "Image envoyée avec succès !", "success");
     }
   };
 
@@ -642,19 +668,38 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
       case "image":
         return (
           <div className="flex flex-col gap-4">
+            {/* Photos de l'appareil d'abord (carte 184) ; le texte du bouton suit l'envoi (« Envoi 2 sur 4… ») */}
+            <div className="flex flex-col gap-1.5">
+              <Button
+                type="button"
+                variant="primary"
+                size="tap"
+                className="min-h-14 w-full text-base whitespace-normal lg:w-auto lg:self-start"
+                onClick={() => fileInputRef.current?.click()}
+                disabled={isUploading}
+                aria-describedby={fieldId("photos-hint")}
+              >
+                {isUploading ? <Loader2 size={20} aria-hidden="true" className="animate-spin" /> : <ImagePlus size={20} aria-hidden="true" />}
+                {uploadProgress ? uploadProgressLabel(uploadProgress.current, uploadProgress.total) : "Choisir des photos"}
+              </Button>
+              <p id={fieldId("photos-hint")} className="m-0 text-sm text-bb-text-muted">
+                Une ou plusieurs photos de l&apos;appareil : plusieurs photos forment une galerie.
+              </p>
+              <p aria-live="polite" className="sr-only">
+                {uploadProgress ? uploadProgressLabel(uploadProgress.current, uploadProgress.total) : ""}
+              </p>
+            </div>
+            <p className="m-0 flex items-center gap-3 text-sm text-bb-text-muted before:h-px before:flex-1 before:bg-bb-border after:h-px after:flex-1 after:bg-bb-border">
+              ou une image déjà en ligne
+            </p>
+            {/* Sur téléphone, pas de focus automatique ici : le clavier recouvrirait le bouton des photos */}
             <Field label="Adresse de l'image" htmlFor={fieldId("image-url")}>
-              <Input id={fieldId("image-url")} type="url" inputMode="url" placeholder="https://…" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} data-autofocus />
+              <Input id={fieldId("image-url")} type="url" inputMode="url" placeholder="https://…" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} data-autofocus={isDesktop ? true : undefined} />
             </Field>
             {mediaOptions}
-            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-              <Button type="button" variant="primary" size="tap" onClick={submitImageUrl}>
-                Insérer l&apos;image
-              </Button>
-              <Button type="button" variant="secondary" size="tap" className="whitespace-normal" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
-                {isUploading ? <Loader2 size={18} aria-hidden="true" className="animate-spin" /> : <Upload size={18} aria-hidden="true" />}
-                Envoyer une image depuis l&apos;appareil
-              </Button>
-            </div>
+            <Button type="button" variant="secondary" size="tap" className="lg:self-start" onClick={submitImageUrl}>
+              Insérer l&apos;image
+            </Button>
           </div>
         );
       case "gallery":
@@ -871,7 +916,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
 
   return (
     <div className="bbcode-editor relative flex flex-col rounded-bb-md border border-bb-border bg-bb-surface-2 font-bb-sans text-bb-text transition-colors focus-within:border-bb-focus">
-      <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={handleImageUpload} tabIndex={-1} aria-hidden="true" />
+      <input type="file" accept="image/*" multiple ref={fileInputRef} className="hidden" onChange={handleImageUpload} tabIndex={-1} aria-hidden="true" />
 
       {/* Barre d'outils, collée en haut de l'écran sur téléphone dans une page de rédaction */}
       <div

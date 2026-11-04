@@ -1,5 +1,6 @@
 import { getQuoteStatusMap } from "@/app/forum/actions";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
+import { TopicVisitorInvite } from "@/app/forum/component/ForumVisitorInvite";
 import MarkAsRead from "@/app/forum/component/MarkAsRead";
 import PostItem from "@/app/forum/component/PostItem";
 import QuickReply from "@/app/forum/component/QuickReply";
@@ -391,7 +392,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
             {canReply ? (
               <QuickReply topicId={id} />
-            ) : !currentUserId || topic.isDeleted ? null : (
+            ) : topic.isDeleted ? null : !currentUserId ? (
+              // Visiteur non connecté : invitation à se connecter, avec retour sur cette page du sujet (carte 185)
+              <TopicVisitorInvite callbackUrl={`/forum/topic/${id}${safeCurrentPage > 1 ? `?page=${safeCurrentPage}` : ""}`} />
+            ) : (
               // Pas d'ancre « quick-reply-area » ici : « Citer » et « Répondre » la cherchent pour y écrire une
               // réponse, et la trouver sur cet encart les faisait seulement défiler jusqu'à lui (carte 111)
               <Card className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">

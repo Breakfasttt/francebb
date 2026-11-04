@@ -6,6 +6,7 @@ import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getTopicLatestPosts, getPostById, getQuoteStatusMap } from "@/app/forum/actions";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { canQuotePost } from "@/lib/forumPostPrivacy";
+import { stripNestedQuotes } from "@/lib/forumQuote";
 import ReplyForm from "@/app/forum/component/ReplyForm";
 import ComposeScreen, { RecentPostsRecap } from "@/app/forum/component/ComposeScreen";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu et le rappel des messages
@@ -14,7 +15,8 @@ export const dynamic = "force-dynamic";
 
 /**
  * Page de réponse à un sujet (carte 087 : écran de rédaction plein écran sur téléphone, voir ComposeScreen).
- * `?quotePostId=` préremplit l'éditeur avec la citation du message demandé, sauf s'il est supprimé ou masqué.
+ * `?quotePostId=` préremplit l'éditeur avec la citation du message demandé, sauf s'il est supprimé ou masqué. Les
+ * citations que ce message contient déjà sont retirées, pour éviter les pyramides de citations (carte 183).
  */
 export default async function ReplyPage({
   params,
@@ -67,7 +69,7 @@ export default async function ReplyPage({
         postId: post.id,
         author: post.authorId,
         authorName: post.author.name,
-        content: post.content
+        content: stripNestedQuotes(post.content)
       };
     }
   }

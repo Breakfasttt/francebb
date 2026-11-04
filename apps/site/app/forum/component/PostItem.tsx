@@ -10,7 +10,8 @@
  *   modifier, supprimer, modérer ou restaurer.
  * - Corps du message en 16 pixels, largeur de lecture limitée à environ 70 caractères ; citations sur fond de surface ;
  *   signature séparée par un filet.
- * - Sous le message, toujours visibles : les réactions et le bouton « Citer » (PostActions).
+ * - Sous le message, toujours visibles : les réactions et le bouton « Citer » (PostActions). Un passage sélectionné
+ *   dans le corps d'un message citable peut aussi être cité seul (QuoteSelectionButton, carte 183).
  * - Message supprimé (carte 165) : la mention dit qui l'a supprimé, son auteur ou la modération (avec la raison).
  * - États conservés : message supprimé, auteur bloqué ou banni (masqué, avec « Afficher le message »), message modéré,
  *   premier message d'un tournoi mis en valeur sur les pages suivantes.
@@ -117,6 +118,8 @@ const PostItem: React.FC<PostItemProps> = ({
   const isFirstTournamentPost = isTournament && post.id === firstPostId;
   const deletedBy = postDeletedBy(post);
   const openAuthor = () => setAuthorOpen(true);
+  // Même règle que le bouton « Citer » : le coach peut répondre et le message n'est pas masqué (carte 164)
+  const isQuotable = !!currentUserId && canReply && !post.isModerated;
 
   const avatar = (size: number) => (
     <UserAvatar
@@ -250,12 +253,16 @@ const PostItem: React.FC<PostItemProps> = ({
                     </Button>
                   </div>
                 )}
-                <BBCodeContent
-                  content={post.content}
-                  quoteStatusMap={quoteStatusMap}
-                  currentUserId={currentUserId}
-                  className={cn(bodyClass, post.isModerated && "opacity-70")}
-                />
+                {/* Un message citable porte ces attributs : le bouton « Citer la sélection » (QuoteSelectionButton,
+                    carte 183) ne s'affiche que pour un passage sélectionné ici, signature exclue */}
+                <div {...(isQuotable ? { "data-quote-post-id": post.id, "data-author-id": post.authorId, "data-author-name": author.name || "" } : {})}>
+                  <BBCodeContent
+                    content={post.content}
+                    quoteStatusMap={quoteStatusMap}
+                    currentUserId={currentUserId}
+                    className={cn(bodyClass, post.isModerated && "opacity-70")}
+                  />
+                </div>
 
                 {author.signature && (
                   <div className="mt-4 border-t border-bb-border pt-3">

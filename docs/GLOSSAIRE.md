@@ -13,14 +13,17 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Backup** | Copie de sauvegarde d'une base de données. |
 | **Barre de navigation basse** | Sur téléphone, barre fixée en bas de l'écran avec les destinations principales toujours visibles, à portée du pouce. Celle de BBFrance a cinq onglets : Accueil, Forum, Tournois, Messages et Plus. L'onglet « Plus » ouvre un panneau qui contient tout le reste (ADR 0006). |
 | **BBCode** | Petit langage de mise en forme des messages du forum (`[b]gras[/b]`, `[url]…[/url]`). |
+| **beforeunload** | Événement que le navigateur envoie juste avant de quitter une page (onglet fermé, page rechargée, adresse tapée). Une page peut alors faire demander « Quitter le site ? » ; le texte de cette question est imposé par le navigateur. Les écrans de rédaction du forum s'en servent quand un message est en cours (carte 181). |
 | **Better Auth** | Bibliothèque de connexion utilisée par le hub. |
 | **Bibliothèque** (ou dépendance, paquet) | Code écrit par d'autres et utilisé par le projet (ex. Prisma, Next.js). Installée par pnpm. |
+| **Brouillon** (forum) | Texte d'un message en cours d'écriture, gardé dans le `localStorage` du téléphone ou de l'ordinateur pendant 7 jours au plus, pour le retrouver après un rechargement ou une fausse manœuvre (crochet `useDraft`, carte 181). |
 | **Bouton flottant de filtres** (`MobileFilterWrapper`) | Ancien composant (cartes 054 à 096) : sur téléphone, un bouton rond en forme d'entonnoir, fixé en bas à droite de l'écran, ouvrait le panneau des filtres. Supprimé par la carte 096 ; les listes refaites ont à la place un bouton « Filtres » au-dessus des résultats, qui ouvre un panneau du bas (`Sheet`). |
 | **Branche** (git) | Version parallèle du code, sur laquelle on travaille sans toucher la version principale avant de fusionner. |
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |
 | **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo à chaque lecture de la session, et les range dans le cookie de session : un bannissement prend donc effet dès la page suivante. |
 | **CDP** (*Chrome DevTools Protocol*) | Protocole qui permet à un programme de piloter Chrome de l'intérieur. Les tests s'en servent pour ce que Playwright ne sait pas faire seul, par exemple simuler deux doigts posés sur l'écran (`Input.dispatchTouchEvent`). |
+| **Canvas** | Zone de dessin du navigateur, utilisable par le code d'une page. L'éditeur de messages s'en sert pour réduire une photo trop grande avant de l'envoyer (carte 184). |
 | **Carte** (kanban) | Fichier qui décrit une tâche : pourquoi, quoi faire, comment vérifier que c'est fini. Voir `kanban/README.md`. |
 | **CI** (*Continuous Integration*, intégration continue) | Vérifications lancées automatiquement par GitHub à chaque envoi de code : types, qualité, tests. Définies dans `.github/workflows/ci.yml`. |
 | **Claim** | Une information sur l'utilisateur contenue dans un jeton de connexion (pseudo, email, « email vérifié »). |

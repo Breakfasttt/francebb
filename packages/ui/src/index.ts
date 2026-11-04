@@ -28,6 +28,7 @@ export { Switch } from "./switch";
 export { Tooltip } from "./tooltip";
 export { Tabs, TabsList, TabsTrigger, TabsContent, LinkTabs, type LinkTab } from "./tabs";
 export { PageNav } from "./page-nav";
+export { PagePicker, type PagePickerOptions } from "./page-picker";
 export { EmptyState, Skeleton } from "./feedback";
 
 // Refonte de l'éditeur de message (carte 087)

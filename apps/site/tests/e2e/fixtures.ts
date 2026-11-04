@@ -73,12 +73,24 @@ export function themedBannedId(theme: string): string {
   return `e2e_banned_${theme}`;
 }
 
+/**
+ * Connecte la page comme le membre `userId` (fournisseur « dev-login », qui n'existe qu'en développement).
+ * La petite base locale (« prisma dev ») rate parfois une requête juste après la fermeture de la page du test
+ * précédent (erreur « bind message supplies 3 parameters… » dans le journal du site) : le fournisseur refuse alors la
+ * connexion et renvoie vers /auth/login?error=CredentialsSignin, et le test suivant se retrouvait visiteur. La
+ * connexion est donc vérifiée et retentée chaque seconde, 5 fois au plus.
+ */
 export async function loginAs(page: Page, userId: string) {
-  const csrfRes = await page.request.get("/api/auth/csrf");
-  const { csrfToken } = (await csrfRes.json()) as { csrfToken: string };
-  await page.request.post("/api/auth/callback/dev-login", {
-    form: { csrfToken, userId, callbackUrl: "/" },
-  });
+  for (let attempt = 1; ; attempt++) {
+    const csrfRes = await page.request.get("/api/auth/csrf");
+    const { csrfToken } = (await csrfRes.json()) as { csrfToken: string };
+    const res = await page.request.post("/api/auth/callback/dev-login", {
+      form: { csrfToken, userId, callbackUrl: "/" },
+    });
+    if (!res.url().includes("error=")) return;
+    if (attempt >= 5) throw new Error(`Connexion de test refusée pour ${userId} : ${res.url()}`);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
 }
 
 /**

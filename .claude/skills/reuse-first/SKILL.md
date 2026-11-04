@@ -29,7 +29,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Champs de formulaire (texte en 16 pixels, 44 pixels de haut) | `Field`, `Label`, `Input`, `Textarea`, `Select` |
 | Interrupteur, info-bulle | `Switch`, `Tooltip` |
 | Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}` ; `orientation="vertical"` pour une colonne d'onglets sur ordinateur, carte 099) |
-| Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092) |
+| Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092). Options facultatives (carte 182) : `showFirst` (flèche « Première page ») et `pagePicker` (« Page N sur M » ouvre le panneau `PagePicker` de choix d'une page ; depuis un composant client seulement, exemple `TopicPageNav`) |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
 | Savoir si on est sur ordinateur (seuil de 1025 pixels) | `useMediaQuery(DESKTOP_QUERY)` |
 
@@ -70,6 +70,8 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 |---|---|
 | Détection mobile | `common/hooks/useIsMobile.ts` (`useIsMobile()` et la constante `MOBILE_BREAKPOINT`, seuil unique de 1024 pixels) |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
+| Garder le texte d'un formulaire en brouillon dans le navigateur (restauré après un rechargement, expiré après 7 jours) | `useDraft(scope, initialValue, { warnBeforeLeave })` de `common/hooks/useDraft.ts` (règles pures dans `common/utils/draftRules.ts`), avec le bandeau `DraftBanner` (`common/components/DraftBanner/`) ; carte 181. Bouton « Annuler » qui confirme si le texte a changé : `CancelComposeButton` (`app/forum/component/`) |
+| Envoyer plusieurs photos depuis un formulaire (galerie, progression, réduction des grandes photos avant l'envoi) | `common/utils/photoUpload.ts` (`shrinkPhoto`, `galleryTag`, `uploadProgressLabel`, `photoFailureMessage`), puis `uploadImageFile` pour chaque photo ; carte 184 |
 | Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur (carte 141) |
 | Zoom au pincement à deux doigts sur un cadre qui défile | `usePinchZoom(ref, { zoom, min, max, onZoomChange })`, parti avec l'éditeur BBScheme dans `apps/bbscheme/editeur-en-attente/hooks/` (carte 179) : le déplacer dans un paquet partagé avant de s'en servir dans le site |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
@@ -82,6 +84,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Rôles et niveau de pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
 | Libellé lisible d'un rôle, rôles personnalisés compris | `getRoleLabel(role, labels)` de `lib/roles.ts`, avec `labels` lus par `getRoleLabelMap()` (`lib/roleLabels.ts`, serveur) ou l'action `getRoleLabels` (`app/profile/actions.ts`, composant client) |
 | Accès forum par rôle (`allowedRoles`) | `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`) — toute requête catégorie/forum/topic/post |
+| Citer un message du forum : texte de la balise, retrait des citations imbriquées, ajout à la fin d'une réponse | `lib/forumQuote.ts` (`buildQuote`, `buildFullPostQuote`, `stripNestedQuotes`, `appendQuote`) ; envoi à la réponse rapide avec la notification « Citation ajoutée » : `sendQuoteToQuickReply` de `app/forum/component/QuoteSelectionButton.tsx` (carte 183) |
 | Champs d'un membre envoyés au navigateur, texte d'un message supprimé ou masqué, citation autorisée | `lib/forumPostPrivacy.ts` (`POST_AUTHOR_SELECT`, `PUBLIC_MEMBER_SELECT`, `POST_MODERATOR_SELECT`, `hidePostContent`, `canQuotePost`) |
 | Client Prisma | `lib/prisma.ts` → `prisma` (ne renvoie jamais `User.email`) ; `prismaWithEmail` réservé à la connexion et aux mails |
 | BBCode → HTML | `lib/bbcode.ts` |
