@@ -168,16 +168,6 @@ async function filters(page: Page): Promise<Locator> {
   return panel;
 }
 
-/** Ouvre le panneau « Plus » du téléphone s'il est fermé et le renvoie. */
-async function openMore(page: Page): Promise<Locator> {
-  const panel = page.getByRole("dialog", { name: "Plus" });
-  if (!(await panel.isVisible())) {
-    await page.getByRole("button", { name: "Plus", exact: true }).click();
-    await expect(panel).toBeVisible();
-  }
-  return panel;
-}
-
 /**
  * Cherche un outil du sujet visible dans la page ; sur téléphone, dans le panneau « Outils du sujet » ouvert par le
  * bouton de l'en-tête (même façon de faire que forum-sujet.spec.ts).
@@ -508,12 +498,11 @@ test.describe("fenêtres de modération et de signalement", () => {
       .toBe(1);
   });
 
-  test("[membre, téléphone] la fenêtre de signalement s'ouvre depuis le panneau « Plus » et passe au-dessus de lui", async ({ page }) => {
-    test.skip(!isPhone(page), "le panneau « Plus » n'existe que sur téléphone");
+  test("[membre] la fenêtre de signalement du sujet s'ouvre depuis les outils du sujet et reçoit les appuis", async ({ page }) => {
     await loginAs(page, E2E.coachId);
     await page.goto(`/forum/topic/${MODO_TOPIC.id}`, { waitUntil: "networkidle" });
-    const panel = await openMore(page);
-    await panel.getByRole("button", { name: /^Signaler( le sujet)?$/ }).click();
+    // Sur téléphone, « Signaler le sujet » est dans le panneau « Outils du sujet » ; sur ordinateur, directement dans la page
+    await (await findTool(page, /^Signaler( le sujet)?$/)).click();
     const dialog = page.getByRole("dialog", { name: "Signaler un contenu" });
     await expect(dialog).toBeVisible();
     // Un appui sur une raison et sur « Annuler » atteint bien la fenêtre (rien ne la recouvre)

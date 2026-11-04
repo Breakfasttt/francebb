@@ -12,6 +12,8 @@
  * - Fenêtres : inscription ou modification d'une équipe, détails d'une équipe, confirmations. Ce sont des panneaux
  *   qui montent du bas sur téléphone (composants `Sheet` et `ConfirmDialog` de packages/ui).
  * Les actions serveur appelées sont les mêmes qu'avant la refonte.
+ * Ce module s'exécute dans le navigateur : il ne reçoit que des données publiques, plus l'état de paiement pour ceux
+ * qui gèrent le tournoi (carte 174, voir `RegistrationTournament`).
  */
 import { useState, useTransition, type ReactNode } from "react";
 import { AlertCircle, CheckCircle2, ChevronDown, Clock, ListOrdered, Lock, Pencil, Plus, UserMinus, UserPlus, Users } from "lucide-react";
@@ -26,9 +28,26 @@ import {
   toggleMercenary
 } from "../actions";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
+import type { PublicTournamentMercenary, PublicTournamentRegistration, PublicTournamentTeam } from "@/lib/forumPostPrivacy";
+
+/**
+ * Le tournoi tel que la page du sujet le confie à ce module (carte 174) : seulement les champs lus ici. L'état de
+ * paiement des inscriptions et des équipes n'est présent que pour l'organisateur, ses commissaires et la modération.
+ */
+export interface RegistrationTournament {
+  id: string;
+  date: Date;
+  isTeam: boolean;
+  coachsPerTeam: number;
+  isFinished: boolean;
+  registrationsLocked: boolean;
+  registrations: PublicTournamentRegistration[];
+  teams: PublicTournamentTeam[];
+  mercenaries: PublicTournamentMercenary[];
+}
 
 interface RegistrationModuleProps {
-  tournament: any;
+  tournament: RegistrationTournament;
   currentUser: any;
   isOrganizer: boolean;
   isCommissioner: boolean;

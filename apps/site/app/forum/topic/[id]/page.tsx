@@ -15,7 +15,16 @@ import { effectiveReadPosition } from "@/lib/forumReadPosition";
 import { forumPostHrefFor, TOPIC_POSTS_PER_PAGE } from "@/lib/forumPostLink";
 import { isTopicClosedFor } from "@/lib/forumWriteRules";
 import { isModerator } from "@/lib/roles";
-import { hidePostContent, POST_AUTHOR_SELECT, POST_MODERATOR_SELECT, PUBLIC_MEMBER_SELECT } from "@/lib/forumPostPrivacy";
+import {
+  hidePostContent,
+  POST_AUTHOR_SELECT,
+  POST_MODERATOR_SELECT,
+  PUBLIC_MEMBER_SELECT,
+  TOURNAMENT_MERCENARY_PUBLIC_SELECT,
+  TOURNAMENT_REGISTRATION_PUBLIC_SELECT,
+  TOURNAMENT_TEAM_PUBLIC_SELECT,
+  withPaymentStatus
+} from "@/lib/forumPostPrivacy";
 import { getBlockedUsersIds } from "@/app/profile/actions";
 import { Lock as LockIcon } from "lucide-react";
 import { Badge, Card } from "@bbfrance/ui";
@@ -96,14 +105,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             // Membres du tournoi : seulement l'identifiant, le pseudo et l'avatar (carte 164). Des commissaires,
             // la page ne lit que l'identifiant, pour savoir si le lecteur en fait partie.
             commissaires: { select: { id: true } },
-            registrations: { include: { user: { select: PUBLIC_MEMBER_SELECT } } },
-            teams: {
-              include: {
-                members: { include: { user: { select: PUBLIC_MEMBER_SELECT } } },
-                captain: { select: PUBLIC_MEMBER_SELECT }
-              }
-            },
-            mercenaries: { include: { user: { select: PUBLIC_MEMBER_SELECT } } },
+            // Inscriptions, équipes et mercenaires : seulement ce qui est affiché à tous (carte 174). L'état de
+            // paiement est lu plus bas, à part, pour l'organisateur, ses commissaires et la modération.
+            registrations: { select: TOURNAMENT_REGISTRATION_PUBLIC_SELECT },
+            teams: { select: TOURNAMENT_TEAM_PUBLIC_SELECT },
+            mercenaries: { select: TOURNAMENT_MERCENARY_PUBLIC_SELECT },
             results: { include: { user: { select: PUBLIC_MEMBER_SELECT } } },
             rounds: { include: { matches: true }, orderBy: { roundNumber: 'asc' } },
             ligue: true
@@ -173,6 +179,31 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const isTournamentOrganizer = topic.tournament?.organizerId === currentUserId;
   const isTournamentCommissaire = topic.tournament?.commissaires.some((c) => c.id === currentUserId);
   const canEditTournament = isUserModerator || isTournamentOrganizer || isTournamentCommissaire;
+
+  // Ce que reçoit le module d'inscription, qui s'exécute dans le navigateur (carte 174) : les quelques champs du
+  // tournoi qu'il lit, et l'état de paiement de chaque inscription seulement pour ceux qui gèrent le tournoi (même
+  // règle que l'action updateRegistrationStatus : organisateur, commissaire ou modérateur).
+  let registrationTournament = null;
+  if (topic.tournament) {
+    const t = topic.tournament;
+    const [registrationPayments, teamPayments] = canEditTournament
+      ? await Promise.all([
+          prisma.tournamentRegistration.findMany({ where: { tournamentId: t.id }, select: { id: true, paymentStatus: true } }),
+          prisma.tournamentTeam.findMany({ where: { tournamentId: t.id }, select: { id: true, paymentStatus: true } })
+        ])
+      : [[], []];
+    registrationTournament = {
+      id: t.id,
+      date: t.date,
+      isTeam: t.isTeam,
+      coachsPerTeam: t.coachsPerTeam,
+      isFinished: t.isFinished,
+      registrationsLocked: t.registrationsLocked,
+      registrations: canEditTournament ? withPaymentStatus(t.registrations, registrationPayments) : t.registrations,
+      teams: canEditTournament ? withPaymentStatus(t.teams, teamPayments) : t.teams,
+      mercenaries: t.mercenaries
+    };
+  }
 
   // Le texte d'un message supprimé, ou masqué pour un lecteur qui n'est ni son auteur ni modérateur, est vidé ici,
   // avant d'être confié aux composants : il ne doit pas apparaître dans le code de la page (carte 164)
@@ -294,12 +325,14 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   />
                 )}
 
-                <RegistrationModule
-                  tournament={topic.tournament}
-                  currentUser={session?.user}
-                  isOrganizer={!!isTournamentOrganizer}
-                  isCommissioner={!!isTournamentCommissaire}
-                />
+                {registrationTournament && (
+                  <RegistrationModule
+                    tournament={registrationTournament}
+                    currentUser={session?.user}
+                    isOrganizer={!!isTournamentOrganizer}
+                    isCommissioner={!!isTournamentCommissaire}
+                  />
+                )}
               </section>
             )}
 

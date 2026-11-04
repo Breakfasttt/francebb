@@ -40,7 +40,6 @@ export async function GET(
         theme: true,
         // Données sensibles (uniquement si soi-même ou modo/admin)
         notifPm: isSelf || isMod,
-        notifMention: isSelf || isMod,
         notifFollowedTopic: isSelf || isMod,
         notifNewsletter: isSelf || isMod,
         autoFollowTopics: isSelf || isMod,

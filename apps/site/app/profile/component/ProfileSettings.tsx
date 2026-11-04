@@ -9,7 +9,7 @@
  * - « Notifications » : un interrupteur par type de courriel (messages privés, sujets suivis, annonces) et
  *   l'abonnement automatique aux sujets que l'on crée ou auxquels on répond (carte 167), enregistrés à chaque
  *   changement. Les mentions n'envoient plus d'e-mail : elles s'affichent seulement sous la cloche du site, d'où la
- *   disparition de l'interrupteur « Mentions » (la colonne `notifMention` reste en base, sans effet) ; en
+ *   disparition de l'interrupteur « Mentions » (sa colonne a été retirée de la base, carte 171) ; en
  *   développement, l'envoi d'une newsletter de test ;
  * - « Zone de danger » : « Supprimer mon compte », avec deux confirmations (hors mode hub).
  * Les actions serveur sont inchangées.

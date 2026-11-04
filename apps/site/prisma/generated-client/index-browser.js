@@ -167,7 +167,6 @@ exports.Prisma.UserScalarFieldEnum = {
   forumactifName: 'forumactifName',
   hasFinishedOnboarding: 'hasFinishedOnboarding',
   notifPm: 'notifPm',
-  notifMention: 'notifMention',
   notifFollowedTopic: 'notifFollowedTopic',
   notifNewsletter: 'notifNewsletter',
   autoFollowTopics: 'autoFollowTopics',
@@ -323,8 +322,7 @@ exports.Prisma.PrivateMessageScalarFieldEnum = {
   content: 'content',
   createdAt: 'createdAt',
   conversationId: 'conversationId',
-  authorId: 'authorId',
-  readAt: 'readAt'
+  authorId: 'authorId'
 };
 
 exports.Prisma.TopicViewScalarFieldEnum = {

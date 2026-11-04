@@ -24,26 +24,6 @@ import { closedTopicMessage, isAllowedReaction, isTopicClosedFor, postContentErr
 import type { QuoteStatusMap } from "@/lib/bbcode";
 import type { ActionResult } from "@/lib/actionResult";
 
-export async function getUnreadMessagesCount() {
-  const session = await getActiveSession();
-  if (!session?.user?.id) return 0;
-
-  return await prisma.privateMessage.count({
-    where: {
-      conversation: {
-        OR: [
-          { user1Id: session.user.id },
-          { user2Id: session.user.id }
-        ]
-      },
-      authorId: {
-        not: session.user.id
-      },
-      readAt: null
-    }
-  });
-}
-
 export async function getRandomPostUrl() {
   const { roles } = await getForumAccess();
   const where = { isArchived: false, ...topicAccessWhere(roles) };

@@ -1,6 +1,6 @@
 /**
  * Page Statistiques (refonte, carte 090, ADR 0006) : les chiffres publics de la plateforme, puis, pour un
- * administrateur seulement, ceux de la console d'administration (courriels, quotas, base, éléments en attente).
+ * administrateur seulement, ceux de la console d'administration (courriels, base, éléments en attente).
  * Deux colonnes de chiffres sur téléphone, trois sur ordinateur.
  */
 import React from 'react';
@@ -15,7 +15,6 @@ import {
   Eye, 
   Activity, 
   Database, 
-  Mail, 
   AlertCircle,
   HardDrive,
   Send
@@ -91,12 +90,6 @@ export default async function StatistiquesPage() {
                 value={stats.admin.monthlyMails} 
                 icon={<Send size={18} />}
                 description="Courriels envoyés ce mois-ci"
-              />
-              <StatCard 
-                label="Quota restant" 
-                value={stats.admin.mailsRemaining} 
-                icon={<Mail size={18} />}
-                description="Courriels encore disponibles ce mois-ci (Resend)"
               />
               <StatCard 
                 label="Taille de la base" 

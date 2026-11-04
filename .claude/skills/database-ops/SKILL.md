@@ -43,6 +43,12 @@ L'outil `scripts/local-postgres.mjs` démarre de petits serveurs Postgres avec `
 - Avant une opération risquée : créer une **branche** Neon (une copie instantanée de la base), qui sert de sauvegarde. Neon permet aussi de restaurer la base à un instant passé.
 - Ne jamais lancer de commande Prisma contre la production depuis un poste local, sauf `firstSetup` et le script d'enregistrement de client du hub décrits dans `DEPLOY.md`.
 
+## Le client Prisma généré
+
+- `apps/site/prisma/generated-client` est suivi par git et produit par `prisma generate` (générateur `prisma-client-js`). Il ne doit contenir que ce que ce générateur produit. Jusqu'à la carte 172, d'anciens fichiers `.ts` générés pour SQLite y traînaient : `tsx` les choisissait et tout script qui importait le client échouait. Pour vérifier : générer dans un dossier temporaire de `apps/site` et comparer les deux listes de fichiers.
+- En local, `pnpm db:migrate` peut échouer (erreur P3006) : la base fantôme de Prisma est copiée de `template1`, qui est aussi la base de développement. Contournement : `npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`, écrire le SQL dans `prisma/migrations/<horodatage>_<nom>/migration.sql`, puis `npx prisma migrate deploy` et `npx prisma generate`, et augmenter `CLIENT_VERSION` dans `lib/prisma.ts`.
+- Requêtes SQL écrites à la main : une requête entière par `prisma.$queryRaw`…``, une liste avec `= ANY(${liste})`. Les morceaux `Prisma.sql` et `Prisma.join` importés du client généré ne sont pas reconnus (carte 170).
+
 ## Particularités de Postgres à connaître
 
 - **Recherche texte** : `contains` respecte les majuscules en Postgres. Pour une recherche de membres, ajouter `mode: "insensitive"`.

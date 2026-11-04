@@ -233,8 +233,8 @@ export async function getPreviousTheme(): Promise<string | null> {
 /**
  * Préférences de notification du profil : e-mails des messages privés, des sujets suivis et des annonces, et
  * abonnement automatique aux sujets (carte 167). Seuls ces quatre champs sont enregistrés, et seulement s'ils valent
- * vrai ou faux. La préférence des e-mails de mention (`notifMention`) n'a plus d'effet depuis la carte 167 : elle
- * n'est plus modifiable.
+ * vrai ou faux. Les mentions n'envoient plus d'e-mail depuis la carte 167, et leur ancienne préférence a été retirée
+ * de la base (carte 171).
  */
 export async function updateNotificationSettings(settings: {
   notifPm: boolean;

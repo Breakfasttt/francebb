@@ -16,7 +16,7 @@
  * les pages et par les actions du forum. Il n'importe aucun autre fichier du site, pour que les tests unitaires
  * (tests/unit/forumPostPrivacy.test.mjs) puissent le lire directement.
  */
-import type { Prisma } from "@/prisma/generated-client";
+import type { PaymentStatus, Prisma } from "@/prisma/generated-client";
 
 /**
  * Champs d'un membre affiché dans une liste (inscrits et équipes d'un tournoi, classement, rappel des derniers
@@ -46,6 +46,58 @@ export const POST_AUTHOR_SELECT = {
   ligues: { select: { id: true, name: true, acronym: true } },
   _count: { select: { posts: true } },
 } as const satisfies Prisma.UserSelect;
+
+/**
+ * Inscriptions d'un tournoi envoyées au module d'inscription (carte 174). Ce module s'exécute dans le navigateur : tout
+ * ce qu'il reçoit est lisible dans le code de la page. On n'y charge donc que ce qui est affiché à tous : le membre,
+ * son statut (pré-inscrit, validé, liste d'attente), qui range l'inscription dans la bonne liste. L'état de paiement
+ * (`paymentStatus`) ne regarde que l'organisateur, ses commissaires et la modération : la page l'ajoute à part, pour
+ * eux seuls, avec `withPaymentStatus`.
+ */
+export const TOURNAMENT_REGISTRATION_PUBLIC_SELECT = {
+  id: true,
+  userId: true,
+  status: true,
+  user: { select: PUBLIC_MEMBER_SELECT },
+} as const satisfies Prisma.TournamentRegistrationSelect;
+
+/** Équipes d'un tournoi par équipes : même règle que les inscriptions, sans l'état de paiement. */
+export const TOURNAMENT_TEAM_PUBLIC_SELECT = {
+  id: true,
+  name: true,
+  captainId: true,
+  status: true,
+  captain: { select: PUBLIC_MEMBER_SELECT },
+  members: { select: { id: true, userId: true, user: { select: PUBLIC_MEMBER_SELECT } } },
+} as const satisfies Prisma.TournamentTeamSelect;
+
+/** Mercenaires d'un tournoi par équipes (coachs sans équipe qui se proposent) : le membre seulement. */
+export const TOURNAMENT_MERCENARY_PUBLIC_SELECT = {
+  id: true,
+  userId: true,
+  user: { select: PUBLIC_MEMBER_SELECT },
+} as const satisfies Prisma.TournamentMercenarySelect;
+
+/** État de paiement facultatif : présent seulement quand le lecteur gère le tournoi. */
+type WithPayment = { paymentStatus?: PaymentStatus };
+
+export type PublicTournamentRegistration = Prisma.TournamentRegistrationGetPayload<{
+  select: typeof TOURNAMENT_REGISTRATION_PUBLIC_SELECT;
+}> & WithPayment;
+export type PublicTournamentTeam = Prisma.TournamentTeamGetPayload<{ select: typeof TOURNAMENT_TEAM_PUBLIC_SELECT }> & WithPayment;
+export type PublicTournamentMercenary = Prisma.TournamentMercenaryGetPayload<{ select: typeof TOURNAMENT_MERCENARY_PUBLIC_SELECT }>;
+
+/**
+ * Ajoute à chaque inscription (ou équipe) son état de paiement, lu à part dans la base. La page ne l'appelle que pour
+ * l'organisateur, un commissaire ou un modérateur ; pour les autres lecteurs, le champ reste absent.
+ */
+export function withPaymentStatus<T extends { id: string }>(
+  items: T[],
+  payments: { id: string; paymentStatus: PaymentStatus }[]
+): (T & WithPayment)[] {
+  const byId = new Map(payments.map((p) => [p.id, p.paymentStatus]));
+  return items.map((item) => ({ ...item, paymentStatus: byId.get(item.id) }));
+}
 
 /** Le modérateur d'un message masqué : seul son pseudo est affiché (« modéré par … »). */
 export const POST_MODERATOR_SELECT = {

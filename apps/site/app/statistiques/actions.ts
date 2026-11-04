@@ -1,12 +1,14 @@
 /**
  * Page de statistiques globales de BBFrance.
  * Affiche des compteurs pour les utilisateurs, ligues, articles, etc.
- * Section Admin avec données techniques (emails, BDD, quotas).
+ * Les compteurs ignorent les sujets et messages supprimés, les membres bannis et le compte fantôme.
+ * Section Admin avec données techniques (emails, BDD, éléments en attente).
  */
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
+import { GHOST_USER_ID } from "@/lib/rankingCoach";
 import { isAdmin as checkIsAdmin } from "@/lib/roles";
 
 export async function getDashboardStats() {
@@ -19,12 +21,12 @@ export async function getDashboardStats() {
 
   try {
     const results = await Promise.allSettled([
-      prisma.user.count(),
+      prisma.user.count({ where: { isBanned: false, id: { not: GHOST_USER_ID } } }),
       prisma.ligue.count(),
       prisma.article.count(),
-      prisma.topic.count(),
-      prisma.post.count(),
-      prisma.topic.aggregate({ _sum: { views: true } }),
+      prisma.topic.count({ where: { isDeleted: false } }),
+      prisma.post.count({ where: { isDeleted: false, topic: { isDeleted: false } } }),
+      prisma.topic.aggregate({ where: { isDeleted: false }, _sum: { views: true } }),
       // « En ligne » : membres ayant lu un sujet du forum ces 15 dernières minutes. La table Session reste vide
       // (les sessions sont des jetons JWT rangés dans un cookie, voir auth.ts), elle ne peut pas servir ici.
       prisma.topicView.groupBy({ by: ["userId"], where: { lastViewedAt: { gte: new Date(Date.now() - 15 * 60 * 1000) } } })
@@ -96,15 +98,11 @@ export async function getDashboardStats() {
       console.error("Erreur stats admin (BDD):", e);
     }
 
-    // Note: Le quota dépend du plan Resend (Free = 3000/mois ou 100/jour selon l'époque, ici on assume 3000)
-    const RESEND_QUOTA = 3000;
-
     stats.admin = {
       dbSize,
       pendingReports,
       pendingResources,
       monthlyMails,
-      mailsRemaining: Math.max(0, RESEND_QUOTA - monthlyMails),
       storageQuota: "500 Mo",
       storageUsage: dbSize
     };

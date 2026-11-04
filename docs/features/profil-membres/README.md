@@ -65,6 +65,6 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 ## État
 
 - Marche : modification du profil, réglages, blocages, suppression de compte anonymisée (par le membre ou par un modérateur, carte 051), annuaire avec modération ; refonte des trois écrans (carte 092), vérifiée par `tests/e2e/inventaire/profil.spec.ts` en taille ordinateur et téléphone.
-- Carte 167 : bloc « Notifications » du profil (préférence `autoFollowTopics` ajoutée, interrupteur « Mentions » retiré ; la colonne `notifMention` reste en base sans effet, sa suppression demande l'accord du responsable).
+- Carte 167 : bloc « Notifications » du profil (préférence `autoFollowTopics` ajoutée, interrupteur « Mentions » retiré ; la colonne `notifMention`, devenue sans effet, a été supprimée de la base par la carte 171 et ne figure plus dans l'export des données du membre ni dans la fiche renvoyée par `/api/users/[id]`).
 - Manque : pagination côté serveur de `/membres`.
 - Cartes : 049 (audit mobile), 054 (annuaire sur téléphone), 019 (avatars en `next/image`), 062 (identifiant du thème « Sombre »), 063 (fluidité du profil), 061 (textes de 12 pixels), 092 (refonte).

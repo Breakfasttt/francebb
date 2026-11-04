@@ -37,7 +37,7 @@ Les actions du forum (`createTopic`, `createPost`, `updatePost`) et de la messag
 - **Regroupement** : une seule notification non lue par sujet suivi et par conversation. Tant qu'elle n'est pas lue, les réponses et les messages suivants n'en créent pas d'autre.
 - **E-mails** : ils partent avec `after()` de Next.js, qui laisse le serveur finir l'envoi après avoir répondu au membre. Un e-mail lancé sans attendre peut être coupé par l'hébergeur. Toute valeur insérée dans un e-mail passe par `escapeHtml`.
 - **Base locale** : les requêtes de ces fonctions se suivent, sans `Promise.all`, car la base de développement ne sait pas traiter plusieurs requêtes à la fois (erreur « bind message supplies … parameters »).
-- La colonne `User.notifMention` n'a plus d'effet ; elle reste en base en attendant l'accord du responsable pour la supprimer.
+- L'ancienne préférence des e-mails de mention (colonne `User.notifMention`) a été supprimée de la base par la carte 171.
 
 ## Les mots expliqués
 

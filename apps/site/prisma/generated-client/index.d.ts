@@ -8228,7 +8228,6 @@ export namespace Prisma {
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
     notifPm: boolean | null
-    notifMention: boolean | null
     notifFollowedTopic: boolean | null
     notifNewsletter: boolean | null
     autoFollowTopics: boolean | null
@@ -8260,7 +8259,6 @@ export namespace Prisma {
     forumactifName: string | null
     hasFinishedOnboarding: boolean | null
     notifPm: boolean | null
-    notifMention: boolean | null
     notifFollowedTopic: boolean | null
     notifNewsletter: boolean | null
     autoFollowTopics: boolean | null
@@ -8292,7 +8290,6 @@ export namespace Prisma {
     forumactifName: number
     hasFinishedOnboarding: number
     notifPm: number
-    notifMention: number
     notifFollowedTopic: number
     notifNewsletter: number
     autoFollowTopics: number
@@ -8340,7 +8337,6 @@ export namespace Prisma {
     forumactifName?: true
     hasFinishedOnboarding?: true
     notifPm?: true
-    notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
     autoFollowTopics?: true
@@ -8372,7 +8368,6 @@ export namespace Prisma {
     forumactifName?: true
     hasFinishedOnboarding?: true
     notifPm?: true
-    notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
     autoFollowTopics?: true
@@ -8404,7 +8399,6 @@ export namespace Prisma {
     forumactifName?: true
     hasFinishedOnboarding?: true
     notifPm?: true
-    notifMention?: true
     notifFollowedTopic?: true
     notifNewsletter?: true
     autoFollowTopics?: true
@@ -8523,7 +8517,6 @@ export namespace Prisma {
     forumactifName: string | null
     hasFinishedOnboarding: boolean
     notifPm: boolean
-    notifMention: boolean
     notifFollowedTopic: boolean
     notifNewsletter: boolean
     autoFollowTopics: boolean
@@ -8574,7 +8567,6 @@ export namespace Prisma {
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -8655,7 +8647,6 @@ export namespace Prisma {
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -8688,7 +8679,6 @@ export namespace Prisma {
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -8721,14 +8711,13 @@ export namespace Prisma {
     forumactifName?: boolean
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
     forumReadAllAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifMention" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "quizTotalScore" | "quizBestScore" | "quizStreak" | "quizAttemptsCount" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8864,7 +8853,6 @@ export namespace Prisma {
       forumactifName: string | null
       hasFinishedOnboarding: boolean
       notifPm: boolean
-      notifMention: boolean
       notifFollowedTopic: boolean
       notifNewsletter: boolean
       /**
@@ -9372,7 +9360,6 @@ export namespace Prisma {
     readonly forumactifName: FieldRef<"User", 'String'>
     readonly hasFinishedOnboarding: FieldRef<"User", 'Boolean'>
     readonly notifPm: FieldRef<"User", 'Boolean'>
-    readonly notifMention: FieldRef<"User", 'Boolean'>
     readonly notifFollowedTopic: FieldRef<"User", 'Boolean'>
     readonly notifNewsletter: FieldRef<"User", 'Boolean'>
     readonly autoFollowTopics: FieldRef<"User", 'Boolean'>
@@ -22453,7 +22440,6 @@ export namespace Prisma {
     createdAt: Date | null
     conversationId: string | null
     authorId: string | null
-    readAt: Date | null
   }
 
   export type PrivateMessageMaxAggregateOutputType = {
@@ -22462,7 +22448,6 @@ export namespace Prisma {
     createdAt: Date | null
     conversationId: string | null
     authorId: string | null
-    readAt: Date | null
   }
 
   export type PrivateMessageCountAggregateOutputType = {
@@ -22471,7 +22456,6 @@ export namespace Prisma {
     createdAt: number
     conversationId: number
     authorId: number
-    readAt: number
     _all: number
   }
 
@@ -22482,7 +22466,6 @@ export namespace Prisma {
     createdAt?: true
     conversationId?: true
     authorId?: true
-    readAt?: true
   }
 
   export type PrivateMessageMaxAggregateInputType = {
@@ -22491,7 +22474,6 @@ export namespace Prisma {
     createdAt?: true
     conversationId?: true
     authorId?: true
-    readAt?: true
   }
 
   export type PrivateMessageCountAggregateInputType = {
@@ -22500,7 +22482,6 @@ export namespace Prisma {
     createdAt?: true
     conversationId?: true
     authorId?: true
-    readAt?: true
     _all?: true
   }
 
@@ -22582,7 +22563,6 @@ export namespace Prisma {
     createdAt: Date
     conversationId: string
     authorId: string
-    readAt: Date | null
     _count: PrivateMessageCountAggregateOutputType | null
     _min: PrivateMessageMinAggregateOutputType | null
     _max: PrivateMessageMaxAggregateOutputType | null
@@ -22608,7 +22588,6 @@ export namespace Prisma {
     createdAt?: boolean
     conversationId?: boolean
     authorId?: boolean
-    readAt?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["privateMessage"]>
@@ -22619,7 +22598,6 @@ export namespace Prisma {
     createdAt?: boolean
     conversationId?: boolean
     authorId?: boolean
-    readAt?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["privateMessage"]>
@@ -22630,7 +22608,6 @@ export namespace Prisma {
     createdAt?: boolean
     conversationId?: boolean
     authorId?: boolean
-    readAt?: boolean
     author?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["privateMessage"]>
@@ -22641,10 +22618,9 @@ export namespace Prisma {
     createdAt?: boolean
     conversationId?: boolean
     authorId?: boolean
-    readAt?: boolean
   }
 
-  export type PrivateMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "conversationId" | "authorId" | "readAt", ExtArgs["result"]["privateMessage"]>
+  export type PrivateMessageOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "content" | "createdAt" | "conversationId" | "authorId", ExtArgs["result"]["privateMessage"]>
   export type PrivateMessageInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     author?: boolean | UserDefaultArgs<ExtArgs>
     conversation?: boolean | ConversationDefaultArgs<ExtArgs>
@@ -22670,11 +22646,6 @@ export namespace Prisma {
       createdAt: Date
       conversationId: string
       authorId: string
-      /**
-       * Ancien marqueur de lecture, commun à tous les participants : il n'est plus lu ni écrit depuis la carte 170,
-       * qui le remplace par ConversationParticipant.lastReadAt. Gardé en base en attendant l'accord pour le supprimer.
-       */
-      readAt: Date | null
     }, ExtArgs["result"]["privateMessage"]>
     composites: {}
   }
@@ -23105,7 +23076,6 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"PrivateMessage", 'DateTime'>
     readonly conversationId: FieldRef<"PrivateMessage", 'String'>
     readonly authorId: FieldRef<"PrivateMessage", 'String'>
-    readonly readAt: FieldRef<"PrivateMessage", 'DateTime'>
   }
     
 
@@ -59432,7 +59402,6 @@ export namespace Prisma {
     forumactifName: 'forumactifName',
     hasFinishedOnboarding: 'hasFinishedOnboarding',
     notifPm: 'notifPm',
-    notifMention: 'notifMention',
     notifFollowedTopic: 'notifFollowedTopic',
     notifNewsletter: 'notifNewsletter',
     autoFollowTopics: 'autoFollowTopics',
@@ -59618,8 +59587,7 @@ export namespace Prisma {
     content: 'content',
     createdAt: 'createdAt',
     conversationId: 'conversationId',
-    authorId: 'authorId',
-    readAt: 'readAt'
+    authorId: 'authorId'
   };
 
   export type PrivateMessageScalarFieldEnum = (typeof PrivateMessageScalarFieldEnum)[keyof typeof PrivateMessageScalarFieldEnum]
@@ -60342,7 +60310,6 @@ export namespace Prisma {
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     notifPm?: BoolFilter<"User"> | boolean
-    notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
     autoFollowTopics?: BoolFilter<"User"> | boolean
@@ -60422,7 +60389,6 @@ export namespace Prisma {
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
     notifPm?: SortOrder
-    notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
@@ -60505,7 +60471,6 @@ export namespace Prisma {
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     notifPm?: BoolFilter<"User"> | boolean
-    notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
     autoFollowTopics?: BoolFilter<"User"> | boolean
@@ -60585,7 +60550,6 @@ export namespace Prisma {
     forumactifName?: SortOrderInput | SortOrder
     hasFinishedOnboarding?: SortOrder
     notifPm?: SortOrder
-    notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
@@ -60625,7 +60589,6 @@ export namespace Prisma {
     forumactifName?: StringNullableWithAggregatesFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolWithAggregatesFilter<"User"> | boolean
     notifPm?: BoolWithAggregatesFilter<"User"> | boolean
-    notifMention?: BoolWithAggregatesFilter<"User"> | boolean
     notifFollowedTopic?: BoolWithAggregatesFilter<"User"> | boolean
     notifNewsletter?: BoolWithAggregatesFilter<"User"> | boolean
     autoFollowTopics?: BoolWithAggregatesFilter<"User"> | boolean
@@ -61600,7 +61563,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PrivateMessage"> | Date | string
     conversationId?: StringFilter<"PrivateMessage"> | string
     authorId?: StringFilter<"PrivateMessage"> | string
-    readAt?: DateTimeNullableFilter<"PrivateMessage"> | Date | string | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
   }
@@ -61611,7 +61573,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     conversationId?: SortOrder
     authorId?: SortOrder
-    readAt?: SortOrderInput | SortOrder
     author?: UserOrderByWithRelationInput
     conversation?: ConversationOrderByWithRelationInput
   }
@@ -61625,7 +61586,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PrivateMessage"> | Date | string
     conversationId?: StringFilter<"PrivateMessage"> | string
     authorId?: StringFilter<"PrivateMessage"> | string
-    readAt?: DateTimeNullableFilter<"PrivateMessage"> | Date | string | null
     author?: XOR<UserScalarRelationFilter, UserWhereInput>
     conversation?: XOR<ConversationScalarRelationFilter, ConversationWhereInput>
   }, "id">
@@ -61636,7 +61596,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     conversationId?: SortOrder
     authorId?: SortOrder
-    readAt?: SortOrderInput | SortOrder
     _count?: PrivateMessageCountOrderByAggregateInput
     _max?: PrivateMessageMaxOrderByAggregateInput
     _min?: PrivateMessageMinOrderByAggregateInput
@@ -61651,7 +61610,6 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"PrivateMessage"> | Date | string
     conversationId?: StringWithAggregatesFilter<"PrivateMessage"> | string
     authorId?: StringWithAggregatesFilter<"PrivateMessage"> | string
-    readAt?: DateTimeNullableWithAggregatesFilter<"PrivateMessage"> | Date | string | null
   }
 
   export type TopicViewWhereInput = {
@@ -64055,7 +64013,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -64135,7 +64092,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -64213,7 +64169,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -64293,7 +64248,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -64372,7 +64326,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -64403,7 +64356,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -64435,7 +64387,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -65514,7 +65465,6 @@ export namespace Prisma {
     id?: string
     content: string
     createdAt?: Date | string
-    readAt?: Date | string | null
     author: UserCreateNestedOneWithoutPrivateMessagesInput
     conversation: ConversationCreateNestedOneWithoutMessagesInput
   }
@@ -65525,14 +65475,12 @@ export namespace Prisma {
     createdAt?: Date | string
     conversationId: string
     authorId: string
-    readAt?: Date | string | null
   }
 
   export type PrivateMessageUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutPrivateMessagesNestedInput
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
   }
@@ -65543,7 +65491,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversationId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageCreateManyInput = {
@@ -65552,14 +65499,12 @@ export namespace Prisma {
     createdAt?: Date | string
     conversationId: string
     authorId: string
-    readAt?: Date | string | null
   }
 
   export type PrivateMessageUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageUncheckedUpdateManyInput = {
@@ -65568,7 +65513,6 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversationId?: StringFieldUpdateOperationsInput | string
     authorId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type TopicViewCreateInput = {
@@ -68449,7 +68393,6 @@ export namespace Prisma {
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
     notifPm?: SortOrder
-    notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
@@ -68488,7 +68431,6 @@ export namespace Prisma {
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
     notifPm?: SortOrder
-    notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
@@ -68520,7 +68462,6 @@ export namespace Prisma {
     forumactifName?: SortOrder
     hasFinishedOnboarding?: SortOrder
     notifPm?: SortOrder
-    notifMention?: SortOrder
     notifFollowedTopic?: SortOrder
     notifNewsletter?: SortOrder
     autoFollowTopics?: SortOrder
@@ -69177,7 +69118,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     conversationId?: SortOrder
     authorId?: SortOrder
-    readAt?: SortOrder
   }
 
   export type PrivateMessageMaxOrderByAggregateInput = {
@@ -69186,7 +69126,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     conversationId?: SortOrder
     authorId?: SortOrder
-    readAt?: SortOrder
   }
 
   export type PrivateMessageMinOrderByAggregateInput = {
@@ -69195,7 +69134,6 @@ export namespace Prisma {
     createdAt?: SortOrder
     conversationId?: SortOrder
     authorId?: SortOrder
-    readAt?: SortOrder
   }
 
   export type TopicViewUserIdTopicIdCompoundUniqueInput = {
@@ -75149,7 +75087,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -75228,7 +75165,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -75321,7 +75257,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -75400,7 +75335,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -75477,7 +75411,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -75556,7 +75489,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -75649,7 +75581,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -75728,7 +75659,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -76401,7 +76331,6 @@ export namespace Prisma {
     id?: string
     content: string
     createdAt?: Date | string
-    readAt?: Date | string | null
     conversation: ConversationCreateNestedOneWithoutMessagesInput
   }
 
@@ -76410,7 +76339,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     conversationId: string
-    readAt?: Date | string | null
   }
 
   export type PrivateMessageCreateOrConnectWithoutAuthorInput = {
@@ -78185,7 +78113,6 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"PrivateMessage"> | Date | string
     conversationId?: StringFilter<"PrivateMessage"> | string
     authorId?: StringFilter<"PrivateMessage"> | string
-    readAt?: DateTimeNullableFilter<"PrivateMessage"> | Date | string | null
   }
 
   export type QuizAttemptUpsertWithWhereUniqueWithoutUserInput = {
@@ -78994,7 +78921,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79073,7 +78999,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79155,7 +79080,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79234,7 +79158,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79327,7 +79250,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -79406,7 +79328,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -79494,7 +79415,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -79573,7 +79493,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -79650,7 +79569,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79729,7 +79647,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79915,7 +79832,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -79994,7 +79910,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -80224,7 +80139,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -80303,7 +80217,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -80396,7 +80309,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -80475,7 +80387,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -80679,7 +80590,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -80758,7 +80668,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -80944,7 +80853,6 @@ export namespace Prisma {
     forumactifName?: StringNullableFilter<"User"> | string | null
     hasFinishedOnboarding?: BoolFilter<"User"> | boolean
     notifPm?: BoolFilter<"User"> | boolean
-    notifMention?: BoolFilter<"User"> | boolean
     notifFollowedTopic?: BoolFilter<"User"> | boolean
     notifNewsletter?: BoolFilter<"User"> | boolean
     autoFollowTopics?: BoolFilter<"User"> | boolean
@@ -81299,7 +81207,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -81378,7 +81285,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -81460,7 +81366,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -81539,7 +81444,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -81784,7 +81688,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -81863,7 +81766,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -82063,7 +81965,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82142,7 +82043,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82230,7 +82130,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82309,7 +82208,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82534,7 +82432,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82613,7 +82510,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -82777,7 +82673,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -82856,7 +82751,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -82964,7 +82858,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -83043,7 +82936,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -83125,7 +83017,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -83204,7 +83095,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -83408,7 +83298,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -83487,7 +83376,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -83591,7 +83479,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -83670,7 +83557,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -83758,7 +83644,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -83837,7 +83722,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -84007,7 +83891,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -84086,7 +83969,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -84168,7 +84050,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -84247,7 +84128,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -84309,7 +84189,6 @@ export namespace Prisma {
     id?: string
     content: string
     createdAt?: Date | string
-    readAt?: Date | string | null
     author: UserCreateNestedOneWithoutPrivateMessagesInput
   }
 
@@ -84318,7 +84197,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     authorId: string
-    readAt?: Date | string | null
   }
 
   export type PrivateMessageCreateOrConnectWithoutConversationInput = {
@@ -84426,7 +84304,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -84505,7 +84382,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -84593,7 +84469,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -84672,7 +84547,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -84797,7 +84671,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -84876,7 +84749,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -85002,7 +84874,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -85081,7 +84952,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -85197,7 +85067,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -85276,7 +85145,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -85402,7 +85270,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -85481,7 +85348,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -85652,7 +85518,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -85731,7 +85596,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -85885,7 +85749,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -85964,7 +85827,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -86041,7 +85903,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86120,7 +85981,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86202,7 +86062,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86281,7 +86140,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86417,7 +86275,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -86496,7 +86353,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -86584,7 +86440,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -86663,7 +86518,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -86789,7 +86643,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86868,7 +86721,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -86950,7 +86802,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -87029,7 +86880,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -87253,7 +87103,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -87332,7 +87181,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -87420,7 +87268,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -87499,7 +87346,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -87725,7 +87571,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -87804,7 +87649,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -87940,7 +87784,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -88019,7 +87862,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -88145,7 +87987,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88223,7 +88064,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88382,7 +88222,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88461,7 +88300,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88615,7 +88453,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -88694,7 +88531,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -88771,7 +88607,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88850,7 +88685,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -88943,7 +88777,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -89022,7 +88855,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -89099,7 +88931,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -89178,7 +89009,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -89386,7 +89216,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -89465,7 +89294,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -89663,7 +89491,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -89742,7 +89569,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -89970,7 +89796,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -90049,7 +89874,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -90263,7 +90087,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -90342,7 +90165,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -90462,7 +90284,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -90541,7 +90362,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -90651,7 +90471,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -90730,7 +90549,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -90938,7 +90756,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -91017,7 +90834,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -91264,7 +91080,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -91343,7 +91158,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -91425,7 +91239,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -91504,7 +91317,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -91691,7 +91503,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -91770,7 +91581,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -91858,7 +91668,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -91937,7 +91746,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -92107,7 +91915,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92186,7 +91993,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92316,7 +92122,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -92395,7 +92200,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -92557,7 +92361,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92636,7 +92439,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92838,7 +92640,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92917,7 +92718,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -92999,7 +92799,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93078,7 +92877,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93187,7 +92985,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -93266,7 +93063,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -93391,7 +93187,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93470,7 +93265,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93552,7 +93346,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93631,7 +93424,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -93724,7 +93516,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -93803,7 +93594,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -93891,7 +93681,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -93970,7 +93759,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -94047,7 +93835,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -94126,7 +93913,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -94219,7 +94005,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -94298,7 +94083,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -94375,7 +94159,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -94454,7 +94237,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -94562,7 +94344,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -94641,7 +94422,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -94789,7 +94569,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -94868,7 +94647,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -95076,7 +94854,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -95155,7 +94932,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -95645,7 +95421,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -95724,7 +95499,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -95806,7 +95580,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -95885,7 +95658,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -95995,7 +95767,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96074,7 +95845,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96162,7 +95932,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96241,7 +96010,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96341,7 +96109,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -96420,7 +96187,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -96513,7 +96279,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96592,7 +96357,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96669,7 +96433,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -96748,7 +96511,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -96841,7 +96603,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96920,7 +96681,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -96997,7 +96757,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97076,7 +96835,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97169,7 +96927,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -97248,7 +97005,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -97325,7 +97081,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97404,7 +97159,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97497,7 +97251,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -97576,7 +97329,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -97653,7 +97405,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97732,7 +97483,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -97825,7 +97575,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -97904,7 +97653,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -98160,7 +97908,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     conversationId: string
-    readAt?: Date | string | null
   }
 
   export type QuizAttemptCreateManyUserInput = {
@@ -99162,7 +98909,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     conversation?: ConversationUpdateOneRequiredWithoutMessagesNestedInput
   }
 
@@ -99171,7 +98917,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversationId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageUncheckedUpdateManyWithoutAuthorInput = {
@@ -99179,7 +98924,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     conversationId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type QuizAttemptUpdateWithoutUserInput = {
@@ -100828,7 +100572,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -100907,7 +100650,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -100985,7 +100727,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -101455,7 +101196,6 @@ export namespace Prisma {
     content: string
     createdAt?: Date | string
     authorId: string
-    readAt?: Date | string | null
   }
 
   export type ConversationParticipantCreateManyConversationInput = {
@@ -101482,7 +101222,6 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     author?: UserUpdateOneRequiredWithoutPrivateMessagesNestedInput
   }
 
@@ -101491,7 +101230,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type PrivateMessageUncheckedUpdateManyWithoutConversationInput = {
@@ -101499,7 +101237,6 @@ export namespace Prisma {
     content?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     authorId?: StringFieldUpdateOperationsInput | string
-    readAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type ConversationParticipantUpdateWithoutConversationInput = {
@@ -101586,7 +101323,6 @@ export namespace Prisma {
     forumactifName?: string | null
     hasFinishedOnboarding?: boolean
     notifPm?: boolean
-    notifMention?: boolean
     notifFollowedTopic?: boolean
     notifNewsletter?: boolean
     autoFollowTopics?: boolean
@@ -101617,7 +101353,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -101695,7 +101430,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -101773,7 +101507,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102180,7 +101913,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102259,7 +101991,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102337,7 +102068,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102368,7 +102098,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102447,7 +102176,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
@@ -102525,7 +102253,6 @@ export namespace Prisma {
     forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
     hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
     notifPm?: BoolFieldUpdateOperationsInput | boolean
-    notifMention?: BoolFieldUpdateOperationsInput | boolean
     notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
     notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
     autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean

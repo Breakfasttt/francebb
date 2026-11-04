@@ -156,7 +156,7 @@ test.beforeAll(async () => {
             { userId: MEMBER_B.id, deletedAt: new Date() },
           ],
         },
-        messages: { create: { content: "Bug TL bienvenue dans le groupe", authorId: MEMBER_A.id, readAt: new Date() } },
+        messages: { create: { content: "Bug TL bienvenue dans le groupe", authorId: MEMBER_A.id } },
       },
     });
   });
