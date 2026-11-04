@@ -19,9 +19,7 @@ import { Badge, Card } from "@bbfrance/ui";
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
-import BackButton from "@/common/components/BackButton/BackButton";
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import ArticleActions from "./component/ArticleActions";
 import ArticleReactions from "./component/ArticleReactions";
@@ -77,13 +75,8 @@ export default async function ArticleDetailPage({
     <div className="mx-auto w-full max-w-[860px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ViewCounter articleId={id} />
 
-      {/* Téléphone : bouton retour dans la barre du haut ; ordinateur : lien vers la liste au-dessus de l'article */}
-      <MobilePortal targetId="mobile-back-button-slot">
-        <span className="lg:hidden">
-          <BackButton href="/articles" title="Retour aux articles" style={{ width: 44, height: 44 }} />
-        </span>
-      </MobilePortal>
-      <div className="hidden pt-4 lg:block">
+      {/* Lien de retour vers la liste, à toutes les tailles d'écran (44 pixels de haut) */}
+      <div className="pt-3 lg:pt-4">
         <Link href="/articles" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-bb-accent-text no-underline hover:underline">
           <ChevronLeft size={16} aria-hidden="true" />
           Tous les articles

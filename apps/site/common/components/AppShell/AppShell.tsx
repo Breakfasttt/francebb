@@ -99,7 +99,6 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
       <header className="app-topbar sticky top-0 z-[5000] border-b border-bb-nav-border bg-bb-nav-bg font-bb-sans">
         {/* Téléphone */}
         <div className="flex h-14 items-center gap-2 px-2 lg:hidden">
-          <div id="mobile-back-button-slot" className="flex items-center" />
           {/* SiteLogo est lui-même un lien vers l'accueil */}
           {!isHome && <SiteLogo scale={0.5} />}
           <div className="flex-1" />

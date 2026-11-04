@@ -28,14 +28,17 @@ test.describe("coquille : visiteur", () => {
 
     if (isPhone(page)) {
       await expect(nav.getByRole("link", { name: "Messages" })).toBeVisible();
+      // Bouton retour et outils du forum affichés sur place, sans portail (carte 156)
+      await expect(page.getByRole("main").getByRole("link", { name: "Retour" })).toBeVisible();
+      await expect(page.getByRole("region", { name: "Outils du forum" }).getByRole("link", { name: "Recherche avancée" })).toBeVisible();
       await openMore(page);
       const panel = page.getByRole("dialog", { name: "Plus" });
       for (const label of ["Ligues", "Carte", "Articles", "Ressources", "BBScheme", "Quizz", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "GitHub"]) {
         await expect(panel.getByRole("link", { name: label })).toBeVisible();
       }
       await expect(panel.getByRole("radiogroup", { name: "Thème du site" }).getByRole("radio")).toHaveCount(8);
-      // Contenu propre à la page (colonne latérale du forum) envoyé dans « Cette page »
-      await expect(panel.getByRole("link", { name: "Recherche avancée" })).toBeVisible();
+      // Plus de rubrique « Cette page » (carte 156) : les outils du forum sont dans la page elle-même
+      await expect(panel.getByRole("region", { name: "Cette page" })).toHaveCount(0);
       await page.screenshot({ path: testInfo.outputPath("visiteur-plus.png") });
       await page.keyboard.press("Escape");
       await expect(panel).toBeHidden();

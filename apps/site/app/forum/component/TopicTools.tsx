@@ -3,10 +3,10 @@
 /**
  * Outils d'un sujet du forum (refonte, carte 086 ; remplace l'ancienne colonne TopicSidebar).
  *
- * Un même contenu est affiché à trois endroits, selon la taille de l'écran :
+ * Un même contenu est affiché à deux endroits, selon la taille de l'écran, plus une barre propre au téléphone :
  * - sur ordinateur, une colonne à droite, collée en haut de l'écran pendant le défilement (`TopicToolsAside`) ;
  * - sur téléphone, un panneau « Outils du sujet » qui monte du bas, ouvert par un bouton de l'en-tête
- *   (`TopicToolsButton`), et la rubrique « Cette page » du panneau « Plus » de la barre basse ;
+ *   (`TopicToolsButton`) ;
  * - sur téléphone encore, une barre collée en bas de l'écran, au-dessus de la barre de navigation, avec la pagination
  *   compacte et le bouton « Répondre » (`TopicReplyBar`).
  *
@@ -48,7 +48,6 @@ import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
 import ConfirmModal from "@/common/components/ConfirmModal/ConfirmModal";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import Modal from "@/common/components/Modal/Modal";
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 export interface TopicToolsProps {
   topicId: string;
@@ -330,17 +329,12 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
     <ToolsContext.Provider value={value}>
       {children}
 
-      {/* Téléphone : panneau « Outils du sujet », et la même liste dans « Cette page » du panneau « Plus » */}
+      {/* Téléphone : panneau « Outils du sujet » */}
       <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
         <SheetContent title="Outils du sujet">
           <ToolsSections />
         </SheetContent>
       </Sheet>
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="lg:hidden">
-          <ToolsSections />
-        </div>
-      </GlobalPortal>
 
       <ConfirmModal
         isOpen={confirmConfig.isOpen}

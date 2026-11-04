@@ -1,6 +1,6 @@
 ---
 name: mobile-ux
-description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (règle absolue - mobile impeccable) - coquille (barre basse, panneau « Plus », « Cette page »), seuil unique de 1024 pixels, bouton Filtres, bouton retour, écrans plein écran. À lire avant toute modification d'interface.
+description: Règles d'affichage et d'ergonomie sur téléphone pour BBFrance (règle absolue - mobile impeccable) - coquille (barre basse, panneau « Plus », pas de portail), seuil unique de 1024 pixels, bouton Filtres, bouton retour, écrans plein écran. À lire avant toute modification d'interface.
 ---
 
 # BBFrance sur téléphone
@@ -35,10 +35,10 @@ D'autres largeurs restent permises **seulement pour ajuster une grille à la pla
 
 La coquille est ce qui entoure chaque page : `common/components/AppShell/` (`AppShell.tsx`, `MorePanel.tsx`, `navItems.ts`, `AppShell.css`).
 
-- **Barre du haut** : l'emplacement du bouton retour de la page (`#mobile-back-button-slot`), le logo (sauf sur l'accueil) et, pour un visiteur, « Connexion ».
+- **Barre du haut** : le logo (sauf sur l'accueil) et, pour un visiteur, « Connexion ». Le bouton retour n'y est plus : il est dans l'en-tête de la page (carte 156).
 - **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier. Quand le champ perd le focus, l'attribut n'est retiré qu'après 350 millisecondes (carte 113) : un appui sur un bouton juste après la saisie se termine ainsi avant que la barre ne revienne et ne décale la page sous le doigt.
-- **Panneau « Plus »** : il monte du bas et contient le profil ou la connexion, le choix du thème, les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier), la rubrique « Cette page », la modération et l'administration pour l'équipe, les mentions légales et la déconnexion.
-- **« Cette page »** : une page peut y envoyer des outils secondaires (actions de la colonne latérale du forum, outils d'un sujet) par un portail vers `#mobile-page-sidebar-slot` (`GlobalPortal` ou `MobilePortal`). La rubrique disparaît quand la page n'y envoie rien. Le panneau reste monté en permanence, caché quand il est fermé, pour que cet emplacement existe toujours.
+- **Panneau « Plus »** : il monte du bas et contient le profil ou la connexion, le choix du thème, les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier), la modération et l'administration pour l'équipe, les mentions légales et la déconnexion.
+- **Pas de portail React** (`createPortal`, carte 156) : une page n'envoie jamais de contenu dans la coquille. Ses outils secondaires restent dans la page : un bloc sur place (« Outils du forum » sous la liste) ou un panneau `Sheet` ouvert par un bouton de l'en-tête (« Outils du sujet »). Seuls les composants Radix de `packages/ui` (fenêtres, panneaux, menus) gardent leur portail interne.
 
 Place réservée en bas de la page : la coquille calcule elle-même la place de la barre basse (`--app-bottom-nav-space`), du bandeau des cookies (`--app-cookie-space`) et des notifications (`--app-toast-space`). Une page n'ajoute pas de marge pour eux.
 
@@ -73,7 +73,7 @@ Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/r
 
 ## Titre de page et bouton retour
 
-Le bouton retour (`BackButton`) est envoyé dans la barre du haut sur téléphone (`MobilePortal targetId="mobile-back-button-slot"`) : il reste accessible quand on fait défiler la page. `ForumListHeader` (forum) et `ComposeScreen` le font déjà ; `PageHeader` ne sert plus qu'aux mentions légales.
+Le bouton retour (`BackButton`, 44 pixels sur téléphone) est affiché sur place, à gauche du titre de la page, à toutes les tailles d'écran (carte 156). `ForumListHeader` (forum), `ComposeScreen` et `PageHeader` (mentions légales) le font ; les fiches d'un article et d'une ligue ont un lien « Tous les articles » ou « Toutes les ligues » au-dessus du contenu, et BBScheme le met en tête de sa barre d'outils.
 
 ## Pages impossibles sur téléphone
 

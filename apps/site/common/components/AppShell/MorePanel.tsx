@@ -2,9 +2,9 @@
 
 /**
  * Panneau « Plus » du téléphone (ADR 0006, carte 081) : tout ce qui n'est pas dans la barre basse.
- * Il reste monté en permanence (caché et inerte quand il est fermé), parce que les pages y envoient leur contenu
- * propre (onglets, outils, filtres de colonne latérale) par un portail vers #mobile-page-sidebar-slot :
- * cet emplacement doit toujours exister. Ouvert, il se comporte comme une fenêtre : focus déplacé dedans,
+ * Il reste monté en permanence (caché et inerte quand il est fermé), pour que son ouverture soit immédiate.
+ * Les outils propres à une page sont affichés dans la page elle-même (carte 156). Ouvert, il se comporte comme
+ * une fenêtre : focus déplacé dedans,
  * Échap ou appui à côté pour fermer, défilement de la page bloqué, fermeture au changement de page.
  */
 import { useEffect, useRef } from "react";
@@ -109,12 +109,6 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
               ))}
             </ul>
           </nav>
-
-          {/* Contenu propre à la page (onglets, outils de la colonne latérale), envoyé par portail */}
-          <section className="more-page-section flex flex-col gap-2" aria-label="Cette page">
-            <h2 className={sectionTitle}>Cette page</h2>
-            <div id="mobile-page-sidebar-slot" className="mobile-sidebar-slot" />
-          </section>
 
           {(isMod || isAdmin) && (
             <section className="flex flex-col gap-2" aria-label="Gestion">

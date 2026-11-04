@@ -4,8 +4,8 @@
  *   pour un membre qui n'est pas modérateur, le bouton désactivé « Forum verrouillé ». Sur téléphone, la page les
  *   affiche en haut de la liste ; sur ordinateur, ils sont en tête de la colonne latérale.
  * - `ForumSidebar` : la colonne latérale, collée en haut de l'écran pendant le défilement sur ordinateur. Sur
- *   téléphone, ses actions secondaires (recherche avancée, membres, non-lus, administration) sont envoyées dans la
- *   rubrique « Cette page » du panneau « Plus », par un portail vers #mobile-page-sidebar-slot.
+ *   téléphone, ses actions secondaires (recherche avancée, membres, non-lus, administration) sont affichées sur
+ *   place, dans un bloc « Outils du forum » sous la liste (carte 156 : plus de portail vers le panneau « Plus »).
  */
 import { getUnreadTopicsCount, getSubForumCount } from "@/app/forum/actions";
 import Link from "next/link";
@@ -17,7 +17,6 @@ import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
 import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
-import GlobalPortal from "@/common/components/GlobalPortal/GlobalPortal";
 
 /** Titre discret d'un groupe d'actions de la colonne. */
 const groupTitle = "m-0 border-0 p-0 text-[0.8125rem] font-bold tracking-wider text-bb-text-muted uppercase not-italic";
@@ -84,7 +83,7 @@ export default async function ForumSidebar({
   const canCreateForum = isModerator(session?.user?.role);
   const showUnread = !!session && !forumId && !categoryId && !parentForumId && unreadTopics > 0;
 
-  // Actions secondaires : dans la colonne sur ordinateur, dans « Cette page » sur téléphone
+  // Actions secondaires : dans la colonne sur ordinateur, dans le bloc « Outils du forum » sur téléphone
   const secondary = (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
@@ -139,10 +138,13 @@ export default async function ForumSidebar({
         </Card>
       </aside>
 
-      {/* Téléphone : la même colonne, sans les actions principales (déjà affichées en haut de la liste) */}
-      <GlobalPortal target="#mobile-page-sidebar-slot">
-        <div className="lg:hidden">{secondary}</div>
-      </GlobalPortal>
+      {/* Téléphone : la même colonne sous la liste, sans les actions principales (déjà affichées en haut de la liste) */}
+      <section className="lg:hidden" aria-labelledby="forum-tools-title">
+        <Card className="flex flex-col gap-3 p-4">
+          <h2 id="forum-tools-title" className={groupTitle}>Outils du forum</h2>
+          {secondary}
+        </Card>
+      </section>
     </>
   );
 }

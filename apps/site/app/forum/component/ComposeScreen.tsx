@@ -12,7 +12,6 @@ import { Avatar, Card, cn } from "@bbfrance/ui";
 import { Clock } from "lucide-react";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import BackButton from "@/common/components/BackButton/BackButton";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { parseBBCode } from "@/lib/bbcode";
 
 interface ComposeScreenProps {
@@ -37,15 +36,7 @@ export default function ComposeScreen({ breadcrumbs, title, subtitle, backHref, 
       )}
 
       <header className="flex items-start gap-3 pt-3 pb-3 lg:pt-5 lg:pb-4">
-        {/* Téléphone : le bouton retour va dans la barre du haut ; ordinateur : il reste à gauche du titre */}
-        <MobilePortal targetId="mobile-back-button-slot">
-          <span className="lg:hidden">
-            <BackButton href={backHref} title={backTitle} style={{ width: 44, height: 44 }} />
-          </span>
-        </MobilePortal>
-        <span className="hidden shrink-0 lg:inline-flex">
-          <BackButton href={backHref} title={backTitle} />
-        </span>
+        <BackButton href={backHref} title={backTitle} />
         <div className="min-w-0 flex-1">
           <h1 className="m-0 border-0 p-0 text-xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-2xl">{title}</h1>
           <p className="m-0 mt-1 text-sm break-words text-bb-text-muted">{subtitle}</p>

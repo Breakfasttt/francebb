@@ -1,13 +1,12 @@
 /**
  * En-tête de page simple (refonte, carte 101) : titre qui domine, sous-titre discret, actions facultatives à droite.
- * Même allure que l'en-tête des listes du forum (ForumListHeader). Le bouton retour va, sur téléphone, dans la barre
- * du haut (emplacement #mobile-back-button-slot) ; sur ordinateur, il est à gauche du titre.
+ * Même allure que l'en-tête des listes du forum (ForumListHeader). Le bouton retour est à gauche du titre, à toutes
+ * les tailles d'écran (carte 156 : plus de portail vers la barre du haut).
  * Utilisé par la page des mentions légales ; les écrans refaits ont chacun leur en-tête.
  */
 import type { CSSProperties, ReactNode } from "react";
 import { cn } from "@bbfrance/ui";
 import BackButton from "@/common/components/BackButton/BackButton";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 
 interface PageHeaderProps {
   /** Le titre principal de la page */
@@ -31,16 +30,7 @@ export default function PageHeader({ title, subtitle, backHref, backTitle = "Ret
   return (
     <header className={cn("mx-auto flex w-full max-w-[1200px] flex-wrap items-center gap-3 px-4 pt-4 pb-2 lg:px-8 lg:pt-8", className)} style={style}>
       {showBack && (
-        <>
-          <MobilePortal targetId="mobile-back-button-slot">
-            <span className="lg:hidden">
-              <BackButton href={backHref} title={backTitle} />
-            </span>
-          </MobilePortal>
-          <span className="hidden lg:inline-flex">
-            <BackButton href={backHref} title={backTitle} />
-          </span>
-        </>
+        <BackButton href={backHref} title={backTitle} />
       )}
       <div className="min-w-0 flex-1">
         <h1 className="m-0 text-2xl leading-tight font-bold text-bb-text lg:text-3xl">{title}</h1>

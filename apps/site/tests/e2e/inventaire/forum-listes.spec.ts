@@ -100,25 +100,12 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
 });
 
-/** Ouvre le panneau « Plus » du téléphone s'il est fermé et le renvoie. */
-async function openMore(page: Page): Promise<Locator> {
-  const panel = page.getByRole("dialog", { name: "Plus" });
-  if (!(await panel.isVisible())) {
-    await page.getByRole("button", { name: "Plus", exact: true }).click();
-    await expect(panel).toBeVisible();
-  }
-  return panel;
-}
-
 /**
- * Cherche une action visible dans la page ; sur téléphone, si elle n'y est pas, la cherche dans la rubrique
- * « Cette page » du panneau « Plus », où la colonne latérale est envoyée.
+ * Cherche une action visible dans la page. Sur téléphone, les actions de la colonne latérale sont dans le bloc
+ * « Outils du forum », sous la liste (carte 156).
  */
 async function findAction(page: Page, role: "link" | "button", name: string | RegExp): Promise<Locator> {
-  const onPage = page.getByRole(role, { name }).filter({ visible: true });
-  if ((await onPage.count()) > 0 || !isPhone(page)) return onPage.first();
-  const panel = await openMore(page);
-  return panel.getByRole(role, { name }).filter({ visible: true }).first();
+  return page.getByRole(role, { name }).filter({ visible: true }).first();
 }
 
 /** Ferme le panneau « Plus » s'il est ouvert. */

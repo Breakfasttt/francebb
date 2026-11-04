@@ -57,7 +57,6 @@ import GifExportSheet from "./component/GifExportSheet";
 import HelpSheet from "./component/HelpSheet";
 import ToolButton from "./component/ToolButton";
 
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { useIsMobile } from "@/common/hooks/useIsMobile";
 import { usePinchZoom } from "@/common/hooks/usePinchZoom";
 
@@ -1277,13 +1276,6 @@ export default function BBSchemePage() {
       )}
       onContextMenu={(e) => { e.preventDefault(); setSelectedId(null); }}
     >
-      {/* Téléphone : le bouton retour va dans la barre haute du site */}
-      {isMobile && (
-        <MobilePortal targetId="mobile-back-button-slot">
-          <BackButton href="/" title="Retour à l'accueil" style={{ width: 44, height: 44 }} />
-        </MobilePortal>
-      )}
-
       {/* ===== Ordinateur : barre d'outils ===== */}
       <header className="hidden shrink-0 items-center gap-2 border-b border-bb-border bg-bb-surface px-3 py-1.5 lg:flex">
         <BackButton href="/" title="Retour à l'accueil" style={{ width: 44, height: 44 }} />
@@ -1317,6 +1309,8 @@ export default function BBSchemePage() {
 
       {/* ===== Téléphone : barre compacte des outils principaux ===== */}
       <div role="toolbar" aria-label="Outils" className="flex h-[52px] shrink-0 items-center gap-1 border-b border-bb-border bg-bb-surface px-2 lg:hidden">
+        {/* Retour à l'accueil, en tête de la barre d'outils (carte 156 : plus de portail vers la barre du site) */}
+        <BackButton href="/" title="Retour à l'accueil" />
         <ToolButton label="Sélection" icon={<MousePointer2 size={20} aria-hidden="true" />} active={activeTool === 'select'} onClick={() => setActiveTool('select')} />
         <ToolButton label="Crayon" icon={<Pencil size={20} aria-hidden="true" />} active={activeTool === 'draw'} onClick={() => setActiveTool('draw')} />
         <ToolButton label="État du joueur" icon={<Wand2 size={20} aria-hidden="true" />} active={activeTool === 'status'} onClick={() => setActiveTool('status')} />

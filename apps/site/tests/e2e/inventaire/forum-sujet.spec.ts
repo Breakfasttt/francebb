@@ -174,19 +174,9 @@ const topicUrl = (id = TOPIC.id, query = "?page=1") => `/forum/topic/${id}${quer
 const postCard = (page: Page, id: string) => page.locator(`[id="post-${id}"]`);
 const MORE_ACTIONS = "Plus d'actions sur ce message";
 
-/** Ouvre le panneau « Plus » du téléphone s'il est fermé et le renvoie. */
-async function openMore(page: Page): Promise<Locator> {
-  const panel = page.getByRole("dialog", { name: "Plus" });
-  if (!(await panel.isVisible())) {
-    await page.getByRole("button", { name: "Plus", exact: true }).click();
-    await expect(panel).toBeVisible();
-  }
-  return panel;
-}
-
 /**
  * Zone des outils du sujet. Sur ordinateur, la page entière (colonne de droite). Sur téléphone, le panneau
- * « Outils du sujet » s'il existe, sinon la rubrique « Cette page » du panneau « Plus ».
+ * « Outils du sujet », ouvert par le bouton de l'en-tête.
  */
 async function topicTools(page: Page): Promise<Locator> {
   if (!isPhone(page)) return page.locator("body");
@@ -198,7 +188,7 @@ async function topicTools(page: Page): Promise<Locator> {
     await expect(sheet).toBeVisible();
     return sheet;
   }
-  return openMore(page);
+  return page.locator("body");
 }
 
 /** Cherche un outil du sujet visible dans la page, sinon dans la zone des outils du téléphone. */

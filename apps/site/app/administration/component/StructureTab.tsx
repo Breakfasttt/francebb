@@ -38,7 +38,6 @@ import {
   useSortable, verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { createPortal } from "react-dom";
 
 /** Nom du forum système des tournois : il ne peut être ni renommé ni supprimé. */
 const PROTECTED_FORUM_NAME = "Les tournois";
@@ -542,18 +541,16 @@ export default function StructureTab() {
               </div>
             </SortableContext>
 
-            {createPortal(
-              <DragOverlay dropAnimation={null}>
-                {activeId && (
-                  <div className="flex w-[min(400px,80vw)] items-center gap-2 rounded-bb-md border border-bb-accent-text bg-bb-surface px-3 py-2 font-bb-sans shadow-bb">
-                    <GripVertical size={16} className="text-bb-text-muted" aria-hidden="true" />
-                    <FolderGit2 size={16} className="text-bb-text-muted" aria-hidden="true" />
-                    <strong className="truncate text-[0.95rem] text-bb-text">{getActiveName()}</strong>
-                  </div>
-                )}
-              </DragOverlay>,
-              document.body
-            )}
+            {/* Aperçu de l'élément déplacé, affiché sur place (carte 156 : plus de portail) ; il est positionné en « fixed » par dnd-kit */}
+            <DragOverlay dropAnimation={null}>
+              {activeId && (
+                <div className="flex w-[min(400px,80vw)] items-center gap-2 rounded-bb-md border border-bb-accent-text bg-bb-surface px-3 py-2 font-bb-sans shadow-bb">
+                  <GripVertical size={16} className="text-bb-text-muted" aria-hidden="true" />
+                  <FolderGit2 size={16} className="text-bb-text-muted" aria-hidden="true" />
+                  <strong className="truncate text-[0.95rem] text-bb-text">{getActiveName()}</strong>
+                </div>
+              )}
+            </DragOverlay>
           </DndContext>
         )}
       </div>

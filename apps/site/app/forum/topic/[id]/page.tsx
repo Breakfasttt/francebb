@@ -17,7 +17,6 @@ import { Lock as LockIcon } from "lucide-react";
 import { Badge, Card } from "@bbfrance/ui";
 import Link from "next/link";
 import BackButton from "@/common/components/BackButton/BackButton";
-import MobilePortal from "@/common/components/MobilePortal/MobilePortal";
 import { notFound, redirect } from "next/navigation";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) et animation du nouveau message, partagés par le forum
 
@@ -244,15 +243,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
         {/* En-tête du sujet : retour, titre, badge « ARCHIVÉ », nom du forum et, sur téléphone, les outils */}
         <header className="flex items-start gap-3 pt-3 pb-4 lg:pt-5">
-          {/* Téléphone : le bouton retour va dans la barre du haut ; ordinateur : il reste à gauche du titre */}
-          <MobilePortal targetId="mobile-back-button-slot">
-            <span className="lg:hidden">
-              <BackButton title="Retour au forum" style={{ width: 44, height: 44 }} />
-            </span>
-          </MobilePortal>
-          <span className="hidden shrink-0 lg:inline-flex">
-            <BackButton title="Retour au forum" />
-          </span>
+          <BackButton title="Retour au forum" />
           <div className="min-w-0 flex-1">
             <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic">
               <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
