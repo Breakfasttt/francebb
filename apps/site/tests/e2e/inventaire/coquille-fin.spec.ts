@@ -2,7 +2,8 @@
  * Inventaire de la refonte, section 1 « Éléments présents sur toutes les pages » (docs/refonte/inventaire.md) : les
  * lignes que coquille.spec.ts ne vérifiait pas encore, ajoutées par la carte 101 (fin de la refonte). Logo, icône
  * Administration, bouton retour du téléphone, bandeau des cookies, notifications au-dessus de la barre basse, thème
- * sans éclair, redirections des bannis et de l'onboarding, widgets de développement, page des mentions légales.
+ * sans éclair, redirections des bannis et de l'onboarding, widgets de développement, page des mentions légales,
+ * barre de progression de la navigation (carte 188).
  * Rejoué en taille ordinateur (projet chromium) et en taille téléphone (projet telephone).
  * Les actions sont cherchées par leur rôle et leur nom accessible, jamais par une classe CSS.
  */
@@ -92,22 +93,29 @@ test("[tous] bandeau des cookies : apparition, croix pour la session, « Accepte
   // Il apparaît après 1,5 seconde
   await expect(banner).toHaveCount(0);
   await expect(banner).toBeVisible({ timeout: 5000 });
-  await expect(banner.getByRole("link", { name: "mentions légales" })).toHaveAttribute("href", "/mentions-legales");
+  const more = banner.getByRole("link", { name: "En savoir plus" });
+  await expect(more).toHaveAttribute("href", "/mentions-legales");
   if (isPhone(page)) {
     // Posé au-dessus de la barre basse, sans la couvrir
     const box = (await banner.boundingBox())!;
     expect(box.y + box.height).toBeLessThanOrEqual(await bottomNavTop(page));
+    // Carte 190 : le bandeau reste bas (deux lignes de texte au plus) et le lien a une zone d'appui de 44 pixels
+    expect(box.height).toBeLessThanOrEqual(72);
+    expect((await more.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
 
   // La croix le ferme, sans rien mémoriser : il revient au prochain chargement
-  await banner.getByRole("button", { name: "Fermer pour cette session" }).click();
+  // Clic envoyé directement : depuis que le bandeau est plus bas (carte 190), le bouton « Dev Auth », qui n'existe que
+  // sur la version de développement, recouvre la croix sur le téléphone (il n'existe pas sur le site en ligne)
+  await banner.getByRole("button", { name: "Fermer pour cette session" }).dispatchEvent("click");
   await expect(banner).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBeNull();
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(banner).toBeVisible({ timeout: 5000 });
 
   // « Accepter » est mémorisé dans le navigateur
-  await banner.getByRole("button", { name: "Accepter" }).filter({ visible: true }).click();
+  // Même raison que pour la croix : le bouton « Dev Auth » recouvre aussi « Accepter » sur le téléphone
+  await banner.getByRole("button", { name: "Accepter" }).filter({ visible: true }).dispatchEvent("click");
   await expect(banner).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBe("accepted");
   await page.reload({ waitUntil: "domcontentloaded" });
@@ -180,4 +188,29 @@ test("[tous] /mentions-legales : titre, dix sections, lisible sans défilement d
   // Texte des sections en 16 pixels au moins (lisible sans zoom)
   const size = await page.getByText(/BBFrance est un site communautaire/).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
   expect(size).toBeGreaterThanOrEqual(16);
+});
+
+test("[tous] la barre de progression est invisible au repos et s'affiche pendant une navigation lente", async ({ page }) => {
+  await acceptCookies(page);
+  await page.goto("/mentions-legales", { waitUntil: "networkidle" });
+  const bar = page.getByTestId("navigation-progress");
+  const opacity = () => bar.evaluate((element) => getComputedStyle(element).opacity);
+  // Au repos, la barre est présente dans la page mais complètement transparente
+  expect(await opacity()).toBe("0");
+
+  // Réseau lent simulé : la réponse du serveur pour la page du forum (requête « RSC », reconnaissable à son en-tête
+  // « rsc: 1 ») est retenue deux secondes, assez pour que la barre apparaisse après son délai de 150 millisecondes
+  await page.route(
+    (url) => url.pathname === "/forum",
+    async (route) => {
+      if (route.request().headers()["rsc"] === "1") await new Promise((resolve) => setTimeout(resolve, 2_000));
+      await route.continue();
+    },
+  );
+  await page.locator('a[href="/forum"]').filter({ visible: true }).first().click();
+  await expect.poll(opacity, { timeout: 2_000 }).toBe("1");
+
+  // Arrivée sur le forum : la barre se remplit puis s'efface
+  await page.waitForURL((url) => url.pathname === "/forum");
+  await expect.poll(opacity, { timeout: 5_000 }).toBe("0");
 });

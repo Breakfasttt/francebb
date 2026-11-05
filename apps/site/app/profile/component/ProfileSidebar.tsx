@@ -5,6 +5,8 @@
  * profil vu par un autre membre `/spy/[id]`. Colonne de gauche sur ordinateur, en haut de la page sur téléphone.
  * - Avatar avec le cadre de son rang, pseudo, rôle (libellé lisible, rôles personnalisés compris), badge « Banni ».
  * - Numéro NAF (lien vers sa fiche sur le site de la NAF) et nombre de messages, puis région, équipe et ligues.
+ *   Sans numéro, la case affiche « Non renseigné » ; sur son propre profil, le membre lit en plus à quoi sert ce
+ *   numéro et un lien l'emmène au formulaire pour l'ajouter (carte 190).
  * - Sur le profil d'un autre membre : « Message privé », « Signaler », « Bloquer » ou « Débloquer » (pas sur un
  *   modérateur) et, pour un modérateur, « Bannir » ou « Débannir ». Chaque action demande une confirmation.
  * Les onglets ne sont plus ici : chaque page les affiche au-dessus de son contenu (composant LinkTabs).
@@ -196,7 +198,9 @@ export default function ProfileSidebar({
                 >
                   {user.nafNumber}
                 </a>
-              ) : "—"}
+              ) : (
+                <span className="text-sm font-normal text-bb-text-muted">Non renseigné</span>
+              )}
             </dd>
           </div>
           <div className="flex flex-col items-center gap-0.5 rounded-bb-md bg-bb-surface-2 px-2 py-2.5">
@@ -204,6 +208,14 @@ export default function ProfileSidebar({
             <dd className="m-0 text-base font-bold text-bb-text">{postCount}</dd>
           </div>
         </dl>
+        {isOwnProfile && !user.nafNumber && (
+          <p className="m-0 text-sm text-bb-text-muted">
+            Le numéro NAF est celui de l&apos;association internationale des joueurs de tournoi.{" "}
+            <Link href="/profile?tab=edit" className="inline-flex min-h-11 items-center font-semibold text-bb-accent-text underline underline-offset-2">
+              Ajouter mon numéro
+            </Link>
+          </p>
+        )}
 
         {/* Région, équipe, ligues */}
         {(user.region || user.equipe || hasLigues) && (

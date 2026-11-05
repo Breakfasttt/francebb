@@ -211,6 +211,27 @@
   transform: scale(1.05);
 }
 
+/* ---------- Image ou vidéo à gauche ou à droite du texte : [img align=left]… (carte 190) ----------
+ * lib/bbcode.ts pose le placement dans l'attribut style de la balise, et la classe bb-float. Sur téléphone (jusqu'à
+ * 1024 pixels, seuil unique du site), l'élément ne flotte plus : il passe seul sur sa ligne, la vidéo en pleine
+ * largeur, pour que le texte voisin ne soit pas écrasé dans une colonne de quelques mots. Les « !important » sont
+ * nécessaires pour passer devant l'attribut style. */
+@media (max-width: 1024px) {
+  .bb-float {
+    float: none !important;
+    margin: 0.8rem auto !important;
+  }
+
+  img.bb-float {
+    display: block;
+  }
+
+  div.bb-float {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bb-accordion summary::before,
   .bb-spoiler-body,

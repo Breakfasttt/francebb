@@ -8,15 +8,18 @@
  * Sur ordinateur, la colonne « Publication » à droite porte les cases de modération et les boutons. Sur téléphone, les
  * cases passent sous la présentation et les boutons dans la barre collée en bas de l'écran (`ComposeActionBar`).
  * Les noms des champs envoyés et les actions serveur (`createTopic`, `updateTournament`) sont ceux d'avant la refonte.
+ * Changer le format (individuel ou par équipes) d'un tournoi qui a des inscrits supprime ces inscriptions : avant
+ * l'envoi, une fenêtre de confirmation annonce combien (carte 186), et le serveur refuse le changement sans elle.
  */
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type FormEvent, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   BedDouble, Calendar, Check, Coins, FileText, Globe, Lock, Map, MapPin, Monitor, Pin, Save, Shield, Sun, Trophy, Users, Utensils
 } from "lucide-react";
-import { Button, Card, Field, Input, Label, Select, Sheet, SheetContent, Skeleton, cn, toast, DESKTOP_QUERY, useMediaQuery } from "@bbfrance/ui";
+import { Button, Card, ConfirmDialog, Field, Input, Label, Select, Sheet, SheetContent, Skeleton, cn, toast, DESKTOP_QUERY, useMediaQuery } from "@bbfrance/ui";
 import { createTopic, updateTournament } from "../actions";
+import { formatChangeLossCount, formatChangeLossText, type FormatChangeLosses } from "@/lib/tournamentRegistrationRules";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import TitleInputWithSmiley from "@/app/forum/component/TitleInputWithSmiley";
 import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
@@ -87,6 +90,8 @@ interface TournamentFormProps {
     lng: number | null;
     totalMatches: number | null;
     tournamentType: string | null;
+    /** Inscriptions qu'un changement de format supprimerait, annoncées dans la confirmation (carte 186). */
+    formatChangeLosses: FormatChangeLosses;
   };
 }
 
@@ -184,9 +189,25 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
     }
   };
 
+  // Changement de format (carte 186) : si le tournoi a des inscrits, l'envoi attend la confirmation
+  const formRef = useRef<HTMLFormElement>(null);
+  const formatChangeConfirmed = useRef(false);
+  const [formatConfirmOpen, setFormatConfirmOpen] = useState(false);
+  const losses = initialData?.formatChangeLosses;
+  const needsFormatConfirm = !!initialData && !!losses && isTeam !== initialData.isTeam && formatChangeLossCount(losses) > 0;
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    if (needsFormatConfirm && !formatChangeConfirmed.current) {
+      event.preventDefault();
+      setFormatConfirmOpen(true);
+    }
+  };
+
   // On crée une version client-side de l'action pour injecter les IDs fixes en mode édition
   const formAction = async (formData: FormData) => {
     if (isEdit && initialData) {
+      if (formatChangeConfirmed.current) formData.set("confirmFormatChange", "yes");
+      formatChangeConfirmed.current = false;
       // En cas de succès, l'action redirige vers le sujet : on n'arrive ici qu'en cas de refus.
       const res = await updateTournament(initialData.id, initialData.topicId, initialData.firstPostId, formData);
       if (!res.success) toast.error(res.error || "Erreur lors de la modification du tournoi.");
@@ -212,7 +233,22 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
   );
 
   return (
-    <form action={formAction}>
+    <form ref={formRef} action={formAction} onSubmit={handleSubmit}>
+      {losses && (
+        <ConfirmDialog
+          open={formatConfirmOpen}
+          onOpenChange={setFormatConfirmOpen}
+          title="Changer le format du tournoi"
+          message={`Passer le tournoi ${isTeam ? "en équipes" : "en individuel"} supprimera ${formatChangeLossText(losses)}. Les coachs concernés seront prévenus par une notification et devront s'inscrire de nouveau.`}
+          confirmLabel="Changer le format"
+          danger
+          onConfirm={() => {
+            formatChangeConfirmed.current = true;
+            setFormatConfirmOpen(false);
+            formRef.current?.requestSubmit();
+          }}
+        />
+      )}
       <input type="hidden" name="forumId" value={forumId} />
       <input type="hidden" name="tLat" value={lat ?? ""} />
       <input type="hidden" name="tLng" value={lng ?? ""} />

@@ -7,8 +7,12 @@
  *   Administration). Sur téléphone, la rangée défile horizontalement au lieu de déborder de l'écran.
  *   `orientation="vertical"` (carte 099) les empile en colonne, pour une colonne latérale d'ordinateur quand les
  *   onglets sont trop nombreux pour tenir sur une ligne (modération, administration).
+ * Rangée qui défile (carte 190) : quand les onglets ne tiennent pas sur la largeur, le bord du côté où il en reste
+ * à voir s'estompe (fondu), pour montrer qu'on peut faire glisser la rangée ; et la rangée se place d'elle-même sur
+ * l'onglet ouvert, pour qu'un onglet de la fin de la liste ne soit pas ouvert sans être visible.
  */
 import * as React from "react";
+import { useEffect, useRef, useState } from "react";
 import { Tabs as TabsPrimitive } from "radix-ui";
 import { cn } from "./cn";
 import { CountBadge } from "./badge";
@@ -28,8 +32,65 @@ const columnTabClass =
   "flex min-h-11 w-full items-center gap-2.5 rounded-bb-md border-0 border-l-[3px] border-transparent px-3 text-[0.95rem] font-semibold text-bb-text-muted no-underline hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus";
 const columnActiveClass = "border-bb-accent-text bg-bb-surface-2 text-bb-text";
 
-export function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
-  return <TabsPrimitive.List className={cn(rowClass, className)} {...props} />;
+// Largeur du fondu posé sur un bord de la rangée. Le masque ne garde que la transparence du dégradé : la couleur
+// écrite (black) n'est jamais affichée, ce qui le rend valable dans les 8 thèmes.
+const FADE = "1.5rem";
+
+/**
+ * Indices de défilement d'une rangée d'onglets : renvoie la référence à poser sur la rangée, puis le style de son masque.
+ * - Un fondu apparaît sur le bord gauche s'il reste des onglets à gauche, sur le bord droit s'il en reste à droite.
+ * - Quand l'onglet ouvert change (attribut aria-current="page" d'un lien, ou data-state="active" d'un onglet Radix),
+ *   la rangée défile pour le centrer, sans faire défiler la page.
+ */
+function useScrollableRow<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
+  const [edges, setEdges] = useState({ start: false, end: false });
+  const activeRef = useRef<Element | null>(null);
+
+  useEffect(() => {
+    const row = ref.current;
+    if (!row) return;
+    const update = () => {
+      const hidden = row.scrollWidth - row.clientWidth;
+      const start = row.scrollLeft > 1;
+      const end = row.scrollLeft < hidden - 1;
+      setEdges((previous) => (previous.start === start && previous.end === end ? previous : { start, end }));
+    };
+    update();
+    row.addEventListener("scroll", update, { passive: true });
+    const observer = new ResizeObserver(update);
+    observer.observe(row);
+    return () => {
+      row.removeEventListener("scroll", update);
+      observer.disconnect();
+    };
+  }, []);
+
+  // Sans liste de dépendances : vérifié à chaque affichage, mais la rangée ne bouge que si l'onglet ouvert a changé
+  useEffect(() => {
+    const row = ref.current;
+    const active = row?.querySelector<HTMLElement>('[aria-current="page"], [data-state="active"]') ?? null;
+    if (!row || !active || active === activeRef.current) return;
+    activeRef.current = active;
+    if (row.scrollWidth <= row.clientWidth) return;
+    const rowBox = row.getBoundingClientRect();
+    const tabBox = active.getBoundingClientRect();
+    row.scrollLeft += tabBox.left - rowBox.left - (rowBox.width - tabBox.width) / 2;
+  });
+
+  let maskImage: string | undefined;
+  if (edges.start || edges.end) {
+    const from = edges.start ? `transparent, black ${FADE}` : "black";
+    const to = edges.end ? `black calc(100% - ${FADE}), transparent` : "black";
+    maskImage = `linear-gradient(to right, ${from}, ${to})`;
+  }
+  const style: React.CSSProperties | undefined = maskImage ? { maskImage, WebkitMaskImage: maskImage } : undefined;
+  return [ref, style] as const;
+}
+
+export function TabsList({ className, style, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
+  const [rowRef, rowStyle] = useScrollableRow<HTMLDivElement>();
+  return <TabsPrimitive.List ref={rowRef} className={cn(rowClass, className)} style={{ ...style, ...rowStyle }} {...props} />;
 }
 
 export function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
@@ -55,8 +116,10 @@ export function LinkTabs({ tabs, label, className, orientation = "horizontal", l
   linkComponent?: React.ElementType;
 }) {
   const vertical = orientation === "vertical";
+  // Les indices de défilement ne servent qu'à la rangée ; une colonne ne défile pas de côté
+  const [rowRef, rowStyle] = useScrollableRow<HTMLElement>();
   return (
-    <nav aria-label={label} className={cn(vertical ? columnClass : rowClass, className)}>
+    <nav ref={vertical ? undefined : rowRef} aria-label={label} className={cn(vertical ? columnClass : rowClass, className)} style={vertical ? undefined : rowStyle}>
       {tabs.map((tab) => (
         <LinkComponent
           key={tab.href}

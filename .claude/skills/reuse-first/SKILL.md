@@ -43,6 +43,8 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 ## Composants du site (`apps/site/common/components/`, sauf mention d'un autre dossier)
 | Besoin | Utiliser |
 |---|---|
+| Écran d'erreur d'une page (« Réessayer », « Retour à l'accueil ») | `ErrorScreen` (utilisé par `app/error.tsx` et `app/global-error.tsx`, carte 188) |
+| Montrer qu'une navigation est en cours | `NavigationProgress`, déjà monté dans `app/layout.tsx`. Ne pas ajouter de `loading.tsx` : il fait répondre « OK » aux pages introuvables et casse les `redirect()` (carte 188) |
 | Écran de rédaction (plein écran sur téléphone, sans barre basse) | `ComposeScreen` (fil d'Ariane du forum facultatif), `ComposeActionBar` (barre d'envoi collée en bas), `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) ; `BBCodeEditor` avec la prop `screen` ; l'adresse s'ajoute à `isComposePath` |
 | Pavé de date (jour en grand, mois dessous) | `DateBlock` de `app/tournois/component/TournamentListItems.tsx` (aussi sur la fiche d'une ligue et l'accueil) |
 | Lien vers le sujet d'un tournoi, ville d'un tournoi | `topicHref` et `placeText` du même fichier (utilisés aussi par l'accueil, carte 155) |

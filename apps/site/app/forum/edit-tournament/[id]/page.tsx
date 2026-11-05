@@ -21,6 +21,8 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
       commissaires: true,
       // Ligue rattachée, pour que le champ de recherche de ligue l'affiche déjà choisie (carte 131)
       ligue: { select: { id: true, name: true, acronym: true, region: true, geographicalZone: true } },
+      // Inscriptions qu'un changement de format supprimerait, annoncées par la confirmation du formulaire (carte 186)
+      _count: { select: { registrations: true, teams: true, mercenaries: true } },
       topic: {
         include: {
           forum: {
@@ -106,6 +108,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
           topicId: tournament.topic.id,
           firstPostId: firstPost.id,
           postContent: firstPost.content,
+          formatChangeLosses: tournament._count,
           isOrganizer: isOrganizer // Pour restreindre l'édition des commissaires
         }}
       />

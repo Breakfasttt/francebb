@@ -5,7 +5,7 @@ import { Button, Card } from "@bbfrance/ui";
 /**
  * Page d'erreur de la connexion, ouverte par Auth.js avec le code de l'erreur dans le paramètre `error`.
  * Refonte (carte 091, ADR 0006) : une carte centrée, avec les composants et les couleurs v2 de packages/ui.
- * Les messages et le code affiché sont ceux d'avant.
+ * Le code de l'erreur reste affiché en petit, en français (« Code : … », carte 190) : utile si le membre la signale.
  */
 export default async function AuthErrorPage(props: {
   searchParams: Promise<{ error?: string }>;
@@ -20,7 +20,7 @@ export default async function AuthErrorPage(props: {
       case "AccessDenied":
         return "L'accès vous a été refusé.";
       case "Verification":
-        return "Le lien magique a expiré ou a déjà été utilisé.";
+        return "Le lien de connexion par e-mail a expiré ou a déjà été utilisé.";
       case "EmailNotVerified":
         // Carte 160 : Discord ou Google indique que l'adresse du compte n'a pas été confirmée
         return "L'adresse e-mail de ce compte n'est pas encore confirmée chez Discord ou Google. Confirmez-la chez eux, puis réessayez.";
@@ -44,7 +44,7 @@ export default async function AuthErrorPage(props: {
           <div className="flex w-full flex-col gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 p-4">
             <p className="m-0 text-bb-text">{getErrorMessage(error)}</p>
             {/* Code technique de l'erreur, utile si le membre la signale */}
-            {error && <code className="text-sm break-all text-bb-text-muted">ID Erreur: {error}</code>}
+            {error && <p className="m-0 text-xs break-all text-bb-text-muted">Code : {error}</p>}
           </div>
 
           <Button asChild variant="primary" size="tap" className="w-full">

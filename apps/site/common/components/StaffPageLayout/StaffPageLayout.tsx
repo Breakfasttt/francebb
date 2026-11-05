@@ -9,7 +9,7 @@
  * Chaque onglet est un lien (`?tab=…`) : l'adresse garde l'onglet ouvert, on peut la partager ou la rouvrir.
  */
 import Link from "next/link";
-import { useEffect, useRef, type ComponentProps, type ReactNode } from "react";
+import type { ComponentProps, ReactNode } from "react";
 import { Card, LinkTabs, Skeleton, type LinkTab } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 
@@ -32,20 +32,8 @@ interface StaffPageLayoutProps {
 }
 
 export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, contentLabel, loading, children }: StaffPageLayoutProps) {
-  const phoneTabsRef = useRef<HTMLDivElement>(null);
-  const activeHref = tabs.find((tab) => tab.active)?.href;
-
-  // Sur téléphone, la rangée d'onglets défile jusqu'à l'onglet ouvert : sinon, un onglet de la fin de la liste
-  // (« Coachs bannis »…) serait ouvert sans être visible dans la rangée.
-  useEffect(() => {
-    const row = phoneTabsRef.current?.querySelector("nav");
-    const active = row?.querySelector<HTMLElement>("[aria-current=page]");
-    if (!row || !active) return;
-    const rowBox = row.getBoundingClientRect();
-    const tabBox = active.getBoundingClientRect();
-    row.scrollLeft += tabBox.left - rowBox.left - (rowBox.width - tabBox.width) / 2;
-  }, [activeHref, loading]);
-
+  // Sur téléphone, la rangée d'onglets se place d'elle-même sur l'onglet ouvert (« Coachs bannis »…) et montre par un
+  // fondu qu'elle défile : LinkTabs de @bbfrance/ui s'en charge depuis la carte 190.
   // La place des notifications sous le contenu est réservée par la coquille (AppShell.css, --app-toast-space)
   return (
     <div className="mx-auto w-full max-w-[1232px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
@@ -59,7 +47,7 @@ export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, cont
       ) : (
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6">
           {/* Téléphone : rangée d'onglets en haut ; elle touche les bords de l'écran pour défiler de côté */}
-          <div ref={phoneTabsRef} className="-mx-3 min-w-0 lg:hidden">
+          <div className="-mx-3 min-w-0 lg:hidden">
             <LinkTabs label={tabsLabel} tabs={tabs} linkComponent={TabLink} className="px-3" />
           </div>
           {/* Ordinateur : colonne d'onglets, qui reste visible quand on fait défiler le contenu */}

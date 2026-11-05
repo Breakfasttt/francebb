@@ -8,12 +8,16 @@
  *   ont leur lien « Créer » ; pour un visiteur, il mène à la connexion, qui renvoie ensuite vers le formulaire) et
  *   « La communauté ».
  * - Enfin, un article tiré au hasard. S'il n'y a aucun article, ce bloc n'est pas affiché.
+ * Les titres des trois blocs viennent de NAV_GROUPS (navItems.ts), partagés avec le panneau « Plus » (carte 189). Les
+ * liens vers le Discord n'apparaissent que si l'invitation est réglée dans l'administration (carte 189).
  */
 import { getActiveSession } from "@/lib/authGuard";
 import { DateBlock, placeText, topicHref } from "@/app/tournois/component/TournamentListItems";
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
+import { upcomingTournamentWhere } from "@/lib/tournamentDates";
+import { NAV_GROUPS, type NavGroupId } from "@/common/components/AppShell/navItems";
 import { Button, cn } from "@bbfrance/ui";
 import { ChevronRight, ExternalLink, MessageSquare, Plus } from "lucide-react";
 import { unstable_cache } from "next/cache";
@@ -25,8 +29,14 @@ import Link from "next/link";
 const getCachedTournaments = unstable_cache(
   async () => {
     return prisma.tournament.findMany({
-      // Pas de tournoi dont le sujet du forum est supprimé (carte 165)
-      where: { date: { gte: new Date() }, isFinished: false, isCancelled: false, ...TOURNAMENT_TOPIC_NOT_DELETED },
+      // Pas de tournoi dont le sujet du forum est supprimé (carte 165). Un tournoi reste affiché jusqu'à la fin de son
+      // dernier jour, heure de Paris (carte 187, lib/tournamentDates.ts) : avant, il disparaissait dès son premier jour.
+      where: {
+        AND: [upcomingTournamentWhere()],
+        isFinished: false,
+        isCancelled: false,
+        ...TOURNAMENT_TOPIC_NOT_DELETED
+      },
       orderBy: { date: 'asc' },
       take: 3,
       include: { organizer: { select: { name: true } }, topic: { select: { id: true } }, _count: TAKEN_PLACES_COUNT }
@@ -155,40 +165,33 @@ export default async function Home() {
       ? `/forum/new-tournament?forumId=${tournamentForum.id}`
       : `/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-tournament?forumId=${tournamentForum.id}`)}`
     : null;
-  const discordHref = discordInvite?.value || "#";
+  // Invitation Discord réglée dans l'administration ; sans elle, aucun bouton Discord n'est affiché (carte 189)
+  const discordHref = discordInvite?.value?.trim() || null;
 
-  const blocks: { id: string; title: string; description: string; links: SectionLink[] }[] = [
-    {
-      id: "home-debuter",
-      title: "Débuter",
-      description: "Apprendre les règles et se lancer.",
-      links: [
-        { label: "Jouer à Blood Bowl !", description: "Le guide du débutant", href: "/jouer" },
-        { label: "Ressources", description: "Règles, aides de jeu, outils", href: "/ressources" },
-      ],
-    },
-    {
-      id: "home-competition",
-      title: "Jouer en compétition",
-      description: "Tournois, ligues et classement national.",
-      links: [
-        { label: "Tournois", description: "Calendrier et inscriptions", href: "/tournois", create: { href: tournamentCreateHref, label: "Créer un tournoi" } },
-        { label: "Ligues", description: "Toutes les ligues", href: "/ligues", create: { href: ligueCreateHref, label: "Créer une ligue" } },
-        { label: "La Carte", description: "Ligues et tournois près de chez vous", href: "/carte" },
-        { label: "Championnat de France", description: "Classement de la saison", href: "/classement" },
-      ],
-    },
-    {
-      id: "home-communaute",
-      title: "La communauté",
-      description: "Discuter, lire, partager.",
-      links: [
-        { label: "Forum", description: "Discussions, annonces, entraide", href: "/forum" },
-        { label: "Articles", description: "Écrits par la communauté", href: "/articles" },
-        { label: "Discord", description: "Discuter en direct", href: discordHref, external: true },
-      ],
-    },
-  ];
+  // Les liens de chaque groupe ; le titre et la phrase du groupe viennent de NAV_GROUPS (mêmes que le panneau « Plus »)
+  const groupLinks: Record<NavGroupId, SectionLink[]> = {
+    debuter: [
+      { label: "Jouer à Blood Bowl !", description: "Le guide du débutant", href: "/jouer" },
+      { label: "Ressources", description: "Règles, aides de jeu, outils", href: "/ressources" },
+    ],
+    competition: [
+      { label: "Tournois", description: "Calendrier et inscriptions", href: "/tournois", create: { href: tournamentCreateHref, label: "Créer un tournoi" } },
+      { label: "Ligues", description: "Toutes les ligues", href: "/ligues", create: { href: ligueCreateHref, label: "Créer une ligue" } },
+      { label: "La Carte", description: "Ligues et tournois près de chez vous", href: "/carte" },
+      { label: "Championnat de France", description: "Classement de la saison", href: "/classement" },
+    ],
+    communaute: [
+      { label: "Forum", description: "Discussions, annonces, entraide", href: "/forum" },
+      { label: "Articles", description: "Écrits par la communauté", href: "/articles" },
+      ...(discordHref ? [{ label: "Discord", description: "Discuter en direct", href: discordHref, external: true }] : []),
+    ],
+  };
+  const blocks = NAV_GROUPS.map((group) => ({
+    id: `home-${group.id}`,
+    title: group.title,
+    description: group.description,
+    links: groupLinks[group.id],
+  }));
 
   return (
     <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-7 px-4 pt-5 pb-10 font-bb-sans text-base text-bb-text lg:gap-8 lg:px-6 lg:pt-10">
@@ -200,14 +203,15 @@ export default async function Home() {
             <h1 id="home-title" className="m-0 border-0 p-0 text-[1.625rem] leading-[1.15] font-extrabold tracking-[-0.02em] text-bb-text normal-case not-italic lg:text-[2.5rem] lg:leading-[1.08]">
               Tournois, ligues et coachs de Blood Bowl en France
             </h1>
-            <p className="m-0 hidden max-w-[600px] text-[1.05rem] leading-relaxed text-bb-text-muted lg:block">
+            {/* Visible aussi sur téléphone (carte 189), en deux lignes au plus : c'est ce qui explique le site */}
+            <p className="m-0 max-w-[600px] text-[0.95rem] leading-snug text-bb-text-muted lg:text-[1.05rem] lg:leading-relaxed">
               Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue.
             </p>
           </div>
           {/* Sur téléphone, « Aller au forum » occupe toute la largeur, les deux autres boutons se partagent la
               ligne suivante. Sur ordinateur, les trois sont alignés : Jouer, Forum, Discord. */}
           <div className="grid grid-cols-2 gap-2.5 lg:flex lg:flex-wrap lg:items-center lg:gap-3">
-            <Button asChild variant="secondary" size="tap" className="order-2 min-h-12 whitespace-normal text-center lg:order-none">
+            <Button asChild variant="secondary" size="tap" className={cn("order-2 min-h-12 whitespace-normal text-center lg:order-none", !discordHref && "col-span-2")}>
               <Link href="/jouer">Jouer à Blood Bowl !</Link>
             </Button>
             <Button asChild variant="primary" size="tap" className="order-1 col-span-2 min-h-[52px] px-6 text-base font-extrabold shadow-[0_6px_18px_var(--bb-accent-soft)] lg:order-none">
@@ -215,13 +219,15 @@ export default async function Home() {
                 <MessageSquare size={20} aria-hidden="true" /> Aller au forum
               </Link>
             </Button>
-            <Button asChild variant="secondary" size="tap" className="order-3 min-h-12 lg:order-none">
-              <a href={discordHref} target="_blank" rel="noopener noreferrer">
-                <span className="lg:hidden">Discord</span>
-                <span className="hidden lg:inline">Rejoindre le Discord</span>
-                <span className="sr-only">(nouvel onglet)</span>
-              </a>
-            </Button>
+            {discordHref && (
+              <Button asChild variant="secondary" size="tap" className="order-3 min-h-12 lg:order-none">
+                <a href={discordHref} target="_blank" rel="noopener noreferrer">
+                  <span className="lg:hidden">Discord</span>
+                  <span className="hidden lg:inline">Rejoindre le Discord</span>
+                  <span className="sr-only">(nouvel onglet)</span>
+                </a>
+              </Button>
+            )}
           </div>
         </section>
 

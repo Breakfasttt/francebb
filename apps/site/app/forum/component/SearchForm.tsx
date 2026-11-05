@@ -55,7 +55,7 @@ function searchHref(values: SearchValues): string {
   if (values.forumId) params.set("forumId", values.forumId);
   if (values.author.trim()) params.set("author", values.author.trim());
   if (values.date !== "all") params.set("date", values.date);
-  if (values.sortBy !== "desc") params.set("sortBy", values.sortBy);
+  if (values.sortBy !== "relevance") params.set("sortBy", values.sortBy);
   return `/forum/search?${params.toString()}`;
 }
 
@@ -64,7 +64,7 @@ export default function SearchForm({
   initialForumId = "",
   initialAuthor = "",
   initialDate = "all",
-  initialSortBy = "desc",
+  initialSortBy = "relevance",
   forums,
 }: SearchFormProps) {
   const router = useRouter();
@@ -101,7 +101,9 @@ export default function SearchForm({
   if (initialForumId) chips.push({ label: `Forum : ${forumName ?? "forum choisi"}`, href: searchHref({ ...current, forumId: "" }) });
   const period = PERIODS.find((item) => item.value === initialDate);
   if (period?.chip) chips.push({ label: period.chip, href: searchHref({ ...current, date: "all" }) });
-  if (initialSortBy === "asc") chips.push({ label: "Plus anciens d'abord", href: searchHref({ ...current, sortBy: "desc" }) });
+  // Le tri par défaut est la pertinence (carte 191) : un tri par date est un choix, retiré par sa pastille
+  if (initialSortBy === "desc") chips.push({ label: "Plus récents d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
+  if (initialSortBy === "asc") chips.push({ label: "Plus anciens d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
 
   /** Les quatre filtres ; `prefix` distingue les champs du panneau de ceux de la page (identifiants uniques). */
   const filterFields = (prefix: string): ReactNode => (
@@ -139,6 +141,7 @@ export default function SearchForm({
       </Field>
       <Field label="Trier par" htmlFor={`${prefix}-sort`}>
         <Select id={`${prefix}-sort`} value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+          <option value="relevance">Pertinence</option>
           <option value="desc">Plus récents d&apos;abord</option>
           <option value="asc">Plus anciens d&apos;abord</option>
         </Select>
@@ -165,7 +168,7 @@ export default function SearchForm({
                 id="search-q"
                 type="text"
                 aria-label="Mots-clés"
-                placeholder="Rechercher des messages ou des sujets…"
+                placeholder="Rechercher…"
                 value={q}
                 onChange={(event) => setQ(event.target.value)}
                 enterKeyHint="search"

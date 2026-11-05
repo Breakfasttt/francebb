@@ -11,7 +11,9 @@
  *   paiement de chaque coach ou équipe, avec des boutons de 44 pixels.
  * - Fenêtres : inscription ou modification d'une équipe, détails d'une équipe, confirmations. Ce sont des panneaux
  *   qui montent du bas sur téléphone (composants `Sheet` et `ConfirmDialog` de packages/ui).
- * Les actions serveur appelées sont les mêmes qu'avant la refonte.
+ * Les actions serveur appelées sont les mêmes qu'avant la refonte. Depuis la carte 186, le capitaine choisit ses
+ * coéquipiers parmi les mercenaires (cases à cocher) au lieu d'une recherche parmi tous les membres, et le serveur
+ * vérifie toutes les règles (taille, coach dans une seule équipe, tournoi ouvert).
  * Ce module s'exécute dans le navigateur : il ne reçoit que des données publiques, plus l'état de paiement pour ceux
  * qui gèrent le tournoi (carte 174, voir `RegistrationTournament`).
  */
@@ -27,7 +29,7 @@ import {
   deleteTeam,
   toggleMercenary
 } from "../actions";
-import UserSearch from "@/common/components/UserSearch/UserSearch";
+import { isTournamentOver } from "@/lib/tournamentDates";
 import type { PublicTournamentMercenary, PublicTournamentRegistration, PublicTournamentTeam } from "@/lib/forumPostPrivacy";
 
 /**
@@ -37,9 +39,12 @@ import type { PublicTournamentMercenary, PublicTournamentRegistration, PublicTou
 export interface RegistrationTournament {
   id: string;
   date: Date;
+  /** Dernier jour du tournoi : les inscriptions restent ouvertes jusqu'à sa fin, heure de Paris (carte 187). */
+  endDate: Date | null;
   isTeam: boolean;
   coachsPerTeam: number;
   isFinished: boolean;
+  isCancelled: boolean;
   registrationsLocked: boolean;
   registrations: PublicTournamentRegistration[];
   teams: PublicTournamentTeam[];
@@ -52,6 +57,9 @@ interface RegistrationModuleProps {
   isOrganizer: boolean;
   isCommissioner: boolean;
 }
+
+/** Coach qu'un capitaine peut choisir comme coéquipier. */
+type TeammateCandidate = PublicTournamentMercenary["user"];
 
 interface ConfirmState {
   open: boolean;
@@ -73,8 +81,9 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const [confirm, setConfirm] = useState<ConfirmState>({ open: false, title: "", message: "", label: "", action: async () => {} });
 
   const canManage = isOrganizer || isCommissioner;
-  const isOver = new Date(tournament.date) < new Date();
-  const isActionBlocked = tournament.registrationsLocked || tournament.isFinished || isOver;
+  // Même règle que le serveur (carte 186) : pas d'inscription à un tournoi annulé, terminé, passé ou fermé
+  const isOver = isTournamentOver(tournament);
+  const isActionBlocked = tournament.registrationsLocked || tournament.isFinished || tournament.isCancelled || isOver;
 
   // -- Inscription Individuelle --
   const isRegistered = tournament.registrations?.some((r: any) => r.userId === currentUser?.id);
@@ -82,7 +91,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const handleJoin = () => {
     startTransition(async () => {
       const res = await joinTournament(tournament.id);
-      if (res.success) toast.success("Pré-inscription réussie !");
+      if (res.success && res.waitingList) toast.success("Le tournoi est complet : vous êtes inscrit sur la liste d'attente.");
+      else if (res.success) toast.success("Pré-inscription réussie !");
       else toast.error(res.error || "Erreur");
     });
   };
@@ -111,7 +121,14 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
         : await createTeam(tournament.id, newTeamName, selectedMembers.map(m => m.id));
 
       if (res.success) {
-        toast.success(editingTeamId ? "Équipe mise à jour !" : "Équipe inscrite avec succès !");
+        const waitingList = "waitingList" in res && res.waitingList;
+        toast.success(
+          editingTeamId
+            ? "Équipe mise à jour !"
+            : waitingList
+              ? "Le tournoi est complet : votre équipe est inscrite sur la liste d'attente."
+              : "Équipe inscrite avec succès !"
+        );
         setIsTeamModalOpen(false);
         setEditingTeamId(null);
         setNewTeamName("");
@@ -134,6 +151,14 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   );
   const isUserInTeam = !!userTeam;
   const isCaptain = userTeam?.captainId === currentUser?.id;
+
+  // Coéquipiers possibles (carte 186) : les mercenaires du tournoi et, en modification, les membres déjà dans l'équipe.
+  // Le serveur refuse tout autre coach : un membre ne peut plus être ajouté sans s'être porté volontaire.
+  const editedTeam = editingTeamId ? tournament.teams.find((team) => team.id === editingTeamId) : undefined;
+  const teammateCandidates: TeammateCandidate[] = [];
+  for (const user of [...(editedTeam?.members.map((member) => member.user) ?? []), ...tournament.mercenaries.map((m) => m.user)]) {
+    if (user.id !== currentUser?.id && !teammateCandidates.some((candidate) => candidate.id === user.id)) teammateCandidates.push(user);
+  }
 
   const handleToggleMercenary = () => {
     startTransition(async () => {
@@ -319,15 +344,42 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
                 Membres de l&apos;équipe ({selectedMembers.length + 1} / {tournament.coachsPerTeam})
               </p>
               <p className="m-0 text-sm text-bb-text-muted">
-                Vous êtes automatiquement inclus comme capitaine. Ajoutez vos {tournament.coachsPerTeam - 1} coéquipiers.
+                Vous êtes automatiquement inclus comme capitaine. Choisissez jusqu&apos;à {tournament.coachsPerTeam - 1} coéquipiers parmi
+                les coachs qui se sont proposés comme mercenaires : seuls les volontaires peuvent être ajoutés.
               </p>
-              <UserSearch
-                selectedUsers={selectedMembers}
-                onSelect={(u) => setSelectedMembers([...selectedMembers, u])}
-                onRemove={(id) => setSelectedMembers(selectedMembers.filter(u => u.id !== id))}
-                maxSelections={tournament.coachsPerTeam - 1}
-                placeholder="Chercher un coéquipier..."
-              />
+              {teammateCandidates.length === 0 ? (
+                <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-2 text-sm text-bb-text-muted italic">
+                  Aucun mercenaire pour l&apos;instant. Vous pouvez inscrire l&apos;équipe maintenant et la compléter plus tard.
+                </p>
+              ) : (
+                <ul className="m-0 flex max-h-[40dvh] list-none flex-col gap-2 overflow-y-auto p-0">
+                  {teammateCandidates.map((user) => {
+                    const checked = selectedMembers.some((m) => m.id === user.id);
+                    const full = !checked && selectedMembers.length >= tournament.coachsPerTeam - 1;
+                    return (
+                      <li key={user.id}>
+                        <label
+                          className={cn(
+                            "flex min-h-11 cursor-pointer items-center gap-3 rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-1.5 has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft",
+                            full && "cursor-not-allowed opacity-60"
+                          )}
+                        >
+                          <input
+                            type="checkbox"
+                            className="size-5 shrink-0 cursor-pointer accent-[var(--bb-accent)]"
+                            checked={checked}
+                            disabled={full}
+                            onChange={() =>
+                              setSelectedMembers(checked ? selectedMembers.filter((m) => m.id !== user.id) : [...selectedMembers, user])
+                            }
+                          />
+                          <MemberLine user={user} size={32} />
+                        </label>
+                      </li>
+                    );
+                  })}
+                </ul>
+              )}
             </div>
             <div className="flex flex-col gap-2 lg:flex-row-reverse">
               <Button type="submit" variant="primary" size="tap" className="w-full lg:w-auto" disabled={isPending}>

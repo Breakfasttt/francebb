@@ -3,7 +3,12 @@
  * Trois types :
  * - MENTION : un membre vous mentionne (`[mention=…]`) dans un nouveau sujet, une réponse ou un message modifié ;
  * - FOLLOWED_REPLY : une réponse dans un sujet que vous suivez ;
- * - PRIVATE_MESSAGE : un message privé dans l'une de vos conversations.
+ * - PRIVATE_MESSAGE : un message privé dans l'une de vos conversations ;
+ * - TOURNAMENT_PROMOTED : une place s'est libérée dans un tournoi, vous passez de la liste d'attente aux pré-inscrits
+ *   (carte 186) ;
+ * - TOURNAMENT_FORMAT_CHANGED : l'organisateur a changé le format d'un tournoi (individuel ou par équipes), votre
+ *   inscription a été supprimée (carte 186).
+ * Les deux notifications de tournoi n'envoient pas d'e-mail.
  * Les réponses d'un même sujet suivi et les messages d'une même conversation sont regroupés : tant que la notification
  * de ce sujet ou de cette conversation n'est pas lue, aucune autre n'est créée.
  *
@@ -29,6 +34,8 @@ export const NOTIFICATION_TYPE = {
   MENTION: "MENTION",
   FOLLOWED_REPLY: "FOLLOWED_REPLY",
   PRIVATE_MESSAGE: "PRIVATE_MESSAGE",
+  TOURNAMENT_PROMOTED: "TOURNAMENT_PROMOTED",
+  TOURNAMENT_FORMAT_CHANGED: "TOURNAMENT_FORMAT_CHANGED",
 } as const;
 
 /** Forum d'un sujet, avec ce qu'il faut pour savoir qui y a accès (voir FORUM_ACCESS_SELECT de lib/forumAccess.ts). */
@@ -215,6 +222,27 @@ export async function notifyPrivateMessage(params: {
       for (const email of emails) await sendPmNotification(email, author.name, preview, conversationId);
     });
   }
+}
+
+/**
+ * Prévient des membres d'un événement de leur tournoi (carte 186), sans e-mail : montée de la liste d'attente
+ * (TOURNAMENT_PROMOTED) ou suppression des inscriptions après un changement de format (TOURNAMENT_FORMAT_CHANGED).
+ * La notification mène au sujet du tournoi. Jamais l'auteur du changement lui-même, ni un membre banni.
+ */
+export async function notifyTournamentMembers(params: {
+  userIds: string[];
+  topicId: string | null | undefined;
+  type: typeof NOTIFICATION_TYPE.TOURNAMENT_PROMOTED | typeof NOTIFICATION_TYPE.TOURNAMENT_FORMAT_CHANGED;
+  actorId?: string | null;
+}): Promise<void> {
+  const { topicId, type, actorId = null } = params;
+  const ids = [...new Set(params.userIds)].filter((id) => id !== actorId);
+  if (!topicId || ids.length === 0) return;
+  const users = await prisma.user.findMany({ where: { id: { in: ids }, isBanned: false }, select: { id: true } });
+  if (users.length === 0) return;
+  await prisma.notification.createMany({
+    data: users.map((user) => ({ userId: user.id, type, topicId, actorId })),
+  });
 }
 
 /**

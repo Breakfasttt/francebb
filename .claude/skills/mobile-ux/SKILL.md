@@ -35,9 +35,10 @@ D'autres largeurs restent permises **seulement pour ajuster une grille à la pla
 
 La coquille est ce qui entoure chaque page : `common/components/AppShell/` (`AppShell.tsx`, `MorePanel.tsx`, `navItems.ts`, `AppShell.css`).
 
-- **Barre du haut** : le logo (sauf sur l'accueil) et, pour un visiteur, « Connexion » ; pour un membre connecté, la cloche des notifications avec sa pastille (carte 167, vers `/notifications`). Le bouton retour n'y est plus : il est dans l'en-tête de la page (carte 156).
-- **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier. Quand le champ perd le focus, l'attribut n'est retiré qu'après 350 millisecondes (carte 113) : un appui sur un bouton juste après la saisie se termine ainsi avant que la barre ne revienne et ne décale la page sous le doigt.
-- **Panneau « Plus »** : il monte du bas et contient le profil ou la connexion, le choix du thème, les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier), la modération et l'administration pour l'équipe, les mentions légales et la déconnexion.
+- **Barre du haut** : le logo (sauf sur l'accueil) et, pour un visiteur, « Se connecter / S'inscrire » (carte 189, sans icône pour tenir à 360 pixels) ; pour un membre connecté, la cloche des notifications avec sa pastille (carte 167, vers `/notifications`). Le bouton retour n'y est plus : il est dans l'en-tête de la page (carte 156).
+- **Barre basse** : cinq onglets, Accueil, Forum, Tournois, Messages et Plus. Un seul est allumé à la fois (`activeBottomTab` de `navItems.ts`, carte 189) : « Plus » quand son panneau est ouvert, ou quand la page courante y est rangée (rubriques de `MORE_NAV`, profil, modération, administration, mentions légales) ; il porte alors `aria-current="page"`. Elle se cache pendant la saisie (la coquille pose l'attribut `data-typing` sur `<html>` quand un champ a le focus) pour laisser la place au clavier. Quand le champ perd le focus, l'attribut n'est retiré qu'après 350 millisecondes (carte 113) : un appui sur un bouton juste après la saisie se termine ainsi avant que la barre ne revienne et ne décale la page sous le doigt.
+- **Panneau « Plus »** : il monte du bas et contient, dans cet ordre (carte 189) : le profil ou « Se connecter / S'inscrire » ; les autres rubriques (liste `MORE_NAV` de `navItems.ts` : ajouter une rubrique, c'est une ligne dans ce fichier, avec son champ `group`), rangées dans les trois groupes de l'accueil (`NAV_GROUPS` : Débuter, Jouer en compétition, La communauté) ; la modération et l'administration pour l'équipe ; le choix du thème ; la déconnexion, dans un bloc à part ; enfin le pied de page (mentions légales, GitHub). Une rubrique marquée `membersOnly` (l'annuaire des membres) n'est proposée qu'aux membres connectés.
+- **Lien « Aller au contenu »** : premier élément de la page, visible seulement au focus clavier, vers `<main id="contenu">` (`app/layout.tsx`).
 - **Pas de portail React** (`createPortal`, carte 156) : une page n'envoie jamais de contenu dans la coquille. Ses outils secondaires restent dans la page : un bloc sur place (« Outils du forum » sous la liste) ou un panneau `Sheet` ouvert par un bouton de l'en-tête (« Outils du sujet »). Seuls les composants Radix de `packages/ui` (fenêtres, panneaux, menus) gardent leur portail interne.
 
 Place réservée en bas de la page : la coquille calcule elle-même la place de la barre basse (`--app-bottom-nav-space`), du bandeau des cookies (`--app-cookie-space`) et des notifications (`--app-toast-space`). Une page n'ajoute pas de marge pour eux.
@@ -53,7 +54,7 @@ Une page qui colle sa propre barre en bas (« Répondre » et la pagination d'un
 
 ## Onglets d'une page
 
-Les onglets se placent en haut de la page avec `LinkTabs` de `@bbfrance/ui` : une rangée qui défile de côté (exemple : `/profile`). Quand ils sont nombreux, `StaffPageLayout` (`/moderation`, `/administration`) en fait une colonne sur ordinateur et une rangée sur téléphone, qui se place sur l'onglet ouvert. Les onglets ne vont pas dans le panneau « Plus ».
+Les onglets se placent en haut de la page avec `LinkTabs` de `@bbfrance/ui` : une rangée qui défile de côté (exemple : `/profile`). Depuis la carte 190, `LinkTabs` et `TabsList` estompent le bord de la rangée du côté où il reste des onglets à voir et se placent d'eux-mêmes sur l'onglet ouvert : une page n'a rien à ajouter. Quand ils sont nombreux, `StaffPageLayout` (`/moderation`, `/administration`) en fait une colonne sur ordinateur et une rangée sur téléphone. Les onglets ne vont pas dans le panneau « Plus ».
 
 ## Filtres d'une liste : bouton « Filtres », panneau et pastilles
 
@@ -73,7 +74,7 @@ Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/r
 
 ## Titre de page et bouton retour
 
-Le bouton retour (`BackButton`, 44 pixels sur téléphone) est affiché sur place, à gauche du titre de la page, à toutes les tailles d'écran (carte 156). `ForumListHeader` (forum), `ComposeScreen` et `PageHeader` (mentions légales) le font ; les fiches d'un article et d'une ligue ont un lien « Tous les articles » ou « Toutes les ligues » au-dessus du contenu.
+Le bouton retour (`BackButton`, 44 pixels sur téléphone) est affiché sur place, à gauche du titre de la page, à toutes les tailles d'écran (carte 156). `ForumListHeader` (forum), `ComposeScreen`, la messagerie (carte 190) et `PageHeader` (mentions légales) le font ; les fiches d'un article et d'une ligue ont un lien « Tous les articles » ou « Toutes les ligues » au-dessus du contenu.
 
 ## Pages impossibles sur téléphone
 

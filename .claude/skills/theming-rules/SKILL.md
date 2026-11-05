@@ -70,7 +70,7 @@ L'ordre de superposition est fixé dans `globals.css` (variables `--z-index-*`).
 | Bandeau des cookies | 6000 |
 | Panneau « Plus » (fond, panneau) | 7000, 7100 |
 | Fenêtres et panneaux de `@bbfrance/ui` (`Sheet`, `Dialog`, `Popover`, `ActionMenu`) | 8000, 8001 |
-| Bulle d'aide (`Tooltip`), avis de suppression du forum | 9000 |
+| Bulle d'aide (`Tooltip`), avis de suppression du forum, barre de progression de la navigation | 9000 |
 | Notifications (`toast`) | au-dessus de tout (valeur propre à la bibliothèque sonner) |
 
 ## Téléphone

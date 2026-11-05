@@ -42,7 +42,7 @@ export default async function OnboardingPage(props: { searchParams: Promise<{ ca
           </h1>
           {!user.hasFinishedOnboarding && (
             <p className="m-0 text-bb-text-muted">
-              Dernière étape avant de fouler le gazon : personnalisez votre profil. Seul le pseudo est obligatoire.
+              Dernière étape avant de fouler le gazon : personnalisez votre profil. Seul le pseudo est obligatoire : le reste peut être rempli plus tard depuis votre profil.
             </p>
           )}
         </header>

@@ -261,9 +261,18 @@ model Topic {
   topicViews   TopicView[]
   notifications Notification[]
 
+  /// Recherche plein texte (carte 191) : mots du titre (sans BBCode), en français et sans accents (configuration
+  /// `french_unaccent`). Colonne générée : Postgres la calcule lui-même à chaque écriture du titre, le code ne l'écrit
+  /// jamais. Prisma ne connaît ni le type tsvector ni les colonnes générées, d'où `Unsupported`. Il prend la formule pour
+  /// une valeur par défaut : `dbgenerated` la recopie telle que Postgres la rend, pour que `prisma migrate diff` ne voie
+  /// aucune différence. Changer la formule demande une migration écrite à la main (voir
+  /// `20261105150000_recherche_plein_texte`), jamais une migration produite par Prisma.
+  searchVector Unsupported("tsvector")? @default(dbgenerated("to_tsvector('french_unaccent'::regconfig, regexp_replace(title, '\\[[^\\]]*\\]'::text, ' '::text, 'g'::text))"))
+
   @@index([forumId])
   @@index([authorId])
   @@index([forumId, isArchived, isSticky, lastPostAt])
+  @@index([searchVector], type: Gin)
 }
 
 model Post {
@@ -293,9 +302,14 @@ model Post {
   reactions        PostReaction[]
   notifications    Notification[]
 
+  /// Recherche plein texte (carte 191) : mots du message, sans les balises BBCode, en français et sans accents.
+  /// Colonne générée par Postgres (voir `Topic.searchVector`), jamais écrite par le code.
+  searchVector     Unsupported("tsvector")? @default(dbgenerated("to_tsvector('french_unaccent'::regconfig, regexp_replace(content, '\\[[^\\]]*\\]'::text, ' '::text, 'g'::text))"))
+
   @@index([topicId])
   @@index([authorId])
   @@index([topicId, createdAt, id])
+  @@index([searchVector], type: Gin)
 }
 
 model Conversation {

@@ -399,7 +399,7 @@ test.describe("4 tournois : la liste /tournois", () => {
     // Tri : date, prix ou places, dans les deux sens
     await page.goto(listUrl(), { waitUntil: "networkidle" });
     const sort = await control(page, "combobox", /Trier/);
-    for (const label of [/Date.*proche/, /Date.*lointain/, /Prix.*croissant/, /Prix.*décroissant/, /Places.*croissant/, /Places.*décroissant/]) {
+    for (const label of [/^Plus tôt$/, /^Plus tard$/, /^Moins cher$/, /^Plus cher$/, /^Moins de places$/, /^Plus de places$/]) {
       await expect(sort.getByRole("option", { name: label }).first()).toBeAttached();
     }
     await sort.selectOption("price_desc");
@@ -552,17 +552,24 @@ test.describe("4 tournois : inscriptions", () => {
     await page.reload({ waitUntil: "networkidle" });
     await region.getByRole("button", { name: "Retirer mercenaire" }).click();
     await expect.poll(() => db((prisma) => prisma.tournamentMercenary.count({ where: { tournamentId: BETA.id, userId: E2E.coachId } })), { timeout: 30_000 }).toBe(0);
+    // Le second membre se propose comme mercenaire : seul un volontaire peut être ajouté à une équipe (carte 186)
+    await db((prisma) => prisma.tournamentMercenary.create({ data: { tournamentId: BETA.id, userId: MATE.id } }));
     await page.reload({ waitUntil: "networkidle" });
 
-    // Créer une équipe
+    // Créer une équipe, avec le mercenaire comme coéquipier
     await region.getByRole("button", { name: "Inscrire une équipe" }).click();
     let sheet = page.getByRole("dialog", { name: "Inscrire une équipe" });
     await expect(sheet).toBeVisible();
-    await expect(sheet.getByRole("textbox", { name: /coéquipier/i })).toBeVisible();
+    const mateBox = sheet.getByRole("checkbox", { name: new RegExp(MATE.name) });
+    await expect(mateBox).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("equipe.png"), fullPage: false });
     await sheet.getByRole("textbox", { name: /Nom de l'équipe/ }).fill("Les Gobelins Inv");
+    await mateBox.check({ force: true });
     await sheet.getByRole("button", { name: "Valider l'inscription" }).click();
     await expect.poll(() => db((prisma) => prisma.tournamentTeam.findFirst({ where: { tournamentId: BETA.id, captainId: E2E.coachId } }).then((t) => t?.name)), { timeout: 30_000 }).toBe("Les Gobelins Inv");
+    // Le mercenaire est devenu membre de l'équipe, et n'est plus mercenaire
+    expect(await db((prisma) => prisma.tournamentTeamMember.count({ where: { userId: MATE.id, team: { tournamentId: BETA.id } } }))).toBe(1);
+    expect(await db((prisma) => prisma.tournamentMercenary.count({ where: { tournamentId: BETA.id, userId: MATE.id } }))).toBe(0);
 
     // La modifier
     await page.reload({ waitUntil: "networkidle" });
@@ -588,6 +595,63 @@ test.describe("4 tournois : inscriptions", () => {
     await region.getByRole("button", { name: /Désinscrire mon équipe/ }).click();
     await confirm(page, "Supprimer l'équipe");
     await expect.poll(() => db((prisma) => prisma.tournamentTeam.count({ where: { tournamentId: BETA.id, captainId: E2E.coachId } })), { timeout: 30_000 }).toBe(0);
+  });
+
+  test("[membre] liste d'attente : une place libérée fait monter le premier, qui est prévenu (carte 186)", async ({ page }) => {
+    // Tournoi passé : aucun bouton d'inscription
+    await loginAs(page, E2E.coachId);
+    await page.goto(`/forum/topic/${OLD.topic}`, { waitUntil: "networkidle" });
+    await expect(tournamentRegion(page).getByRole("button", { name: "Me pré-inscrire" })).toHaveCount(0);
+
+    // Une seule place, déjà prise par le second membre : le coach part en liste d'attente
+    await db(async (prisma) => {
+      await prisma.tournament.update({ where: { id: ALPHA.id }, data: { maxParticipants: 1 } });
+      await prisma.tournamentRegistration.create({ data: { tournamentId: ALPHA.id, userId: MATE.id, status: "PRE_REGISTERED", paymentStatus: "NOT_PAID" } });
+    });
+    const coachStatus = () =>
+      db((prisma) => prisma.tournamentRegistration.findFirst({ where: { tournamentId: ALPHA.id, userId: E2E.coachId } }).then((r) => r?.status));
+    try {
+      await page.goto(`/forum/topic/${ALPHA.topic}`, { waitUntil: "networkidle" });
+      await tournamentRegion(page).getByRole("button", { name: "Me pré-inscrire" }).click();
+      await expect.poll(coachStatus, { timeout: 30_000 }).toBe("WAITING_LIST");
+
+      // Le second membre se désinscrit : le coach passe pré-inscrit et reçoit une notification
+      await page.context().clearCookies();
+      await loginAs(page, MATE.id);
+      await page.goto(`/forum/topic/${ALPHA.topic}`, { waitUntil: "networkidle" });
+      await tournamentRegion(page).getByRole("button", { name: /Annuler mon inscription/ }).click();
+      await confirm(page, "Quitter le tournoi");
+      await expect.poll(coachStatus, { timeout: 30_000 }).toBe("PRE_REGISTERED");
+      expect(
+        await db((prisma) => prisma.notification.count({ where: { userId: E2E.coachId, type: "TOURNAMENT_PROMOTED", topicId: ALPHA.topic } }))
+      ).toBe(1);
+    } finally {
+      await db(async (prisma) => {
+        await prisma.tournamentRegistration.deleteMany({ where: { tournamentId: ALPHA.id, userId: { in: [E2E.coachId, MATE.id] } } });
+        await prisma.notification.deleteMany({ where: { topicId: ALPHA.topic } });
+        await prisma.tournament.update({ where: { id: ALPHA.id }, data: { maxParticipants: 40 } });
+      });
+    }
+  });
+
+  test("[orga] changer le format demande une confirmation qui annonce les inscriptions perdues (carte 186)", async ({ page }) => {
+    await db((prisma) => prisma.tournamentMercenary.create({ data: { tournamentId: BETA.id, userId: MATE.id } }));
+    try {
+      await loginAs(page, ORGA.id);
+      await page.goto(`/forum/edit-tournament/${BETA.id}`, { waitUntil: "networkidle" });
+      await page.getByRole("checkbox", { name: /En équipe/ }).first().uncheck({ force: true });
+      await page.getByRole("button", { name: "Enregistrer les modifications" }).filter({ visible: true }).first().click();
+      const dialog = page.getByRole("dialog", { name: "Changer le format du tournoi" });
+      await expect(dialog).toBeVisible();
+      await expect(dialog).toContainText("1 mercenaire");
+      // On renonce : le tournoi reste par équipes, le mercenaire reste inscrit
+      await dialog.getByRole("button", { name: "Annuler" }).click();
+      await expect(dialog).toBeHidden();
+      expect((await db((prisma) => prisma.tournament.findUnique({ where: { id: BETA.id } })))?.isTeam).toBe(true);
+      expect(await db((prisma) => prisma.tournamentMercenary.count({ where: { tournamentId: BETA.id, userId: MATE.id } }))).toBe(1);
+    } finally {
+      await db((prisma) => prisma.tournamentMercenary.deleteMany({ where: { tournamentId: BETA.id, userId: MATE.id } }));
+    }
   });
 
   test("[orga] statut d'inscription et de paiement ; ouvrir ou fermer les inscriptions", async ({ page }, testInfo) => {
@@ -709,6 +773,12 @@ test.describe("4 tournois : résultats", () => {
       await (await findTool(page, "button", "Annuler le tournoi")).click();
       await confirm(page, /^Annuler le tournoi$/);
       await expect.poll(async () => (await state())?.isCancelled, { timeout: 30_000 }).toBe(true);
+      // Rétablir le tournoi annulé (carte 187)
+      await page.reload({ waitUntil: "networkidle" });
+      await (await findTool(page, "button", "Rétablir le tournoi")).click();
+      await confirm(page, /^Rétablir le tournoi$/);
+      await expect.poll(async () => (await state())?.isCancelled, { timeout: 30_000 }).toBe(false);
+      expect((await state())?.isFinished).toBe(false);
     } finally {
       await db((prisma) => prisma.tournament.update({ where: { id: BETA.id }, data: { isFinished: false, isCancelled: false } }));
     }

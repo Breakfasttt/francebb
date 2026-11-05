@@ -261,6 +261,7 @@ La migration `20261030180000_theme_vestiaire` écrit dans la table des membres :
 
 - **Le site affiche une erreur 500 ou une page blanche** : sur Vercel, onglet **Logs**, lire le message en rouge.
 - **La construction échoue à l'étape `prisma migrate deploy`** : vérifier `DATABASE_URL` (adresse Neon complète, connexion directe et non « pooled »).
+- **La migration `20261105150000_recherche_plein_texte` échoue sur `CREATE EXTENSION unaccent`** (recherche du forum, carte 191) : l'extension `unaccent`, qui retire les accents, fait partie des extensions proposées par Neon ; elle doit être créée par le rôle propriétaire de la base (celui de la chaîne de connexion donnée par Neon). Si le rôle utilisé n'en a pas le droit, lancer `CREATE EXTENSION IF NOT EXISTS unaccent;` dans l'éditeur SQL de Neon, puis redéployer.
 - **« Invalid AUTH_SECRET »** : la variable manque ou fait moins de 32 caractères.
 - **Erreur de redirection à la connexion** : `AUTH_URL` doit être exactement l'adresse affichée dans le navigateur, et l'adresse de retour doit être déclarée chez Discord ou Google.
 

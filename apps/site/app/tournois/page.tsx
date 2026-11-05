@@ -15,6 +15,7 @@ import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { canonicalRegion, DEPARTMENTS_BY_REGION, withoutAccents } from "@/lib/france";
 import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
+import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { TournamentFilterAside, TournamentListControls } from "@/app/tournois/component/TournamentFilters";
 import { TournamentCard, TournamentRow } from "@/app/tournois/component/TournamentListItems";
@@ -76,8 +77,8 @@ export default async function TournamentsPage({
   const skip = (page - 1) * limit;
 
   // Build where clause
-  const todayStart = new Date();
-  todayStart.setHours(0, 0, 0, 0);
+  // Instant de référence des badges « Passé » et du filtre des tournois à venir (règle de lib/tournamentDates.ts)
+  const now = new Date();
 
   // Un tournoi dont le sujet du forum est supprimé (carte 165) n'est plus listé
   const where: any = { ...TOURNAMENT_TOPIC_NOT_DELETED };
@@ -85,7 +86,9 @@ export default async function TournamentsPage({
   if (!showHistory) {
     where.isFinished = false;
     where.isCancelled = false;
-    where.date = { gte: todayStart };
+    // À venir ou en cours jusqu'à la fin de son dernier jour, heure de Paris (carte 187) : avant, un tournoi de deux
+    // jours disparaissait de la liste dès son deuxième jour
+    where.AND = [upcomingTournamentWhere(now)];
   }
 
   if (query) where.name = { contains: query, mode: "insensitive" };
@@ -202,7 +205,7 @@ export default async function TournamentsPage({
               {view === "grid" ? (
                 <div className="grid gap-3 md:grid-cols-2">
                   {tournaments.map((tournament) => (
-                    <TournamentCard key={tournament.id} tournament={tournament} todayStart={todayStart} />
+                    <TournamentCard key={tournament.id} tournament={tournament} now={now} />
                   ))}
                 </div>
               ) : (
@@ -217,7 +220,7 @@ export default async function TournamentsPage({
                     <span className="text-right">Prix</span>
                   </div>
                   {tournaments.map((tournament) => (
-                    <TournamentRow key={tournament.id} tournament={tournament} todayStart={todayStart} />
+                    <TournamentRow key={tournament.id} tournament={tournament} now={now} />
                   ))}
                 </Card>
               )}

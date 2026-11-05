@@ -2,9 +2,12 @@
  * Recherche avancée du forum (refonte, carte 088) : formulaire (mots-clés et filtres), puis les messages trouvés,
  * 20 par page, un par ligne : titre du sujet (avec un trophée pour un tournoi), forum, auteur, ancienneté, extrait du
  * message avec les mots cherchés surlignés, vues du sujet, date du dernier message et bouton « Voir ».
- * La recherche elle-même (filtres, droits d'accès aux forums, calcul de la page du sujet où se trouve chaque message)
- * est la même qu'avant la refonte ; seul l'affichage change. Depuis la carte 169, un mot trouvé dans le titre d'un
- * sujet ne ramène que son premier message, et une page illisible dans l'adresse donne la page 1.
+ * Depuis la carte 169, un mot trouvé dans le titre d'un sujet ne ramène que son premier message, et une page illisible
+ * dans l'adresse donne la page 1.
+ * Depuis la carte 191, les mots-clés passent par la recherche plein texte de Postgres (lib/forumSearch.ts) : elle
+ * comprend le français (« nains chaos » trouve « Nains du Chaos », « équipe » trouve « equipes ») et s'appuie sur un
+ * index au lieu de relire tous les messages. Les résultats sont triés par pertinence puis du plus récent au plus
+ * ancien, sauf si l'on choisit un tri par date. Les filtres et les droits d'accès restent des filtres Prisma.
  */
 import Link from "next/link";
 import { Eye, SearchX, Trophy } from "lucide-react";
@@ -17,6 +20,8 @@ import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { isModerator } from "@/lib/roles";
 import { forumPostHrefFor } from "@/lib/forumPostLink";
+import { headlineSnippet, plainSnippet } from "@/lib/forumSearchSnippet";
+import { headlinesFor, searchPostIds, type SearchSort } from "@/lib/forumSearch";
 import type { Prisma } from "@/prisma/generated-client";
 import SearchForm, { ForumOption } from "@/app/forum/component/SearchForm";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
@@ -32,54 +37,9 @@ function getDescendantForumIds(allForums: { id: string; parentForumId: string | 
   return ids;
 }
 
-/** Nombre maximum de sujets dont le titre contient le mot cherché, pris en compte dans les résultats. */
-const TITLE_MATCH_LIMIT = 500;
-
-/**
- * Premier message (non supprimé) de chaque sujet dont le titre contient `q`, sans tenir compte des majuscules : c'est
- * lui qui représente le sujet dans les résultats. Les droits d'accès et les autres filtres sont appliqués ensuite, par
- * la requête principale. Les caractères « % » et « _ », qui ont un sens spécial pour ILIKE, sont cherchés tels quels.
- */
-async function firstPostsOfTopicsTitled(q: string): Promise<string[]> {
-  const pattern = `%${q.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
-  const rows = await prisma.$queryRaw<{ id: string }[]>`
-    SELECT DISTINCT ON (p."topicId") p."id"
-    FROM "Post" AS p
-    JOIN "Topic" AS t ON t."id" = p."topicId"
-    WHERE t."title" ILIKE ${pattern} AND t."isDeleted" = false AND p."isDeleted" = false
-    ORDER BY p."topicId", p."createdAt" ASC, p."id" ASC
-    LIMIT ${TITLE_MATCH_LIMIT}`;
-  return rows.map((row) => row.id);
-}
-
-/** Nombre de caractères gardés de part et d'autre du mot cherché dans l'extrait. */
-const SNIPPET_CONTEXT = 50;
-/** Longueur de l'extrait quand le mot cherché n'est pas dans le texte du message (ou sans mot-clé). */
-const SNIPPET_LENGTH = 200;
-
-/**
- * Extrait d'un message autour du premier mot cherché, sans les balises BBCode, découpé en morceaux : les morceaux
- * `match` sont les mots cherchés, à surligner. Les morceaux sont affichés comme du texte (jamais comme du HTML) :
- * un message qui contiendrait des balises HTML ne peut donc rien exécuter dans la page.
- */
-function buildSnippet(content: string, query: string): { text: string; match: boolean }[] {
-  const stripped = content.replace(/\[.*?\]/g, "");
-  const shorten = () => [{ text: stripped.length > SNIPPET_LENGTH ? `${stripped.substring(0, SNIPPET_LENGTH)}…` : stripped, match: false }];
-  if (!query) return shorten();
-
-  // Les caractères spéciaux des expressions régulières (parenthèses, points…) sont cherchés tels quels
-  const escaped = query.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
-  const matchIndex = stripped.search(new RegExp(escaped, "i"));
-  if (matchIndex === -1) return shorten();
-
-  const start = Math.max(0, matchIndex - SNIPPET_CONTEXT);
-  const end = Math.min(stripped.length, matchIndex + query.length + SNIPPET_CONTEXT);
-  const snippet = `${start > 0 ? "…" : ""}${stripped.substring(start, end)}${end < stripped.length ? "…" : ""}`;
-  // Avec des parenthèses dans l'expression, split garde les morceaux trouvés : ce sont les indices impairs
-  return snippet
-    .split(new RegExp(`(${escaped})`, "gi"))
-    .map((text, index) => ({ text, match: index % 2 === 1 }))
-    .filter((part) => part.text !== "");
+/** Messages affichés dans les résultats, avec leur auteur, leur sujet et le forum du sujet. */
+function findResultPosts(args: Pick<Prisma.PostFindManyArgs, "where" | "orderBy" | "skip" | "take">) {
+  return prisma.post.findMany({ ...args, include: { author: true, topic: { include: { forum: true } } } });
 }
 
 export default async function SearchPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
@@ -90,7 +50,8 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   const forumId = (params.forumId as string) || "";
   const authorQuery = (params.author as string) || "";
   const dateStr = (params.date as string) || "all";
-  const sortBy = (params.sortBy as string) || "desc";
+  // Tri : par pertinence (par défaut), ou par date si l'adresse le demande (« desc » ou « asc »)
+  const sortBy: SearchSort = params.sortBy === "desc" || params.sortBy === "asc" ? params.sortBy : "relevance";
   // Un numéro de page absent ou illisible (« ?page=abc ») donne la page 1
   const page = Math.max(1, parseInt((params.page as string) || "1", 10) || 1);
 
@@ -136,17 +97,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     whereClause.isModerated = false;
   }
 
-  if (q) {
-    // Un mot trouvé dans le titre d'un sujet ne ramène que le premier message de ce sujet (carte 169) : avant, chercher
-    // « Nuffle » ramenait les 300 messages du sujet « Nuffle ». Les messages qui contiennent eux-mêmes le mot restent
-    // tous trouvés.
-    const titleMatches = await firstPostsOfTopicsTitled(q);
-    whereClause.OR = [
-      { content: { contains: q, mode: "insensitive" } },
-      ...(titleMatches.length > 0 ? [{ id: { in: titleMatches } }] : [])
-    ];
-  }
-
   if (authorQuery) {
     whereClause.author = { name: { contains: authorQuery, mode: "insensitive" } };
   }
@@ -169,26 +119,33 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   const hasPerformedSearch = !!params.q || !!params.author || !!params.forumId;
 
-  // Sans recherche lancée (ni mot-clé, ni auteur, ni forum), aucune requête n'est faite
-  const searchResults = hasPerformedSearch
-    ? await Promise.all([
-        prisma.post.findMany({
-          where: whereClause,
-          orderBy: { createdAt: sortBy === "asc" ? "asc" : "desc" },
-          skip,
-          take: POSTS_PER_PAGE,
-          include: {
-            author: true,
-            topic: {
-              include: { forum: true }
-            }
-          }
-        }),
-        prisma.post.count({ where: whereClause })
-      ])
-    : null;
-  const posts = searchResults?.[0] ?? [];
-  const totalMatches = searchResults?.[1] ?? 0;
+  // Sans recherche lancée (ni mot-clé, ni auteur, ni forum), aucune requête n'est faite.
+  // Avec des mots-clés : la recherche plein texte donne les messages candidats dans l'ordre d'affichage, puis Prisma
+  // garde ceux qui passent les filtres et les droits d'accès, et charge ceux de la page. Les requêtes s'enchaînent
+  // l'une après l'autre (la base locale de développement refuse les requêtes simultanées).
+  // Sans mot-clé : la liste filtrée par Prisma, du plus récent au plus ancien (ou l'inverse).
+  let posts: Awaited<ReturnType<typeof findResultPosts>> = [];
+  let totalMatches = 0;
+  if (hasPerformedSearch && q) {
+    const orderedIds = await searchPostIds(q, sortBy, whereClause);
+    totalMatches = orderedIds.length;
+    const pageIds = orderedIds.slice(skip, skip + POSTS_PER_PAGE);
+    const pagePosts = await findResultPosts({ where: { id: { in: pageIds } } });
+    posts = pageIds.flatMap((id) => pagePosts.filter((post) => post.id === id));
+  } else if (hasPerformedSearch) {
+    posts = await findResultPosts({
+      where: whereClause,
+      orderBy: { createdAt: sortBy === "asc" ? "asc" : "desc" },
+      skip,
+      take: POSTS_PER_PAGE
+    });
+    totalMatches = await prisma.post.count({ where: whereClause });
+  }
+  const headlines = q ? await headlinesFor(posts.map((post) => post.id), q) : new Map<string, string>();
+  const snippetFor = (post: { id: string; content: string }) => {
+    const headline = headlines.get(post.id);
+    return headline === undefined ? plainSnippet(post.content) : headlineSnippet(headline, post.content);
+  };
 
   const totalPages = Math.max(1, Math.ceil(totalMatches / POSTS_PER_PAGE));
 
@@ -207,7 +164,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     if (forumId) query.set("forumId", forumId);
     if (authorQuery) query.set("author", authorQuery);
     if (dateStr !== "all") query.set("date", dateStr);
-    if (sortBy !== "desc") query.set("sortBy", sortBy);
+    if (sortBy !== "relevance") query.set("sortBy", sortBy);
     query.set("page", String(target));
     return `/forum/search?${query.toString()}`;
   };
@@ -276,7 +233,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                             </time>
                           </p>
                           <p className="m-0 line-clamp-3 border-l-2 border-bb-border pl-3 text-[0.9375rem] leading-relaxed break-words text-bb-text">
-                            {buildSnippet(post.content, q).map((part, index) =>
+                            {snippetFor(post).map((part, index) =>
                               part.match ? (
                                 <mark key={index} className="rounded-sm bg-bb-accent-soft px-0.5 font-semibold text-bb-accent-text">
                                   {part.text}

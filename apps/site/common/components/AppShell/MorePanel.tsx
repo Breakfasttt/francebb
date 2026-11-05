@@ -6,6 +6,8 @@
  * Les outils propres à une page sont affichés dans la page elle-même (carte 156). Ouvert, il se comporte comme
  * une fenêtre : focus déplacé dedans,
  * Échap ou appui à côté pour fermer, défilement de la page bloqué, fermeture au changement de page.
+ * Ordre (carte 189) : le profil ou « Se connecter / S'inscrire », les rubriques rangées dans les mêmes groupes que
+ * l'accueil (NAV_GROUPS), la gestion pour l'équipe, le choix du thème, la déconnexion à part, puis le pied de page.
  */
 import { useEffect, useRef } from "react";
 import Link from "next/link";
@@ -13,7 +15,7 @@ import { usePathname } from "next/navigation";
 import { ChevronRight, Github, LogIn, LogOut, Settings, ShieldAlert } from "lucide-react";
 import { Avatar, Button, CountBadge } from "@bbfrance/ui";
 import ThemePicker from "./ThemePicker";
-import { MORE_NAV } from "./navItems";
+import { NAV_GROUPS, isActive, moreNavFor } from "./navItems";
 import { signOutUser } from "@/common/utils/signOutUser";
 import "./MorePanel.css";
 
@@ -31,6 +33,7 @@ const sectionTitle = "m-0 border-0 p-0 text-[0.8rem] font-bold tracking-wider te
 
 export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, isMod, pendingModCount }: MorePanelProps) {
   const pathname = usePathname();
+  const items = moreNavFor(!!user);
   const panelRef = useRef<HTMLDivElement>(null);
 
   // Fermeture au changement de page (un lien du panneau ou du contenu de la page a été suivi)
@@ -83,31 +86,35 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
           ) : (
             <Button asChild variant="primary" size="tap">
               <Link href="/auth/login">
-                <LogIn size={18} aria-hidden="true" /> Connexion
+                <LogIn size={18} aria-hidden="true" /> Se connecter / S&apos;inscrire
               </Link>
             </Button>
           )}
 
-          <section className="flex flex-col gap-2" aria-label="Thème">
-            <h2 className={sectionTitle}>Thème</h2>
-            <ThemePicker isLoggedIn={!!user} />
-          </section>
-
-          <nav className="flex flex-col gap-2" aria-label="Explorer le site">
-            <h2 className={sectionTitle}>Explorer</h2>
-            <ul className="m-0 grid list-none grid-cols-4 gap-2 p-0">
-              {MORE_NAV.map(({ label, href, icon: Icon }) => (
-                <li key={href}>
-                  <Link
-                    href={href}
-                    className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-bb-lg border border-bb-border bg-bb-bg px-1 text-center text-xs font-semibold text-bb-text"
-                  >
-                    <Icon size={22} className="text-bb-accent-text" aria-hidden="true" />
-                    {label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <nav className="flex flex-col gap-4" aria-label="Rubriques du site">
+            {NAV_GROUPS.map((group) => {
+              const groupItems = items.filter((item) => item.group === group.id);
+              if (groupItems.length === 0) return null;
+              return (
+                <section key={group.id} className="flex flex-col gap-2" aria-labelledby={`more-group-${group.id}`}>
+                  <h2 id={`more-group-${group.id}`} className={sectionTitle}>{group.title}</h2>
+                  <ul className="m-0 grid list-none grid-cols-4 gap-2 p-0">
+                    {groupItems.map(({ label, href, icon: Icon }) => (
+                      <li key={href}>
+                        <Link
+                          href={href}
+                          aria-current={isActive(pathname, href) ? "page" : undefined}
+                          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-bb-lg border border-bb-border bg-bb-bg px-1 text-center text-xs font-semibold text-bb-text aria-[current=page]:border-bb-accent aria-[current=page]:bg-bb-accent-soft"
+                        >
+                          <Icon size={22} className="text-bb-accent-text" aria-hidden="true" />
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              );
+            })}
           </nav>
 
           {(isMod || isAdmin) && (
@@ -129,17 +136,24 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
             </section>
           )}
 
-          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-bb-text-muted">
+          <section className="flex flex-col gap-2" aria-labelledby="more-theme">
+            <h2 id="more-theme" className={sectionTitle}>Thème</h2>
+            <ThemePicker isLoggedIn={!!user} />
+          </section>
+
+          {/* Déconnexion : un bloc à part, loin des liens du pied de page, pour ne pas l'appuyer par erreur */}
+          {user && (
+            <Button type="button" variant="secondary" size="tap" className="w-full" onClick={() => signOutUser(hubLogout)}>
+              <LogOut size={16} aria-hidden="true" /> Déconnexion
+            </Button>
+          )}
+
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-bb-border pt-2 text-sm text-bb-text-muted">
             <Link href="/mentions-legales" className="flex min-h-11 items-center">Mentions légales</Link>
             <a href="https://github.com/Breakfasttt/francebb" target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-1">
               <Github size={14} aria-hidden="true" /> GitHub
             </a>
             <span>Conçu avec l&apos;aide de l&apos;IA</span>
-            {user && (
-              <Button type="button" variant="secondary" size="tap" className="ml-auto" onClick={() => signOutUser(hubLogout)}>
-                <LogOut size={16} aria-hidden="true" /> Déconnexion
-              </Button>
-            )}
           </div>
         </div>
       </div>

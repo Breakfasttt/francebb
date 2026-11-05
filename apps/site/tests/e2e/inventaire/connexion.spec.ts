@@ -94,7 +94,7 @@ test.describe("connexion", () => {
     await expect(email).toBeEditable();
     await expect(email).toHaveAttribute("type", "email");
     await expect(email).toHaveAttribute("name", "email");
-    await expect(main.getByRole("button", { name: "Recevoir un lien magique" })).toBeEnabled();
+    await expect(main.getByRole("button", { name: "Recevoir un lien de connexion par e-mail" })).toBeEnabled();
     await page.screenshot({ path: testInfo.outputPath("connexion.png"), fullPage: true });
   });
 
@@ -107,7 +107,8 @@ test.describe("connexion", () => {
     await page.goto(`/auth/login?callbackUrl=${encodeURIComponent("/forum")}`, { waitUntil: "networkidle" });
     const main = content(page);
     await main.getByRole("button", { name: /Mode Développement/ }).click();
-    await expect(main.getByText(/comptes de test/i)).toBeVisible();
+    // Le titre de la liste, et non le bouton « Comptes de test du hub », présent quand le hub sert à la connexion (carte 153)
+    await expect(main.getByRole("heading", { name: /^Comptes de test$/ })).toBeVisible();
     await expect(main.getByRole("button", { name: /Créer un nouvel Admin de test/ })).toBeEnabled();
     await page.screenshot({ path: testInfo.outputPath("connexion-dev.png"), fullPage: true });
     // « Retour » referme la liste, puis on la rouvre
@@ -140,8 +141,8 @@ test.describe("vérification de l'email et erreur", () => {
     await page.goto("/auth/error?error=Verification", { waitUntil: "networkidle" });
     const main = content(page);
     await expect(main.getByRole("heading", { name: "Erreur d'authentification", level: 1 })).toBeVisible();
-    await expect(main.getByText("Le lien magique a expiré ou a déjà été utilisé.")).toBeVisible();
-    await expect(main.getByText(/Verification/)).toBeVisible();
+    await expect(main.getByText("Le lien de connexion par e-mail a expiré ou a déjà été utilisé.")).toBeVisible();
+    await expect(main.getByText("Code : Verification")).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("erreur.png"), fullPage: true });
     await main.getByRole("link", { name: "Retour à la page de connexion" }).click();
     await expect(page).toHaveURL(/\/auth\/login$/);

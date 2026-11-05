@@ -145,7 +145,7 @@ export default async function LoginPage(props: {
             </div>
           )}
 
-          {/* Lien magique : un lien de connexion envoyé par email */}
+          {/* Lien de connexion envoyé par e-mail (appelé « lien magique » dans Auth.js) */}
           {isEmailEnabled && (
             <form
               className="m-0 flex flex-col gap-3"
@@ -163,7 +163,7 @@ export default async function LoginPage(props: {
               </Field>
               <Button type="submit" variant="primary" size="tap" className="w-full">
                 <LogIn size={18} aria-hidden="true" />
-                Recevoir un lien magique
+                Recevoir un lien de connexion par e-mail
               </Button>
             </form>
           )}

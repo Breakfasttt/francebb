@@ -52,7 +52,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
               title: true,
               lastPostAt: true,
               lastPostAuthor: { select: { name: true } },
-              tournament: { select: { date: true, isCancelled: true, isFinished: true } }
+              tournament: { select: { date: true, endDate: true, isCancelled: true, isFinished: true } }
             }
           }
         }
@@ -92,7 +92,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
       _count: {
         select: { posts: true }
       },
-      tournament: { select: { date: true, isCancelled: true, isFinished: true } }
+      tournament: { select: { date: true, endDate: true, isCancelled: true, isFinished: true } }
     }
     }),
     userId ? getUnreadState(userId) : null,

@@ -198,9 +198,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     registrationTournament = {
       id: t.id,
       date: t.date,
+      endDate: t.endDate,
       isTeam: t.isTeam,
       coachsPerTeam: t.coachsPerTeam,
       isFinished: t.isFinished,
+      isCancelled: t.isCancelled,
       registrationsLocked: t.registrationsLocked,
       registrations: canManagePayments ? withPaymentStatus(t.registrations, registrationPayments) : t.registrations,
       teams: canManagePayments ? withPaymentStatus(t.teams, teamPayments) : t.teams,

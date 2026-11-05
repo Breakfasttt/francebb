@@ -9,7 +9,8 @@
  * - À droite, le bouton « ⋯ » (PostMoreMenu) regroupe les actions rares : partager, signaler, marquer comme non lu,
  *   modifier, supprimer, modérer ou restaurer.
  * - Corps du message en 16 pixels, largeur de lecture limitée à environ 70 caractères ; citations sur fond de surface ;
- *   signature séparée par un filet.
+ *   signature séparée par un filet. Sur téléphone, la signature est repliée derrière un bouton « Voir la signature »
+ *   (carte 190) : sur un sujet de vingt messages, les signatures dépliées font beaucoup à faire défiler.
  * - Sous le message, toujours visibles : les réactions et le bouton « Citer » (PostActions). Un passage sélectionné
  *   dans le corps d'un message citable peut aussi être cité seul (QuoteSelectionButton, carte 183).
  * - Message supprimé (carte 165) : la mention dit qui l'a supprimé, son auteur ou la modération (avec la raison).
@@ -17,7 +18,7 @@
  *   premier message d'un tournoi mis en valeur sur les pages suivantes.
  */
 import React, { useState } from "react";
-import { Ban, Eye, EyeOff, Info, Shield } from "lucide-react";
+import { Ban, ChevronDown, Eye, EyeOff, Info, Shield } from "lucide-react";
 import { Badge, Button, cn } from "@bbfrance/ui";
 import UserAvatar, { RANK_LABELS, resolveRank, type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import BBCodeContent from "@/common/components/BBCodeContent/BBCodeContent";
@@ -104,6 +105,8 @@ const PostItem: React.FC<PostItemProps> = ({
   topicHasReplies = true,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
+  // Signature dépliée par le membre sur téléphone ; sur ordinateur, elle est toujours visible
+  const [signatureOpen, setSignatureOpen] = useState(false);
   const [authorOpen, setAuthorOpen] = useState(false);
   const author = post.author;
   const isBannedAuthor = !!author.isBanned;
@@ -265,8 +268,23 @@ const PostItem: React.FC<PostItemProps> = ({
                 </div>
 
                 {author.signature && (
-                  <div className="mt-4 border-t border-bb-border pt-3">
-                    <BBCodeContent content={author.signature} currentUserId={currentUserId} className="text-sm leading-normal text-bb-text-muted" />
+                  <div className="mt-4 border-t border-bb-border pt-3 max-lg:pt-1">
+                    {/* Téléphone : le bouton déplie ou replie la signature ; il n'existe pas sur ordinateur */}
+                    <Button
+                      type="button"
+                      variant="quiet"
+                      size="tap"
+                      aria-expanded={signatureOpen}
+                      aria-controls={`signature-${post.id}`}
+                      onClick={() => setSignatureOpen((open) => !open)}
+                      className="-ml-3 gap-1.5 text-sm text-bb-text-muted lg:hidden"
+                    >
+                      <ChevronDown size={16} aria-hidden="true" className={cn("transition-transform", signatureOpen && "rotate-180")} />
+                      {signatureOpen ? "Masquer la signature" : "Voir la signature"}
+                    </Button>
+                    <div id={`signature-${post.id}`} className={cn(!signatureOpen && "max-lg:hidden")}>
+                      <BBCodeContent content={author.signature} currentUserId={currentUserId} className="text-sm leading-normal text-bb-text-muted" />
+                    </div>
                   </div>
                 )}
               </div>

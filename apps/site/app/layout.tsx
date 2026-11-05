@@ -17,6 +17,8 @@ import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
 import { getNavCounts } from "@/common/components/AppShell/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import BBCodeInteractions from "@/common/components/BBCodeContent/BBCodeInteractions";
+import NavigationProgress from "@/common/components/NavigationProgress/NavigationProgress";
+import { Suspense } from "react";
 import "./tailwind.css";
 
 
@@ -64,6 +66,15 @@ export default async function RootLayout({
   return (
     <html lang="fr" data-theme={userTheme} className={interFont.variable} suppressHydrationWarning>
       <body suppressHydrationWarning className="flex min-h-screen flex-col">
+        {/* Lien « Aller au contenu » (carte 189) : caché, il apparaît en haut à gauche dès qu'on arrive dessus avec la
+            touche Tabulation (c'est le premier élément de la page), et permet de sauter la barre de navigation pour aller droit au contenu de la page. */}
+        <a
+          href="#contenu"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[9000] focus:inline-flex focus:min-h-11 focus:items-center focus:rounded-bb-md focus:bg-bb-accent focus:px-4 focus:font-bb-sans focus:font-semibold focus:text-bb-on-accent focus:outline-2 focus:outline-offset-2 focus:outline-bb-focus"
+        >
+          Aller au contenu
+        </a>
+
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
           <DebugAuthWidget />
@@ -71,6 +82,11 @@ export default async function RootLayout({
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
           <BBCodeInteractions />
+          {/* Barre de progression en haut de l'écran pendant une navigation (carte 188). Suspense : la barre lit
+              l'adresse de la page (useSearchParams), ce que Next.js demande d'isoler ainsi. */}
+          <Suspense fallback={null}>
+            <NavigationProgress />
+          </Suspense>
           
           <AppShell
             user={user ? { id: user.id, name: user.name, image: user.image } : null}
@@ -80,7 +96,7 @@ export default async function RootLayout({
             counts={navCounts}
           />
 
-          <main className="main-layout-wrapper">
+          <main id="contenu" tabIndex={-1} className="main-layout-wrapper outline-none">
             {user?.id ? <NewLookBanner isLoggedIn /> : null}
             {children}
           </main>

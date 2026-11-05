@@ -58,13 +58,15 @@ const CHIP_LABELS: Record<string, string> = {
   history: "Avec les tournois passés",
 };
 
+// Libellés courts (carte 190) : sur un téléphone de 360 pixels, la liste de tri n'a la place que d'une dizaine de
+// lettres à côté du bouton « Filtres » ; « Date (plus proche) » y était coupé.
 const SORT_OPTIONS = [
-  { value: "date_asc", label: "Date (plus proche)" },
-  { value: "date_desc", label: "Date (plus lointain)" },
-  { value: "price_asc", label: "Prix (croissant)" },
-  { value: "price_desc", label: "Prix (décroissant)" },
-  { value: "participants_asc", label: "Places (croissant)" },
-  { value: "participants_desc", label: "Places (décroissant)" },
+  { value: "date_asc", label: "Plus tôt" },
+  { value: "date_desc", label: "Plus tard" },
+  { value: "price_asc", label: "Moins cher" },
+  { value: "price_desc", label: "Plus cher" },
+  { value: "participants_asc", label: "Moins de places" },
+  { value: "participants_desc", label: "Plus de places" },
 ];
 
 /** Paramètres de l'adresse qui ne sont pas des filtres (pas de pastille, ne comptent pas dans le bouton « Filtres »). */

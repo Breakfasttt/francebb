@@ -146,7 +146,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
             <Field label="Pseudo" htmlFor="onboarding-name" hint="3 caractères au moins. C'est le nom affiché sur le forum." className="lg:col-span-2">
               <Input id="onboarding-name" name="name" defaultValue={formData.name} required minLength={3} placeholder="Ex : Grumbly" autoComplete="nickname" />
             </Field>
-            <Field label="Numéro NAF" htmlFor="onboarding-naf" hint="Facultatif.">
+            <Field label="Numéro NAF" htmlFor="onboarding-naf" hint="Facultatif. C'est votre numéro de membre de la NAF, l'association internationale des joueurs de tournoi de Blood Bowl.">
               <Input id="onboarding-naf" name="nafNumber" defaultValue={formData.nafNumber} placeholder="Ex : 12345" inputMode="numeric" />
             </Field>
             <Field label="Région" htmlFor="onboarding-region" hint="Facultatif.">
@@ -173,8 +173,8 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
         <Card>
           <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
           <CardBody className="flex flex-col gap-1.5">
-            <Label htmlFor="onboarding-signature">Signature (BBCode)</Label>
-            <p className="m-0 text-sm text-bb-text-muted">Facultatif. Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus.</p>
+            <Label htmlFor="onboarding-signature">Signature (texte mis en forme)</Label>
+            <p className="m-0 text-sm text-bb-text-muted">Facultatif. Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus. Les boutons de l&apos;éditeur mettent le texte en gras, en couleur, ajoutent un lien…</p>
             <BBCodeEditor id="onboarding-signature" name="signature" defaultValue={formData.signature} maxLength={250} rows={3} onChange={(v) => setFormData(p => ({ ...p, signature: v }))} />
           </CardBody>
         </Card>

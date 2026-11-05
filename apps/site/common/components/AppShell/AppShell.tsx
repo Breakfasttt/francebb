@@ -9,6 +9,10 @@
  * elle est dans la barre haute, pour ne pas ajouter un sixième onglet à la barre basse.
  * La barre basse se cache pendant la saisie (clavier ouvert) et sur les écrans de rédaction du forum (répondre,
  * modifier un message, nouveau sujet), qui occupent tout l'écran.
+ * Un seul onglet de la barre basse est allumé à la fois (carte 189) : « Plus » l'est quand son panneau est ouvert ou
+ * quand la page courante y est rangée (activeBottomTab, navItems.ts). Le visiteur voit « Se connecter / S'inscrire » :
+ * la page de connexion crée le compte à la première connexion. Ce bouton est masqué sur la page de connexion
+ * elle-même (carte 190), où il ne mènerait nulle part.
  */
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
@@ -21,7 +25,7 @@ import { useNavCounts } from "./useNavCounts";
 import { signOutUser } from "@/common/utils/signOutUser";
 import MorePanel from "./MorePanel";
 import ThemePicker from "./ThemePicker";
-import { DESKTOP_NAV, MORE_ICON, MORE_NAV, PRIMARY_NAV, isActive, isComposePath } from "./navItems";
+import { DESKTOP_NAV, MORE_ICON, PRIMARY_NAV, activeBottomTab, isActive, isComposePath, moreNavFor } from "./navItems";
 import "./AppShell.css";
 
 interface AppShellProps {
@@ -101,6 +105,8 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   const { unreadCount, notificationCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
   const isHome = pathname === "/";
+  // Sur la page de connexion, le bouton « Se connecter / S'inscrire » de la barre haute ne sert à rien (carte 190)
+  const showLoginButton = !user && pathname !== "/auth/login";
   // Écrans plein écran sans barre basse : les écrans de rédaction du forum (carte 087). L'éditeur BBScheme, qui en
   // faisait partie, a quitté le site (carte 179).
   const immersive = isComposePath(pathname);
@@ -109,7 +115,10 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   const closeMore = useCallback(() => setMoreOpen(false), []);
   useTypingFlag();
 
-  const desktopMoreItems = MORE_NAV.filter((item) => !DESKTOP_NAV.includes(item)).map((item) => ({ label: item.label, href: item.href }));
+  const desktopMoreItems = moreNavFor(!!user).filter((item) => !DESKTOP_NAV.includes(item)).map((item) => ({ label: item.label, href: item.href }));
+  const activeTab = activeBottomTab(pathname, moreOpen);
+  // « Plus » porte aria-current seulement pour la page courante, pas pour un panneau simplement ouvert
+  const morePageCurrent = activeBottomTab(pathname, false) === "more";
 
   return (
     <>
@@ -121,11 +130,10 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
           {!isHome && <SiteLogo scale={0.5} />}
           <div className="flex-1" />
           {user && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
-          {!user && (
-            <Button asChild variant="primary" size="tap">
-              <Link href="/auth/login">
-                <LogIn size={16} aria-hidden="true" /> Connexion
-              </Link>
+          {showLoginButton && (
+            // Sans icône sur téléphone : le texte entier tient à côté du logo dès 360 pixels de large
+            <Button asChild variant="primary" size="tap" className="px-3 whitespace-nowrap">
+              <Link href="/auth/login">Se connecter / S&apos;inscrire</Link>
             </Button>
           )}
         </div>
@@ -186,11 +194,13 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
               <Button type="button" variant="quiet" size="tap-icon" aria-label="Changer de thème" className="text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active" onClick={() => setThemeOpen(true)}>
                 <Palette size={20} aria-hidden="true" />
               </Button>
-              <Button asChild variant="primary" size="tap">
-                <Link href="/auth/login">
-                  <LogIn size={16} aria-hidden="true" /> Connexion
-                </Link>
-              </Button>
+              {showLoginButton && (
+                <Button asChild variant="primary" size="tap">
+                  <Link href="/auth/login">
+                    <LogIn size={16} aria-hidden="true" /> Se connecter / S&apos;inscrire
+                  </Link>
+                </Button>
+              )}
             </div>
           )}
         </div>
@@ -200,7 +210,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
       {!immersive && (
         <nav aria-label="Navigation principale" className="app-bottom-nav fixed inset-x-0 bottom-0 z-[5000] grid grid-cols-5 border-t border-bb-nav-border bg-bb-nav-bg font-bb-sans lg:hidden">
           {PRIMARY_NAV.map(({ label, href, icon: Icon }) => {
-            const active = isActive(pathname, href);
+            const active = activeTab === href;
             const badge = href === "/messagerie" ? unreadCount : 0;
             return (
               <Link
@@ -223,8 +233,9 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
             variant="quiet"
             aria-expanded={moreOpen}
             aria-controls="more-panel"
+            aria-current={morePageCurrent ? "page" : undefined}
             onClick={() => setMoreOpen((open) => !open)}
-            className={cn("flex h-auto min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-none bg-transparent p-0 text-xs leading-tight hover:bg-transparent", moreOpen ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
+            className={cn("flex h-auto min-h-[52px] flex-col items-center justify-center gap-0.5 rounded-none bg-transparent p-0 text-xs leading-tight hover:bg-transparent", activeTab === "more" ? "font-bold text-bb-nav-active" : "font-medium text-bb-nav-text")}
           >
             <span className="relative flex" aria-hidden="true">
               <MORE_ICON size={24} />

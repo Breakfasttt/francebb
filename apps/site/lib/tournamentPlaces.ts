@@ -31,3 +31,13 @@ export function takenPlaces(tournament: TournamentPlacesFields): number {
   const counted = tournament.isTeam ? tournament._count.teams : tournament._count.registrations;
   return Math.max(counted, tournament.currentParticipants);
 }
+
+/**
+ * Places encore libres (carte 186) : places maximales moins places prises. Un tournoi sans nombre maximal de places
+ * est illimité (`Infinity`). Les inscriptions (`joinTournament`, `createTeam`) et la montée de la liste d'attente
+ * utilisent ce calcul, le même que l'affichage : un tournoi affiché « 30 / 30 » n'accepte plus de pré-inscription.
+ */
+export function freePlaces(tournament: TournamentPlacesFields & { maxParticipants: number | null }): number {
+  if (tournament.maxParticipants == null) return Infinity;
+  return Math.max(0, tournament.maxParticipants - takenPlaces(tournament));
+}

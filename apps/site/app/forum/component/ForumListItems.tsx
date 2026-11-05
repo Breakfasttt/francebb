@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Folder, Lock, Pin, Trophy } from "lucide-react";
 import { Avatar, Badge } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
+import { isTournamentOver } from "@/lib/tournamentDates";
 
 /** Date courte à la française (jj/mm/aaaa), comme dans le reste du forum. */
 export const frenchDate = (date: Date | string) => new Date(date).toLocaleDateString("fr-FR");
@@ -31,6 +32,8 @@ export function LockMark({ label, size = 15 }: { label: string; size?: number })
 
 interface TournamentState {
   date: Date | string;
+  /** Dernier jour du tournoi (carte 187) ; facultatif, la date de début sert à défaut. */
+  endDate?: Date | string | null;
   isCancelled: boolean;
   isFinished: boolean;
 }
@@ -40,7 +43,8 @@ export function TournamentStatusBadge({ tournament }: { tournament: TournamentSt
   if (!tournament) return null;
   if (tournament.isCancelled) return <Badge variant="danger">Annulé</Badge>;
   if (tournament.isFinished) return <Badge variant="success">Terminé</Badge>;
-  if (new Date(tournament.date) < new Date()) return <Badge variant="neutral">Passé</Badge>;
+  // « Passé » une fois le dernier jour fini, heure de Paris (règle de lib/tournamentDates.ts, carte 187)
+  if (isTournamentOver(tournament)) return <Badge variant="neutral">Passé</Badge>;
   return null;
 }
 
@@ -70,7 +74,8 @@ export interface ForumRowData {
 /**
  * Ligne d'un forum : icône carrée (trophée pour un forum de tournois, dossier sinon), nom (gras s'il contient du
  * non-lu), cadenas, description, dernier sujet sur une ligne tronquée, puis « N sujets · Dernier : X · date et heure »
- * (auteur et date du dernier message de ce sujet).
+ * (auteur et date du dernier message de ce sujet). Un forum vide n'affiche que « Aucun sujet », sans « 0 sujet »
+ * en dessous (carte 190).
  */
 export function ForumRow({ forum }: { forum: ForumRowData }) {
   const { lastTopic } = forum;
@@ -101,10 +106,12 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
         ) : (
           <span className="mt-0.5 text-sm text-bb-text-muted">Aucun sujet</span>
         )}
-        <span className="text-[0.8125rem] text-bb-text-muted">
-          {forum.topicCount} {forum.topicCount > 1 ? "sujets" : "sujet"}
-          {lastTopic && ` · Dernier : ${lastTopic.lastPostAuthorName ?? "Anonyme"} · ${frenchDateTime(lastTopic.lastPostAt)}`}
-        </span>
+        {(forum.topicCount > 0 || lastTopic) && (
+          <span className="text-[0.8125rem] text-bb-text-muted">
+            {forum.topicCount} {forum.topicCount > 1 ? "sujets" : "sujet"}
+            {lastTopic && ` · Dernier : ${lastTopic.lastPostAuthorName ?? "Anonyme"} · ${frenchDateTime(lastTopic.lastPostAt)}`}
+          </span>
+        )}
       </span>
       {forum.hasNew && <UnreadDot className="mt-2" />}
     </Link>

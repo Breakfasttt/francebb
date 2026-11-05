@@ -5,6 +5,7 @@
  */
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
+import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import CarteClient from "./component/CarteClient";
 
@@ -14,12 +15,15 @@ export default async function CartePage() {
   const [nextTournaments, ligues] = await Promise.all([
     prisma.tournament.findMany({
       where: {
-        date: { gte: new Date() },
+        // À venir ou en cours jusqu'à la fin de leur dernier jour, heure de Paris (carte 187, lib/tournamentDates.ts)
+        AND: [upcomingTournamentWhere()],
         isFinished: false,
         isCancelled: false,
         // Pas de tournoi dont le sujet du forum est supprimé (carte 165)
         ...TOURNAMENT_TOPIC_NOT_DELETED
       },
+      // Les 100 plus proches dans le temps (carte 187) : avant, 100 tournois pris sans ordre
+      orderBy: [{ date: "asc" }, { id: "asc" }],
       take: 100,
       select: {
         id: true,

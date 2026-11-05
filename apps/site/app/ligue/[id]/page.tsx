@@ -16,6 +16,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { parseBBCode } from "@/lib/bbcode";
 import { DateBlock } from "@/app/tournois/component/TournamentListItems";
+import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import LigueBlason from "@/app/ligues/component/LigueBlason";
 import LigueActions from "./component/LigueActions";
 // Styles des blocs BBCode (accordéons, spoilers, galeries) de la présentation, comme dans les sujets du forum ; avant
@@ -41,7 +42,9 @@ export default async function LigueDetailPage({
         select: { tournaments: true, members: true }
       },
       tournaments: {
-        where: { isFinished: false, isCancelled: false },
+        // Prochains tournois : à venir ou en cours jusqu'à la fin de leur dernier jour, heure de Paris (carte 187).
+        // Avant, un tournoi passé dont personne n'avait saisi les résultats restait affiché « à venir » pour toujours.
+        where: { isFinished: false, isCancelled: false, AND: [upcomingTournamentWhere()] },
         orderBy: { date: "asc" },
         take: 5,
         include: { topic: { select: { id: true } } }

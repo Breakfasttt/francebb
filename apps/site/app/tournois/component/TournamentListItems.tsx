@@ -7,12 +7,15 @@ import Link from "next/link";
 import { CalendarDays, MapPin, Users } from "lucide-react";
 import { Badge, Card, cn } from "@bbfrance/ui";
 import { takenPlaces } from "@/lib/tournamentPlaces";
+import { isTournamentOver } from "@/lib/tournamentDates";
 
 /** Champs du tournoi utilisés par la liste. */
 export interface TournamentListItem {
   id: string;
   name: string;
   date: Date;
+  /** Dernier jour du tournoi ; vide pour un tournoi d'un jour importé de l'ancien site. */
+  endDate: Date | null;
   days: string | null;
   location: string;
   ville: string | null;
@@ -44,11 +47,14 @@ const priceText = (price: number | null) => (price === 0 ? "Gratuit" : price != 
 /** Ville du tournoi, ou à défaut son lieu. Réutilisé par l'accueil (carte 155). */
 export const placeText = (tournament: Pick<TournamentListItem, "ville" | "location">) => (tournament.ville || tournament.location);
 
-/** Badge de statut : annulé, terminé ou passé (date dépassée sans avoir été marqué terminé). */
-export function TournamentStatusBadge({ tournament, todayStart }: { tournament: TournamentListItem; todayStart: Date }) {
+/**
+ * Badge de statut : annulé, terminé ou passé (dernier jour dépassé, heure de Paris, sans avoir été marqué terminé :
+ * règle de lib/tournamentDates.ts, carte 187).
+ */
+export function TournamentStatusBadge({ tournament, now }: { tournament: TournamentListItem; now: Date }) {
   if (tournament.isCancelled) return <Badge variant="danger">Annulé</Badge>;
   if (tournament.isFinished) return <Badge variant="success">Terminé</Badge>;
-  if (new Date(tournament.date) < todayStart) return <Badge variant="neutral">Passé</Badge>;
+  if (isTournamentOver(tournament, now)) return <Badge variant="neutral">Passé</Badge>;
   return null;
 }
 
@@ -68,7 +74,7 @@ export function DateBlock({ date, className }: { date: Date; className?: string 
 
 const muted = "text-bb-text-muted";
 
-export function TournamentCard({ tournament, todayStart }: { tournament: TournamentListItem; todayStart: Date }) {
+export function TournamentCard({ tournament, now }: { tournament: TournamentListItem; now: Date }) {
   const inactive = tournament.isCancelled || tournament.isFinished;
   return (
     <Link
@@ -97,7 +103,7 @@ export function TournamentCard({ tournament, todayStart }: { tournament: Tournam
               </span>
             </p>
           </div>
-          <TournamentStatusBadge tournament={tournament} todayStart={todayStart} />
+          <TournamentStatusBadge tournament={tournament} now={now} />
         </div>
 
         <div className="flex flex-wrap gap-1.5">
@@ -123,9 +129,9 @@ export function TournamentCard({ tournament, todayStart }: { tournament: Tournam
   );
 }
 
-export function TournamentRow({ tournament, todayStart }: { tournament: TournamentListItem; todayStart: Date }) {
-  const status = <TournamentStatusBadge tournament={tournament} todayStart={todayStart} />;
-  const isActive = !tournament.isCancelled && !tournament.isFinished && new Date(tournament.date) >= todayStart;
+export function TournamentRow({ tournament, now }: { tournament: TournamentListItem; now: Date }) {
+  const status = <TournamentStatusBadge tournament={tournament} now={now} />;
+  const isActive = !tournament.isCancelled && !tournament.isFinished && !isTournamentOver(tournament, now);
   return (
     <Link
       href={topicHref(tournament)}

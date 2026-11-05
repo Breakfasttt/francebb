@@ -10,7 +10,14 @@ import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
 import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
-import { followTopicAutomatically, markTopicNotificationsRead, notifyFollowers, notifyMentions } from "@/lib/notifications";
+import {
+  NOTIFICATION_TYPE,
+  followTopicAutomatically,
+  markTopicNotificationsRead,
+  notifyFollowers,
+  notifyMentions,
+  notifyTournamentMembers
+} from "@/lib/notifications";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, forumAccessWhere, topicAccessWhere, FORUM_ACCESS_SELECT } from "@/lib/forumAccess";
 import { logModerationAction } from "@/lib/moderationLog";
@@ -23,6 +30,16 @@ import { forumPostPage } from "@/lib/forumPostLink";
 import { closedTopicMessage, isAllowedReaction, isTopicClosedFor, postContentError, topicTitleError } from "@/lib/forumWriteRules";
 import type { QuoteStatusMap } from "@/lib/bbcode";
 import type { ActionResult } from "@/lib/actionResult";
+import type { Prisma } from "@/prisma/generated-client";
+import { isTournamentOver, tournamentDatesError } from "@/lib/tournamentDates";
+import {
+  cleanTeamMemberIds,
+  formatChangeLossCount,
+  formatChangeLossText,
+  registrationRefusal,
+  teamCompositionError
+} from "@/lib/tournamentRegistrationRules";
+import { lockTournamentRegistrations, nextRegistrationStatus, promoteFromWaitingList } from "@/lib/tournamentRegistrations";
 
 export async function getRandomPostUrl() {
   const { roles } = await getForumAccess();
@@ -487,6 +504,9 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
     
     const startDate = new Date(tDateStr);
     const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
+    // Date de fin avant la date de début refusée (carte 187), comme à la modification
+    const datesError = tournamentDatesError(startDate, endDate);
+    if (datesError) return { success: false, error: datesError };
     const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
     const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
@@ -1504,10 +1524,9 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   const startDate = new Date(tDateStr);
   const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
   
-  // Validation des dates (fail-safe)
-  if (endDate < startDate) {
-    return { success: false, error: "La date de fin ne peut pas être avant la date de début." };
-  }
+  // Validation des dates : même règle qu'à la création (carte 187)
+  const datesError = tournamentDatesError(startDate, endDate);
+  if (datesError) return { success: false, error: datesError };
   
   const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
   const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
@@ -1573,6 +1592,30 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   const isTeamNew = formData.get("isTeam") === "on";
   const hasFormatChanged = isTeamNew !== tournament.isTeam;
 
+  // Changer le format (individuel ou par équipes) supprime toutes les inscriptions (carte 186) : le formulaire demande
+  // une confirmation qui annonce combien, et le serveur refuse le changement sans elle. Les inscrits sont prévenus.
+  let formatChangeRecipients: string[] = [];
+  if (hasFormatChanged) {
+    const registrations = await prisma.tournamentRegistration.findMany({ where: { tournamentId }, select: { userId: true } });
+    const teams = await prisma.tournamentTeam.findMany({
+      where: { tournamentId },
+      select: { captainId: true, members: { select: { userId: true } } }
+    });
+    const mercenaries = await prisma.tournamentMercenary.findMany({ where: { tournamentId }, select: { userId: true } });
+    const losses = { registrations: registrations.length, teams: teams.length, mercenaries: mercenaries.length };
+    if (formatChangeLossCount(losses) > 0 && formData.get("confirmFormatChange") !== "yes") {
+      return {
+        success: false,
+        error: `Changer le format du tournoi supprimera ${formatChangeLossText(losses)} : confirmez ce changement.`
+      };
+    }
+    formatChangeRecipients = [
+      ...registrations.map((registration) => registration.userId),
+      ...teams.flatMap((team) => [team.captainId, ...team.members.map((member) => member.userId)]),
+      ...mercenaries.map((mercenary) => mercenary.userId)
+    ];
+  }
+
   // Seul l'organisateur (ou modérateur) peut changer les commissaires
   if (isOrganizer || isMod) {
     const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
@@ -1581,12 +1624,14 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     };
   }
 
-  await prisma.$transaction(async (tx) => {
-    // Si le format a changé, on vide les inscriptions pour éviter les incohérences
+  const promoted = await prisma.$transaction(async (tx) => {
+    await lockTournamentRegistrations(tx, tournamentId);
+    // Si le format a changé, on vide les inscriptions (et les mercenaires) pour éviter les incohérences
     if (hasFormatChanged) {
       await tx.tournamentRegistration.deleteMany({ where: { tournamentId } });
       await tx.tournamentTeamMember.deleteMany({ where: { team: { tournamentId } } });
       await tx.tournamentTeam.deleteMany({ where: { tournamentId } });
+      await tx.tournamentMercenary.deleteMany({ where: { tournamentId } });
     }
 
     await tx.tournament.update({
@@ -1603,7 +1648,27 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
       where: { id: firstPostId },
       data: { content }
     });
+
+    // Places ajoutées (nombre maximal augmenté) : les plus anciens de la liste d'attente montent (carte 186)
+    return hasFormatChanged ? [] : promoteFromWaitingList(tx, tournamentId);
   });
+
+  // Notifications dans le site (carte 186). Un échec ici n'annule pas la modification du tournoi.
+  try {
+    if (formatChangeRecipients.length > 0) {
+      await notifyTournamentMembers({
+        userIds: formatChangeRecipients,
+        topicId,
+        type: NOTIFICATION_TYPE.TOURNAMENT_FORMAT_CHANGED,
+        actorId: session.user.id
+      });
+    }
+    if (promoted.length > 0) {
+      await notifyTournamentMembers({ userIds: promoted, topicId, type: NOTIFICATION_TYPE.TOURNAMENT_PROMOTED });
+    }
+  } catch (error) {
+    console.error("updateTournament notifications error:", error);
+  }
 
   revalidatePath(`/forum/topic/${topicId}`);
   // On récupère le forumId du topic si possible pour revalider la liste
@@ -1614,54 +1679,94 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
 }
 
 /**
- * Inscription individuelle à un tournoi
+ * Tournoi lu pour une inscription (carte 186) : format, état et sujet du forum. Les règles d'ouverture sont dans
+ * lib/tournamentRegistrationRules.ts, la règle des dates dans lib/tournamentDates.ts.
+ */
+async function loadTournamentForRegistration(tournamentId: string) {
+  return prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    select: {
+      id: true,
+      isTeam: true,
+      coachsPerTeam: true,
+      isCancelled: true,
+      isFinished: true,
+      registrationsLocked: true,
+      date: true,
+      endDate: true,
+      topic: { select: { id: true } }
+    }
+  });
+}
+
+/** Raison du refus d'une nouvelle inscription : tournoi annulé, terminé, passé ou inscriptions fermées. */
+function newRegistrationRefusal(tournament: {
+  isCancelled: boolean;
+  isFinished: boolean;
+  registrationsLocked: boolean;
+  date: Date;
+  endDate: Date | null;
+}) {
+  return registrationRefusal({ ...tournament, isOver: isTournamentOver(tournament) });
+}
+
+/**
+ * Prévient les coachs sortis de la liste d'attente (notification dans le site, sans e-mail). Un échec ici n'annule
+ * pas la désinscription qui a libéré la place.
+ */
+async function notifyPromotedMembers(userIds: string[], topicId: string | null | undefined) {
+  if (userIds.length === 0) return;
+  try {
+    await notifyTournamentMembers({ userIds, topicId, type: NOTIFICATION_TYPE.TOURNAMENT_PROMOTED });
+  } catch (error) {
+    console.error("notifyPromotedMembers error:", error);
+  }
+}
+
+/**
+ * Inscription individuelle à un tournoi. Refusée pour un tournoi par équipes, annulé, terminé, passé ou fermé
+ * (carte 186). Le statut (pré-inscrit ou liste d'attente) suit le même calcul de places que l'affichage, sous un verrou
+ * propre au tournoi : deux inscriptions envoyées au même moment ne prennent pas la même dernière place.
  */
 export async function joinTournament(tournamentId: string) {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
-  const tournament = await prisma.tournament.findUnique({
-    where: { id: tournamentId },
-    include: {
-      registrations: true,
-      topic: true
-    }
-  });
-
+  const tournament = await loadTournamentForRegistration(tournamentId);
   if (!tournament) return { success: false, error: "Tournoi introuvable" };
-  if (tournament.registrationsLocked) return { success: false, error: "Les inscriptions sont fermées pour ce tournoi." };
-
-  // Vérifier si déjà inscrit
-  const existing = await prisma.tournamentRegistration.findUnique({
-    where: { tournamentId_userId: { tournamentId, userId } }
-  });
-  if (existing) return { success: false, error: "Déjà inscrit" };
-
-  // Déterminer le statut (pré-inscrit ou liste d'attente)
-  const currentTotal = tournament.registrations.length;
-  const max = tournament.maxParticipants || 9999;
-  const status = currentTotal >= max ? "WAITING_LIST" : "PRE_REGISTERED";
+  if (tournament.isTeam) {
+    return { success: false, error: "Ce tournoi se joue par équipes : inscrivez une équipe ou proposez-vous comme mercenaire." };
+  }
+  const refusal = newRegistrationRefusal(tournament);
+  if (refusal) return { success: false, error: refusal };
 
   try {
-    await prisma.tournamentRegistration.create({
-      data: {
-        tournamentId,
-        userId,
-        status: status as any,
-        paymentStatus: "NOT_PAID"
-      }
+    const status = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, tournamentId);
+      const existing = await tx.tournamentRegistration.findUnique({
+        where: { tournamentId_userId: { tournamentId, userId } },
+        select: { id: true }
+      });
+      if (existing) return null;
+      const nextStatus = await nextRegistrationStatus(tx, tournamentId);
+      await tx.tournamentRegistration.create({
+        data: { tournamentId, userId, status: nextStatus, paymentStatus: "NOT_PAID" }
+      });
+      return nextStatus;
     });
+    if (!status) return { success: false, error: "Déjà inscrit" };
 
     if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
-    return { success: true };
+    return { success: true, waitingList: status === "WAITING_LIST" };
   } catch (e) {
     return { success: false, error: "Erreur lors de l'inscription" };
   }
 }
 
 /**
- * Désinscription individuelle
+ * Désinscription individuelle. La place libérée fait monter le plus ancien de la liste d'attente, qui est prévenu
+ * (carte 186).
  */
 export async function leaveTournament(tournamentId: string) {
   const session = await getActiveSession();
@@ -1671,14 +1776,18 @@ export async function leaveTournament(tournamentId: string) {
   try {
     const reg = await prisma.tournamentRegistration.findUnique({
       where: { tournamentId_userId: { tournamentId, userId } },
-      include: { tournament: { include: { topic: true } } }
+      select: { id: true, status: true, tournament: { select: { topic: { select: { id: true } } } } }
     });
 
     if (!reg) return { success: false, error: "Inscription introuvable" };
 
-    await prisma.tournamentRegistration.delete({
-      where: { id: reg.id }
+    const promoted = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, tournamentId);
+      await tx.tournamentRegistration.delete({ where: { id: reg.id } });
+      // Une inscription en liste d'attente ne prenait pas de place : rien ne se libère
+      return reg.status === "WAITING_LIST" ? [] : promoteFromWaitingList(tx, tournamentId);
     });
+    await notifyPromotedMembers(promoted, reg.tournament.topic?.id);
 
     if (reg.tournament.topic) revalidatePath(`/forum/topic/${reg.tournament.topic.id}`);
     return { success: true };
@@ -1688,7 +1797,9 @@ export async function leaveTournament(tournamentId: string) {
 }
 
 /**
- * Inscription / Désinscription mercenaire
+ * Inscription ou désinscription comme mercenaire (coach seul qui se propose pour compléter une équipe). Se proposer
+ * est refusé pour un tournoi individuel, annulé, terminé, passé ou fermé, et pour un coach qui a déjà une équipe dans
+ * ce tournoi (carte 186). Se retirer reste toujours possible.
  */
 export async function toggleMercenary(tournamentId: string) {
   const session = await getActiveSession();
@@ -1696,86 +1807,123 @@ export async function toggleMercenary(tournamentId: string) {
   const userId = session.user.id;
 
   try {
+    const tournament = await loadTournamentForRegistration(tournamentId);
+    if (!tournament) return { success: false, error: "Tournoi introuvable" };
+
     const existing = await prisma.tournamentMercenary.findUnique({
       where: { tournamentId_userId: { tournamentId, userId } }
     });
-
-    const tournament = await prisma.tournament.findUnique({ 
-      where: { id: tournamentId },
-      include: { topic: true }
-    });
-
-    if (!tournament) return { success: false, error: "Tournoi introuvable" };
-    if (tournament.registrationsLocked && !existing) {
-      return { success: false, error: "Les inscriptions mercenaires sont fermées." };
-    }
 
     if (existing) {
       await prisma.tournamentMercenary.delete({
         where: { id: existing.id }
       });
     } else {
+      if (!tournament.isTeam) return { success: false, error: "Les mercenaires n'existent que dans un tournoi par équipes." };
+      const refusal = newRegistrationRefusal(tournament);
+      if (refusal) return { success: false, error: refusal };
+      const team = await prisma.tournamentTeam.findFirst({
+        where: { tournamentId, OR: [{ captainId: userId }, { members: { some: { userId } } }] },
+        select: { id: true }
+      });
+      if (team) return { success: false, error: "Vous faites déjà partie d'une équipe de ce tournoi." };
       await prisma.tournamentMercenary.create({
         data: { tournamentId, userId }
       });
     }
 
-    if (tournament?.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
     return { success: true };
   } catch (e) {
     return { success: false, error: "Action impossible" };
   }
 }
 
+/** Capitaines et membres des équipes d'un tournoi, sauf l'équipe `exceptTeamId` (modification de cette équipe). */
+async function teamCoachIds(tx: Prisma.TransactionClient, tournamentId: string, exceptTeamId?: string) {
+  const teams = await tx.tournamentTeam.findMany({
+    where: { tournamentId, ...(exceptTeamId ? { id: { not: exceptTeamId } } : {}) },
+    select: { captainId: true, members: { select: { userId: true } } }
+  });
+  return teams.flatMap((team) => [team.captainId, ...team.members.map((member) => member.userId)]);
+}
+
+/** Coachs inscrits comme mercenaires dans un tournoi. */
+async function mercenaryIds(tx: Prisma.TransactionClient, tournamentId: string) {
+  const mercenaries = await tx.tournamentMercenary.findMany({ where: { tournamentId }, select: { userId: true } });
+  return mercenaries.map((mercenary) => mercenary.userId);
+}
+
 /**
- * Création d'équipe
+ * Création d'une équipe par son capitaine (carte 186) : tournoi par équipes ouvert aux inscriptions, au plus
+ * `coachsPerTeam` coachs capitaine compris, aucun coach déjà dans une autre équipe du tournoi (donc une seule équipe
+ * par capitaine), et des coéquipiers volontaires seulement, c'est-à-dire inscrits comme mercenaires. Le statut suit le
+ * même calcul de places que l'affichage, sous le verrou du tournoi.
  */
 export async function createTeam(tournamentId: string, name: string, memberIds: string[]) {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
   const userId = session.user.id;
 
-  const tournament = await prisma.tournament.findUnique({
-    where: { id: tournamentId },
-    include: { teams: true, topic: true }
-  });
-
+  const tournament = await loadTournamentForRegistration(tournamentId);
   if (!tournament) return { success: false, error: "Tournoi introuvable" };
-  if (tournament.registrationsLocked) return { success: false, error: "Les inscriptions sont fermées pour ce tournoi." };
+  if (!tournament.isTeam) return { success: false, error: "Ce tournoi se joue en individuel : il n'accepte pas d'équipe." };
+  const refusal = newRegistrationRefusal(tournament);
+  if (refusal) return { success: false, error: refusal };
 
-  // Status
-  const currentTotal = tournament.teams.length;
-  const max = tournament.maxParticipants || 9999;
-  const status = currentTotal >= max ? "WAITING_LIST" : "PRE_REGISTERED";
+  const teamName = typeof name === "string" ? name.trim() : "";
+  const members = cleanTeamMemberIds(userId, memberIds);
 
   try {
-    const team = await prisma.tournamentTeam.create({
-      data: {
-        name,
-        tournamentId,
+    const outcome = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, tournamentId);
+      const error = teamCompositionError({
+        isTeamTournament: true,
+        coachsPerTeam: tournament.coachsPerTeam,
+        name: teamName,
+        memberIds: members,
+        currentMemberIds: [],
+        mercenaryIds: await mercenaryIds(tx, tournamentId),
         captainId: userId,
-        status: status as any,
-        paymentStatus: "NOT_PAID",
-        members: {
-          create: memberIds.map(id => ({ userId: id }))
-        }
-      }
-    });
+        otherTeamCoachIds: await teamCoachIds(tx, tournamentId)
+      });
+      if (error) return { error };
+      const sameName = await tx.tournamentTeam.findFirst({ where: { tournamentId, name: teamName }, select: { id: true } });
+      if (sameName) return { error: "Une équipe porte déjà ce nom dans ce tournoi." };
 
-    // Retrait des mercenaires
-    await prisma.tournamentMercenary.deleteMany({
-      where: { tournamentId, userId: { in: [userId, ...memberIds] } }
+      const status = await nextRegistrationStatus(tx, tournamentId);
+      await tx.tournamentTeam.create({
+        data: {
+          name: teamName,
+          tournamentId,
+          captainId: userId,
+          status,
+          paymentStatus: "NOT_PAID",
+          members: {
+            create: members.map(id => ({ userId: id }))
+          }
+        }
+      });
+
+      // Le capitaine et ses coéquipiers ne sont plus mercenaires : ils ont une équipe
+      await tx.tournamentMercenary.deleteMany({
+        where: { tournamentId, userId: { in: [userId, ...members] } }
+      });
+      return { status };
     });
+    if ("error" in outcome) return { success: false, error: outcome.error };
 
     if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
-    return { success: true };
+    return { success: true, waitingList: outcome.status === "WAITING_LIST" };
   } catch (e) {
     return { success: false, error: "Erreur lors de la création" };
   }
 }
 
 /**
- * Mise à jour d'équipe
+ * Modification d'une équipe par son capitaine, avec les mêmes règles que la création (carte 186) : un membre déjà
+ * dans l'équipe peut y rester, un nouveau coéquipier doit être inscrit comme mercenaire. Un membre retiré de l'équipe
+ * redevient mercenaire, pour rester visible des autres capitaines. Refusée pour un tournoi annulé, terminé ou passé.
  */
 export async function updateTeam(teamId: string, name: string, memberIds: string[]) {
   const session = await getActiveSession();
@@ -1784,31 +1932,68 @@ export async function updateTeam(teamId: string, name: string, memberIds: string
   try {
     const team = await prisma.tournamentTeam.findUnique({
       where: { id: teamId },
-      include: { tournament: { include: { topic: true } } }
+      select: { id: true, captainId: true, tournamentId: true, members: { select: { userId: true } } }
     });
 
     if (!team) return { success: false, error: "Équipe introuvable" };
     if (team.captainId !== session.user.id) return { success: false, error: "Action interdite" };
 
-    await prisma.$transaction([
-      prisma.tournamentTeamMember.deleteMany({ where: { teamId } }),
-      prisma.tournamentTeam.update({
+    const tournament = await loadTournamentForRegistration(team.tournamentId);
+    if (!tournament) return { success: false, error: "Tournoi introuvable" };
+    // Le capitaine peut compléter son équipe quand les inscriptions sont fermées, pas après le tournoi
+    const refusal = newRegistrationRefusal({ ...tournament, registrationsLocked: false });
+    if (refusal) return { success: false, error: refusal };
+
+    const teamName = typeof name === "string" ? name.trim() : "";
+    const members = cleanTeamMemberIds(team.captainId, memberIds);
+    const currentMemberIds = team.members.map((member) => member.userId);
+
+    const outcome = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, team.tournamentId);
+      const error = teamCompositionError({
+        isTeamTournament: tournament.isTeam,
+        coachsPerTeam: tournament.coachsPerTeam,
+        name: teamName,
+        memberIds: members,
+        currentMemberIds,
+        mercenaryIds: await mercenaryIds(tx, team.tournamentId),
+        captainId: team.captainId,
+        otherTeamCoachIds: await teamCoachIds(tx, team.tournamentId, teamId)
+      });
+      if (error) return { error };
+      const sameName = await tx.tournamentTeam.findFirst({
+        where: { tournamentId: team.tournamentId, name: teamName, id: { not: teamId } },
+        select: { id: true }
+      });
+      if (sameName) return { error: "Une équipe porte déjà ce nom dans ce tournoi." };
+
+      await tx.tournamentTeamMember.deleteMany({ where: { teamId } });
+      await tx.tournamentTeam.update({
         where: { id: teamId },
         data: {
-          name,
+          name: teamName,
           members: {
-            create: memberIds.map(id => ({ userId: id }))
+            create: members.map(id => ({ userId: id }))
           }
         }
-      })
-    ]);
+      });
 
-    // Retrait des mercenaires
-    await prisma.tournamentMercenary.deleteMany({
-      where: { tournamentId: team.tournamentId, userId: { in: memberIds } }
+      // Les nouveaux coéquipiers ne sont plus mercenaires ; les membres retirés le redeviennent
+      await tx.tournamentMercenary.deleteMany({
+        where: { tournamentId: team.tournamentId, userId: { in: members } }
+      });
+      const removed = currentMemberIds.filter((id) => !members.includes(id));
+      if (removed.length > 0) {
+        await tx.tournamentMercenary.createMany({
+          data: removed.map((userId) => ({ tournamentId: team.tournamentId, userId })),
+          skipDuplicates: true
+        });
+      }
+      return { error: null };
     });
+    if (outcome.error) return { success: false, error: outcome.error };
 
-    if (team.tournament.topic) revalidatePath(`/forum/topic/${team.tournament.topic.id}`);
+    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
     return { success: true };
   } catch (e) {
     return { success: false, error: "Erreur lors de la mise à jour" };
@@ -1816,7 +2001,8 @@ export async function updateTeam(teamId: string, name: string, memberIds: string
 }
 
 /**
- * Suppression d'équipe
+ * Suppression d'une équipe par son capitaine. La place libérée fait monter la plus ancienne équipe de la liste
+ * d'attente, dont les membres sont prévenus (carte 186).
  */
 export async function deleteTeam(teamId: string) {
   const session = await getActiveSession();
@@ -1825,13 +2011,18 @@ export async function deleteTeam(teamId: string) {
   try {
     const team = await prisma.tournamentTeam.findUnique({
       where: { id: teamId },
-      include: { tournament: { include: { topic: true } } }
+      select: { id: true, captainId: true, status: true, tournamentId: true, tournament: { select: { topic: { select: { id: true } } } } }
     });
 
     if (!team) return { success: false, error: "Équipe introuvable" };
     if (team.captainId !== session.user.id) return { success: false, error: "Action interdite" };
 
-    await prisma.tournamentTeam.delete({ where: { id: teamId } });
+    const promoted = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, team.tournamentId);
+      await tx.tournamentTeam.delete({ where: { id: teamId } });
+      return team.status === "WAITING_LIST" ? [] : promoteFromWaitingList(tx, team.tournamentId);
+    });
+    await notifyPromotedMembers(promoted, team.tournament.topic?.id);
 
     if (team.tournament.topic) revalidatePath(`/forum/topic/${team.tournament.topic.id}`);
     return { success: true };

@@ -17,6 +17,7 @@ import ConversationList from "./component/ConversationList";
 import ConversationView from "./component/ConversationView";
 import NewConversationModal, { ENCRYPTION_NOTE } from "./component/NewConversationModal";
 import { startConversation } from "./actions";
+import BackButton from "@/common/components/BackButton/BackButton";
 
 function MessagerieContent() {
   const searchParams = useSearchParams();
@@ -63,13 +64,17 @@ function MessagerieContent() {
     <div className="mx-auto w-full max-w-[1232px] px-3 pt-3 font-bb-sans text-base text-bb-text lg:grid lg:h-[calc(100dvh-8.5rem)] lg:min-h-[480px] lg:grid-cols-[minmax(300px,360px)_1fr] lg:gap-4 lg:px-6 lg:pt-4">
       {/* Colonne de la liste ; sur téléphone, cachée quand une conversation est ouverte */}
       <section aria-labelledby="messagerie-title" className={activeId ? "max-lg:hidden lg:flex lg:min-h-0 lg:flex-col" : "lg:flex lg:min-h-0 lg:flex-col"}>
-        {/* Titre et sous-titre sur toute la largeur, puis le bouton « Nouvelle conversation » sur toute la largeur */}
+        {/* Titre et sous-titre sur toute la largeur, puis le bouton « Nouvelle conversation » sur toute la largeur.
+            Sur téléphone, le bouton retour est à gauche du titre, comme dans les autres rubriques (carte 190). */}
         <header className="flex flex-col gap-3 pb-3">
-          <div>
-            <h1 id="messagerie-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
-              Messagerie
-            </h1>
-            <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Vos discussions privées avec les autres coachs</p>
+          <div className="flex items-center gap-3">
+            <BackButton href="/" title="Retour à l'accueil" className="lg:hidden" />
+            <div className="min-w-0 flex-1">
+              <h1 id="messagerie-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
+                Messagerie
+              </h1>
+              <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Vos discussions privées avec les autres coachs</p>
+            </div>
           </div>
           <Button type="button" variant="primary" size="tap" onClick={() => setShowNew(true)} className="w-full gap-1.5">
             <Plus size={18} aria-hidden="true" />

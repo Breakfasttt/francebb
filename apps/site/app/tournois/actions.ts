@@ -1,6 +1,7 @@
 /**
  * Actions serveur pour la gestion des tournois.
- * Gère la clôture, l'annulation, la sauvegarde et le parsing de rapports NAF XML.
+ * Gère la clôture, l'annulation et son retour en arrière (rétablir, carte 187), la sauvegarde et le parsing de
+ * rapports NAF XML.
  */
 "use server";
 
@@ -86,6 +87,48 @@ export async function cancelTournament(tournamentId: string) {
   });
 
   revalidatePath("/tournois");
+  if (tournament.topic?.id) {
+    revalidatePath(`/forum/topic/${tournament.topic.id}`);
+  }
+  return { success: true };
+}
+
+/**
+ * Rétablit un tournoi annulé (carte 187) : organisateur, commissaires ou modération, comme l'annulation. L'annulation
+ * marquait aussi le tournoi terminé : il le reste seulement s'il a déjà des résultats. Les résultats d'un tournoi annulé
+ * ne comptent pas au classement (`getRanking` écarte les tournois annulés) ; rétabli, il compte de nouveau.
+ */
+export async function restoreTournament(tournamentId: string) {
+  const session = await getActiveSession();
+  if (!session?.user) return null;
+
+  const tournament = await prisma.tournament.findUnique({
+    where: { id: tournamentId },
+    include: {
+      commissaires: { select: { id: true } },
+      topic: { select: { id: true } },
+      _count: { select: { results: true } }
+    }
+  });
+
+  if (!tournament) return null;
+
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
+  const isAuthorizedRole = isModerator(session.user.role);
+
+  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+    console.warn(`[restoreTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
+    return null;
+  }
+
+  await prisma.tournament.update({
+    where: { id: tournamentId },
+    data: { isCancelled: false, isFinished: tournament._count.results > 0 }
+  });
+
+  revalidatePath("/tournois");
+  revalidatePath("/classement");
   if (tournament.topic?.id) {
     revalidatePath(`/forum/topic/${tournament.topic.id}`);
   }

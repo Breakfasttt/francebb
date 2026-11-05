@@ -16,8 +16,9 @@
  * - les réglages du guide `/jouer` (première section vide, sections 2 à 5 remplies, sixième vide) et les chaînes
  *   Twitch et YouTube de `/media`. Les valeurs d'avant le test sont remises à la fin.
  *
- * Le lien Discord de l'accueil vient d'un réglage de l'administration gardé en cache une heure par le site : le test
- * vérifie seulement que ses liens existent et s'ouvrent dans un nouvel onglet, sans changer ce réglage.
+ * Le lien Discord de l'accueil vient d'un réglage de l'administration gardé en cache une heure par le site. Depuis la
+ * carte 189, ses liens n'apparaissent que si ce réglage est rempli : le test accepte les deux cas (aucun lien, ou deux
+ * liens qui s'ouvrent dans un nouvel onglet), sans changer ce réglage, et vérifie qu'aucun lien ne mène nulle part (« # »).
  *
  * La liste des prochains tournois est gardée en cache 60 secondes par le site (`unstable_cache`, étiquette
  * « home-tournaments »). Ce cache est enregistré sur le disque dans `.next` et survit au redémarrage du serveur de test,
@@ -183,13 +184,17 @@ test.describe("accueil", () => {
     for (const [name, href] of TILES) {
       await expect(main.getByRole("link", { name }).first()).toHaveAttribute("href", href);
     }
-    // Deux liens Discord depuis la carte 155 : le bouton du bandeau et la ligne du bloc « La communauté »
+    // La phrase qui explique le site est visible, aussi sur téléphone (carte 189)
+    await expect(main.getByText(/Échangez sur le forum/)).toBeVisible();
+    // Liens Discord (carte 155) : le bouton du bandeau et la ligne du bloc « La communauté », seulement si
+    // l'invitation est réglée (carte 189). Aucun lien de l'accueil ne mène nulle part.
     const discord = main.getByRole("link", { name: /Discord/ });
-    await expect(discord).toHaveCount(2);
+    expect([0, 2]).toContain(await discord.count());
     for (const link of await discord.all()) {
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute("target", "_blank");
     }
+    await expect(main.locator('a[href="#"]')).toHaveCount(0);
 
     // « Créer » une ligue ou un tournoi envoie un visiteur vers la connexion, en gardant la page visée. On regarde les
     // blocs de rubriques seulement : quand la liste des tournois est vide (cache d'un lancement précédent), son

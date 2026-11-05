@@ -56,7 +56,7 @@ import {
 } from "lucide-react";
 import { Button, Card, ConfirmDialog, Field, PageNav, Sheet, SheetContent, Textarea, cn, toast } from "@bbfrance/ui";
 import { deleteTopic, isFollowingTopic, restoreTopic, toggleArchiveTopic, toggleFollowTopic, togglePinTopic, toggleTournamentRegistrations } from "@/app/forum/actions";
-import { cancelTournament, finishTournament, unfinishTournament } from "@/app/tournois/actions";
+import { cancelTournament, finishTournament, restoreTournament, unfinishTournament } from "@/app/tournois/actions";
 import LockButton from "@/app/forum/component/LockButton";
 import MoveTopicModal from "@/app/forum/component/MoveTopicModal";
 import EditTopicTitleModal from "@/app/forum/component/EditTopicTitleModal";
@@ -122,6 +122,7 @@ interface ToolsContextValue extends TopicToolsProps {
     finish: () => void;
     unfinish: () => void;
     cancel: () => void;
+    restore: () => void;
     toggleRegistrations: () => void;
     togglePin: () => void;
     toggleArchive: () => void;
@@ -237,7 +238,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const handleCancel = () =>
     openConfirm(
       "Annuler le tournoi",
-      "🚨 ATTENTION : Voulez-vous vraiment ANNULER ce tournoi ? Cette action est définitive.",
+      "Voulez-vous vraiment annuler ce tournoi ? Il sera marqué « Annulé » et ses résultats ne compteront pas au classement. Vous pourrez le rétablir plus tard.",
       async () => {
         const res = await cancelTournament(tournamentId!);
         if (res?.success) {
@@ -247,6 +248,24 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       },
       true,
       "Annuler le tournoi"
+    );
+
+  // Rétablir un tournoi annulé (carte 187) : avant, une annulation ne se défaisait pas
+  const handleRestore = () =>
+    openConfirm(
+      "Rétablir le tournoi",
+      "Voulez-vous rétablir ce tournoi ? Il ne sera plus marqué « Annulé », et ses résultats éventuels compteront de nouveau au classement.",
+      async () => {
+        const res = await restoreTournament(tournamentId!);
+        if (res?.success) {
+          toast.success("Tournoi rétabli");
+          router.refresh();
+        } else {
+          toast.error("Le tournoi n'a pas pu être rétabli.");
+        }
+      },
+      false,
+      "Rétablir le tournoi"
     );
 
   const handleToggleRegistrations = () => {
@@ -384,6 +403,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       finish: handleFinish,
       unfinish: handleUnfinish,
       cancel: handleCancel,
+      restore: handleRestore,
       toggleRegistrations: handleToggleRegistrations,
       togglePin: handleTogglePin,
       toggleArchive: handleToggleArchive,
@@ -630,6 +650,15 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
               </Button>
             </>
           )}
+        </Group>
+      )}
+
+      {/* Tournoi annulé (carte 187) : les autres outils du tournoi sont cachés, seul « Rétablir le tournoi » reste */}
+      {t.isTournament && t.canEditTournament && t.isCancelled && (
+        <Group asCards={asCards} title="Gestion du tournoi" label="Gestion du tournoi">
+          <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={() => t.run(t.open.restore)} disabled={t.isPending}>
+            {ico(RotateCcw)} Rétablir le tournoi
+          </Button>
         </Group>
       )}
 

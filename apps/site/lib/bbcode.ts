@@ -255,6 +255,8 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
   });
 
   // 7. Replace Images
+  // Une image ou une vidéo placée à gauche ou à droite du texte porte la classe « bb-float » : sur téléphone (sous
+  // 1024 pixels), bbcode.css annule le placement et la met en pleine largeur, sinon le texte voisin est écrasé (carte 190).
   html = html.replace(
     /\[img(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\](.*?)\[\/img\]/gi,
     (match, align, wrap, thumb, url) => {
@@ -264,6 +266,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
       let style = "max-width:100%; border-radius:8px;";
       if (isThumb) style += " max-width: 400px; max-height: 250px; object-fit: contain;";
       const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
+      const floatClass = isWrap && (align === "left" || align === "right") ? ' class="bb-float"' : "";
       if (isWrap) {
         if (align === "left") style += " float: left; margin: 0.3rem 1rem 0.3rem 0;";
         else if (align === "right") style += " float: right; margin: 0.3rem 0 0.3rem 1rem;";
@@ -273,7 +276,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
         else if (align === "right") style += " display: block; margin: 0.8rem 0; margin-left: auto;";
         else style += " display: block; margin: 0.8rem auto;";
       }
-      return `<img src="${safeUrl}" alt="Image" style="${style}" loading="lazy" />`;
+      return `<img src="${safeUrl}" alt="Image du message"${floatClass} style="${style}" loading="lazy" />`;
     }
   );
 
@@ -283,6 +286,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
     let style = "position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:8px;";
     let outerStyle = `margin: 1rem 0; clear: both; width: 100%; max-width: ${isThumb ? '480px' : '800px'};`;
     const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
+    const floatClass = isWrap && (align === "left" || align === "right") ? ' class="bb-float"' : "";
     if (isWrap) {
       if (align === "left") outerStyle = `float: left; width: 45%; max-width: ${isThumb ? '350px' : '45%'}; margin: 0.3rem 1.2rem 0.3rem 0;`;
       else if (align === "right") outerStyle = `float: right; width: 45%; max-width: ${isThumb ? '350px' : '45%'}; margin: 0.3rem 0 0.3rem 1.2rem;`;
@@ -292,7 +296,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
       else if (align === "right") outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem 0; margin-left: auto;`;
       else outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem auto;`;
     }
-    return `<div style="${outerStyle}"><div style="${style}"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
+    return `<div${floatClass} style="${outerStyle}"><div style="${style}"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
   };
 
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
