@@ -7,6 +7,7 @@ import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { Suspense } from "react";
 import CarteClient from "./component/CarteClient";
 
 export const dynamic = "force-dynamic";
@@ -52,7 +53,10 @@ export default async function CartePage() {
         />
       </div>
 
-      <CarteClient initialTournaments={nextTournaments} initialLigues={ligues} />
+      {/* Suspense : la carte lit son choix tournois ou ligues dans l'adresse (useSearchParams), ce que Next.js demande */}
+      <Suspense fallback={null}>
+        <CarteClient initialTournaments={nextTournaments} initialLigues={ligues} />
+      </Suspense>
     </div>
   );
 }

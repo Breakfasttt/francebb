@@ -32,10 +32,12 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
+  // Erreur affichée sous la liste des raisons (carte 194)
+  const [reasonError, setReasonError] = useState<string>();
   const [isPending, startTransition] = useTransition();
   const handleSubmit = () => {
     if (!reason) {
-      toast.error("Veuillez choisir une raison");
+      setReasonError("Choisissez une raison.");
       return;
     }
 
@@ -70,7 +72,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
             Vous signalez : <strong className="font-semibold break-words text-bb-text">{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
           </p>
 
-          <div role="group" aria-labelledby="report-reason-label" className="flex flex-col gap-2">
+          <div role="group" aria-labelledby="report-reason-label" aria-describedby={reasonError ? "report-reason-error" : undefined} className="flex flex-col gap-2">
             <p id="report-reason-label" className="m-0 text-sm font-semibold text-bb-text">Raison du signalement</p>
             {REPORT_REASONS.map((r) => {
               const selected = reason === r;
@@ -81,7 +83,10 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
                   variant="secondary"
                   size="tap"
                   aria-pressed={selected}
-                  onClick={() => setReason(r)}
+                  onClick={() => {
+                    setReason(r);
+                    setReasonError(undefined);
+                  }}
                   className={cn("w-full justify-between text-left font-semibold whitespace-normal", selected && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
                 >
                   {r}
@@ -89,6 +94,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
                 </Button>
               );
             })}
+            {reasonError && <p id="report-reason-error" role="alert" className="m-0 text-sm text-bb-danger-text">{reasonError}</p>}
           </div>
 
           <Field label="Précisions (facultatif)" htmlFor="report-details">

@@ -117,6 +117,7 @@ export default function PostAuthorSheet({ open, onOpenChange, author, roleLabel,
                       className="inline-flex min-h-11 items-center font-semibold text-bb-accent-text underline-offset-2 hover:underline lg:min-h-0"
                     >
                       {ligue.acronym || ligue.name}
+                      {ligue.acronym && <span className="sr-only"> ({ligue.name})</span>}
                     </Link>
                   ))}
                   {author.ligueCustom && <span>{author.ligueCustom}</span>}

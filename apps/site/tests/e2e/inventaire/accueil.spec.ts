@@ -172,6 +172,61 @@ const TILES: [RegExp, string][] = [
   [/^Ressources/, "/ressources"],
 ];
 
+/**
+ * Derniers messages du forum (carte 205) : un message d'un forum public et un message du forum réservé à la
+ * modération, datés d'une minute dans le futur pour passer devant les messages des autres tests. La liste est gardée
+ * en cache 30 secondes par le site : on recharge jusqu'à la voir. Les tailles ordinateur et téléphone tournent en
+ * même temps : chacune a ses propres messages (nom du projet dans l'identifiant), sinon la fin de l'une supprimerait
+ * ceux que l'autre attend encore.
+ */
+const latestPosts = (project: string) => ({
+  public: { id: `e2e_acc_post_public_${project}`, content: "Inv Accueil message public [b]en gras[/b]" },
+  secret: { id: `e2e_acc_post_secret_${project}`, content: "Inv Accueil message réservé" },
+});
+
+test.describe("accueil, derniers messages du forum", () => {
+  test.beforeAll(async ({}, testInfo) => {
+    const posts = latestPosts(testInfo.project.name);
+    await db(async (prisma) => {
+      const soon = new Date(Date.now() + 60_000);
+      await prisma.post.deleteMany({ where: { id: { in: [posts.public.id, posts.secret.id] } } });
+      await prisma.post.create({ data: { ...posts.public, topicId: E2E.topicId, authorId: E2E.coachId, createdAt: soon } });
+      await prisma.post.create({ data: { ...posts.secret, topicId: E2E.secretTopicId, authorId: E2E.modoId, createdAt: soon } });
+    });
+  });
+
+  test.afterAll(async ({}, testInfo) => {
+    const posts = latestPosts(testInfo.project.name);
+    await db((prisma) => prisma.post.deleteMany({ where: { id: { in: [posts.public.id, posts.secret.id] } } }));
+  });
+
+  test("un visiteur voit les messages publics, jamais ceux d'un forum réservé", async ({ page }, testInfo) => {
+    test.setTimeout(120_000);
+    await expect(async () => {
+      await page.goto("/", { waitUntil: "networkidle" });
+      const block = content(page).getByRole("region", { name: "Derniers messages" });
+      // Début du message sans les balises BBCode, et lien permanent vers le message
+      await expect(block.getByRole("link", { name: /Inv Accueil message public en gras/ }).first()).toHaveAttribute("href", /^\/forum\/post\/e2e_acc_post_public_/, { timeout: 2_000 });
+    }).toPass({ timeout: 90_000, intervals: [5_000] });
+    const block = content(page).getByRole("region", { name: "Derniers messages" });
+    await expect(block.getByText("Inv Accueil message réservé")).toHaveCount(0);
+    await expect(block.getByText(E2E.secretTopicTitle)).toHaveCount(0);
+    // Le lien « Voir le forum » tient sur une ligne et fait 44 pixels de haut
+    expect((await block.getByRole("link", { name: "Voir le forum" }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await page.screenshot({ path: testInfo.outputPath("accueil-derniers-messages.png"), fullPage: true });
+  });
+
+  test("un modérateur voit aussi le message du forum réservé", async ({ page }) => {
+    test.setTimeout(120_000);
+    await loginAs(page, E2E.modoId);
+    await expect(async () => {
+      await page.goto("/", { waitUntil: "networkidle" });
+      const block = content(page).getByRole("region", { name: "Derniers messages" });
+      await expect(block.getByRole("link", { name: /Inv Accueil message réservé/ }).first()).toHaveAttribute("href", /^\/forum\/post\/e2e_acc_post_secret_/, { timeout: 2_000 });
+    }).toPass({ timeout: 90_000, intervals: [5_000] });
+  });
+});
+
 test.describe("accueil", () => {
   test("titre, rubriques et liens « Créer » pour un visiteur", async ({ page }, testInfo) => {
     await page.goto("/", { waitUntil: "networkidle" });
@@ -181,14 +236,17 @@ test.describe("accueil", () => {
     await expect(main.getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
     // « Aller au forum », le bouton mis en avant (carte 155)
     await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
+    // Cherchés dans le bloc des rubriques : depuis la carte 205, les derniers messages du forum, dont le titre peut
+    // commencer par les mêmes mots (« Tournois… »), sont aussi sur l'accueil
+    const sections = main.getByRole("navigation", { name: "Rubriques du site" });
     for (const [name, href] of TILES) {
-      await expect(main.getByRole("link", { name }).first()).toHaveAttribute("href", href);
+      await expect(sections.getByRole("link", { name }).first()).toHaveAttribute("href", href);
     }
     // La phrase qui explique le site est visible, aussi sur téléphone (carte 189)
     await expect(main.getByText(/Échangez sur le forum/)).toBeVisible();
     // Liens Discord (carte 155) : le bouton du bandeau et la ligne du bloc « La communauté », seulement si
     // l'invitation est réglée (carte 189). Aucun lien de l'accueil ne mène nulle part.
-    const discord = main.getByRole("link", { name: /Discord/ });
+    const discord = main.getByRole("link", { name: /^(Discord|Rejoindre le Discord)/ });
     expect([0, 2]).toContain(await discord.count());
     for (const link of await discord.all()) {
       await expect(link).toBeVisible();
@@ -227,10 +285,13 @@ test.describe("accueil", () => {
       await page.goto("/", { waitUntil: "networkidle" });
       const main = content(page);
       await expect(main.getByRole("heading", { name: /prochains tournois/i })).toBeVisible({ timeout: 2_000 });
+      // Cherchés dans leur bloc : depuis la carte 205, les messages de leurs sujets peuvent aussi figurer dans
+      // « Derniers messages », sous le titre du sujet (le nom du tournoi)
+      const tournaments = main.getByRole("region", { name: /prochains tournois/i });
       for (const t of TOURNAMENTS.slice(0, 3)) {
-        await expect(main.getByRole("link", { name: new RegExp(t.name) })).toHaveAttribute("href", `/forum/topic/${t.topicId}`, { timeout: 2_000 });
+        await expect(tournaments.getByRole("link", { name: new RegExp(t.name) })).toHaveAttribute("href", `/forum/topic/${t.topicId}`, { timeout: 2_000 });
       }
-      await expect(main.getByRole("link", { name: new RegExp(TOURNAMENTS[3].name) })).toHaveCount(0);
+      await expect(tournaments.getByRole("link", { name: new RegExp(TOURNAMENTS[3].name) })).toHaveCount(0);
     }).toPass({ timeout: 120_000, intervals: [5_000] });
 
     const main = content(page);

@@ -59,7 +59,7 @@ export function ComposeActionBar({ children, className }: { children: ReactNode;
       data-page-bottom-bar="always"
       className={cn(
         "flex items-center gap-2",
-        "max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-[4000] max-lg:border-t max-lg:border-bb-border max-lg:bg-bb-surface max-lg:px-3 max-lg:pt-2 max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))]",
+        "max-lg:fixed max-lg:inset-x-0 max-lg:bottom-0 max-lg:z-[var(--z-index-page-bar)] max-lg:border-t max-lg:border-bb-border max-lg:bg-bb-surface max-lg:px-3 max-lg:pt-2 max-lg:pb-[max(0.5rem,env(safe-area-inset-bottom))]",
         "lg:mt-4 lg:justify-end",
         className
       )}

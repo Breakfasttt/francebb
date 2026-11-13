@@ -35,7 +35,7 @@ function report({ label, code, output, seconds }) {
 const start = Date.now();
 const types = await Promise.all(TYPED.map((dir) => run(`types ${dir}`, "npx tsc --noEmit", dir)));
 types.forEach(report);
-const unit = await run("tests unitaires apps/site", "node --experimental-strip-types --no-warnings --test tests/unit/*.test.mjs", "apps/site");
+const unit = await run("tests unitaires apps/site", "node --experimental-strip-types --no-warnings --import ./tests/unit/alias-loader.mjs --test tests/unit/*.test.mjs", "apps/site");
 report(unit);
 const lint = await run("ESLint (cliquet)", "node scripts/lint-ratchet.mjs", "apps/site");
 report(lint);

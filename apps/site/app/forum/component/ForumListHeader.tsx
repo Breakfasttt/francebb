@@ -12,13 +12,15 @@ interface ForumListHeaderProps {
   /** Adresse du bouton retour du téléphone ; sans adresse, il revient à la page précédente. */
   backHref?: string;
   backTitle?: string;
+  /** Revient à la page précédente quand elle fait partie du site, `backHref` sinon (voir `BackButton`, carte 196). */
+  backPreferHistory?: boolean;
   children?: ReactNode;
 }
 
-export default function ForumListHeader({ title, subtitle, backHref, backTitle = "Retour", children }: ForumListHeaderProps) {
+export default function ForumListHeader({ title, subtitle, backHref, backTitle = "Retour", backPreferHistory, children }: ForumListHeaderProps) {
   return (
     <header className="flex flex-wrap items-end gap-3 pt-4 pb-4 lg:pt-6">
-      <BackButton href={backHref} title={backTitle} className="self-center lg:hidden" />
+      <BackButton href={backHref} title={backTitle} preferHistory={backPreferHistory} className="self-center lg:hidden" />
       <div className="min-w-0 flex-1">
         <h1 className="m-0 flex flex-wrap items-center gap-2 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
           {title}

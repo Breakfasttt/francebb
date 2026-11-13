@@ -244,9 +244,10 @@ export default function ProfileSidebar({
                       key={ligue.id}
                       href={`/ligue/${ligue.id}`}
                       title={ligue.name}
-                      className="inline-flex min-h-8 items-center rounded-bb-sm border border-bb-accent-text px-2 text-sm font-bold text-bb-accent-text no-underline hover:bg-bb-accent-soft"
+                      className="inline-flex min-h-11 items-center rounded-bb-sm border border-bb-accent-text px-2 text-sm font-bold text-bb-accent-text no-underline hover:bg-bb-accent-soft lg:min-h-8"
                     >
                       {ligue.acronym || ligue.name}
+                      {ligue.acronym && <span className="sr-only"> ({ligue.name})</span>}
                     </Link>
                   ))}
                   {customLigues.map((custom) => (

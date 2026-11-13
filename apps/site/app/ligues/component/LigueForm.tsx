@@ -16,6 +16,7 @@ import Link from "next/link";
 import { Check, FileText, Globe, ImageIcon, Map, MapPin, Save, Shield, Users } from "lucide-react";
 import { Button, Card, Field, Input, Label, Select, Sheet, SheetContent, Skeleton, cn, toast, DESKTOP_QUERY, useMediaQuery } from "@bbfrance/ui";
 import ActionForm from "@/common/components/Form/ActionForm";
+import SubmitButton from "@/common/components/Form/SubmitButton";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 import type { Rank } from "@/common/components/UserAvatar/UserAvatar";
@@ -244,9 +245,9 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
               <span aria-hidden="true" className="text-bb-accent-text">{submitIcon}</span>
               Publication
             </h2>
-            <Button type="submit" variant="primary" size="tap" className="w-full">
+            <SubmitButton className="w-full">
               {submitLabel}
-            </Button>
+            </SubmitButton>
             <Button asChild variant="secondary" size="tap" className="w-full">
               <Link href={cancelHref}>Annuler</Link>
             </Button>
@@ -258,10 +259,10 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
         <Button asChild variant="secondary" size="tap">
           <Link href={cancelHref}>Annuler</Link>
         </Button>
-        <Button type="submit" variant="primary" size="tap" className="flex-1">
+        <SubmitButton className="flex-1" icon={submitIcon}>
           {/* Libellé court sur téléphone : « Enregistrer les modifications » ne tient pas sur 360 pixels */}
-          {submitIcon} {isEdit ? "Enregistrer" : submitLabel}
-        </Button>
+          {isEdit ? "Enregistrer" : submitLabel}
+        </SubmitButton>
       </ComposeActionBar>
 
       <Sheet open={isMapOpen} onOpenChange={setIsMapOpen}>

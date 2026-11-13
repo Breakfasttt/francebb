@@ -1,8 +1,6 @@
 import { getSession } from "@/lib/authGuard";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
-import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
-import DebugThemeWidget from "@/common/components/DebugThemeWidget/DebugThemeWidget";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
 import { Github, BarChart3, Image as ImageIcon } from "lucide-react";
 import type { Metadata } from "next";
@@ -18,6 +16,7 @@ import { getNavCounts } from "@/common/components/AppShell/navCounts";
 import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import BBCodeInteractions from "@/common/components/BBCodeContent/BBCodeInteractions";
 import NavigationProgress from "@/common/components/NavigationProgress/NavigationProgress";
+import InAppHistoryTracker from "@/common/components/BackButton/InAppHistoryTracker";
 import { Suspense } from "react";
 import "./tailwind.css";
 
@@ -77,8 +76,6 @@ export default async function RootLayout({
 
         <ThemeProvider attribute="data-theme" defaultTheme={userTheme} preferStoredTheme={!session?.user?.id} enableSystem={false}>
         <AuthProvider session={session}>
-          <DebugAuthWidget />
-          <DebugThemeWidget />
         <BannedRedirect isBanned={isBanned} />
           <Toaster />
           <BBCodeInteractions />
@@ -87,6 +84,8 @@ export default async function RootLayout({
           <Suspense fallback={null}>
             <NavigationProgress />
           </Suspense>
+          {/* Pages du site visitées dans l'onglet : le bouton retour s'en sert pour ne pas faire quitter le site (carte 196) */}
+          <InAppHistoryTracker />
           
           <AppShell
             user={user ? { id: user.id, name: user.name, image: user.image } : null}

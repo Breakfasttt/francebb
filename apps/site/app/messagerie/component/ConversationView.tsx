@@ -156,7 +156,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
     <div
       ref={frameRef}
       data-fullscreen=""
-      className="flex flex-col bg-bb-surface max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--chat-top,0px)] max-lg:z-[5001] max-lg:h-[var(--chat-height,100dvh)] lg:h-full lg:min-h-0"
+      className="flex flex-col bg-bb-surface max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--chat-top,0px)] max-lg:z-[var(--z-index-screen)] max-lg:h-[var(--chat-height,100dvh)] lg:h-full lg:min-h-0"
     >
       {/* En-tête : retour (téléphone), avatar, titre, participants et menu « ⋯ » */}
       <header className="flex shrink-0 items-center gap-2 border-b border-bb-border bg-bb-surface px-2 py-2 lg:px-4">
@@ -236,6 +236,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
           defaultValue={content}
           onChange={setContent}
           placeholder="Écrivez votre message..."
+          ariaLabel="Votre message"
           maxLength={MAX_LENGTH}
           rows={2}
         />

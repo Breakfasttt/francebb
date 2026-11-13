@@ -7,6 +7,7 @@
  * Les filtres actifs sont rappelés en pastilles au-dessus des résultats. La recherche elle-même (lecture des
  * paramètres de l'adresse, conditions, tri) est la même qu'avant la refonte ; seul l'affichage change.
  */
+import { getReferenceLists } from "@/lib/referenceData";
 import Link from "next/link";
 import { SearchX } from "lucide-react";
 import { Card, EmptyState, PageNav } from "@bbfrance/ui";
@@ -146,10 +147,7 @@ export default async function TournamentsPage({
   }
 
   // Régions et départements de la liste de référence, la même que celle du formulaire de tournoi (carte 129)
-  const [regionRows, departmentRows] = await Promise.all([
-    prisma.referenceData.findMany({ where: { group: "REGION_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
-    prisma.referenceData.findMany({ where: { group: "DEPARTEMENT_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
-  ]);
+  const { REGION_FRANCE: regionRows, DEPARTEMENT_FRANCE: departmentRows } = await getReferenceLists(["REGION_FRANCE", "DEPARTEMENT_FRANCE"] as const);
   // Liste de référence vide (base neuve) : on se rabat sur la liste des régions de lib/france.ts
   const places = {
     regions: regionRows.length > 0 ? regionRows : Object.keys(DEPARTMENTS_BY_REGION).map((key) => ({ key, label: key })),
@@ -203,7 +201,7 @@ export default async function TournamentsPage({
           {tournaments.length > 0 ? (
             <>
               {view === "grid" ? (
-                <div className="grid gap-3 md:grid-cols-2">
+                <div className="grid gap-3 lg:grid-cols-2">
                   {tournaments.map((tournament) => (
                     <TournamentCard key={tournament.id} tournament={tournament} now={now} />
                   ))}

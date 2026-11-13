@@ -15,6 +15,8 @@ import { prisma } from "@/lib/prisma";
 import { effectiveReadPosition } from "@/lib/forumReadPosition";
 import { forumPostHrefFor, TOPIC_POSTS_PER_PAGE } from "@/lib/forumPostLink";
 import { isTopicClosedFor } from "@/lib/forumWriteRules";
+import { canEditPost, canReplyToTopic } from "@/lib/forumRights";
+import { canManagePayments as canPayTournament, canManageTournament } from "@/lib/tournamentRights";
 import { isModerator } from "@/lib/roles";
 import {
   hidePostContent,
@@ -177,11 +179,10 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   const displayViews = topic.views || 0;
 
-  const isTournamentOrganizer = topic.tournament?.organizerId === currentUserId;
-  const isTournamentCommissaire = topic.tournament?.commissaires.some((c) => c.id === currentUserId);
-  const canEditTournament = isUserModerator || isTournamentOrganizer || isTournamentCommissaire;
-  // L'état de paiement des inscrits ne regarde que l'organisateur et les commissaires (cartes 174 et 177)
-  const canManagePayments = !!(isTournamentOrganizer || isTournamentCommissaire);
+  // Droits sur le tournoi, écrits une seule fois (lib/tournamentRights.ts, carte 201). L'état de paiement des inscrits
+  // ne regarde que l'organisateur et les commissaires (cartes 174 et 177).
+  const canEditTournament = !!topic.tournament && canManageTournament({ id: currentUserId, isModerator: isUserModerator }, topic.tournament);
+  const canManagePayments = !!topic.tournament && canPayTournament({ id: currentUserId }, topic.tournament);
 
   // Ce que reçoit le module d'inscription, qui s'exécute dans le navigateur (carte 174) : les quelques champs du
   // tournoi qu'il lit, et l'état de paiement de chaque inscription seulement pour l'organisateur et les commissaires
@@ -244,10 +245,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   // Peut-il répondre ? Membre, et sujet ni verrouillé ni archivé (carte 169), dans un forum non verrouillé (un
   // modérateur peut toujours répondre). Un sujet supprimé n'accepte aucune réponse, même d'un modérateur : il faut
   // d'abord le restaurer.
-  const canReply =
-    !!currentUserId &&
-    !topic.isDeleted &&
-    !isTopicClosedFor({ isLocked: topic.isLocked, isArchived: topic.isArchived, forumIsLocked: topic.forum.isLocked }, isUserModerator);
+  // Droits calculés à un seul endroit (lib/forumRights.ts, carte 200) et transmis aux composants, qui ne les
+  // recalculent plus : « Répondre » et les réactions, « Modifier » et « Supprimer » d'un message (`viewer`, déclaré plus haut, sert aussi au masquage des messages).
+  const topicState = { isLocked: topic.isLocked, isArchived: topic.isArchived, forumIsLocked: topic.forum.isLocked };
+  const canReply = canReplyToTopic(viewer, { ...topicState, isDeleted: topic.isDeleted });
+  const topicClosed = isTopicClosedFor(topicState, false);
 
   return (
     <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
@@ -258,6 +260,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         currentPage={safeCurrentPage}
         totalPages={totalPages}
         isModerator={isUserModerator}
+        canReply={canReply}
         isPinned={topic.isSticky}
         isLocked={topic.isLocked}
         isForumLocked={topic.forum.isLocked}
@@ -334,8 +337,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                   <RegistrationModule
                     tournament={registrationTournament}
                     currentUser={session?.user}
-                    isOrganizer={!!isTournamentOrganizer}
-                    isCommissioner={!!isTournamentCommissaire}
+                    isOrganizer={!!currentUserId && topic.tournament?.organizerId === currentUserId}
+                    isCommissioner={!!currentUserId && !!topic.tournament?.commissaires.some((c) => c.id === currentUserId)}
                   />
                 )}
               </section>
@@ -361,6 +364,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 isFirstPostAlwaysVisible={true}
                 isBlocked={blockedUserIds.includes(firstPost.authorId)}
                 canReply={canReply}
+                canEdit={canEditPost(viewer, topicClosed, firstPost.authorId)}
                 topicHasReplies={totalPostCount > 1}
               />
             )}
@@ -383,6 +387,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 firstPostId={posts[0]?.id}
                 isBlocked={blockedUserIds.includes(post.authorId)}
                 canReply={canReply}
+                canEdit={canEditPost(viewer, topicClosed, post.authorId)}
                 topicHasReplies={totalPostCount > 1}
               />
             ))}

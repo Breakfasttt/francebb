@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import TournamentResultsEditor from "./TournamentResultsEditor";
 import { isModerator } from "@/lib/roles";
+import { canManageTournament } from "@/lib/tournamentRights";
 import ComposeScreen from "@/app/forum/component/ComposeScreen";
 
 /**
@@ -41,11 +42,9 @@ export default async function TournamentResultsPage({ params }: { params: Promis
   if (!tournament) notFound();
 
   // Autorisation : Organisateur, Commissaire ou modération (même règle que saveTournamentResults)
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isSuperAdmin = isModerator(session.user.role || 'USER');
-
-  if (!isOrganizer && !isCommissaire && !isSuperAdmin) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     redirect(`/forum/topic/${tournament.topic?.id || ''}`);
   }
 

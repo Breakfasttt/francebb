@@ -7,7 +7,11 @@
  * - Puis toutes les rubriques, rangées en trois blocs : « Débuter », « Jouer en compétition » (Tournois et Ligues y
  *   ont leur lien « Créer » ; pour un visiteur, il mène à la connexion, qui renvoie ensuite vers le formulaire) et
  *   « La communauté ».
- * - Enfin, un article tiré au hasard. S'il n'y a aucun article, ce bloc n'est pas affiché.
+ * - Les trois derniers messages du forum (carte 205), mis à jour sans recharger la page (`LatestPosts`), et l'article
+ *   tiré au hasard (s'il n'y a aucun article, ce bloc n'est pas affiché). Sur ordinateur, ils sont côte à côte.
+ * - Les rubriques viennent en dernier : sur téléphone, elles répètent la barre basse et le panneau « Plus », et sont
+ *   donc compactes (le nom seul, sans la phrase de description).
+ * Un membre connecté voit un bandeau plus court (carte 205) : la phrase qui présente le site est réservée au visiteur.
  * Les titres des trois blocs viennent de NAV_GROUPS (navItems.ts), partagés avec le panneau « Plus » (carte 189). Les
  * liens vers le Discord n'apparaissent que si l'invitation est réglée dans l'administration (carte 189).
  */
@@ -19,9 +23,12 @@ import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
 import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import { NAV_GROUPS, type NavGroupId } from "@/common/components/AppShell/navItems";
 import { Button, cn } from "@bbfrance/ui";
-import { ChevronRight, ExternalLink, MessageSquare, Plus } from "lucide-react";
+import { ArrowRight, ChevronRight, ExternalLink, MessageSquare, Plus } from "lucide-react";
 import { unstable_cache } from "next/cache";
 import Link from "next/link";
+import { getForumAccess } from "@/lib/forumAccess";
+import { getLatestPosts } from "@/lib/homeLatestPosts";
+import LatestPosts from "@/app/component/LatestPosts";
 
 // Cache pour les tournois (60 s). L'étiquette « home-tournaments » permet de retrouver ce cache (le vider, ou le
 // renouveler par `revalidateTag`) : le test tests/e2e/inventaire/accueil.spec.ts s'en sert pour effacer la liste
@@ -71,6 +78,15 @@ async function pickRandomArticle(count: number) {
   return randomArticles[0] ?? null;
 }
 
+/**
+ * Places d'un tournoi : « 5 / 16 places », ou « 5 inscrits » quand il n'a pas de nombre maximum (carte 205 ; l'ancien
+ * « 5 / ∞ places » était peu clair).
+ */
+function placesText(taken: number, max: number | null | undefined): string {
+  if (max) return `${taken} / ${max} places`;
+  return `${taken} inscrit${taken > 1 ? "s" : ""}`;
+}
+
 /** Contour de focus clavier commun aux liens de l'accueil. */
 const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus";
 
@@ -78,7 +94,7 @@ const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-
 const blockTitle = "m-0 border-0 p-0 text-xl leading-tight font-extrabold text-bb-text normal-case not-italic";
 
 /** Petit titre en capitales, en couleur d'accent, au-dessus d'un contenu (« La communauté française »…). */
-const eyebrow = "text-xs font-bold tracking-[0.08em] text-bb-accent-text uppercase lg:text-[0.8rem]";
+const eyebrow = "text-sm font-bold tracking-[0.06em] text-bb-accent-text uppercase";
 
 /** Un lien d'un bloc de rubriques : le nom, une courte description, et éventuellement un lien « Créer » à droite. */
 interface SectionLink {
@@ -94,26 +110,27 @@ interface SectionLink {
 /** Un bloc de rubriques : un titre, une phrase, puis une liste de liens séparés par un filet. */
 function SectionBlock({ id, title, description, links }: { id: string; title: string; description: string; links: SectionLink[] }) {
   return (
-    <section aria-labelledby={id} className="flex flex-col gap-3 rounded-bb-lg border border-bb-border bg-bb-surface px-4 pt-[18px] pb-1.5 lg:px-6 lg:pt-[22px] lg:pb-2">
+    <section aria-labelledby={id} className="flex flex-col gap-2 rounded-bb-lg border border-bb-border bg-bb-surface px-4 pt-4 pb-1 lg:gap-3 lg:px-6 lg:pt-[22px] lg:pb-2">
       <div className="flex flex-col gap-1">
         <h2 id={id} className={blockTitle}>{title}</h2>
-        <p className="m-0 text-sm text-bb-text-muted">{description}</p>
+        {/* Sur téléphone, la phrase du bloc et celles des liens sont masquées : les rubriques y sont compactes */}
+        <p className="m-0 hidden text-sm text-bb-text-muted lg:block">{description}</p>
       </div>
       <ul className="m-0 flex list-none flex-col p-0">
         {links.map((link) => {
           const content = (
             <>
-              <span className="flex items-center gap-1.5 text-base font-bold text-bb-text lg:text-[0.95rem]">
+              <span className="flex items-center gap-1.5 text-base font-bold text-bb-text">
                 {link.label}
                 {link.external && <ExternalLink size={14} aria-hidden="true" className="shrink-0 text-bb-text-muted" />}
                 {link.external && <span className="sr-only">(nouvel onglet)</span>}
               </span>
-              <span className="text-[0.8rem] text-bb-text-muted">{link.description}</span>
+              <span className="hidden text-sm text-bb-text-muted lg:block">{link.description}</span>
             </>
           );
-          const linkClass = `flex min-h-14 flex-1 flex-col justify-center gap-0.5 rounded-bb-md py-1.5 no-underline ${focusRing}`;
+          const linkClass = `flex min-h-12 flex-1 flex-col justify-center gap-0.5 rounded-bb-md py-1.5 no-underline lg:min-h-14 ${focusRing}`;
           return (
-            <li key={link.label} className="flex min-h-14 items-center gap-2.5 border-t border-bb-border">
+            <li key={link.label} className="flex min-h-12 items-center gap-2.5 border-t border-bb-border lg:min-h-14">
               {link.external ? (
                 <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>{content}</a>
               ) : (
@@ -139,13 +156,16 @@ function SectionBlock({ id, title, description, links }: { id: string; title: st
 export default async function Home() {
   const session = await getActiveSession();
   const isAuth = !!session?.user;
+  // Prénom ou pseudo du membre pour son bandeau (« Bon retour, … ») ; vide pour un visiteur
+  const memberName = isAuth ? session.user.name || "coach" : null;
 
   // 1. Requêtes parallélisées (certaines sont cachées)
   const [
     nextTournaments,
     discordInvite,
     tournamentForum,
-    articlesCount
+    articlesCount,
+    latestPosts
   ] = await Promise.all([
     getCachedTournaments(),
     getCachedDiscordInvite(),
@@ -153,7 +173,9 @@ export default async function Home() {
       where: { isTournamentForum: true },
       select: { id: true }
     }),
-    prisma.article.count({ where: { isModerated: false } })
+    prisma.article.count({ where: { isModerated: false } }),
+    // Derniers messages des forums ouverts au lecteur (carte 205)
+    getForumAccess().then(({ roles }) => getLatestPosts(roles))
   ]);
 
   // 2. Sélection d'un article (on reste dynamique ici pour le hasard)
@@ -194,19 +216,23 @@ export default async function Home() {
   }));
 
   return (
-    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-7 px-4 pt-5 pb-10 font-bb-sans text-base text-bb-text lg:gap-8 lg:px-6 lg:pt-10">
-      {/* Bandeau de présentation et prochains tournois : côte à côte sur ordinateur, l'un sous l'autre sur téléphone */}
-      <div className="grid gap-7 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-6">
+    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-6 px-4 pt-5 pb-10 font-bb-sans text-base text-bb-text lg:gap-8 lg:px-6 lg:pt-10">
+      {/* Une seule grille : sur téléphone, les blocs se suivent dans l'ordre du code (bandeau, tournois, derniers
+          messages, article) ; sur ordinateur, deux colonnes : bandeau et tournois, puis derniers messages et article */}
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
         <section aria-labelledby="home-title" className="flex flex-col justify-center gap-4 rounded-bb-lg border border-bb-border bg-bb-surface px-5 py-6 lg:gap-6 lg:px-10 lg:py-9">
           <div className="flex flex-col gap-3">
-            <span className={eyebrow}>La communauté française</span>
+            <span className={eyebrow}>{memberName ? `Bon retour, ${memberName}` : "La communauté française"}</span>
             <h1 id="home-title" className="m-0 border-0 p-0 text-[1.625rem] leading-[1.15] font-extrabold tracking-[-0.02em] text-bb-text normal-case not-italic lg:text-[2.5rem] lg:leading-[1.08]">
               Tournois, ligues et coachs de Blood Bowl en France
             </h1>
-            {/* Visible aussi sur téléphone (carte 189), en deux lignes au plus : c'est ce qui explique le site */}
-            <p className="m-0 max-w-[600px] text-[0.95rem] leading-snug text-bb-text-muted lg:text-[1.05rem] lg:leading-relaxed">
-              Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue.
-            </p>
+            {/* Pour le visiteur, visible aussi sur téléphone (carte 189), en deux lignes au plus : c'est ce qui explique
+                le site. Un membre le connaît déjà : son bandeau est plus court (carte 205). */}
+            {!isAuth && (
+              <p className="m-0 max-w-[600px] text-[0.95rem] leading-relaxed text-bb-text-muted lg:text-[1.05rem]">
+                Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue.
+              </p>
+            )}
           </div>
           {/* Sur téléphone, « Aller au forum » occupe toute la largeur, les deux autres boutons se partagent la
               ligne suivante. Sur ordinateur, les trois sont alignés : Jouer, Forum, Discord. */}
@@ -232,10 +258,11 @@ export default async function Home() {
         </section>
 
         <section aria-labelledby="home-next-tournaments" className="flex flex-col overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface">
+          {/* Titre et lien sur une seule ligne, même en 360 pixels de large (carte 205) */}
           <div className="flex items-center justify-between gap-3 px-4 pt-3 pb-2 lg:px-[22px] lg:pt-4">
-            <h2 id="home-next-tournaments" className={blockTitle}>Prochains tournois</h2>
-            <Link href="/tournois" className={`inline-flex min-h-11 items-center text-sm font-semibold text-bb-accent-text no-underline ${focusRing}`}>
-              Tous les tournois
+            <h2 id="home-next-tournaments" className={cn(blockTitle, "min-w-0")}>Prochains tournois</h2>
+            <Link href="/tournois" className={`inline-flex min-h-11 shrink-0 items-center text-sm font-semibold whitespace-nowrap text-bb-accent-text no-underline ${focusRing}`}>
+              Tout voir<span className="sr-only"> : tous les tournois</span>
             </Link>
           </div>
           {nextTournaments.length > 0 ? (
@@ -250,7 +277,7 @@ export default async function Home() {
                     <span className="flex min-w-0 flex-1 flex-col gap-0.5">
                       <span className="text-base leading-snug font-bold break-words text-bb-text">{tournament.name}</span>
                       <span className="text-sm text-bb-text-muted">
-                        {placeText(tournament)} · {takenPlaces(tournament)} / {tournament.maxParticipants || "∞"} places
+                        {placeText(tournament)} · {placesText(takenPlaces(tournament), tournament.maxParticipants)}
                       </span>
                     </span>
                     <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-bb-text-muted" />
@@ -273,29 +300,39 @@ export default async function Home() {
             </div>
           )}
         </section>
+
+        {/* Derniers messages du forum, mis à jour sans recharger la page (carte 205). Toute la largeur s'il n'y a pas
+            d'article à côté. */}
+        <div className={cn("flex flex-col", !selectedArticle && "lg:col-span-2")}>
+          <LatestPosts initialPosts={latestPosts} focusRing={focusRing} />
+        </div>
+
+        {/* Article tiré au hasard : rien n'est affiché s'il n'y a aucun article */}
+        {selectedArticle && (
+          <section aria-labelledby="home-random-article" className="flex">
+            <Link
+              href={`/articles/${selectedArticle.id}`}
+              className={cn("flex flex-1 flex-col gap-2 rounded-bb-lg bg-bb-surface-2 p-[18px] text-inherit no-underline lg:justify-center lg:gap-3 lg:px-7 lg:py-[22px]", focusRing)}
+            >
+              <h2 id="home-random-article" className={cn(eyebrow, "m-0 border-0 p-0 not-italic")}>Article au hasard</h2>
+              <span className="flex min-w-0 flex-col gap-1">
+                <span className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text lg:line-clamp-3 lg:text-[1.2rem]">{selectedArticle.title}</span>
+                <span className="text-sm text-bb-text-muted">par {selectedArticle.author?.name || "Anonyme"}</span>
+              </span>
+              {/* Visible aussi sur téléphone (carte 205) : montre que le bloc est un lien */}
+              <span aria-hidden="true" className="inline-flex items-center gap-1 text-sm font-semibold text-bb-accent-text">
+                Lire l&apos;article <ArrowRight size={16} />
+              </span>
+            </Link>
+          </section>
+        )}
       </div>
 
-      {/* Les rubriques en trois blocs : trois colonnes sur ordinateur, l'un sous l'autre sur téléphone */}
-      <nav aria-label="Rubriques du site" className="grid gap-5 lg:grid-cols-3">
+      {/* Les rubriques en trois blocs : trois colonnes sur ordinateur (chacune à sa hauteur, sans vide sous les liens),
+          l'un sous l'autre et compacts sur téléphone */}
+      <nav aria-label="Rubriques du site" className="grid gap-4 lg:grid-cols-3 lg:items-start lg:gap-5">
         {blocks.map((block) => <SectionBlock key={block.id} {...block} />)}
       </nav>
-
-      {/* Article tiré au hasard : rien n'est affiché s'il n'y a aucun article */}
-      {selectedArticle && (
-        <section aria-labelledby="home-random-article">
-          <Link
-            href={`/articles/${selectedArticle.id}`}
-            className={cn("flex flex-col gap-1.5 rounded-bb-lg bg-bb-surface-2 p-[18px] text-inherit no-underline lg:flex-row lg:items-center lg:gap-6 lg:px-7 lg:py-[22px]", focusRing)}
-          >
-            <h2 id="home-random-article" className={cn(eyebrow, "m-0 shrink-0 border-0 p-0 not-italic")}>Article au hasard</h2>
-            <span className="flex min-w-0 flex-1 flex-col gap-1">
-              <span className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text lg:text-[1.2rem]">{selectedArticle.title}</span>
-              <span className="text-sm text-bb-text-muted">par {selectedArticle.author?.name || "Anonyme"}</span>
-            </span>
-            <span aria-hidden="true" className="hidden shrink-0 text-sm font-semibold text-bb-accent-text lg:inline">Lire l&apos;article →</span>
-          </Link>
-        </section>
-      )}
     </div>
   );
 }

@@ -38,7 +38,7 @@ Fichiers actuels : `apps/site/app/layout.tsx`, `common/components/AppShell/` (la
 - [ ] [tous] Le thème choisi est appliqué dès le premier affichage, sans éclair d'une autre couleur (ADR 0005). Pour un membre, il vient de sa session ; pour un visiteur, de la mémoire du navigateur. *(Carte 101 : vérifié pour un membre (le thème est dans la page envoyée par le serveur). Pour un visiteur, le thème gardé par le navigateur n'est posé qu'après le chargement de la page (`ThemeProvider`), d'où un court éclair du thème par défaut : défaut hors refonte, ligne laissée non cochée.)*
 - [x] [membre banni] Un membre banni est envoyé vers `/banned`.
 - [x] [membre] Tant que le profil n'est pas terminé, le membre est renvoyé vers l'onboarding (`proxy.ts`).
-- [x] [tous, en développement seulement] Le widget de comptes de test (`DebugAuthWidget`) et le widget de thème (`DebugThemeWidget`) restent utilisables.
+- [x] [tous, en développement seulement] Le sélecteur de comptes de test (`DebugAuthWidget`, bouton « Dev Auth » de la barre haute depuis la carte 204) reste utilisable ; le widget de thème de développement a été supprimé.
 
 ## 2. L'éditeur BBCode (partagé par le forum, les articles, la messagerie, les ligues, le profil et l'administration)
 
@@ -214,6 +214,7 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [tous] `/` : titre en texte, sans logo (carte 155). Bouton « Aller au forum » mis en avant, puis « Jouer à Blood Bowl ! » et « Rejoindre le Discord ». Liens vers toutes les rubriques, rangés en trois blocs : Débuter (Jouer, Ressources, Quizz, BBScheme), Jouer en compétition (Tournois et Ligues, chacun avec « Créer », La Carte, Championnat de France) et La communauté (Forum, Articles, Discord, lien réglé dans l'administration). *Le test vérifie le titre, l'absence de logo et les liens. Pour Discord, il vérifie les deux liens et leur ouverture dans un nouvel onglet, pas l'adresse réglée (gardée en cache une heure par le site).*
 - [x] [visiteur] Sur l'accueil, « Créer » une ligue envoie vers la connexion.
 - [x] [tous] `/` : bloc « Prochains tournois » (3, liens vers leur sujet) et bloc « Article aléatoire ».
+- [x] [tous] `/` : bloc « Derniers messages » (carte 205) : les 3 derniers messages du forum, mis à jour toutes les 30 secondes sans recharger la page ; un visiteur ne voit jamais un message d'un forum réservé, un modérateur le voit.
 - [x] [tous] `/jouer` : guide en 6 sections illustrées (texte saisi dans l'administration), liens « Prochaine étape », boutons « Créer mon compte » et « Parcourir le forum ». Une section vide est masquée, sauf la première.
 - [x] [tous] `/mentions-legales`. *Non traitée par la carte 090 : le texte de la page était réécrit au même moment (carte 126, RGPD). Mise en forme faite par la carte 101 (sans toucher `page.tsx`), vérifiée par `coquille-fin.spec.ts` : titre, dix sections, pas de défilement de côté, texte en 16 pixels.*
 - [x] [tous] `/media` : lecteurs Twitch avec le lien « Suivez… » et listes de lecture YouTube. *Le lien s'appelle « Voir sur Twitch » (avant comme après la refonte).*

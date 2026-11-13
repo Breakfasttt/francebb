@@ -306,6 +306,7 @@ export async function archiveYear(year: number) {
     });
 
     await logModerationAction(
+      session.user.id,
       "ARCHIVE_RANKING",
       archive.id,
       "RankingArchive",
@@ -334,6 +335,7 @@ export async function deleteArchive(year: number) {
     await prisma.rankingArchive.delete({ where: { year } });
 
     await logModerationAction(
+      session.user.id,
       "DELETE_ARCHIVE",
       archive.id,
       "RankingArchive",
@@ -370,6 +372,7 @@ export async function saveArchive(year: number, name: string, rankingData: any[]
     });
 
     await logModerationAction(
+      session.user.id,
       archive.createdAt === archive.updatedAt ? "CREATE_ARCHIVE_MANUAL" : "UPDATE_ARCHIVE",
       archive.id,
       "RankingArchive",

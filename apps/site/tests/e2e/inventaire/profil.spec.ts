@@ -289,6 +289,8 @@ test.describe("Inventaire : profil et membres", () => {
     const main = content(page);
     await expect(main.getByText(BLOCKED.name)).toBeVisible();
     await main.getByRole("button", { name: /Débloquer/ }).first().click();
+    // Le déblocage demande confirmation (carte 196)
+    await page.getByRole("dialog", { name: /Débloquer/ }).getByRole("button", { name: "Débloquer", exact: true }).click();
     await expect(main.getByText(BLOCKED.name)).toBeHidden();
     await expect.poll(() => db((prisma) => prisma.block.count({ where: { blockerId: ME.id, blockedId: BLOCKED.id } }))).toBe(0);
     await db((prisma) => prisma.block.create({ data: { blockerId: ME.id, blockedId: BLOCKED.id } }));

@@ -23,7 +23,7 @@ export { ActionMenu, type ActionMenuItem, type ActionMenuProps } from "./action-
 export { Card, CardHeader, CardTitle, CardBody, ListRow } from "./card";
 export { Badge, badgeVariants, CountBadge } from "./badge";
 export { Avatar, type AvatarProps } from "./avatar";
-export { Label, Input, Textarea, Select, Field } from "./field";
+export { Label, Input, Textarea, Select, Field, useFieldAria } from "./field";
 export { Switch } from "./switch";
 export { Tooltip } from "./tooltip";
 export { Tabs, TabsList, TabsTrigger, TabsContent, LinkTabs, type LinkTab } from "./tabs";

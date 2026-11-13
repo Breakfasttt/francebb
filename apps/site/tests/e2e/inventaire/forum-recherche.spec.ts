@@ -474,9 +474,9 @@ test.describe("fenêtres de modération et de signalement", () => {
     for (const reason of ["Spam / Publicité", "Harcèlement / Insultes", "Contenu inapproprié / NSFW", "Bot", "Autre (préciser ci-dessous)"]) {
       await expect(dialog.getByRole("button", { name: reason })).toBeVisible();
     }
-    // Sans raison : notification d'erreur
+    // Sans raison : erreur affichée sous la liste des raisons (carte 194)
     await dialog.getByRole("button", { name: "Envoyer le signalement" }).click();
-    await expect(page.getByText("Veuillez choisir une raison")).toBeVisible();
+    await expect(page.getByText("Choisissez une raison.")).toBeVisible();
     await dialog.getByRole("button", { name: "Bot" }).click();
     await dialog.getByPlaceholder(/Détaillez votre signalement/).fill("Précision du test de recherche");
     await page.screenshot({ path: testInfo.outputPath("fenetre-signaler.png"), fullPage: false });

@@ -1,5 +1,7 @@
+import { getTournamentFormLists } from "@/lib/referenceData";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
+import { canManageTournament } from "@/lib/tournamentRights";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) affichés dans l'aperçu de l'éditeur
 import { notFound, redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -48,27 +50,28 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
   }
 
   // Vérifier les droits (Auteur ou Commissaire ou Modérateur)
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isMod = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isMod) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     redirect(`/forum/topic/${tournament.topic.id}`);
   }
+  // L'organisateur (ou un modérateur) est seul à pouvoir changer les commissaires
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isMod = viewer.isModerator;
 
   const firstPost = tournament.topic.posts[0];
   if (!firstPost) notFound();
 
   // Charger toutes les données de référence
-  const [franceRegions, gameEditions, departments, tournamentFormats, tournamentTypes, platforms, coachRegions] = await Promise.all([
-    prisma.referenceData.findMany({ where: { group: 'REGION_FRANCE', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'GAME_EDITION', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'DEPARTEMENT_FRANCE', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'TOURNAMENT_FORMAT', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'TOURNAMENT_TYPE', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'PLATFORM', isActive: true }, orderBy: { order: 'asc' } }),
-    prisma.referenceData.findMany({ where: { group: 'COACH_REGION', isActive: true }, orderBy: { order: 'asc' } }),
-  ]);
+  // Les sept listes du formulaire, en une seule requête (lib/referenceData.ts, carte 203)
+  const lists = await getTournamentFormLists();
+  const franceRegions = lists.REGION_FRANCE;
+  const gameEditions = lists.GAME_EDITION;
+  const departments = lists.DEPARTEMENT_FRANCE;
+  const tournamentFormats = lists.TOURNAMENT_FORMAT;
+  const tournamentTypes = lists.TOURNAMENT_TYPE;
+  const platforms = lists.PLATFORM;
+  const coachRegions = lists.COACH_REGION;
 
   const forum = tournament.topic.forum;
   const breadcrumbs = [];

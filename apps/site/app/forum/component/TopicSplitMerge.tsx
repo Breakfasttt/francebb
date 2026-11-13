@@ -49,14 +49,17 @@ export function SplitTopicDialog({
   const choices = forums.filter((forum) => !forum.isTournamentForum);
   const [forumId, setForumId] = useState(choices.some((forum) => forum.id === defaultForumId) ? defaultForumId : "");
   const count = postIds.length;
+  // Erreurs de saisie, affichées sous le champ concerné (carte 194)
+  const [errors, setErrors] = useState<{ title?: string; forum?: string }>({});
 
   const handleConfirm = () => {
-    if (!title.trim()) {
-      toast.error("Donnez un titre au nouveau sujet.");
-      return;
-    }
-    if (!forumId) {
-      toast.error("Choisissez le forum du nouveau sujet.");
+    const nextErrors = {
+      title: title.trim() ? undefined : "Donnez un titre au nouveau sujet.",
+      forum: forumId ? undefined : "Choisissez le forum du nouveau sujet.",
+    };
+    setErrors(nextErrors);
+    if (nextErrors.title || nextErrors.forum) {
+      document.getElementById(nextErrors.title ? "split-topic-title" : "split-topic-forum")?.focus();
       return;
     }
     startTransition(async () => {
@@ -83,17 +86,27 @@ export function SplitTopicDialog({
       onConfirm={handleConfirm}
     >
       <div className="flex flex-col gap-4">
-        <Field label="Titre du nouveau sujet" htmlFor="split-topic-title">
+        <Field label="Titre du nouveau sujet" htmlFor="split-topic-title" error={errors.title}>
           <Input
             id="split-topic-title"
             value={title}
             maxLength={TOPIC_TITLE_MAX_LENGTH}
-            onChange={(event) => setTitle(event.target.value)}
+            onChange={(event) => {
+              setTitle(event.target.value);
+              setErrors((prev) => ({ ...prev, title: undefined }));
+            }}
             placeholder="Ex : Suite de la discussion sur…"
           />
         </Field>
-        <Field label="Forum du nouveau sujet" htmlFor="split-topic-forum">
-          <Select id="split-topic-forum" value={forumId} onChange={(event) => setForumId(event.target.value)}>
+        <Field label="Forum du nouveau sujet" htmlFor="split-topic-forum" error={errors.forum}>
+          <Select
+            id="split-topic-forum"
+            value={forumId}
+            onChange={(event) => {
+              setForumId(event.target.value);
+              setErrors((prev) => ({ ...prev, forum: undefined }));
+            }}
+          >
             <option value="" disabled>
               Choisir un forum…
             </option>
@@ -129,6 +142,8 @@ export function MergeTopicDialog({
   // Résultats de la dernière recherche, avec le texte cherché : ils ne s'affichent que pour le texte en cours
   const [found, setFound] = useState<{ query: string; topics: MergeTarget[] }>({ query: "", topics: [] });
   const [selected, setSelected] = useState<MergeTarget | null>(null);
+  // Erreur affichée sous le champ de recherche (carte 194)
+  const [selectedError, setSelectedError] = useState<string>();
   const searching = debouncedQuery.trim().length >= 2;
   const results = searching && found.query === debouncedQuery ? found.topics : [];
 
@@ -149,12 +164,14 @@ export function MergeTopicDialog({
     if (!next) {
       setQuery("");
       setSelected(null);
+      setSelectedError(undefined);
     }
   };
 
   const handleConfirm = () => {
     if (!selected) {
-      toast.error("Choisissez le sujet qui recevra les messages.");
+      setSelectedError("Choisissez le sujet qui recevra les messages.");
+      document.getElementById("merge-topic-search")?.focus();
       return;
     }
     startTransition(async () => {
@@ -181,7 +198,7 @@ export function MergeTopicDialog({
       onConfirm={handleConfirm}
     >
       <div className="flex flex-col gap-3">
-        <Field label="Sujet d'arrivée" htmlFor="merge-topic-search" hint="Tapez au moins deux lettres du titre, ou l'identifiant du sujet.">
+        <Field label="Sujet d'arrivée" htmlFor="merge-topic-search" hint="Tapez au moins deux lettres du titre, ou l'identifiant du sujet." error={selectedError}>
           <Input
             id="merge-topic-search"
             type="search"
@@ -207,7 +224,10 @@ export function MergeTopicDialog({
                     variant="secondary"
                     size="tap"
                     aria-pressed={isSelected}
-                    onClick={() => setSelected(topic)}
+                    onClick={() => {
+                      setSelected(topic);
+                      setSelectedError(undefined);
+                    }}
                     className={cn("h-auto w-full flex-col items-start gap-0.5 py-2 text-left whitespace-normal", isSelected && "border-bb-accent text-bb-accent-text")}
                   >
                     <span className="flex w-full items-start gap-2 font-semibold break-words">

@@ -91,7 +91,7 @@ test.beforeEach(async ({ page }) => {
 async function openReply(page: Page): Promise<Locator> {
   await loginAs(page, WRITER.id);
   await page.goto(`/forum/topic/${TOPIC.id}/reply`, { waitUntil: "networkidle" });
-  const textarea = page.getByRole("textbox", { name: REPLY_PLACEHOLDER });
+  const textarea = page.getByPlaceholder(REPLY_PLACEHOLDER);
   await expect(textarea).toBeVisible();
   return textarea;
 }
@@ -348,7 +348,7 @@ test.describe("2 éditeur BBCode : outils", () => {
     await textarea.press("End");
     await applyTool(page, "Smileys");
     await page.screenshot({ path: testInfo.outputPath("outil-smileys.png"), fullPage: false });
-    await visibleButton(page, "🙂").click();
+    await visibleButton(page, "Insérer le smiley :)").click();
     await expect(textarea).toHaveValue("Salut :)");
   });
 
@@ -402,7 +402,7 @@ test.describe("3.4 page de réponse", () => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${TOPIC.id}?page=1`, { waitUntil: "networkidle" });
     await page.goto(`/forum/topic/${TOPIC.id}/reply`, { waitUntil: "networkidle" });
-    const textarea = page.getByRole("textbox", { name: REPLY_PLACEHOLDER });
+    const textarea = page.getByPlaceholder(REPLY_PLACEHOLDER);
     await expect(textarea).toBeVisible();
 
     await expect(page.getByText("Rappel des derniers messages")).toBeVisible();
@@ -417,7 +417,7 @@ test.describe("3.4 page de réponse", () => {
 
     // Publier : retour au sujet, le nouveau message est affiché
     await page.goto(`/forum/topic/${TOPIC.id}/reply`, { waitUntil: "networkidle" });
-    await page.getByRole("textbox", { name: REPLY_PLACEHOLDER }).fill("Réponse publiée par l'inventaire de l'éditeur");
+    await page.getByPlaceholder(REPLY_PLACEHOLDER).fill("Réponse publiée par l'inventaire de l'éditeur");
     await page.screenshot({ path: testInfo.outputPath("reponse-remplie.png"), fullPage: false });
     await visibleButton(page, "Publier ma réponse").click();
     await page.waitForURL(new RegExp(`/forum/topic/${TOPIC.id}(\\?|$)`));
@@ -428,7 +428,7 @@ test.describe("3.4 page de réponse", () => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${TOPIC.id}?page=1`, { waitUntil: "networkidle" });
     await page.goto(`/forum/topic/${TOPIC.id}/reply`, { waitUntil: "networkidle" });
-    const textarea = page.getByRole("textbox", { name: REPLY_PLACEHOLDER });
+    const textarea = page.getByPlaceholder(REPLY_PLACEHOLDER);
     await textarea.fill("Brouillon de l'inventaire");
     // Le brouillon est enregistré une seconde après la dernière frappe
     await expect
@@ -456,7 +456,7 @@ test.describe("3.4 page de réponse", () => {
   test("[membre] ?quotePostId= préremplit la citation", async ({ page }) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${TOPIC.id}/reply?quotePostId=${postId(2)}`, { waitUntil: "networkidle" });
-    await expect(page.getByRole("textbox", { name: REPLY_PLACEHOLDER })).toHaveValue(
+    await expect(page.getByPlaceholder(REPLY_PLACEHOLDER)).toHaveValue(
       `[quote=${WRITER.id}|${postId(2)}|${WRITER.name}]Message deux à citer[/quote]\n`
     );
   });
@@ -466,7 +466,7 @@ test.describe("3.5 modifier un message", () => {
   test("[auteur] éditeur prérempli, rappel avec « (Ce message) », « Annuler », enregistrement puis retour au message", async ({ page }, testInfo) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/post/${postId(4)}/edit`, { waitUntil: "networkidle" });
-    const textarea = page.getByRole("textbox", { name: "Modifiez votre message ici..." });
+    const textarea = page.getByPlaceholder("Modifiez votre message ici...");
     await expect(textarea).toHaveValue("Message quatre à modifier");
     await expect(page.getByText("Rappel des derniers messages")).toBeVisible();
     await expect(page.getByText("(Ce message)")).toBeVisible();
@@ -482,7 +482,7 @@ test.describe("3.5 modifier un message", () => {
   test("[modo] peut modifier le message d'un autre ; [membre] un autre est renvoyé vers le sujet", async ({ page }) => {
     await loginAs(page, E2E.modoId);
     await page.goto(`/forum/post/${postId(3)}/edit`, { waitUntil: "networkidle" });
-    await expect(page.getByRole("textbox", { name: "Modifiez votre message ici..." })).toHaveValue("Message trois du rappel");
+    await expect(page.getByPlaceholder("Modifiez votre message ici...")).toHaveValue("Message trois du rappel");
 
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/post/${postId(3)}/edit`);
@@ -498,7 +498,7 @@ test.describe("3.6 nouveau sujet", () => {
     const title = page.getByRole("textbox", { name: "Titre du sujet" });
     await title.fill("Inv éditeur créé par un membre ");
     await visibleButton(page, "Insérer un smiley dans le titre").click();
-    await visibleButton(page, "🙂").click();
+    await visibleButton(page, "Insérer le smiley :)").click();
     await expect(title).toHaveValue("Inv éditeur créé par un membre :)");
     await expect(page.getByText(/Aperçu du titre/)).toBeVisible();
     await expect(page.getByText("Inv éditeur créé par un membre 🙂")).toBeVisible();
@@ -548,7 +548,7 @@ test.describe("réponse rapide", () => {
   test("[membre] les outils de l'éditeur et l'envoi fonctionnent dans la réponse rapide", async ({ page }, testInfo) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${QUICK_TOPIC}?page=1`, { waitUntil: "networkidle" });
-    const textarea = page.getByRole("textbox", { name: "Écrivez votre réponse ici..." });
+    const textarea = page.getByPlaceholder("Écrivez votre réponse ici...");
     await writeAndSelect(textarea, "Réponse rapide en gras");
     await applyTool(page, "Gras");
     await expect(textarea).toHaveValue("[b]Réponse rapide en gras[/b]");

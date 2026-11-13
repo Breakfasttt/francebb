@@ -160,7 +160,7 @@ export default function MultiLigueSearch({
             />
 
             {(isLoading || (showResults && query.trim().length >= 2)) && (
-              <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+              <div className="absolute inset-x-0 top-full z-[var(--z-index-dropdown)] mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
                 {isLoading ? (
                   <p className="m-0 flex items-center gap-2 p-3 text-sm text-bb-text-muted">
                     <Loader2 size={16} className="animate-spin" aria-hidden="true" /> Recherche en cours...

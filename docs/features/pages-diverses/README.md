@@ -10,7 +10,13 @@ Les petites pages du site, trop courtes pour une fiche chacune : la porte d'entr
 
 ### Accueil — `/` (`app/page.tsx`)
 Refaite par la carte 155 (ADR 0006), d'après la maquette choisie par le responsable ; il n'y a plus de logo. En haut, un bandeau de présentation : le titre de la page (un texte), puis trois boutons. « Aller au forum » est le plus visible (couleur d'accent, un peu plus grand), à côté de « Jouer à Blood Bowl ! » et « Rejoindre le Discord ». À côté du bandeau, les 3 prochains tournois en liste compacte (date, nom, ville, places prises) ; s'il n'y en a aucun, le message « Aucun tournoi prévu pour l'instant » et un lien « Créer un tournoi ». La phrase qui explique le site (« Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue. ») est visible aussi sur téléphone depuis la carte 189, en deux lignes au plus. Les boutons et liens Discord n'apparaissent que si l'invitation est réglée dans l'administration (carte 189) ; sinon, « Jouer à Blood Bowl ! » prend toute la ligne. Ensuite, toutes les rubriques en trois blocs, chaque lien avec une courte description : « Débuter » (Jouer, Ressources ; le quiz et BBScheme en sont partis avec les cartes 179 et 180), « Jouer en compétition » (Tournois et Ligues, chacun avec un lien « Créer », La Carte, Championnat de France) et « La communauté » (Forum, Articles, Discord). Le titre et la phrase de chaque bloc viennent de `NAV_GROUPS` (`common/components/AppShell/navItems.ts`), la liste partagée avec le panneau « Plus » du téléphone, qui range ses rubriques dans les mêmes groupes (carte 189). Pour un visiteur, « Créer » mène à la connexion, qui renvoie ensuite vers le formulaire. Enfin, un article tiré au hasard ; s'il n'y a aucun article, ce bloc n'est pas affiché. Visible par tous. Les tournois et le lien Discord sont gardés en cache (60 s et 1 h).
-**Sur ordinateur** : le bandeau et les tournois côte à côte, les trois blocs de rubriques en colonnes, l'article en bandeau horizontal. **Sur téléphone** : tout l'un sous l'autre ; « Aller au forum » occupe toute la largeur, « Jouer » et « Discord » se partagent la ligne suivante ; chaque lien fait au moins 56 pixels de haut.
+**Accueil vivant (carte 205).** Sous le bandeau et les tournois, le bloc « Derniers messages » montre les 3 derniers messages du forum : titre du sujet, auteur, depuis combien de temps (« il y a 5 min »), et le début du message sans balises BBCode ni citations ; un appui ouvre le message (lien permanent `/forum/post/<id>`). Chaque lecteur ne voit que les messages des forums qui lui sont ouverts (`topicAccessWhere`) ; les messages supprimés, masqués par la modération ou écrits par un membre banni n'apparaissent pas. La requête est dans `lib/homeLatestPosts.ts`, gardée en cache 30 secondes par ensemble de rôles (étiquette `home-latest-posts`, vidée par `refreshTopic` de `lib/pageRefresh.ts` à chaque message publié ou supprimé).
+
+La liste se met à jour sans recharger la page : tant que l'onglet est visible, `app/component/LatestPosts.tsx` redemande les derniers messages toutes les 30 secondes à l'action `fetchLatestPosts` (`app/homeActions.ts`), et aussitôt quand l'onglet redevient visible. Le site n'a pas d'envoi en direct depuis le serveur : c'est la même méthode que la messagerie. L'action ne prend aucun paramètre et lit les rôles dans la session, pour qu'on ne puisse pas demander les messages d'un forum réservé. Un nouveau message entre en haut avec l'apparition `bb-fade-in` (glissement et fondu de 0,3 seconde ; un simple fondu avec le réglage « réduire les animations »), et une zone d'annonce invisible prévient les lecteurs d'écran (« Nouveau message de … dans « … » »).
+
+Un membre connecté a un bandeau plus court : « Bon retour, <pseudo> » au-dessus du titre, sans la phrase qui présente le site. Un tournoi sans nombre maximum de participants affiche « 5 inscrits » au lieu de « 5 / ∞ places ». L'article au hasard montre « Lire l'article » aussi sur téléphone.
+
+**Sur ordinateur** : le bandeau et les tournois côte à côte, puis les derniers messages et l'article au hasard côte à côte (les messages prennent toute la largeur s'il n'y a pas d'article), puis les trois blocs de rubriques en colonnes, chacun à sa hauteur. **Sur téléphone** : tout l'un sous l'autre (bandeau, tournois, derniers messages, article, rubriques) ; « Aller au forum » occupe toute la largeur, « Jouer » et « Discord » se partagent la ligne suivante. Les rubriques y sont compactes depuis la carte 205 : le nom seul, sans phrase de description (elles répètent la barre basse et le panneau « Plus »), chaque lien fait 48 pixels de haut. Aucun texte de l'accueil ne fait moins de 14 pixels.
 
 ### Jouer — `/jouer` (`app/jouer/page.tsx`)
 Le « Guide du Coach » : six sections illustrées (C'est quoi Blood Bowl, plateformes, communauté, tournois, NAF/CdF/RTC, challenges régionaux), dont le texte en BBCode est saisi par un admin dans l'administration (`getHowToPlaySettings`). Une section sans texte est masquée, sauf la première.
@@ -51,13 +57,16 @@ Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx
 « Erreur 404 », le titre « Terrain impraticable ! » et un bouton de retour à l'accueil, dans une carte centrée (carte 090). **Sur téléphone** : bouton sur toute la largeur, 44 pixels de haut ; audit mobile propre à 360 et 390 pixels.
 
 ### Thèmes
-Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`, `naf`, `nehekhara`. Le coach choisit le sien dans son profil ou à l'inscription ; il est enregistré en base (`updateTheme`) et dans le navigateur. `DebugThemeWidget` est un sélecteur flottant visible seulement en développement.
+Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`, `naf`, `nehekhara`. Le coach choisit le sien dans son profil ou à l'inscription ; il est enregistré en base (`updateTheme`) et dans le navigateur. En développement, le thème se choisit comme sur le site en ligne : l'ancien sélecteur flottant `DebugThemeWidget` a été supprimé (carte 204). Le sélecteur de comptes de test (`DebugAuthWidget`) est un bouton à icône de la barre haute, nommé « Dev Auth », absent du site en ligne.
 
 ## Les fichiers
 
 | Fichier | Rôle |
 |---|---|
 | `apps/site/app/page.tsx` | Accueil |
+| `apps/site/app/component/LatestPosts.tsx` | Bloc « Derniers messages » de l'accueil, mis à jour toutes les 30 secondes (carte 205) |
+| `apps/site/app/homeActions.ts` | Action `fetchLatestPosts`, appelée par ce bloc |
+| `apps/site/lib/homeLatestPosts.ts` | Requête des derniers messages visibles pour un lecteur, cache `home-latest-posts`, début lisible d'un message (`postExcerpt`) |
 | `apps/site/app/jouer/page.tsx` | Guide du débutant ; images dans `public/images/how-to-play/`, affichées par `next/image` en mode `fill` (l'image remplit un bandeau au format 16/7) |
 | `apps/site/common/components/SiteLogo/SiteLogo.tsx` | Logo du site (barre du haut des autres pages que l'accueil ; zone cliquable d'au moins 44 pixels depuis la carte 101). `next/image` reçoit la largeur et la hauteur réellement affichées, calculées à partir des dimensions du fichier `logo3.png` (1347 × 589 pixels, 1,5 Mo) |
 | `apps/site/app/spy/[id]/page.tsx` | Profil public (client), lit `/api/users/[id]` et les actions de `app/profile/actions.ts` |
@@ -69,7 +78,7 @@ Sept thèmes : `saison3` (par défaut), `default`, `light`, `blood`, `malpierre`
 | `apps/site/app/error.tsx`, `app/global-error.tsx`, `common/components/ErrorScreen/ErrorScreen.tsx` | Écrans d'erreur (carte 188) |
 | `packages/ui/src/themes/<id>.css` | Couleurs de chaque thème en variables v2 (`[data-theme='…']`, skill `theming-rules`) |
 | `apps/site/common/components/ThemeProvider/ThemeProvider.tsx` | `useTheme()` : thème actif, `setTheme`, liste des thèmes |
-| `apps/site/common/components/DebugThemeWidget/DebugThemeWidget.tsx` | Sélecteur de développement |
+| `apps/site/common/components/DebugAuthWidget/DebugAuthWidget.tsx` | Comptes de test, bouton de la barre haute en développement seulement (carte 204) |
 
 ## Les pièges
 

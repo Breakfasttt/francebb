@@ -1,5 +1,6 @@
 "use server";
 
+import { listAllReferenceData } from "@/lib/referenceData";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
@@ -37,7 +38,7 @@ export async function searchCoaches(query: string = "", page: number = 1, pageSi
 export async function updateCoachRole(targetUserId: string, newRole: string) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
-  if (!userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
+  if (!session || !userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
     return { success: false, error: "Non autorisé." };
   }
 
@@ -62,6 +63,7 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
   });
 
   await logModerationAction(
+    session.user.id,
     "USER_ROLE_CHANGED",
     targetUserId,
     "USER",
@@ -240,33 +242,7 @@ export async function reorderRoles(orderedNames: string[]) {
   return { success: true };
 }
 
-// ---- FORUM STRUCTURE MANAGEMENT ----
-
-export async function getForumStructure() {
-  const session = await getActiveSession();
-  const userRole = (session?.user as any)?.role;
-  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) return [];
-
-  const categories = await prisma.category.findMany({
-    orderBy: { order: 'asc' },
-    include: {
-      forums: {
-        where: { parentForumId: null }, // Only root forums of this category
-        orderBy: { order: 'asc' },
-        include: {
-          subForums: {
-            orderBy: { order: 'asc' },
-            include: {
-              subForums: { orderBy: { order: 'asc' } } // Fetch deep enough (depth 5 limit as requetsed)
-            }
-          }
-        }
-      }
-    }
-  });
-
-  return categories;
-}
+// La lecture de l'arbre des forums est dans actionsStructure.ts (getForumStructure, carte 199).
 
 export async function createReferenceData(data: { group: string, key: string, label: string, order: number }) {
   const session = await getActiveSession();
@@ -334,12 +310,7 @@ export async function getAllReferenceDataAdmin() {
     return [];
   }
 
-  return await prisma.referenceData.findMany({
-    orderBy: [
-      { group: 'asc' },
-      { order: 'asc' }
-    ]
-  });
+  return listAllReferenceData();
 }
 
 // ---- SITE SETTINGS MANAGEMENT ----

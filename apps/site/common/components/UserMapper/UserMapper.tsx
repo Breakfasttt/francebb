@@ -108,7 +108,7 @@ export default function UserMapper({
         {isLoading && <Loader2 size={16} className="absolute top-1/2 right-3 -translate-y-1/2 animate-spin text-bb-text-muted" aria-label="Recherche en cours" />}
 
         {showResults && (results.length > 0 || query.length >= 2) && (
-          <div className="absolute inset-x-0 top-full z-20 mt-1 max-h-60 min-w-48 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+          <div className="absolute inset-x-0 top-full z-[var(--z-index-dropdown)] mt-1 max-h-60 min-w-48 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
             {results.length > 0 ? (
               results.map(user => (
                 <Button

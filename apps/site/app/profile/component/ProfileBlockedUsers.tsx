@@ -6,7 +6,7 @@
  */
 import { useEffect, useState, useTransition } from "react";
 import { Info, UserX } from "lucide-react";
-import { Button, Card, CardBody, CardHeader, CardTitle, EmptyState, Skeleton, toast } from "@bbfrance/ui";
+import { Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, EmptyState, Skeleton, toast } from "@bbfrance/ui";
 import UserAvatar from "@/common/components/UserAvatar/UserAvatar";
 import { getBlockedUsers, toggleBlockUser } from "@/app/profile/actions";
 import { getRoleLabel } from "@/lib/roles";
@@ -15,6 +15,8 @@ type BlockedUser = { id: string; name: string | null; image: string | null; role
 
 export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Record<string, string> }) {
   const [blockedUsers, setBlockedUsers] = useState<BlockedUser[] | null>(null);
+  // Membre à débloquer, en attente de confirmation (carte 196)
+  const [unblocking, setUnblocking] = useState<BlockedUser | null>(null);
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -35,6 +37,7 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
           return;
         }
         setBlockedUsers((prev) => (prev ?? []).filter((u) => u.id !== userId));
+        setUnblocking(null);
         toast.success("Utilisateur débloqué");
       } catch {
         toast.error("Erreur lors du déblocage");
@@ -72,7 +75,7 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
                   size="tap"
                   disabled={isPending}
                   aria-label={`Débloquer ${user.name ?? ""}`.trim()}
-                  onClick={() => handleUnblock(user.id)}
+                  onClick={() => setUnblocking(user)}
                 >
                   Débloquer
                 </Button>
@@ -91,6 +94,20 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
           </p>
         </CardBody>
       </Card>
+
+      <ConfirmDialog
+        open={!!unblocking}
+        onOpenChange={(open) => {
+          if (!open) setUnblocking(null);
+        }}
+        title={`Débloquer ${unblocking?.name ?? "ce membre"}`}
+        message={`Ses messages seront de nouveau visibles et ${unblocking?.name ?? "ce membre"} pourra de nouveau vous contacter.`}
+        confirmLabel="Débloquer"
+        pending={isPending}
+        onConfirm={() => {
+          if (unblocking) handleUnblock(unblocking.id);
+        }}
+      />
     </div>
   );
 }

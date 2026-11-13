@@ -13,6 +13,8 @@ import Link from "next/link";
 import { useState, useMemo } from "react";
 import { Button, Card, Field, Input, Select, Textarea } from "@bbfrance/ui";
 import ActionForm from "@/common/components/Form/ActionForm";
+import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
+import SubmitButton from "@/common/components/Form/SubmitButton";
 import type { ActionResult } from "@/lib/actionResult";
 
 interface Forum {
@@ -121,14 +123,15 @@ export default function NewForumForm({
           </Field>
         </fieldset>
 
-        <div className="flex flex-col-reverse gap-2 border-t border-bb-border pt-4 sm:flex-row sm:justify-end">
+        {/* Collée en bas de l'écran sur téléphone, sous le formulaire sur ordinateur (carte 196) */}
+        <ComposeActionBar className="lg:mt-0 lg:border-t lg:border-bb-border lg:pt-4">
           <Button asChild variant="secondary" size="tap" className="no-underline">
             <Link href="/forum">Annuler</Link>
           </Button>
-          <Button type="submit" variant="primary" size="tap">
-            <FolderPlus size={18} aria-hidden="true" /> Créer le forum
-          </Button>
-        </div>
+          <SubmitButton className="max-lg:flex-1" icon={<FolderPlus size={18} aria-hidden="true" />}>
+            Créer le forum
+          </SubmitButton>
+        </ComposeActionBar>
       </ActionForm>
     </Card>
   );

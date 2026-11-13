@@ -24,6 +24,7 @@ const PAGE_SIZE = 20;
 const ACTION_LABELS: Record<string, string> = {
   // Forum
   FORUM_CREATED: "Forum créé",
+  FORUM_UPDATED: "Forum modifié",
   FORUM_LOCKED: "Forum verrouillé",
   FORUM_UNLOCKED: "Forum déverrouillé",
   FORUM_DELETED: "Forum supprimé",

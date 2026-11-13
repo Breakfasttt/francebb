@@ -3,6 +3,8 @@
  * les membres (bannis compris pour un modérateur), les ligues, les régions et les libellés des rôles ; la recherche,
  * les filtres, le tri et la pagination se font dans le navigateur (`MembersTable`), comme avant la refonte.
  */
+import { getReferenceData } from "@/lib/referenceData";
+import { Suspense } from "react";
 import MembersTable from "@/app/membres/component/MembersTable";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { getActiveSession } from "@/lib/authGuard";
@@ -60,11 +62,7 @@ export default async function MembersPage() {
       select: { id: true, name: true, acronym: true },
       orderBy: { acronym: 'asc' }
     }),
-    prisma.referenceData.findMany({
-      where: { group: 'COACH_REGION', isActive: true },
-      select: { key: true, label: true },
-      orderBy: { order: 'asc' }
-    }),
+    getReferenceData("COACH_REGION"),
     getRoleLabelMap(),
   ]);
 
@@ -74,17 +72,21 @@ export default async function MembersPage() {
         title="Membres"
         subtitle={`Annuaire des coachs de la communauté : ${allUsers.length} membre${allUsers.length > 1 ? "s" : ""}`}
         backHref="/"
-        backTitle="Retour à l'accueil"
+        backTitle="Retour"
+        backPreferHistory
       />
 
-      <MembersTable
-        users={allUsers.map((u) => ({ ...u, name: u.name ?? "" }))}
-        currentUserRole={me.role as UserRole}
-        currentUserId={session.user.id}
-        allLigues={allLigues}
-        allRegions={allRegions}
-        roleLabels={roleLabels}
-      />
+      {/* Suspense : l'annuaire lit ses filtres dans l'adresse (useSearchParams), ce que Next.js demande d'isoler ainsi */}
+      <Suspense fallback={null}>
+        <MembersTable
+          users={allUsers.map((u) => ({ ...u, name: u.name ?? "" }))}
+          currentUserRole={me.role as UserRole}
+          currentUserId={session.user.id}
+          allLigues={allLigues}
+          allRegions={allRegions}
+          roleLabels={roleLabels}
+        />
+      </Suspense>
     </div>
   );
 }

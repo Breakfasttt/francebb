@@ -8,6 +8,7 @@ L'annuaire des ligues permet à chaque club de Blood Bowl de se présenter (nom,
 
 ## Ce que voit le coach
 
+- **Carte** (carte 196) : le choix tournois ou ligues est écrit dans l'adresse (`/carte?vue=ligues`). Le plein écran se ferme avec son bouton, avec la touche Échap ou avec le bouton retour du téléphone, sans quitter la page.
 Ces écrans ont été refaits par la carte 094 (refonte visuelle, ADR 0006) avec les composants de `packages/ui`. Les adresses, leurs paramètres (`?view&query&region&page`), les noms des champs et les actions serveur n'ont pas changé.
 
 - `/ligues` : titre « Ligues » avec le nombre de ligues et le bouton « Créer une ligue », recherche par nom ou sigle toujours visible, choix grille (12 par page) ou liste (20 par page), filtre par zone géographique. Sur ordinateur, la zone est une liste à côté de la recherche ; sur téléphone, le bouton « Filtres » ouvre le panneau « Filtrer les ligues ». La zone choisie est rappelée en pastille, avec une croix pour la retirer. Chaque carte ou ligne de ligue est entièrement cliquable.
@@ -34,6 +35,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 
 ## Les pièges
 
+- **Données de référence (carte 203).** Les listes fixes (régions, départements, éditions du jeu, plateformes, formats et types de tournoi, régions des coachs) se lisent seulement par `lib/referenceData.ts` : `getReferenceData`, `getReferenceLists` (plusieurs groupes en une requête), `getTournamentFormLists`, `getLigueFormLists`, `getReferenceLabel`. Ne pas écrire `prisma.referenceData.findMany` dans une page. L'action publique `getReferenceDataAction` (profil, inscription) n'accepte plus que le groupe `COACH_REGION`.
 - Transfert et suppression : le transfert s'ouvre dans un panneau avec la recherche du nouveau chef (`UserSearch`), la suppression dans une fenêtre de confirmation (`ConfirmDialog`). Réservés au chef et à la modération, vérifiés côté serveur. `transferLigueOwnership` refuse un nouveau chef inexistant ou banni ; transfert et suppression sont tracés au journal de modération (carte 051).
 - Supprimer une ligue garde ses tournois et ses articles : leur lien vers la ligue est seulement retiré.
 - Les actions renvoient `{ success, error }`. Le formulaire passe par `ActionForm`, qui affiche le refus dans une notification sans vider les champs ; `createLigue` redirige vers la nouvelle ligue en cas de succès, et la modification affiche « Ligue mise à jour avec succès ! ».

@@ -105,7 +105,7 @@ export default async function ArticlesPage({
     <Button asChild variant="primary" size="tap">
       <Link href="/articles/create" className="no-underline">
         <Plus size={18} aria-hidden="true" />
-        {/* Un seul bloc de texte : l'écart entre l'icône et le texte ne s'ajoute pas avant « un article » */}
+        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
         <span>Créer<span className="max-sm:sr-only"> un article</span></span>
       </Link>
     </Button>
@@ -137,7 +137,7 @@ export default async function ArticlesPage({
                   ))}
                 </Card>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2">
                   {articles.map((article) => (
                     <ArticleCard key={article.id} article={article} />
                   ))}

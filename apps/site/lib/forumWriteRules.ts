@@ -1,6 +1,6 @@
 /**
  * Règles d'écriture du forum (carte 169), sans accès à la base : elles sont vérifiées par
- * `tests/unit/forumWriteRules.test.mjs`. Ce fichier n'importe rien, pour pouvoir être testé directement par Node.
+ * `tests/unit/forumWriteRules.test.mjs`. Il n'importe rien ; depuis la carte 198, ce n'est plus une condition pour être testé (alias `@/` compris).
  *
  * - Longueur d'un titre de sujet et d'un message : avant cette carte, un message fait seulement d'espaces, un titre
  *   vide après un renommage ou un message de plusieurs mégaoctets étaient acceptés. Un message géant ralentissait aussi

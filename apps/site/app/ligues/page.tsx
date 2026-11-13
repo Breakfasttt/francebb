@@ -5,6 +5,7 @@
  * Sur téléphone, une seule colonne ; le filtre de zone est rangé dans le panneau « Filtrer les ligues ».
  * La recherche elle-même (paramètres `?view&query&region&page`, conditions, tri par nom) n'a pas changé.
  */
+import { getReferenceData } from "@/lib/referenceData";
 import Link from "next/link";
 import { Plus, Shield } from "lucide-react";
 import { Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
@@ -53,10 +54,7 @@ export default async function LiguesPage({
     }
   });
 
-  const coachRegions = await prisma.referenceData.findMany({
-    where: { group: "COACH_REGION", isActive: true },
-    orderBy: { order: "asc" }
-  });
+  const coachRegions = await getReferenceData("COACH_REGION");
   const zones = coachRegions.map((zone) => ({ key: zone.key, label: zone.label }));
   const zoneLabels = new Map(zones.map((zone) => [zone.key, zone.label]));
 
@@ -75,7 +73,7 @@ export default async function LiguesPage({
     <Button asChild variant="primary" size="tap">
       <Link href="/ligues/create" className="no-underline">
         <Plus size={18} aria-hidden="true" />
-        {/* Un seul bloc de texte : l'écart entre l'icône et le texte ne s'ajoute pas avant « une ligue » */}
+        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
         <span>Créer<span className="max-sm:sr-only"> une ligue</span></span>
       </Link>
     </Button>

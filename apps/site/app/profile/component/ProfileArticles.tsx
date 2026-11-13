@@ -46,7 +46,7 @@ export default function ProfileArticles({ userId, isOwnProfile }: ProfileArticle
       </h2>
 
       {loading ? (
-        <div className="grid w-full gap-4 md:grid-cols-2">
+        <div className="grid w-full gap-4 lg:grid-cols-2">
           {[0, 1].map((i) => <Skeleton key={i} className="h-48 w-full" />)}
         </div>
       ) : data.articles.length === 0 ? (
@@ -54,7 +54,7 @@ export default function ProfileArticles({ userId, isOwnProfile }: ProfileArticle
           <EmptyState icon={<FileText size={32} />} title="Aucun article publié pour le moment." />
         </Card>
       ) : (
-        <div className="grid w-full gap-4 md:grid-cols-2">
+        <div className="grid w-full gap-4 lg:grid-cols-2">
           {data.articles.map((article) => (
             <ArticleCard key={article.id} article={article} />
           ))}

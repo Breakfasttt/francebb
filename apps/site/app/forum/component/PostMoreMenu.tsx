@@ -34,6 +34,8 @@ interface PostMoreMenuProps {
   authorName: string;
   currentUserId?: string;
   isModerator: boolean;
+  /** Peut modifier ou supprimer le message : faux dans un sujet fermé, sauf pour un modérateur (carte 200). */
+  canEdit: boolean;
   isModerated: boolean;
   /** Le contenu du message est affiché : les actions Modifier, Supprimer et Modérer sont alors proposées. */
   showContentActions: boolean;
@@ -59,6 +61,7 @@ export default function PostMoreMenu({
   authorName,
   currentUserId,
   isModerator,
+  canEdit,
   isModerated,
   showContentActions,
   isDeletedByModeration,
@@ -76,11 +79,12 @@ export default function PostMoreMenu({
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [modDeleteOpen, setModDeleteOpen] = useState(false);
   const [modDeleteReason, setModDeleteReason] = useState("");
+  // Erreur de saisie affichée sous le champ de la raison (carte 194)
+  const [modDeleteReasonError, setModDeleteReasonError] = useState<string>();
   const [restoreDeletedOpen, setRestoreDeletedOpen] = useState(false);
   const [isPending, setIsPending] = useState(false);
 
   const isAuthor = !!currentUserId && currentUserId === authorId;
-  const canEdit = isAuthor || isModerator;
   // Le seul message d'un sujet : le supprimer supprime aussi le sujet
   const deletesTopic = isFirstPost && !topicHasReplies && !isTournament;
 
@@ -169,7 +173,7 @@ export default function PostMoreMenu({
           { label: "Signaler ce message", icon: icon(TriangleAlert), onSelect: () => setReportOpen(true), hidden: !currentUserId || isAuthor },
           { label: "Marquer comme non lu à partir d'ici", icon: icon(EyeOff), onSelect: handleMarkAsUnread, hidden: !currentUserId },
           { label: editLabel, icon: icon(Pencil), href: editHref, hidden: !showContentActions || !canEdit },
-          { label: "Supprimer", icon: icon(Trash2), onSelect: openAuthorDelete, danger: true, hidden: !showContentActions || !isAuthor },
+          { label: "Supprimer", icon: icon(Trash2), onSelect: openAuthorDelete, danger: true, hidden: !showContentActions || !isAuthor || !canEdit },
           { label: "Modérer", icon: icon(ShieldAlert), onSelect: () => setModerateOpen(true), danger: true, hidden: !showContentActions || !isModerator || isModerated },
           { label: "Restaurer", icon: icon(ShieldCheck), onSelect: () => setRestoreOpen(true), hidden: !showContentActions || !isModerator || !isModerated },
           // Le premier message ne se supprime pas seul : le modérateur supprime le sujet depuis les outils du sujet
@@ -216,7 +220,10 @@ export default function PostMoreMenu({
         open={modDeleteOpen}
         onOpenChange={(open) => {
           setModDeleteOpen(open);
-          if (!open) setModDeleteReason("");
+          if (!open) {
+            setModDeleteReason("");
+            setModDeleteReasonError(undefined);
+          }
         }}
         title={`Supprimer le message de ${authorName}`}
         message="Le message sera remplacé par la mention « Ce message a été supprimé par la modération », avec la raison. Rien n'est effacé : un modérateur pourra le restaurer."
@@ -225,17 +232,21 @@ export default function PostMoreMenu({
         pending={isPending}
         onConfirm={() => {
           if (!modDeleteReason.trim()) {
-            toast.error("Indiquez la raison de la suppression.");
+            setModDeleteReasonError("Indiquez la raison de la suppression.");
+            document.getElementById(`delete-reason-${postId}`)?.focus();
             return;
           }
           runDeletion(() => deletePost(postId, modDeleteReason), "Erreur lors de la suppression.");
         }}
       >
-        <Field label="Raison de la suppression (obligatoire)" htmlFor={`delete-reason-${postId}`}>
+        <Field label="Raison de la suppression (obligatoire)" htmlFor={`delete-reason-${postId}`} error={modDeleteReasonError}>
           <Textarea
             id={`delete-reason-${postId}`}
             value={modDeleteReason}
-            onChange={(event) => setModDeleteReason(event.target.value)}
+            onChange={(event) => {
+              setModDeleteReason(event.target.value);
+              setModDeleteReasonError(undefined);
+            }}
             placeholder="Ex : spam, publicité, message en double…"
             rows={3}
             className="resize-none [font-family:inherit]"

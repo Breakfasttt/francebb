@@ -1,3 +1,4 @@
+import { canReplyToTopic } from "@/lib/forumRights";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { prisma } from "@/lib/prisma";
@@ -55,7 +56,9 @@ export default async function ReplyPage({
   // Carte 149 : un sujet verrouillé (ou un sujet d'un forum verrouillé) n'accepte que les réponses des modérateurs.
   // Un membre ordinaire est renvoyé vers le sujet avant d'écrire, au lieu d'être refusé à l'envoi.
   // Carte 169 : un sujet archivé est fermé de la même façon.
-  if ((topic.isLocked || topic.isArchived || topic.forum.isLocked) && !isModerator(session.user.role)) {
+  // Même règle que le bouton « Répondre » et que l'action serveur (lib/forumRights.ts, carte 200)
+  const topicState = { isLocked: topic.isLocked, isArchived: topic.isArchived, forumIsLocked: topic.forum.isLocked, isDeleted: topic.isDeleted };
+  if (!canReplyToTopic({ id: session.user.id, isModerator: isModerator(session.user.role) }, topicState)) {
     redirect(`/forum/topic/${id}`);
   }
 

@@ -4,6 +4,7 @@
  * Ouvert au chef de ligue, aux commissaires et à la modération ; seuls le chef et la modération peuvent changer la
  * liste des commissaires. Un autre membre est renvoyé vers la fiche de la ligue, un visiteur vers la connexion.
  */
+import { getLigueFormLists } from "@/lib/referenceData";
 import { notFound, redirect } from "next/navigation";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
@@ -38,11 +39,8 @@ export default async function EditLiguePage({
     redirect(`/ligue/${id}`);
   }
 
-  const [coachRegions, franceRegions, departments] = await Promise.all([
-    prisma.referenceData.findMany({ where: { group: "COACH_REGION", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
-    prisma.referenceData.findMany({ where: { group: "REGION_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
-    prisma.referenceData.findMany({ where: { group: "DEPARTEMENT_FRANCE", isActive: true }, orderBy: { order: "asc" }, select: { key: true, label: true } }),
-  ]);
+  // Les trois listes du formulaire de ligue (lib/referenceData.ts, carte 203)
+  const { COACH_REGION: coachRegions, REGION_FRANCE: franceRegions, DEPARTEMENT_FRANCE: departments } = await getLigueFormLists();
 
   return (
     <ComposeScreen

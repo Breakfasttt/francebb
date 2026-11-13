@@ -8,7 +8,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
-import { revalidatePath, updateTag } from "next/cache";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
   NOTIFICATION_TYPE,
@@ -21,17 +21,22 @@ import {
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, forumAccessWhere, topicAccessWhere, FORUM_ACCESS_SELECT } from "@/lib/forumAccess";
 import { logModerationAction } from "@/lib/moderationLog";
+import { createForumRecord, deleteForumRecord } from "@/lib/forumStructure";
 import { closePendingReports } from "@/lib/moderationReports";
 import { hidePostContent, PUBLIC_MEMBER_SELECT } from "@/lib/forumPostPrivacy";
 import { canRestorePost, decidePostDeletion, topicDeletionRefusal } from "@/lib/forumDeletion";
 import { advanceReadPosition, isTopicUnread, shouldCountTopicView, type ReadPosition } from "@/lib/forumReadPosition";
 import { refreshTopicLastPost } from "@/lib/forumTopicLastPost";
+import { refreshForumStructure, refreshTopic, refreshTournament } from "@/lib/pageRefresh";
 import { forumPostPage } from "@/lib/forumPostLink";
 import { closedTopicMessage, isAllowedReaction, isTopicClosedFor, postContentError, topicTitleError } from "@/lib/forumWriteRules";
+import { canEditPost, canReplyToTopic } from "@/lib/forumRights";
+import { canManagePayments, canManageTournament } from "@/lib/tournamentRights";
 import type { QuoteStatusMap } from "@/lib/bbcode";
 import type { ActionResult } from "@/lib/actionResult";
 import type { Prisma } from "@/prisma/generated-client";
-import { isTournamentOver, tournamentDatesError } from "@/lib/tournamentDates";
+import { isTournamentOver } from "@/lib/tournamentDates";
+import { readTournamentForm, withCoordinates } from "@/lib/tournamentForm";
 import {
   cleanTeamMemberIds,
   formatChangeLossCount,
@@ -253,81 +258,26 @@ export async function getSubForumCount(parentForumId: string) {
 }
 
 /**
- * Crée un forum (modérateurs seulement). En cas de refus, renvoie `{ success: false, error }` que le formulaire
- * affiche dans une notification ; en cas de réussite, redirige vers le forum parent ou la liste des forums.
+ * Crée un forum (modérateurs seulement). Les règles (nom unique, 5 sous-forums au plus, place du forum, journal,
+ * rafraîchissement) sont dans `lib/forumStructure.ts`, partagé avec l'administration (carte 199). En cas de refus,
+ * renvoie `{ success: false, error }` que le formulaire affiche dans une notification ; en cas de réussite, redirige
+ * vers le forum parent ou la liste des forums.
  */
 export async function createForum(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
-  const userRole = session?.user?.role;
-
-  if (!userRole || !isModerator(userRole)) {
+  if (!session || !isModerator(session.user.role)) {
     return { success: false, error: "Seuls les modérateurs peuvent créer des forums." };
   }
 
-  const name = formData.get("name") as string;
-  const description = formData.get("description") as string;
-  const categoryId = formData.get("categoryId") as string || null;
-  const parentForumId = formData.get("parentForumId") as string || null;
-  const afterId = formData.get("afterId") as string;
-
-  if (!name?.trim()) {
-    return { success: false, error: "Le nom du forum est obligatoire." };
-  }
-  // Deux forums ne peuvent pas porter le même nom (contrainte de la base) : on le dit clairement au modérateur
-  const sameName = await prisma.forum.findUnique({ where: { name }, select: { id: true } });
-  if (sameName) {
-    return { success: false, error: `Un forum porte déjà le nom « ${name} ».` };
-  }
-
-  if (parentForumId) {
-    const count = await prisma.forum.count({ where: { parentForumId } });
-    if (count >= 5) {
-      return { success: false, error: "Le nombre maximum de sous-forums (5) a été atteint pour ce forum." };
-    }
-  }
-
-  // Déterminer l'ordre
-  let order = 0;
-  if (afterId && afterId !== "START") {
-    const prev = await prisma.forum.findUnique({ where: { id: afterId }, select: { order: true } });
-    if (prev) order = prev.order + 1;
-  }
-
-  // Transaction pour garder la cohésion
-  const forum = await prisma.$transaction(async (tx) => {
-    // Décaler tout ce qui est après
-    await tx.forum.updateMany({
-      where: {
-        categoryId: categoryId || undefined,
-        parentForumId: parentForumId || undefined,
-        order: { gte: order }
-      },
-      data: { order: { increment: 1 } }
-    });
-
-    return await tx.forum.create({
-      data: {
-        name,
-        description,
-        categoryId: categoryId || undefined,
-        parentForumId: parentForumId || undefined,
-        order,
-        isTournamentForum: false,
-      }
-    });
+  const parentForumId = (formData.get("parentForumId") as string) || null;
+  const result = await createForumRecord(session.user.id, {
+    name: (formData.get("name") as string) ?? "",
+    description: formData.get("description") as string,
+    categoryId: (formData.get("categoryId") as string) || null,
+    parentForumId,
+    afterId: (formData.get("afterId") as string) || "START",
   });
-
-  await logModerationAction(
-    "FORUM_CREATED",
-    forum.id,
-    "FORUM",
-    `Création du forum : ${name}`
-  );
-
-  revalidatePath("/forum");
-  if (parentForumId) {
-    revalidatePath(`/forum/${parentForumId}`);
-  }
+  if (!result.success) return result;
 
   redirect(parentForumId ? `/forum/${parentForumId}` : "/forum");
 }
@@ -385,71 +335,27 @@ export async function getAllForums() {
 }
 
 /**
- * Supprime un forum vide et ses sous-forums vides (modérateurs). Depuis la carte 169 :
- * - un forum qui contient encore des sujets, dans lui-même ou dans un de ses sous-forums, est refusé avec un message
- *   clair : il faut d'abord déplacer ses sujets. Les sujets supprimés comptent aussi, car la suppression des sujets est
- *   douce (carte 165) : ils restent en base pour pouvoir être restaurés, avec leurs messages et leur tournoi. Avant,
- *   cette action effaçait réellement tous les sujets et messages, et laissait derrière elle les tournois, avec des liens
- *   morts ;
- * - la suppression des sous-forums et du forum se fait dans une transaction : une panne au milieu ne laisse plus un
- *   forum à moitié vidé.
- * C'est la même règle que la suppression d'un forum depuis l'administration (`app/administration/actionsStructure.ts`).
+ * Supprime un forum vide (modérateurs). Les règles sont dans `lib/forumStructure.ts`, partagé avec l'administration
+ * (carte 199) : le forum « Les tournois » et le dernier forum ouvert à tous ne peuvent pas être supprimés, et un forum
+ * qui contient des sous-forums ou des sujets (supprimés compris, car restaurables) est refusé avec un message clair.
+ * Avant la carte 199, cet écran supprimait aussi les sous-forums vides avec leur parent, et ne protégeait ni le
+ * forum « Les tournois » ni le dernier forum public.
  */
 export async function deleteForum(forumId: string, forumName: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  const userRole = session?.user?.role;
-
-  if (!userRole || !isModerator(userRole)) {
+  if (!session || !isModerator(session.user.role)) {
     return { success: false, error: "Seuls les modérateurs peuvent supprimer des forums." };
   }
 
-  const forum = await prisma.forum.findUnique({ where: { id: forumId }, select: { id: true, parentForumId: true } });
-  if (!forum) return { success: false, error: "Forum introuvable." };
+  // Un modérateur ne touche qu'aux forums qu'il peut voir (un forum réservé aux administrateurs lui reste fermé)
+  const { roles } = await getForumAccess();
+  const visible = await prisma.forum.findFirst({ where: { id: forumId, ...forumAccessWhere(roles) }, select: { id: true } });
+  if (!visible) return { success: false, error: "Forum introuvable." };
 
-  // Le forum et tous ses sous-forums, sur autant de niveaux qu'il y en a (une requête par niveau)
-  const allForumIds = [forumId];
-  let level = [forumId];
-  while (level.length > 0) {
-    const children = await prisma.forum.findMany({ where: { parentForumId: { in: level } }, select: { id: true } });
-    level = children.map((child) => child.id).filter((id) => !allForumIds.includes(id));
-    allForumIds.push(...level);
-  }
+  const result = await deleteForumRecord(session.user.id, forumId);
+  if (!result.success) return result;
 
-  const visibleTopics = await prisma.topic.count({ where: { forumId: { in: allForumIds }, isDeleted: false } });
-  const deletedTopics = await prisma.topic.count({ where: { forumId: { in: allForumIds }, isDeleted: true } });
-  if (visibleTopics > 0) {
-    return {
-      success: false,
-      error: `Ce forum contient encore ${visibleTopics} sujet${visibleTopics > 1 ? "s" : ""} (sous-forums compris). Déplacez-les d'abord vers un autre forum, ou supprimez-les.`,
-    };
-  }
-  if (deletedTopics > 0) {
-    return {
-      success: false,
-      error: `Ce forum contient ${deletedTopics} sujet${deletedTopics > 1 ? "s" : ""} supprimé${deletedTopics > 1 ? "s" : ""}, gardé${deletedTopics > 1 ? "s" : ""} pour pouvoir être restauré${deletedTopics > 1 ? "s" : ""}. Restaurez-les et déplacez-les vers un autre forum avant de supprimer celui-ci.`,
-    };
-  }
-
-  // Les sous-forums d'abord, des plus profonds aux plus proches, puis le forum lui-même
-  await prisma.$transaction([
-    ...allForumIds.slice(1).reverse().map((id) => prisma.forum.delete({ where: { id } })),
-    prisma.forum.delete({ where: { id: forumId } }),
-  ]);
-
-  await logModerationAction(
-    "FORUM_DELETED",
-    forumId,
-    "FORUM",
-    `Suppression du forum : ${forumName}`
-  );
-
-  revalidatePath("/forum");
-  updateTag("forum-categories");
-  if (forum.parentForumId) {
-    revalidatePath(`/forum/${forum.parentForumId}`);
-  }
-
-  redirect(`/forum?deletedForum=${encodeURIComponent(forumName)}`);
+  redirect(`/forum?deletedForum=${encodeURIComponent(result.name ?? forumName)}`);
 }
 
 /**
@@ -488,96 +394,28 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
     return { success: false, error: "Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet." };
   }
 
-  // Données de tournoi si applicable
-  let tournamentData: any = null;
+  // Données de tournoi si applicable : formulaire lu par la même fonction qu'à la modification (carte 201)
+  let tournamentData: Prisma.TournamentUncheckedCreateInput | null = null;
   if (forum?.isTournamentForum) {
-    const tDateStr = formData.get("tDate") as string;
-    const tEndDateStr = formData.get("tEndDate") as string;
-    if (!tDateStr) return { success: false, error: "La date de début du tournoi est obligatoire." };
+    const form = readTournamentForm(formData);
+    if ("error" in form) return { success: false, error: form.error };
 
     // Seuls les modérateurs et les administrateurs accréditent un tournoi de la Coupe de France (carte 162) : la case
     // n'est pas affichée aux autres, et le serveur refuse la demande si elle arrive quand même.
-    const wantsCdf = formData.get("isCDF") === "on";
+    const { wantsCdf, typeCDF, commissaireIds } = form.requests;
     if (wantsCdf && !isModerator(session.user.role)) {
       return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
     }
-    
-    const startDate = new Date(tDateStr);
-    const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
-    // Date de fin avant la date de début refusée (carte 187), comme à la modification
-    const datesError = tournamentDatesError(startDate, endDate);
-    if (datesError) return { success: false, error: datesError };
-    const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-    const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
 
-    const commissaireIds = (formData.get("commissaireIds") as string || "").split(',').filter(id => id.length > 0);
-
-    // Géocodage
-    const tAddress = formData.get("tAddress") as string;
-    const tVille = formData.get("tVille") as string;
-    const tLatForm = formData.get("tLat") as string;
-    const tLngForm = formData.get("tLng") as string;
-    
-    let lat = tLatForm ? parseFloat(tLatForm) : null;
-    let lng = tLngForm ? parseFloat(tLngForm) : null;
-
-    // Si on n'a pas de coordonnées du formulaire, on tente un géocodage serveur
-    if (lat === null || lng === null) {
-      try {
-        const gRes = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(`${tAddress || ""} ${tVille || ""}`.trim())}&format=json&limit=1`, {
-          headers: { "User-Agent": "BBFrance-App" }
-        });
-        const gData = await gRes.json();
-        if (gData && gData.length > 0) {
-          lat = parseFloat(gData[0].lat);
-          lng = parseFloat(gData[0].lon);
-        }
-      } catch (e) {
-        console.error("Tournament geocoding error:", e);
-      }
-    }
-
+    // Sans coordonnées venues du formulaire, l'adresse est cherchée par le serveur
+    const fields = await withCoordinates(form.fields);
     tournamentData = {
+      ...fields,
       name: title,
-      date: startDate,
-      endDate: endDate,
-      location: tAddress || "Lieu non précisé",
-      address: tAddress,
-      gmapsUrl: null, // Plus utilisé
-      ville: tVille,
-      departement: formData.get("tDept") as string,
-      region: formData.get("tRegion") as string,
-      regionNAF: formData.get("tRegionNAF") as string,
-      lat,
-      lng,
-      maxParticipants: parseInt(formData.get("tMax") as string) || null,
-      isTeam: formData.get("isTeam") === "on",
-      coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,
-      price: parseFloat(formData.get("tPrice") as string) || null,
-      priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
-      priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
-      days: calculatedDays.toString(),
-      totalMatches: parseInt(formData.get("tTotalMatches") as string) || null,
-      structure: formData.get("tStructure") as string,
-      ruleset: formData.get("tRuleset") as string,
-      gameEdition: formData.get("tGame") as string || "BB2025",
-      platform: formData.get("tPlatform") as string || "Tabletop",
-      tournamentType: formData.get("tournamentType") as string || "SWISS",
-      mealsIncluded: formData.get("tMeals") === "on",
-      lodgingAtVenue: formData.get("tLodging") === "on",
-      fridayArrival: formData.get("tFriday") === "on",
-      isNAF: formData.get("isNAF") === "on",
       isCDF: wantsCdf,
-      typeCDF: wantsCdf ? (formData.get("typeCDF") as string || "INDIVIDUEL") : "INDIVIDUEL",
-      isCGO: formData.get("isCGO") === "on",
-      isTGE: formData.get("isTGE") === "on",
-      isTSC: formData.get("isTSC") === "on",
-      ligueId: formData.get("ligueId") as string || null,
-      ligueCustom: formData.get("ligueCustom") as string || null,
+      typeCDF: wantsCdf ? typeCDF || "INDIVIDUEL" : "INDIVIDUEL",
       organizerId: session.user.id,
-      commissaires: {
-        connect: commissaireIds.map(id => ({ id }))
-      }
+      commissaires: { connect: commissaireIds.map((id) => ({ id })) },
     };
   }
 
@@ -630,9 +468,7 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
     console.error("createTopic notifications error:", error);
   }
 
-  revalidatePath(`/forum/${forumId}`);
-  revalidatePath("/forum/unread");
-  revalidatePath("/tournois");
+  refreshTopic({ id: topic.id, forumIds: [forumId], isTournament: !!tournamentData });
 
   redirect(`/forum/topic/${topic.id}`);
 }
@@ -656,7 +492,8 @@ export async function createPost(topicId: string, content: string): Promise<Acti
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
   // Un sujet archivé est fermé comme un sujet verrouillé (carte 169) : avant, il acceptait des réponses invisibles
-  if (isTopicClosedFor(writeState(topic), isModerator(session.user.role))) {
+  // Même règle que l'outil « Répondre » de la page du sujet (lib/forumRights.ts, carte 200)
+  if (!canReplyToTopic({ id: session.user.id, isModerator: isModerator(session.user.role) }, { ...writeState(topic), isDeleted: topic.isDeleted })) {
     return { success: false, error: closedTopicMessage(writeState(topic)) };
   }
 
@@ -703,7 +540,7 @@ export async function createPost(topicId: string, content: string): Promise<Acti
     console.error("createPost notifications error:", error);
   }
 
-  revalidatePath(`/forum/topic/${topicId}`);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId] });
   return { success: true, postId: post.id };
 }
 
@@ -719,11 +556,15 @@ export async function updatePost(postId: string, content: string): Promise<Actio
   const existingPost = await findAccessiblePost(postId);
 
   if (!existingPost) return { success: false, error: "Message introuvable." };
-  if (existingPost.authorId !== session.user.id && !isModerator(session.user.role)) {
-    return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce message." };
-  }
-  if (isLockedFor(existingPost, session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus modifier ce message." };
+  // Même règle que le menu « ⋯ » du message (lib/forumRights.ts, carte 200)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canEditPost(viewer, isTopicClosedFor(writeState(existingPost.topic), false), existingPost.authorId)) {
+    return {
+      success: false,
+      error: existingPost.authorId !== session.user.id && !viewer.isModerator
+        ? "Vous n'avez pas l'autorisation de modifier ce message."
+        : "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus modifier ce message.",
+    };
   }
 
   await prisma.post.update({
@@ -785,8 +626,11 @@ export async function moderatePost(postId: string, reason: string): Promise<Acti
     return { success: false, error: "Seuls les modérateurs peuvent modérer des messages." };
   }
 
-  const post = await prisma.post.findUnique({
-    where: { id: postId }
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const post = await prisma.post.findFirst({
+    where: { id: postId, topic: { forum: forumAccessWhere(roles) } }
   });
 
   if (!post) {
@@ -804,6 +648,7 @@ export async function moderatePost(postId: string, reason: string): Promise<Acti
   });
 
   await logModerationAction(
+    session.user.id,
     "POST_MODERATED",
     postId,
     "POST",
@@ -822,8 +667,11 @@ export async function unmoderatePost(postId: string): Promise<ActionResult> {
     return { success: false, error: "Seuls les modérateurs peuvent annuler une modération." };
   }
 
-  const post = await prisma.post.findUnique({
-    where: { id: postId }
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const post = await prisma.post.findFirst({
+    where: { id: postId, topic: { forum: forumAccessWhere(roles) } }
   });
 
   if (!post) return { success: false, error: "Message introuvable." };
@@ -839,6 +687,7 @@ export async function unmoderatePost(postId: string): Promise<ActionResult> {
   });
 
   await logModerationAction(
+    session.user.id,
     "POST_UNMODERATED",
     postId,
     "POST",
@@ -893,6 +742,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
     // Premier message d'un sujet sans réponse : le sujet entier disparaît (suppression douce, restaurable)
     await markTopicDeleted(post.topicId, userId, null);
     await logModerationAction(
+      session.user.id,
       "TOPIC_DELETED",
       post.topicId,
       "TOPIC",
@@ -901,7 +751,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
     // Le sujet et son premier message ont disparu : leurs signalements en attente se ferment (carte 168)
     await closePendingReports("TOPIC", [post.topicId], userId);
     await closePendingReports("POST", [postId], userId);
-    revalidateTopicLists(post.topic.forumId, post.topicId);
+    refreshTopic({ id: post.topicId, forumIds: [post.topic.forumId], isTournament: true });
     return { success: true, topicDeleted: true, topicTitle: post.topic.title };
   }
 
@@ -915,6 +765,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
 
   // Trace au journal de modération, aussi quand c'est l'auteur qui supprime : utile pour l'historique
   await logModerationAction(
+    session.user.id,
     "POST_DELETED",
     postId,
     "POST",
@@ -923,8 +774,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
   // Le message supprimé n'a plus besoin d'être traité : ses signalements en attente se ferment (carte 168)
   await closePendingReports("POST", [postId], userId);
 
-  revalidatePath(`/forum/topic/${post.topicId}`);
-  revalidatePath(`/forum/${post.topic.forumId}`);
+  refreshTopic({ id: post.topicId, forumIds: [post.topic.forumId] });
   return { success: true };
 }
 
@@ -951,7 +801,7 @@ export async function restorePost(postId: string): Promise<ActionResult> {
   // Le message restauré redevient peut-être le dernier du sujet
   await refreshTopicLastPost(post.topicId);
 
-  await logModerationAction("POST_RESTORED", postId, "POST", "Message supprimé par la modération restauré");
+  await logModerationAction(session.user.id, "POST_RESTORED", postId, "POST", "Message supprimé par la modération restauré");
 
   revalidatePath(`/forum/topic/${post.topicId}`);
   return { success: true };
@@ -994,8 +844,11 @@ export async function togglePinTopic(topicId: string): Promise<ActionResult> {
     return { success: false, error: "Seuls les modérateurs peuvent épingler des sujets." };
   }
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId },
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, forum: forumAccessWhere(roles) },
     select: { isSticky: true }
   });
 
@@ -1007,6 +860,7 @@ export async function togglePinTopic(topicId: string): Promise<ActionResult> {
   });
 
   await logModerationAction(
+    session.user.id,
     topic.isSticky ? "TOPIC_UNPINNED" : "TOPIC_PINNED",
     topicId,
     "TOPIC",
@@ -1031,20 +885,6 @@ async function markTopicRestored(topicId: string) {
   await prisma.$executeRaw`UPDATE "Topic" SET "isDeleted" = false, "deletedAt" = NULL, "deletedById" = NULL, "deletionReason" = NULL WHERE "id" = ${topicId}`;
 }
 
-/**
- * Renouvelle les pages et les caches qui listent des sujets ou des tournois, après la suppression ou la restauration
- * d'un sujet : le forum, l'accueil du forum (cache « forum-categories »), les non-lus, les tournois et l'accueil du
- * site (cache « home-tournaments »).
- */
-function revalidateTopicLists(forumId: string, topicId: string) {
-  revalidatePath(`/forum/${forumId}`);
-  revalidatePath(`/forum/topic/${topicId}`);
-  revalidatePath("/forum");
-  revalidatePath("/forum/unread");
-  revalidatePath("/tournois");
-  updateTag("forum-categories");
-  updateTag("home-tournaments");
-}
 
 /**
  * Supprime un sujet, en suppression douce (carte 165) : réservé aux modérateurs, avec une raison, inscrit au journal
@@ -1082,6 +922,7 @@ export async function deleteTopic(topicId: string, reason: string): Promise<Acti
   await markTopicDeleted(topicId, session.user.id, cleanReason);
 
   await logModerationAction(
+    session.user.id,
     "TOPIC_DELETED",
     topicId,
     "TOPIC",
@@ -1091,7 +932,7 @@ export async function deleteTopic(topicId: string, reason: string): Promise<Acti
   // messages restent ouverts ; l'écran de modération les montre comme « contenu déjà supprimé », avec « Fermer ».
   await closePendingReports("TOPIC", [topicId], session.user.id);
 
-  revalidateTopicLists(topic.forumId, topicId);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId], isTournament: true });
   redirect(`/forum?deletedTopic=${encodeURIComponent(topic.title)}`);
 }
 
@@ -1116,9 +957,9 @@ export async function restoreTopic(topicId: string): Promise<ActionResult> {
   }
 
   await markTopicRestored(topicId);
-  await logModerationAction("TOPIC_RESTORED", topicId, "TOPIC", `Sujet restauré : ${topic.title}`);
+  await logModerationAction(session.user.id, "TOPIC_RESTORED", topicId, "TOPIC", `Sujet restauré : ${topic.title}`);
 
-  revalidateTopicLists(topic.forumId, topicId);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId], isTournament: true });
   return { success: true };
 }
 
@@ -1144,15 +985,14 @@ export async function moveTopic(topicId: string, newForumId: string): Promise<Ac
   });
 
   await logModerationAction(
+    session.user.id,
     "TOPIC_MOVED",
     topicId,
     "TOPIC",
     `Sujet déplacé vers le forum ${newForumId}`
   );
 
-  revalidatePath(`/forum/${topic.forumId}`);
-  revalidatePath(`/forum/${newForumId}`);
-  revalidatePath(`/forum/topic/${topicId}`);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId, newForumId] });
   return { success: true };
 }
 
@@ -1245,8 +1085,11 @@ export async function toggleArchiveTopic(topicId: string): Promise<ActionResult>
     return { success: false, error: "Seuls les modérateurs peuvent archiver des sujets." };
   }
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId },
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, forum: forumAccessWhere(roles) },
     select: { id: true, isArchived: true, forumId: true }
   });
 
@@ -1258,14 +1101,14 @@ export async function toggleArchiveTopic(topicId: string): Promise<ActionResult>
   });
 
   await logModerationAction(
+    session.user.id,
     topic.isArchived ? "TOPIC_UNARCHIVED" : "TOPIC_ARCHIVED",
     topicId,
     "TOPIC",
     `${topic.isArchived ? "Désarchivage" : "Archivage"} du sujet`
   );
 
-  revalidatePath(`/forum/${topic.forumId}`);
-  revalidatePath(`/forum/topic/${topicId}`);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId] });
   return { success: true };
 }
 
@@ -1395,12 +1238,15 @@ export async function getFollowedTopics(page: number = 1, limit: number = 20) {
 }
 export async function toggleForumLock(forumId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) {
+  if (!session || !isModerator(session.user.role)) {
     return { success: false, error: "Action non autorisée." };
   }
 
-  const forum = await prisma.forum.findUnique({
-    where: { id: forumId },
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const forum = await prisma.forum.findFirst({
+    where: { id: forumId, ...forumAccessWhere(roles) },
     select: { isLocked: true }
   });
 
@@ -1412,25 +1258,28 @@ export async function toggleForumLock(forumId: string): Promise<ActionResult> {
   });
 
   await logModerationAction(
+    session.user.id,
     forum.isLocked ? "FORUM_UNLOCKED" : "FORUM_LOCKED",
     forumId,
     "FORUM",
     `${forum.isLocked ? "Déverrouillage" : "Verrouillage"} du forum`
   );
 
-  revalidatePath("/forum");
-  revalidatePath(`/forum/${forumId}`);
+  refreshForumStructure(forumId);
   return { success: true };
 }
 
 export async function toggleTopicLock(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) {
+  if (!session || !isModerator(session.user.role)) {
     return { success: false, error: "Action non autorisée." };
   }
 
-  const topic = await prisma.topic.findUnique({
-    where: { id: topicId },
+  // Seulement dans un forum que le modérateur peut voir (carte 200 : avant, un forum réservé aux administrateurs
+  // restait modifiable en appelant l'action directement)
+  const { roles } = await getForumAccess();
+  const topic = await prisma.topic.findFirst({
+    where: { id: topicId, forum: forumAccessWhere(roles) },
     select: { isLocked: true, forumId: true }
   });
 
@@ -1442,14 +1291,14 @@ export async function toggleTopicLock(topicId: string): Promise<ActionResult> {
   });
 
   await logModerationAction(
+    session.user.id,
     topic.isLocked ? "TOPIC_UNLOCKED" : "TOPIC_LOCKED",
     topicId,
     "TOPIC",
     `${topic.isLocked ? "Déverrouillage" : "Verrouillage"} du sujet`
   );
 
-  revalidatePath(`/forum/topic/${topicId}`);
-  revalidatePath(`/forum/${topic.forumId}`);
+  refreshTopic({ id: topicId, forumIds: [topic.forumId] });
   return { success: true };
 }
 
@@ -1490,13 +1339,14 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
 
   if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isMod = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isMod) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     return { success: false, error: "Vous n'avez pas les droits pour modifier ce tournoi." };
   }
+  // L'organisateur (ou un modérateur) est seul à pouvoir changer les commissaires
+  const isOrganizer = tournament.organizerId === session.user.id;
+  const isMod = viewer.isModerator;
 
   // Le sujet et son premier message arrivent du navigateur : on vérifie qu'ils appartiennent bien à ce tournoi,
   // sinon un organisateur pourrait réécrire le titre ou le message d'un autre sujet (carte 052).
@@ -1511,82 +1361,39 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
 
   const title = formData.get("title") as string;
   const content = formData.get("content") as string;
-  const tDateStr = formData.get("tDate") as string;
-  const tEndDateStr = formData.get("tEndDate") as string;
 
-  if (!title || !content || !tDateStr) {
+  if (!title || !content) {
     return { success: false, error: "Titre, contenu et date de début sont obligatoires." };
   }
   // Mêmes limites que pour un sujet ordinaire (carte 169)
   const textError = topicTitleError(title) ?? postContentError(content);
   if (textError) return { success: false, error: textError };
 
-  const startDate = new Date(tDateStr);
-  const endDate = tEndDateStr ? new Date(tEndDateStr) : startDate;
-  
-  // Validation des dates : même règle qu'à la création (carte 187)
-  const datesError = tournamentDatesError(startDate, endDate);
-  if (datesError) return { success: false, error: datesError };
-  
-  const diffTime = Math.abs(endDate.getTime() - startDate.getTime());
-  const calculatedDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-
-  const tLatForm = formData.get("tLat") as string;
-  const tLngForm = formData.get("tLng") as string;
-  let lat = tLatForm ? parseFloat(tLatForm) : null;
-  let lng = tLngForm ? parseFloat(tLngForm) : null;
+  // Formulaire lu par la même fonction qu'à la création (carte 201) : mêmes valeurs par défaut, et l'adresse est
+  // aussi cherchée par le serveur quand le formulaire ne donne pas de coordonnées
+  const form = readTournamentForm(formData);
+  if ("error" in form) return { success: false, error: form.error };
+  const fields = await withCoordinates(form.fields);
 
   // Case « CDF » : seuls les modérateurs et les administrateurs la changent (carte 162). Pour les autres, le tournoi
   // garde son statut CDF ; seul le type de classement CDF suit le format (individuel ou par équipes) choisi dans le
   // formulaire. Retirer ou remettre la case annule une éventuelle validation des résultats par la modération.
-  const wantsCdf = formData.get("isCDF") === "on";
+  const { wantsCdf } = form.requests;
   if (wantsCdf && !tournament.isCDF && !isMod) {
     return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
   }
   const isCdfNew = isMod ? wantsCdf : tournament.isCDF;
   const cdfUpdate = {
     isCDF: isCdfNew,
-    typeCDF: isCdfNew ? (formData.get("typeCDF") as string || tournament.typeCDF || "INDIVIDUEL") : "INDIVIDUEL",
+    typeCDF: isCdfNew ? (form.requests.typeCDF || tournament.typeCDF || "INDIVIDUEL") : "INDIVIDUEL",
     ...(isCdfNew !== tournament.isCDF ? { cdfValidatedAt: null, cdfValidatedById: null } : {})
   };
 
   // Mise à jour du tournoi
-  const updateData: any = {
+  const updateData: Prisma.TournamentUncheckedUpdateInput = {
+    ...fields,
     name: title,
-    date: startDate,
-    endDate: endDate,
-    location: formData.get("tAddress") as string || "Lieu non précisé",
-    address: formData.get("tAddress") as string,
-    gmapsUrl: null, // Plus utilisé
-    ville: formData.get("tVille") as string,
-    departement: formData.get("tDept") as string,
-    region: formData.get("tRegion") as string,
-    regionNAF: formData.get("tRegionNAF") as string,
-    lat,
-    lng,
-    maxParticipants: parseInt(formData.get("tMax") as string) || null,
-    isTeam: formData.get("isTeam") === "on",
-    coachsPerTeam: formData.get("isTeam") === "on" ? Math.max(2, parseInt(formData.get("tCoachsPerTeam") as string) || 2) : 1,
-    price: parseFloat(formData.get("tPrice") as string) || null,
-    priceMeals: parseFloat(formData.get("tPriceMeals") as string) || null,
-    priceLodging: parseFloat(formData.get("tPriceLodging") as string) || null,
-    days: calculatedDays.toString(),
-    totalMatches: parseInt(formData.get("tTotalMatches") as string) || null,
-    structure: formData.get("tStructure") as string,
-    ruleset: formData.get("tRuleset") as string,
-    gameEdition: formData.get("tGame") as string,
-    platform: formData.get("tPlatform") as string,
-    tournamentType: formData.get("tournamentType") as string || "SWISS",
-    mealsIncluded: formData.get("tMeals") === "on",
-    lodgingAtVenue: formData.get("tLodging") === "on",
-    fridayArrival: formData.get("tFriday") === "on",
-    isNAF: formData.get("isNAF") === "on",
     ...cdfUpdate,
-    isCGO: formData.get("isCGO") === "on",
-    isTGE: formData.get("isTGE") === "on",
-    isTSC: formData.get("isTSC") === "on",
-    ligueId: formData.get("ligueId") as string || null,
-    ligueCustom: formData.get("ligueCustom") as string || null,
   };
 
   const isTeamNew = formData.get("isTeam") === "on";
@@ -1670,10 +1477,10 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     console.error("updateTournament notifications error:", error);
   }
 
-  revalidatePath(`/forum/topic/${topicId}`);
-  // On récupère le forumId du topic si possible pour revalider la liste
+  // Le sujet, sa liste, les pages des tournois et l'accueil (lib/pageRefresh.ts, carte 202)
+  refreshTournament({ id: tournamentId, topicId });
   const topic = await prisma.topic.findUnique({ where: { id: topicId }, select: { forumId: true }});
-  if (topic) revalidatePath(`/forum/${topic.forumId}`);
+  if (topic) refreshTopic({ id: topicId, forumIds: [topic.forumId] });
   
   redirect(`/forum/topic/${topicId}`);
 }
@@ -1757,7 +1564,7 @@ export async function joinTournament(tournamentId: string) {
     });
     if (!status) return { success: false, error: "Déjà inscrit" };
 
-    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
     return { success: true, waitingList: status === "WAITING_LIST" };
   } catch (e) {
     return { success: false, error: "Erreur lors de l'inscription" };
@@ -1789,7 +1596,7 @@ export async function leaveTournament(tournamentId: string) {
     });
     await notifyPromotedMembers(promoted, reg.tournament.topic?.id);
 
-    if (reg.tournament.topic) revalidatePath(`/forum/topic/${reg.tournament.topic.id}`);
+    refreshTournament({ id: tournamentId, topicId: reg.tournament.topic?.id });
     return { success: true };
   } catch (e) {
     return { success: false, error: "Désinscription impossible" };
@@ -1810,29 +1617,32 @@ export async function toggleMercenary(tournamentId: string) {
     const tournament = await loadTournamentForRegistration(tournamentId);
     if (!tournament) return { success: false, error: "Tournoi introuvable" };
 
-    const existing = await prisma.tournamentMercenary.findUnique({
-      where: { tournamentId_userId: { tournamentId, userId } }
-    });
-
-    if (existing) {
-      await prisma.tournamentMercenary.delete({
-        where: { id: existing.id }
+    // Sous le verrou des inscriptions (carte 201), comme createTeam qui lit les mercenaires : avant, la vérification
+    // « déjà dans une équipe » et l'écriture se faisaient hors du verrou, et une équipe créée au même moment pouvait
+    // compter ce coach à la fois comme membre et comme mercenaire.
+    const refusal = await prisma.$transaction(async (tx) => {
+      await lockTournamentRegistrations(tx, tournamentId);
+      const existing = await tx.tournamentMercenary.findUnique({
+        where: { tournamentId_userId: { tournamentId, userId } }
       });
-    } else {
-      if (!tournament.isTeam) return { success: false, error: "Les mercenaires n'existent que dans un tournoi par équipes." };
-      const refusal = newRegistrationRefusal(tournament);
-      if (refusal) return { success: false, error: refusal };
-      const team = await prisma.tournamentTeam.findFirst({
+      if (existing) {
+        await tx.tournamentMercenary.delete({ where: { id: existing.id } });
+        return null;
+      }
+      if (!tournament.isTeam) return "Les mercenaires n'existent que dans un tournoi par équipes.";
+      const registrationRefusal = newRegistrationRefusal(tournament);
+      if (registrationRefusal) return registrationRefusal;
+      const team = await tx.tournamentTeam.findFirst({
         where: { tournamentId, OR: [{ captainId: userId }, { members: { some: { userId } } }] },
         select: { id: true }
       });
-      if (team) return { success: false, error: "Vous faites déjà partie d'une équipe de ce tournoi." };
-      await prisma.tournamentMercenary.create({
-        data: { tournamentId, userId }
-      });
-    }
+      if (team) return "Vous faites déjà partie d'une équipe de ce tournoi.";
+      await tx.tournamentMercenary.create({ data: { tournamentId, userId } });
+      return null;
+    });
+    if (refusal) return { success: false, error: refusal };
 
-    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
     return { success: true };
   } catch (e) {
     return { success: false, error: "Action impossible" };
@@ -1913,7 +1723,7 @@ export async function createTeam(tournamentId: string, name: string, memberIds: 
     });
     if ("error" in outcome) return { success: false, error: outcome.error };
 
-    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
     return { success: true, waitingList: outcome.status === "WAITING_LIST" };
   } catch (e) {
     return { success: false, error: "Erreur lors de la création" };
@@ -1993,7 +1803,7 @@ export async function updateTeam(teamId: string, name: string, memberIds: string
     });
     if (outcome.error) return { success: false, error: outcome.error };
 
-    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+    refreshTournament({ id: tournament.id, topicId: tournament.topic?.id });
     return { success: true };
   } catch (e) {
     return { success: false, error: "Erreur lors de la mise à jour" };
@@ -2024,7 +1834,7 @@ export async function deleteTeam(teamId: string) {
     });
     await notifyPromotedMembers(promoted, team.tournament.topic?.id);
 
-    if (team.tournament.topic) revalidatePath(`/forum/topic/${team.tournament.topic.id}`);
+    refreshTournament({ id: team.tournamentId, topicId: team.tournament.topic?.id });
     return { success: true };
   } catch (e) {
     return { success: false, error: "Action impossible" };
@@ -2062,16 +1872,14 @@ export async function updateRegistrationStatus(params: {
 
     if (!tournament) return { success: false, error: "Tournoi ou inscription introuvable" };
 
-    const isOrganizer = tournament.organizerId === session.user.id;
-    const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-    const isMod = isModerator(session.user.role);
-
-    if (!isOrganizer && !isCommissaire && !isMod) {
+    // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+    const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+    if (!canManageTournament(viewer, tournament)) {
       return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette inscription." };
     }
     // Le paiement est l'affaire de l'organisateur et des commissaires du tournoi, pas de la modération du site
     // (décision du responsable, carte 177). Un modérateur peut nommer un commissaire si l'organisateur est absent.
-    if (params.paymentStatus !== undefined && !isOrganizer && !isCommissaire) {
+    if (params.paymentStatus !== undefined && !canManagePayments(viewer, tournament)) {
       return { success: false, error: "Seuls l'organisateur et les commissaires du tournoi peuvent modifier un paiement." };
     }
   } catch (e) {
@@ -2125,11 +1933,9 @@ export async function toggleTournamentRegistrations(tournamentId: string) {
 
     if (!tournament) return { success: false, error: "Tournoi introuvable" };
 
-    const isOrganizer = tournament.organizerId === session.user.id;
-    const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-    const isLogMod = isModerator(session.user.role);
-
-    if (!isOrganizer && !isCommissaire && !isLogMod) {
+    // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+    const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+    if (!canManageTournament(viewer, tournament)) {
       return { success: false, error: "Action non autorisée" };
     }
 
@@ -2138,8 +1944,8 @@ export async function toggleTournamentRegistrations(tournamentId: string) {
       data: { registrationsLocked: !tournament.registrationsLocked }
     });
 
-    if (tournament.topic) revalidatePath(`/forum/topic/${tournament.topic.id}`);
-    
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
+
     return { 
       success: true, 
       locked: updated.registrationsLocked 

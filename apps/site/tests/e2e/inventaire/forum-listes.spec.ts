@@ -402,7 +402,8 @@ test.describe("3.2 un forum", () => {
     await expect(page.getByText(/contient encore 1 sujet/).filter({ visible: true }).first()).toBeVisible();
     expect(await withTestDb((prisma) => prisma.topic.count({ where: { id: "e2e_inv_topic_jetable" } }))).toBe(1);
 
-    // Une fois le sujet parti ailleurs (ici, effacé par le test), le forum vide et son sous-forum sont supprimés
+    // Une fois le sujet parti ailleurs (ici, effacé par le test), le forum est encore refusé tant qu'il a un
+    // sous-forum (carte 199 : plus de suppression en cascade)
     await withTestDb(async (prisma) => {
       await prisma.topicView.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
       await prisma.topicFollow.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
@@ -413,12 +414,20 @@ test.describe("3.2 un forum", () => {
     await page.reload({ waitUntil: "networkidle" });
     await (await findAction(page, "button", /Supprimer/)).click();
     dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
+    await dialog.getByRole("button", { name: "Confirmer" }).click();
+    await expect(page.getByText(/contient 1 sous-forum/).filter({ visible: true }).first()).toBeVisible();
+
+    // Le sous-forum supprimé (ici par le test), le forum vide est supprimé
+    await withTestDb((prisma) => prisma.forum.delete({ where: { id: "e2e_inv_jetable_sous" } }));
+    await page.reload({ waitUntil: "networkidle" });
+    await (await findAction(page, "button", /Supprimer/)).click();
+    dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Confirmer" }).click();
     await page.waitForURL(/\/forum\?deletedForum=/);
     await expect(page.getByText(/Forum supprimé/)).toBeVisible();
 
-    // Le forum et son sous-forum ont disparu
+    // Le forum et son sous-forum ont disparu (le sous-forum, effacé par le test)
     const left = await withTestDb((prisma) => prisma.forum.count({ where: { id: { in: [throwaway.id, "e2e_inv_jetable_sous"] } } }));
     expect(left).toBe(0);
   });

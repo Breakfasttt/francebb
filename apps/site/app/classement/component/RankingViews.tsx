@@ -181,7 +181,7 @@ export function RosterList({ entries }: { entries: RankingEntry[] }) {
               <p className="m-0 mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-bb-text-muted">
                 <span>Meilleur coach :</span>
                 {entry.userId ? (
-                  <Link href={`/spy/${entry.userId}`} aria-label={`Voir le profil de ${entry.name}`} className="font-semibold break-words text-bb-text hover:underline">
+                  <Link href={`/spy/${entry.userId}`} aria-label={`Voir le profil de ${entry.name}`} className="inline-flex min-h-11 items-center font-semibold break-words text-bb-text hover:underline lg:min-h-0">
                     {entry.name}
                   </Link>
                 ) : (

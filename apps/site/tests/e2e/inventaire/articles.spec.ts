@@ -140,9 +140,7 @@ async function shownArticles(page: Page): Promise<string[]> {
 async function filterPanel(page: Page): Promise<Locator> {
   const panel = page.getByRole("dialog", { name: /Filtr/ }).filter({ visible: true });
   if ((await panel.count()) === 0) {
-    // En développement, le bouton flottant historique est caché sous les widgets de développement (« Dev Auth ») :
-    // le clic est envoyé directement au bouton
-    await page.getByRole("button", { name: /^(Ouvrir les filtres|Filtres)/ }).filter({ visible: true }).first().dispatchEvent("click");
+    await page.getByRole("button", { name: /^(Ouvrir les filtres|Filtres)/ }).filter({ visible: true }).first().click();
     await expect(panel.first()).toBeVisible();
   }
   return panel.first();
@@ -339,7 +337,7 @@ test.describe("Inventaire 10 : articles", () => {
     await expect(page.getByText(TAG_A, { exact: true }).first()).toBeVisible();
     await expect(page.getByText(TAG_B, { exact: true }).first()).toBeVisible();
     // Réactions : visibles pour un visiteur, qui ne peut pas réagir
-    const thumbs = page.getByRole("button", { name: /^👍\s*2/ }).filter({ visible: true }).first();
+    const thumbs = page.getByRole("button", { name: /^Pouce levé, 2 réactions/ }).filter({ visible: true }).first();
     await expect(thumbs).toBeVisible();
     await expect(thumbs).toBeDisabled();
     await expect(page.getByRole("button", { name: /Ajouter une réaction|Réagir/ }).filter({ visible: true })).toHaveCount(0);
@@ -348,10 +346,10 @@ test.describe("Inventaire 10 : articles", () => {
     await loginAs(page, AUTHOR.id);
     await page.goto(`/articles/${ALPHA.id}`, { waitUntil: "networkidle" });
     await page.getByRole("button", { name: /Ajouter une réaction|Réagir/ }).filter({ visible: true }).first().click();
-    await page.getByRole("button", { name: "🔥", exact: true }).filter({ visible: true }).first().click();
+    await page.getByRole("button", { name: "Feu", exact: true }).filter({ visible: true }).first().click();
     await expect.poll(() => db((prisma) => prisma.articleReaction.count({ where: { articleId: ALPHA.id, userId: AUTHOR.id, emoji: "🔥" } }))).toBe(1);
     await page.screenshot({ path: testInfo.outputPath("article-reactions.png"), fullPage: false });
-    await page.getByRole("button", { name: /^🔥\s*1/ }).filter({ visible: true }).first().click();
+    await page.getByRole("button", { name: /^Feu, 1 réaction/ }).filter({ visible: true }).first().click();
     await expect.poll(() => db((prisma) => prisma.articleReaction.count({ where: { articleId: ALPHA.id, userId: AUTHOR.id } }))).toBe(0);
   });
 

@@ -21,6 +21,7 @@ export default function SmileyGrid({ onSelect }: SmileyGridProps) {
           variant="quiet"
           size="tap-icon"
           title={code}
+          aria-label={`Insérer le smiley ${code}`}
           className="w-full text-2xl font-normal"
           onClick={(e) => {
             e.preventDefault();

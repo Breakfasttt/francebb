@@ -38,30 +38,32 @@ jobs:
       - run: pnpm --filter @bbfrance/hub exec prisma generate
       - run: pnpm --filter @bbfrance/bbscheme exec prisma generate
       - run: pnpm --filter @bbfrance/bbquizz exec prisma generate
-      - name: Site : migrations à jour du schéma (aucune migration oubliée)
+      - name: "Site : migrations à jour du schéma (aucune migration oubliée)"
         working-directory: apps/site
         run: |
           export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-      - name: Hub : schéma Prisma = tables Better Auth, migrations à jour
+      - name: "Hub : schéma Prisma = tables Better Auth, migrations à jour"
         working-directory: apps/hub
         run: |
           node scripts/generate-schema.mjs
           git diff --exit-code prisma/schema.prisma
           export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-      - name: Application BBScheme : migrations à jour du schéma (carte 179)
+      - name: "Application BBScheme : migrations à jour du schéma (carte 179)"
         working-directory: apps/bbscheme
         run: |
           export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
-      - name: Application BBQuizz : migrations à jour du schéma (carte 180)
+      - name: "Application BBQuizz : migrations à jour du schéma (carte 180)"
         working-directory: apps/bbquizz
         run: |
           export SHADOW_DATABASE_URL=$(node ../../scripts/local-postgres.mjs fresh shadow)
           pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --exit-code
       - name: Typecheck
         run: pnpm typecheck
+      - name: "Tests unitaires du site (règles sans base ni navigateur, carte 198)"
+        run: pnpm --filter @bbfrance/site test:unit
       - name: Lint (cliquet)
         run: pnpm lint:ratchet
       - name: Build

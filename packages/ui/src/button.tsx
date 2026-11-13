@@ -16,7 +16,7 @@ export const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary-hover",
         outline: "border border-border bg-card text-foreground hover:bg-muted",
         ghost: "text-foreground hover:bg-muted",
-        destructive: "bg-destructive text-white hover:opacity-90",
+        destructive: "bg-bb-danger text-bb-on-danger hover:opacity-90",
         // Variantes de la refonte (ADR 0006), sur les variables v2 :
         primary: "bg-bb-accent text-bb-on-accent hover:bg-bb-accent-hover focus-visible:outline-bb-focus",
         secondary: "border border-bb-border bg-bb-surface-2 text-bb-text hover:border-bb-text-muted focus-visible:outline-bb-focus",

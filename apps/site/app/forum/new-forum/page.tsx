@@ -6,7 +6,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
 import { redirect } from "next/navigation";
 import { createForum, getCategories, getAllForums } from "../actions";
-import ForumListHeader from "../component/ForumListHeader";
+import ComposeScreen from "../component/ComposeScreen";
 import NewForumForm from "./component/NewForumForm";
 
 
@@ -23,20 +23,22 @@ export default async function NewForumPage({ searchParams }: { searchParams: Pro
   const allForums = await getAllForums();
 
   return (
-    <div className="mx-auto w-full max-w-[760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader
-        title="Créer un forum"
-        subtitle="Ajoutez une nouvelle section ou un sous-forum à la communauté."
-        backHref="/forum"
-        backTitle="Retour au forum"
-      />
-      <NewForumForm
-        categories={categories}
-        allForums={allForums}
-        initialCategoryId={categoryId}
-        initialParentForumId={parentForumId}
-        createAction={createForum}
-      />
-    </div>
+    // Écran de rédaction, comme la création d'un sujet : sans barre basse sur téléphone, boutons collés en bas (carte 196)
+    <ComposeScreen
+      title="Créer un forum"
+      subtitle="Ajoutez une nouvelle section ou un sous-forum à la communauté."
+      backHref="/forum"
+      backTitle="Retour au forum"
+    >
+      <div className="max-w-[760px]">
+        <NewForumForm
+          categories={categories}
+          allForums={allForums}
+          initialCategoryId={categoryId}
+          initialParentForumId={parentForumId}
+          createAction={createForum}
+        />
+      </div>
+    </ComposeScreen>
   );
 }

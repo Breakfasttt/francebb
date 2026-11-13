@@ -100,7 +100,7 @@ export default function ProfilePage() {
 
   // Carte 063 : le titre de la page s'affiche tout de suite, sans attendre les données du membre.
   const header = (
-    <ForumListHeader title="Mon compte" subtitle="Gérez vos informations et votre activité" backHref="/" backTitle="Retour à l'accueil" />
+    <ForumListHeader title="Mon compte" subtitle="Gérez vos informations et votre activité" backHref="/" backTitle="Retour" backPreferHistory />
   );
 
   if (loading || status === "loading") {

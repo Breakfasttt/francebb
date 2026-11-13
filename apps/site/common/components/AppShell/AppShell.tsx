@@ -20,6 +20,7 @@ import { usePathname } from "next/navigation";
 import { Bell, ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
 import { ActionMenu, Avatar, Button, CountBadge, Sheet, SheetContent, cn } from "@bbfrance/ui";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
+import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
 import type { NavCounts } from "./navCounts";
 import { useNavCounts } from "./useNavCounts";
 import { signOutUser } from "@/common/utils/signOutUser";
@@ -86,6 +87,9 @@ const navLinkClass = (active: boolean) =>
 const iconLinkClass =
   "relative inline-flex size-11 items-center justify-center rounded-bb-md text-bb-nav-text hover:text-bb-nav-active";
 
+/** Bouton des comptes de test (développement seulement), aux couleurs de la barre comme les autres icônes. */
+const devButtonClass = "shrink-0 text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active";
+
 /** Cloche des notifications (carte 167), carré de 44 pixels avec la pastille du nombre de notifications non lues. */
 function NotificationBell({ count, active }: { count: number; active: boolean }) {
   return (
@@ -129,6 +133,8 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
           {/* SiteLogo est lui-même un lien vers l'accueil */}
           {!isHome && <SiteLogo scale={0.5} />}
           <div className="flex-1" />
+          {/* Comptes de test, en développement seulement (carte 204) */}
+          <DebugAuthWidget className={devButtonClass} />
           {user && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
           {showLoginButton && (
             // Sans icône sur téléphone : le texte entier tient à côté du logo dès 360 pixels de large
@@ -158,6 +164,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
             />
           </nav>
 
+          <DebugAuthWidget className={devButtonClass} />
           {user ? (
             <div className="flex items-center gap-1">
               <NotificationBell count={notificationCount} active={pathname === "/notifications"} />

@@ -50,7 +50,7 @@ Une page qui colle sa propre barre en bas (« Répondre » et la pagination d'un
 ## Écrans plein écran
 
 - **Écrans de rédaction** (répondre, modifier un message, nouveau sujet, tournois, ligues, articles, ressources, archives du classement) : la barre basse est retirée grâce à leur adresse, reconnue par `isComposePath` dans `navItems.ts`. Une nouvelle adresse de rédaction doit y être ajoutée, sinon la barre basse recouvre la barre d'envoi. Leur mise en page passe par `ComposeScreen` et `ComposeActionBar` (`app/forum/component/ComposeScreen.tsx`).
-- **Écran plein écran sans adresse propre** (conversation de la messagerie ouverte par `?id=`, carte en plein écran) : il pose l'attribut `data-fullscreen` sur son cadre. `AppShell.css` retire alors la barre basse et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`).
+- **Écran plein écran sans adresse propre** (conversation de la messagerie ouverte par `?id=`, carte en plein écran) : il pose l'attribut `data-fullscreen` sur son cadre. `AppShell.css` retire alors la barre basse et bloque le défilement de la page restée derrière. Pour garder une zone de saisie au-dessus du clavier, ce cadre suit la partie visible de l'écran (`window.visualViewport`, voir `app/messagerie/component/ConversationView.tsx`). Un plein écran ouvert par un bouton se ferme aussi avec Échap et avec le bouton retour du téléphone : l'ouvrir ajoute une entrée à l'historique (`window.history.pushState`), que le retour retire sans quitter la page (modèle : `app/carte/component/CarteClient.tsx`, carte 196).
 
 ## Onglets d'une page
 
@@ -63,7 +63,9 @@ Sur ordinateur, les filtres d'une liste sont dans une colonne « Filtres » à g
 - il ouvre un panneau qui monte du bas (`Sheet` de `@bbfrance/ui`) avec les mêmes filtres, « Réinitialiser » et « Voir N résultats » ;
 - chaque filtre actif est rappelé en pastille au-dessus des résultats, avec une croix pour le retirer.
 
-Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/ressources`. Les modèles les plus simples à copier : `app/articles/component/ArticleFilters.tsx` (filtres écrits dans l'adresse) ou `app/ressources/component/ResourceFilters.tsx` (filtres gardés dans la page). Les filtres ne vont jamais dans le panneau « Plus ».
+Exemples : `/forum/search`, `/tournois`, `/membres`, `/ligues`, `/articles`, `/ressources`. Les modèles les plus simples à copier : `app/articles/component/ArticleFilters.tsx` (page serveur) ou `app/ressources/component/ResourceFilters.tsx` (liste chargée dans le navigateur). Les filtres ne vont jamais dans le panneau « Plus ».
+
+**Les filtres d'une liste sont toujours écrits dans l'adresse** (carte 196, décision du responsable du projet du 13 novembre 2026) : un lien partagé ou un retour arrière depuis un élément de la liste doit retrouver la même liste. Une page serveur les lit dans `searchParams` ; une liste chargée dans le navigateur lit ses réglages de départ avec `useSearchParams` et les réécrit avec `useSyncUrlFilters` (`common/hooks/useUrlFilters.ts`), sans recharger la page ni remplir l'historique. Exemples : `/ressources`, `/membres`, `/classement` (`?vue=`), `/carte` (`?vue=ligues`).
 
 ## Mise en page
 

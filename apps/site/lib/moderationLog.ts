@@ -4,14 +4,13 @@
  * (Exportée depuis un fichier « use server », logModerationAction devenait une action publique et n'importe quel
  * membre connecté pouvait écrire de fausses entrées dans le journal — carte 050.)
  */
-import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 
 /**
  * Types d'actions de modération pour le journal (Audit Log).
  */
 export type ModerationAction = 
-  | "FORUM_CREATED" | "FORUM_LOCKED" | "FORUM_UNLOCKED" | "FORUM_DELETED"
+  | "FORUM_CREATED" | "FORUM_UPDATED" | "FORUM_LOCKED" | "FORUM_UNLOCKED" | "FORUM_DELETED"
   | "TOPIC_DELETED" | "TOPIC_RESTORED" | "TOPIC_PINNED" | "TOPIC_UNPINNED" | "TOPIC_MOVED" | "TOPIC_ARCHIVED" | "TOPIC_UNARCHIVED" | "TOPIC_LOCKED" | "TOPIC_UNLOCKED"
   | "TOPIC_SPLIT" | "TOPIC_MERGED"
   | "POST_MODERATED" | "POST_UNMODERATED" | "POST_DELETED" | "POST_RESTORED"
@@ -24,26 +23,24 @@ export type ModerationAction =
   | "TOURNAMENT_CDF_VALIDATED" | "TOURNAMENT_CDF_UNVALIDATED";
 
 /**
- * Enregistre une action de modération dans le journal, au nom du membre connecté.
- * Fonction interne au serveur, appelée par les actions serveur après une action réussie.
+ * Enregistre une action de modération dans le journal, au nom du membre `moderatorId`.
+ * Fonction interne au serveur, appelée par les actions serveur après une action réussie. Depuis la carte 198, elle
+ * reçoit le membre en paramètre au lieu de relire la session : l'action serveur lit la session une fois et la
+ * transmet, et la fonction peut être appelée dans un test avec un membre fictif.
+ * On écrit au journal même si le membre n'est pas modérateur (par exemple un auteur qui supprime son sujet).
  */
 export async function logModerationAction(
-  action: ModerationAction, 
-  targetId?: string, 
-  targetType?: string, 
+  moderatorId: string,
+  action: ModerationAction,
+  targetId?: string,
+  targetType?: string,
   details?: string
 ) {
-  const session = await getActiveSession();
-  const userId = session?.user?.id;
-  
-  // Note: On loggue même si l'utilisateur n'est pas "officiellement" modo (ex: suppression topic par auteur)
-  if (!userId) return;
-
   try {
     await prisma.moderationLog.create({
       data: {
         action,
-        moderatorId: userId,
+        moderatorId,
         targetId,
         targetType,
         details

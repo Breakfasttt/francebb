@@ -6,7 +6,8 @@ import { LogIn } from "lucide-react";
 import Link from "next/link";
 import { prisma } from "@/lib/prisma";
 import DevLoginSection from "./DevLoginSection";
-import { Button, Card, Field, Input } from "@bbfrance/ui";
+import { Card, Field, Input } from "@bbfrance/ui";
+import SubmitButton from "@/common/components/Form/SubmitButton";
 import { DiscordIcon, GoogleIcon } from "@/common/components/Icons/SocialIcons";
 
 export const metadata = {
@@ -111,10 +112,9 @@ export default async function LoginPage(props: {
                     else await signIn("discord", { redirectTo: callbackUrl });
                   }}
                 >
-                  <Button type="submit" variant="secondary" size="tap" className="w-full">
-                    <DiscordIcon size={20} />
+                  <SubmitButton variant="secondary" className="w-full" icon={<DiscordIcon size={20} />}>
                     Se connecter avec Discord
-                  </Button>
+                  </SubmitButton>
                 </form>
               )}
 
@@ -128,10 +128,9 @@ export default async function LoginPage(props: {
                     else await signIn("google", { redirectTo: callbackUrl });
                   }}
                 >
-                  <Button type="submit" variant="secondary" size="tap" className="w-full">
-                    <GoogleIcon size={20} />
+                  <SubmitButton variant="secondary" className="w-full" icon={<GoogleIcon size={20} />}>
                     Se connecter avec Google
-                  </Button>
+                  </SubmitButton>
                 </form>
               )}
             </div>
@@ -161,10 +160,9 @@ export default async function LoginPage(props: {
               <Field label="Adresse email" htmlFor="email" hint="Vous recevrez un lien qui vous connecte sans mot de passe.">
                 <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.fr" required />
               </Field>
-              <Button type="submit" variant="primary" size="tap" className="w-full">
-                <LogIn size={18} aria-hidden="true" />
+              <SubmitButton className="w-full" icon={<LogIn size={18} aria-hidden="true" />}>
                 Recevoir un lien de connexion par e-mail
-              </Button>
+              </SubmitButton>
             </form>
           )}
 
@@ -177,9 +175,9 @@ export default async function LoginPage(props: {
                 await signIn("hub", { redirectTo: callbackUrl });
               }}
             >
-              <Button type="submit" variant="secondary" size="tap" className="w-full">
+              <SubmitButton variant="secondary" className="w-full">
                 Comptes de test du hub
-              </Button>
+              </SubmitButton>
             </form>
           )}
 

@@ -273,6 +273,7 @@ export async function resolveReportsAction(targetId: string, targetType: string,
     });
 
     await logModerationAction(
+      session.user.id,
       action === "RESOLVE" ? "REPORT_RESOLVED" : "REPORT_IGNORED",
       targetId,
       targetType,
@@ -314,6 +315,7 @@ export async function cleanupModerationLogs(months = 3) {
     // ouverture de la première page du journal, et une ligne « 0 entrées supprimées » l'encombrerait (carte 144).
     if (deleted.count > 0) {
       await logModerationAction(
+        session.user.id,
         "REPORT_RESOLVED", // On utilise une action existante ou on en crée une, ici RESOLVED car c'est une maintenance
         undefined,
         "SYSTEM",

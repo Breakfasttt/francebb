@@ -20,7 +20,7 @@
  */
 "use server";
 
-import { revalidatePath, updateTag } from "next/cache";
+import { refreshTopic } from "@/lib/pageRefresh";
 import { getActiveSession } from "@/lib/authGuard";
 import { forumAccessWhere, getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { logModerationAction } from "@/lib/moderationLog";
@@ -52,16 +52,6 @@ async function copyReadersAndFollowers(tx: Tx, fromTopicId: string, toTopicId: s
     ON CONFLICT DO NOTHING`;
 }
 
-/** Renouvelle les pages qui affichent ces sujets et leurs forums, et le cache de l'accueil du forum. */
-function revalidateTopics(topics: { id: string; forumId: string }[]) {
-  for (const topic of topics) {
-    revalidatePath(`/forum/topic/${topic.id}`);
-    revalidatePath(`/forum/${topic.forumId}`);
-  }
-  revalidatePath("/forum");
-  revalidatePath("/forum/unread");
-  updateTag("forum-categories");
-}
 
 /**
  * Scinde un sujet : les messages `postIds` partent dans un nouveau sujet, nommé `title`, dans le forum `forumId`.
@@ -120,10 +110,11 @@ export async function splitTopic(topicId: string, postIds: string[], title: stri
   });
 
   const count = `${moved.length} message${moved.length > 1 ? "s" : ""}`;
-  await logModerationAction("TOPIC_SPLIT", topicId, "TOPIC", `${count} déplacé${moved.length > 1 ? "s" : ""} du sujet « ${source.title} » vers le nouveau sujet « ${title.trim()} » (${newTopic.id})`);
-  await logModerationAction("TOPIC_SPLIT", newTopic.id, "TOPIC", `Sujet créé en scindant « ${source.title} » (${topicId}) : ${count}`);
+  await logModerationAction(session.user.id, "TOPIC_SPLIT", topicId, "TOPIC", `${count} déplacé${moved.length > 1 ? "s" : ""} du sujet « ${source.title} » vers le nouveau sujet « ${title.trim()} » (${newTopic.id})`);
+  await logModerationAction(session.user.id, "TOPIC_SPLIT", newTopic.id, "TOPIC", `Sujet créé en scindant « ${source.title} » (${topicId}) : ${count}`);
 
-  revalidateTopics([source, { id: newTopic.id, forumId }]);
+  // Les deux sujets (le nouveau peut être dans un autre forum) ; un sujet de tournoi rafraîchit aussi l'accueil
+  for (const topic of [source, { id: newTopic.id, forumId }]) refreshTopic({ id: topic.id, forumIds: [topic.forumId], isTournament: true });
   return { success: true, topicId: newTopic.id };
 }
 
@@ -162,13 +153,13 @@ export async function mergeTopics(sourceId: string, targetId: string): Promise<A
     await refreshTopicLastPost(sourceId, tx);
   });
 
-  await logModerationAction("TOPIC_MERGED", sourceId, "TOPIC", `Sujet « ${source.title} » fusionné dans « ${target.title} » (${targetId}), puis supprimé`);
-  await logModerationAction("TOPIC_MERGED", targetId, "TOPIC", `A reçu les messages du sujet « ${source.title} » (${sourceId})`);
+  await logModerationAction(session.user.id, "TOPIC_MERGED", sourceId, "TOPIC", `Sujet « ${source.title} » fusionné dans « ${target.title} » (${targetId}), puis supprimé`);
+  await logModerationAction(session.user.id, "TOPIC_MERGED", targetId, "TOPIC", `A reçu les messages du sujet « ${source.title} » (${sourceId})`);
   // Le sujet vidé n'a plus besoin d'être traité : ses signalements en attente se ferment (carte 168)
   await closePendingReports("TOPIC", [sourceId], moderatorId);
 
-  revalidateTopics([source, target]);
-  updateTag("home-tournaments");
+  // Le cache des tournois de l'accueil est vidé par refreshTopic (sujets de tournoi compris)
+  for (const topic of [source, target]) refreshTopic({ id: topic.id, forumIds: [topic.forumId], isTournament: true });
   return { success: true, topicId: targetId };
 }
 

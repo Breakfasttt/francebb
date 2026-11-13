@@ -37,7 +37,7 @@ export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, cont
   // La place des notifications sous le contenu est réservée par la coquille (AppShell.css, --app-toast-space)
   return (
     <div className="mx-auto w-full max-w-[1232px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
-      <ForumListHeader title={title} subtitle={subtitle} backHref="/" backTitle="Retour à l'accueil" />
+      <ForumListHeader title={title} subtitle={subtitle} backHref="/" backTitle="Retour" backPreferHistory />
 
       {loading ? (
         <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-6" aria-label="Chargement">

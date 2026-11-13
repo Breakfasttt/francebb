@@ -7,16 +7,21 @@
  * Par-dessus la carte : en haut à gauche, le choix entre les tournois à venir et les ligues ; en haut à droite, le
  * bouton « Plein écran » ; en bas à gauche, le nombre de points affichés. En plein écran, la carte couvre tout l'écran
  * (attribut `data-fullscreen`, qui retire aussi la barre du bas du téléphone, voir AppShell.css).
+ * Depuis la carte 196, le choix tournois ou ligues est gardé dans l'adresse (`?vue=ligues`), et le plein écran se
+ * ferme aussi avec la touche Échap et avec le bouton retour du téléphone : l'ouvrir ajoute une entrée à l'historique,
+ * que le retour retire sans quitter la page.
  *
  * La bibliothèque Leaflet a sa propre feuille de style (leaflet.css), qui l'emporte sur les classes du site : les
  * réglages de ses éléments (bulle, boutons de zoom, repères) sont donc écrits plus bas avec le suffixe « ! »
  * (priorité forcée).
  */
-import { useMemo, useState, type ReactNode } from "react";
+import { useCallback, useEffect, useMemo, useState, type ReactNode } from "react";
+import { useSearchParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import { Maximize2, Minimize2, Shield, Trophy } from "lucide-react";
 import { Button, Skeleton, cn } from "@bbfrance/ui";
 import type { MapPoint } from "./LeafletMapContainer";
+import { useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 
 // Import dynamique : Leaflet a besoin de l'objet `window` du navigateur
 const LeafletMap = dynamic(() => import("./LeafletMapContainer"), {
@@ -48,8 +53,33 @@ const leafletTheme = cn(
 );
 
 export default function CarteClient({ initialTournaments, initialLigues }: CarteProps) {
-  const [view, setView] = useState<"tournaments" | "ligues">("tournaments");
+  const searchParams = useSearchParams();
+  const [view, setView] = useState<"tournaments" | "ligues">(() => (searchParams.get("vue") === "ligues" ? "ligues" : "tournaments"));
+  useSyncUrlFilters({ vue: view === "ligues" ? "ligues" : "" });
   const [isFullscreen, setIsFullscreen] = useState(false);
+
+  // Ouvrir le plein écran ajoute une entrée à l'historique : le bouton retour du téléphone la retire et ferme le plein
+  // écran, au lieu de quitter la page
+  const openFullscreen = () => {
+    window.history.pushState(null, "", window.location.href);
+    setIsFullscreen(true);
+  };
+  // Fermer revient sur l'entrée ajoutée : l'événement « popstate » ci-dessous ferme alors le plein écran
+  const closeFullscreen = useCallback(() => window.history.back(), []);
+
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const onPopState = () => setIsFullscreen(false);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") closeFullscreen();
+    };
+    window.addEventListener("popstate", onPopState);
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("popstate", onPopState);
+      window.removeEventListener("keydown", onKeyDown);
+    };
+  }, [isFullscreen, closeFullscreen]);
 
   const tournaments = useMemo(() => initialTournaments.filter((p) => p.lat && p.lng), [initialTournaments]);
   const ligues = useMemo(() => initialLigues.filter((p) => p.lat && p.lng), [initialLigues]);
@@ -80,7 +110,7 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
         // isolate : les calques de Leaflet (jusqu'à 1000) restent sous la barre du haut et les panneaux du site
         "relative isolate overflow-hidden bg-bb-surface-2",
         isFullscreen
-          ? "fixed inset-0 z-[6500]"
+          ? "fixed inset-0 z-[var(--z-index-fullscreen)]"
           : "max-lg:-mx-3 max-lg:h-[calc(100dvh-57px-var(--app-bottom-nav-space))] lg:h-[calc(100dvh-13.5rem)] lg:min-h-[460px] lg:rounded-bb-lg lg:border lg:border-bb-border",
         leafletTheme
       )}
@@ -99,7 +129,7 @@ export default function CarteClient({ initialTournaments, initialLigues }: Carte
           size="tap-icon"
           aria-label={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
           title={isFullscreen ? "Quitter le plein écran" : "Plein écran"}
-          onClick={() => setIsFullscreen(!isFullscreen)}
+          onClick={isFullscreen ? closeFullscreen : openFullscreen}
           className="pointer-events-auto shrink-0 rounded-full shadow-bb"
         >
           {isFullscreen ? <Minimize2 size={20} aria-hidden="true" /> : <Maximize2 size={20} aria-hidden="true" />}

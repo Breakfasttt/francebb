@@ -34,7 +34,8 @@ export default async function StatistiquesPage() {
         title="Statistiques"
         subtitle="État des lieux du Blood Bowl en France"
         backHref="/"
-        backTitle="Retour à l'accueil"
+        backTitle="Retour"
+        backPreferHistory
       />
 
       <div className="flex flex-col gap-8">

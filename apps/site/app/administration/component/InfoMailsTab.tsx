@@ -7,7 +7,7 @@
  */
 import { useState, useTransition } from "react";
 import { AlertTriangle, CheckCircle2, Loader2, Mail, Send } from "lucide-react";
-import { Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, EmptyState, Field, Input, Label, toast } from "@bbfrance/ui";
+import { Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, EmptyState, Field, Input, toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { sendGlobalInfoMail } from "../actions";
 
@@ -15,12 +15,19 @@ export default function InfoMailsTab() {
   const [isPending, startTransition] = useTransition();
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
+  // Erreurs de saisie, affichées sous le champ concerné (carte 194)
+  const [errors, setErrors] = useState<{ subject?: string; content?: string }>({});
   const [showConfirm, setShowConfirm] = useState(false);
   const [result, setResult] = useState<{ success: boolean; count: number; total: number } | null>(null);
 
   const handleSend = () => {
-    if (!subject || !content) {
-      toast.error("Veuillez remplir tous les champs.");
+    const nextErrors = {
+      subject: subject.trim() ? undefined : "Indiquez l'objet du mail.",
+      content: content.trim() ? undefined : "Écrivez le message.",
+    };
+    setErrors(nextErrors);
+    if (nextErrors.subject || nextErrors.content) {
+      document.getElementById(nextErrors.subject ? "info-mail-subject" : "info-mail-content")?.focus();
       return;
     }
     setShowConfirm(true);
@@ -78,21 +85,32 @@ export default function InfoMailsTab() {
           </p>
         </div>
 
-        <Field label="Objet du mail" htmlFor="info-mail-subject">
-          <Input id="info-mail-subject" type="text" value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Objet de l'e-mail" />
+        <Field label="Objet du mail" htmlFor="info-mail-subject" error={errors.subject}>
+          <Input
+            id="info-mail-subject"
+            type="text"
+            value={subject}
+            onChange={(e) => {
+              setSubject(e.target.value);
+              setErrors((prev) => ({ ...prev, subject: undefined }));
+            }}
+            placeholder="Objet de l'e-mail"
+          />
         </Field>
 
-        <div className="flex flex-col gap-1.5">
-          <Label htmlFor="info-mail-content">Message (BBCode)</Label>
+        <Field label="Message (BBCode)" htmlFor="info-mail-content" error={errors.content}>
           <BBCodeEditor
             name="mail-content"
             id="info-mail-content"
             defaultValue={content}
-            onChange={(value) => setContent(value)}
+            onChange={(value) => {
+              setContent(value);
+              setErrors((prev) => ({ ...prev, content: undefined }));
+            }}
             placeholder="Message..."
             rows={10}
           />
-        </div>
+        </Field>
 
         <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto lg:self-end" disabled={!subject || !content || isPending} onClick={handleSend}>
           {isPending ? <Loader2 size={18} className="animate-spin" aria-hidden="true" /> : <Send size={18} aria-hidden="true" />}

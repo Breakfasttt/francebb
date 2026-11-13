@@ -65,9 +65,13 @@ L'ordre de superposition est fixé dans `globals.css` (variables `--z-index-*`).
 
 | Élément | Valeur |
 |---|---|
-| Barre d'actions collée en bas par une page (sujet du forum) | 4000 |
+| Contenu de page au-dessus des autres (`--z-index-base` 1, `--z-index-page-content` 1100) | 1, 1100 |
+| Listes déroulantes de recherche (`--z-index-dropdown`) : posées sous un champ, dans la page ou dans une fenêtre (la fenêtre forme son propre ordre, la liste reste dessus) | 1500 |
+| Barre d'actions collée en bas par une page (sujet du forum) (`--z-index-page-bar`) | 4000 |
 | Barre du haut, barre basse, pied de page de l'ordinateur | 5000 |
+| Écran plein écran du téléphone qui recouvre la barre basse (conversation de la messagerie, `--z-index-screen`) | 5001 |
 | Bandeau des cookies | 6000 |
+| Carte en plein écran (`--z-index-fullscreen`) : au-dessus du bandeau des cookies, sous le panneau « Plus » | 6500 |
 | Panneau « Plus » (fond, panneau) | 7000, 7100 |
 | Fenêtres et panneaux de `@bbfrance/ui` (`Sheet`, `Dialog`, `Popover`, `ActionMenu`) | 8000, 8001 |
 | Bulle d'aide (`Tooltip`), avis de suppression du forum, barre de progression de la navigation | 9000 |

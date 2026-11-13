@@ -129,6 +129,7 @@ export async function deleteArticle(id: string) {
     await prisma.article.delete({ where: { id } });
 
     await logModerationAction(
+      session.user.id,
       "ARTICLE_DELETED",
       id,
       "ARTICLE",
@@ -185,7 +186,7 @@ export async function toggleArticleReaction(articleId: string, emoji: string) {
 export async function moderateArticle(articleId: string, reason: string) {
   const session = await getActiveSession();
   const sessionUser = session?.user as any;
-  if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
+  if (!session || !isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
 
   try {
     await prisma.article.update({
@@ -198,6 +199,7 @@ export async function moderateArticle(articleId: string, reason: string) {
     });
 
     await logModerationAction(
+      session.user.id,
       "ARTICLE_MODERATED",
       articleId,
       "ARTICLE",
@@ -215,7 +217,7 @@ export async function moderateArticle(articleId: string, reason: string) {
 export async function unmoderateArticle(articleId: string) {
   const session = await getActiveSession();
   const sessionUser = session?.user as any;
-  if (!isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
+  if (!session || !isModerator(sessionUser?.role)) return { error: "Action non autorisée" };
 
   try {
     await prisma.article.update({
@@ -228,6 +230,7 @@ export async function unmoderateArticle(articleId: string) {
     });
 
     await logModerationAction(
+      session.user.id,
       "ARTICLE_UNMODERATED",
       articleId,
       "ARTICLE",

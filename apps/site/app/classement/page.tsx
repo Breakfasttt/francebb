@@ -18,9 +18,9 @@
  * déroulante permet d'en choisir une autre (carte 142). L'import d'archives ouvre directement l'éditeur, qui interroge
  * l'ancien site une seule fois et affiche lui-même l'erreur éventuelle.
  */
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { Download, HelpCircle, History, Info, Medal, Pencil, Plus, Settings2, Shield, Trash2, Trophy, Users } from "lucide-react";
 import {
@@ -43,6 +43,7 @@ import {
   useMediaQuery,
 } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import { isAdmin, isModerator } from "@/lib/roles";
 import {
   archiveYear,
@@ -57,11 +58,29 @@ import { HallOfFame, RankingList, RosterList, type HallOfFameYear, type RankingE
 type RankingYear = { year: number; isArchived: boolean };
 type TabValue = "year" | "rolling" | "roster" | "hof" | "archives";
 
+/** Vue du classement lue dans l'adresse (`?vue=CDF_2026`, `ROLLING`, `ROSTER_2025`, `HOF`, `ARCHIVES`), ou rien. */
+function readRankingFilter(value: string | null): RankingFilter | null {
+  return value && /^(ROLLING|HOF|ARCHIVES|CDF_\d{4}|ROSTER_\d{4})$/.test(value) ? value : null;
+}
+
+// useSearchParams demande une limite Suspense (exigence de Next.js)
 export default function ClassementPage() {
+  return (
+    <Suspense fallback={null}>
+      <Classement />
+    </Suspense>
+  );
+}
+
+function Classement() {
   const { data: session } = useSession();
   const router = useRouter();
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
-  const [filter, setFilter] = useState<RankingFilter>("ROLLING");
+  // La vue affichée est gardée dans l'adresse : un lien partagé ou un retour arrière la retrouve (carte 196)
+  const searchParams = useSearchParams();
+  const [filterFromUrl] = useState(() => readRankingFilter(searchParams.get("vue")));
+  const [filter, setFilter] = useState<RankingFilter>(filterFromUrl ?? "ROLLING");
+  useSyncUrlFilters({ vue: filter });
   const [loading, setLoading] = useState(true);
   const [ranking, setRanking] = useState<RankingEntry[]>([]);
   const [hof, setHof] = useState<HallOfFameYear[]>([]);
@@ -73,6 +92,8 @@ export default function ClassementPage() {
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isOverwriteConfirmOpen, setIsOverwriteConfirmOpen] = useState(false);
   const [importYear, setImportYear] = useState(new Date().getFullYear() - 1);
+  // Erreur affichée sous le champ de l'année (carte 194)
+  const [importYearError, setImportYearError] = useState<string>();
   const [isImportLoading, setIsImportLoading] = useState(false);
   // Dernière année choisie dans l'onglet « Année » : l'onglet « Par roster » la reprend
   const [chosenYear, setChosenYear] = useState<number | null>(null);
@@ -98,8 +119,8 @@ export default function ClassementPage() {
     async function loadYears() {
       const years = await getRankingYears();
       setAvailableYears(years);
-      // Au premier chargement, la plus récente des années disponibles est affichée
-      if (years.length > 0 && filter === "ROLLING") {
+      // Au premier chargement, la plus récente des années disponibles est affichée, sauf si l'adresse en choisit une
+      if (years.length > 0 && filter === "ROLLING" && !filterFromUrl) {
         setFilter(`CDF_${years[0].year}`);
       }
     }
@@ -150,7 +171,8 @@ export default function ClassementPage() {
   // lui-même l'erreur si l'import échoue.
   function handleImport() {
     if (Number.isNaN(importYear)) {
-      toast.error("Indiquez l'année à importer.");
+      setImportYearError("Indiquez l'année à importer.");
+      document.getElementById("import-year")?.focus();
       return;
     }
     if (availableYears.some((y) => y.year === importYear)) {
@@ -257,7 +279,8 @@ export default function ClassementPage() {
         title="Championnat de France"
         subtitle="Le classement des coachs de la communauté Blood Bowl France"
         backHref="/"
-        backTitle="Retour à l'accueil"
+        backTitle="Retour"
+        backPreferHistory
       >
         <div className="flex w-full items-center gap-2 lg:w-auto">
           {/* Sur un petit téléphone, le libellé passe sur deux lignes plutôt que de pousser « Gestion » hors de l'écran */}
@@ -404,13 +427,16 @@ export default function ClassementPage() {
         <SheetContent title="Importer des archives" side={isDesktop ? "center" : "bottom"}>
           <div className="flex flex-col gap-4 pb-2">
             <p className="m-0 text-[0.95rem] text-bb-text">Indiquez l&apos;année à récupérer depuis l&apos;ancien site (teamfrancebb.fr).</p>
-            <Field label="Année cible" htmlFor="import-year" hint="L'import récupère les noms, les numéros NAF et les points totaux, puis ouvre l'éditeur d'archives.">
+            <Field label="Année cible" htmlFor="import-year" hint="L'import récupère les noms, les numéros NAF et les points totaux, puis ouvre l'éditeur d'archives." error={importYearError}>
               <Input
                 id="import-year"
                 type="number"
                 inputMode="numeric"
                 value={Number.isNaN(importYear) ? "" : importYear}
-                onChange={(e) => setImportYear(parseInt(e.target.value))}
+                onChange={(e) => {
+                  setImportYear(parseInt(e.target.value));
+                  setImportYearError(undefined);
+                }}
                 min={2000}
                 max={new Date().getFullYear()}
               />

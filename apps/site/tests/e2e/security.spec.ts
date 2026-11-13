@@ -35,8 +35,11 @@ test("les actions du forum vérifient l'accès au sujet et le verrouillage (cart
   };
   for (const name of ["updatePost", "deletePost", "togglePostReaction"]) {
     expect(body(name), name).toMatch(/findAccessiblePost\(/);
-    expect(body(name), name).toMatch(/isLockedFor\(/);
   }
+  // Le sujet fermé : règle partagée avec l'écran (lib/forumRights.ts, carte 200) ou garde historique
+  expect(body("updatePost")).toMatch(/canEditPost\(/);
+  expect(body("createPost")).toMatch(/canReplyToTopic\(/);
+  for (const name of ["deletePost", "togglePostReaction"]) expect(body(name), name).toMatch(/isLockedFor\(/);
   expect(body("markTopicAsRead")).toMatch(/topicAccessWhere\(roles\)/);
   expect(body("markAllTopicsAsRead")).toMatch(/isArchived: false, \.\.\.topicAccessWhere\(roles\)/);
   expect(body("moveTopic")).toMatch(/forumAccessWhere\(roles\)/);
@@ -45,6 +48,59 @@ test("les actions du forum vérifient l'accès au sujet et le verrouillage (cart
   // La liste des forums de destination proposée aux modérateurs est filtrée par rôle
   const topicPage = readFileSync("app/forum/topic/[id]/page.tsx", "utf-8");
   expect(topicPage).toMatch(/where: forumAccessWhere\(roles\)/);
+});
+
+test("un modérateur ne peut pas épingler un sujet d'un forum réservé aux administrateurs (carte 200)", async ({ page }) => {
+  // Avant la carte 200, six actions de modération lisaient l'élément par son seul identifiant : un modérateur pouvait
+  // épingler, archiver, verrouiller ou modérer dans un forum qu'il ne voit pas, en appelant l'action directement.
+  // Le test appuie sur « Épingler » dans un sujet qu'il voit, et remplace l'identifiant envoyé au serveur par celui
+  // d'un sujet réservé aux administrateurs.
+  const ADMIN_FORUM = "e2e_c200_admin_forum";
+  const ADMIN_TOPIC = "e2e_c200_admin_topic";
+  await withTestDb(async (prisma) => {
+    const category = await prisma.category.upsert({
+      where: { name: "E2E Catégorie Admin c200" },
+      update: {},
+      create: { name: "E2E Catégorie Admin c200", allowedRoles: "ADMIN" },
+    });
+    await prisma.forum.upsert({
+      where: { id: ADMIN_FORUM },
+      update: {},
+      create: { id: ADMIN_FORUM, name: "E2E Forum Admin c200", allowedRoles: "ADMIN", categoryId: category.id },
+    });
+    await prisma.topic.upsert({
+      where: { id: ADMIN_TOPIC },
+      update: { isSticky: false },
+      create: {
+        id: ADMIN_TOPIC,
+        title: "E2E Sujet Admin c200",
+        forumId: ADMIN_FORUM,
+        authorId: E2E.coachId,
+        lastPostAt: new Date(),
+        lastPostAuthorId: E2E.coachId,
+        posts: { create: { content: "Sujet réservé aux administrateurs", authorId: E2E.coachId } },
+      },
+    });
+  });
+  const pinnedBefore = await withTestDb((prisma) => prisma.topic.findUniqueOrThrow({ where: { id: E2E.topicId }, select: { isSticky: true } }));
+
+  await loginAs(page, E2E.modoId);
+  await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
+  await rewriteServerActions(page, (body) => body.split(`"${E2E.topicId}"`).join(`"${ADMIN_TOPIC}"`));
+
+  // Sur téléphone, l'outil est rangé dans le panneau « Outils du sujet »
+  let pin = page.getByRole("button", { name: /^(Épingler|Désépingler)$/ }).filter({ visible: true });
+  if ((await pin.count()) === 0) {
+    await page.getByRole("button", { name: "Outils du sujet" }).filter({ visible: true }).first().click();
+    pin = page.getByRole("dialog", { name: "Outils du sujet" }).getByRole("button", { name: /^(Épingler|Désépingler)$/ });
+  }
+  await pin.first().click();
+  await expect(page.getByText("Sujet introuvable.").filter({ visible: true }).first()).toBeVisible();
+
+  // Ni le sujet réservé ni le sujet affiché n'ont changé
+  const after = await withTestDb((prisma) => prisma.topic.findMany({ where: { id: { in: [ADMIN_TOPIC, E2E.topicId] } }, select: { id: true, isSticky: true } }));
+  expect(after.find((topic) => topic.id === ADMIN_TOPIC)?.isSticky).toBe(false);
+  expect(after.find((topic) => topic.id === E2E.topicId)?.isSticky).toBe(pinnedBefore.isSticky);
 });
 
 test("après connexion, aucune redirection vers un site extérieur", async ({ page }) => {

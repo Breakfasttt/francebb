@@ -17,8 +17,13 @@ body {
   --z-index-base: 1;
   --z-index-page-content: 1100;
   --z-index-dropdown: 1500;
+  --z-index-page-bar: 4000;
   --z-index-nav: 5000;
+  /* Écran plein écran du téléphone (conversation) : juste au-dessus de la barre basse, qu'il doit recouvrir */
+  --z-index-screen: 5001;
   --z-index-fab: 6000;
+  /* Carte en plein écran : au-dessus du bandeau des cookies, sous le panneau « Plus » */
+  --z-index-fullscreen: 6500;
   --z-index-sidebar-overlay: 7000;
   --z-index-sidebar: 7100;
   --z-index-modal-bottom: 8000;

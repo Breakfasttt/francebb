@@ -10,9 +10,10 @@
  * en cas d'erreur, il revient à l'état précédent.
  */
 import { useEffect, useState, useTransition } from "react";
-import { SmilePlus } from "lucide-react";
+import { SmilePlus, Users } from "lucide-react";
 import { Button, DESKTOP_QUERY, Popover, PopoverContent, PopoverTrigger, Sheet, SheetContent, cn, toast, useMediaQuery } from "@bbfrance/ui";
 import { toggleArticleReaction } from "@/app/articles/actions";
+import { reactionName, reactionPillLabel } from "@/common/utils/reactionLabels";
 
 interface Reaction {
   emoji: string;
@@ -93,31 +94,56 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
   const emojiGrid = (
     <div className="grid grid-cols-5 gap-1">
       {COMMON_EMOJIS.map((emoji) => (
-        <Button key={emoji} type="button" variant="quiet" size="tap-icon" onClick={() => handleToggle(emoji)} className="text-2xl">
+        <Button key={emoji} type="button" variant="quiet" size="tap-icon" onClick={() => handleToggle(emoji)} disabled={isPending} aria-label={reactionName(emoji)} className="text-2xl">
           {emoji}
         </Button>
       ))}
     </div>
   );
 
+  // Noms des membres par émoji : consultables d'un appui (la bulle `title` n'apparaît qu'au survol de la souris)
+  const withNames = entries.filter(([, { users }]) => users.length > 0);
+
   return (
     <section aria-label="Réactions" className="flex flex-wrap items-center gap-2">
-      {entries.map(([emoji, { count, hasReacted, users }]) => (
+      {entries.map(([emoji, { count, hasReacted }]) => (
         <Button
           key={emoji}
           type="button"
           variant="secondary"
           size="tap"
           aria-pressed={currentUserId ? hasReacted : undefined}
-          title={users.length > 0 ? users.join(", ") : hasReacted ? "Retirer votre réaction" : "Réagir"}
+          aria-label={reactionPillLabel(emoji, count, hasReacted)}
+          title={hasReacted ? "Retirer votre réaction" : "Réagir"}
           onClick={() => handleToggle(emoji)}
           disabled={isPending || !currentUserId}
-          className={cn("gap-1.5 rounded-full px-3 disabled:opacity-100", hasReacted && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
+          aria-busy={isPending}
+          // Sans connexion, la pastille reste nette (simple compteur) ; pendant un envoi, elle s'estompe (carte 193)
+          className={cn("gap-1.5 rounded-full px-3 disabled:opacity-100", isPending && "disabled:opacity-60", hasReacted && "border-bb-accent-text bg-bb-accent-soft text-bb-accent-text")}
         >
           <span className="text-lg leading-none">{emoji}</span>
           <span className="text-sm font-bold">{count}</span>
         </Button>
       ))}
+
+      {withNames.length > 0 && (
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button type="button" variant="quiet" size="tap-icon" aria-label="Voir qui a réagi" title="Voir qui a réagi">
+              <Users size={20} aria-hidden="true" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent aria-label="Membres qui ont réagi" className="w-auto max-w-[calc(100vw-2rem)]">
+            <ul className="m-0 flex list-none flex-col gap-2 p-0 text-sm">
+              {withNames.map(([emoji, { users }]) => (
+                <li key={emoji}>
+                  <span aria-hidden="true">{emoji}</span> <span className="font-bold">{reactionName(emoji)}</span> : {users.join(", ")}
+                </li>
+              ))}
+            </ul>
+          </PopoverContent>
+        </Popover>
+      )}
 
       {currentUserId && (isDesktop ? (
         <Popover open={pickerOpen} onOpenChange={setPickerOpen}>

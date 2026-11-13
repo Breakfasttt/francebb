@@ -66,12 +66,12 @@ test.describe("rendu des thèmes", () => {
   }
 });
 
-test("le signalement sans raison affiche une notification d'erreur", async ({ page }) => {
+test("le signalement sans raison affiche une erreur sous les raisons", async ({ page }) => {
   await loginAs(page, E2E.modoId);
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
   await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
   await page.getByRole("button", { name: "Envoyer le signalement" }).click();
-  await expect(page.getByText("Veuillez choisir une raison")).toBeVisible();
+  await expect(page.getByText("Choisissez une raison.")).toBeVisible();
 });
 
 test("la modale de signalement est un dialog accessible, fermé par Échap", async ({ page }) => {

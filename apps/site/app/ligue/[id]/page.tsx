@@ -7,6 +7,7 @@
  *   comme avant la refonte).
  * Sur ordinateur, le chef et les commissaires occupent une colonne à droite ; sur téléphone, tout est sur une colonne.
  */
+import { getReferenceLabel } from "@/lib/referenceData";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ChevronLeft, Globe, MapPin, Trophy, Users } from "lucide-react";
@@ -59,7 +60,7 @@ export default async function LigueDetailPage({
   if (!ligue) notFound();
 
   const zone = ligue.geographicalZone
-    ? await prisma.referenceData.findFirst({ where: { group: "COACH_REGION", key: ligue.geographicalZone }, select: { label: true } })
+    ? await getReferenceLabel("COACH_REGION", ligue.geographicalZone)
     : null;
 
   const isCreator = session?.user?.id === ligue.creatorId;
@@ -70,7 +71,7 @@ export default async function LigueDetailPage({
 
   const members = ligue._count?.members || 0;
   const tournaments = ligue._count?.tournaments || 0;
-  const place = [zone?.label ?? ligue.geographicalZone, ligue.ville || ligue.region].filter(Boolean).join(" · ") || "France";
+  const place = [zone ?? ligue.geographicalZone, ligue.ville || ligue.region].filter(Boolean).join(" · ") || "France";
 
   const leaders = [
     { ...ligue.creator, role: "Chef de ligue", variant: "accent" as const },

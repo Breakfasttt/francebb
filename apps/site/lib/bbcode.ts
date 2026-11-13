@@ -263,6 +263,8 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
       if (!isAttributeSafe(url)) return "";
       const safeUrl = sanitizeUrl(url);
       const isThumb = thumb !== "no";
+      // Les dimensions de l'image ne sont pas connues par la balise : on ne réserve pas de hauteur, car une hauteur
+      // minimale étirerait les petites images (carte 197). decoding="async" évite de bloquer l'affichage du texte.
       let style = "max-width:100%; border-radius:8px;";
       if (isThumb) style += " max-width: 400px; max-height: 250px; object-fit: contain;";
       const isWrap = wrap === "yes" || (!wrap && (align === "left" || align === "right"));
@@ -276,7 +278,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
         else if (align === "right") style += " display: block; margin: 0.8rem 0; margin-left: auto;";
         else style += " display: block; margin: 0.8rem auto;";
       }
-      return `<img src="${safeUrl}" alt="Image du message"${floatClass} style="${style}" loading="lazy" />`;
+      return `<img src="${safeUrl}" alt="Image du message"${floatClass} style="${style}" loading="lazy" decoding="async" />`;
     }
   );
 
@@ -345,7 +347,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
   while (/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i.test(html)) {
     html = html.replace(/\[gallery(?:=(\d))?\]((?:(?!\[gallery)[\s\S])*?)\[\/gallery\]/i, (match, cols, content) => {
       const urls = content.trim().split(/[\n,]/).map((u: string) => u.trim()).filter((u: string) => u && isAttributeSafe(u));
-      const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${sanitizeUrl(url)}" alt="Gallery" loading="lazy" /></div>`).join("");
+      const images = urls.map((url: string) => `<div class="bb-gallery-item"><img src="${sanitizeUrl(url)}" alt="Gallery" loading="lazy" decoding="async" /></div>`).join("");
       return `<div class="bb-gallery">${images}</div>`;
     });
   }

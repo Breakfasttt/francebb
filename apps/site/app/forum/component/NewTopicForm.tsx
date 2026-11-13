@@ -11,9 +11,10 @@
  */
 import { useEffect, useRef } from "react";
 import { Lock, MessageSquarePlus, Pin } from "lucide-react";
-import { Button, Card, Label } from "@bbfrance/ui";
+import { Card, Label } from "@bbfrance/ui";
 import { createTopic } from "@/app/forum/actions";
 import ActionForm from "@/common/components/Form/ActionForm";
+import SubmitButton from "@/common/components/Form/SubmitButton";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import DraftBanner from "@/common/components/DraftBanner/DraftBanner";
 import { useDraft } from "@/common/hooks/useDraft";
@@ -94,9 +95,9 @@ export default function NewTopicForm({ forumId, userCanStick, cancelHref }: { fo
             )}
 
             <div className="hidden flex-col gap-2 lg:flex">
-              <Button type="submit" variant="primary" size="tap" className="w-full">
+              <SubmitButton className="w-full">
                 Créer le sujet
-              </Button>
+              </SubmitButton>
               <CancelComposeButton draft={draft} href={cancelHref} className="w-full" />
             </div>
           </Card>
@@ -105,9 +106,9 @@ export default function NewTopicForm({ forumId, userCanStick, cancelHref }: { fo
 
       <ComposeActionBar className="lg:hidden">
         <CancelComposeButton draft={draft} href={cancelHref} />
-        <Button type="submit" variant="primary" size="tap" className="flex-1">
-          <MessageSquarePlus size={18} aria-hidden="true" /> Créer le sujet
-        </Button>
+        <SubmitButton className="flex-1" icon={<MessageSquarePlus size={18} aria-hidden="true" />}>
+          Créer le sujet
+        </SubmitButton>
       </ComposeActionBar>
     </ActionForm>
   );

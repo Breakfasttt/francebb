@@ -26,6 +26,7 @@ import { ComposeActionBar } from "@/app/forum/component/ComposeScreen";
 import UserSearch from "@/common/components/UserSearch/UserSearch";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import { REGION_BY_DEPARTMENT } from "@/lib/france";
+import SubmitButton from "@/common/components/Form/SubmitButton";
 
 const MapPicker = dynamic(() => import("./MapPicker"), {
   ssr: false,
@@ -259,7 +260,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
         <div className="flex min-w-0 flex-col gap-4">
           <Block icon={<Trophy size={18} />} title="Le tournoi">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="title">Titre de l&apos;annonce (nom du tournoi)</Label>
+              <Label htmlFor="title">Titre de l&apos;annonce (nom du tournoi, obligatoire)</Label>
               <TitleInputWithSmiley name="title" initialValue={initialData?.name} placeholder="Ex : Open de Bretagne 2027" />
             </div>
             <div className="flex flex-col gap-1.5">
@@ -271,7 +272,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
 
           <Block icon={<Calendar size={18} />} title="Dates">
             <div className={grid2}>
-              <Field label="Date de début" htmlFor="tDate">
+              <Field label="Date de début (obligatoire)" htmlFor="tDate">
                 <Input id="tDate" type="date" name="tDate" required value={startDate} onChange={handleStartDateChange} />
               </Field>
               <Field label="Date de fin" htmlFor="tEndDate" hint="Laissez vide pour un tournoi d'un jour.">
@@ -507,7 +508,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
 
           <Block icon={<FileText size={18} />} title="Présentation">
             <div className="flex flex-col gap-1.5">
-              <Label htmlFor="content">Présentation complète et règlement détaillé</Label>
+              <Label htmlFor="content">Présentation complète et règlement détaillé (obligatoire)</Label>
               <BBCodeEditor
                 id="content"
                 name="content"
@@ -531,9 +532,9 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
               Publication
             </h2>
             {moderationBoxes}
-            <Button type="submit" variant="primary" size="tap" className="w-full">
+            <SubmitButton className="w-full">
               {submitLabel}
-            </Button>
+            </SubmitButton>
             <Button asChild variant="secondary" size="tap" className="w-full">
               <Link href={cancelHref}>Annuler</Link>
             </Button>
@@ -545,9 +546,9 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
         <Button asChild variant="secondary" size="tap">
           <Link href={cancelHref}>Annuler</Link>
         </Button>
-        <Button type="submit" variant="primary" size="tap" className="flex-1">
-          {submitIcon} {submitLabel}
-        </Button>
+        <SubmitButton className="flex-1" icon={submitIcon}>
+          {submitLabel}
+        </SubmitButton>
       </ComposeActionBar>
 
       <Sheet open={isMapModalOpen} onOpenChange={setIsMapModalOpen}>

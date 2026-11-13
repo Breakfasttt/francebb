@@ -12,6 +12,7 @@
 import { useTransition, type ComponentProps, type FormEvent } from "react";
 import { toast } from "@bbfrance/ui";
 import type { ActionResult } from "@/lib/actionResult";
+import { FormPendingContext } from "./SubmitButton";
 
 interface ActionFormProps extends Omit<ComponentProps<"form">, "action" | "onSubmit"> {
   /** Action serveur appelée avec les champs du formulaire. */
@@ -36,5 +37,10 @@ export default function ActionForm({ action, fallbackError = "L'enregistrement a
     });
   };
 
-  return <form {...formProps} onSubmit={handleSubmit} aria-busy={isPending} />;
+  // Le contexte permet aux boutons `SubmitButton` du formulaire de se désactiver pendant l'envoi (carte 193)
+  return (
+    <FormPendingContext.Provider value={isPending}>
+      <form {...formProps} onSubmit={handleSubmit} aria-busy={isPending} />
+    </FormPendingContext.Provider>
+  );
 }

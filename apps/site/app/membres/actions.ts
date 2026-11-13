@@ -79,6 +79,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
   });
 
   await logModerationAction(
+    session.user.id,
     isBanned ? "USER_BANNED" : "USER_UNBANNED",
     userId,
     "USER",
@@ -119,7 +120,7 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
   const ok = await anonymizeAndDeleteUser(userId, false);
   if (!ok) return { success: false, error: "Erreur lors de la suppression du membre" };
 
-  await logModerationAction("USER_DELETED", userId, "USER", "Suppression du membre (contenus rattachés au compte fantôme)");
+  await logModerationAction(session.user.id, "USER_DELETED", userId, "USER", "Suppression du membre (contenus rattachés au compte fantôme)");
 
   revalidatePath("/membres");
   return { success: true };

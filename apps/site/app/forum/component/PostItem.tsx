@@ -71,6 +71,8 @@ interface PostItemProps {
   isBlocked?: boolean;
   // Faux quand le membre ne peut pas répondre (sujet ou forum verrouillé) : le bouton « Citer » est alors masqué
   canReply?: boolean;
+  /** Le membre peut modifier ou supprimer ce message (calculé par la page avec lib/forumRights.ts, carte 200). */
+  canEdit?: boolean;
   // Le sujet a d'autres messages que le premier : l'auteur ne peut alors plus supprimer le premier (carte 165)
   topicHasReplies?: boolean;
 }
@@ -102,6 +104,7 @@ const PostItem: React.FC<PostItemProps> = ({
   firstPostId,
   isBlocked = false,
   canReply = true,
+  canEdit = false,
   topicHasReplies = true,
 }) => {
   const [isRevealed, setIsRevealed] = useState(false);
@@ -193,6 +196,7 @@ const PostItem: React.FC<PostItemProps> = ({
           authorName={author.name || ""}
           currentUserId={currentUserId}
           isModerator={isUserModerator}
+          canEdit={canEdit}
           isModerated={!!post.isModerated}
           showContentActions={!post.isDeleted && !isHidden}
           isDeletedByModeration={deletedBy === "moderation"}

@@ -105,17 +105,14 @@ test("[tous] bandeau des cookies : apparition, croix pour la session, « Accepte
   }
 
   // La croix le ferme, sans rien mémoriser : il revient au prochain chargement
-  // Clic envoyé directement : depuis que le bandeau est plus bas (carte 190), le bouton « Dev Auth », qui n'existe que
-  // sur la version de développement, recouvre la croix sur le téléphone (il n'existe pas sur le site en ligne)
-  await banner.getByRole("button", { name: "Fermer pour cette session" }).dispatchEvent("click");
+  await banner.getByRole("button", { name: "Fermer pour cette session" }).click();
   await expect(banner).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBeNull();
   await page.reload({ waitUntil: "domcontentloaded" });
   await expect(banner).toBeVisible({ timeout: 5000 });
 
   // « Accepter » est mémorisé dans le navigateur
-  // Même raison que pour la croix : le bouton « Dev Auth » recouvre aussi « Accepter » sur le téléphone
-  await banner.getByRole("button", { name: "Accepter" }).filter({ visible: true }).dispatchEvent("click");
+  await banner.getByRole("button", { name: "Accepter" }).filter({ visible: true }).click();
   await expect(banner).toHaveCount(0);
   expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBe("accepted");
   await page.reload({ waitUntil: "domcontentloaded" });
@@ -167,14 +164,17 @@ test("[membre banni] est envoyé vers /banned ; [membre] sans profil terminé, v
   await page.waitForURL(/\/auth\/onboarding/);
 });
 
-test("[tous, en développement] les widgets de comptes et de thème restent utilisables", async ({ page }) => {
+// Depuis la carte 204, le sélecteur de comptes de test est un bouton de la barre haute (plus de bouton flottant) et le
+// sélecteur de thème de développement n'existe plus : le thème se choisit comme sur le site en ligne
+test("[tous, en développement] le bouton des comptes de test est dans la barre haute et ouvre sa fenêtre", async ({ page }) => {
   await acceptCookies(page);
   await page.goto("/forum", { waitUntil: "networkidle" });
-  for (const name of [/Dev Theme/, /Dev Auth/]) {
-    const widget = page.getByRole("button", { name }).filter({ visible: true }).first();
-    await expect(widget).toBeVisible();
-    await expect(widget).toBeEnabled();
-  }
+  await expect(page.getByRole("button", { name: /Dev Theme/ })).toHaveCount(0);
+  const widget = page.getByRole("banner").getByRole("button", { name: "Dev Auth" }).filter({ visible: true });
+  await expect(widget).toBeVisible();
+  expect((await widget.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+  await widget.click();
+  await expect(page.getByRole("dialog", { name: "Comptes de test" })).toBeVisible();
 });
 
 test("[tous] /mentions-legales : titre, dix sections, lisible sans défilement de côté", async ({ page }) => {

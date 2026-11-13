@@ -69,6 +69,8 @@ export interface TopicToolsProps {
   currentPage: number;
   totalPages: number;
   isModerator: boolean;
+  /** Le membre peut répondre (calculé par la page avec lib/forumRights.ts, carte 200 : archivage compris). */
+  canReply: boolean;
   isPinned: boolean;
   isLocked: boolean;
   isForumLocked: boolean;
@@ -158,6 +160,8 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const [sheetOpen, setSheetOpen] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleteReason, setDeleteReason] = useState("");
+  // Erreur de saisie affichée sous le champ de la raison (carte 194)
+  const [deleteReasonError, setDeleteReasonError] = useState<string>();
   const [showRestoreModal, setShowRestoreModal] = useState(false);
   const [showMoveModal, setShowMoveModal] = useState(false);
   const [showEditTitleModal, setShowEditTitleModal] = useState(false);
@@ -169,7 +173,8 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const [showMergeDialog, setShowMergeDialog] = useState(false);
   const [confirmConfig, setConfirmConfig] = useState<ConfirmConfig>({ isOpen: false, title: "", message: "", action: async () => {} });
 
-  const canReply = !!currentUserId && !props.isDeleted && (!(props.isLocked || props.isForumLocked) || props.isModerator);
+  // Avant la carte 200, ce calcul ignorait l'archivage : « Répondre » s'affichait sur un sujet archivé
+  const canReply = props.canReply;
 
   // État du suivi, lu au chargement (comme dans l'ancienne colonne)
   useEffect(() => {
@@ -211,9 +216,12 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       "Voulez-vous marquer ce tournoi comme TERMINÉ ? Cela coupera les inscriptions et le marquera comme passé.",
       async () => {
         const res = await finishTournament(tournamentId!);
-        if (res?.success) {
+        if (res.success) {
           toast.success("Tournoi terminé !");
           router.refresh();
+        } else {
+          // Avant la carte 201, un refus du serveur ne s'affichait pas
+          toast.error(res.error || "L'action a échoué.");
         }
       },
       false,
@@ -226,9 +234,12 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       "Voulez-vous marquer ce tournoi comme ACTIF ? Cela réouvrira les inscriptions.",
       async () => {
         const res = await unfinishTournament(tournamentId!);
-        if (res?.success) {
+        if (res.success) {
           toast.success("Tournoi réouvert !");
           router.refresh();
+        } else {
+          // Avant la carte 201, un refus du serveur ne s'affichait pas
+          toast.error(res.error || "L'action a échoué.");
         }
       },
       false,
@@ -241,9 +252,12 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       "Voulez-vous vraiment annuler ce tournoi ? Il sera marqué « Annulé » et ses résultats ne compteront pas au classement. Vous pourrez le rétablir plus tard.",
       async () => {
         const res = await cancelTournament(tournamentId!);
-        if (res?.success) {
+        if (res.success) {
           toast.success("Tournoi annulé");
           router.refresh();
+        } else {
+          // Avant la carte 201, un refus du serveur ne s'affichait pas
+          toast.error(res.error || "L'action a échoué.");
         }
       },
       true,
@@ -257,11 +271,11 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
       "Voulez-vous rétablir ce tournoi ? Il ne sera plus marqué « Annulé », et ses résultats éventuels compteront de nouveau au classement.",
       async () => {
         const res = await restoreTournament(tournamentId!);
-        if (res?.success) {
+        if (res.success) {
           toast.success("Tournoi rétabli");
           router.refresh();
         } else {
-          toast.error("Le tournoi n'a pas pu être rétabli.");
+          toast.error(res.error || "Le tournoi n'a pas pu être rétabli.");
         }
       },
       false,
@@ -321,7 +335,8 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
 
   const handleDeleteTopic = () => {
     if (!deleteReason.trim()) {
-      toast.error("Indiquez la raison de la suppression.");
+      setDeleteReasonError("Indiquez la raison de la suppression.");
+      document.getElementById("topic-delete-reason")?.focus();
       return;
     }
     startTransition(async () => {
@@ -463,7 +478,10 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
         open={showDeleteModal}
         onOpenChange={(open) => {
           setShowDeleteModal(open);
-          if (!open) setDeleteReason("");
+          if (!open) {
+            setDeleteReason("");
+            setDeleteReasonError(undefined);
+          }
         }}
         title="Supprimer le sujet"
         message={
@@ -476,11 +494,14 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
         pending={isPending}
         onConfirm={handleDeleteTopic}
       >
-        <Field label="Raison de la suppression (obligatoire)" htmlFor="topic-delete-reason">
+        <Field label="Raison de la suppression (obligatoire)" htmlFor="topic-delete-reason" error={deleteReasonError}>
           <Textarea
             id="topic-delete-reason"
             value={deleteReason}
-            onChange={(event) => setDeleteReason(event.target.value)}
+            onChange={(event) => {
+              setDeleteReason(event.target.value);
+              setDeleteReasonError(undefined);
+            }}
             placeholder="Ex : spam, sujet en double…"
             rows={3}
             className="resize-none [font-family:inherit]"
@@ -802,7 +823,7 @@ function SplitBar() {
         data-page-bottom-bar="always"
         role="region"
         aria-label="Scission du sujet"
-        className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[4000] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden"
+        className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[var(--z-index-page-bar)] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden"
       >
         <div className="mx-auto flex max-w-[1232px] items-center justify-between gap-2">
           <p className="m-0 min-w-0 text-sm font-semibold text-bb-text" aria-live="polite">
@@ -891,7 +912,7 @@ export function TopicReplyBar() {
       {/* Réserve la hauteur de la barre en bas de la page, pour qu'elle ne cache pas la fin du contenu */}
       <div aria-hidden="true" className="h-16 lg:hidden" />
       {!replyOnScreen && (
-        <div data-page-bottom-bar className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[4000] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden [html[data-typing=true]_&]:hidden">
+        <div data-page-bottom-bar className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[var(--z-index-page-bar)] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden [html[data-typing=true]_&]:hidden">
           <div className="mx-auto flex max-w-[1232px] items-center justify-between gap-2">
             {/* Pagination resserrée pour tenir sur 360 pixels : le bouton « Page N sur M » perd sa largeur minimale et
                 peut passer sur deux lignes quand les numéros sont longs (« Page 15 sur 15 » à côté de « Répondre ») */}

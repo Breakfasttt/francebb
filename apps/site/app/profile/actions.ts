@@ -1,5 +1,6 @@
 "use server";
 
+import { getReferenceData } from "@/lib/referenceData";
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
@@ -195,12 +196,16 @@ export async function getRoleLabels(): Promise<Record<string, string>> {
   return getRoleLabelMap();
 }
 
+/**
+ * Liste de référence demandée par le profil et l'inscription (régions des coachs). Action publique : elle n'accepte que
+ * les groupes que ces écrans utilisent (carte 203 ; avant, n'importe quel nom de groupe était accepté).
+ */
+const PROFILE_REFERENCE_GROUPS = ["COACH_REGION"] as const;
 export async function getReferenceDataAction(group: string) {
-  return await prisma.referenceData.findMany({
-    where: { group, isActive: true },
-    orderBy: { order: "asc" },
-    select: { key: true, label: true }
-  });
+  const allowed = PROFILE_REFERENCE_GROUPS.find((name) => name === group);
+  if (!allowed) return [];
+  const rows = await getReferenceData(allowed);
+  return rows.map(({ key, label }) => ({ key, label }));
 }
 
 export async function updateTheme(theme: string): Promise<ActionResult> {

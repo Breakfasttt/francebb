@@ -13,7 +13,7 @@
  * demande une confirmation. Les actions serveur sont inchangées.
  */
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowDown, ArrowUp, ArrowUpDown, Ban, Mail, Search, SearchX, SlidersHorizontal, Trash2, UserCheck, X } from "lucide-react";
 import {
@@ -25,12 +25,23 @@ import {
 } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import { readPositiveInt, useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
 
 const USERS_PER_PAGE = 25;
 
 type SortKey = "name" | "role" | "naf" | "region" | "ligue";
 type SortConfig = { key: SortKey; direction: "asc" | "desc" } | null;
+
+const SORT_KEYS: SortKey[] = ["name", "role", "naf", "region", "ligue"];
+
+/** Tri lu dans l'adresse (`?tri=naf` ou `?tri=naf-desc`), ou aucun tri (carte 196). */
+function readSort(value: string | null): SortConfig {
+  if (!value) return null;
+  const [key, direction] = value.split("-");
+  if (!SORT_KEYS.includes(key as SortKey)) return null;
+  return { key: key as SortKey, direction: direction === "desc" ? "desc" : "asc" };
+}
 
 interface Member {
   id: string;
@@ -76,12 +87,26 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const router = useRouter();
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedRole, setSelectedRole] = useState("");
-  const [selectedLigue, setSelectedLigue] = useState("");
-  const [selectedRegion, setSelectedRegion] = useState("");
-  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
-  const [currentPage, setCurrentPage] = useState(1);
+  // Recherche, filtres, tri et page sont lus dans l'adresse, puis y sont réécrits à chaque changement : un retour
+  // depuis la fiche d'un membre retrouve la même liste (carte 196)
+  const searchParams = useSearchParams();
+  const [searchTerm, setSearchTerm] = useState(() => searchParams.get("q") ?? "");
+  const [selectedRole, setSelectedRole] = useState(() => searchParams.get("role") ?? "");
+  const [selectedLigue, setSelectedLigue] = useState(() => searchParams.get("ligue") ?? "");
+  const [selectedRegion, setSelectedRegion] = useState(() => searchParams.get("region") ?? "");
+  const [sortConfig, setSortConfig] = useState<SortConfig>(() => readSort(searchParams.get("tri")));
+  const [currentPage, setCurrentPage] = useState(() => readPositiveInt(searchParams.get("page"), 1));
+  useSyncUrlFilters(
+    {
+      q: searchTerm.trim(),
+      role: selectedRole,
+      ligue: selectedLigue,
+      region: selectedRegion,
+      tri: sortConfig ? `${sortConfig.key}${sortConfig.direction === "desc" ? "-desc" : ""}` : "",
+      page: currentPage,
+    },
+    { page: 1 }
+  );
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const [roleModal, setRoleModal] = useState<{ userId: string; userName: string; newRole: UserRole } | null>(null);
@@ -285,12 +310,20 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   const ligueBadges = (user: Member) =>
     user.ligues && user.ligues.length > 0
-      ? user.ligues.map((l) => <Badge key={l.id} variant="neutral" title={l.name}>{l.acronym}</Badge>)
+      ? user.ligues.map((l) => (
+          // Le sigle mène à la page de la ligue, où le nom complet est écrit ; le lecteur d'écran lit le nom complet
+          <Link key={l.id} href={`/ligue/${l.id}`} title={l.name} className="inline-flex min-h-11 items-center no-underline lg:min-h-0">
+            <Badge variant="neutral">
+              {l.acronym}
+              <span className="sr-only"> ({l.name})</span>
+            </Badge>
+          </Link>
+        ))
       : <span className="text-bb-text-muted">—</span>;
 
   const nafCell = (user: Member) =>
     user.nafNumber ? (
-      <a href={nafHref(user.nafNumber)} target="_blank" rel="noopener noreferrer" className="font-semibold text-bb-accent-text">
+      <a href={nafHref(user.nafNumber)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center font-semibold text-bb-accent-text lg:min-h-0">
         {user.nafNumber}
       </a>
     ) : <span className="text-bb-text-muted">—</span>;
@@ -355,7 +388,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             size="sm"
             aria-label={`Retirer le filtre ${f.label}`}
             onClick={f.clear}
-            className="min-h-9 gap-1 rounded-full px-3 font-semibold"
+            className="min-h-11 gap-1 rounded-full px-3 font-semibold lg:min-h-9"
           >
             {f.label} <X size={14} aria-hidden="true" />
           </Button>

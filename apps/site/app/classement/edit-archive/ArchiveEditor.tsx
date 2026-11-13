@@ -87,6 +87,8 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
   const router = useRouter();
   const [year, setYear] = useState(initialData.year);
   const [name, setName] = useState(initialData.name);
+  // Erreurs de saisie, affichées sous le champ concerné (carte 194)
+  const [errors, setErrors] = useState<{ year?: string; name?: string }>({});
   // Chaque ligne reçoit une clé interne (`_key`), retirée à l'enregistrement, et le membre lié pour l'affichage (`user`)
   const [entries, setEntries] = useState<any[]>(() =>
     initialData.rankingData.map((entry, index) => ({
@@ -115,7 +117,21 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
   const updateEntry = (key: string, changes: Record<string, unknown>) =>
     setEntries((prev) => prev.map((entry) => (entry._key === key ? { ...entry, ...changes } : entry)));
 
-  const removeEntry = (key: string) => setEntries((prev) => prev.filter((entry) => entry._key !== key));
+  // La ligne retirée peut être remise à sa place depuis la notification : une confirmation à chaque ligne serait
+  // pénible quand on en retire plusieurs (carte 196)
+  const removeEntry = (key: string) => {
+    const index = entries.findIndex((entry) => entry._key === key);
+    if (index < 0) return;
+    const removed = entries[index];
+    setEntries((prev) => prev.filter((entry) => entry._key !== key));
+    toast("Ligne supprimée", {
+      action: {
+        label: "Annuler",
+        onClick: () =>
+          setEntries((prev) => (prev.some((entry) => entry._key === key) ? prev : [...prev.slice(0, index), removed, ...prev.slice(index)])),
+      },
+    });
+  };
 
   const updateBestResult = (key: string, resultIndex: number, field: string, value: unknown) =>
     setEntries((prev) =>
@@ -142,8 +158,13 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
   };
 
   const handleSave = async () => {
-    if (!year || Number.isNaN(year) || !name) {
-      toast.error("Veuillez remplir l'année et le nom avec des valeurs valides.");
+    const nextErrors = {
+      year: !year || Number.isNaN(year) ? "Indiquez l'année du championnat." : undefined,
+      name: name.trim() ? undefined : "Donnez un nom à l'archive.",
+    };
+    setErrors(nextErrors);
+    if (nextErrors.year || nextErrors.name) {
+      document.getElementById(nextErrors.year ? "archive-year" : "archive-name")?.focus();
       return;
     }
     setIsSaving(true);
@@ -178,17 +199,29 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
       <div className="flex min-w-0 flex-col gap-4">
         <Block icon={<Trophy size={18} />} title="L'archive">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-[10rem_minmax(0,1fr)]">
-            <Field label="Année du championnat" htmlFor="archive-year">
+            <Field label="Année du championnat" htmlFor="archive-year" error={errors.year}>
               <Input
                 id="archive-year"
                 type="number"
                 inputMode="numeric"
                 value={Number.isNaN(year) ? "" : year}
-                onChange={(e) => setYear(e.target.value === "" ? NaN : parseInt(e.target.value))}
+                onChange={(e) => {
+                  setYear(e.target.value === "" ? NaN : parseInt(e.target.value));
+                  setErrors((prev) => ({ ...prev, year: undefined }));
+                }}
               />
             </Field>
-            <Field label="Nom de l'archive" htmlFor="archive-name">
-              <Input id="archive-name" type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Ex : Championnat de France 2026" />
+            <Field label="Nom de l'archive" htmlFor="archive-name" error={errors.name}>
+              <Input
+                id="archive-name"
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setErrors((prev) => ({ ...prev, name: undefined }));
+                }}
+                placeholder="Ex : Championnat de France 2026"
+              />
             </Field>
           </div>
         </Block>

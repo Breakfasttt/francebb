@@ -76,6 +76,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [newTeamName, setNewTeamName] = useState("");
+  // Erreur affichée sous le nom de l'équipe (carte 194)
+  const [teamNameError, setTeamNameError] = useState<string>();
   const [selectedMembers, setSelectedMembers] = useState<any[]>([]);
   const [selectedTeamDetails, setSelectedTeamDetails] = useState<any | null>(null);
   const [confirm, setConfirm] = useState<ConfirmState>({ open: false, title: "", message: "", label: "", action: async () => {} });
@@ -111,7 +113,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
 
   const handleCreateTeamSubmit = () => {
     if (!newTeamName.trim()) {
-      toast.error("Veuillez donner un nom à votre équipe");
+      setTeamNameError("Donnez un nom à votre équipe.");
+      document.getElementById("team-name")?.focus();
       return;
     }
 
@@ -331,13 +334,24 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
         <SheetContent title={editingTeamId ? "Modifier l'équipe" : "Inscrire une équipe"} side={isDesktop ? "center" : "bottom"}>
           <form
             className="flex flex-col gap-4 pt-1 pb-2"
+            // L'erreur de saisie s'affiche sous le champ, pas dans la bulle du navigateur (carte 194)
+            noValidate
             onSubmit={(event) => {
               event.preventDefault();
               handleCreateTeamSubmit();
             }}
           >
-            <Field label="Nom de l'équipe" htmlFor="team-name">
-              <Input id="team-name" value={newTeamName} onChange={(e) => setNewTeamName(e.target.value)} placeholder="Ex : Les Gorets de Nurgle" required />
+            <Field label="Nom de l'équipe (obligatoire)" htmlFor="team-name" error={teamNameError}>
+              <Input
+                id="team-name"
+                value={newTeamName}
+                onChange={(e) => {
+                  setNewTeamName(e.target.value);
+                  setTeamNameError(undefined);
+                }}
+                placeholder="Ex : Les Gorets de Nurgle"
+                required
+              />
             </Field>
             <div className="flex flex-col gap-1.5">
               <p className="m-0 text-sm font-semibold text-bb-text">

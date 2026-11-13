@@ -70,7 +70,7 @@ export default function CookieBanner() {
       <Cookie size={24} aria-hidden="true" className="hidden shrink-0 text-bb-accent-text lg:block" />
       <div className="min-w-0 flex-1">
         <h2 className="m-0 hidden text-[0.95rem] font-bold lg:block">Respect de la vie privée</h2>
-        <p className="m-0 text-sm leading-snug text-bb-text-muted lg:mt-0.5">
+        <p className="m-0 text-sm leading-normal text-bb-text-muted lg:mt-0.5">
           Cookies techniques seulement.{" "}
           {/* Le remplissage vertical, compensé par une marge négative, porte la zone d'appui à 44 pixels sans
               agrandir la ligne */}

@@ -281,7 +281,7 @@ export async function updateResourceAction(id: string, formData: FormData) {
       }
     });
 
-    await logModerationAction("RESOURCE_UPDATED", id, "RESOURCE", "Mise à jour d'un outil système");
+    await logModerationAction(user.id, "RESOURCE_UPDATED", id, "RESOURCE", "Mise à jour d'un outil système");
     revalidatePath("/ressources");
     return { success: true };
   }
@@ -327,6 +327,7 @@ export async function updateResourceAction(id: string, formData: FormData) {
     });
 
     await logModerationAction(
+        user.id,
         "RESOURCE_UPDATED", 
         id, 
         "RESOURCE", 
@@ -367,6 +368,7 @@ export async function deleteResourceAction(id: string) {
     await prisma.resource.delete({ where: { id } });
 
     await logModerationAction(
+        user.id,
         "RESOURCE_DELETED", 
         id, 
         "RESOURCE", 
@@ -422,7 +424,7 @@ export async function moderateResource(
   data?: { title?: string; description?: string; link?: string; imageUrl?: string; tags?: string }
 ) {
   const session = await getActiveSession();
-  if (!isModerator(session?.user?.role)) return { error: "Action non autorisée" };
+  if (!session || !isModerator(session.user.role)) return { error: "Action non autorisée" };
 
   try {
     if (action === "DELETE") {
@@ -430,19 +432,19 @@ export async function moderateResource(
       if (resource?.isSystem) return { error: "Impossible de supprimer un outil système" };
       
       await prisma.resource.delete({ where: { id } });
-      await logModerationAction("RESOURCE_DELETED", id, "RESOURCE", "Ressource supprimée");
+      await logModerationAction(session.user.id, "RESOURCE_DELETED", id, "RESOURCE", "Ressource supprimée");
     } else if (action === "APPROVE") {
       await prisma.resource.update({
         where: { id },
         data: { status: "APPROVED" },
       });
-      await logModerationAction("RESOURCE_APPROVED", id, "RESOURCE", "Ressource approuvée");
+      await logModerationAction(session.user.id, "RESOURCE_APPROVED", id, "RESOURCE", "Ressource approuvée");
     } else if (action === "REJECT") {
       await prisma.resource.update({
         where: { id },
         data: { status: "REJECTED" },
       });
-      await logModerationAction("RESOURCE_REJECTED", id, "RESOURCE", "Ressource rejetée");
+      await logModerationAction(session.user.id, "RESOURCE_REJECTED", id, "RESOURCE", "Ressource rejetée");
     } else if (action === "UPDATE" && data) {
       // Mêmes contrôles d'adresse que pour un membre ; une adresse interne n'est permise que pour un outil officiel
       const current = await prisma.resource.findUnique({ where: { id }, select: { isSystem: true } });
@@ -471,7 +473,7 @@ export async function moderateResource(
           },
         },
       });
-      await logModerationAction("RESOURCE_UPDATED", id, "RESOURCE", "Ressource mise à jour par un modérateur");
+      await logModerationAction(session.user.id, "RESOURCE_UPDATED", id, "RESOURCE", "Ressource mise à jour par un modérateur");
     }
 
     revalidatePath("/ressources");

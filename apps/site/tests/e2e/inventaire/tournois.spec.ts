@@ -205,9 +205,7 @@ const showsTournament = (page: Page, name: string) => tournamentLinks(page).filt
 async function filterPanel(page: Page): Promise<Locator> {
   const panel = page.getByRole("dialog", { name: /Filtr/ }).filter({ visible: true });
   if ((await panel.count()) === 0) {
-    // En développement, le bouton flottant historique est caché sous les widgets de développement (« Dev Auth ») :
-    // le clic est envoyé directement au bouton
-    await page.getByRole("button", { name: /^(Ouvrir les filtres|Filtres)/ }).filter({ visible: true }).first().dispatchEvent("click");
+    await page.getByRole("button", { name: /^(Ouvrir les filtres|Filtres)/ }).filter({ visible: true }).first().click();
     await expect(panel.first()).toBeVisible();
   }
   return panel.first();

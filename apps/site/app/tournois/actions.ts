@@ -7,17 +7,19 @@
 
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
-import { revalidatePath } from "next/cache";
+import { refreshTournament } from "@/lib/pageRefresh";
 import { isModerator } from "@/lib/roles";
+import type { ActionResult } from "@/lib/actionResult";
+import { canManageTournament } from "@/lib/tournamentRights";
 import { calculateCdfPoints, cdfRoundsCount, isValidRank, CdfTournamentType } from "@/common/utils/cdf";
 import { logModerationAction } from "@/lib/moderationLog";
 
 /**
  * Marque un tournoi comme terminé.
  */
-export async function finishTournament(tournamentId: string) {
+export async function finishTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return null;
+  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -27,16 +29,14 @@ export async function finishTournament(tournamentId: string) {
     }
   });
 
-  if (!tournament) return null;
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
   // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     console.warn(`[finishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
-    return null;
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -44,19 +44,16 @@ export async function finishTournament(tournamentId: string) {
     data: { isFinished: true }
   });
 
-  revalidatePath("/tournois");
-  if (tournament.topic?.id) {
-    revalidatePath(`/forum/topic/${tournament.topic.id}`);
-  }
+  refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
   return { success: true };
 }
 
 /**
  * Marque un tournoi comme annulé.
  */
-export async function cancelTournament(tournamentId: string) {
+export async function cancelTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return null;
+  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -66,16 +63,14 @@ export async function cancelTournament(tournamentId: string) {
     }
   });
 
-  if (!tournament) return null;
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
   // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     console.warn(`[cancelTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
-    return null;
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -86,10 +81,7 @@ export async function cancelTournament(tournamentId: string) {
     }
   });
 
-  revalidatePath("/tournois");
-  if (tournament.topic?.id) {
-    revalidatePath(`/forum/topic/${tournament.topic.id}`);
-  }
+  refreshTournament({ id: tournamentId, topicId: tournament.topic?.id, affectsRanking: true });
   return { success: true };
 }
 
@@ -98,9 +90,9 @@ export async function cancelTournament(tournamentId: string) {
  * marquait aussi le tournoi terminé : il le reste seulement s'il a déjà des résultats. Les résultats d'un tournoi annulé
  * ne comptent pas au classement (`getRanking` écarte les tournois annulés) ; rétabli, il compte de nouveau.
  */
-export async function restoreTournament(tournamentId: string) {
+export async function restoreTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return null;
+  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -111,15 +103,13 @@ export async function restoreTournament(tournamentId: string) {
     }
   });
 
-  if (!tournament) return null;
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     console.warn(`[restoreTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
-    return null;
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   await prisma.tournament.update({
@@ -127,35 +117,29 @@ export async function restoreTournament(tournamentId: string) {
     data: { isCancelled: false, isFinished: tournament._count.results > 0 }
   });
 
-  revalidatePath("/tournois");
-  revalidatePath("/classement");
-  if (tournament.topic?.id) {
-    revalidatePath(`/forum/topic/${tournament.topic.id}`);
-  }
+  refreshTournament({ id: tournamentId, topicId: tournament.topic?.id, affectsRanking: true });
   return { success: true };
 }
 
 /**
  * Sauvegarde les résultats d'un tournoi (classement et matchs/rondes).
  */
-export async function saveTournamentResults(tournamentId: string, data: { results: any[], rounds: any[] }) {
+export async function saveTournamentResults(tournamentId: string, data: { results: any[], rounds: any[] }): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { error: "Non authentifié" };
+  if (!session?.user) return { success: false, error: "Non authentifié" };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
-    include: { commissaires: { select: { id: true } } }
+    include: { commissaires: { select: { id: true } }, topic: { select: { id: true } } }
   });
 
-  if (!tournament) return { error: "Tournoi non trouvé" };
+  if (!tournament) return { success: false, error: "Tournoi non trouvé" };
 
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     console.warn(`[saveTournamentResults] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
-    return { error: "Non autorisé" };
+    return { success: false, error: "Non autorisé" };
   }
 
   // Points CDF recalculés ici avec la formule officielle (common/utils/cdf.ts), sans faire confiance
@@ -168,7 +152,7 @@ export async function saveTournamentResults(tournamentId: string, data: { result
   if (tournament.isCDF) {
     const withoutRank = data.results.find((res) => !isValidRank(res.rank));
     if (withoutRank) {
-      return { error: `Le rang de ${withoutRank.coachName || "un coach"} est vide ou invalide : chaque coach d'un tournoi CDF doit avoir un rang (1, 2, 3…).` };
+      return { success: false, error: `Le rang de ${withoutRank.coachName || "un coach"} est vide ou invalide : chaque coach d'un tournoi CDF doit avoir un rang (1, 2, 3…).` };
     }
   }
 
@@ -240,14 +224,12 @@ export async function saveTournamentResults(tournamentId: string, data: { result
       });
     });
 
-    revalidatePath(`/forum/tournament/${tournamentId}/results`);
-    const t = await prisma.tournament.findUnique({ where: { id: tournamentId }, include: { topic: true } });
-    if (t?.topic?.id) revalidatePath(`/forum/topic/${t.topic.id}`);
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id, affectsRanking: true });
 
     return { success: true };
   } catch (error: any) {
     console.error("Erreur saveTournamentResults:", error);
-    return { error: error.message || "Erreur interne" };
+    return { success: false, error: error.message || "Erreur interne" };
   }
 }
 
@@ -339,9 +321,9 @@ export async function parseNafReport(xmlContent: string) {
 /**
  * Marque un tournoi comme non terminé (ré-ouvre le tournoi).
  */
-export async function unfinishTournament(tournamentId: string) {
+export async function unfinishTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return null;
+  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -351,16 +333,14 @@ export async function unfinishTournament(tournamentId: string) {
     }
   });
 
-  if (!tournament) return null;
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
 
   // Autorisation : Organisateur, Commissaire ou modération (même règle que la page /results et updateTournament)
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
     console.warn(`[unfinishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
-    return null;
+    return { success: false, error: "Vous devez être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -368,19 +348,16 @@ export async function unfinishTournament(tournamentId: string) {
     data: { isFinished: false }
   });
 
-  revalidatePath("/tournois");
-  if (tournament.topic?.id) {
-    revalidatePath(`/forum/topic/${tournament.topic.id}`);
-  }
+  refreshTournament({ id: tournamentId, topicId: tournament.topic?.id });
   return { success: true };
 }
 
 /**
  * Supprime tous les résultats et matchs d'un tournoi.
  */
-export async function clearTournamentResults(tournamentId: string) {
+export async function clearTournamentResults(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { error: "Non authentifié" };
+  if (!session?.user) return { success: false, error: "Non authentifié" };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -390,14 +367,12 @@ export async function clearTournamentResults(tournamentId: string) {
     }
   });
 
-  if (!tournament) return { error: "Tournoi non trouvé" };
+  if (!tournament) return { success: false, error: "Tournoi non trouvé" };
 
-  const isOrganizer = tournament.organizerId === session.user.id;
-  const isCommissaire = tournament.commissaires.some(c => c.id === session.user.id);
-  const isAuthorizedRole = isModerator(session.user.role);
-
-  if (!isOrganizer && !isCommissaire && !isAuthorizedRole) {
-    return { error: "Non autorisé" };
+  // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
+  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  if (!canManageTournament(viewer, tournament)) {
+    return { success: false, error: "Non autorisé" };
   }
 
   try {
@@ -413,16 +388,12 @@ export async function clearTournamentResults(tournamentId: string) {
       });
     });
 
-    revalidatePath(`/forum/tournament/${tournamentId}/results`);
-    revalidatePath("/tournois");
-    if (tournament.topic?.id) {
-      revalidatePath(`/forum/topic/${tournament.topic.id}`);
-    }
+    refreshTournament({ id: tournamentId, topicId: tournament.topic?.id, affectsRanking: true });
 
     return { success: true };
   } catch (error: any) {
     console.error("Erreur clearTournamentResults:", error);
-    return { error: error.message || "Erreur interne" };
+    return { success: false, error: error.message || "Erreur interne" };
   }
 }
 
@@ -432,23 +403,23 @@ export async function clearTournamentResults(tournamentId: string) {
  * session (auth.ts). Seuls les résultats validés comptent au classement national (app/classement/actions.ts).
  * L'action est notée au journal de modération.
  */
-export async function setCdfValidation(tournamentId: string, validate: boolean): Promise<{ success: true } | { error: string }> {
+export async function setCdfValidation(tournamentId: string, validate: boolean): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) return { error: "Vous devez être connecté." };
+  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
   if (!isModerator(session.user.role)) {
-    return { error: "Seuls les modérateurs et les administrateurs peuvent valider les résultats d'un tournoi CDF." };
+    return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent valider les résultats d'un tournoi CDF." };
   }
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
     select: { id: true, name: true, isCDF: true, isFinished: true, isCancelled: true, topic: { select: { id: true } }, _count: { select: { results: true } } }
   });
-  if (!tournament) return { error: "Tournoi introuvable." };
-  if (!tournament.isCDF) return { error: "Ce tournoi ne compte pas pour la Coupe de France." };
+  if (!tournament) return { success: false, error: "Tournoi introuvable." };
+  if (!tournament.isCDF) return { success: false, error: "Ce tournoi ne compte pas pour la Coupe de France." };
   if (validate) {
-    if (tournament.isCancelled) return { error: "Ce tournoi est annulé : ses résultats ne peuvent pas compter au classement." };
+    if (tournament.isCancelled) return { success: false, error: "Ce tournoi est annulé : ses résultats ne peuvent pas compter au classement." };
     if (!tournament.isFinished || tournament._count.results === 0) {
-      return { error: "Les résultats de ce tournoi n'ont pas encore été publiés." };
+      return { success: false, error: "Les résultats de ce tournoi n'ont pas encore été publiés." };
     }
   }
 
@@ -460,14 +431,13 @@ export async function setCdfValidation(tournamentId: string, validate: boolean):
   });
 
   await logModerationAction(
+    session.user.id,
     validate ? "TOURNAMENT_CDF_VALIDATED" : "TOURNAMENT_CDF_UNVALIDATED",
     tournament.topic?.id,
     tournament.topic ? "TOPIC" : undefined,
     `Tournoi « ${tournament.name} »`
   );
 
-  revalidatePath("/classement");
-  revalidatePath(`/forum/tournament/${tournamentId}/results/view`);
-  if (tournament.topic?.id) revalidatePath(`/forum/topic/${tournament.topic.id}`);
+  refreshTournament({ id: tournamentId, topicId: tournament.topic?.id, affectsRanking: true });
   return { success: true };
 }

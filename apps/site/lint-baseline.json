@@ -1,10 +1,10 @@
 {
-  "maxErrors": 203,
+  "maxErrors": 191,
   "rules": {
     "@typescript-eslint/ban-ts-comment": 6,
-    "@typescript-eslint/no-explicit-any": 156,
+    "@typescript-eslint/no-explicit-any": 146,
     "no-restricted-syntax": 22,
-    "prefer-const": 8,
+    "prefer-const": 6,
     "react-hooks/purity": 1,
     "react-hooks/set-state-in-effect": 2,
     "react/forbid-elements": 8

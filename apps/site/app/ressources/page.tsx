@@ -7,17 +7,19 @@
  * la barre de recherche et d'affichage (`ResourceListControls`) et les ressources en grille ou en liste, 20 par page
  * (pagination `PageNav`). Sur ordinateur, le filtre par tags est dans une colonne à gauche ; sur téléphone, une seule
  * colonne, et ce filtre est rangé dans le panneau « Filtrer les ressources ».
- * La liste est chargée dans la page par l'action serveur `getResources`, comme avant la refonte : la recherche, les
- * tags, l'affichage et la page ne sont pas écrits dans l'adresse. La recherche est lancée 300 millisecondes après la
- * dernière touche.
+ * La liste est chargée dans la page par l'action serveur `getResources`. Depuis la carte 196, la recherche, les tags,
+ * l'affichage et la page sont écrits dans l'adresse (`?q=…&tags=…&vue=liste&page=2`) : un lien partagé ou un retour
+ * depuis une ressource retrouve la même liste. La recherche est lancée 300 millisecondes après la dernière touche.
  */
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { BookOpen, Plus } from "lucide-react";
 import { Button, Card, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { useDebounce } from "@/common/hooks/useDebounce";
+import { readList, readPositiveInt, useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import { isAdmin, isModerator } from "@/lib/roles";
 import { deleteResourceAction, getResources, getResourceTags } from "./actions";
 import ResourceCard, { type ResourceListItem } from "./component/ResourceCard";
@@ -25,13 +27,25 @@ import { ResourceFilterAside, ResourceListControls, type ResourceView } from "./
 
 const PAGE_SIZE = 20;
 
+// useSearchParams demande une limite Suspense (exigence de Next.js) ; la liste a déjà ses propres cartes grises
 export default function RessourcesPage() {
+  return (
+    <Suspense fallback={null}>
+      <RessourcesList />
+    </Suspense>
+  );
+}
+
+function RessourcesList() {
   const { data: session } = useSession();
-  const [query, setQuery] = useState("");
+  // Réglages de départ lus dans l'adresse (carte 196)
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
   const debouncedQuery = useDebounce(query, 300);
-  const [tags, setTags] = useState<string[]>([]);
-  const [view, setView] = useState<ResourceView>("grid");
-  const [page, setPage] = useState(1);
+  const [tags, setTags] = useState<string[]>(() => readList(searchParams.get("tags")));
+  const [view, setView] = useState<ResourceView>(() => (searchParams.get("vue") === "liste" ? "list" : "grid"));
+  const [page, setPage] = useState(() => readPositiveInt(searchParams.get("page"), 1));
+  useSyncUrlFilters({ q: debouncedQuery.trim(), tags, vue: view === "list" ? "liste" : "", page }, { page: 1 });
   const [availableTags, setAvailableTags] = useState<string[]>([]);
   // Dernier résultat reçu, avec la clé de la demande qui l'a produit : tant que la clé ne correspond pas aux réglages
   // actuels (y compris pendant les 300 millisecondes d'attente après une touche), une nouvelle liste est en cours de
@@ -96,7 +110,7 @@ export default function RessourcesPage() {
     <Button asChild variant="primary" size="tap">
       <Link href="/ressources/submit" className="no-underline">
         <Plus size={18} aria-hidden="true" />
-        {/* Un seul bloc de texte : l'écart entre l'icône et le texte ne s'ajoute pas avant « une ressource » */}
+        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
         <span>Soumettre<span className="max-sm:sr-only"> une ressource</span></span>
       </Link>
     </Button>
@@ -134,7 +148,7 @@ export default function RessourcesPage() {
 
           {loading || !data ? (
             // Chargement : des cartes grises à la place des ressources
-            <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3" aria-label="Chargement des ressources">
+            <div className="grid gap-3 sm:grid-cols-2" aria-label="Chargement des ressources">
               {Array.from({ length: 6 }, (_, index) => (
                 <Skeleton key={index} className="h-72 rounded-bb-lg" />
               ))}
@@ -148,7 +162,7 @@ export default function RessourcesPage() {
                   ))}
                 </Card>
               ) : (
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2">
                   {resources.map((resource) => (
                     <ResourceCard key={resource.id} resource={resource} {...rights(resource, user)} onDelete={() => setDeleting(resource)} />
                   ))}

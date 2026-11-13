@@ -90,6 +90,8 @@ export default function UserAvatar({
           src={image} 
           alt={name || "Avatar"} 
           className="user-avatar-img" 
+          loading="lazy" 
+          decoding="async" 
           style={{ width: size, height: size }} 
         />
       ) : (

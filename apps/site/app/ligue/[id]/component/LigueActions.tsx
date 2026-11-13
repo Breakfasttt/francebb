@@ -47,18 +47,23 @@ export default function LigueActions({ ligueId, ligueName, canEdit, canManage, c
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
   const [newOwner, setNewOwner] = useState<SelectedUser | null>(null);
+  // Erreur affichée sous la recherche du coach (carte 194)
+  const [newOwnerError, setNewOwnerError] = useState<string>();
   const [pending, setPending] = useState(false);
 
   if (!canEdit && !canManage && !canReport) return null;
 
   const closeTransfer = (open: boolean) => {
     setTransferOpen(open);
-    if (!open) setNewOwner(null);
+    if (!open) {
+      setNewOwner(null);
+      setNewOwnerError(undefined);
+    }
   };
 
   const handleTransfer = async () => {
     if (!newOwner) {
-      toast.error("Choisissez d'abord le nouveau chef de ligue.");
+      setNewOwnerError("Choisissez d'abord le nouveau chef de ligue.");
       return;
     }
     setPending(true);
@@ -120,11 +125,15 @@ export default function LigueActions({ ligueId, ligueName, canEdit, canManage, c
               <div className="flex min-h-64 flex-col gap-4 pt-2 pb-2">
                 <UserSearch
                   selectedUsers={newOwner ? [newOwner] : []}
-                  onSelect={(user) => setNewOwner(user)}
+                  onSelect={(user) => {
+                    setNewOwner(user);
+                    setNewOwnerError(undefined);
+                  }}
                   onRemove={() => setNewOwner(null)}
                   placeholder="Rechercher le nouveau chef..."
                   maxSelections={1}
                 />
+                {newOwnerError && <p role="alert" className="m-0 text-sm text-bb-danger-text">{newOwnerError}</p>}
                 <div className="mt-auto flex flex-col gap-2 lg:flex-row-reverse">
                   <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" disabled={pending} onClick={handleTransfer}>
                     Transférer

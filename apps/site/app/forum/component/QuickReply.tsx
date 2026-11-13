@@ -70,7 +70,7 @@ export default function QuickReply({ topicId }: { topicId: string }) {
         </h2>
 
         <DraftBanner draft={draft} />
-        <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Écrivez votre réponse ici..." rows={6} />
+        <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Écrivez votre réponse ici..." ariaLabel="Votre réponse" rows={6} />
 
         <Button type="button" variant="primary" size="tap" className="mt-4 w-full" onClick={handleSubmit} disabled={isSubmitting}>
           <Send size={18} aria-hidden="true" /> {isSubmitting ? "Envoi en cours…" : "Envoyer ma réponse"}

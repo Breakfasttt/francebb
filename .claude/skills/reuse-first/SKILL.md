@@ -23,6 +23,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Confirmer une action (jamais `confirm()`) | `ConfirmDialog` : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice ; `children` pour un champ entre la phrase et les boutons (commentaire du modérateur, carte 099) |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
 | Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverClose` ; sur téléphone, utiliser `Sheet` |
+| Noms français des émojis de réaction pour les lecteurs d'écran (pastilles et choix d'émojis) | `reactionName`, `reactionPillLabel` de `common/utils/reactionLabels.ts` ; carte 195 |
 | Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |
 | Étiquette, pastille de compteur | `Badge`, `CountBadge` |
 | Avatar avec initiale | `Avatar` (les cadres de rang restent dans `UserAvatar`) |
@@ -50,6 +51,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Lien vers le sujet d'un tournoi, ville d'un tournoi | `topicHref` et `placeText` du même fichier (utilisés aussi par l'accueil, carte 155) |
 | Blason d'une ligue (ou bouclier s'il n'y en a pas) | `LigueBlason` (`app/ligues/component/LigueBlason.tsx`) |
 | Formulaire envoyé à une action serveur qui renvoie `ActionResult` (refus en notification, champs gardés) | `Form/ActionForm` (au lieu de `<form action={monAction}>`) |
+| Bouton d'envoi qui se désactive et montre un indicateur pendant l'envoi | `Form/SubmitButton` (prop `icon`, variante `primary` et taille `tap` par défaut) ; fonctionne dans `ActionForm` (contexte `FormPendingContext`) et dans un `<form action={…}>` (`useFormStatus`), carte 193 |
 | Conteneur carte | `Card` de `@bbfrance/ui` ; `PremiumCard` ne sert plus qu'aux mentions légales, ne pas le réutiliser |
 | Fenêtre, confirmation, signalement | `ConfirmDialog` et `Sheet` de `@bbfrance/ui` (jamais `window.confirm`) ; `ReportModal` pour signaler un contenu ; `Modal` et `ConfirmModal` restent pour les écrans qui les utilisent déjà, pas pour un nouvel écran |
 | Avatar avec le cadre du rang du membre | `UserAvatar` |
@@ -60,6 +62,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Saisie d'étiquettes (tags) avec suggestions | `TagSelector` (props `id` et `aria-label` pour le relier à un libellé) ; pour afficher un statut, `Badge` de `@bbfrance/ui` |
 | Écrire et afficher un message BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu, styles dans `BBCodeContent/bbcode.css`) |
 | Smileys | `SmileyGrid` |
+| Bouton retour d'une page ouverte depuis plusieurs endroits (panneau « Plus », menu du compte) | `BackButton` avec `preferHistory` (ou `ForumListHeader` avec `backPreferHistory`) : revient à la page précédente si elle fait partie du site, suit `href` sinon. Les pages visitées sont notées par `InAppHistoryTracker`, monté dans `app/layout.tsx` (carte 196) |
 | En-tête de page et bouton retour | `ForumListHeader` (`app/forum/component/`, pages du forum), `BackButton` (44 px sur téléphone, affiché sur place à gauche du titre) ; `PageHeader` ne sert plus qu'aux mentions légales |
 | Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |
 | Envoyer un élément dans la coquille (téléphone) | **Interdit** depuis la carte 156 : pas de portail React (`createPortal`) dans le code du projet. Afficher l'élément dans la page, ou dans un `Sheet` ouvert depuis la page |
@@ -70,6 +73,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 ## Hooks, petites fonctions et code serveur (`apps/site`)
 | Besoin | Utiliser |
 |---|---|
+| Garder les filtres d'une liste chargée dans le navigateur dans l'adresse (lien partagé, retour arrière) | `useSyncUrlFilters`, `readList`, `readPositiveInt` de `common/hooks/useUrlFilters.ts` (carte 196) ; la page lit ses réglages de départ avec `useSearchParams`, dans un `<Suspense>` |
 | Détection mobile | `common/hooks/useIsMobile.ts` (`useIsMobile()` et la constante `MOBILE_BREAKPOINT`, seuil unique de 1024 pixels) |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
 | Garder le texte d'un formulaire en brouillon dans le navigateur (restauré après un rechargement, expiré après 7 jours) | `useDraft(scope, initialValue, { warnBeforeLeave })` de `common/hooks/useDraft.ts` (règles pures dans `common/utils/draftRules.ts`), avec le bandeau `DraftBanner` (`common/components/DraftBanner/`) ; carte 181. Bouton « Annuler » qui confirme si le texte a changé : `CancelComposeButton` (`app/forum/component/`) |
@@ -90,6 +94,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Champs d'un membre envoyés au navigateur, texte d'un message supprimé ou masqué, citation autorisée | `lib/forumPostPrivacy.ts` (`POST_AUTHOR_SELECT`, `PUBLIC_MEMBER_SELECT`, `POST_MODERATOR_SELECT`, `hidePostContent`, `canQuotePost`) |
 | Client Prisma | `lib/prisma.ts` → `prisma` (ne renvoie jamais `User.email`) ; `prismaWithEmail` réservé à la connexion et aux mails |
 | BBCode → HTML | `lib/bbcode.ts` |
+| Début lisible d'un message du forum (sans citations ni balises, coupé avec « … ») | `postExcerpt` de `lib/homeLatestPosts.ts` (carte 205) |
 | Chiffrement | `lib/crypto.ts` |
 | Départements / régions | `lib/france.ts` |
 | Mail | `lib/mail.ts` ; toute valeur insérée dans le HTML d'un e-mail passe par `escapeHtml` (`lib/htmlEscape.ts`, carte 167) ; un e-mail envoyé par une action part dans `after()` de `next/server` |

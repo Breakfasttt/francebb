@@ -72,6 +72,8 @@ interface BBCodeEditorProps {
   maxLength?: number;
   onChange?: (value: string) => void;
   required?: boolean;
+  /** Nom de la zone de texte lu par les lecteurs d'écran, quand aucun libellé visible n'est relié par `id` (carte 194). */
+  ariaLabel?: string;
   /** Éditeur d'une page de rédaction qui occupe tout l'écran sur téléphone (barre d'outils collée en haut). */
   screen?: boolean;
 }
@@ -103,7 +105,7 @@ function OptionLabel({ children }: { children: ReactNode }) {
   return <p className="m-0 text-sm font-semibold text-bb-text">{children}</p>;
 }
 
-export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange, required, screen = false }: BBCodeEditorProps) {
+export default function BBCodeEditor({ name, id, defaultValue = "", placeholder, rows = 10, maxLength, onChange, required, ariaLabel, screen = false }: BBCodeEditorProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const uid = useId();
   const [content, setContent] = useState(defaultValue);
@@ -717,7 +719,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         return (
           <div className="flex flex-col gap-4">
             <Field label="Adresse ou identifiant de la vidéo" htmlFor={fieldId("youtube")}>
-              <Input id={fieldId("youtube")} type="text" placeholder="https://www.youtube.com/watch?v=…" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} data-autofocus />
+              <Input id={fieldId("youtube")} type="text" inputMode="url" autoComplete="off" placeholder="https://www.youtube.com/watch?v=…" value={toolInputUrl} onChange={(e) => setToolInputUrl(e.target.value)} data-autofocus />
             </Field>
             {mediaOptions}
             <Button type="button" variant="primary" size="tap" onClick={submitYoutube}>
@@ -915,7 +917,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const sheetOpen = !isDesktop && (moreOpen || activeTool !== null);
 
   return (
-    <div className="bbcode-editor relative flex flex-col rounded-bb-md border border-bb-border bg-bb-surface-2 font-bb-sans text-bb-text transition-colors focus-within:border-bb-focus">
+    <div className="bbcode-editor relative flex flex-col rounded-bb-md border border-bb-border bg-bb-surface-2 font-bb-sans text-bb-text transition-colors focus-within:border-bb-focus has-[textarea[aria-invalid=true]]:border-bb-danger">
       <input type="file" accept="image/*" multiple ref={fileInputRef} className="hidden" onChange={handleImageUpload} tabIndex={-1} aria-hidden="true" />
 
       {/* Barre d'outils, collée en haut de l'écran sur téléphone dans une page de rédaction */}
@@ -924,7 +926,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         aria-label="Mise en forme du message"
         className={cn(
           "flex items-center gap-0.5 rounded-t-bb-md border-b border-bb-border bg-bb-surface px-1 py-1",
-          screen && "max-lg:sticky max-lg:top-14 max-lg:z-20"
+          screen && "max-lg:sticky max-lg:top-14 max-lg:z-[var(--z-index-dropdown)]"
         )}
       >
         {PRIMARY_TOOLS.map(({ tool, desktopOnly }) => {
@@ -999,6 +1001,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         placeholder={placeholder}
         rows={rows}
         required={required}
+        aria-label={ariaLabel}
         className={cn(
           "block min-h-[120px] resize-y rounded-none border-0 bg-transparent px-3 py-3 [font-family:inherit] focus-visible:outline-none",
           screen && "max-lg:min-h-[calc(100dvh-18rem)] max-lg:resize-none max-lg:overflow-hidden",

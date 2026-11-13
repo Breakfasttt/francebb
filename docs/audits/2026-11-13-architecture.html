@@ -1,0 +1,296 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Revue d'architecture BBFrance</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+<style>
+  .mermaid { display:flex; justify-content:center; }
+  pre.mermaid { background: transparent; }
+</style>
+</head>
+<body class="bg-stone-50 text-slate-900 font-sans">
+<main class="max-w-5xl mx-auto px-4 sm:px-6 py-10 space-y-12">
+
+<header class="space-y-3">
+  <h1 class="font-serif text-3xl sm:text-4xl">Revue d'architecture — BBFrance</h1>
+  <p class="text-sm text-slate-500">13 novembre 2026 · zones chaudes : forum, tournois, administration (150 derniers commits)</p>
+  <div class="flex flex-wrap gap-4 text-xs text-slate-600">
+    <span><b>module</b> : interface + implémentation</span>
+    <span><b>profond</b> : beaucoup de comportement derrière peu d'interface</span>
+    <span><b>superficiel</b> : interface presque aussi grosse que le code</span>
+    <span><b>seam</b> : là où vit l'interface</span>
+    <span class="text-red-600"><b>rouge</b> : fuite / copie divergente</span>
+  </div>
+  <div class="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm">
+    Constat transversal : les tests unitaires (<code>node --test</code>) ne résolvent pas l'alias <code>@/</code>.
+    Seuls les modules qui n'importent rien sont testables, donc on extrait de minuscules fonctions pures,
+    et les défauts vivent dans leurs appelants. Les droits des actions serveur sont « testés » par expressions régulières
+    sur le code source (<code>tests/e2e/security.spec.ts:26-47</code>).
+  </div>
+</header>
+
+<section id="candidates" class="space-y-10">
+
+<!-- 1 -->
+<article id="c1" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">1. Approfondir le module « Tournoi »</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1">Strong</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">local-substitutable (Postgres de test)</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">mock pour Nominatim</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>app/forum/actions.ts — createTopic 460-638, updateTournament 1482-1682, inscriptions 1685-2150</li>
+    <li>app/tournois/actions.ts — 33, 72, 116, 152, 357, 395</li>
+    <li>app/forum/edit-tournament/[id]/page.tsx:51 · tournament/[id]/results/page.tsx:44 · topic/[id]/page.tsx:180-184</li>
+    <li>lib/tournamentRegistrationRules.ts · tournamentRegistrations.ts · tournamentDates.ts</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Avant</p>
+      <pre class="mermaid">
+flowchart TB
+  P["3 pages"] --> R1["organisateur ∨ commissaire ∨ modo (copie)"]
+  A["9 actions"] --> R1
+  C["createTopic"] --> F1["lecture ~40 champs (copie 1)"]
+  U["updateTournament"] --> F2["lecture ~40 champs (copie 2)"]
+  I["8 actions d'inscription"] --> L["verrou + statut + liste d'attente + notif"]
+  F1 --> DB[(Prisma)]
+  F2 --> DB
+  L --> DB
+  R1 --> DB
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#991b1b;
+  class R1,F1,F2 leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Après</p>
+      <pre class="mermaid">
+flowchart TB
+  P["pages"] --> T
+  A["actions (adaptateurs fins)"] --> T
+  subgraph T["module Tournoi (profond)"]
+    direction TB
+    d["droits(membre, id)"]
+    f["lireFormulaire(fd)"]
+    i["inscrire / désinscrire / équipe"]
+  end
+  T --> DB[(Prisma)]
+  T --> N["notifications"]
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a;
+  class T deep
+      </pre>
+    </div>
+  </div>
+  <p><b>Problème.</b> La règle de droits est recopiée 12 fois (celle du paiement 2 fois), et la lecture du formulaire existe en deux copies qui ont déjà divergé : <code>gameEdition</code> et <code>platform</code> n'ont pas la même valeur par défaut, le géocodage n'a lieu qu'à la création.</p>
+  <p><b>Solution.</b> Un module tournoi côté serveur. Droits, lecture du formulaire, verrou, liste d'attente et notifications passent derrière une petite interface.</p>
+  <ul class="list-disc pl-5 text-sm space-y-1">
+    <li>Locality : une seule règle de droits</li>
+    <li>Locality : valeurs par défaut posées une fois</li>
+    <li>Leverage : 12 appelants des droits</li>
+    <li>Tests : verrou et liste d'attente testés par l'interface</li>
+    <li>Corrige : <code>toggleMercenary</code> écrit hors du verrou (1804-1840)</li>
+    <li>Un seul contrat d'erreur au lieu de 3 (<code>null</code>, <code>{error}</code>, <code>{success}</code>)</li>
+  </ul>
+  <div class="rounded-md bg-amber-50 border border-amber-300 p-3 text-sm">ADR-0004 dit que le code ne change pas de place, et ce chantier en déplace. La friction le justifie (environ 670 lignes de tournoi dans le fichier du forum), mais c'est à trancher.</div>
+</article>
+
+<!-- 2 -->
+<article id="c2" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">2. Politique d'un sujet ou d'un message : une seule interface pour le serveur et l'écran</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1">Strong</span>
+    <span class="rounded-full bg-red-100 text-red-800 px-3 py-1">sécurité</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">local-substitutable + in-process</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>app/forum/actions.ts — findAccessiblePost 64, writeState 81, isLockedFor 89 ; findUnique sans filtre : 788, 825, 997, 1248, 1402, 1432</li>
+    <li>lib/forumWriteRules.ts · lib/forumAccess.ts</li>
+    <li>component/TopicTools.tsx:172 · component/PostMoreMenu.tsx:83 · topic/[id]/reply/page.tsx:58 · topic/[id]/page.tsx:250</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Avant</p>
+      <pre class="mermaid">
+flowchart TB
+  W["createPost / updatePost / deletePost…"] --> FA["forumAccess + writeState"]
+  M["pin / archive / lock / moderate"] --> FU["findUnique(id) sans filtre"]
+  TP["TopicPage"] --> R1["isTopicClosedFor"]
+  TT["TopicTools"] --> R2["canReply (oublie archivé)"]
+  PM["PostMoreMenu"] --> R3["canEdit (oublie fermé)"]
+  RP["ReplyPage"] --> R4["condition en ligne"]
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#991b1b;
+  class FU,R2,R3,R4 leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Après</p>
+      <pre class="mermaid">
+flowchart TB
+  W["toutes les actions forum"] --> FP
+  TP["TopicPage"] --> FP
+  subgraph FP["forumPolicy.load(membre, élément)"]
+    direction TB
+    a["charge via forumAccess"]
+    c["capacités : répondre, modifier, supprimer, réagir, modérer + raison"]
+  end
+  TP -- "capacités en props" --> UI["TopicTools · PostItem · PostMoreMenu"]
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a;
+  class FP deep
+      </pre>
+    </div>
+  </div>
+  <p><b>Problème.</b> Six actions de modération lisent le sujet ou le message par son identifiant, sans le filtre d'accès. Un modérateur peut donc épingler, verrouiller ou modérer dans un forum réservé aux administrateurs. L'écran, lui, réimplémente la règle « fermé / peut modifier » en trois copies divergentes : un bouton s'affiche, puis l'action échoue.</p>
+  <p><b>Solution.</b> Un module qui charge l'élément via <code>forumAccess</code> et renvoie ses capacités. Les actions s'en servent pour refuser, la page pour afficher.</p>
+  <ul class="list-disc pl-5 text-sm space-y-1">
+    <li>Locality : une définition de « fermé »</li>
+    <li>Leverage : environ 20 actions + 4 écrans</li>
+    <li>Ferme la faille d'accès des modérateurs</li>
+    <li>Tests de comportement au lieu des expressions régulières</li>
+  </ul>
+</article>
+
+<!-- 3 -->
+<article id="c3" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">3. Structure du forum : fusionner les deux « créer / supprimer un forum »</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-emerald-100 text-emerald-800 px-3 py-1">Strong</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">local-substitutable</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">petit chantier</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>app/forum/actions.ts:259 createForum · :398 deleteForum</li>
+    <li>app/administration/actionsStructure.ts:109 createForum · :140 updateForum · :169 deleteForum</li>
+    <li>app/administration/actions.ts:245 getForumStructure (aucun appelant)</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Avant</p>
+      <pre class="mermaid">
+flowchart TB
+  FB["boutons du forum"] --> A1["forum/actions (modérateur)"]
+  ST["StructureTab admin"] --> A2["actionsStructure (admin)"]
+  A1 --> DB[(Prisma)]
+  A2 --> DB
+  A1 --> J["journal + cache"]
+  X["getForumStructure (mort)"]
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#991b1b;
+  class A1,A2,X leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Après</p>
+      <pre class="mermaid">
+flowchart TB
+  FB["boutons du forum"] --> S
+  ST["StructureTab admin"] --> S
+  subgraph S["forumStructure (profond)"]
+    direction TB
+    i["invariants : nom unique, 5 sous-forums, forum protégé, 1 forum public"]
+    o["create · update · delete · tree"]
+  end
+  S --> DB[(Prisma)]
+  S --> J["journal + cache"]
+  classDef deep fill:#0f172a,color:#fff,stroke:#0f172a;
+  class S deep
+      </pre>
+    </div>
+  </div>
+  <p><b>Problème.</b> Les deux implémentations ont divergé sur 10 règles. Rôle, nom unique, forum protégé « Les tournois », dernier forum public, sous-forums, journal et cache diffèrent de l'une à l'autre. Depuis l'écran du forum, un modérateur peut supprimer le forum protégé vide.</p>
+  <p><b>Solution.</b> Un seul module qui porte tous les invariants. Les deux écrans en deviennent des adaptateurs, chacun avec son niveau de rôle.</p>
+  <ul class="list-disc pl-5 text-sm space-y-1">
+    <li>Locality : une liste d'invariants</li>
+    <li>Corrige un défaut réel</li>
+    <li>Supprime une action morte publique</li>
+    <li>Bon chantier d'essai, isolé</li>
+  </ul>
+</article>
+
+<!-- 4 -->
+<article id="c4" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">4. Seam de test : membre injecté, alias <code>@/</code> résolu</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-amber-100 text-amber-800 px-3 py-1">Worth exploring</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">ports &amp; adapters (session → membre)</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>apps/site/package.json:12 (test:unit) · lib/authGuard.ts · lib/moderationLog.ts:34-41</li>
+    <li>tests/e2e/security.spec.ts:26-47 · lib/forumWriteRules.ts:2-3</li>
+  </ul>
+  <div class="grid md:grid-cols-2 gap-4">
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Avant</p>
+      <pre class="mermaid">
+flowchart TB
+  A["action"] --> S1["getActiveSession"]
+  A --> LG["logModerationAction"] --> S2["getActiveSession (2e lecture)"]
+  T["test"] --> RX["readFileSync + regex"]
+  classDef leak stroke:#dc2626,stroke-width:2px,color:#991b1b;
+  class S2,RX leak
+      </pre>
+    </div>
+    <div class="rounded-lg border border-slate-200 p-3">
+      <p class="text-xs uppercase tracking-wider text-slate-500 mb-2">Après</p>
+      <pre class="mermaid">
+flowchart TB
+  A["action"] --> S1["getActiveSession"] --> M["module.op(membre, …)"]
+  M --> LG["journal(membre, …)"]
+  T["test"] --> M2["module.op(membreFictif, …) sur base de test"]
+      </pre>
+    </div>
+  </div>
+  <p><b>Problème.</b> Les actions lisent la session de l'intérieur et le lanceur de tests ne résout pas <code>@/</code>. Aucun module qui touche la base n'est donc testable par son interface.</p>
+  <p><b>Solution.</b> Les modules 1 à 3 reçoivent le membre en paramètre. On résout <code>@/</code> pour <code>node --test</code> sans nouvelle bibliothèque (par exemple le champ <code>imports</code> de package.json).</p>
+  <ul class="list-disc pl-5 text-sm space-y-1">
+    <li>Condition pour tester 1 à 3</li>
+    <li>Fin des tests par expressions régulières</li>
+  </ul>
+</article>
+
+<!-- 5 -->
+<article id="c5" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">5. Rafraîchissement des pages par concept</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-amber-100 text-amber-800 px-3 py-1">Worth exploring</span>
+    <span class="rounded-full bg-slate-100 px-3 py-1">in-process</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>app/forum/actions.ts:1039 revalidateTopicLists · topicSplitMergeActions.ts:56 · tournois/actions.ts:89</li>
+    <li>app/page.tsx:48 (home-tournaments) · app/forum/page.tsx:57 (forum-categories)</li>
+  </ul>
+  <p><b>Problème.</b> On compte 64 appels <code>revalidatePath</code>, chacun avec sa propre liste d'adresses. Le cache <code>home-tournaments</code> n'est vidé que par 2 fichiers : l'annulation ou la création d'un tournoi ne le vide pas, et l'accueil garde l'ancienne version jusqu'à 60 s.</p>
+  <p><b>Solution.</b> <code>invalidate.topic()</code>, <code>invalidate.tournament()</code>, <code>invalidate.structure()</code>, appelés par les modules 1 à 3.</p>
+  <ul class="list-disc pl-5 text-sm space-y-1"><li>Locality : un seul endroit sait quelles pages dépendent de quoi</li><li>Compatible ADR-0005</li></ul>
+</article>
+
+<!-- 6 -->
+<article id="c6" class="rounded-xl border border-slate-200 bg-white p-5 sm:p-6 space-y-4">
+  <h2 class="font-serif text-2xl">6. Données de référence : supprimer ou approfondir</h2>
+  <div class="flex flex-wrap gap-2 text-xs">
+    <span class="rounded-full bg-slate-200 text-slate-700 px-3 py-1">Speculative</span>
+  </div>
+  <ul class="font-mono text-xs sm:text-sm text-slate-700 break-all">
+    <li>lib/referenceData.ts (aucun appelant) · new-tournament/page.tsx:43 · edit-tournament/[id]/page.tsx:64 · profile/actions.ts:198</li>
+  </ul>
+  <p><b>Problème.</b> 28 appels <code>referenceData.findMany</code> en ligne, alors que le module dédié est mort : le supprimer ne casserait rien.</p>
+  <p><b>Solution.</b> Le supprimer, ou en faire le point d'accès unique (« listes du formulaire de tournoi ») rattaché au candidat 1.</p>
+</article>
+
+</section>
+
+<section id="top-recommendation" class="rounded-xl bg-slate-900 text-white p-6 space-y-3">
+  <h2 class="font-serif text-2xl">Recommandation</h2>
+  <p>Commencer par le <a href="#c2" class="underline">2, la politique d'un sujet ou d'un message</a> : c'est le seul candidat qui ferme une faille d'accès, et l'écran retrouve la même règle que le serveur.
+  Le <a href="#c3" class="underline">3</a> peut le précéder, à titre d'essai : il est petit, isolé et corrige un défaut réel.
+  Le <a href="#c1" class="underline">1, le tournoi</a>, a le meilleur leverage, mais il faut d'abord trancher l'ADR-0004 et poser la seam de test du <a href="#c4" class="underline">4</a>.</p>
+</section>
+
+</main>
+</body>
+</html>

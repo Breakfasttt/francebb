@@ -140,6 +140,7 @@ export async function createLigue(formData: FormData): Promise<ActionResult> {
   });
 
   await logModerationAction(
+    session.user.id,
     "LIGUE_CREATED",
     ligue.id,
     "LIGUE",
@@ -257,6 +258,7 @@ export async function deleteLigue(id: string): Promise<{ success: boolean; error
   });
 
   await logModerationAction(
+    session.user.id,
     "LIGUE_DELETED",
     id,
     "LIGUE",
@@ -301,6 +303,7 @@ export async function transferLigueOwnership(id: string, newOwnerId: string): Pr
   });
 
   await logModerationAction(
+    session.user.id,
     "LIGUE_TRANSFERRED",
     id,
     "LIGUE",

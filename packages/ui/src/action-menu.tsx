@@ -78,7 +78,7 @@ export function ActionMenu({ label, title, items, trigger = dots, triggerClassNa
                 asChild={!!item.href}
                 onSelect={item.href ? undefined : () => select(item)}
                 className={cn(
-                  "flex min-h-10 cursor-pointer items-center gap-2 rounded-bb-sm px-3 text-[0.95rem] outline-none data-[highlighted]:bg-bb-surface-2",
+                  "flex min-h-10 cursor-pointer items-center gap-2 rounded-bb-sm px-3 text-[0.95rem] outline-none data-[highlighted]:bg-bb-surface-2 data-[highlighted]:outline-2 data-[highlighted]:-outline-offset-2 data-[highlighted]:outline-bb-focus",
                   item.danger && "text-bb-danger-text"
                 )}
               >

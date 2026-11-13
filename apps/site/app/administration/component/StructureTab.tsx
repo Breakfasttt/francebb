@@ -9,8 +9,9 @@
  *   niveau) ou le fait passer dans la catégorie précédente ou suivante.
  * - « Modifier » ouvre un panneau (à droite sur ordinateur, en bas sur téléphone) : nom, description, rôle minimum
  *   d'accès, et suppression d'un élément vide. Le forum « Les tournois » ne peut être ni renommé ni supprimé.
- * Les actions de `actionsStructure.ts` et `getAllRoles` sont inchangées ; la logique de déplacement a été recopiée
- * telle quelle depuis l'ancienne version de l'onglet.
+ * La logique de déplacement a été recopiée telle quelle depuis l'ancienne version de l'onglet. Depuis la carte 199,
+ * l'arbre est typé (`StructureCategory`, `StructureForum` de `lib/forumStructure.ts`) et les règles des forums sont
+ * celles de `lib/forumStructure.ts`, partagées avec l'écran du forum.
  */
 import {
   ArrowBigDown, ArrowBigUp, ChevronDown, ChevronRight, FolderGit2, GripVertical, IndentDecrease, IndentIncrease, Lock,
@@ -22,6 +23,8 @@ import {
   SheetContent, Skeleton, Textarea, toast, useMediaQuery,
 } from "@bbfrance/ui";
 import { getRoleLabel } from "@/lib/roles";
+import { PROTECTED_FORUM_NAME } from "@/lib/forumStructureRules";
+import type { StructureCategory, StructureForum } from "@/lib/forumStructure";
 import { getAllRoles } from "../actions";
 import {
   createCategory, createForum, deleteCategory, deleteForum,
@@ -40,7 +43,10 @@ import {
 import { CSS } from "@dnd-kit/utilities";
 
 /** Nom du forum système des tournois : il ne peut être ni renommé ni supprimé. */
-const PROTECTED_FORUM_NAME = "Les tournois";
+/** Catégorie ou forum ouvert dans le panneau de modification. */
+type StructureItem = StructureCategory | StructureForum;
+/** Rôle proposé dans la liste « Accès » (getAllRoles). */
+type DbRole = Awaited<ReturnType<typeof getAllRoles>>[number];
 
 /** Poignée de glisser-déposer : 44 pixels, et `touch-none` pour que le doigt fasse glisser au lieu de défiler. */
 const handleClass =
@@ -58,8 +64,7 @@ function AccessBadge({ allowedRoles, roleLabels }: { allowedRoles: string; roleL
 }
 
 // ------ Éléments déplaçables ------
-// eslint-disable-next-line @typescript-eslint/no-explicit-any -- catégorie renvoyée par getForumStructure
-function SortableCategoryItem({ category, onEditClick, roleLabels, children }: { category: any; onEditClick: (item: any, type: "Category" | "Forum") => void; roleLabels: Record<string, string>; children: ReactNode }) {
+function SortableCategoryItem({ category, onEditClick, roleLabels, children }: { category: StructureCategory; onEditClick: (item: StructureItem, type: "Category" | "Forum") => void; roleLabels: Record<string, string>; children: ReactNode }) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `cat-${category.id}`,
     data: { type: "Category", category }
@@ -92,17 +97,15 @@ function SortableCategoryItem({ category, onEditClick, roleLabels, children }: {
   );
 }
 
-/* eslint-disable @typescript-eslint/no-explicit-any -- forum renvoyé par getForumStructure, rappels du parent */
 function SortableForumItem({
   forum, onEditClick, level, onIndent, onDedent, canIndent, canDedent,
   onMoveUpCat, onMoveDownCat, canMoveUpCat, canMoveDownCat, roleLabels, children
 }: {
-  forum: any; onEditClick: (item: any, type: "Category" | "Forum") => void; level: number;
+  forum: StructureForum; onEditClick: (item: StructureItem, type: "Category" | "Forum") => void; level: number;
   onIndent: () => void; onDedent: () => void; canIndent: boolean; canDedent: boolean;
   onMoveUpCat?: () => void; onMoveDownCat?: () => void; canMoveUpCat?: boolean; canMoveDownCat?: boolean;
   roleLabels: Record<string, string>; children?: ReactNode;
 }) {
-  /* eslint-enable @typescript-eslint/no-explicit-any */
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: `forum-${forum.id}`,
     data: { type: "Forum", forum }
@@ -170,25 +173,24 @@ function AddButton({ label, onClick }: { label: string; onClick: () => void }) {
 
 // ------ Onglet ------
 export default function StructureTab() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- arbre renvoyé par getForumStructure
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<StructureCategory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isPending, startTransition] = useTransition();
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
 
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- catégorie ou forum en cours de modification
-  const [editingItem, setEditingItem] = useState<any>(null);
+  const [editingItem, setEditingItem] = useState<StructureItem | null>(null);
   const [editingType, setEditingType] = useState<"Category" | "Forum">("Category");
   const [parentTargetId, setParentTargetId] = useState<string | null>(null);
 
   const [formName, setFormName] = useState("");
+  // Erreur affichée sous le champ du nom (carte 194)
+  const [formNameError, setFormNameError] = useState<string>();
   const [formDesc, setFormDesc] = useState("");
   const [formAllowedRoles, setFormAllowedRoles] = useState<string>("ALL");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars -- gardé comme avant la refonte (un forum ne devient plus « tournoi » à la main)
   const [formIsTournament, setFormIsTournament] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any -- rôles renvoyés par getAllRoles
-  const [availableDbRoles, setAvailableDbRoles] = useState<any[]>([]);
+  const [availableDbRoles, setAvailableDbRoles] = useState<DbRole[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
 
@@ -216,7 +218,6 @@ export default function StructureTab() {
     });
   }, []);
 
-  /* eslint-disable @typescript-eslint/no-explicit-any -- logique recopiée telle quelle de l'ancienne version (carte 099) : arbre non typé de getForumStructure */
   // --- DND : réordonnancement au sein du même niveau uniquement ---
   const handleDragStart = (event: DragStartEvent) => setActiveId(event.active.id as string);
 
@@ -244,8 +245,8 @@ export default function StructureTab() {
 
     // Réordonnancement de forums (même niveau)
     if (activeStr.startsWith('forum-') && overStr.startsWith('forum-')) {
-      const draggedForum = active.data.current?.forum;
-      const targetForum = over.data.current?.forum;
+      const draggedForum = active.data.current?.forum as StructureForum | undefined;
+      const targetForum = over.data.current?.forum as StructureForum | undefined;
       if (!draggedForum || !targetForum) return;
 
       // Même parent seulement
@@ -255,18 +256,19 @@ export default function StructureTab() {
       }
 
       const parentId = draggedForum.categoryId || draggedForum.parentForumId;
+      if (!parentId) return;
       const isCat = !!draggedForum.categoryId;
-      let list: any[] = [];
+      let list: StructureForum[] = [];
       if (isCat) {
         list = categories.find(c => c.id === parentId)?.forums || [];
       } else {
         for (const cat of categories) {
-          const parent = cat.forums?.find((f: any) => f.id === parentId);
+          const parent = cat.forums?.find((f) => f.id === parentId);
           if (parent) { list = parent.subForums || []; break; }
         }
       }
-      const oldIdx = list.findIndex((f: any) => `forum-${f.id}` === activeStr);
-      const newIdx = list.findIndex((f: any) => `forum-${f.id}` === overStr);
+      const oldIdx = list.findIndex((f) => `forum-${f.id}` === activeStr);
+      const newIdx = list.findIndex((f) => `forum-${f.id}` === overStr);
       if (oldIdx === -1 || newIdx === -1) return;
       const newArr = arrayMove(list, oldIdx, newIdx);
 
@@ -274,7 +276,7 @@ export default function StructureTab() {
         setCategories(prev => prev.map(c => c.id === parentId ? { ...c, forums: newArr } : c));
       }
       startTransition(async () => {
-        const res = await reorderForums(parentId, isCat, newArr.map((f: any) => f.id));
+        const res = await reorderForums(parentId, isCat, newArr.map((f) => f.id));
         if (res.success) toast.success("Ordre mis à jour");
         else toast.error("Erreur de réorganisation");
         loadData(true);
@@ -285,16 +287,16 @@ export default function StructureTab() {
   // --- INDENT / DEDENT ---
 
   // Indenter : forum racine → sous-forum du forum juste au-dessus
-  const handleIndent = (forum: any, categoryId: string) => {
+  const handleIndent = (forum: StructureForum, categoryId: string) => {
     const cat = categories.find(c => c.id === categoryId);
     if (!cat) return;
-    const list: any[] = cat.forums || [];
-    const idx = list.findIndex((f: any) => f.id === forum.id);
+    const list: StructureForum[] = cat.forums || [];
+    const idx = list.findIndex((f) => f.id === forum.id);
     if (idx <= 0) { toast.error("Impossible : aucun forum au-dessus pour y être indenté"); return; }
     const targetParent = list[idx - 1];
     if ((targetParent.subForums?.length || 0) >= 5) { toast.error("Le forum au-dessus a déjà 5 sous-forums"); return; }
 
-    const newOrder = [...(targetParent.subForums || []).map((f: any) => f.id), forum.id];
+    const newOrder = [...(targetParent.subForums || []).map((f) => f.id), forum.id];
     startTransition(async () => {
       const res = await reorderForums(targetParent.id, false, newOrder);
       if (res.success) toast.success(`"${forum.name}" est maintenant sous-forum de "${targetParent.name}"`);
@@ -304,20 +306,20 @@ export default function StructureTab() {
   };
 
   // Indenter niveau 1 → niveau 2 (sous-forum → sous-forum du voisin au-dessus)
-  const handleIndentSub = (forum: any, parentForumId: string) => {
-    let parentForum: any = null;
+  const handleIndentSub = (forum: StructureForum, parentForumId: string) => {
+    let parentForum: StructureForum | undefined;
     for (const cat of categories) {
-      parentForum = cat.forums?.find((f: any) => f.id === parentForumId);
+      parentForum = cat.forums?.find((f) => f.id === parentForumId);
       if (parentForum) break;
     }
     if (!parentForum) return;
-    const list: any[] = parentForum.subForums || [];
-    const idx = list.findIndex((f: any) => f.id === forum.id);
+    const list: StructureForum[] = parentForum.subForums || [];
+    const idx = list.findIndex((f) => f.id === forum.id);
     if (idx <= 0) { toast.error("Impossible : aucun sous-forum au-dessus"); return; }
     const targetParent = list[idx - 1];
     if ((targetParent.subForums?.length || 0) >= 5) { toast.error("Le sous-forum au-dessus a déjà 5 sous-forums"); return; }
 
-    const newOrder = [...(targetParent.subForums || []).map((f: any) => f.id), forum.id];
+    const newOrder = [...(targetParent.subForums || []).map((f) => f.id), forum.id];
     startTransition(async () => {
       const res = await reorderForums(targetParent.id, false, newOrder);
       if (res.success) toast.success(`"${forum.name}" est maintenant sous-forum de niveau 2`);
@@ -327,15 +329,15 @@ export default function StructureTab() {
   };
 
   // Dédenter niveau 1 → forum racine dans la catégorie parente
-  const handleDedent = (forum: any) => {
+  const handleDedent = (forum: StructureForum) => {
     let parentCategoryId: string | null = null;
     for (const cat of categories) {
-      const found = cat.forums?.find((f: any) => f.subForums?.some((sf: any) => sf.id === forum.id));
+      const found = cat.forums?.find((f) => f.subForums?.some((sf) => sf.id === forum.id));
       if (found) { parentCategoryId = cat.id; break; }
     }
     if (!parentCategoryId) return;
     const cat = categories.find(c => c.id === parentCategoryId);
-    const newOrder = [...(cat?.forums || []).map((f: any) => f.id), forum.id];
+    const newOrder = [...(cat?.forums || []).map((f) => f.id), forum.id];
     startTransition(async () => {
       const res = await reorderForums(parentCategoryId!, true, newOrder);
       if (res.success) toast.success(`"${forum.name}" est maintenant un forum racine`);
@@ -345,22 +347,22 @@ export default function StructureTab() {
   };
 
   // Dédenter niveau 2 → sous-forum niveau 1 du grand-parent
-  const handleDedentSub = (forum: any) => {
+  const handleDedentSub = (forum: StructureForum) => {
     let grandParentForumId: string | null = null;
     for (const cat of categories) {
       for (const f of (cat.forums || [])) {
-        const found = f.subForums?.find((sf: any) => sf.subForums?.some((ssf: any) => ssf.id === forum.id));
+        const found = f.subForums?.find((sf) => sf.subForums?.some((ssf) => ssf.id === forum.id));
         if (found) { grandParentForumId = f.id; break; }
       }
       if (grandParentForumId) break;
     }
     if (!grandParentForumId) return;
-    let grandParent: any = null;
+    let grandParent: StructureForum | undefined;
     for (const cat of categories) {
-      grandParent = cat.forums?.find((f: any) => f.id === grandParentForumId);
+      grandParent = cat.forums?.find((f) => f.id === grandParentForumId);
       if (grandParent) break;
     }
-    const newOrder = [...(grandParent?.subForums || []).map((f: any) => f.id), forum.id];
+    const newOrder = [...(grandParent?.subForums || []).map((f) => f.id), forum.id];
     startTransition(async () => {
       const res = await reorderForums(grandParentForumId!, false, newOrder);
       if (res.success) toast.success(`"${forum.name}" est maintenant sous-forum de niveau 1`);
@@ -370,13 +372,13 @@ export default function StructureTab() {
   };
 
   // Changement de catégorie (pour forums racines)
-  const handleMoveCat = (forum: any, direction: 'up' | 'down') => {
+  const handleMoveCat = (forum: StructureForum, direction: 'up' | 'down') => {
     const curCatIdx = categories.findIndex(c => c.id === forum.categoryId);
     if (curCatIdx === -1) return;
     const targetCat = categories[direction === 'up' ? curCatIdx - 1 : curCatIdx + 1];
     if (!targetCat) return;
 
-    const newOrder = [...(targetCat.forums || []).map((f: any) => f.id), forum.id];
+    const newOrder = [...(targetCat.forums || []).map((f) => f.id), forum.id];
     startTransition(async () => {
       const res = await reorderForums(targetCat.id, true, newOrder);
       if (res.success) toast.success(`Forum déplacé vers "${targetCat.name}"`);
@@ -394,17 +396,23 @@ export default function StructureTab() {
     setEditingItem(null); setEditingType('Forum'); setParentTargetId(parentId);
     setFormName(""); setFormDesc(""); setFormAllowedRoles("ALL"); setFormIsTournament(false); setIsPanelOpen(true);
   };
-  const openEdit = (item: any, type: 'Category' | 'Forum') => {
+  const openEdit = (item: StructureItem, type: 'Category' | 'Forum') => {
     setEditingItem(item); setEditingType(type);
-    setParentTargetId(item.categoryId || item.parentForumId || null);
+    // Seul un forum a un parent (catégorie ou forum) et peut être un forum de tournois
+    const isForum = "parentForumId" in item;
+    setParentTargetId(isForum ? item.categoryId || item.parentForumId || null : null);
     setFormName(item.name); setFormDesc(item.description || "");
-    setFormAllowedRoles(item.allowedRoles || "ALL"); 
-    setFormIsTournament(item.isTournamentForum || false);
+    setFormAllowedRoles(item.allowedRoles || "ALL");
+    setFormIsTournament(isForum ? item.isTournamentForum : false);
     setIsPanelOpen(true);
   };
 
   const handleSave = () => {
-    if (!formName) return toast.error("Le nom est obligatoire");
+    if (!formName.trim()) {
+      setFormNameError("Le nom est obligatoire.");
+      document.getElementById("structure-name")?.focus();
+      return;
+    }
     startTransition(async () => {
       let res;
       if (editingType === 'Category') {
@@ -415,7 +423,7 @@ export default function StructureTab() {
         if (editingItem) {
           res = await updateForum(editingItem.id, { name: formName, description: formDesc, allowedRoles: formAllowedRoles });
         } else {
-          const isCat = categories.some((c: any) => c.id === parentTargetId);
+          const isCat = categories.some((c) => c.id === parentTargetId);
           res = await createForum({
             name: formName, description: formDesc, allowedRoles: formAllowedRoles,
             categoryId: isCat ? (parentTargetId ?? undefined) : undefined,
@@ -430,6 +438,7 @@ export default function StructureTab() {
 
   const handleDeleteItem = () => setIsDeleteModalOpen(true);
   const confirmDelete = () => {
+    if (!editingItem) return;
     startTransition(async () => {
       const res = editingType === 'Category' ? await deleteCategory(editingItem.id) : await deleteForum(editingItem.id);
       if (res?.success) { toast.success("Supprimé"); setIsDeleteModalOpen(false); setIsPanelOpen(false); loadData(true); }
@@ -441,16 +450,15 @@ export default function StructureTab() {
   const getActiveName = () => {
     if (!activeId) return "";
     for (const cat of categories) {
-      const f = cat.forums?.find((f: any) => `forum-${f.id}` === activeId);
+      const f = cat.forums?.find((f) => `forum-${f.id}` === activeId);
       if (f) return f.name;
       for (const rf of (cat.forums || [])) {
-        const sf = rf.subForums?.find((sf: any) => `forum-${sf.id}` === activeId);
+        const sf = rf.subForums?.find((sf) => `forum-${sf.id}` === activeId);
         if (sf) return sf.name;
       }
     }
     return "Forum";
   };
-  /* eslint-enable @typescript-eslint/no-explicit-any */
 
   const isProtected = editingItem?.name === PROTECTED_FORUM_NAME;
   const panelTitle = editingItem
@@ -487,8 +495,7 @@ export default function StructureTab() {
                 {categories.map((cat, ci) => (
                   <SortableCategoryItem key={`cat-${cat.id}`} category={cat} onEditClick={openEdit} roleLabels={roleLabels}>
                     <SortableContext items={(cat.forums || []).map((f: { id: string }) => `forum-${f.id}`)} strategy={verticalListSortingStrategy}>
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- forums de getForumStructure */}
-                      {(cat.forums || []).map((forum: any, fi: number) => (
+                      {(cat.forums || []).map((forum, fi: number) => (
                         <SortableForumItem
                           key={`forum-${forum.id}`} forum={forum} onEditClick={openEdit} roleLabels={roleLabels}
                           level={1}
@@ -503,8 +510,7 @@ export default function StructureTab() {
                         >
                           {/* SOUS-FORUMS NIVEAU 1 */}
                           <SortableContext items={(forum.subForums || []).map((sf: { id: string }) => `forum-${sf.id}`)} strategy={verticalListSortingStrategy}>
-                            {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- sous-forums de getForumStructure */}
-                            {(forum.subForums || []).map((sf: any, sfi: number) => (
+                            {(forum.subForums || []).map((sf, sfi: number) => (
                               <SortableForumItem
                                 key={`forum-${sf.id}`} forum={sf} onEditClick={openEdit} roleLabels={roleLabels}
                                 level={2}
@@ -515,8 +521,7 @@ export default function StructureTab() {
                               >
                                 {/* SOUS-FORUMS NIVEAU 2 (le plus bas) */}
                                 <SortableContext items={(sf.subForums || []).map((ssf: { id: string }) => `forum-${ssf.id}`)} strategy={verticalListSortingStrategy}>
-                                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any -- sous-sous-forums de getForumStructure */}
-                                  {(sf.subForums || []).map((ssf: any) => (
+                                  {(sf.subForums || []).map((ssf) => (
                                     <SortableForumItem
                                       key={`forum-${ssf.id}`} forum={ssf} onEditClick={openEdit} roleLabels={roleLabels}
                                       level={3}
@@ -563,11 +568,15 @@ export default function StructureTab() {
               label={editingType === "Category" ? "Nom de la catégorie" : "Nom du forum"}
               htmlFor="structure-name"
               hint={isProtected ? "Ce forum est protégé et ne peut pas être renommé." : undefined}
+              error={formNameError}
             >
               <Input
                 id="structure-name"
                 value={formName}
-                onChange={(e) => setFormName(e.target.value)}
+                onChange={(e) => {
+                  setFormName(e.target.value);
+                  setFormNameError(undefined);
+                }}
                 placeholder="Ex. : Discussions générales"
                 disabled={isPending || isProtected}
               />

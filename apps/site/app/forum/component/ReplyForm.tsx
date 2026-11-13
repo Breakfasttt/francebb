@@ -56,7 +56,7 @@ export default function ReplyForm({ topicId, quotePostId, quoteAuthor, quoteAuth
   return (
     <form onSubmit={handleSubmit}>
       <DraftBanner draft={draft} />
-      <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Tapez votre réponse ici..." rows={12} screen />
+      <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Tapez votre réponse ici..." ariaLabel="Votre réponse" rows={12} screen />
 
       <ComposeActionBar>
         <CancelComposeButton draft={draft} />

@@ -36,6 +36,7 @@ export default function EditTopicTitleModal({ isOpen, onClose, topicId, initialT
           toast.error(res.error || "Erreur lors de la modification");
           return;
         }
+        toast.success("Titre du sujet modifié");
         onClose();
       } catch {
         toast.error("Erreur lors de la modification");

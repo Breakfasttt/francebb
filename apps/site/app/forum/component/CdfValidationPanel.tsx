@@ -30,8 +30,8 @@ export default function CdfValidationPanel({ tournamentId, validatedAt, canValid
   const toggle = () => {
     startTransition(async () => {
       const response = await setCdfValidation(tournamentId, !isValidated);
-      if ("error" in response) {
-        toast.error(response.error);
+      if (!response.success) {
+        toast.error(response.error || "La validation a échoué.");
         return;
       }
       toast.success(isValidated ? "La validation des résultats CDF est retirée." : "Les résultats CDF sont validés : ils comptent au classement.");

@@ -621,33 +621,33 @@ test.describe("3.3 un message", () => {
   test("[tous] réactions ; [membre] 10 émojis, une seule réaction, remplacée ou retirée", async ({ page }, testInfo) => {
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
     const visitorPost = postCard(page, postId(8));
-    await expect(visitorPost.getByRole("button", { name: /👍\s*1/ })).toBeVisible();
+    await expect(visitorPost.getByRole("button", { name: /Pouce levé, 1 réaction/ })).toBeVisible();
     await expect(visitorPost.getByRole("button", { name: "Ajouter une réaction" })).toHaveCount(0);
 
     await loginAs(page, READER.id);
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
     const post = postCard(page, postId(8));
     await post.getByRole("button", { name: "Ajouter une réaction" }).click();
-    for (const emoji of ["👍", "❤️", "😂", "😢", "😡", "🔥", "👀", "🎉", "👎", "🍻"]) {
+    for (const emoji of ["Pouce levé", "Cœur", "Rire", "Tristesse", "Colère", "Feu", "Yeux", "Fête", "Pouce baissé", "Bières"]) {
       await expect(page.getByRole("button", { name: emoji, exact: true }).filter({ visible: true })).toBeVisible();
     }
     await page.screenshot({ path: testInfo.outputPath("reactions.png"), fullPage: false });
-    await page.getByRole("button", { name: "🔥", exact: true }).filter({ visible: true }).click();
-    await expect(post.getByRole("button", { name: /🔥\s*1/, pressed: true })).toBeVisible();
-    await expect(post.getByRole("button", { name: /👍\s*1/, pressed: false })).toBeVisible();
+    await page.getByRole("button", { name: "Feu", exact: true }).filter({ visible: true }).click();
+    await expect(post.getByRole("button", { name: /Feu, 1 réaction/, pressed: true })).toBeVisible();
+    await expect(post.getByRole("button", { name: /Pouce levé, 1 réaction/, pressed: false })).toBeVisible();
 
     // Un autre émoji remplace la réaction
     await post.getByRole("button", { name: "Ajouter une réaction" }).click();
-    await page.getByRole("button", { name: "😂", exact: true }).filter({ visible: true }).click();
-    await expect(post.getByRole("button", { name: /😂\s*1/, pressed: true })).toBeVisible();
-    await expect(post.getByRole("button", { name: /🔥/ })).toHaveCount(0);
+    await page.getByRole("button", { name: "Rire", exact: true }).filter({ visible: true }).click();
+    await expect(post.getByRole("button", { name: /Rire, 1 réaction/, pressed: true })).toBeVisible();
+    await expect(post.getByRole("button", { name: /^Feu/ })).toHaveCount(0);
     await expect
       .poll(() => withTestDb((prisma) => prisma.postReaction.findMany({ where: { postId: postId(8), userId: READER.id }, select: { emoji: true } })), { timeout: 30_000 })
       .toEqual([{ emoji: "😂" }]);
 
     // Le même émoji retire la réaction
-    await post.getByRole("button", { name: /😂\s*1/ }).click();
-    await expect(post.getByRole("button", { name: /😂/ })).toHaveCount(0);
+    await post.getByRole("button", { name: /Rire, 1 réaction/ }).click();
+    await expect(post.getByRole("button", { name: /^Rire/ })).toHaveCount(0);
     await expect
       .poll(() => withTestDb((prisma) => prisma.postReaction.count({ where: { postId: postId(8), userId: READER.id } })), { timeout: 30_000 })
       .toBe(0);
@@ -742,9 +742,7 @@ test.describe("3.3 un message", () => {
     await expect(quoteSelection).toBeVisible();
     await expect(quoteSelection).toBeInViewport();
     expect((await quoteSelection.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    // Clic envoyé directement : sur la version de développement, les boutons « Dev Theme » et « Dev Auth » occupent le
-    // bas de l'écran du téléphone (ils n'existent pas sur le site en ligne)
-    await quoteSelection.dispatchEvent("click");
+    await quoteSelection.click();
 
     const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
     // Le message n°10 est du coach de test : seul le passage sélectionné est cité, en texte brut

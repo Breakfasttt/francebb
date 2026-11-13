@@ -112,7 +112,7 @@ export default function UserSearch({
         {showResults && query.length >= 2 && !isLoading && (
           // Les résultats sont des boutons (choix au clavier par Tab puis Entrée, annoncés comme boutons), réunis dans
           // un groupe nommé
-          <div role="group" aria-label="Membres trouvés" className="absolute inset-x-0 top-full z-20 mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
+          <div role="group" aria-label="Membres trouvés" className="absolute inset-x-0 top-full z-[var(--z-index-dropdown)] mt-1 max-h-72 overflow-y-auto rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
             {results.length > 0 ? (
               results.map(user => (
                 <Button

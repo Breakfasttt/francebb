@@ -1,33 +1,30 @@
 "use server";
 
+/**
+ * Actions de l'onglet « Structure » de l'administration (administrateurs) : catégories et forums.
+ * Depuis la carte 199, la création, la modification et la suppression d'un forum passent par `lib/forumStructure.ts`,
+ * partagé avec l'écran du forum : mêmes règles des deux côtés, et `/forum` est rafraîchi tout de suite après chaque
+ * changement (avant, il fallait attendre 60 secondes). Les actions sur les catégories et l'ordre des forums
+ * rafraîchissent aussi les pages du forum.
+ */
 import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
+import {
+  createForumRecord, deleteForumRecord, readForumStructure, updateForumRecord, type StructureCategory,
+} from "@/lib/forumStructure";
+import { refreshForumStructure } from "@/lib/pageRefresh";
 
-export async function getForumStructure() {
+/** Membre administrateur connecté, ou rien. */
+async function adminSession() {
   const session = await getActiveSession();
-  const userRole = (session?.user as any)?.role;
-  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) return [];
+  if (!session || getRolePower(session.user.role) < ROLE_POWER.ADMIN) return null;
+  return session;
+}
 
-  const categories = await prisma.category.findMany({
-    orderBy: { order: 'asc' },
-    include: {
-      forums: {
-        where: { parentForumId: null }, // Only root forums of this category
-        orderBy: { order: 'asc' },
-        include: {
-          subForums: {
-            orderBy: { order: 'asc' },
-            include: {
-              subForums: true // on va jusqu'à 3 niveaux pour être tranquille, bien que la spec dise "5 max" en enfants.
-            }
-          }
-        }
-      }
-    }
-  });
-
-  return categories;
+export async function getForumStructure(): Promise<StructureCategory[]> {
+  if (!(await adminSession())) return [];
+  return readForumStructure();
 }
 
 // ---------------- CATEGORY ACTIONS ----------------
@@ -47,6 +44,7 @@ export async function createCategory(data: { name: string, description: string, 
       order: newOrder
     }
   });
+  refreshForumStructure();
   return { success: true };
 }
 
@@ -68,6 +66,7 @@ export async function updateCategory(id: string, data: { name: string, descripti
       allowedRoles: data.allowedRoles
     }
   });
+  refreshForumStructure();
   return { success: true };
 }
 
@@ -86,6 +85,7 @@ export async function deleteCategory(id: string) {
   if (cat._count.forums > 0) return { success: false, error: "La catégorie n'est pas vide (déplacez d'abord ses forums)." };
 
   await prisma.category.delete({ where: { id } });
+  refreshForumStructure();
   return { success: true };
 }
 
@@ -99,94 +99,28 @@ export async function reorderCategories(orderedIds: string[]) {
       data: { order: index }
     }))
   );
+  refreshForumStructure();
   return { success: true };
 }
 
 // ---------------- FORUM ACTIONS ----------------
 
-const PROTECTED_FORUM_NAME = "Les tournois";
-
 export async function createForum(data: { name: string, description: string, allowedRoles: string, categoryId?: string, parentForumId?: string }) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
-
-  if (!data.categoryId && !data.parentForumId) return { success: false, error: "Un forum doit appartenir à une catégorie ou un forum parent." };
-  
-  // Rule: 5 sub-forums max per forum
-  if (data.parentForumId) {
-    const siblingCount = await prisma.forum.count({ where: { parentForumId: data.parentForumId } });
-    if (siblingCount >= 5) return { success: false, error: "Impossible: La limite de 5 sous-forums est atteinte pour ce forum." };
-  }
-
-  const condition = data.categoryId ? { categoryId: data.categoryId, parentForumId: null } : { parentForumId: data.parentForumId };
-  const lastOrder = await prisma.forum.findFirst({ where: condition, orderBy: { order: 'desc' }, select: { order: true } });
-  const newOrder = lastOrder ? lastOrder.order + 1 : 0;
-
-  await prisma.forum.create({
-    data: {
-      name: data.name,
-      description: data.description,
-      allowedRoles: data.allowedRoles,
-      categoryId: data.categoryId || null,
-      parentForumId: data.parentForumId || null,
-      isTournamentForum: false, // On ne peut plus taguer manuellement un forum tournoi
-      order: newOrder
-    }
-  });
-
-  return { success: true };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  return createForumRecord(session.user.id, data);
 }
 
 export async function updateForum(id: string, data: { name: string, description: string, allowedRoles: string }) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
-
-  if (data.allowedRoles !== "ALL") {
-    // Only check if it's a root forum in a category (public forum must be root)
-    const forum = await prisma.forum.findUnique({ where: { id } });
-    if (forum && forum.allowedRoles === "ALL") {
-      const publicForums = await prisma.forum.count({ where: { allowedRoles: "ALL", id: { not: id } } });
-      if (publicForums === 0) return { success: false, error: "Impossible: Vous devez garder au moins UN forum ouvert à 'ALL'." };
-    }
-  }
-
-  const forum = await prisma.forum.findUnique({ where: { id } });
-  if (forum?.name === PROTECTED_FORUM_NAME && data.name !== PROTECTED_FORUM_NAME) {
-    return { success: false, error: `Le forum "${PROTECTED_FORUM_NAME}" ne peut pas être renommé.` };
-  }
-
-  await prisma.forum.update({
-    where: { id },
-    data: {
-      name: data.name,
-      description: data.description,
-      allowedRoles: data.allowedRoles
-    }
-  });
-  return { success: true };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  return updateForumRecord(session.user.id, id, data);
 }
 
 export async function deleteForum(id: string) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
-
-  const forum = await prisma.forum.findUnique({ where: { id }, include: { _count: { select: { subForums: true, topics: true } } } });
-  if (!forum) return { success: false, error: "Forum introuvable." };
-
-  if (forum.name === PROTECTED_FORUM_NAME) {
-    return { success: false, error: `Le forum "${PROTECTED_FORUM_NAME}" est protégé et ne peut pas être supprimé.` };
-  }
-
-  if (forum.allowedRoles === "ALL") {
-    const publicForums = await prisma.forum.count({ where: { allowedRoles: "ALL", id: { not: id } } });
-    if (publicForums === 0) return { success: false, error: "Impossible de supprimer le dernier forum public ('ALL')." };
-  }
-
-  if (forum._count.subForums > 0) return { success: false, error: "Ce forum contient des sous-forums (supprimez-les d'abord)." };
-  if (forum._count.topics > 0) return { success: false, error: "Ce forum contient des sujets (déplacez-les ou supprimez-les d'abord)." };
-
-  await prisma.forum.delete({ where: { id } });
-  return { success: true };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  return deleteForumRecord(session.user.id, id);
 }
 
 export async function reorderForums(containerId: string, isCategory: boolean, orderedIds: string[]) {
@@ -202,5 +136,6 @@ export async function reorderForums(containerId: string, isCategory: boolean, or
       }
     }))
   );
+  refreshForumStructure();
   return { success: true };
 }

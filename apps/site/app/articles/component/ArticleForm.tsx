@@ -59,6 +59,8 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
   const [tagSuggestions, setTagSuggestions] = useState<string[]>([]);
   const [ligueId, setLigueId] = useState(initialData?.ligueId || "");
   const [ligueCustom, setLigueCustom] = useState(initialData?.ligueCustom || "");
+  // Erreurs de saisie, affichées sous le champ concerné (carte 194)
+  const [errors, setErrors] = useState<{ title?: string; content?: string }>({});
 
   // Suggestions de tags : tous les tags existants, chargés à l'ouverture du formulaire
   useEffect(() => {
@@ -78,8 +80,14 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    if (!title || !content) {
-      toast.error("Veuillez remplir le titre et le contenu.");
+    const nextErrors = {
+      title: title.trim() ? undefined : "Donnez un titre à l'article.",
+      content: content.trim() ? undefined : "Écrivez le contenu de l'article.",
+    };
+    setErrors(nextErrors);
+    if (nextErrors.title || nextErrors.content) {
+      // Le curseur va au premier champ à corriger
+      document.getElementById(nextErrors.title ? "title" : "content")?.focus();
       return;
     }
 
@@ -122,16 +130,19 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
   const cancelHref = isEdit && initialData?.id ? `/articles/${initialData.id}` : "/articles";
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} noValidate>
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
         <div className="flex min-w-0 flex-col gap-4">
           <Block icon={<FileText size={18} />} title="L'article">
-            <Field label="Titre de l'article (obligatoire)" htmlFor="title">
+            <Field label="Titre de l'article (obligatoire)" htmlFor="title" error={errors.title}>
               <Input
                 id="title"
                 type="text"
                 value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  if (errors.title) setErrors((prev) => ({ ...prev, title: undefined }));
+                }}
                 placeholder="Ex : Guide stratégique - Les Orques au tournoi NAF"
                 required
               />
@@ -173,17 +184,19 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
           </Block>
 
           <Block icon={<PenLine size={18} />} title="Contenu">
-            <div className="flex flex-col gap-1.5">
-              <Label htmlFor="content">Contenu de l&apos;article (BBCode, obligatoire)</Label>
+            <Field label="Contenu de l'article (BBCode, obligatoire)" htmlFor="content" error={errors.content}>
               <BBCodeEditor
                 id="content"
                 name="content"
                 defaultValue={content}
-                onChange={setContent}
+                onChange={(value) => {
+                  setContent(value);
+                  if (errors.content) setErrors((prev) => ({ ...prev, content: undefined }));
+                }}
                 placeholder="Rédigez votre article ici..."
                 rows={16}
               />
-            </div>
+            </Field>
           </Block>
         </div>
 
