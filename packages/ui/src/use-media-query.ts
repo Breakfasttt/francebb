@@ -18,5 +18,5 @@ export function useMediaQuery(query: string): boolean {
   );
 }
 
-/** Seuil unique du site (skill mobile-ux) : téléphone jusqu'à 1024 px inclus, ordinateur à partir de 1025 px. */
+/** Seuil unique du site (skill ui) : téléphone jusqu'à 1024 px inclus, ordinateur à partir de 1025 px. */
 export const DESKTOP_QUERY = "(min-width: 1025px)";

@@ -10,13 +10,14 @@ BBFrance est le site de la communauté française de **Blood Bowl** (jeu de plat
 
 ### Deux règles absolues
 
-1. **Tout doit être compréhensible par quelqu'un qui découvre le projet.** Code, documentation, cartes du kanban, messages de commit : on écrit en français clair (le code lui-même est en anglais). Chaque terme technique ou acronyme est expliqué, soit sur place, soit dans le [glossaire](docs/GLOSSAIRE.md).
-2. **Le site doit être impeccable sur téléphone.** La plupart des coachs le consultent sur mobile. Chaque page doit y être :
+1. **La documentation doit être compréhensible par quelqu'un qui découvre le projet.** README, ARCHITECTURE, fiches de fonctionnalité, décisions (ADR) : français clair, phrases complètes. Un terme propre au projet ou à Blood Bowl est expliqué dans le [glossaire](docs/GLOSSAIRE.md). Le code est en anglais ; commits, commentaires et cartes restent concis.
+2. **Le site doit être impeccable sur téléphone et sur ordinateur.** La plupart des coachs le consultent sur mobile. Chaque page doit être :
    - lisible sans zoomer ;
    - utilisable au pouce (boutons d'au moins 44 pixels) ;
-   - fluide, sans défilement horizontal.
+   - fluide, sans défilement horizontal ;
+   - intacte sur ordinateur.
 
-   Une modification n'est terminée que si elle a été vérifiée en taille téléphone.
+   On écrit d'abord pour le téléphone. La preuve automatique (le parcours, voir plus bas) se lance sur demande, en fin de gros chantier et avant un envoi qui touche l'interface.
 
 ### Les autres règles, et où elles sont écrites
 
@@ -25,14 +26,15 @@ Chaque règle n'est écrite qu'à un seul endroit :
 | Sujet | Où |
 |---|---|
 | Organisation du code, réutilisation, dépendances, données | [ARCHITECTURE.md](ARCHITECTURE.md) |
-| Tâches : comment créer, suivre et terminer une carte | [kanban/README.md](kanban/README.md) |
+| Gros chantiers : les cartes du kanban | [kanban/README.md](kanban/README.md) |
+| Essais à faire à la main (vrai téléphone, vrais comptes) | [TESTS-MANUELS.md](TESTS-MANUELS.md) |
 | Mise en ligne | [DEPLOY.md](DEPLOY.md) |
 | Consignes propres à l'IA (Claude Code) | [.claude/CLAUDE.md](.claude/CLAUDE.md) |
 
 **Commits** (enregistrements dans l'historique git) :
-- le titre commence par le numéro de la carte concernée, ex. `[043] Kanban rangé en dossiers`, ou `[hotfix]` pour une correction urgente ;
-- moins de 50 caractères pour le titre, et le corps explique **pourquoi** ;
-- un contrôle automatique (`.githooks/commit-msg`) le vérifie. Pour l'activer, une fois par copie du projet : `git config core.hooksPath .githooks`.
+- moins de 50 caractères pour le titre, et le corps explique **pourquoi** : sans carte, le commit est le seul journal de la modification ;
+- le titre commence par le numéro de la carte quand il y en a une, ex. `[043] Kanban rangé en dossiers` ;
+- un contrôle automatique (`.githooks/commit-msg`) vérifie l'auteur. Pour l'activer, une fois par copie du projet : `git config core.hooksPath .githooks`.
 
 ---
 
@@ -49,9 +51,8 @@ Chaque règle n'est écrite qu'à un seul endroit :
 | `docs/features/` | **Une fiche par fonctionnalité** : à quoi elle sert, ce que voit le coach, où est le code |
 | `docs/adr/` | Les décisions importantes et leurs raisons (voir « ADR » dans le glossaire) |
 | `docs/GLOSSAIRE.md` | Les mots techniques expliqués |
-| `docs/bilans/` | Comptes rendus des séances de travail |
-| `docs/audits/` | Audits complets du site (sécurité, bugs, confort), datés |
-| `kanban/` | Les tâches, rangées par état (à faire, en cours, terminé…) |
+| `kanban/` | Les cartes des gros chantiers, rangées par état (à faire, en cours) |
+| `archive/` | Ce qui ne sert plus au travail courant : cartes terminées, épics, bilans de séance, audits, comptes rendus du conseil |
 | `scripts/` | Petits outils du dépôt (vérification du kanban, envoi vers `master`) |
 | `.claude/` | Consignes et outils de l'IA qui aide au développement |
 | `.github/` | Vérifications automatiques lancées par GitHub à chaque envoi de code (la « CI ») |
@@ -93,11 +94,11 @@ Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`
 
 ## Vérifier son travail
 
-Les tests ont trois niveaux (carte 157), du plus rapide au plus complet :
+Les tests ont trois niveaux, du plus rapide au plus complet :
 
-1. **Pendant le développement** : `pnpm check`, environ une minute, sans serveur ni navigateur.
-2. **À la fin d'une carte** : `pnpm --filter @bbfrance/site test:parcours`, environ une minute et demie. Le serveur de développement du site doit être arrêté : Next.js refuse d'en démarrer un second dans le même dossier.
-3. **Seulement à la demande du responsable** : `pnpm test:e2e`, la suite complète, environ 20 minutes.
+1. **Après chaque modification de code** : `pnpm check`, environ une minute, sans serveur ni navigateur.
+2. **Sur demande, en fin de gros chantier ou avant un envoi qui touche l'interface** : `pnpm --filter @bbfrance/site test:parcours`, environ une minute et demie. Le serveur de développement du site doit être arrêté : Next.js refuse d'en démarrer un second dans le même dossier.
+3. **La suite complète** `pnpm test:e2e` (environ 20 minutes) : lancée par GitHub à chaque envoi de code ; en local, seulement à la demande du responsable.
 
 | Commande | Ce qu'elle vérifie |
 |---|---|
@@ -109,7 +110,7 @@ Les tests ont trois niveaux (carte 157), du plus rapide au plus complet :
 | `pnpm --filter @bbfrance/site lighthouse` | Fluidité sur téléphone : note Lighthouse sur 100 des pages principales, mesurée sur la version de production du site (environ 5 minutes, résultats dans `apps/site/logs/lighthouse/`) |
 | `pnpm --filter @bbfrance/site temps-reponse` | Temps de réponse du serveur (délai avant le premier octet) de 5 pages sur la version de production, médiane de 5 mesures ; avertit au-dessus de 1000 ms, sans échouer (environ 2 minutes, rapport `apps/site/logs/temps-reponse-AAAA-MM-JJ.txt`) |
 | `pnpm --filter @bbfrance/hub test:sso` | Connexion au site via le hub, de bout en bout |
-| `pnpm kanban` | Liste les tâches et vérifie que le kanban est bien rangé |
+| `pnpm kanban` | Liste les cartes en cours et à faire |
 
 Première fois pour les tests navigateur : `pnpm --filter @bbfrance/site exec playwright install chromium`.
 
@@ -125,7 +126,7 @@ GitHub relance automatiquement ces vérifications à chaque envoi de code (`.git
 | Base de données | [Postgres](https://www.postgresql.org), hébergé chez [Neon](https://neon.tech) en production ; en local, `prisma dev` (sans Docker) |
 | Accès à la base de données | [Prisma 7](https://www.prisma.io) |
 | Connexion des membres | [Auth.js v5](https://authjs.dev) aujourd'hui ; [Better Auth](https://www.better-auth.com) dans le hub |
-| Apparence | [Tailwind CSS](https://tailwindcss.com) et 8 thèmes de couleurs, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
+| Apparence | [Tailwind CSS](https://tailwindcss.com) et 5 thèmes de couleurs, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
 | Hébergement | [Vercel](https://vercel.com) |
 
 ---

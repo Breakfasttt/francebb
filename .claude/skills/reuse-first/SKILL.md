@@ -5,9 +5,9 @@ description: Inventaire des composants, hooks et helpers existants de BBFrance +
 
 # Réutiliser avant de créer
 
-Avant d'écrire un composant, un hook ou une fonction, chercher dans cette liste, puis dans le code avec `grep`. On ne crée que si rien ne couvre le besoin, et on le dit dans la carte.
+Avant d'écrire un composant, un hook ou une fonction, chercher dans cette liste, puis dans le code avec `grep`. On ne crée que si rien ne couvre le besoin.
 
-Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord du responsable du projet et un ADR (`docs/adr/`). Une bibliothèque déjà installée qui fait le travail passe toujours avant.
+Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord du responsable du projet et un ADR (`docs/adr/`, décision écrite). Une bibliothèque déjà installée qui fait le travail passe toujours avant.
 
 ## Paquet partagé (`packages/ui`, `@bbfrance/ui`)
 
@@ -20,17 +20,17 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Fenêtre sur mesure (comportement seul : Échap, focus, accessibilité) | `Dialog`, `DialogTrigger`, `DialogPortal`, `DialogOverlay`, `DialogContent`, `DialogTitle`, `DialogDescription`, `DialogClose` |
 | Bouton | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
 | Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
-| Confirmer une action (jamais `confirm()`) | `ConfirmDialog` : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice ; `children` pour un champ entre la phrase et les boutons (commentaire du modérateur, carte 099) |
+| Confirmer une action (jamais `confirm()`) | `ConfirmDialog` : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice ; `children` pour un champ entre la phrase et les boutons (commentaire du modérateur) |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
 | Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverClose` ; sur téléphone, utiliser `Sheet` |
-| Noms français des émojis de réaction pour les lecteurs d'écran (pastilles et choix d'émojis) | `reactionName`, `reactionPillLabel` de `common/utils/reactionLabels.ts` ; carte 195 |
+| Noms français des émojis de réaction pour les lecteurs d'écran (pastilles et choix d'émojis) | `reactionName`, `reactionPillLabel` de `common/utils/reactionLabels.ts` |
 | Carte, ligne de liste | `Card`, `CardHeader`, `CardTitle`, `CardBody`, `ListRow` |
 | Étiquette, pastille de compteur | `Badge`, `CountBadge` |
 | Avatar avec initiale | `Avatar` (les cadres de rang restent dans `UserAvatar`) |
 | Champs de formulaire (texte en 16 pixels, 44 pixels de haut) | `Field`, `Label`, `Input`, `Textarea`, `Select` |
 | Interrupteur, info-bulle | `Switch`, `Tooltip` |
-| Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}` ; `orientation="vertical"` pour une colonne d'onglets sur ordinateur, carte 099) |
-| Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page (carte 092). Options facultatives (carte 182) : `showFirst` (flèche « Première page ») et `pagePicker` (« Page N sur M » ouvre le panneau `PagePicker` de choix d'une page ; depuis un composant client seulement, exemple `TopicPageNav`) |
+| Onglets dans la page, onglets liés à l'adresse (`?tab=`) | `Tabs*`, `LinkTabs` (lui passer `linkComponent={Link}` ; `orientation="vertical"` pour une colonne d'onglets sur ordinateur) |
+| Pagination compacte | `PageNav` : liens avec `hrefFor` (`?page=N`), ou boutons avec `onPageChange` pour une liste chargée dans la page. Options facultatives : `showFirst` (flèche « Première page ») et `pagePicker` (« Page N sur M » ouvre le panneau `PagePicker` de choix d'une page ; depuis un composant client seulement, exemple `TopicPageNav`) |
 | Liste vide, chargement | `EmptyState`, `Skeleton` |
 | Savoir si on est sur ordinateur (seuil de 1025 pixels) | `useMediaQuery(DESKTOP_QUERY)` |
 
@@ -44,42 +44,42 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 ## Composants du site (`apps/site/common/components/`, sauf mention d'un autre dossier)
 | Besoin | Utiliser |
 |---|---|
-| Écran d'erreur d'une page (« Réessayer », « Retour à l'accueil ») | `ErrorScreen` (utilisé par `app/error.tsx` et `app/global-error.tsx`, carte 188) |
-| Montrer qu'une navigation est en cours | `NavigationProgress`, déjà monté dans `app/layout.tsx`. Ne pas ajouter de `loading.tsx` : il fait répondre « OK » aux pages introuvables et casse les `redirect()` (carte 188) |
+| Écran d'erreur d'une page (« Réessayer », « Retour à l'accueil ») | `ErrorScreen` (utilisé par `app/error.tsx` et `app/global-error.tsx`) |
+| Montrer qu'une navigation est en cours | `NavigationProgress`, déjà monté dans `app/layout.tsx`. Ne pas ajouter de `loading.tsx` : il fait répondre « OK » aux pages introuvables et casse les `redirect()` |
 | Écran de rédaction (plein écran sur téléphone, sans barre basse) | `ComposeScreen` (fil d'Ariane du forum facultatif), `ComposeActionBar` (barre d'envoi collée en bas), `RecentPostsRecap` (`app/forum/component/ComposeScreen.tsx`) ; `BBCodeEditor` avec la prop `screen` ; l'adresse s'ajoute à `isComposePath` |
 | Pavé de date (jour en grand, mois dessous) | `DateBlock` de `app/tournois/component/TournamentListItems.tsx` (aussi sur la fiche d'une ligue et l'accueil) |
-| Lien vers le sujet d'un tournoi, ville d'un tournoi | `topicHref` et `placeText` du même fichier (utilisés aussi par l'accueil, carte 155) |
+| Lien vers le sujet d'un tournoi, ville d'un tournoi | `topicHref` et `placeText` du même fichier (utilisés aussi par l'accueil) |
 | Blason d'une ligue (ou bouclier s'il n'y en a pas) | `LigueBlason` (`app/ligues/component/LigueBlason.tsx`) |
 | Formulaire envoyé à une action serveur qui renvoie `ActionResult` (refus en notification, champs gardés) | `Form/ActionForm` (au lieu de `<form action={monAction}>`) |
-| Bouton d'envoi qui se désactive et montre un indicateur pendant l'envoi | `Form/SubmitButton` (prop `icon`, variante `primary` et taille `tap` par défaut) ; fonctionne dans `ActionForm` (contexte `FormPendingContext`) et dans un `<form action={…}>` (`useFormStatus`), carte 193 |
+| Bouton d'envoi qui se désactive et montre un indicateur pendant l'envoi | `Form/SubmitButton` (prop `icon`, variante `primary` et taille `tap` par défaut) ; fonctionne dans `ActionForm` (contexte `FormPendingContext`) et dans un `<form action={…}>` (`useFormStatus`) |
 | Conteneur carte | `Card` de `@bbfrance/ui` ; `PremiumCard` ne sert plus qu'aux mentions légales, ne pas le réutiliser |
 | Fenêtre, confirmation, signalement | `ConfirmDialog` et `Sheet` de `@bbfrance/ui` (jamais `window.confirm`) ; `ReportModal` pour signaler un contenu ; `Modal` et `ConfirmModal` restent pour les écrans qui les utilisent déjà, pas pour un nouvel écran |
 | Avatar avec le cadre du rang du membre | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
-| Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil (carte 092) |
-| Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` (carte 092) |
+| Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil |
+| Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` |
 | Rechercher et choisir un membre ou une ligue | `UserSearch`, `UserMapper`, `LigueSearch` (prop `inputId` pour le relier à un libellé), `MultiLigueSearch` (choix de plusieurs ligues) |
 | Saisie d'étiquettes (tags) avec suggestions | `TagSelector` (props `id` et `aria-label` pour le relier à un libellé) ; pour afficher un statut, `Badge` de `@bbfrance/ui` |
 | Écrire et afficher un message BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu, styles dans `BBCodeContent/bbcode.css`) |
 | Smileys | `SmileyGrid` |
-| Bouton retour d'une page ouverte depuis plusieurs endroits (panneau « Plus », menu du compte) | `BackButton` avec `preferHistory` (ou `ForumListHeader` avec `backPreferHistory`) : revient à la page précédente si elle fait partie du site, suit `href` sinon. Les pages visitées sont notées par `InAppHistoryTracker`, monté dans `app/layout.tsx` (carte 196) |
+| Bouton retour d'une page ouverte depuis plusieurs endroits (panneau « Plus », menu du compte) | `BackButton` avec `preferHistory` (ou `ForumListHeader` avec `backPreferHistory`) : revient à la page précédente si elle fait partie du site, suit `href` sinon. Les pages visitées sont notées par `InAppHistoryTracker`, monté dans `app/layout.tsx` |
 | En-tête de page et bouton retour | `ForumListHeader` (`app/forum/component/`, pages du forum), `BackButton` (44 px sur téléphone, affiché sur place à gauche du titre) ; `PageHeader` ne sert plus qu'aux mentions légales |
 | Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |
-| Envoyer un élément dans la coquille (téléphone) | **Interdit** depuis la carte 156 : pas de portail React (`createPortal`) dans le code du projet. Afficher l'élément dans la page, ou dans un `Sheet` ouvert depuis la page |
-| Filtres d'une liste sur téléphone | Bouton « Filtres », `Sheet` et pastilles : copier `app/articles/component/ArticleFilters.tsx` ou `app/ressources/component/ResourceFilters.tsx` (skill `mobile-ux`) |
+| Envoyer un élément dans la coquille (téléphone) | **Interdit** : pas de portail React (`createPortal`) dans le code du projet. Afficher l'élément dans la page, ou dans un `Sheet` ouvert depuis la page |
+| Filtres d'une liste sur téléphone | Bouton « Filtres », `Sheet` et pastilles : copier `app/articles/component/ArticleFilters.tsx` ou `app/ressources/component/ResourceFilters.tsx` (skill `ui`) |
 | Rubriques de la navigation, écrans plein écran | `common/components/AppShell/navItems.ts` (`PRIMARY_NAV`, `MORE_NAV`, `DESKTOP_NAV`, `isComposePath`) |
 | Icônes | `lucide-react` uniquement ; `Icons/SocialIcons.tsx` garde les logos de réseaux sociaux absents de Lucide |
 
 ## Hooks, petites fonctions et code serveur (`apps/site`)
 | Besoin | Utiliser |
 |---|---|
-| Garder les filtres d'une liste chargée dans le navigateur dans l'adresse (lien partagé, retour arrière) | `useSyncUrlFilters`, `readList`, `readPositiveInt` de `common/hooks/useUrlFilters.ts` (carte 196) ; la page lit ses réglages de départ avec `useSearchParams`, dans un `<Suspense>` |
+| Garder les filtres d'une liste chargée dans le navigateur dans l'adresse (lien partagé, retour arrière) | `useSyncUrlFilters`, `readList`, `readPositiveInt` de `common/hooks/useUrlFilters.ts` ; la page lit ses réglages de départ avec `useSearchParams`, dans un `<Suspense>` |
 | Détection mobile | `common/hooks/useIsMobile.ts` (`useIsMobile()` et la constante `MOBILE_BREAKPOINT`, seuil unique de 1024 pixels) |
 | Temporiser une saisie | `common/hooks/useDebounce.ts` |
-| Garder le texte d'un formulaire en brouillon dans le navigateur (restauré après un rechargement, expiré après 7 jours) | `useDraft(scope, initialValue, { warnBeforeLeave })` de `common/hooks/useDraft.ts` (règles pures dans `common/utils/draftRules.ts`), avec le bandeau `DraftBanner` (`common/components/DraftBanner/`) ; carte 181. Bouton « Annuler » qui confirme si le texte a changé : `CancelComposeButton` (`app/forum/component/`) |
-| Envoyer plusieurs photos depuis un formulaire (galerie, progression, réduction des grandes photos avant l'envoi) | `common/utils/photoUpload.ts` (`shrinkPhoto`, `galleryTag`, `uploadProgressLabel`, `photoFailureMessage`), puis `uploadImageFile` pour chaque photo ; carte 184 |
-| Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur (carte 141) |
-| Zoom au pincement à deux doigts sur un cadre qui défile | `usePinchZoom(ref, { zoom, min, max, onZoomChange })`, parti avec l'éditeur BBScheme dans `apps/bbscheme/editeur-en-attente/hooks/` (carte 179) : le déplacer dans un paquet partagé avant de s'en servir dans le site |
+| Garder le texte d'un formulaire en brouillon dans le navigateur (restauré après un rechargement, expiré après 7 jours) | `useDraft(scope, initialValue, { warnBeforeLeave })` de `common/hooks/useDraft.ts` (règles pures dans `common/utils/draftRules.ts`), avec le bandeau `DraftBanner` (`common/components/DraftBanner/`). Bouton « Annuler » qui confirme si le texte a changé : `CancelComposeButton` (`app/forum/component/`) |
+| Envoyer plusieurs photos depuis un formulaire (galerie, progression, réduction des grandes photos avant l'envoi) | `common/utils/photoUpload.ts` (`shrinkPhoto`, `galleryTag`, `uploadProgressLabel`, `photoFailureMessage`), puis `uploadImageFile` pour chaque photo |
+| Envoyer une image choisie par un membre (hébergée chez ImgBB, clé gardée par le serveur) | `uploadImageFile(file)` de `common/utils/imageUpload.ts`, qui appelle l'action `uploadImage` (`app/imageUploadActions.ts`) ; jamais d'appel direct à ImgBB depuis le navigateur |
+| Zoom au pincement à deux doigts sur un cadre qui défile | `usePinchZoom(ref, { zoom, min, max, onZoomChange })`, parti avec l'éditeur BBScheme dans `apps/bbscheme/editeur-en-attente/hooks/` : le déplacer dans un paquet partagé avant de s'en servir dans le site |
 | Écrire au journal de modération | `lib/moderationLog.ts` (`logModerationAction`), interne au serveur |
 | Fermer les signalements en attente d'un contenu après une action de modération | `lib/moderationReports.ts` (`closePendingReports`), interne au serveur |
 | Supprimer un compte membre (contenus publics rattachés au compte fantôme) | `lib/accountDeletion.ts` (`anonymizeAndDeleteUser`), interne au serveur ; l'appelant vérifie les droits |
@@ -90,23 +90,23 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Rôles et niveau de pouvoir | `lib/roles.ts` (`isModerator`, `getRolePower`…) |
 | Libellé lisible d'un rôle, rôles personnalisés compris | `getRoleLabel(role, labels)` de `lib/roles.ts`, avec `labels` lus par `getRoleLabelMap()` (`lib/roleLabels.ts`, serveur) ou l'action `getRoleLabels` (`app/profile/actions.ts`, composant client) |
 | Accès forum par rôle (`allowedRoles`) | `lib/forumAccess.ts` (`getForumAccess`, `forumAccessWhere`, `topicAccessWhere`, `canAccessForum`) — toute requête catégorie/forum/topic/post |
-| Citer un message du forum : texte de la balise, retrait des citations imbriquées, ajout à la fin d'une réponse | `lib/forumQuote.ts` (`buildQuote`, `buildFullPostQuote`, `stripNestedQuotes`, `appendQuote`) ; envoi à la réponse rapide avec la notification « Citation ajoutée » : `sendQuoteToQuickReply` de `app/forum/component/QuoteSelectionButton.tsx` (carte 183) |
+| Citer un message du forum : texte de la balise, retrait des citations imbriquées, ajout à la fin d'une réponse | `lib/forumQuote.ts` (`buildQuote`, `buildFullPostQuote`, `stripNestedQuotes`, `appendQuote`) ; envoi à la réponse rapide avec la notification « Citation ajoutée » : `sendQuoteToQuickReply` de `app/forum/component/QuoteSelectionButton.tsx` |
 | Champs d'un membre envoyés au navigateur, texte d'un message supprimé ou masqué, citation autorisée | `lib/forumPostPrivacy.ts` (`POST_AUTHOR_SELECT`, `PUBLIC_MEMBER_SELECT`, `POST_MODERATOR_SELECT`, `hidePostContent`, `canQuotePost`) |
 | Client Prisma | `lib/prisma.ts` → `prisma` (ne renvoie jamais `User.email`) ; `prismaWithEmail` réservé à la connexion et aux mails |
 | BBCode → HTML | `lib/bbcode.ts` |
-| Début lisible d'un message du forum (sans citations ni balises, coupé avec « … ») | `postExcerpt` de `lib/homeLatestPosts.ts` (carte 205) |
+| Début lisible d'un message du forum (sans citations ni balises, coupé avec « … ») | `postExcerpt` de `lib/homeLatestPosts.ts` |
 | Chiffrement | `lib/crypto.ts` |
 | Départements / régions | `lib/france.ts` |
-| Mail | `lib/mail.ts` ; toute valeur insérée dans le HTML d'un e-mail passe par `escapeHtml` (`lib/htmlEscape.ts`, carte 167) ; un e-mail envoyé par une action part dans `after()` de `next/server` |
-| Notifications sous la cloche (mention, réponse dans un sujet suivi, message privé), abonnement automatique à un sujet | `lib/notifications.ts` (`notifyMentions`, `notifyFollowers`, `notifyPrivateMessage`, `followTopicAutomatically`, `visibleNotificationsWhere`), carte 167 |
+| Mail | `lib/mail.ts` ; toute valeur insérée dans le HTML d'un e-mail passe par `escapeHtml` (`lib/htmlEscape.ts`) ; un e-mail envoyé par une action part dans `after()` de `next/server` |
+| Notifications sous la cloche (mention, réponse dans un sujet suivi, message privé), abonnement automatique à un sujet | `lib/notifications.ts` (`notifyMentions`, `notifyFollowers`, `notifyPrivateMessage`, `followTopicAutomatically`, `visibleNotificationsWhere`) |
 | Mentions d'un message (sans doublon, 10 au plus) | `extractMentionIds` de `lib/mentionRules.ts` |
-| Adresse d'un message du forum sur la bonne page de son sujet (`?page=N#post-<id>`) | `forumPostHref`, `forumPostHrefFor` (message déjà lu) et `forumPostPage` de `lib/forumPostLink.ts` ; dans du HTML ou un lien sans calcul, le lien permanent `/forum/post/<id>` (carte 169) |
-| Longueur d'un titre ou d'un message du forum, sujet fermé (verrouillé, archivé), émojis de réaction | `lib/forumWriteRules.ts` (`topicTitleError`, `postContentError`, `isTopicClosedFor`, `REACTION_EMOJIS`), carte 169 |
+| Adresse d'un message du forum sur la bonne page de son sujet (`?page=N#post-<id>`) | `forumPostHref`, `forumPostHrefFor` (message déjà lu) et `forumPostPage` de `lib/forumPostLink.ts` ; dans du HTML ou un lien sans calcul, le lien permanent `/forum/post/<id>` |
+| Longueur d'un titre ou d'un message du forum, sujet fermé (verrouillé, archivé), émojis de réaction | `lib/forumWriteRules.ts` (`topicTitleError`, `postContentError`, `isTopicClosedFor`, `REACTION_EMOJIS`) |
 | Recalculer le dernier message d'un sujet après avoir ajouté, retiré ou déplacé des messages | `refreshTopicLastPost` de `lib/forumTopicLastPost.ts`, interne au serveur (accepte le client d'une transaction) |
 | Rôles accessibles à un autre membre que le visiteur (droits d'un destinataire) | `loadRolePowers` et `accessibleRolesFor` de `lib/forumAccess.ts`, avec `canAccessForum` et `FORUM_ACCESS_SELECT` |
 | Données de référence | `lib/referenceData.ts` |
 | Config site | `lib/siteConfig.ts` |
-| Liste des 8 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |
+| Liste des 5 thèmes (identifiant, nom, thème par défaut) | `lib/themes.ts` : `SITE_THEMES`, `DEFAULT_SITE_THEME`, `isSiteTheme` |
 | Points classement CDF | `common/utils/cdf.ts` |
 | Dates | `date-fns` (déjà installé) |
 | Drag & drop | `@dnd-kit/*` (déjà installé) |
@@ -116,4 +116,4 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 
 Aucun doublon connu pour l'instant.
 
-Quand on crée un composant partagé, on ajoute sa ligne dans ce skill, dans le même commit.
+Quand on crée un composant ou une fonction partagée, on ajoute sa ligne ici.

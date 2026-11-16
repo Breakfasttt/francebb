@@ -1,6 +1,8 @@
-# Essais à la main de fin de refonte visuelle
+# Essais à la main
 
-Cette liste rassemble tout ce que les tests automatiques ne peuvent pas vérifier à la place d'une vraie personne : le comportement du clavier d'un téléphone, la zone protégée de l'iPhone (la bande en bas de l'écran réservée au geste de retour à l'accueil, voir `docs/GLOSSAIRE.md`), la fluidité du défilement, l'aspect des huit thèmes et le confort de lecture. Elle est tirée de la section « Résultat » de chaque carte de l'épic E08 (cartes 075 à 101) et des lignes de `docs/refonte/inventaire.md` qui n'ont pas pu être cochées par un test. Elle correspond à la carte 114.
+Ce fichier est la liste unique des essais à faire à la main sur le projet. Il rassemble tout ce que les tests automatiques ne peuvent pas vérifier à la place d'une vraie personne : le comportement du clavier d'un téléphone, la zone protégée de l'iPhone (la bande en bas de l'écran réservée au geste de retour à l'accueil, voir `docs/GLOSSAIRE.md`), la fluidité du défilement, l'aspect des cinq thèmes, le confort de lecture, la connexion avec de vrais comptes Discord ou Google, les vrais e-mails et les contrôles à faire en production, c'est-à-dire sur le site en ligne.
+
+Les sections 1 à 20 viennent de la fin de la refonte visuelle (carte 114) : elles sont tirées des cartes de l'épic E08 (cartes 075 à 101) et des lignes de `docs/refonte/inventaire.md` qu'aucun test n'a pu cocher. La section 22 rassemble les essais demandés par les cartes suivantes. Une ligne venue d'une carte porte son numéro entre parenthèses, pour retrouver le détail. Quand une nouvelle carte demande un essai à la main, il est ajouté à ce fichier.
 
 **Comment la dérouler.**
 - Préparer quatre comptes : un visiteur (navigation privée, sans être connecté), un membre ordinaire, un modérateur et un administrateur. Le super administrateur (le compte du responsable du site) sert pour les essais de la section « Administration ».
@@ -8,8 +10,8 @@ Cette liste rassemble tout ce que les tests automatiques ne peuvent pas vérifie
 - Suivre l'ordre des sections : la coquille (barre du haut, barre du bas, panneau « Plus ») et les thèmes d'abord, puis les écrans, du plus fréquent au plus rare.
 - Refaire quelques essais en position horizontale du téléphone, surtout pour les écrans de rédaction et BBScheme.
 - Cocher la case quand le résultat attendu est obtenu. Sinon, laisser la case vide et noter à côté l'appareil, le compte, le thème et ce qui s'est passé (une capture d'écran aide beaucoup).
-- Un problème trouvé n'est pas corrigé sur le moment : il est noté, puis il devient une carte séparée du kanban. Avant de noter, relire la dernière section : le problème est peut-être déjà en carte.
-- Aucune ligne ne demande d'effacer des données réelles. Quand un essai touche une suppression, un envoi à tous les membres ou une remise à zéro, il se limite à ouvrir la fenêtre puis à l'annuler, ou se fait sur des données d'essai.
+- Un problème trouvé est d'abord noté à côté de la ligne. Ensuite, s'il est petit, il est corrigé directement ; s'il demande un vrai chantier, il devient une carte du kanban. Avant de noter, relire la section 21 : le problème est peut-être déjà en carte.
+- Aucune ligne ne demande d'effacer des données réelles. Quand un essai touche une suppression ou un envoi à tous les membres, il se limite à ouvrir la fenêtre puis à l'annuler, ou se fait sur des données d'essai.
 
 Les rôles sont ceux de `docs/refonte/inventaire.md` : visiteur, membre, modérateur, administrateur, super administrateur.
 
@@ -18,10 +20,9 @@ Les rôles sont ceux de `docs/refonte/inventaire.md` : visiteur, membre, modéra
 - [ ] **Téléphone, visiteur.** La barre du bas affiche cinq onglets (Accueil, Forum, Tournois, Messages, Plus) lisibles sans zoom, chacun se touche facilement au pouce, et la barre du haut ne montre que le retour, le logo et le bouton « Connexion ».
 - [ ] **Téléphone, membre.** L'onglet Messages porte une pastille avec le nombre de messages non lus, et elle disparaît une fois les messages lus.
 - [ ] **Téléphone, modérateur.** L'onglet Plus porte une pastille de modération quand il y a des éléments à traiter.
-- [ ] **Téléphone, membre.** Le panneau « Plus » s'ouvre par le bas et montre le profil, le choix du thème (les 8 thèmes), les autres rubriques, les liens du pied de page et « Déconnexion ». Tout se lit sans zoom, se ferme facilement et défile jusqu'au dernier lien.
+- [ ] **Téléphone, membre.** Le panneau « Plus » s'ouvre par le bas et montre le profil, le choix du thème (les 5 thèmes), les autres rubriques, les liens du pied de page et « Déconnexion ». Tout se lit sans zoom, se ferme facilement et défile jusqu'au dernier lien.
 - [ ] **Téléphone, visiteur.** Le panneau « Plus » propose la connexion à la place du profil et ne montre ni Modération ni Administration.
 - [ ] **Téléphone, administrateur.** Le panneau « Plus » montre Modération et Administration avec leur pastille.
-- [ ] **Téléphone, membre.** Sur la page d'un sujet du forum, la rubrique « Cette page » du panneau « Plus » affiche les outils du sujet ; sur une page sans outils, la rubrique n'apparaît pas.
 - [ ] **Android, membre.** Toucher une zone de saisie fait disparaître la barre du bas pour laisser la place au clavier ; fermer le clavier la fait revenir, sans que la page saute.
 - [ ] **iPhone, membre.** Même essai : la barre du bas disparaît quand le clavier s'ouvre, revient à sa fermeture, et rien ne passe sous la bande de l'iPhone en bas de l'écran.
 - [ ] **Téléphone, membre.** Un bouton « Envoyer » ou « Enregistrer » touché juste après avoir tapé du texte atteint bien le bouton visé (la barre ne se glisse pas sous le doigt).
@@ -30,11 +31,14 @@ Les rôles sont ceux de `docs/refonte/inventaire.md` : visiteur, membre, modéra
 - [ ] **Téléphone, membre.** Le logo de la barre du haut (hors accueil) s'atteint facilement au pouce, et les libellés de la barre du bas sont lisibles.
 - [ ] **Ordinateur, visiteur.** La barre du haut propose Accueil, Forum, Tournois, Ligues, Articles et Ressources, plus un menu « Plus » pour le reste ; les boutons « Thème » et « Connexion » sont présents.
 - [ ] **Ordinateur, membre.** Le menu du compte propose Mon profil, Réglages, Changer de thème et Déconnexion ; Messagerie et Modération ont leur pastille, Administration son icône.
-- [ ] **Tous appareils, membre.** Recharger plusieurs pages avec le thème Clair puis avec un thème sombre : pas d'éclair d'une autre couleur avant le bon thème.
+- [ ] **Tous appareils, membre.** Recharger plusieurs pages avec le thème NAF puis avec le thème Sombre : pas d'éclair d'une autre couleur avant le bon thème.
+- [ ] **Téléphone, membre.** Sur le profil (onglet « Modifier »), dans le formulaire d'une ligue et dans la réponse rapide d'un sujet, écrire un texte puis appuyer directement sur le bouton d'envoi, sans fermer le clavier : l'envoi part du premier coup. Si l'appui rate encore, essayer une valeur plus grande de `TYPING_RELEASE_DELAY_MS`, par exemple 500 (carte 113).
+- [ ] **Téléphone, membre.** Le panneau « Plus » range ses rubriques dans les groupes Débuter, Jouer en compétition et La communauté (avec l'annuaire des membres), met en évidence la rubrique en cours, et place « Déconnexion » dans un bloc à part, avant le pied de page (carte 189).
+- [ ] **Téléphone, membre.** Un seul onglet de la barre du bas est allumé à la fois : « Plus » s'allume quand son panneau est ouvert ou quand la page en cours y est rangée (profil, modération, mentions légales…) (carte 189).
 
 ## 2. Bandeau « Nouveau look » et changement de thème
 
-Pour ces lignes, utiliser un membre dont l'ancien thème, d'avant la bascule vers Vestiaire, a été conservé (le bandeau n'apparaît que dans ce cas).
+Pour ces lignes, utiliser un membre dont l'ancien thème, d'avant la bascule vers le thème par défaut (aujourd'hui Sombre), a été conservé (le bandeau n'apparaît que dans ce cas).
 
 - [ ] **Téléphone, membre.** Le bandeau « Nouveau look » apparaît en haut de la page avec « Revenir à l'ancien thème » et « Garder le nouveau look » ; le texte est lisible et les deux boutons font au moins 44 pixels de haut.
 - [ ] **Ordinateur, membre.** Même contrôle du bandeau, sans débordement.
@@ -42,22 +46,21 @@ Pour ces lignes, utiliser un membre dont l'ancien thème, d'avant la bascule ver
 - [ ] **Téléphone, membre.** « Garder le nouveau look » fait disparaître le bandeau, qui ne revient pas aux visites suivantes.
 - [ ] **Téléphone, membre.** Changer de thème depuis le panneau « Plus » prend effet immédiatement, et le choix se retrouve ensuite dans « Éditer mon profil ».
 - [ ] **Ordinateur, membre.** Changer de thème depuis le menu du compte prend effet immédiatement et se garde au rechargement.
-- [ ] **Ordinateur, visiteur.** Le bouton « Thème » change l'aspect du site et le thème choisi revient au rechargement (un très court éclair du thème par défaut est possible pour un visiteur, il est déjà en carte, voir la dernière section).
+- [ ] **Ordinateur, visiteur.** Le bouton « Thème » change l'aspect du site et le thème choisi revient au rechargement (un très court éclair du thème par défaut est possible pour un visiteur, il est déjà en carte, voir la section 21).
 
-## 3. Les huit thèmes
+## 3. Les cinq thèmes
 
-Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Clair, Blood, Malpierre, Néhékhara et NAF. Pour chacun, parcourir les cinq écrans suivants, sur téléphone puis sur ordinateur : l'accueil, la liste d'un forum, la page d'un sujet, l'éditeur d'une réponse et la fenêtre d'un signalement.
+Depuis la carte 218, le site a cinq thèmes : Sombre (le thème par défaut, identifiant `vestiaire`), Saison 3, NAF, Néhékhara et Violet. Pour chacun, parcourir les cinq écrans suivants, sur téléphone puis sur ordinateur : l'accueil, la liste d'un forum, la page d'un sujet, l'éditeur d'une réponse et la fenêtre d'un signalement.
 
-- [ ] **Vestiaire, téléphone et ordinateur, membre.** Les cinq écrans sont lisibles, rien ne déborde, les boutons ressortent clairement, aucun texte n'est gris sur gris.
+- [ ] **Sombre, téléphone et ordinateur, membre.** Les cinq écrans sont lisibles, rien ne déborde, les boutons ressortent clairement, aucun texte n'est gris sur gris ; les cartes en verre dépoli (fond translucide et flouté) restent fluides au défilement sur téléphone.
 - [ ] **Saison 3, téléphone et ordinateur, membre.** Fond en léger dégradé, titres sans trait vertical ni bleu marine imposé, textes lisibles.
-- [ ] **Sombre, téléphone et ordinateur, membre.** Fond en léger dégradé, cartes en verre dépoli (fond translucide et flouté) qui restent fluides au défilement sur téléphone, texte lisible.
-- [ ] **Clair, téléphone et ordinateur, membre.** Textes foncés sur fond clair, bordures visibles, aucune zone restée sombre.
-- [ ] **Blood, téléphone et ordinateur, membre.** Contraste suffisant entre le texte et le fond ; boutons et liens reconnaissables.
-- [ ] **Malpierre, téléphone et ordinateur, membre.** Même contrôle de lisibilité et de contraste.
+- [ ] **NAF, téléphone et ordinateur, membre.** Même contrôle de lisibilité et de contraste ; les couleurs rappellent bien celles de la NAF.
 - [ ] **Néhékhara, téléphone et ordinateur, membre.** Même contrôle de lisibilité et de contraste.
-- [ ] **NAF, téléphone et ordinateur, membre.** Même contrôle ; les couleurs rappellent bien celles de la NAF.
+- [ ] **Violet, téléphone et ordinateur, membre.** Même contrôle de lisibilité et de contraste ; boutons et liens reconnaissables.
+- [ ] **Tous appareils, membre.** Choisir chacun des cinq thèmes l'un après l'autre : chacun s'applique et se garde au rechargement (carte 218).
+- [ ] **Tous appareils, membre.** Un compte qui avait choisi un thème retiré (par exemple l'ancien Clair ou Blood) arrive sur Sombre, sans erreur (carte 218).
 - [ ] **Ordinateur, membre, chaque thème.** Dans un message, un spoiler, un accordéon, une citation, un tableau et une galerie sont lisibles (texte visible, bordures visibles).
-- [ ] **Téléphone, membre, thèmes Sombre et Blood.** La barre du bas, le panneau « Plus » et le bandeau des cookies restent lisibles et se distinguent du fond de la page.
+- [ ] **Téléphone, membre, thèmes Sombre et Violet.** La barre du bas, le panneau « Plus » et le bandeau des cookies restent lisibles et se distinguent du fond de la page.
 - [ ] **Tous appareils, chaque thème.** Après un changement de thème en cours de navigation, aucun élément ne garde les couleurs de l'ancien thème (cartes, boutons, menus, fenêtres, notifications).
 
 ## 4. Accueil, `/jouer`, `/media` et pages fixes
@@ -83,6 +86,12 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 - [ ] **Ordinateur, nouveau compte.** L'inscription complète fonctionne et le thème choisi s'applique à la fin.
 - [ ] **Tous appareils, visiteur.** Les connexions Discord et Google ouvrent leur écran d'autorisation et reviennent sur le site (essai avec de vrais comptes).
 
+Les trois essais suivants se font avec le site branché sur le hub, le service de connexion commun aux applications BBFrance (réglage `AUTH_MODE="hub"` ; la préparation est décrite dans la carte 115). Le hub doit rester invisible : le coach ne voit jamais son écran.
+
+- [ ] **Ordinateur, visiteur, navigation privée.** L'écran de connexion montre Discord, Google et e-mail, sans bouton « Compte BBFrance ». Saisir une adresse, ouvrir le lien reçu dans la même fenêtre : on arrive sur le site connecté, sans voir d'écran du hub (au plus un court « Redirection… »). Rouvrir le même lien : un message d'erreur clair, sans boucle de redirection (cartes 073 et 115).
+- [ ] **Ordinateur, visiteur, navigation privée.** Le bouton Discord mène directement à l'écran d'autorisation de Discord, puis on revient sur le site connecté, sans écran du hub entre les deux ; se déconnecter et refaire l'essai avec Google (cartes 073 et 115).
+- [ ] **Ordinateur, administrateur et compte d'essai.** Connecté avec un compte d'essai dans une fenêtre, le bannir depuis l'administration dans une autre fenêtre : à la page suivante, le compte banni arrive sur `/banned`, sans attendre (carte 115).
+
 ## 6. Forum : accueil, listes de sujets, non lus
 
 - [ ] **Téléphone, membre.** L'accueil du forum : les catégories sont des cartes repliables (toucher l'en-tête les ouvre et les ferme) ; chaque forum affiche son icône, son nom, sa description, son dernier sujet et son nombre de sujets.
@@ -91,7 +100,7 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 - [ ] **Téléphone, membre.** Un forum de tournoi a son trophée ; un forum sans sujet affiche « Aucun sujet ».
 - [ ] **Téléphone, membre.** La page d'un forum : fil d'Ariane, sous-forums en lignes, sujets en lignes avec avatar, titre, épinglé, badge de tournoi (« Annulé », « Terminé », « Passé »), cadenas, auteur, date, messages, vues et dernière activité ; tout est lisible sans zoom.
 - [ ] **Téléphone, membre.** « Nouveau sujet » et « Nouveau tournoi » sont visibles en haut de la liste ; dans un forum verrouillé, le bouton grisé « Forum verrouillé » s'affiche à la place.
-- [ ] **Téléphone, membre.** La rubrique « Cette page » du panneau « Plus » contient la recherche avancée, les membres, les non-lus, « Tout marquer comme lu » et, pour un modérateur, l'administration du forum.
+- [ ] **Téléphone, membre.** Le bloc « Outils du forum », sous la liste des sujets, contient la recherche avancée, les membres, les non-lus, « Tout marquer comme lu » et, pour un modérateur, l'administration du forum.
 - [ ] **Téléphone, membre.** La pagination de la liste fonctionne et se trouve en bas de la liste.
 - [ ] **Ordinateur, membre.** La page d'un forum montre des colonnes de chiffres et une colonne d'actions à droite qui reste visible pendant le défilement.
 - [ ] **Téléphone, membre.** La liste des sujets non lus : la coche « Marquer ce sujet comme lu » (44 pixels) fonctionne, « Tout marquer comme lu » vide la liste, puis « Vous êtes à jour » s'affiche.
@@ -106,11 +115,11 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 - [ ] **Téléphone, membre.** « MP » dans la fiche coach ouvre directement la conversation avec ce coach.
 - [ ] **Téléphone, membre.** Le menu « ⋯ » d'un message propose partager (notification « Lien copié ! »), signaler, marquer comme non lu à partir d'ici et, selon le compte, modifier, supprimer (avec confirmation), modérer ou restaurer.
 - [ ] **Téléphone, membre.** Ajouter une réaction puis la retirer fonctionne.
-- [ ] **Téléphone, membre.** « Citer » insère la citation dans la réponse rapide et fait défiler jusqu'à elle.
+- [ ] **Téléphone, membre.** « Citer » ajoute la citation à la fin de la réponse rapide, sans faire défiler la page ; la notification « Citation ajoutée » propose « Voir ma réponse », qui y mène (carte 183).
 - [ ] **Téléphone, membre.** Un message supprimé, un auteur bloqué ou banni (« Afficher le message », « AFFICHAGE TEMPORAIRE », « Masquer à nouveau ») et un message modéré s'affichent correctement.
 - [ ] **Téléphone, membre.** Sur une page suivante d'un sujet de tournoi, le premier message est mis en valeur (bordure d'accent et badge « Premier message »).
 - [ ] **Téléphone, membre.** Publier une réponse : le nouveau message apparaît avec une brève animation et la page reste fluide.
-- [ ] **Téléphone, membre.** Le panneau « Outils du sujet » et la rubrique « Cette page » du panneau « Plus » donnent les mêmes outils (sujet, gestion du tournoi, modération) et chaque outil fonctionne.
+- [ ] **Téléphone, membre.** Le panneau « Outils du sujet » donne les outils du sujet, de la gestion du tournoi et de la modération, et chaque outil fonctionne.
 - [ ] **Téléphone, membre.** La barre collée en bas, au-dessus de la barre du bas, affiche la pagination compacte et « Répondre » ; elle s'efface pendant la saisie et quand la zone de réponse est visible ; sur un écran étroit (moins de 375 pixels de large), « Répondre » n'affiche que son icône.
 - [ ] **iPhone, membre.** Taper dans la réponse rapide, fermer le clavier puis toucher « Envoyer ma réponse » : l'appui atteint bien le bouton (la barre ne se glisse pas dessous).
 - [ ] **Ordinateur, membre.** Les outils du sujet forment une colonne de cartes à droite, collée en haut de l'écran, qui défile pour elle-même si elle est plus haute que l'écran ; la pagination est en haut et en bas de la liste.
@@ -145,14 +154,14 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 - [ ] **Ordinateur, membre.** Les filtres sont affichés en ligne, sans panneau, et tiennent sur la largeur.
 - [ ] **Téléphone, membre.** Rechercher un message qui contient du texte ressemblant à du code HTML : l'extrait l'affiche tel quel, comme du texte, et rien ne s'exécute.
 - [ ] **Téléphone, modérateur.** Créer un forum : choisir une catégorie puis un forum parent ; la liste « Insérer après » suit ce choix.
-- [ ] **Téléphone, membre.** Signaler un message (menu « ⋯ ») et un sujet (panneau « Outils du sujet » et rubrique « Cette page »), avec le clavier ouvert dans « Précisions » : la fenêtre passe au-dessus de la barre du bas et le bouton d'envoi reste atteignable.
+- [ ] **Téléphone, membre.** Signaler un message (menu « ⋯ ») et un sujet (panneau « Outils du sujet »), avec le clavier ouvert dans « Précisions » : la fenêtre passe au-dessus de la barre du bas et le bouton d'envoi reste atteignable.
 
 ## 10. Tournois
 
 - [ ] **Téléphone, visiteur.** `/tournois` : taper un nom, ouvrir « Filtres », choisir une région puis un département, cocher un circuit, fermer avec « Voir N tournois », retirer une pastille, changer le tri, passer en liste, aller à la page 2.
 - [ ] **Ordinateur, visiteur.** Les filtres s'affichent en ligne, et le passage entre carte, liste et tri fonctionne.
 - [ ] **Téléphone, membre.** Sujet d'un tournoi : se pré-inscrire puis annuler la pré-inscription.
-- [ ] **Téléphone, membre.** Sur un tournoi par équipes, inscrire une équipe avec un coéquipier (le clavier ouvert dans la recherche ne cache pas la liste), la modifier, ouvrir ses détails, la désinscrire.
+- [ ] **Téléphone, membre.** Sur un tournoi par équipes, inscrire une équipe en cochant un coéquipier parmi les mercenaires (carte 186), la modifier, ouvrir ses détails, la désinscrire.
 - [ ] **Téléphone, organisateur.** Déplier les inscriptions, changer un paiement, valider un inscrit (sur un tournoi d'essai).
 - [ ] **Téléphone, membre.** Créer un tournoi d'essai : remplir chaque bloc, ouvrir « Choisir sur la carte », chercher une adresse, déplacer le repère, valider ; « Publier » se touche depuis la barre du bas.
 - [ ] **Téléphone, organisateur.** Saisie des résultats d'un tournoi d'essai : importer un fichier NAF depuis le téléphone, réordonner deux coachs avec la poignée, ajouter une ronde et un match, publier.
@@ -244,7 +253,6 @@ Les huit thèmes sont : Vestiaire (le thème par défaut), Saison 3, Sombre, Cla
 - [ ] **Téléphone, administrateur.** `/administration?tab=structure` : faire glisser un forum au doigt, ouvrir le menu « ⋯ » d'un forum, l'indenter puis le désindenter, modifier un forum dans le panneau du bas (sur un forum d'essai).
 - [ ] **Téléphone, administrateur.** Les autres onglets de l'administration s'ouvrent sans débordement ni bouton trop petit.
 - [ ] **Téléphone, administrateur.** Annonces par courriel : écrire l'objet et le message, ouvrir la fenêtre « Oui, diffuser » puis l'annuler. Ne pas envoyer : l'annonce partirait à tous les membres.
-- [ ] **Téléphone, super administrateur.** `/administration?tab=reset` : ouvrir le panneau de remise à zéro ; le bouton reste grisé tant que la phrase demandée n'est pas écrite exactement ; puis « Annuler ». Ne rien confirmer.
 - [ ] **Ordinateur, administrateur.** L'administration s'utilise à la souris : glisser-déposer, menus « ⋯ », panneaux.
 
 ## 20. BBScheme
@@ -293,3 +301,75 @@ Les problèmes ci-dessous sont déjà connus, et chacun a sa carte dans `kanban/
 - 146 : bulle d'informations d'un pion de BBScheme et code mort.
 - 147 : thème d'un visiteur posé trop tard, d'où un court éclair du thème par défaut.
 - 148 : capture de l'accueil fragile dans les tests et retour de BBScheme.
+
+## 22. Essais issus des cartes de novembre
+
+Ces essais viennent des cartes terminées après la refonte. Le numéro entre parenthèses renvoie à la carte, dont la section « Résultat » donne le détail.
+
+**Accueil.**
+- [ ] **Téléphone, visiteur puis membre.** L'accueil dans deux ou trois thèmes : les boutons du haut, les liens « Créer » et les blocs se lisent sans zoom et fonctionnent (cartes 155 et 205).
+- [ ] **Téléphone, membre.** Publier un message depuis un autre appareil : il arrive dans « Derniers messages » de l'accueil en moins de 30 secondes, avec son apparition en fondu (carte 205).
+- [ ] **Téléphone et ordinateur, visiteur puis membre.** Sur de vraies données (production ou copie), vérifier les tournois remplis, l'article au hasard, le bouton Discord et, sur ordinateur, la petite carte des ligues de l'accueil du membre (cartes 205 et 210).
+- [ ] **Ordinateur, modérateur.** Annuler un tournoi d'essai à venir, puis ouvrir l'accueil : il a quitté les prochains tournois tout de suite, sans attendre une minute (carte 202).
+
+**Navigation, chargement et erreurs.**
+- [ ] **Téléphone, membre.** Le bouton retour en haut d'un sujet du forum, d'une liste de forum et de BBScheme ramène à la bonne page ; le bloc « Outils du forum » s'affiche sous la liste d'un forum (carte 156).
+- [ ] **Téléphone, membre.** Filtrer `/ressources` ou `/membres`, ouvrir un élément, revenir en arrière : la liste revient avec ses filtres. Copier l'adresse d'une liste filtrée dans un autre onglet : les mêmes filtres s'appliquent (carte 196).
+- [ ] **Téléphone, membre.** Ouvrir « Mon compte » depuis le forum puis toucher le bouton retour : retour au forum. Ouvrir « Mon compte » dans un nouvel onglet : le bouton retour mène à l'accueil (carte 196).
+- [ ] **Téléphone, visiteur.** Ouvrir `/carte` en plein écran puis faire le geste de retour du téléphone : le plein écran se ferme et on reste sur la carte (carte 196).
+- [ ] **Téléphone, membre, connexion lente.** En touchant un lien, une fine barre colorée avance en haut de l'écran jusqu'à l'arrivée de la page suivante (carte 188).
+- [ ] **Ordinateur et téléphone, poste de développement.** Arrêter la base locale puis ouvrir une page : l'écran « Match interrompu par l'orage ! » s'affiche, avec « Réessayer » et « Retour à l'accueil » de 44 pixels ; après avoir relancé la base, « Réessayer » affiche la page (carte 188).
+
+**Forum.**
+- [ ] **Téléphone et ordinateur.** Un message masqué par la modération : un visiteur lit « Le contenu de ce message a été masqué par la modération. », tandis que son auteur et un modérateur voient encore le texte ; aucun bouton « Citer » sur ce message (carte 164).
+- [ ] **Téléphone, modérateur.** Supprimer un sujet d'essai : la fenêtre demande une raison, puis le modérateur voit le bandeau « Sujet supprimé » et « Restaurer le sujet ». Le menu « ⋯ » d'un message propose « Supprimer (modération) » et « Restaurer le message supprimé » (carte 165).
+- [ ] **Téléphone, membre.** Commencer une réponse, passer à une autre application puis revenir, ou fermer l'onglet puis rouvrir le sujet : le texte revient avec le bandeau « Brouillon restauré · Effacer » (carte 181).
+- [ ] **Téléphone, membre.** Sur un long sujet (plus de 30 pages, en production), toucher « Page N sur M » : le panneau « Choisir une page » monte du bas, liste les pages proches et propose le champ « Aller à la page », qui fonctionne (carte 182).
+- [ ] **Téléphone, membre.** Sélectionner au doigt un passage d'un message : le bouton « Citer la sélection » apparaît centré en bas, au-dessus de la barre « Répondre », sans gêner le menu de sélection du téléphone ; le passage s'ajoute à la réponse (carte 183).
+- [ ] **Téléphone, membre.** Dans l'outil Image de l'éditeur, « Choisir des photos » ouvre la galerie sans ouvrir le clavier ; envoyer quatre vraies photos : le bouton affiche « Envoi 2 sur 4… », puis les photos sont insérées en galerie (carte 184).
+- [ ] **Téléphone, membre.** Envoyer une grande photo de l'appareil photo (plus de 4 Mo) : elle est réduite avant l'envoi et part sans erreur (carte 184).
+- [ ] **Téléphone, coach.** Dans un sujet archivé, l'outil « Répondre » n'apparaît plus ; dans un sujet verrouillé, le menu « ⋯ » de son propre message ne propose plus « Modifier » ni « Supprimer ». Un modérateur garde ces actions (carte 200).
+- [ ] **Téléphone, modérateur.** Depuis `/forum`, créer un forum d'essai puis le supprimer ; essayer de supprimer « Les tournois » (refus) ; dans l'administration, renommer un forum : `/forum` affiche aussitôt le nouveau nom. L'écran « Nouveau forum » n'a pas de barre du bas, et « Annuler » et « Créer le forum » restent en bas de l'écran à 360 pixels de large (cartes 196 et 199).
+
+**Membres, avatars et profil.**
+- [ ] **Téléphone, membre.** Avec le réglage « réduire les animations » du téléphone, ouvrir un sujet dont un auteur a le rang or ou plus : le cadre de l'avatar reste immobile (carte 192).
+- [ ] **Téléphone, membre.** Sans ce réglage, un auteur de rang or ou diamant : la pulsation du cadre reste visible et fluide, et la liste des sujets reste lisible (carte 207).
+- [ ] **Téléphone, membre.** Le bandeau « banni » d'un avatar se lit dans deux ou trois thèmes ; le liseré des avatars sans rang n'est pas trop marqué dans les thèmes sombres (carte 192).
+- [ ] **Téléphone, membre.** Sur son propre profil sans numéro NAF : « Non renseigné », une phrase d'explication et le lien « Ajouter mon numéro », qui ouvre l'onglet de modification (carte 190).
+- [ ] **Téléphone, membre.** Dans un sujet, la signature d'un message est repliée derrière « Voir la signature » ; dans la messagerie, le bouton retour est à gauche du titre (carte 190).
+- [ ] **Téléphone, membre.** Dans l'annuaire, toucher le sigle d'une ligue mène à la page de la ligue (carte 195).
+- [ ] **Téléphone, membre.** Choisir sa région dans son profil : la liste déroulante est remplie (carte 203).
+
+**Images envoyées.**
+- [ ] **Téléphone, membre.** Envoyer une photo de la galerie comme avatar (profil), comme blason (ligue), dans un message du forum et comme image d'une ressource : chaque envoi réussit (carte 141).
+- [ ] **Téléphone, membre.** Envoyer comme avatar une image de plus de 4 Mo (pas une photo, qui serait réduite) : le message « L'image est trop lourde » s'affiche (carte 141).
+- [ ] **Téléphone, visiteur.** Ouvrir `/ressources/submit` sans être connecté : on arrive sur la page de connexion, et après connexion sur le formulaire (carte 141).
+
+**Formulaires et réactions.**
+- [ ] **Ordinateur, membre, connexion ralentie** (outils du navigateur, « 3G lente »). Créer un sujet puis un tournoi d'essai en appuyant deux fois de suite sur « Publier » : un seul envoi, bouton grisé avec indicateur de chargement. Même essai sur les boutons de la page de connexion (carte 193).
+- [ ] **Téléphone, membre, 360 pixels de large.** Publier un article sans titre ni contenu, signaler un message sans raison, supprimer un sujet sans raison (modérateur) : l'erreur apparaît sous le champ, sans pousser les boutons hors de l'écran (carte 194).
+- [ ] **Téléphone, membre, lecteur d'écran** (TalkBack sur Android, VoiceOver sur iPhone). Un champ en erreur est annoncé « invalide » avec son explication (carte 194).
+- [ ] **Téléphone, membre, 360 pixels de large.** Réagir à un message du forum : le choix d'émojis monte du bas et se ferme d'un geste. Sous un article, « Voir qui a réagi » liste les membres par émoji (carte 195).
+- [ ] **Ordinateur, membre, deux thèmes.** Parcourir un menu « ⋯ » au clavier : l'élément choisi est entouré d'un contour visible, et le choix d'émojis du forum se ferme avec Échap (carte 195).
+- [ ] **Téléphone, membre, 360 pixels de large.** Ouvrir une recherche de ligue ou de membre dans un formulaire, puis dans une fenêtre : la liste des résultats passe au-dessus de tout le reste. Ouvrir la carte en plein écran et une conversation : rien ne passe par-dessus (carte 197).
+- [ ] **Téléphone et ordinateur, membre, chaque thème.** Un bouton « danger » (suppression) se lit bien ; l'en-tête des pages des articles, des ligues et des ressources est bien aligné (carte 197).
+
+**Tournois.**
+- [ ] **Téléphone, modérateur.** Sur un tournoi CDF terminé, le bloc « Résultats du tournoi » montre « Résultats en attente de validation par la modération » et le bouton de validation sur toute la largeur ; valider, puis retirer la validation (carte 162).
+- [ ] **Téléphone, organisateur.** Modifier un tournoi d'essai sans toucher à l'édition du jeu : elle reste « BB2025 ». Devenir mercenaire puis se retirer (carte 201).
+- [ ] **Téléphone, coach inscrit.** Essayer de terminer un tournoi dont on n'est pas l'organisateur, par l'outil du sujet : le refus est affiché (carte 201).
+- [ ] **Téléphone, membre.** Ouvrir la création et la modification d'un tournoi et d'une ligue : toutes les listes déroulantes sont remplies ; filtrer `/tournois` par région (carte 203).
+
+**Modération et notifications.**
+- [ ] **Téléphone, modérateur.** Dans `/moderation`, la fiche d'un message signalé se lit (type, raison, auteur du signalement, date, extrait) ; « Voir dans le sujet » ouvre le bon message dans le même onglet ; « Masquer » ferme le signalement ; un contenu déjà supprimé affiche « Contenu déjà supprimé » et « Fermer le signalement » (carte 168).
+- [ ] **Avec un vrai envoi d'e-mails.** Une réponse dans un sujet suivi et un premier message privé non lu envoient bien un e-mail lisible ; une mention n'en envoie plus (carte 167).
+
+**Outils du développeur.**
+- [ ] **Téléphone, poste de développement.** Le bouton « Dev Auth » de la barre du haut ouvre la liste des comptes de test, et changer de compte fonctionne (carte 204).
+- [ ] **Ordinateur, VS Code.** Rouvrir `apps/hub/playwright.config.ts` : l'erreur a disparu ; lancer une fois `pnpm test:sso` depuis `apps/hub` : les tests démarrent (carte 154).
+- [ ] **GitHub.** Après l'envoi sur la branche `development`, réactiver l'intégration continue (`gh workflow enable CI`, l'automate qui lance les tests à chaque envoi) et contrôler que son premier lancement passe (carte 074).
+
+**Production (site en ligne).**
+- [ ] Créer une nouvelle clé ImgBB, supprimer l'ancienne qui a été publique, renseigner `IMGBB_API_KEY` sur Vercel et retirer `NEXT_PUBLIC_IMGBB_API_KEY` (voir `DEPLOY.md`), puis envoyer une image sur le site en ligne : elle s'affiche (carte 141).
+- [ ] Après une branche de sauvegarde Neon, lancer `scripts/find-trapped-bbcode.mjs` sur la base de production pour retrouver les messages piégés, puis retirer ce script du dépôt. Sur le site en ligne, les spoilers s'ouvrent et se ferment toujours (carte 159).
+- [ ] Au premier déploiement de la recherche plein texte, vérifier que la migration crée bien l'extension `unaccent` (sinon la créer dans l'éditeur SQL de Neon, voir `DEPLOY.md`) et qu'elle reste rapide sur la vraie table des messages ; puis chercher « equipe » sur le forum en ligne : les messages qui contiennent « équipe » sont trouvés (carte 191).

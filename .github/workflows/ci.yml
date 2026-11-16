@@ -1,5 +1,5 @@
 # CI bbfrance : vérifications lancées par GitHub à chaque envoi de code (push) et chaque Pull Request.
-# Kanban, migrations, types, qualité (ESLint), build, tests du site et test de connexion via le hub.
+# Migrations, types, qualité (ESLint), build, tests du site et test de connexion via le hub.
 # Les quatre applications (site, hub, BBScheme, BBQuizz) passent par les étapes de migrations, de types et de build.
 # Les bases de test sont des serveurs Postgres locaux lancés par `prisma dev` (scripts/local-postgres.mjs), jamais une base réelle.
 name: CI
@@ -32,8 +32,6 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - name: Kanban (cartes rangées dans le bon dossier, valides)
-        run: pnpm kanban
       - run: pnpm --filter @bbfrance/site exec prisma generate
       - run: pnpm --filter @bbfrance/hub exec prisma generate
       - run: pnpm --filter @bbfrance/bbscheme exec prisma generate

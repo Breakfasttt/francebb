@@ -8,10 +8,10 @@ Ce document dit **comment le code est organisé et quelles règles respecter** q
 |---|---|---|
 | `apps/site` | Le site BBFrance (Next.js) | En ligne |
 | `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
-| `apps/bbscheme` | Les schémas tactiques BBScheme, avec leur propre base ; donne un schéma au site par `GET /api/boards/:id` (carte 179, [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : l'éditeur est rangé dans `editeur-en-attente/`, à relancer (carte 071) |
-| `apps/bbquizz` | Le quiz BBQuizz, avec sa propre base (questions, parties, scores des joueurs) ; le site n'a plus de lien vers lui (carte 180, [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : le code du quiz est rangé dans `quiz-en-attente/`, à relancer plus tard |
-| `packages/ui` | Composants d'interface partagés (shadcn/ui) et variables de couleur des 8 thèmes | Utilisé par le site et le hub |
-| `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types (carte 024) | Utilisé par le site (messages du forum) et par l'éditeur en attente |
+| `apps/bbscheme` | Les schémas tactiques BBScheme, avec leur propre base ; donne un schéma au site par `GET /api/boards/:id` ([ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : l'éditeur est rangé dans `editeur-en-attente/`, à relancer |
+| `apps/bbquizz` | Le quiz BBQuizz, avec sa propre base (questions, parties, scores des joueurs) ; le site n'a plus de lien vers lui ([ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : le code du quiz est rangé dans `quiz-en-attente/`, à relancer plus tard |
+| `packages/ui` | Composants d'interface partagés (shadcn/ui) et variables de couleur des 5 thèmes | Utilisé par le site et le hub |
+| `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types | Utilisé par le site (messages du forum) et par l'éditeur en attente |
 
 Le site lit un schéma auprès de l'application BBScheme depuis son serveur, avec le réglage `BBSCHEME_URL` (`apps/site/lib/bbschemeBoard.ts`) ; si elle ne répond pas, le lecteur affiche « Schéma indisponible ».
 
@@ -22,7 +22,7 @@ Le site lit un schéma auprès de l'application BBScheme depuis son serveur, ave
 | Dossier | Contenu | Règle |
 |---|---|---|
 | `app/<page>/` | La page (`page.tsx`, mise en forme en classes Tailwind), ses composants propres (`component/`) et ses actions serveur (`actions.ts`) | Les requêtes à la base de données vont dans `actions.ts` ou dans `page.tsx`, jamais dans un composant d'affichage |
-| `common/components/` | Composants utilisés par au moins 2 pages | Inventaire : skill `.claude/skills/reuse-first` |
+| `common/components/` | Composants utilisés par au moins 2 pages | Inventaire : skill `reuse-first` |
 | `common/hooks/`, `common/utils/` | Petites fonctions réutilisables côté navigateur | |
 | `lib/` | Fonctions côté serveur : base de données, connexion, rôles, BBCode, mail | Jamais importé par un composant navigateur |
 | `prisma/` | Structure de la base (`schema.prisma`), migrations, données de base (`firstSetup.ts`) | `firstSetup.ts` : ne pas modifier sans accord ; toujours `upsert` (crée ou met à jour, ne duplique jamais) |
@@ -35,11 +35,11 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 - **Sécurité** :
   - toute action serveur commence par `getActiveSession()` (`lib/authGuard.ts`), qui refuse les visiteurs non connectés et les bannis ;
   - les droits (modérateur, admin) se vérifient côté serveur avec `lib/roles.ts` ;
-  - le rôle, le bannissement, le thème et le pseudo d'un membre voyagent dans son cookie de session, relu en base au plus toutes les 5 minutes (callback `jwt` d'`auth.ts`, carte 017). Un changement fait par un modérateur sur un autre membre prend donc effet en 5 minutes au plus. Quand un membre modifie son propre profil, le composant appelle `update()` de `useSession()` après l'action serveur : la session est alors relue tout de suite. `update()` ne peut pas servir à se donner des droits, car la base écrase toujours ce que le navigateur envoie ;
+  - le rôle, le bannissement, le thème et le pseudo d'un membre voyagent dans son cookie de session, relu en base au plus toutes les 5 minutes (callback `jwt` d'`auth.ts`). Un changement fait par un modérateur sur un autre membre prend donc effet en 5 minutes au plus. Quand un membre modifie son propre profil, le composant appelle `update()` de `useSession()` après l'action serveur : la session est alors relue tout de suite. `update()` ne peut pas servir à se donner des droits, car la base écrase toujours ce que le navigateur envoie ;
   - **toute fonction exportée d'un fichier `"use server"` est appelable depuis le navigateur par n'importe qui** : n'y exporter que de vraies actions, qui vérifient elles-mêmes l'appelant. Une fonction interne (journal, calcul) va dans `lib/` ;
   - une adresse de retour fournie par l'utilisateur passe par `safeCallbackUrl` (`lib/safeRedirect.ts`).
-- **Règles métier dans `lib/`, membre en paramètre** (carte 198) : une règle (droits, places d'un tournoi, journal de modération…) vit dans un fichier de `lib/` et reçoit le membre concerné en paramètre ; elle ne lit jamais la session elle-même. L'action serveur lit la session une fois avec `getActiveSession()`, vérifie l'appelant, puis appelle la règle avec ce membre. La règle peut ainsi être testée avec un membre fictif. Exemple : `logModerationAction(session.user.id, "POST_DELETED", …)`.
-- **Tests unitaires** (`pnpm test:unit` dans `apps/site`, aussi lancés par `pnpm check`) : Node exécute directement les fichiers TypeScript (`--experimental-strip-types`). Le chargeur `tests/unit/alias-loader.mjs`, passé par `--import`, lui fait comprendre l'alias `@/` et les imports sans extension du code Next.js, sans bibliothèque ajoutée (carte 198). Le champ `imports` de `package.json`, l'autre piste étudiée, n'accepte que des alias commençant par `#` : il aurait fallu réécrire tous les imports du site. Un fichier de `lib/` qui importe d'autres fichiers est donc testable ; ce qui touche la base se teste en passant une fausse transaction (exemple : `tests/unit/tournamentRegistrations.test.mjs`). Un fichier `.tsx` (JSX) ne peut pas être chargé ainsi.
+- **Règles métier dans `lib/`, membre en paramètre** : une règle (droits, places d'un tournoi, journal de modération…) vit dans un fichier de `lib/` et reçoit le membre concerné en paramètre ; elle ne lit jamais la session elle-même. L'action serveur lit la session une fois avec `getActiveSession()`, vérifie l'appelant, puis appelle la règle avec ce membre. La règle peut ainsi être testée avec un membre fictif. Exemple : `logModerationAction(session.user.id, "POST_DELETED", …)`.
+- **Tests unitaires** (`pnpm test:unit` dans `apps/site`, aussi lancés par `pnpm check`) : Node exécute directement les fichiers TypeScript (`--experimental-strip-types`). Le chargeur `tests/unit/alias-loader.mjs`, passé par `--import`, lui fait comprendre l'alias `@/` et les imports sans extension du code Next.js, sans bibliothèque ajoutée. Le champ `imports` de `package.json`, l'autre piste étudiée, n'accepte que des alias commençant par `#` : il aurait fallu réécrire tous les imports du site. Un fichier de `lib/` qui importe d'autres fichiers est donc testable ; ce qui touche la base se teste en passant une fausse transaction (exemple : `tests/unit/tournamentRegistrations.test.mjs`). Un fichier `.tsx` (JSX) ne peut pas être chargé ainsi.
 - **Données personnelles** : le client `prisma` par défaut ne renvoie jamais l'email des membres. `prismaWithEmail` est réservé à la connexion et à l'envoi de mails.
 - **Erreurs** : pas de `throw` dans le nouveau code. Une action qui lit des données renvoie `null` (ou une liste vide) et l'appelant gère le cas ; une action qui modifie des données renvoie `{ success, error }` (type `ActionResult` de `lib/actionResult.ts`) et le composant affiche `error` dans une notification. En production, Next.js remplace le message d'une erreur levée par un texte générique : le membre ne saurait pas pourquoi son action a échoué. Le lien vers la page de connexion porte l'adresse de retour dans `?callbackUrl=`.
 - **Actions serveur plutôt que routes d'API** : une page qui doit modifier des données appelle une action serveur (`actions.ts`), pas une adresse `/api/…`. Les routes d'API sont réservées aux appels venant de l'extérieur du site.
@@ -49,10 +49,10 @@ Chaque fonctionnalité a sa fiche dans [docs/features/](docs/features/) : elle d
 - **Langue** : commentaires d'en-tête de fichier en français, noms de variables et de fonctions en anglais.
 - **Interface** :
   - utiliser les composants existants (boutons, sélecteurs, fenêtres, notifications de `@bbfrance/ui`) ;
-  - mise en forme en classes Tailwind, couleurs uniquement via les variables v2 des thèmes (`bg-bb-surface`, `var(--bb-text)`…, jamais de code couleur en dur ; skill `theming-rules`) ;
+  - mise en forme en classes Tailwind, couleurs uniquement via les variables v2 des thèmes (`bg-bb-surface`, `var(--bb-text)`…, jamais de code couleur en dur ; skill `ui`) ;
   - icônes Lucide uniquement ;
   - chaque écran testé en taille téléphone ;
-  - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En Tailwind, les préfixes `max-lg:` (téléphone) et `lg:` (ordinateur) ; dans un fichier CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `mobile-ux`).
+  - un seul seuil entre l'affichage téléphone et l'affichage ordinateur : 1024 pixels de large. En Tailwind, les préfixes `max-lg:` (téléphone) et `lg:` (ordinateur) ; dans un fichier CSS, `@media (max-width: 1024px)` (et `min-width: 1025px` pour l'ordinateur seul) ; en JavaScript, `useIsMobile()` sans argument ou la constante `MOBILE_BREAKPOINT` (`common/hooks/useIsMobile.ts`). Une autre largeur ne sert qu'à ajuster une grille, jamais à masquer ou déplacer une colonne, un onglet ou des filtres (détails dans le skill `ui`).
 
 ## Règles vérifiées automatiquement
 
@@ -87,7 +87,7 @@ Le cliquet contrôle aussi les paquets partagés : `packages/ui` et `packages/bb
   | Icônes | `lucide-react` |
   | Notifications | `sonner`, via `@bbfrance/ui` |
 
-- Bibliothèque majeure (cadre, connexion, interface, base de données) : passage par le conseil (`/council`) et un ADR.
+- Toute nouvelle bibliothèque, accordée par le responsable, est expliquée dans un ADR (`docs/adr/`). Pour une bibliothèque majeure (cadre, connexion, interface, base de données), l'outil `conseil` peut aider à trancher.
 - Versions exactes, figées dans `pnpm-lock.yaml`.
 
 ## Données

@@ -1,64 +1,43 @@
 # Kanban BBFrance
 
-Le kanban est la liste des tâches du projet. Chaque tâche est une **carte** : un petit fichier texte qui explique ce qu'il faut faire, pourquoi, et comment vérifier que c'est fini.
+Le kanban ne sert qu'aux **gros chantiers** : un travail qui demande plusieurs séances, ou qui touche la connexion des membres, la sécurité, la base de données ou une nouvelle application. Une petite ou moyenne modification n'a pas de carte : son message de commit sert de journal (titre clair, corps qui dit pourquoi).
 
 ## Où sont les cartes
 
-Le dossier dans lequel se trouve une carte **est** son état :
+Le dossier d'une carte **est** son état :
 
 | Dossier | Contenu |
 |---|---|
-| `a-faire/` | Cartes pas encore commencées |
-| `en-cours/` | Cartes en train d'être réalisées (une ou deux à la fois) |
-| `a-tester/` | Cartes terminées par l'IA et vérifiées par les tests automatiques, qui attendent un essai à la main par un humain (sur un vrai téléphone, avec un vrai compte Discord…). Après l'essai réussi, elles passent dans `termine/` |
-| `termine/` | Cartes réalisées et validées |
-| `annule/` | Cartes abandonnées sans être réalisées (la raison est écrite dans la carte) |
-| `deprecie/` | Cartes terminées dont le résultat a été remplacé depuis (la carte indique par quoi) |
-| `epics/` | Les **épics** : grands chantiers qui regroupent plusieurs cartes |
+| `a-faire/` | Chantiers pas encore commencés |
+| `en-cours/` | Chantiers en cours |
 
-Changer l'état d'une carte = la déplacer d'un dossier à l'autre avec `git mv` (ex. `git mv kanban/a-faire/041-essai-postgres.md kanban/en-cours/`).
+Une carte terminée ou abandonnée part dans `archive/kanban/` avec `git mv`. Ce qui reste à essayer à la main (vrai téléphone, vrai compte Discord ou Google…) va dans [TESTS-MANUELS.md](../TESTS-MANUELS.md), pas dans une carte.
 
-Pour voir la liste à jour : `pnpm kanban`. La même commande vérifie que tout est bien rangé ; la CI (vérification automatique sur GitHub) la lance à chaque envoi de code.
+`pnpm kanban` liste les cartes et vérifie que chacune a un numéro unique.
 
 ## Format d'une carte
 
-Nom du fichier : `NNN-titre-court.md`, où `NNN` est un numéro à 3 chiffres unique (le plus grand numéro existant + 1).
+Nom du fichier : `NNN-titre-court.md`, où `NNN` est le plus grand numéro existant + 1 (archives comprises).
 
 ```markdown
 ---
-id: 050
+id: 219
 title: Titre court
-epic: E03
-app: site
-depends_on: [041, 046]
-adr: 0004
-verify: ce qui prouve que c'est fini (commande ou vérification visible)
 ---
 
-# 050 — Titre court
+# 219 — Titre court
 
 ## Pourquoi
-## Action
+## À faire
+## Résultat
 ```
 
-| Champ | Signification |
-|---|---|
-| `id` | Le numéro, identique au début du nom du fichier |
-| `epic` | Le grand chantier de rattachement (`kanban/epics/Exx-*.md`), ou vide |
-| `app` | L'application concernée : `site`, `hub`, `packages/ui`… |
-| `depends_on` | Les cartes à terminer avant celle-ci (`[]` si aucune) |
-| `adr` | Le numéro de la décision écrite (`docs/adr/`) qui justifie la carte, ou vide |
-| `verify` | Obligatoire : comment on sait que la carte est finie |
+La section « Résultat » se remplit à la fin : ce qui a été fait, les décisions prises, ce qui reste à essayer à la main (recopié dans `TESTS-MANUELS.md`). Une carte abandonnée dit pourquoi dans une section « Annulée ».
 
-Une carte terminée reçoit une section **« Résultat »** qui dit ce qui a été fait. Une carte annulée reçoit une section **« Annulée »** qui dit pourquoi.
+Champs facultatifs : `app` (application concernée), `adr` (numéro de la décision écrite dans `docs/adr/`).
 
 ## Les étapes
 
-1. Nouvelle demande : la commande `/card` rédige la carte dans `a-faire/`.
+1. `/card` rédige la carte dans `a-faire/`.
 2. Démarrage : la carte passe dans `en-cours/`.
-3. Fin : la commande `/ship` lance les vérifications. Après ta validation, la carte passe dans `termine/`.
-4. Décision lourde (connexion, base de données, nouvelle bibliothèque, découpage d'une app) : `/council` d'abord, qui produit un ADR.
-
-## Épics
-
-`kanban/epics/Exx-titre.md` : en-tête `id`, `title`, `phase`, et une section « Terminé quand » qui dit quand le chantier est fini.
+3. Fin : `/ship` vérifie, remplit le « Résultat » et range la carte dans `archive/kanban/`.

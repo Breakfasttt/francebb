@@ -2,7 +2,7 @@
 
 - **Statut** : proposé | accepté | remplacé par ADR-XXXX | abandonné
 - **Date** : AAAA-MM-JJ
-- **Conseil** : oui (`/council`) | non
+- **Conseil** : oui (outil `conseil`) | non
 
 > Rédiger pour quelqu'un qui découvre le projet : phrases simples, chaque terme technique expliqué (ou présent dans `docs/GLOSSAIRE.md`).
 

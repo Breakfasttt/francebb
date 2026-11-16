@@ -2,7 +2,7 @@
 
 - **Statut** : accepté
 - **Date** : 2026-11-04
-- **Conseil** : oui (outil `conseil`, compte rendu dans `.claude/council/sessions/2026-11-04-1254-sortir-le-quiz-bbquizz-et-l-editeur-bbsc.md`), décision finale prise par le responsable
+- **Conseil** : oui (outil `conseil`, compte rendu dans `archive/council/sessions/2026-11-04-1254-sortir-le-quiz-bbquizz-et-l-editeur-bbsc.md`), décision finale prise par le responsable
 
 > Un ADR (Architecture Decision Record) est une fiche qui garde la trace d'une décision importante : le problème, le choix fait, et pourquoi. Voir `docs/GLOSSAIRE.md`.
 

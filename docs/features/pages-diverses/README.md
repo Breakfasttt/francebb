@@ -1,6 +1,6 @@
 # Pages diverses (accueil, jouer, spy, mentions légales, banni, 404, thèmes)
 
-> Fiche écrite pour quelqu'un qui découvre le projet : phrases simples, termes techniques expliqués. Tenue à jour à chaque carte qui touche la fonctionnalité (commande `/ship`). Environ 80 lignes au plus.
+> Fiche écrite pour quelqu'un qui découvre le projet : phrases simples, termes techniques expliqués. Tenue à jour en fin de gros chantier (commande `/ship`) ou quand le comportement visible change. Environ 80 lignes au plus.
 
 ## À quoi ça sert
 
@@ -64,14 +64,14 @@ Premier élément de chaque page (`app/layout.tsx`) : invisible, il apparaît en
 Le bouton « Se connecter / S'inscrire » de la barre du haut (téléphone et ordinateur) est masqué sur `/auth/login` : il y mènerait à la page déjà ouverte.
 
 ### Compte banni — `/banned` (`app/banned/page.tsx`)
-Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx`) et voit la raison du bannissement. Tout autre visiteur est renvoyé à l'accueil. Depuis la carte 058, la page n'utilise que des variables de thème (avant, ses couleurs écrites en dur la rendaient presque illisible dans le thème clair) : depuis la carte 090, c'est une carte centrée (composants `Card` et `Button` de `packages/ui`) avec l'icône de la couleur « danger » du thème, l'encadré de la raison et le bouton « Retour à l'accueil ». La carte est une région nommée « Compte banni », que le test des captures repère par ce nom. Captures de référence dans les 8 thèmes : test « page des bannis sur téléphone » de `tests/e2e/visual-themes.spec.ts`. Depuis la carte 067, ce test utilise un membre banni par thème, préparé par `globalSetup.ts` (`themedBannedId`) : il ne modifie plus la base pendant que le site tourne, ce qui le faisait parfois dépasser son délai.
+Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx`) et voit la raison du bannissement. Tout autre visiteur est renvoyé à l'accueil. Depuis la carte 058, la page n'utilise que des variables de thème (avant, ses couleurs écrites en dur la rendaient presque illisible dans le thème clair) : depuis la carte 090, c'est une carte centrée (composants `Card` et `Button` de `packages/ui`) avec l'icône de la couleur « danger » du thème, l'encadré de la raison et le bouton « Retour à l'accueil ». La carte est une région nommée « Compte banni », que le test des captures repère par ce nom. Captures de référence dans les thèmes : test « page des bannis sur téléphone » de `tests/e2e/visual-themes.spec.ts`. Depuis la carte 067, ce test utilise un membre banni par thème, préparé par `globalSetup.ts` (`themedBannedId`) : il ne modifie plus la base pendant que le site tourne, ce qui le faisait parfois dépasser son délai.
 **Sur téléphone** : marges réduites, bouton de retour sur toute la largeur et de 44 pixels de haut au moins. Audit mobile propre à 360 et 390 pixels.
 
 ### Page introuvable — 404 (`app/not-found.tsx`)
 « Erreur 404 », le titre « Terrain impraticable ! » et un bouton de retour à l'accueil, dans une carte centrée (carte 090). **Sur téléphone** : bouton sur toute la largeur, 44 pixels de haut ; audit mobile propre à 360 et 390 pixels.
 
 ### Thèmes
-5 thèmes depuis la carte 218 : Sombre (identifiant `vestiaire`, le thème par défaut), Saison 3, NAF, Néhékhara et Violet (identifiant `elfes-noirs`). Les 35 thèmes de l'ADR-0009 (un par équipe) ont été essayés, puis réduits à ces 5 à la demande du responsable. Tous viennent d'une source unique, `packages/ui/src/themes/themeData.mjs`, dont le script `corepack pnpm themes:build` (à la racine du dépôt) génère les fichiers de couleurs et la liste lue par le site (voir le skill `theming-rules`). Le coach choisit le sien dans le sélecteur (panneau « Plus », menu du compte, profil, inscription) : une liste simple, une ligne de 44 pixels par thème avec un aperçu de ses couleurs. Le thème est enregistré en base (`updateTheme`) et dans le navigateur ; un membre qui avait choisi un thème retiré voit le thème par défaut.
+5 thèmes depuis la carte 218 : Sombre (identifiant `vestiaire`, le thème par défaut), Saison 3, NAF, Néhékhara et Violet (identifiant `elfes-noirs`). Les 35 thèmes de l'ADR-0009 (un par équipe) ont été essayés, puis réduits à ces 5 à la demande du responsable. Tous viennent d'une source unique, `packages/ui/src/themes/themeData.mjs`, dont le script `corepack pnpm themes:build` (à la racine du dépôt) génère les fichiers de couleurs et la liste lue par le site (voir le skill `ui`). Le coach choisit le sien dans le sélecteur (panneau « Plus », menu du compte, profil, inscription) : une liste simple, une ligne de 44 pixels par thème avec un aperçu de ses couleurs. Le thème est enregistré en base (`updateTheme`) et dans le navigateur ; un membre qui avait choisi un thème retiré voit le thème par défaut.
 
 ## Les fichiers
 
@@ -94,7 +94,7 @@ Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx
 | `apps/site/app/not-found.tsx` | Page 404 |
 | `apps/site/common/components/NavigationProgress/NavigationProgress.tsx` | Barre de progression de la navigation (carte 188) |
 | `apps/site/app/error.tsx`, `app/global-error.tsx`, `common/components/ErrorScreen/ErrorScreen.tsx` | Écrans d'erreur (carte 188) |
-| `packages/ui/src/themes/<id>.css` | Couleurs de chaque thème en variables v2 (`[data-theme='…']`, skill `theming-rules`) |
+| `packages/ui/src/themes/<id>.css` | Couleurs de chaque thème en variables v2 (`[data-theme='…']`, skill `ui`) |
 | `apps/site/common/components/ThemeProvider/ThemeProvider.tsx` | `useTheme()` : thème actif, `setTheme`, liste des thèmes |
 | `apps/site/common/components/DebugAuthWidget/DebugAuthWidget.tsx` | Comptes de test, bouton de la barre haute en développement seulement (carte 204) |
 

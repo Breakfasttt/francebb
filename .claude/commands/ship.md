@@ -1,15 +1,12 @@
 ---
-description: Termine une carte - vérifications, fiche de fonctionnalité, rangement, proposition de commit
+description: Termine un gros chantier - vérifications, fiche de fonctionnalité, rangement de la carte, proposition de commit
 argument-hint: <numéro de carte>
 ---
 
 Clôture de la carte **$ARGUMENTS** (`kanban/en-cours/$ARGUMENTS-*.md`).
 
-1. Lancer `pnpm check` (types et ESLint), puis le parcours de fin de carte `pnpm --filter @bbfrance/site test:parcours` (le serveur de développement doit être arrêté) et la vérification (`verify`) de la carte. Montrer les résultats. Un échec arrête tout. **La suite complète `pnpm test:e2e` n'est lancée que si le user la demande** (carte 157) ; si la carte a modifié un test de bout en bout, relancer seulement ce fichier de test.
-1b. Lancer `pnpm --filter @bbfrance/site temps-reponse` (environ 2 minutes) : il mesure le temps de réponse du serveur des 5 pages principales et écrit `apps/site/logs/temps-reponse-AAAA-MM-JJ.txt`. Montrer les médianes ; une page au-dessus de 1000 ms est signalée au user (c'est l'une des conditions pour rouvrir la question du cache, ADR 0005), mais cela n'arrête pas la clôture.
-2. **Mobile** : si la carte touche l'interface, vérifier que ses écrans font partie du parcours de fin de carte (`apps/site/tests/parcours/parcours.spec.ts`), sinon les y ajouter : il contrôle en taille téléphone le débordement et les boutons de 44 pixels. Sinon, la carte n'est pas terminée.
-3. Mettre à jour la fiche de la fonctionnalité concernée (`docs/features/<nom>/README.md`, modèle `docs/features/TEMPLATE.md`), ou la créer si elle n'existe pas.
-4. Nouveau composant ou outil partagé : l'ajouter au skill `reuse-first`. Changement de mise en ligne : mettre à jour `DEPLOY.md`. Nouveau terme technique : l'ajouter à `docs/GLOSSAIRE.md`.
-5. Si le nombre d'erreurs ESLint a baissé : `node scripts/lint-ratchet.mjs --update` (dans `apps/site`).
-6. Demander au user de valider le résultat. Après son accord : ajouter une section « Résultat » à la carte, la déplacer avec `git mv` dans `kanban/termine/`, puis lancer `pnpm kanban`. Si la carte demande un essai à la main que l'IA ne peut pas faire (vrai téléphone, vrai compte Discord ou Google, iPhone…), la ranger plutôt dans `kanban/a-tester/` en écrivant dans le « Résultat » ce que l'humain doit essayer ; elle passe dans `termine/` après son essai.
-7. Proposer le commit après avoir montré `git diff --cached --stat`. Format : titre `[NNN] …` de moins de 50 caractères, corps qui explique pourquoi, auteur breakyt, **jamais de ligne `Co-Authored-By`**. Ne commiter que si le user le demande.
+1. `pnpm check`. Si l'interface est touchée : `pnpm --filter @bbfrance/site test:parcours` (téléphone et ordinateur ; serveur de développement arrêté). Si un écran nouveau n'est pas dans `apps/site/tests/parcours/parcours.spec.ts`, l'y ajouter. Un échec arrête tout. La suite e2e complète tourne en CI : pas en local sans demande.
+2. Mettre à jour la fiche `docs/features/<nom>/README.md` si le comportement visible a changé (modèle `docs/features/TEMPLATE.md`). Nouveau composant partagé : une ligne dans `reuse-first`. Changement de mise en ligne : `DEPLOY.md`.
+3. Si le nombre d'erreurs ESLint a baissé : `node scripts/lint-ratchet.mjs --update` (dans `apps/site`).
+4. Remplir la section « Résultat » de la carte. Ce qui reste à essayer à la main va dans `TESTS-MANUELS.md`. Après accord du user : `git mv` de la carte vers `archive/kanban/`.
+5. Proposer le commit après avoir montré `git diff --cached --stat` : titre `[NNN] …` de moins de 50 caractères, corps qui dit pourquoi, **jamais de ligne `Co-Authored-By`**. Ne commiter que si le user le demande.

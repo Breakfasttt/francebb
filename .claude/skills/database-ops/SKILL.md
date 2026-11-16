@@ -35,6 +35,7 @@ L'outil `scripts/local-postgres.mjs` démarre de petits serveurs Postgres avec `
 - `prisma dev` choisit lui-même ses ports : les adresses sont enregistrées dans `.local-postgres.json` à la racine (hors git).
 - Après un redémarrage de l'ordinateur, relancer `pnpm db:start`.
 - Explorer les données : `pnpm exec prisma studio` dans l'application.
+- La base `prisma dev` coupe parfois la connexion sous des requêtes parallèles (« Server has closed the connection ») : relancer `pnpm db:start`. La base des tests (`site-e2e`) reste fiable.
 - Repartir d'une base de développement vide : `node scripts/local-postgres.mjs fresh site`, puis `pnpm exec prisma migrate deploy` et `pnpm db:setup`.
 
 ## Production (Neon)

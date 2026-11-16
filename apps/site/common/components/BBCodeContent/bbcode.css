@@ -3,7 +3,7 @@
  * message est affiché : forum, articles, ligues, messagerie, page « Jouer », aperçu de l'éditeur. Elle est donc chargée
  * pour tout le site par app/tailwind.css. Les balises simples (citation, code, tableau, lien) portent leur style dans
  * la balise elle-même ; ici ne restent que celles qui ont besoin d'un état (ouvert, révélé) ou d'un survol.
- * Couleurs : variables v2 uniquement (voir le skill theming-rules).
+ * Couleurs : variables v2 uniquement (voir le skill ui).
  */
 
 /* Contenu d'un message : un mot très long (adresse, pseudo) passe à la ligne au lieu d'élargir la page. */

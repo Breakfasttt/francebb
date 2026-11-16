@@ -1,6 +1,6 @@
 # Hub de connexion (apps/hub)
 
-> Fiche écrite pour quelqu'un qui découvre le projet : phrases simples, termes techniques expliqués. Tenue à jour à chaque carte qui touche la fonctionnalité (commande `/ship`). Environ 80 lignes au plus.
+> Fiche écrite pour quelqu'un qui découvre le projet : phrases simples, termes techniques expliqués. Tenue à jour en fin de gros chantier (commande `/ship`) ou quand le comportement visible change. Environ 80 lignes au plus.
 
 ## À quoi ça sert
 
@@ -23,7 +23,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 - Sur le site, en mode hub, le bouton « Déconnexion » ferme aussi la session du hub : à la connexion suivante, le hub redemande les identifiants. Le coach revient ensuite sur l'accueil du site.
 - Un compte banni au hub voit « Ce compte BBFrance a été suspendu. » sur `/sign-in` et ne peut plus se connecter à aucune application.
 - Accès : tout visiteur. Le hub ne connaît aucun rôle métier (modérateur, admin) : ces rôles restent sur le site.
-- **Sur téléphone** : le hub n'a pas de fichier mobile, mais sa mise en page est simple et pensée pour : une seule colonne avec 16 px de marge de chaque côté, les boutons et les champs de `packages/ui` à la taille tactile (44 px de haut au moins), des champs en police de 16 px (pas de zoom automatique sur iPhone). Points à vérifier : Discord et Google s'affichent même s'ils ne sont pas configurés au hub (le site les propose toujours en mode hub ; sans réglages au hub, le coach tombe sur le formulaire du hub avec une erreur) ; un seul thème (les couleurs de « Vestiaire », le thème par défaut du site), pas les 8 thèmes ; la reconnexion silencieuse sur Safari iOS n'est possible qu'avec un domaine parent commun (carte 035, non testable en local).
+- **Sur téléphone** : le hub n'a pas de fichier mobile, mais sa mise en page est simple et pensée pour : une seule colonne avec 16 px de marge de chaque côté, les boutons et les champs de `packages/ui` à la taille tactile (44 px de haut au moins), des champs en police de 16 px (pas de zoom automatique sur iPhone). Points à vérifier : Discord et Google s'affichent même s'ils ne sont pas configurés au hub (le site les propose toujours en mode hub ; sans réglages au hub, le coach tombe sur le formulaire du hub avec une erreur) ; un seul thème (les couleurs de « Vestiaire », le thème par défaut du site), pas les 5 thèmes ; la reconnexion silencieuse sur Safari iOS n'est possible qu'avec un domaine parent commun (carte 035, non testable en local).
 
 ## Les fichiers
 

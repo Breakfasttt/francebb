@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Ce fichier décrit BBFrance comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle d'un futur `DESIGN.md` et du skill `theming-rules`.
+> Ce fichier décrit BBFrance comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle d'un futur `DESIGN.md` et du skill `ui`.
 
 ## Platform
 
@@ -41,7 +41,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
   - `apps/hub`, le hub de connexion : un compte unique (le « passeport Blood Bowl ») pour toutes les applications. Prêt, pas encore en ligne. Il est indépendant et ne connaît aucune application en particulier (ADR-0007) ;
   - `apps/bbscheme` et `apps/bbquizz`, en attente : elles n'affichent qu'une page « revient bientôt » (ADR-0008).
 - **Le tournoi rythme la vie du site** : annonce sur le forum, inscriptions, paiement géré par l'organisateur et ses commissaires, saisie des résultats, puis mise à jour du classement.
-- **Le téléphone est l'appareil principal.** Sur téléphone, la navigation passe par une barre basse à cinq onglets (Accueil, Forum, Tournois, Messages, Plus). Le seuil entre téléphone et ordinateur est unique : 1024 pixels (skill `mobile-ux`).
+- **Le téléphone est l'appareil principal.** Sur téléphone, la navigation passe par une barre basse à cinq onglets (Accueil, Forum, Tournois, Messages, Plus). Le seuil entre téléphone et ordinateur est unique : 1024 pixels (skill `ui`).
 - Le projet est maintenu par un développeur bénévole, aidé par l'IA. Toute la documentation est écrite en français clair, pour quelqu'un qui découvre le projet.
 
 ## Capabilities and Constraints
@@ -64,7 +64,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 ## Evidence on Hand
 
 - Contenu réel de la communauté : sujets du forum, tournois, résultats, classements et archives CDF dans la base de production.
-- Fiches de fonctionnalité : `docs/features/`. Décisions : `docs/adr/`. Audits : `docs/audits/`, `docs/mobile-audit.md`.
+- Fiches de fonctionnalité : `docs/features/`. Décisions : `docs/adr/`. Audits : `archive/docs/audits/`, `docs/mobile-audit.md`.
 - Images du site : `apps/site/public/images/`.
 - Aucun témoignage, chiffre d'audience ni article de presse n'a été fourni : ne pas en inventer.
 

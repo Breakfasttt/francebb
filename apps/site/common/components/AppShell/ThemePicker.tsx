@@ -8,7 +8,7 @@
  * Une liste simple : une ligne d'au moins 44 pixels par thème, avec un aperçu de ses couleurs (fond de page, carte
  * et couleur d'accent, lues dans la liste générée, `swatch`). Ces couleurs sont écrites en ligne (`style`) : chaque
  * aperçu montre un autre thème que le thème actif, il ne peut donc pas utiliser les variables du thème affiché
- * (exception prévue par le skill theming-rules).
+ * (exception prévue par le skill ui).
  */
 import { useTransition } from "react";
 import { useSession } from "next-auth/react";

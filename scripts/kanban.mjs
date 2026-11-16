@@ -1,79 +1,64 @@
 /**
- * Vérifie le kanban et affiche un résumé (aucun fichier généré).
- * Le kanban est rangé en dossiers : le dossier d'une carte EST son statut.
- *   kanban/a-faire/   kanban/en-cours/   kanban/a-tester/   kanban/termine/   kanban/annule/   kanban/deprecie/
- * Contrôles : chaque carte est dans un dossier connu, son numéro (id) correspond au début du nom de fichier
- * et n'existe qu'une fois, son épic existe, ses dépendances existent, le champ verify est rempli.
- * Usage : pnpm kanban   (lancé aussi par la CI : échoue si une carte est mal rangée ou invalide)
+ * Liste les cartes du kanban (gros chantiers) et vérifie leurs numéros.
+ * Le dossier d'une carte est son état : kanban/a-faire/ ou kanban/en-cours/.
+ * Les cartes terminées ou abandonnées sont dans archive/kanban/ : leurs numéros comptent pour l'unicité.
+ * Contrôles : nom NNN-titre.md, en-tête avec un id égal au début du nom, numéro unique.
+ * Usage : pnpm kanban
  */
 import { readdirSync, readFileSync, existsSync } from "node:fs";
+import { join } from "node:path";
 
 const FOLDERS = [
-  ["a-tester", "À tester par un humain"],
   ["en-cours", "En cours"],
   ["a-faire", "À faire"],
-  ["termine", "Terminé"],
-  ["deprecie", "Déprécié"],
-  ["annule", "Annulé"],
 ];
 
-function parseFrontmatter(path) {
+function frontmatter(path) {
   const content = readFileSync(path, "utf-8").replace(/\r\n/g, "\n");
   const match = content.match(/^---\n([\s\S]*?)\n---/);
   if (!match) return null;
   const data = {};
   for (const line of match[1].split("\n")) {
     const pair = line.match(/^(\w+):\s*(.*)$/);
-    if (!pair) continue;
-    const raw = pair[2].trim();
-    data[pair[1]] = raw.startsWith("[")
-      ? raw.slice(1, -1).split(",").map((item) => item.trim()).filter(Boolean)
-      : raw;
+    if (pair) data[pair[1]] = pair[2].trim().replace(/^"(.*)"$/, "$1");
   }
   return data;
 }
 
-const errors = [];
-const knownFolders = new Set(FOLDERS.map(([folder]) => folder));
-for (const entry of readdirSync("kanban", { withFileTypes: true })) {
-  if (entry.isDirectory() && !knownFolders.has(entry.name) && entry.name !== "epics") errors.push(`kanban/${entry.name}/ : dossier inconnu`);
-  if (entry.isFile() && entry.name !== "README.md") errors.push(`kanban/${entry.name} : une carte doit être rangée dans un dossier d'état`);
+// Numéros déjà pris dans les archives (tous sous-dossiers)
+function archivedIds(dir) {
+  if (!existsSync(dir)) return [];
+  const ids = [];
+  for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    if (entry.isDirectory()) ids.push(...archivedIds(join(dir, entry.name)));
+    else if (/^\d{3}-.*\.md$/.test(entry.name)) ids.push(entry.name.slice(0, 3));
+  }
+  return ids;
 }
 
-const epicIds = new Set(
-  readdirSync("kanban/epics")
-    .filter((name) => /^E\d+-.*\.md$/.test(name))
-    .map((name) => parseFrontmatter(`kanban/epics/${name}`)?.id)
-);
-
+const errors = [];
 const cards = [];
 for (const [folder] of FOLDERS) {
-  if (!existsSync(`kanban/${folder}`)) continue;
-  for (const name of readdirSync(`kanban/${folder}`)) {
+  const dir = `kanban/${folder}`;
+  if (!existsSync(dir)) continue;
+  for (const name of readdirSync(dir)) {
     if (name === "README.md") continue;
+    const where = `${dir}/${name}`;
     if (!/^\d{3}-.*\.md$/.test(name)) {
-      errors.push(`kanban/${folder}/${name} : nom attendu NNN-titre.md`);
+      errors.push(`${where} : nom attendu NNN-titre.md`);
       continue;
     }
-    const data = parseFrontmatter(`kanban/${folder}/${name}`);
-    if (!data) errors.push(`kanban/${folder}/${name} : en-tête (frontmatter) absent`);
-    cards.push({ folder, file: name, ...data });
+    const data = frontmatter(where);
+    if (!data) errors.push(`${where} : en-tête (frontmatter) absent`);
+    else if (data.id !== name.slice(0, 3)) errors.push(`${where} : id « ${data.id} » différent du début du nom`);
+    cards.push({ folder, id: name.slice(0, 3), title: data?.title ?? name });
   }
 }
 
-const ids = new Set();
+const seen = new Set(archivedIds("archive/kanban"));
 for (const card of cards) {
-  const where = `kanban/${card.folder}/${card.file}`;
-  if (card.id !== card.file.slice(0, 3)) errors.push(`${where} : id « ${card.id} » différent du début du nom de fichier`);
-  if (ids.has(card.id)) errors.push(`${where} : numéro ${card.id} déjà utilisé`);
-  ids.add(card.id);
-  if (card.status !== undefined) errors.push(`${where} : champ status interdit (le dossier donne le statut)`);
-  if (card.epic && !epicIds.has(card.epic)) errors.push(`${where} : épic inconnue « ${card.epic} »`);
-  if (!card.verify) errors.push(`${where} : champ verify vide`);
-  if (!Array.isArray(card.depends_on)) errors.push(`${where} : depends_on doit être une liste ([] si aucune)`);
-}
-for (const card of cards) {
-  for (const dep of card.depends_on ?? []) if (!ids.has(dep)) errors.push(`kanban/${card.folder}/${card.file} : dépendance inconnue ${dep}`);
+  if (seen.has(card.id)) errors.push(`carte ${card.id} : numéro déjà utilisé`);
+  seen.add(card.id);
 }
 
 if (errors.length > 0) {
@@ -83,10 +68,8 @@ if (errors.length > 0) {
 
 for (const [folder, label] of FOLDERS) {
   const list = cards.filter((card) => card.folder === folder);
-  if (folder === "termine" || folder === "annule" || folder === "deprecie") {
-    console.log(`${label} : ${list.length} carte(s)`);
-    continue;
-  }
   console.log(`${label} (${list.length})`);
   for (const card of list) console.log(`  ${card.id}  ${card.title}`);
 }
+const next = String(Math.max(0, ...[...seen].map(Number)) + 1).padStart(3, "0");
+console.log(`Prochain numéro libre : ${next}`);

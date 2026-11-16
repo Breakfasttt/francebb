@@ -4,7 +4,7 @@
 // Les couleurs doivent passer par les variables CSS des thèmes (voir ARCHITECTURE.md).
 const HEX_COLOR = "/#([0-9a-fA-F]{3,4}|[0-9a-fA-F]{6}|[0-9a-fA-F]{8})\\b/";
 const HEX_COLOR_MESSAGE =
-  "Code couleur en dur : utiliser une variable CSS des thèmes, par exemple var(--primary) (skill theming-rules).";
+  "Code couleur en dur : utiliser une variable CSS des thèmes, par exemple var(--bb-accent) (skill ui).";
 
 // Couleurs : aucun code hexadécimal dans les composants.
 export const hexColorRule = [
@@ -21,11 +21,11 @@ export const forbidNativeElementsRule = [
     forbid: [
       {
         element: "button",
-        message: "utiliser un bouton de common/components/Button, par exemple ClassicButton, ou le Button de @bbfrance/ui (skill ui-components).",
+        message: "utiliser le Button de @bbfrance/ui (skill ui).",
       },
       {
         element: "select",
-        message: "utiliser ClassicSelect de common/components/Form (skill ui-components).",
+        message: "utiliser le Select de @bbfrance/ui (skill ui).",
       },
     ],
   },

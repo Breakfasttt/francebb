@@ -151,7 +151,7 @@ components:
 
 # Design System: BBFrance
 
-> Ce fichier décrit l'apparence actuelle de BBFrance, relevée dans le code. Il est lu par l'outil de conception Impeccable (skill `impeccable`) pour que les nouveaux écrans restent cohérents. Les valeurs de l'en-tête (entre les lignes `---`) sont celles du thème par défaut « Vestiaire » ; la source de vérité reste le code : `packages/ui/src/tokens.css` et `packages/ui/src/themes/`. Les règles des thèmes sont dans le skill `theming-rules`, celles du téléphone dans le skill `mobile-ux`.
+> Ce fichier décrit l'apparence actuelle de BBFrance, relevée dans le code. Il est lu par l'outil de conception Impeccable (skill `impeccable`) pour que les nouveaux écrans restent cohérents. Les valeurs de l'en-tête (entre les lignes `---`) sont celles du thème par défaut « Vestiaire » ; la source de vérité reste le code : `packages/ui/src/tokens.css` et `packages/ui/src/themes/`. Les règles des thèmes et du téléphone sont dans le skill `ui`.
 
 ## Overview
 
