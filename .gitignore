@@ -59,3 +59,6 @@ yarn-error.log*
 
 # Adresses des bases Postgres locales, écrites par scripts/local-postgres.mjs
 .local-postgres.json
+
+# Réglages locaux de l'outil de conception Impeccable (propres à chaque poste)
+.impeccable/config.local.json

@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-16T12:00:00.000Z",
+  "title": "Design System: BBFrance",
+  "extensions": {
+    "colorMeta": {
+      "vestiaire-bg": { "role": "neutral", "displayName": "Noir de vestiaire", "canonical": "#111215", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
+      "vestiaire-surface": { "role": "neutral", "displayName": "Ardoise", "canonical": "#1a1c21", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
+      "vestiaire-surface-2": { "role": "neutral", "displayName": "Ardoise en relief", "canonical": "#252830", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
+      "vestiaire-border": { "role": "neutral", "displayName": "Joint gris", "canonical": "#2f333b", "tonalRamp": ["#14161a", "#1f2228", "#2f333b", "#40454f", "#555b66", "#717783", "#959ba5", "#c4c8ce"] },
+      "vestiaire-text": { "role": "neutral", "displayName": "Craie", "canonical": "#eceef1", "tonalRamp": ["#3a3e47", "#5c626d", "#7d838d", "#a3a9b3", "#c4c8ce", "#dcdfe3", "#eceef1", "#f7f8f9"] },
+      "vestiaire-text-muted": { "role": "neutral", "displayName": "Craie passée", "canonical": "#a3a9b3", "tonalRamp": ["#3a3e47", "#5c626d", "#7d838d", "#a3a9b3", "#c4c8ce", "#dcdfe3", "#eceef1", "#f7f8f9"] },
+      "blood-red": { "role": "primary", "displayName": "Rouge Blood Bowl", "canonical": "#c8102e", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
+      "blood-red-hover": { "role": "primary", "displayName": "Rouge Blood Bowl foncé", "canonical": "#a90d26", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
+      "blood-red-text": { "role": "primary", "displayName": "Rouge clair de lecture", "canonical": "#ff7b80", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
+      "on-accent": { "role": "neutral", "displayName": "Blanc sur rouge", "canonical": "#ffffff" },
+      "unread-blue": { "role": "secondary", "displayName": "Bleu non-lu", "canonical": "#5aa9ff", "tonalRamp": ["#0a2342", "#123a6b", "#1d5698", "#2f78c8", "#5aa9ff", "#8cc3ff", "#bfdcff", "#e6f1ff"] },
+      "rank-gold": { "role": "tertiary", "displayName": "Or de rang", "canonical": "#e2b54a", "tonalRamp": ["#3a2a08", "#5c440f", "#80601a", "#a8812a", "#e2b54a", "#ecc873", "#f4dca3", "#fbf0d6"] },
+      "success-text": { "role": "neutral", "displayName": "Vert succès", "canonical": "#4ade80" },
+      "warning-text": { "role": "neutral", "displayName": "Ambre alerte", "canonical": "#fbbf24" },
+      "nav-bg": { "role": "neutral", "displayName": "Fond de barre", "canonical": "#16181c" }
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Titre de page", "purpose": "Titre principal d'une page (h1), 1,875 rem sur ordinateur si besoin." },
+      "title": { "displayName": "Titre de carte", "purpose": "Titre d'une carte ou d'une section." },
+      "body": { "displayName": "Texte courant", "purpose": "Messages, contenus, champs de saisie (16 px minimum dans un champ)." },
+      "action": { "displayName": "Action", "purpose": "Texte des boutons et des onglets." },
+      "secondary": { "displayName": "Secondaire", "purpose": "Libellés, métadonnées, aide ; taille la plus utilisée." },
+      "label": { "displayName": "Étiquette", "purpose": "Badges, compteurs, libellés de la barre basse." }
+    },
+    "shadows": [
+      { "name": "bb-shadow", "value": "0 8px 24px rgba(0, 0, 0, 0.35)", "purpose": "Seule ombre du système : fenêtres, menus, panneaux, notifications." },
+      { "name": "bb-overlay", "value": "rgba(0, 0, 0, 0.6)", "purpose": "Voile derrière une fenêtre ouverte." }
+    ],
+    "motion": [
+      { "name": "color-transition", "value": "color, background-color, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Changements d'état des boutons et liens (transition-colors de Tailwind) ; aucun mouvement." }
+    ],
+    "breakpoints": [
+      { "name": "lg", "value": "1025px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Bouton principal",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "L'action principale d'un écran, une seule par écran.",
+      "html": "<button class=\"ds-btn-primary\">Je m'inscris</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 0; border-radius: var(--bb-radius-md, 12px); background: var(--bb-accent, #c8102e); color: var(--bb-on-accent, #ffffff); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: var(--bb-accent-hover, #a90d26); } .ds-btn-primary:focus-visible { outline: 2px solid var(--bb-focus, #5aa9ff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton secondaire",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Action de même niveau que le contenu, à côté d'un bouton principal.",
+      "html": "<button class=\"ds-btn-secondary\">Voir le classement</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 1px solid var(--bb-border, #2f333b); border-radius: var(--bb-radius-md, 12px); background: var(--bb-surface-2, #252830); color: var(--bb-text, #eceef1); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; white-space: nowrap; cursor: pointer; transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-secondary:hover { border-color: var(--bb-text-muted, #a3a9b3); } .ds-btn-secondary:focus-visible { outline: 2px solid var(--bb-focus, #5aa9ff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Bouton discret",
+      "kind": "button",
+      "refersTo": "button-quiet",
+      "description": "Action de second plan ou bouton d'icône, sans fond au repos.",
+      "html": "<button class=\"ds-btn-quiet\">Annuler</button>",
+      "css": ".ds-btn-quiet { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 0; border-radius: var(--bb-radius-md, 12px); background: transparent; color: var(--bb-text-muted, #a3a9b3); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: color 150ms, background-color 150ms; } .ds-btn-quiet:hover { background: var(--bb-surface-2, #252830); color: var(--bb-text, #eceef1); } .ds-btn-quiet:focus-visible { outline: 2px solid var(--bb-focus, #5aa9ff); outline-offset: 2px; }"
+    },
+    {
+      "name": "Champ de saisie",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Champ texte de 44 px, texte de 16 px pour éviter le zoom de l'iPhone.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Nom de la ligue</span><input class=\"ds-input\" placeholder=\"Ex. : Ligue des Gobelins\" /></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); } .ds-field-label { font-size: 0.875rem; font-weight: 600; color: var(--bb-text, #eceef1); } .ds-input { width: 100%; min-height: 44px; padding: 0 12px; border: 1px solid var(--bb-border, #2f333b); border-radius: var(--bb-radius-md, 12px); background: var(--bb-surface-2, #252830); color: var(--bb-text, #eceef1); font-family: inherit; font-size: 1rem; } .ds-input::placeholder { color: var(--bb-text-muted, #a3a9b3); } .ds-input:focus-visible { border-color: var(--bb-focus, #5aa9ff); outline: 2px solid var(--bb-focus, #5aa9ff); outline-offset: 0; }"
+    },
+    {
+      "name": "Carte",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Surface pleine bordée, sans ombre, avec en-tête séparé.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-card-header\"><h2 class=\"ds-card-title\">Prochains tournois</h2></div><div class=\"ds-card-body\">Tournoi de Lyon, samedi 6 décembre.</div></div>",
+      "css": ".ds-card { border: 1px solid var(--bb-border, #2f333b); border-radius: var(--bb-radius-lg, 16px); background: var(--bb-surface, #1a1c21); color: var(--bb-text, #eceef1); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); } .ds-card-header { display: flex; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--bb-border, #2f333b); } .ds-card-title { margin: 0; font-size: 1rem; font-weight: 700; } .ds-card-body { padding: 16px; font-size: 1rem; line-height: 1.625; }"
+    },
+    {
+      "name": "Badges",
+      "kind": "chip",
+      "refersTo": "badge-neutral",
+      "description": "Étiquettes courtes (statut, rang) et pastille de compteur.",
+      "html": "<span class=\"ds-badge\">Complet</span> <span class=\"ds-badge ds-badge-rank\">Vétéran</span> <span class=\"ds-count\">3</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 4px; padding: 2px 6px; border: 1px solid var(--bb-border, #2f333b); border-radius: var(--bb-radius-sm, 8px); background: var(--bb-surface-2, #252830); color: var(--bb-text-muted, #a3a9b3); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); font-size: 0.75rem; font-weight: 700; line-height: 1; } .ds-badge-rank { border-color: var(--bb-rank, #e2b54a); background: transparent; color: var(--bb-rank, #e2b54a); } .ds-count { display: inline-flex; align-items: center; justify-content: center; height: 20px; min-width: 20px; padding: 0 6px; border-radius: 999px; background: var(--bb-accent, #c8102e); color: var(--bb-on-accent, #ffffff); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); font-size: 0.75rem; font-weight: 700; line-height: 1; }"
+    },
+    {
+      "name": "Barre de navigation basse",
+      "kind": "nav",
+      "refersTo": "bottom-nav",
+      "description": "Navigation principale sur téléphone : cinq onglets, icône et libellé.",
+      "html": "<nav class=\"ds-bottom-nav\"><a class=\"ds-tab ds-tab-active\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z\"/></svg>Accueil</a><a class=\"ds-tab\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z\"/></svg>Forum</a><a class=\"ds-tab\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0z\"/></svg>Tournois</a><a class=\"ds-tab\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><rect x=\"3\" y=\"5\" width=\"18\" height=\"14\" rx=\"2\"/><path d=\"m3 7 9 6 9-6\"/></svg>Messages</a><a class=\"ds-tab\" href=\"#\"><svg width=\"22\" height=\"22\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 6h16M4 12h16M4 18h16\"/></svg>Plus</a></nav>",
+      "css": ".ds-bottom-nav { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--bb-nav-border, #2f333b); background: var(--bb-nav-bg, #16181c); font-family: var(--bb-font-sans, Inter, system-ui, sans-serif); } .ds-tab { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 52px; color: var(--bb-nav-text, #a3a9b3); font-size: 0.75rem; font-weight: 500; line-height: 1.25; text-decoration: none; } .ds-tab:hover { color: var(--bb-text, #eceef1); } .ds-tab:focus-visible { outline: 2px solid var(--bb-focus, #5aa9ff); outline-offset: -2px; } .ds-tab-active { color: var(--bb-nav-active, #ff7b80); font-weight: 700; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Le Vestiaire",
+    "overview": "Les coulisses d'avant-match : une pièce sombre, rangée, où tout sert. On y vient pour se préparer, pas pour admirer le décor. Le fond est presque noir, les surfaces sont pleines et se distinguent par de légers écarts de gris, et une seule couleur forte, le rouge Blood Bowl, signale ce qui compte : l'action principale, le compteur à lire, l'onglet ouvert.\n\nL'interface est tactile et robuste. Elle est pensée pour un coach qui tient son téléphone d'une main, sur le lieu d'un tournoi : chaque zone d'appui fait au moins 44 pixels, le texte des champs fait 16 pixels pour éviter le zoom automatique de l'iPhone, et la navigation principale tient dans une barre basse à cinq onglets. La densité est moyenne : des listes serrées mais aérées par des lignes d'au moins 56 pixels et des séparateurs fins.\n\nLe Vestiaire est le thème par défaut parmi huit. Chaque thème garde ses couleurs et son esprit (Saison 3 en parchemin et bleu marine, NAF en bleu marine et jaune…), mais la mise en page, les formes et les composants sont les mêmes pour tous. Les styles refusés sont le look « jeu vidéo » chargé (textures, néons, typographies fantasy, effets métalliques), le verre dépoli généralisé, et le tableau de bord SaaS générique (dégradés violets, cartes à ombre douce, icônes dans des pastilles).",
+    "keyCharacteristics": [
+      "Fond sombre et surfaces pleines, séparées par des bordures fines plutôt que par des ombres.",
+      "Un seul accent, le rouge Blood Bowl, utilisé avec parcimonie.",
+      "Une seule police, Inter, en gras pour les actions et les titres.",
+      "Cibles tactiles de 44 pixels partout, barre de navigation basse sur téléphone.",
+      "Huit thèmes interchangeables qui ne changent que les couleurs."
+    ],
+    "rules": [
+      { "name": "The One Red Rule", "body": "Le rouge plein est réservé à l'action principale d'un écran et aux compteurs. Une page qui montre trois boutons rouges en a deux de trop : les autres passent en `secondary` ou `quiet`.", "section": "colors" },
+      { "name": "The Variable Only Rule", "body": "Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux huit thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.", "section": "colors" },
+      { "name": "The AA Everywhere Rule", "body": "Chaque paire texte et fond atteint le contraste AA dans chacun des huit thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.", "section": "colors" },
+      { "name": "The Weight Not Size Rule", "body": "Pour faire ressortir un élément, on monte le poids avant la taille. Une page n'a qu'un seul titre au-dessus de 1 rem.", "section": "typography" },
+      { "name": "The No Fantasy Type Rule", "body": "Aucune police décorative ou « fantasy » : l'univers du jeu passe par les mots et les images, pas par la typographie.", "section": "typography" },
+      { "name": "The Thumb Reach Rule", "body": "Toute cible d'appui mesure au moins 44 × 44 pixels (`--bb-tap`) ; une ligne de liste cliquable, au moins 56 pixels de haut.", "section": "layout" },
+      { "name": "The Flat Surface Rule", "body": "Une carte posée dans la page n'a pas d'ombre : elle a une bordure. L'ombre est réservée aux éléments qui passent au-dessus des autres.", "section": "elevation" },
+      { "name": "The No Glass Rule", "body": "Le verre dépoli (flou d'arrière-plan) est désactivé par défaut, parce qu'il ralentit les téléphones modestes. Seul un thème peut l'activer, par `--bb-glass-blur` (aujourd'hui seul « Sombre »), et un composant ne l'utilise qu'à travers la prop `glass` de `Card`, jamais avec un flou écrit en dur.", "section": "elevation" }
+    ],
+    "dos": [
+      "**Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans les huit thèmes.",
+      "**Do** donner à toute cible d'appui au moins 44 × 44 pixels (`size=\"tap\"`, `size=\"tap-icon\"`, `min-h-11`).",
+      "**Do** vérifier chaque écran en taille téléphone et dans les huit thèmes avant de le dire terminé.",
+      "**Do** réserver le rouge plein à une seule action principale par écran.",
+      "**Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.",
+      "**Do** écrire un texte de 16 pixels au moins dans les champs de saisie."
+    ],
+    "donts": [
+      "**Don't** écrire une couleur en dur ni réintroduire les anciennes variables (`--primary`, `--card-bg`, `--glass-border`…).",
+      "**Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques.",
+      "**Don't** généraliser le verre dépoli ni écrire un flou en dur.",
+      "**Don't** produire un tableau de bord SaaS générique : dégradés violets, cartes à ombre douce, icônes dans des pastilles colorées.",
+      "**Don't** ajouter une deuxième police ni charger une police depuis Google.",
+      "**Don't** créer un défilement horizontal de la page ou un point de rupture autre que 1024/1025 pixels."
+    ]
+  }
+}
