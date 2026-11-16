@@ -298,7 +298,8 @@ L'accueil (`/`, carte 210) reprend deux lignes d'un terrain de Blood Bowl pour d
 - **En-but :** voile d'accent dégradé (de 19 % à 7 % de `--bb-accent`) fermé par un trait d'accent de 2 px, derrière le titre de l'accueil.
 - **Ligne de mêlée :** trait de 2 px en couleur du texte à 65 %, d'un bord à l'autre : horizontal sur téléphone, vertical entre deux colonnes sur ordinateur ; marquée « contre » (rôle Label) entre les deux camps du visiteur.
 - **Blocs :** surfaces pleines (`--bb-surface`, bordure d'un pixel, 16 px d'arrondi).
-- **Actions :** « Aller au forum » est le bouton principal de l'accueil (rouge plein, 52 px de haut) ; Discord, à côté, en bouton secondaire bordé de la couleur du texte discret.
+- **Actions :** « Aller au forum » est le bouton principal de l'accueil du visiteur (rouge plein, 52 px de haut) ; Discord, à côté, en bouton secondaire bordé de la couleur du texte discret.
+- **Accueil du membre :** depuis le 16 novembre 2026, ni en-but ni ligne de mêlée : une colonne centrée de 760 px ; le bouton « Forum » (principal, plein) est dans l'en-tête du bloc forum. Sur ordinateur, repères de défilement à droite : points de 10 px bordés de 2 px reliés par un trait de 2 px (`--bb-border`), la partie parcourue et le point en cours en `--bb-accent`, nom du bloc en pastille (`--bb-accent-soft` pour le bloc en cours).
 
 ### Cadres de rang (exception assumée)
 Les avatars des membres portent un cadre selon leur rang (`common/components/UserAvatar/UserAvatar.css`) : bronze, argent, or qui pulse, platine bleu électrique, diamant qui scintille, maître violet et rose qui tourne, grand maître rouge et or qui tourne. C'est **le seul endroit du site où le look « jeu vidéo » est permis** (lueurs, couleurs vives, mouvement), décision du responsable du projet : le rang est une récompense, il doit se voir. Ces couleurs sont écrites en dur et ne suivent pas le thème.

@@ -3,8 +3,8 @@
  * - un visiteur non connecté voit la feuille de match (`VisitorHome`) : « Tu joues déjà » mène au forum,
  *   « Tu découvres » à « Blood Bowl, c'est quoi ? », puis les tournois, les derniers messages, un article et les
  *   rubriques ;
- * - un membre connecté voit son tableau de bord (`MemberHome`) : le forum et ses non-lus d'abord, puis les tournois,
- *   les ligues de sa région, les articles et les autres rubriques.
+ * - un membre connecté voit son tableau de bord (`MemberHome`), sur une seule colonne : le forum (ses non-lus, ou les
+ *   sujets récents), les tournois, le classement, les ligues de sa région, les articles, les ressources et les médias.
  * Cette page ne fait que lire les données (requêtes en parallèle) et choisir l'accueil ; les requêtes sont dans
  * `app/component/homeData.ts`. Le lien « Créer un tournoi » d'un visiteur mène à la connexion, qui renvoie ensuite
  * vers le formulaire. Les liens Discord n'apparaissent que si l'invitation est réglée dans l'administration
@@ -23,9 +23,12 @@ import {
   getCachedDiscordInvite,
   getCachedTournaments,
   getHomeActivity,
+  getHomeMedia,
+  getHomeRanking,
+  getHomeResources,
+  getMemberForumTopics,
   getMemberLigues,
   getMemberRegisteredTournamentIds,
-  getMemberUnreadTopics,
   pickRandomArticle,
 } from "@/app/component/homeData";
 
@@ -58,21 +61,26 @@ export default async function Home() {
   if (userId) {
     const member = await prisma.user.findUnique({ where: { id: userId }, select: { region: true } });
     const region = member?.region || null;
-    const [unread, ligues, registeredIds] = await Promise.all([
-      getMemberUnreadTopics(userId),
+    const [forum, ligues, registeredIds, ranking, resources, media] = await Promise.all([
+      getMemberForumTopics(userId),
       getMemberLigues(region),
       getMemberRegisteredTournamentIds(userId, nextTournaments.map((tournament) => tournament.id)),
+      getHomeRanking(new Date().getFullYear()),
+      getHomeResources(),
+      getHomeMedia(),
     ]);
     return (
       <MemberHome
-        memberName={session?.user?.name || "coach"}
         discordHref={discordHref}
-        unread={unread}
+        forum={forum}
         tournaments={nextTournaments}
         registeredIds={registeredIds}
         tournamentCreateHref={tournamentCreateHref}
         ligues={{ ...ligues, regionHref: ligues.fromRegion && region ? `/ligues?region=${encodeURIComponent(region)}` : "/ligues" }}
         article={selectedArticle}
+        ranking={ranking}
+        resources={resources}
+        media={media}
       />
     );
   }

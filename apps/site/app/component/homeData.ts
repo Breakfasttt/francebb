@@ -11,9 +11,10 @@ import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { TAKEN_PLACES_COUNT } from "@/lib/tournamentPlaces";
 import { parisDayStart, upcomingTournamentWhere } from "@/lib/tournamentDates";
-import { topicAccessWhere } from "@/lib/forumAccess";
+import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { postExcerpt } from "@/lib/homeLatestPosts";
 import { getUnreadState } from "@/app/forum/unreadState";
+import { getRanking } from "@/app/classement/actions";
 
 // Cache pour les tournois (60 s). L'étiquette « home-tournaments » permet de retrouver ce cache (le vider, ou le
 // renouveler par `revalidateTag`) : le test tests/e2e/inventaire/accueil.spec.ts s'en sert pour effacer la liste
@@ -87,19 +88,34 @@ export const getHomeActivity = unstable_cache(
   { revalidate: 60 }
 );
 
-/** Nombre de sujets non lus montrés sur l'accueil du membre. */
-const MEMBER_UNREAD_COUNT = 3;
+/** Nombre de sujets du forum montrés sur l'accueil du membre. */
+const MEMBER_FORUM_TOPICS_COUNT = 3;
 
 /**
- * Les trois sujets non lus les plus récents du membre (carte 210), avec le début de leur dernier message. La liste
- * vient de `getUnreadState` (`app/forum/unreadState.ts`), la même que la page `/forum/unread` : seuls les forums
- * ouverts au rôle du membre comptent. `total` est le nombre de tous ses sujets non lus.
+ * Le bloc « Forum » de l'accueil du membre : ses trois sujets non lus les plus récents (carte 210), ou, quand il a tout
+ * lu, les trois sujets au dernier message le plus récent (`mode` vaut alors `recent`), pour que le bloc ne soit jamais
+ * vide. Les non-lus viennent de `getUnreadState` (`app/forum/unreadState.ts`), la même liste que `/forum/unread` ; les
+ * sujets récents passent par `topicAccessWhere`. Dans les deux cas, seuls les forums ouverts au rôle du membre
+ * comptent. `total` est le nombre de tous ses sujets non lus.
  */
-export async function getMemberUnreadTopics(userId: string) {
+export async function getMemberForumTopics(userId: string) {
   const { topicIds } = await getUnreadState(userId);
-  const ids = topicIds.slice(0, MEMBER_UNREAD_COUNT);
-  if (ids.length === 0) return { topics: [], total: 0 };
+  if (topicIds.length > 0) {
+    return { mode: "unread" as const, topics: await loadForumTopicRows(topicIds.slice(0, MEMBER_FORUM_TOPICS_COUNT)), total: topicIds.length };
+  }
+  const { roles } = await getForumAccess();
+  const recent = await prisma.topic.findMany({
+    where: topicAccessWhere(roles),
+    orderBy: { lastPostAt: "desc" },
+    take: MEMBER_FORUM_TOPICS_COUNT,
+    select: { id: true },
+  });
+  return { mode: "recent" as const, topics: await loadForumTopicRows(recent.map((topic) => topic.id)), total: 0 };
+}
 
+/** Lignes du bloc « Forum », dans l'ordre de `ids`, avec le début de leur dernier message. */
+async function loadForumTopicRows(ids: string[]) {
+  if (ids.length === 0) return [];
   const rows = await prisma.topic.findMany({
     where: { id: { in: ids } },
     select: {
@@ -121,9 +137,9 @@ export async function getMemberUnreadTopics(userId: string) {
       });
   const excerpts = new Map(lastPosts.map((post) => [post.id, postExcerpt(post.content)]));
 
-  // Même ordre que la liste des non-lus (dernier message le plus récent d'abord)
+  // Même ordre que la liste reçue (dernier message le plus récent d'abord)
   const byId = new Map(rows.map((topic) => [topic.id, topic]));
-  const topics = ids.flatMap((id) => {
+  return ids.flatMap((id) => {
     const topic = byId.get(id);
     if (!topic) return [];
     return [{
@@ -136,11 +152,13 @@ export async function getMemberUnreadTopics(userId: string) {
       excerpt: (topic.lastPostId && excerpts.get(topic.lastPostId)) || "",
     }];
   });
-  return { topics, total: topicIds.length };
 }
 
-/** Un sujet non lu de l'accueil du membre. */
-export type MemberUnreadTopic = Awaited<ReturnType<typeof getMemberUnreadTopics>>["topics"][number];
+/** Le bloc « Forum » de l'accueil du membre. */
+export type MemberForumTopics = Awaited<ReturnType<typeof getMemberForumTopics>>;
+
+/** Un sujet du bloc « Forum » de l'accueil du membre. */
+export type MemberForumTopic = MemberForumTopics["topics"][number];
 
 /** Nombre de ligues montrées sur l'accueil du membre. */
 const MEMBER_LIGUES_COUNT = 3;
@@ -187,3 +205,64 @@ export async function getMemberRegisteredTournamentIds(userId: string, tournamen
   });
   return new Set(registrations.map((registration) => registration.tournamentId));
 }
+
+/** Nombre de coachs montrés dans le bloc « Classement » de l'accueil du membre. */
+const HOME_RANKING_COUNT = 5;
+
+/**
+ * Tête du classement du Championnat de France de l'année en cours, pour l'accueil du membre. Le calcul est celui de
+ * la page `/classement` (`getRanking`, ou l'archive de l'année si elle existe), gardé dix minutes en cache : les
+ * résultats ne changent qu'à la validation d'un tournoi.
+ */
+export const getHomeRanking = unstable_cache(
+  async (year: number) => {
+    const ranking: { name?: string; userId?: string | null; totalPoints?: number }[] = await getRanking(`CDF_${year}`);
+    return ranking.slice(0, HOME_RANKING_COUNT).map((entry) => ({
+      name: entry.name || "Coach anonyme",
+      userId: entry.userId ?? null,
+      totalPoints: entry.totalPoints ?? 0,
+    }));
+  },
+  ["home-ranking-v1"],
+  { revalidate: 600 }
+);
+
+/** Une ligne du bloc « Classement » de l'accueil du membre. */
+export type HomeRankingEntry = Awaited<ReturnType<typeof getHomeRanking>>[number];
+
+/** Nombre de ressources montrées sur l'accueil du membre. */
+const HOME_RESOURCES_COUNT = 3;
+
+/** Les dernières ressources validées par la modération (mêmes ressources que la page `/ressources`). */
+export const getHomeResources = unstable_cache(
+  async () =>
+    prisma.resource.findMany({
+      where: { status: "APPROVED" },
+      orderBy: { createdAt: "desc" },
+      take: HOME_RESOURCES_COUNT,
+      select: { id: true, title: true, description: true, link: true },
+    }),
+  ["home-resources-v1"],
+  { revalidate: 300 }
+);
+
+/** Une ressource de l'accueil du membre. */
+export type HomeResource = Awaited<ReturnType<typeof getHomeResources>>[number];
+
+/**
+ * Chaînes Twitch et YouTube réglées dans l'administration (réglages `twitch_channels` et `youtube_channels`, séparés
+ * par des virgules), lues comme la page `/media`. L'accueil n'affiche que leurs noms : les lecteurs restent sur `/media`.
+ */
+export const getHomeMedia = unstable_cache(
+  async () => {
+    const settings = await prisma.siteSetting.findMany({
+      where: { key: { in: ["twitch_channels", "youtube_channels"] } },
+      select: { key: true, value: true },
+    });
+    const list = (key: string) =>
+      settings.find((setting) => setting.key === key)?.value?.split(",").map((item) => item.trim()).filter(Boolean) ?? [];
+    return { twitch: list("twitch_channels"), youtube: list("youtube_channels") };
+  },
+  ["home-media-v1"],
+  { revalidate: 300 }
+);

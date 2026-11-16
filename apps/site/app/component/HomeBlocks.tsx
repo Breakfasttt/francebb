@@ -128,7 +128,8 @@ export function NextTournaments({
         <div className="flex flex-1 flex-col items-center justify-center gap-3 border-t border-bb-border px-4 py-6 text-center lg:py-7">
           <p className="m-0 text-base font-bold text-bb-text">Aucun tournoi prévu pour l&apos;instant</p>
           <p className="m-0 max-w-[300px] text-sm leading-normal text-bb-text-muted">Vous organisez un tournoi ? Annoncez-le à la communauté.</p>
-          {createHref && (
+          {/* Un seul « Créer » : quand l'en-tête en porte déjà un (accueil du membre), pas de second bouton ici */}
+          {createHref && !createInHeader && (
             <Link
               href={createHref}
               className={`inline-flex min-h-11 items-center gap-1 rounded-bb-md bg-bb-accent-soft px-4 text-sm font-bold text-bb-accent-text no-underline ${focusRing}`}

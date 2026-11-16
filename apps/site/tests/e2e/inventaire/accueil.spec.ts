@@ -228,7 +228,8 @@ test.describe("accueil, derniers messages du forum", () => {
     try {
       await loginAs(page, E2E.coachId);
       await page.goto("/", { waitUntil: "networkidle" });
-      const coachBlock = content(page).getByRole("region", { name: "Non lus au forum" });
+      // Sans non-lu, le bloc montre les sujets récents (titre « Derniers sujets du forum ») : le sujet réservé non plus
+      const coachBlock = content(page).getByRole("region", { name: /Non lus au forum|Derniers sujets du forum/ });
       await expect(coachBlock).toBeVisible();
       await expect(coachBlock.getByText(E2E.secretTopicTitle)).toHaveCount(0);
 
@@ -297,24 +298,46 @@ test.describe("accueil", () => {
     expect(hrefs).toContainEqual(expect.stringMatching(/^\/forum\/new-tournament\?forumId=/));
   });
 
-  // Carte 210 : l'accueil du membre suit l'ordre fixé par le responsable du projet, sans classement
-  test("accueil du membre : forum, non-lus, tournois, ligues, articles", async ({ page }, testInfo) => {
+  // Accueil du membre (carte 210, revu le 16 novembre 2026) : une seule colonne, dans l'ordre fixé par le responsable
+  // du projet, sans bandeau d'accueil ni pastilles de rubriques ; des repères de défilement sur ordinateur seulement
+  test("accueil du membre : une colonne, du forum aux médias", async ({ page }, testInfo) => {
     await loginAs(page, E2E.coachId);
     await page.goto("/", { waitUntil: "networkidle" });
     const main = content(page);
-    await expect(main.getByRole("heading", { level: 1, name: /^Salut / })).toBeVisible();
-    await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
-    const order = ["Non lus au forum", "Prochains tournois", /Ligues de ta région|Dernières ligues/, "Articles"];
+    await expect(main.getByRole("heading", { level: 1, name: /^Salut / })).toHaveCount(0);
+    await expect(main.getByRole("link", { name: "Forum", exact: true })).toHaveAttribute("href", "/forum");
+    const order = [
+      /Non lus au forum|Derniers sujets du forum/,
+      "Prochains tournois",
+      /^Classement \d{4}$/,
+      /Ligues de ta région|Dernières ligues/,
+      "Articles",
+      "Ressources",
+      "Médias",
+    ];
     let previousTop = -Infinity;
-    // Sur téléphone, les blocs se suivent dans cet ordre ; sur ordinateur, ils sont en deux colonnes
     for (const name of order) {
       const box = (await main.getByRole("region", { name }).boundingBox())!;
-      if (testInfo.project.name === "telephone") expect(box.y).toBeGreaterThan(previousTop);
+      expect(box.y).toBeGreaterThan(previousTop);
       previousTop = box.y;
     }
     await expect(main.getByRole("link", { name: "Écrire un article" })).toHaveAttribute("href", "/articles/create");
+    await expect(main.getByRole("link", { name: "Proposer une ressource" })).toHaveAttribute("href", "/ressources/submit");
     await expect(main.getByRole("link", { name: "Voir les ligues sur la carte" })).toHaveAttribute("href", "/carte?vue=ligues");
-    await expect(main.getByRole("heading", { name: /classement/i })).toHaveCount(0);
+    // Un seul « Créer un tournoi », celui de l'en-tête du bloc, même quand la liste est vide
+    await expect(main.getByRole("region", { name: "Prochains tournois" }).getByRole("link", { name: /Créer un tournoi/ })).toHaveCount(1);
+    // Statistiques (pied de page), Membres et Jouer (panneau « Plus ») ne sont plus sur l'accueil
+    for (const href of ["/statistiques", "/membres", "/jouer"]) {
+      await expect(main.locator(`a[href="${href}"]`)).toHaveCount(0);
+    }
+    const waypoints = page.getByRole("navigation", { name: "Sections de l'accueil" });
+    if (testInfo.project.name === "telephone") {
+      await expect(waypoints).toBeHidden();
+    } else {
+      await expect(waypoints.getByRole("link")).toHaveCount(7);
+      await waypoints.getByRole("link", { name: "Médias" }).click();
+      await expect(waypoints.getByRole("link", { name: "Médias" })).toHaveAttribute("aria-current", "location");
+    }
     await page.screenshot({ path: testInfo.outputPath("accueil-membre.png"), fullPage: true });
   });
 

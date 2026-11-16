@@ -9,22 +9,25 @@ Les petites pages du site, trop courtes pour une fiche chacune : la porte d'entr
 ## Ce que voit le coach
 
 ### Accueil — `/` (`app/page.tsx`)
-**Deux accueils sur le terrain (carte 210).** La page choisit entre deux versions, posées sur le même fond : le terrain de Blood Bowl vu du dessus, dessiné par `app/component/PitchField.tsx` (quadrillage des cases, en-but rouge, couloirs en pointillés et ligne de mêlée, aux couleurs du thème actif). Les blocs sont des surfaces pleines posées sur le terrain : aucun texte n'est écrit sur le quadrillage. Le plus important est l'accès au forum ; Discord est juste à côté, moins voyant, et n'apparaît que si l'invitation est réglée dans l'administration (carte 189). Il n'y a pas de classement sur l'accueil.
+**Deux accueils sur le terrain (carte 210).** La page choisit entre deux versions, posées sur le même fond : le terrain de Blood Bowl vu du dessus, dessiné par `app/component/PitchField.tsx` (quadrillage des cases, en-but rouge, couloirs en pointillés et ligne de mêlée, aux couleurs du thème actif). Les blocs sont des surfaces pleines posées sur le terrain : aucun texte n'est écrit sur le quadrillage. Le plus important est l'accès au forum ; Discord est juste à côté, moins voyant, et n'apparaît que si l'invitation est réglée dans l'administration (carte 189). Depuis le 16 novembre 2026, l'accueil du membre n'utilise plus le terrain (voir plus bas).
 
 **Visiteur** (`app/component/VisitorHome.tsx`) : la feuille de match. Le titre du site est dans l'en-but. En dessous, deux camps séparés par la ligne de mêlée marquée « contre » :
 - « Tu joues déjà » : « Aller au forum » (bouton principal) et Discord, l'activité du jour (« 14 messages aujourd'hui · 3 tournois à venir », masquée quand les deux valent zéro ; seuls comptent les messages des forums ouverts aux visiteurs), puis Tournois et Classement ;
 - « Tu découvres » : « Blood Bowl, c'est quoi ? » (le guide `/jouer`), puis « Trouver une ligue » (la carte des ligues) et Ressources.
 Ensuite : les 3 prochains tournois, les derniers messages du forum, l'article au hasard et les trois blocs de rubriques (titres venus de `NAV_GROUPS`, partagés avec le panneau « Plus » ; pour un visiteur, « Créer » mène à la connexion, qui renvoie ensuite vers le formulaire).
 
-**Membre connecté** (`app/component/MemberHome.tsx`), dans l'ordre fixé par le responsable du projet :
-1. dans l'en-but, « Salut <pseudo> », « Aller au forum » et Discord ;
-2. « Non lus au forum » : ses 3 sujets non lus les plus récents (titre, forum, auteur et date du dernier message, début de ce message), et « Tout voir » vers `/forum/unread`. La liste est la même que celle de cette page (`getUnreadState`) : seuls comptent les forums ouverts au rôle du membre. Sans non-lu : « Tu es à jour » ;
-3. la ligne de mêlée, puis les prochains tournois avec « Créer » ; un tournoi où il est inscrit le dit (« Tu es inscrit ») ;
+**Membre connecté** (`app/component/MemberHome.tsx`, revu le 16 novembre 2026) : une seule colonne qui défile, sans bandeau d'accueil ni terrain, dans l'ordre fixé par le responsable du projet :
+1. le forum : ses 3 sujets non lus les plus récents (« Non lus au forum » : titre, forum, auteur et date du dernier message, début de ce message), avec « Voir les N sujets non lus » vers `/forum/unread`. La liste est la même que celle de cette page (`getUnreadState`) : seuls comptent les forums ouverts au rôle du membre. Sans non-lu, le bloc s'appelle « Derniers sujets du forum », dit « Tu es à jour » et montre les 3 sujets au dernier message le plus récent (`getMemberForumTopics`). Le bouton « Forum » est dans l'en-tête du bloc ; « Rejoindre le Discord » au pied, si l'invitation est réglée ;
+2. les prochains tournois avec « Créer » dans l'en-tête (un seul bouton, même quand la liste est vide) ; un tournoi où il est inscrit le dit (« Tu es inscrit ») ;
+3. « Classement <année> » : les 5 premiers du Championnat de France de l'année (même calcul que `/classement`, gardé dix minutes en cache), chaque coach lié à sa fiche ;
 4. « Ligues de ta région » : les 3 ligues de la région de son profil (`User.region`, comparée à la zone de la ligue `Ligue.geographicalZone`, deux valeurs de la même liste de référence), les plus fournies en membres d'abord, avec « Créer », « Tout voir » et « Voir les ligues sur la carte ». Sans région au profil ou sans ligue dans sa région, le bloc s'appelle « Dernières ligues ». Sur ordinateur seulement, une petite carte de ces ligues (`app/component/LiguesMiniMap.tsx`, carte `/carte` en version `compact`) ; la bibliothèque de carte n'est chargée que lorsque le bloc arrive à l'écran ;
 5. « Articles » : l'article au hasard, avec « Tout voir » et « Écrire » ;
-6. les autres rubriques en pastilles (Jouer, Ressources, Classement, Membres, Statistiques, Médias).
+6. « Ressources » : les 3 dernières ressources validées, avec « Tout voir » et « Proposer » ;
+7. « Médias » : les chaînes Twitch et YouTube réglées dans l'administration, qui mènent à `/media`.
 
-**Sur ordinateur**, le terrain se couche : pour le visiteur, les deux camps sont côte à côte, la ligne de mêlée devient verticale et les en-buts passent sur les côtés ; puis tournois, derniers messages et article en trois colonnes. Pour le membre, l'en-but porte le salut à gauche et les boutons à droite ; dessous, le forum et les articles à gauche de la ligne de mêlée, les tournois et les ligues à droite. **Sur téléphone**, tout est l'un sous l'autre dans l'ordre ci-dessus ; chaque bouton fait au moins 44 pixels de haut et aucun texte de lecture ne fait moins de 14 pixels.
+Statistiques reste au pied de page ; Membres (lié au forum) et Jouer restent dans le panneau « Plus », Membres aussi sur la page du forum. **Sur ordinateur**, des repères à droite de l'écran (`app/component/HomeWaypoints.tsx`) mènent d'un bloc à l'autre : un point par bloc, le bloc en cours allumé, le trait qui les relie se remplit à mesure qu'on descend ; le nom du bloc paraît au survol (et en permanence pour le bloc en cours à partir de 1280 pixels de large).
+
+**Sur ordinateur**, le terrain se couche : pour le visiteur, les deux camps sont côte à côte, la ligne de mêlée devient verticale et les en-buts passent sur les côtés ; puis tournois, derniers messages et article en trois colonnes. **Sur téléphone**, tout est l'un sous l'autre dans l'ordre ci-dessus ; chaque bouton fait au moins 44 pixels de haut et aucun texte de lecture ne fait moins de 14 pixels.
 
 Les requêtes de la page sont dans `app/component/homeData.ts` ; les tournois et le lien Discord sont gardés en cache (60 s et 1 h), l'activité du jour 60 s. Esquisses validées avec le responsable : `apps/site/.impeccable/mocks/decision/` (fichiers locaux, non enregistrés).
 
@@ -79,6 +82,7 @@ Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx
 |---|---|
 | `apps/site/app/page.tsx` | Accueil : lit les données et choisit l'accueil du visiteur ou du membre (carte 210) |
 | `apps/site/app/component/VisitorHome.tsx`, `MemberHome.tsx` | Les deux accueils (carte 210) |
+| `apps/site/app/component/HomeWaypoints.tsx` | Repères de défilement de l'accueil du membre, sur ordinateur |
 | `apps/site/app/component/PitchField.tsx` | Le terrain de fond de l'accueil : quadrillage, en-but, couloirs, ligne de mêlée (carte 210) |
 | `apps/site/app/component/HomeBlocks.tsx`, `homeData.ts` | Blocs partagés (tournois, article, rubriques, boutons forum et Discord) et requêtes de l'accueil (carte 210) |
 | `apps/site/app/component/LiguesMiniMap.tsx` | Petite carte des ligues de l'accueil du membre, sur ordinateur (carte 210) |
