@@ -75,7 +75,7 @@ export default function NewForumForm({
         </Field>
 
         <Field label="Description" htmlFor="description" hint="Une phrase qui dit ce qu'on trouve dans ce forum.">
-          <Textarea id="description" name="description" rows={3} placeholder="Décrivez brièvement le contenu de ce forum" className="[font-family:inherit]" />
+          <Textarea id="description" name="description" rows={3} placeholder="Décrivez brièvement le contenu de ce forum" />
         </Field>
 
         <fieldset className="m-0 flex min-w-0 flex-col gap-4 border-0 p-0">

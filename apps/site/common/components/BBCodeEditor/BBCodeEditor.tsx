@@ -1003,7 +1003,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         required={required}
         aria-label={ariaLabel}
         className={cn(
-          "block min-h-[120px] resize-y rounded-none border-0 bg-transparent px-3 py-3 [font-family:inherit] focus-visible:outline-none",
+          "block min-h-[120px] resize-y rounded-none border-0 bg-transparent px-3 py-3 focus-visible:outline-none",
           screen && "max-lg:min-h-[calc(100dvh-18rem)] max-lg:resize-none max-lg:overflow-hidden",
           isPreview && "max-lg:hidden"
         )}

@@ -47,7 +47,7 @@ const dots = (
 );
 
 const triggerBase =
-  "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-bb-md border-0 bg-transparent [font-family:inherit] text-bb-text-muted hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus";
+  "inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center rounded-bb-md border-0 bg-transparent text-bb-text-muted hover:bg-bb-surface-2 hover:text-bb-text focus-visible:outline-2 focus-visible:outline-bb-focus";
 
 export function ActionMenu({ label, title, items, trigger = dots, triggerClassName, linkComponent: LinkComponent = "a" }: ActionMenuProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);

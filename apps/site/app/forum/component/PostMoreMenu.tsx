@@ -249,7 +249,7 @@ export default function PostMoreMenu({
             }}
             placeholder="Ex : spam, publicité, message en double…"
             rows={3}
-            className="resize-none [font-family:inherit]"
+            className="resize-none"
           />
         </Field>
       </ConfirmDialog>

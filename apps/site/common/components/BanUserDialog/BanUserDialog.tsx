@@ -97,7 +97,7 @@ function BanForm({ isBanned, pending, onConfirm, onCancel }: {
               onChange={(e) => setDetails(e.target.value)}
               placeholder="Détaillez le motif si nécessaire…"
               rows={3}
-              className="resize-none [font-family:inherit]"
+              className="resize-none"
             />
           </Field>
         </>

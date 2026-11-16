@@ -504,7 +504,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
             }}
             placeholder="Ex : spam, sujet en double…"
             rows={3}
-            className="resize-none [font-family:inherit]"
+            className="resize-none"
           />
         </Field>
       </ConfirmDialog>

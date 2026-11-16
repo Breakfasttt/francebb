@@ -8,8 +8,10 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "./cn";
 
 export const buttonVariants = cva(
-  // border-0, bg-transparent et la police héritée remplacent une partie du reset (preflight, la remise à zéro des styles du navigateur de Tailwind), qui est actif mais ne couvre pas tous les cas
-  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-0 bg-transparent [font-family:inherit] font-bold whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+  // La police vient du preflight (la remise à zéro des styles du navigateur de Tailwind), qui donne `font: inherit`
+  // à tous les boutons et champs : aucune classe de police n'est nécessaire ici (vérifié par la carte 208).
+  // border-0 et bg-transparent sont gardés pour les variantes sans fond.
+  "inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl border-0 bg-transparent font-bold whitespace-nowrap transition-colors disabled:pointer-events-none disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
   {
     variants: {
       variant: {

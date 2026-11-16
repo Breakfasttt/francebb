@@ -104,7 +104,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
               onChange={(e) => setDetails(e.target.value)}
               placeholder="Détaillez votre signalement si nécessaire..."
               rows={3}
-              className="min-h-24 resize-none [font-family:inherit]"
+              className="min-h-24 resize-none"
             />
           </Field>
 

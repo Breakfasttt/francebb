@@ -66,7 +66,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
               placeholder="Ex : contenu inapproprié, irrespectueux, spam…"
               required
               rows={4}
-              className="resize-none [font-family:inherit]"
+              className="resize-none"
             />
           </Field>
 
