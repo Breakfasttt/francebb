@@ -2,7 +2,7 @@ import { getSession } from "@/lib/authGuard";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
-import { Github, BarChart3, Image as ImageIcon } from "lucide-react";
+import { Github, BarChart3 } from "lucide-react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
@@ -119,9 +119,6 @@ export default async function RootLayout({
             </a>
             <Link href="/statistiques" className={footerLinkClass}>
               <BarChart3 size={14} aria-hidden="true" /> Statistiques
-            </Link>
-            <Link href="/media" className={footerLinkClass}>
-              <ImageIcon size={14} aria-hidden="true" /> Médias
             </Link>
           </footer>
 
