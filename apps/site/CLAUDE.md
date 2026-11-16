@@ -6,10 +6,9 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, affichage
 
 | Commande | Rôle |
 |---|---|
-| `pnpm db:start` | Démarre la base Postgres locale (à relancer après un redémarrage de l'ordinateur) |
 | `pnpm db:migrate` | Crée une migration après une modification de `prisma/schema.prisma` |
 | `pnpm db:setup` | Ajoute les données de base (rôles, catégories du forum…) |
-| `pnpm dev` | Lance le site en local (port 3000) |
+| `pnpm dev [vide\|exemple\|prod]` | Démarre la base locale du profil choisi (défaut : exemple), la met à jour et la remplit si besoin, puis lance le site (port 3000). Même commande à la racine |
 | `pnpm build` | Prépare la version de production |
 | `pnpm exec prisma …` | Outils de base de données (migrations, génération du client) |
 | `node scripts/lint-ratchet.mjs` | Contrôle qualité avec plafond d'erreurs, au total et par règle (`--update` pour abaisser les plafonds) |
@@ -17,7 +16,7 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, affichage
 
 ## Points à connaître
 
-- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Bases Postgres locales sans Docker (`scripts/local-postgres.mjs`) : `pnpm db:start` pour la base de développement ; la base des tests est recréée vide à chaque `pnpm test:e2e`.
+- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Bases Postgres locales sans Docker (`scripts/local-postgres.mjs`) : `pnpm dev [vide|exemple|prod]` prépare la base du profil choisi (`../../scripts/dev.mjs`, données fictives dans `prisma/seedScript/exampleData.ts`, sauvegardes JSON de la production par `scripts/site-backup.ts`) ; la base des tests est recréée vide à chaque `pnpm test:e2e`.
 - **Connexion des membres** : `auth.ts`, `auth.config.ts`, `proxy.ts` (code exécuté avant chaque page) et `lib/authGuard.ts` (`getActiveSession` refuse les visiteurs non connectés et les bannis).
 - **Forum** : toute requête sur les catégories, forums, sujets ou messages passe par `lib/forumAccess.ts`, qui cache aux membres ce qui est réservé à certains rôles.
 - **Emails des membres** : le client `prisma` par défaut ne les renvoie jamais ; `prismaWithEmail` est réservé à la connexion et aux mails.

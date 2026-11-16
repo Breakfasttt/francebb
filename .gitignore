@@ -27,6 +27,8 @@ next-env.d.ts
 *.db-journal
 *.db-wal
 *.db-shm
+# Sauvegardes de la production : données personnelles, jamais dans git (carte 219)
+docs/backup-db/
 
 # Journaux et sauvegardes (peuvent contenir des données personnelles)
 logs/

@@ -27,16 +27,18 @@ L'outil `scripts/local-postgres.mjs` démarre de petits serveurs Postgres avec `
 
 | Base | Commande | Usage |
 |---|---|---|
-| `site` | `pnpm db:start` (dans `apps/site`) | Développement du site ; adresse écrite dans `apps/site/.env.local` |
+| `site-exemple`, `site-vide`, `site-prod` | `pnpm dev [exemple\|vide\|prod]` (racine ou `apps/site`) | Profils de base du site (carte 219) : données fictives, base vide, dernière sauvegarde JSON de `docs/backup-db/`. Le profil lancé écrit son adresse dans `apps/site/.env.local` |
+| `import-test` | Automatique (`site-backup.ts convert`) | Base temporaire de la conversion d'une sauvegarde de la bêta |
 | `hub` | `pnpm db:start` (dans `apps/hub`) | Développement du hub ; adresse écrite dans `apps/hub/.env.local` |
 | `site-e2e`, `hub-e2e` | Automatique (`pnpm test:e2e`, `pnpm test:sso`) | Tests ; recréées vides à chaque lancement |
 | `shadow` | Automatique (CI) | Base vide qui sert à vérifier les migrations |
 
 - `prisma dev` choisit lui-même ses ports : les adresses sont enregistrées dans `.local-postgres.json` à la racine (hors git).
-- Après un redémarrage de l'ordinateur, relancer `pnpm db:start`.
+- Après un redémarrage de l'ordinateur, relancer `pnpm dev` pour le site, `pnpm db:start` pour une autre application.
 - Explorer les données : `pnpm exec prisma studio` dans l'application.
-- La base `prisma dev` coupe parfois la connexion sous des requêtes parallèles (« Server has closed the connection ») : relancer `pnpm db:start`. La base des tests (`site-e2e`) reste fiable.
-- Repartir d'une base de développement vide : `node scripts/local-postgres.mjs fresh site`, puis `pnpm exec prisma migrate deploy` et `pnpm db:setup`.
+- La base `prisma dev` coupe parfois la connexion sous des requêtes parallèles (« Server has closed the connection ») : relancer `pnpm dev` (site) ou `pnpm db:start` (autres applications). La base des tests (`site-e2e`) reste fiable.
+- Sauvegardes du site (`apps/site/scripts/site-backup.ts`) : fichiers `docs/backup-db/bbfrance-site-backup-AAAAMMJJ.json` (dossier hors git, données personnelles). `export` lit une base sans la modifier ; `restore` ne vise qu'une base locale neuve : il applique les migrations jusqu'à celle de la sauvegarde, copie les lignes, puis applique les migrations suivantes, pour qu'une vieille sauvegarde subisse les mêmes transformations que la production ; `convert` fait de même depuis une sauvegarde SQLite de la bêta (structure de `0_init`). Exporter la production Neon depuis le poste serait une nouvelle exception à la règle ci-dessous : à décider avec le user.
+- Repartir de zéro sur un profil du site : `pnpm dev <profil> --reset`. Le repère `devProfile` (table `SiteSetting`) dit avec quoi la base a été remplie ; sans lui, `pnpm dev` la remplit.
 
 ## Production (Neon)
 

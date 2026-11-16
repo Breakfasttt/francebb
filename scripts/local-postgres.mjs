@@ -9,7 +9,8 @@
  *
  * Usage : node scripts/local-postgres.mjs <commande> <base>
  *   commandes : start (démarre si besoin), fresh (repart d'une base vide), stop, url (affiche l'adresse)
- *   bases     : site, site-e2e (tests du site), hub, hub-e2e (tests du hub), bbscheme (application BBScheme, carte 179),
+ *   bases     : site-vide, site-exemple, site-prod (profils de base du site lancés par `pnpm dev`, carte 219),
+ *               site-e2e (tests du site), hub, hub-e2e (tests du hub), bbscheme (application BBScheme, carte 179),
  *               bbquizz (application BBQuizz, carte 180), shadow (vérification des migrations),
  *               import-test (essai de la reprise des données de la bêta, carte 178)
  */
@@ -22,12 +23,15 @@ const STATE_FILE = `${ROOT}.local-postgres.json`;
 
 // Base de développement : variable écrite dans le .env.local de l'application
 const DEV_ENV = {
-  site: { file: `${ROOT}apps/site/.env.local`, variable: "DATABASE_URL" },
+  // Les trois profils du site écrivent la même variable : le dernier profil lancé par `pnpm dev` gagne (carte 219)
+  "site-vide": { file: `${ROOT}apps/site/.env.local`, variable: "DATABASE_URL" },
+  "site-exemple": { file: `${ROOT}apps/site/.env.local`, variable: "DATABASE_URL" },
+  "site-prod": { file: `${ROOT}apps/site/.env.local`, variable: "DATABASE_URL" },
   hub: { file: `${ROOT}apps/hub/.env.local`, variable: "HUB_DATABASE_URL" },
   bbscheme: { file: `${ROOT}apps/bbscheme/.env.local`, variable: "BBSCHEME_DATABASE_URL" },
   bbquizz: { file: `${ROOT}apps/bbquizz/.env.local`, variable: "BBQUIZZ_DATABASE_URL" },
 };
-export const LOCAL_DATABASES = ["site", "site-e2e", "hub", "hub-e2e", "bbscheme", "bbquizz", "shadow", "import-test"];
+export const LOCAL_DATABASES = ["site-vide", "site-exemple", "site-prod", "site-e2e", "hub", "hub-e2e", "bbscheme", "bbquizz", "shadow", "import-test"];
 
 // `npx prisma` doit être lancé depuis une application qui a Prisma dans ses dépendances
 const PRISMA_CWD = `${ROOT}apps/site`;
@@ -87,7 +91,7 @@ export function startLocalDatabase(name) {
   return url;
 }
 
-/** Supprime la base (toutes ses données) puis en redémarre une vide. Réservé aux bases de test. */
+/** Supprime la base (toutes ses données) puis en redémarre une vide. Réservé aux bases de test et aux profils locaux. */
 export function freshLocalDatabase(name) {
   prisma(`dev stop ${serverName(name)}`, { ignoreErrors: true });
   prisma(`dev rm --force ${serverName(name)}`, { ignoreErrors: true });

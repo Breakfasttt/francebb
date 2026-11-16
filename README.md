@@ -75,19 +75,21 @@ pnpm install             # installe les bibliothèques de toutes les application
 ```
 
 1. Copier `apps/site/.env.example` en `apps/site/.env` et le remplir. Chaque variable y est expliquée. La connexion Discord/Google et l'envoi de mails en local sont détaillés dans [DEPLOY.md](DEPLOY.md).
-2. Préparer la base de données locale, depuis `apps/site` :
-   ```bash
-   cd apps/site
-   pnpm db:start                    # démarre une base Postgres locale (sans Docker) et note son adresse dans .env.local
-   pnpm exec prisma migrate deploy  # crée les tables
-   pnpm db:setup                    # ajoute les données de base (rôles, catégories du forum…)
-   ```
-   Après un redémarrage de l'ordinateur, relancer seulement `pnpm db:start`.
-3. Lancer le site, depuis la racine : `pnpm dev`, puis ouvrir [http://localhost:3000](http://localhost:3000).
+2. Lancer le site, depuis la racine (ou depuis `apps/site`) : `pnpm dev`, puis ouvrir [http://localhost:3000](http://localhost:3000). Cette seule commande démarre une base Postgres locale (sans Docker), crée ses tables, la remplit au premier lancement, puis lance le site. Elle marche aussi après un redémarrage de l'ordinateur.
+
+   Trois **profils de base** au choix, chacun dans sa propre base (on passe de l'un à l'autre sans rien perdre) :
+
+   | Commande | Contenu de la base |
+   |---|---|
+   | `pnpm dev` ou `pnpm dev exemple` | Données de base et données fictives : membres de chaque rôle, forum, articles, ligues, tournois, messages privés |
+   | `pnpm dev vide` | Données de base seulement (rôles, forums, réglages), sans membre ni contenu |
+   | `pnpm dev prod` | Dernière sauvegarde de la production rangée dans `docs/backup-db/`, en entier (membres, forum, messages privés, tournois…) |
+
+   `pnpm dev exemple --reset` efface la base du profil et la recrée. Le profil prod prend toujours la sauvegarde la plus récente de `docs/backup-db/` (fichiers `bbfrance-site-backup-AAAAMMJJ.json`) et se recrée tout seul quand une plus récente y est déposée. Ce dossier n'est jamais enregistré dans git : il contient des données personnelles. S'il n'y a qu'une ancienne sauvegarde de la bêta (`bbfrance-db-backup-AAAAMMJJ.db`), elle est d'abord convertie au nouveau format, et gardée. Outil des sauvegardes (conversion, export, restauration) : `apps/site/scripts/site-backup.ts`. Pour se connecter, la page de connexion propose en local un bouton de développement qui ouvre une session sous n'importe quel membre.
 
 Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`, puis `pnpm db:migrate` (crée une migration, c'est-à-dire le fichier qui décrit le changement). Elle sera appliquée automatiquement en production au prochain déploiement.
 
-**Tester sur un vrai téléphone** (même réseau Wi-Fi) : lancer `pnpm --filter @bbfrance/site exec next dev -H 0.0.0.0`, puis ouvrir `http://<adresse IP de l'ordinateur>:3000` sur le téléphone.
+**Tester sur un vrai téléphone** (même réseau Wi-Fi) : lancer `pnpm dev -H 0.0.0.0` (le profil peut s'ajouter : `pnpm dev prod -H 0.0.0.0`), puis ouvrir `http://<adresse IP de l'ordinateur>:3000` sur le téléphone.
 
 
 ---

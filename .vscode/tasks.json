@@ -38,11 +38,11 @@
       "presentation": { "panel": "dedicated", "reveal": "always", "group": "hub-site" }
     },
     {
-      // Site en local (port 3000) : démarre sa base Postgres locale, puis le serveur.
+      // Site en local (port 3000) : prépare la base du profil exemple (scripts/dev.mjs), puis le serveur.
       // La connexion passe par le hub si AUTH_MODE="hub" dans apps/site/.env.
       "label": "Site (port 3000)",
       "type": "shell",
-      "command": "corepack pnpm db:start; corepack pnpm dev",
+      "command": "corepack pnpm dev",
       "options": { "cwd": "${workspaceFolder}/apps/site" },
       "isBackground": true,
       "problemMatcher": [],

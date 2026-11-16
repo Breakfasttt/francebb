@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node ../../scripts/dev.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -14,7 +14,6 @@
     "test:parcours": "node scripts/e2e-db.mjs && playwright test -c playwright.parcours.config.ts",
     "lighthouse": "node scripts/e2e-db.mjs && playwright test -c playwright.lighthouse.config.ts lighthouse-mobile",
     "temps-reponse": "node scripts/e2e-db.mjs && playwright test -c playwright.lighthouse.config.ts temps-reponse",
-    "db:start": "node ../../scripts/local-postgres.mjs start site",
     "db:migrate": "prisma migrate dev",
     "db:setup": "npx tsx prisma/firstSetup.ts",
     "vercel-build": "prisma generate && prisma migrate deploy && next build"
