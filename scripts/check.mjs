@@ -1,5 +1,5 @@
 /**
- * Vérification rapide du code (niveau 1 des tests, carte 157) : `pnpm check` à la racine du dépôt.
+ * Vérification rapide du code (niveau 1 des tests) : `pnpm check` à la racine du dépôt.
  * Pas de serveur ni de navigateur : on vérifie seulement que le code est correct, en une minute environ.
  * - Vérification des types TypeScript (`tsc --noEmit`) dans chaque application et chaque paquet, en même temps ;
  * - les tests unitaires du site (`pnpm test:unit` dans apps/site : fonctions isolées comme le moteur BBCode, sans navigateur) ;

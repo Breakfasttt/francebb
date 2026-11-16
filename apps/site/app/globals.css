@@ -1,5 +1,5 @@
 /*
- * Styles communs à tout le site (carte 101). Les couleurs viennent uniquement des variables v2 (`--bb-*`) des 8 thèmes,
+ * Styles communs à tout le site (carte 101). Les couleurs viennent uniquement des variables v2 (`--bb-*`) des thèmes,
  * définies dans packages/ui/src/themes/ ; la remise à zéro des styles du navigateur est le preflight de Tailwind
  * (app/tailwind.css). Les écrans se mettent en forme avec des classes Tailwind, pas avec un fichier CSS de page.
  */

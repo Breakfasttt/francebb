@@ -15,7 +15,7 @@ interface MemberAvatarImageProps {
 /**
  * Petite image d'avatar d'un membre, sans cadre de rang (pour le cadre, voir `UserAvatar`).
  * Quand le membre n'a pas d'avatar, affiche l'avatar par défaut du site : la même silhouette que `UserAvatar`,
- * dessinée avec les couleurs du thème actif, donc lisible dans les 8 thèmes et sans fichier image à charger.
+ * dessinée avec les couleurs du thème actif, donc lisible dans tous les thèmes et sans fichier image à charger.
  * La taille, l'arrondi et la bordure viennent de `className` ; la silhouette occupe 60 % de l'avatar. La classe
  * `member-avatar-fallback` sert de repère aux tests.
  */

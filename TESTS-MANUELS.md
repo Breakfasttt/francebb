@@ -65,10 +65,13 @@ Depuis la carte 218, le site a cinq thèmes : Sombre (le thème par défaut, ide
 
 ## 4. Accueil, `/jouer`, `/media` et pages fixes
 
-- [ ] **Téléphone, visiteur.** L'accueil : le logo et les tuiles tiennent sur deux colonnes sans déborder, et le grand logo n'est pas caché par la barre du haut.
-- [ ] **Téléphone, visiteur.** Toucher « Créer » sur Ligues sans être connecté mène à la connexion ; après connexion, on arrive sur le formulaire de création d'une ligue.
-- [ ] **Téléphone, membre.** Toucher un tournoi puis un article depuis l'accueil ouvre la bonne page.
-- [ ] **Ordinateur, visiteur.** L'accueil est équilibré : pas de grand vide, tuiles alignées.
+- [ ] **Téléphone, visiteur.** L'accueil « feuille de match » : le titre dans l'en-but, puis les deux camps « Tu joues déjà » et « Tu découvres » l'un sous l'autre, séparés par la ligne de mêlée « contre ». Rien ne déborde, aucun texte n'est posé directement sur le quadrillage du terrain.
+- [ ] **Téléphone, visiteur.** « Aller au forum » est le bouton le plus visible ; Discord est à côté, moins voyant (et absent si l'invitation n'est pas réglée dans l'administration).
+- [ ] **Téléphone, visiteur.** Dans une rubrique, toucher « Créer » sans être connecté mène à la connexion ; après connexion, on arrive sur le formulaire de création.
+- [ ] **Téléphone, membre.** L'accueil du membre, de haut en bas : « Salut <pseudo> » avec « Aller au forum », « Non lus au forum » (ou « Tu es à jour »), les prochains tournois (« Tu es inscrit » sur un tournoi où il l'est), « Ligues de ta région » (ou « Dernières ligues » sans région au profil), l'article au hasard, puis les rubriques en pastilles.
+- [ ] **Téléphone, membre.** Toucher un sujet non lu, un tournoi, une ligue et l'article depuis l'accueil ouvre chaque fois la bonne page.
+- [ ] **Ordinateur, visiteur.** Le terrain est couché : les deux camps côte à côte de part et d'autre d'une ligne de mêlée verticale, puis tournois, derniers messages et article en trois colonnes. Pas de grand vide.
+- [ ] **Ordinateur, membre.** Le salut à gauche de l'en-but et les boutons à droite ; forum et articles à gauche de la ligne de mêlée, tournois et ligues à droite, avec la petite carte des ligues qui s'affiche quand on arrive au bloc.
 - [ ] **Téléphone, visiteur.** `/jouer` : faire défiler la page puis toucher « Prochaine étape » ; la section suivante s'affiche sous la barre du haut, sans être cachée par elle.
 - [ ] **Téléphone, visiteur.** Dans `/jouer`, ouvrir un spoiler ou un accordéon s'il y en a dans le texte : il s'ouvre et se referme.
 - [ ] **Téléphone, membre.** `/media` (depuis le panneau « Plus ») : lancer un direct Twitch et une vidéo YouTube, passer en plein écran, toucher « Voir sur Twitch ».

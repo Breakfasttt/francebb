@@ -1,5 +1,5 @@
 /**
- * Parcours de fin de carte (niveau 2 des tests, carte 157) : `pnpm test:parcours` dans apps/site.
+ * Parcours (niveau 2 des tests) : `pnpm test:parcours` dans apps/site.
  *
  * Un seul test, donc une seule session : le serveur démarre une fois, le navigateur s'ouvre une fois, et les pages
  * principales du site sont visitées l'une après l'autre. On commence en visiteur, puis on se connecte une fois en
@@ -167,6 +167,6 @@ test("parcours de toutes les pages principales", async ({ page }) => {
 
   mkdirSync("logs", { recursive: true });
   writeFileSync("logs/parcours.txt", lines.join("\n") + "\n");
-  console.log(`\nParcours de fin de carte :\n${lines.join("\n")}\n`);
+  console.log(`\nParcours :\n${lines.join("\n")}\n`);
   expect(problemCount, "problèmes relevés (détail dans logs/parcours.txt)").toBe(0);
 });

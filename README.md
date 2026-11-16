@@ -103,7 +103,7 @@ Les tests ont trois niveaux, du plus rapide au plus complet :
 | Commande | Ce qu'elle vérifie |
 |---|---|
 | `pnpm check` | Niveau 1 : types TypeScript de chaque application et paquet, puis le cliquet ESLint. Ni serveur ni navigateur |
-| `pnpm --filter @bbfrance/site test:parcours` | Niveau 2 : parcours de fin de carte. Une seule session de navigateur visite les pages principales (en visiteur, en modérateur puis en administrateur), en taille téléphone puis ordinateur : page sans erreur, rien qui dépasse à droite, boutons d'au moins 44 pixels. Résumé dans `apps/site/logs/parcours.txt` |
+| `pnpm --filter @bbfrance/site test:parcours` | Niveau 2 : le parcours. Une seule session de navigateur visite les pages principales (en visiteur, en modérateur puis en administrateur), en taille téléphone puis ordinateur : page sans erreur, rien qui dépasse à droite, boutons d'au moins 44 pixels. Résumé dans `apps/site/logs/parcours.txt` |
 | `pnpm typecheck` | Pas d'incohérence de types dans le code TypeScript |
 | `pnpm lint:ratchet` | Qualité du code (ESLint) du site et des deux paquets (`packages/ui`, `packages/bbscheme-player`). Le nombre d'erreurs ne doit jamais augmenter, plafond par cible |
 | `pnpm test:e2e` | Niveau 3, à la demande : la suite complète. Chaque cas est un test indépendant (lire le forum, répondre, se connecter…), joué dans un vrai navigateur, en taille ordinateur et téléphone, sur une base de test locale recréée vide à chaque fois |

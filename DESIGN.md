@@ -168,7 +168,7 @@ Le Vestiaire (nommé « Sombre ») est le thème par défaut parmi cinq. Chaque 
 - Un seul accent, le rouge Blood Bowl, utilisé avec parcimonie.
 - Une seule police, Inter, en gras pour les actions et les titres.
 - Cibles tactiles de 44 pixels partout, barre de navigation basse sur téléphone.
-- Huit thèmes interchangeables qui ne changent que les couleurs.
+- Cinq thèmes interchangeables qui ne changent que les couleurs.
 
 ## Colors
 

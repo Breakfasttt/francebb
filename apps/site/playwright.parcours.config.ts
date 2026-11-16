@@ -1,5 +1,5 @@
 /**
- * Configuration Playwright du parcours de fin de carte (niveau 2 des tests, carte 157) : `pnpm test:parcours`.
+ * Configuration Playwright du parcours (niveau 2 des tests) : `pnpm test:parcours`.
  * Un seul fichier de test (tests/parcours/parcours.spec.ts), un seul navigateur, un seul démarrage du serveur.
  * Même serveur et même base de test que la suite complète (playwright.config.ts) : la base « site-e2e » est
  * recréée vide par scripts/e2e-db.mjs, puis remplie par tests/e2e/globalSetup.ts.

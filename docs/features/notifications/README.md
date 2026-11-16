@@ -51,5 +51,5 @@ Depuis la carte 186, deux notifications de tournoi s'ajoutent, sans e-mail, cré
 
 ## État
 
-- Carte 167 : cloche, page `/notifications`, mentions lues à la création d'un sujet, d'une réponse et à la modification d'un message, abonnement automatique, e-mails fiables et neutralisés, annonces filtrées sur la préférence « Newsletter et annonces ». Test `tests/e2e/inventaire/notifications.spec.ts` ; la page est aussi visitée par le parcours de fin de carte.
+- Carte 167 : cloche, page `/notifications`, mentions lues à la création d'un sujet, d'une réponse et à la modification d'un message, abonnement automatique, e-mails fiables et neutralisés, annonces filtrées sur la préférence « Newsletter et annonces ». Test `tests/e2e/inventaire/notifications.spec.ts` ; la page est aussi visitée par le parcours (niveau 2 des tests).
 - Manque : notification en temps réel (la pastille se met à jour au chargement d'une page), suppression des vieilles notifications lues, notification des réactions.

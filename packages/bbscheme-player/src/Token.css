@@ -213,7 +213,7 @@
 }
 
 /* -- Bulle d'infos d'un pion (affichée par un portail) --
-   Fond sombre et or (#ffd700) fixes : ce sont des couleurs de jeu, identiques dans les 8 thèmes (carte 101). */
+   Fond sombre et or (#ffd700) fixes : ce sont des couleurs de jeu, identiques dans tous les thèmes (carte 101). */
 .token-stats-hover.portal-tooltip {
   position: fixed;
   background: #11111a;

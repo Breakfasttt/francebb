@@ -336,7 +336,7 @@
       "Un seul accent, le rouge Blood Bowl, utilisé avec parcimonie.",
       "Une seule police, Inter, en gras pour les actions et les titres.",
       "Cibles tactiles de 44 pixels partout, barre de navigation basse sur téléphone.",
-      "Huit thèmes interchangeables qui ne changent que les couleurs."
+      "Cinq thèmes interchangeables qui ne changent que les couleurs."
     ],
     "rules": [
       {
@@ -346,12 +346,12 @@
       },
       {
         "name": "The Variable Only Rule",
-        "body": "Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux huit thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.",
+        "body": "Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux cinq thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.",
         "section": "colors"
       },
       {
         "name": "The AA Everywhere Rule",
-        "body": "Chaque paire texte et fond atteint le contraste AA dans chacun des huit thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.",
+        "body": "Chaque paire texte et fond atteint le contraste AA dans chacun des cinq thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.",
         "section": "colors"
       },
       {
@@ -386,9 +386,9 @@
       }
     ],
     "dos": [
-      "**Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans les huit thèmes.",
+      "**Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans les cinq thèmes.",
       "**Do** donner à toute cible d'appui au moins 44 × 44 pixels (`size=\"tap\"`, `size=\"tap-icon\"`, `min-h-11`).",
-      "**Do** vérifier chaque écran en taille téléphone et dans les huit thèmes avant de le dire terminé.",
+      "**Do** vérifier chaque écran en taille téléphone et dans les cinq thèmes avant de le dire terminé.",
       "**Do** réserver le rouge plein à une seule action principale par écran.",
       "**Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.",
       "**Do** écrire un texte de 16 pixels au moins dans les champs de saisie.",

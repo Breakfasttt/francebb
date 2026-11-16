@@ -1,6 +1,6 @@
 /**
  * Mesures d'une page en taille téléphone (carte 049), partagées par l'audit mobile (mobile-audit.spec.ts) et le
- * parcours de fin de carte (tests/parcours/parcours.spec.ts, carte 157) : contenu qui dépasse à droite, cibles
+ * parcours (tests/parcours/parcours.spec.ts) : contenu qui dépasse à droite, cibles
  * tactiles de moins de 44 pixels, textes de moins de 12 pixels, champs de saisie de moins de 16 pixels.
  * Fonction déplacée telle quelle depuis mobile-audit.spec.ts par la carte 157.
  */

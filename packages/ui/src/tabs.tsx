@@ -33,7 +33,7 @@ const columnTabClass =
 const columnActiveClass = "border-bb-accent-text bg-bb-surface-2 text-bb-text";
 
 // Largeur du fondu posé sur un bord de la rangée. Le masque ne garde que la transparence du dégradé : la couleur
-// écrite (black) n'est jamais affichée, ce qui le rend valable dans les 8 thèmes.
+// écrite (black) n'est jamais affichée, ce qui le rend valable dans tous les thèmes.
 const FADE = "1.5rem";
 
 /**
