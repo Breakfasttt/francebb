@@ -102,7 +102,7 @@ export default async function RootLayout({
           
           {/* Pied de page, sur ordinateur seulement (sur téléphone, ces liens sont dans le panneau « Plus »).
               Fixé en bas de l'écran ; restylé avec les variables v2 par la carte 090. */}
-          <footer className="fixed inset-x-0 bottom-0 z-[5000] hidden items-center justify-center gap-6 border-t border-bb-nav-border bg-bb-nav-bg px-4 py-1.5 font-bb-sans text-[0.8rem] text-bb-nav-text lg:flex">
+          <footer className="fixed inset-x-0 bottom-0 z-[5000] hidden items-center justify-center gap-6 border-t border-bb-nav-border bg-bb-nav-bg px-4 py-1.5 font-bb-sans text-sm text-bb-nav-text lg:flex">
             <Link href="/mentions-legales" className={footerLinkClass}>
               Mentions légales
             </Link>

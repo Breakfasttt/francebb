@@ -41,7 +41,7 @@ export default function ErrorScreen({ onRetry, digest }: ErrorScreenProps) {
           </Button>
         </div>
         {digest && (
-          <p className="m-0 text-xs text-bb-text-muted">
+          <p className="m-0 text-sm text-bb-text-muted">
             Référence de l&apos;erreur, à donner à l&apos;équipe si besoin : {digest}
           </p>
         )}

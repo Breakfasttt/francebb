@@ -187,7 +187,7 @@ export default function ProfileSidebar({
         {/* NAF et nombre de messages */}
         <dl className="m-0 grid grid-cols-2 gap-2">
           <div className="flex flex-col items-center gap-0.5 rounded-bb-md bg-bb-surface-2 px-2 py-2.5">
-            <dt className="text-xs font-semibold tracking-wide text-bb-text-muted uppercase">NAF</dt>
+            <dt className="text-bb-label font-semibold tracking-wide text-bb-text-muted uppercase">NAF</dt>
             <dd className="m-0 text-base font-bold text-bb-text">
               {user.nafNumber ? (
                 <a
@@ -204,7 +204,7 @@ export default function ProfileSidebar({
             </dd>
           </div>
           <div className="flex flex-col items-center gap-0.5 rounded-bb-md bg-bb-surface-2 px-2 py-2.5">
-            <dt className="text-xs font-semibold tracking-wide text-bb-text-muted uppercase">Messages</dt>
+            <dt className="text-bb-label font-semibold tracking-wide text-bb-text-muted uppercase">Messages</dt>
             <dd className="m-0 text-base font-bold text-bb-text">{postCount}</dd>
           </div>
         </dl>

@@ -46,7 +46,7 @@ function StatRow({ icon, label, children }: { icon: React.ReactNode; label: stri
         {icon}
       </span>
       <span className="flex min-w-0 flex-1 flex-col py-1.5">
-        <span className="text-xs text-bb-text-muted">{label}</span>
+        <span className="text-sm text-bb-text-muted">{label}</span>
         <span className="min-w-0 break-words text-[0.95rem] text-bb-text">{children}</span>
       </span>
     </li>

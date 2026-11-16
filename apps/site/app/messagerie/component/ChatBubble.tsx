@@ -46,9 +46,9 @@ export default function ChatBubble({ message, isSelf, showName, showAvatar }: Ch
             : "rounded-bl-[6px] border border-bb-border bg-bb-surface-2 text-bb-text"
         )}
       >
-        {showName && !isSelf && <span className="text-xs font-bold text-bb-accent-text">{message.author.name}</span>}
+        {showName && !isSelf && <span className="text-sm font-bold text-bb-accent-text">{message.author.name}</span>}
         <div className={bbcodeClass} dangerouslySetInnerHTML={{ __html: parseBBCode(message.content) }} />
-        <time dateTime={date.toISOString()} className="self-end text-[0.75rem] text-bb-text-muted">
+        <time dateTime={date.toISOString()} className="self-end text-xs text-bb-text-muted">
           {time}
         </time>
       </div>

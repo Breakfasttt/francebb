@@ -78,7 +78,7 @@ const NumberInput = ({ id, value, onChange, className, step = 1, readOnly, disab
 );
 
 /** Libellé d'un champ : visible sur téléphone (carte du coach), lu seulement par les lecteurs d'écran sur ordinateur. */
-const cellLabel = "text-xs font-semibold text-bb-text-muted lg:sr-only";
+const cellLabel = "text-sm font-semibold text-bb-text-muted lg:sr-only";
 
 /**
  * Grille d'une ligne du classement. Ordinateur : 12 colonnes dans l'ordre de la page (poignée, rang, NAF, coach,
@@ -570,7 +570,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
           <Card className="overflow-hidden max-lg:border-0 max-lg:bg-transparent">
             {/* En-tête des colonnes (ordinateur) */}
-            <div aria-hidden="true" className={cn(rankingColumns, "hidden border-b border-bb-border bg-bb-surface-2 px-2 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase lg:grid")}>
+            <div aria-hidden="true" className={cn(rankingColumns, "hidden border-b border-bb-border bg-bb-surface-2 px-2 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:grid")}>
               <span />
               <span>Rang</span>
               <span>NAF</span>
@@ -652,7 +652,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                   const side = (n: 1 | 2) => (
                     <div className="grid min-w-0 flex-1 grid-cols-[minmax(0,1fr)_3.5rem_3.5rem] items-end gap-2">
                       <div className="flex min-w-0 flex-col gap-1">
-                        <label htmlFor={id(`coach${n}`)} className="text-xs font-semibold text-bb-text-muted">Coach {n}</label>
+                        <label htmlFor={id(`coach${n}`)} className="text-sm font-semibold text-bb-text-muted">Coach {n}</label>
                         <Input
                           id={id(`coach${n}`)}
                           list={`all-coaches-${n === 1 ? '' : '2-'}${rIdx}-${mIdx}`}
@@ -664,11 +664,11 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                         </datalist>
                       </div>
                       <div className="flex flex-col gap-1">
-                        <label htmlFor={id(`td${n}`)} className="text-xs font-semibold text-bb-text-muted">TD</label>
+                        <label htmlFor={id(`td${n}`)} className="text-sm font-semibold text-bb-text-muted">TD</label>
                         <NumberInput id={id(`td${n}`)} value={match[`coach${n}TD`]} onChange={(val: number) => updateMatchField(rIdx, mIdx, `coach${n}TD`, val)} />
                       </div>
                       <div className="flex flex-col gap-1">
-                        <label htmlFor={id(`cas${n}`)} className="text-xs font-semibold text-bb-text-muted">CAS</label>
+                        <label htmlFor={id(`cas${n}`)} className="text-sm font-semibold text-bb-text-muted">CAS</label>
                         <NumberInput id={id(`cas${n}`)} value={match[`coach${n}Casualties`]} onChange={(val: number) => updateMatchField(rIdx, mIdx, `coach${n}Casualties`, val)} />
                       </div>
                     </div>
@@ -677,7 +677,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                     <li key={mIdx} className="flex flex-col gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 p-2 lg:flex-row lg:items-end">
                       <div className="flex items-end gap-2 lg:contents">
                         <div className="flex w-16 shrink-0 flex-col gap-1">
-                          <label htmlFor={id('table')} className="text-xs font-semibold text-bb-text-muted">Table</label>
+                          <label htmlFor={id('table')} className="text-sm font-semibold text-bb-text-muted">Table</label>
                           <NumberInput id={id('table')} value={match.tableNumber} onChange={(val: number) => updateMatchField(rIdx, mIdx, 'tableNumber', val)} />
                         </div>
                         <span className="flex-1 lg:hidden" />
@@ -694,7 +694,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                         </Button>
                       </div>
                       {side(1)}
-                      <span aria-hidden="true" className="self-center text-xs font-bold text-bb-text-muted uppercase lg:pb-3">contre</span>
+                      <span aria-hidden="true" className="self-center text-bb-label font-bold text-bb-text-muted uppercase lg:pb-3">contre</span>
                       {side(2)}
                     </li>
                   );

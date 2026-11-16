@@ -33,7 +33,7 @@ export const dynamic = "force-dynamic";
  * paragraphes et listes aérés. Les blocs particuliers (citations, spoilers…) gardent leurs propres styles.
  */
 const proseClass =
-  "text-[1.0625rem] leading-[1.6] break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_strong]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_p]:my-3 [&_ul]:my-3 [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:pl-6";
+  "text-bb-lead break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_strong]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_p]:my-3 [&_ul]:my-3 [&_ul]:pl-6 [&_ol]:my-3 [&_ol]:pl-6";
 
 export default async function ArticleDetailPage({
   params,
@@ -94,7 +94,7 @@ export default async function ArticleDetailPage({
               ))}
             </ul>
           )}
-          <h1 className="m-0 border-0 p-0 text-[1.75rem] leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-4xl">
+          <h1 className="m-0 border-0 p-0 text-bb-display font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-bb-display-lg">
             {article.title}
           </h1>
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-bb-border pb-4">

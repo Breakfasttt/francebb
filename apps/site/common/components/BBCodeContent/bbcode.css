@@ -17,7 +17,6 @@
   border-radius: var(--bb-radius-md);
   overflow: hidden;
   border: 1px solid var(--bb-border);
-  border-left: 6px solid var(--bb-accent);
   background: var(--bb-surface);
 }
 
@@ -43,7 +42,7 @@
 .bb-accordion summary::before {
   content: "→";
   font-family: monospace;
-  font-size: 1.1rem;
+  font-size: 1.0625rem;
   font-weight: bold;
   color: var(--bb-accent-text);
   transition: transform 0.3s ease;
@@ -145,7 +144,7 @@
   color: var(--bb-accent-text);
   text-transform: uppercase;
   letter-spacing: 0.4rem;
-  font-size: 1.1rem;
+  font-size: 1.0625rem;
   font-weight: 900;
 }
 

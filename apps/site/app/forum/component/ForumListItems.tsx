@@ -107,7 +107,7 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
           <span className="mt-0.5 text-sm text-bb-text-muted">Aucun sujet</span>
         )}
         {(forum.topicCount > 0 || lastTopic) && (
-          <span className="text-[0.8125rem] text-bb-text-muted">
+          <span className="text-sm text-bb-text-muted">
             {forum.topicCount} {forum.topicCount > 1 ? "sujets" : "sujet"}
             {lastTopic && ` · Dernier : ${lastTopic.lastPostAuthorName ?? "Anonyme"} · ${frenchDateTime(lastTopic.lastPostAt)}`}
           </span>
@@ -156,17 +156,17 @@ export function TopicRow({ topic }: { topic: TopicRowData }) {
             {!topic.isSticky && topic.isTournament && <Trophy size={15} role="img" aria-label="Tournoi" className="shrink-0 text-bb-accent-text" />}
             <InlineBBCode
               text={topic.title}
-              className={`min-w-0 text-[1.0625rem] leading-snug break-words ${topic.hasNew ? "font-bold" : "font-semibold"}`}
+              className={`min-w-0 text-bb-lead leading-snug break-words ${topic.hasNew ? "font-bold" : "font-semibold"}`}
             />
             <TournamentStatusBadge tournament={topic.tournament} />
             {topic.isLocked && <LockMark label="Sujet verrouillé" size={14} />}
             {topic.hasNew && <UnreadDot />}
           </span>
-          <span className="text-[0.8125rem] text-bb-text-muted">
+          <span className="text-sm text-bb-text-muted">
             par {topic.author.name ?? "Anonyme"} · {frenchDate(topic.createdAt)}
           </span>
         </span>
-        <span className="flex flex-wrap gap-x-3 text-[0.8125rem] text-bb-text-muted lg:flex-nowrap lg:gap-0 lg:text-sm">
+        <span className="flex flex-wrap gap-x-3 text-sm text-bb-text-muted lg:flex-nowrap lg:gap-0">
           <span className="lg:w-24 lg:text-right">{plural(topic.postCount, "message")}</span>
           <span className="lg:w-20 lg:text-right">{plural(topic.views, "vue")}</span>
           <span className="flex min-w-0 flex-wrap gap-x-1 lg:w-40 lg:flex-col lg:text-right">

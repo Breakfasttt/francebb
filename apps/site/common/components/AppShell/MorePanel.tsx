@@ -29,7 +29,7 @@ interface MorePanelProps {
   pendingModCount: number;
 }
 
-const sectionTitle = "m-0 border-0 p-0 text-[0.8rem] font-bold tracking-wider text-bb-text-muted uppercase not-italic";
+const sectionTitle = "m-0 border-0 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase not-italic";
 
 export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, isMod, pendingModCount }: MorePanelProps) {
   const pathname = usePathname();

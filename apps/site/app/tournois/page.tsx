@@ -209,7 +209,7 @@ export default async function TournamentsPage({
               ) : (
                 <Card className="overflow-hidden">
                   {/* En-tête des colonnes (ordinateur) */}
-                  <div aria-hidden="true" className="hidden border-b border-bb-border bg-bb-surface-2 px-4 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase lg:grid lg:grid-cols-[48px_minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_7rem_5.5rem] lg:gap-4">
+                  <div aria-hidden="true" className="hidden border-b border-bb-border bg-bb-surface-2 px-4 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:grid lg:grid-cols-[48px_minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_7rem_5.5rem] lg:gap-4">
                     <span>Date</span>
                     <span>Tournoi</span>
                     <span>Lieu</span>

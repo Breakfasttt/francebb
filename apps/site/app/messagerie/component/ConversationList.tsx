@@ -114,13 +114,13 @@ export default function ConversationList({ activeId, version }: ConversationList
                   <time
                     dateTime={new Date(conv.updatedAt).toISOString()}
                     title={formatDistanceToNow(new Date(conv.updatedAt), { addSuffix: true, locale: fr })}
-                    className="shrink-0 text-xs text-bb-text-muted"
+                    className="shrink-0 text-sm text-bb-text-muted"
                   >
                     {isToday(new Date(conv.updatedAt)) ? format(new Date(conv.updatedAt), "HH:mm") : format(new Date(conv.updatedAt), "d MMM", { locale: fr })}
                   </time>
                 </span>
                 {!isOneOnOne && (
-                  <span className="truncate text-xs text-bb-text-muted">
+                  <span className="truncate text-sm text-bb-text-muted">
                     {conv.participants.length} participants : {conv.participants.map((p) => p.user.name).join(", ")}
                   </span>
                 )}

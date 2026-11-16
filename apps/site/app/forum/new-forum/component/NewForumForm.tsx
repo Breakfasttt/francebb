@@ -79,7 +79,7 @@ export default function NewForumForm({
         </Field>
 
         <fieldset className="m-0 flex min-w-0 flex-col gap-4 border-0 p-0">
-          <legend className="mb-3 p-0 text-[0.8125rem] font-bold tracking-wider text-bb-text-muted uppercase">Emplacement</legend>
+          <legend className="mb-3 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase">Emplacement</legend>
           <div className="grid gap-4 lg:grid-cols-2">
             <Field label="Catégorie principale" htmlFor="categoryId" hint="Sans catégorie, choisissez un forum parent.">
               <Select

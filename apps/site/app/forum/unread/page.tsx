@@ -56,17 +56,17 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
                         <span className="flex min-w-0 flex-wrap items-center gap-x-1.5 gap-y-1">
                           {topic.tournamentId && <Trophy size={15} role="img" aria-label="Tournoi" className="shrink-0 text-bb-accent-text" />}
                           <span
-                            className="min-w-0 text-[1.0625rem] leading-snug font-bold break-words"
+                            className="min-w-0 text-bb-lead leading-snug font-bold break-words"
                             dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }}
                           />
                           <UnreadDot />
                         </span>
-                        <span className="text-[0.8125rem] text-bb-text-muted">
+                        <span className="text-sm text-bb-text-muted">
                           dans <strong className="font-semibold text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forum.name) }} /> · par{" "}
                           {topic.author.name}
                         </span>
                       </span>
-                      <span className="flex flex-wrap gap-x-3 text-[0.8125rem] text-bb-text-muted lg:flex-nowrap lg:gap-0 lg:text-sm">
+                      <span className="flex flex-wrap gap-x-3 text-sm text-bb-text-muted lg:flex-nowrap lg:gap-0">
                         <span className="lg:w-24 lg:text-right">
                           {topic._count.posts} {topic._count.posts > 1 ? "messages" : "message"}
                         </span>

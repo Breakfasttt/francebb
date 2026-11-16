@@ -73,7 +73,7 @@ function NumberField({ id, value, onChange, decimal, className }: {
 }
 
 /** Libellé d'un champ de ligne : visible sur téléphone (carte du coach), lu seulement par les lecteurs d'écran sur ordinateur. */
-const cellLabel = "text-xs font-semibold text-bb-text-muted lg:sr-only";
+const cellLabel = "text-sm font-semibold text-bb-text-muted lg:sr-only";
 const cell = "flex min-w-0 flex-col gap-1";
 
 /**
@@ -241,7 +241,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
             </p>
           ) : (
             <div className="flex flex-col gap-3 lg:gap-0">
-              <div aria-hidden="true" className={cn(rowColumns, "hidden border-b border-bb-border px-2 pb-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase lg:grid")}>
+              <div aria-hidden="true" className={cn(rowColumns, "hidden border-b border-bb-border px-2 pb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:grid")}>
                 <span className="text-center">#</span>
                 <span>Coach</span>
                 <span>Membre du site</span>
@@ -327,13 +327,13 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
                               const prefix = <span className="sr-only">Tournoi {resultIndex + 1} : </span>;
                               return (
                                 <fieldset key={resultIndex} className="m-0 grid min-w-0 grid-cols-[minmax(0,1fr)_4.5rem_6rem] gap-2 border-0 p-0">
-                                  <legend className="mb-1 p-0 text-xs font-bold tracking-wide text-bb-text-muted uppercase">Tournoi {resultIndex + 1}</legend>
+                                  <legend className="mb-1 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">Tournoi {resultIndex + 1}</legend>
                                   <div className={cn(cell, "col-span-3 sm:col-span-1")}>
-                                    <label htmlFor={rid("name")} className="text-xs font-semibold text-bb-text-muted">{prefix}Nom</label>
+                                    <label htmlFor={rid("name")} className="text-sm font-semibold text-bb-text-muted">{prefix}Nom</label>
                                     <Input id={rid("name")} type="text" value={result.name} onChange={(e) => updateBestResult(key, resultIndex, "name", e.target.value)} placeholder="Nom du tournoi" />
                                   </div>
                                   <div className={cn(cell, "max-sm:col-start-1")}>
-                                    <label htmlFor={rid("rank")} className="text-xs font-semibold text-bb-text-muted">{prefix}Rang</label>
+                                    <label htmlFor={rid("rank")} className="text-sm font-semibold text-bb-text-muted">{prefix}Rang</label>
                                     <Input
                                       id={rid("rank")}
                                       type="number"
@@ -344,7 +344,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
                                     />
                                   </div>
                                   <div className={cn(cell, "max-sm:col-span-2")}>
-                                    <label htmlFor={rid("points")} className="text-xs font-semibold text-bb-text-muted">{prefix}Points</label>
+                                    <label htmlFor={rid("points")} className="text-sm font-semibold text-bb-text-muted">{prefix}Points</label>
                                     <Input
                                       id={rid("points")}
                                       type="number"

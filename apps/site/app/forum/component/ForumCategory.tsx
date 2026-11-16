@@ -47,7 +47,7 @@ export default function ForumCategory({ category, unreadForumIds }: CategoryProp
         onClick={() => setIsExpanded(!isExpanded)}
         className="min-h-12 w-full justify-start gap-2 rounded-none px-3 py-2 text-left font-normal whitespace-normal hover:bg-transparent focus-visible:-outline-offset-2 lg:px-4"
       >
-        <span className={`flex-1 text-[0.8125rem] font-bold tracking-wider uppercase ${categoryHasNew ? "text-bb-text" : ""}`}>
+        <span className={`flex-1 text-bb-label font-bold tracking-wider uppercase ${categoryHasNew ? "text-bb-text" : ""}`}>
           {category.name}
         </span>
         {categoryHasNew && <UnreadDot />}

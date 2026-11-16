@@ -69,7 +69,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
         <span className={cn("text-center text-lg font-bold tabular-nums", rankTone(rank))}>{rank}</span>
         <span className="min-w-0">
           <span className="block font-semibold break-words text-bb-text">{entry.name}</span>
-          {!entry.userId && <span className="block text-xs text-bb-text-muted lg:hidden">Non associé à un membre</span>}
+          {!entry.userId && <span className="block text-sm text-bb-text-muted lg:hidden">Non associé à un membre</span>}
         </span>
         <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.nafNumber ? `#${entry.nafNumber}` : "-"}</span>
         <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.count ?? results.length}</span>
@@ -109,7 +109,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
           </p>
           {results.length > 0 ? (
             <div>
-              <p className="m-0 mb-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase">Meilleurs tournois retenus</p>
+              <p className="m-0 mb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">Meilleurs tournois retenus</p>
               <ul className="m-0 grid list-none grid-cols-1 gap-x-4 p-0 lg:grid-cols-2">
                 {results.map((result, index) => {
                   const title = result.tournamentName || result.name || "Tournoi";
@@ -150,7 +150,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
 export function RankingList({ entries }: { entries: RankingEntry[] }) {
   return (
     <Card className="overflow-hidden">
-      <div aria-hidden="true" className={cn(columns, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase lg:px-4")}>
+      <div aria-hidden="true" className={cn(columns, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:px-4")}>
         <span className="text-center">#</span>
         <span>Coach</span>
         <span className="hidden lg:block">NAF</span>

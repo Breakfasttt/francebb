@@ -112,7 +112,7 @@ export function RecentPostsRecap({
                 <Avatar name={post.author.name} src={post.author.image} size={32} />
                 <p className="m-0 text-sm font-semibold break-words text-bb-text">
                   {post.author.name}
-                  {isEditing && <span className="block text-xs font-normal text-bb-accent-text">(Ce message)</span>}
+                  {isEditing && <span className="block text-sm font-normal text-bb-accent-text">(Ce message)</span>}
                 </p>
               </div>
               {(post.isDeleted || post.isModerated) && !post.content ? (

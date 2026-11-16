@@ -20,7 +20,7 @@
   top: max(2.75rem, env(safe-area-inset-top));
   bottom: var(--app-bottom-nav-space, 0px);
   z-index: 7100;
-  border-radius: 20px 20px 0 0;
+  border-radius: var(--bb-radius-lg) var(--bb-radius-lg) 0 0;
   border-top: 1px solid var(--bb-border);
   box-shadow: var(--bb-shadow);
   transform: translateY(105%);

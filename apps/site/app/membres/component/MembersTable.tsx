@@ -340,7 +340,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           type="button"
           variant="quiet"
           onClick={() => handleSort(key)}
-          className="min-h-11 w-full justify-start gap-1.5 rounded-none px-3 text-xs font-bold tracking-wide uppercase"
+          className="min-h-11 w-full justify-start gap-1.5 rounded-none px-3 text-bb-label font-bold tracking-wide uppercase"
         >
           {label}
           <Icon size={14} aria-hidden="true" className={active ? "text-bb-accent-text" : "opacity-50"} />
@@ -413,8 +413,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   {sortHeader("naf", "N° NAF")}
                   {sortHeader("region", "Région")}
                   {sortHeader("ligue", "Ligue(s)")}
-                  <th scope="col" className="px-3 text-xs font-bold tracking-wide uppercase">Message</th>
-                  {showRoles && <th scope="col" className="px-3 text-xs font-bold tracking-wide uppercase">Gestion du rôle</th>}
+                  <th scope="col" className="px-3 text-bb-label font-bold tracking-wide uppercase">Message</th>
+                  {showRoles && <th scope="col" className="px-3 text-bb-label font-bold tracking-wide uppercase">Gestion du rôle</th>}
                   {(showMod || showDelete) && <th scope="col" className="px-3"><span className="sr-only">Actions</span></th>}
                 </tr>
               </thead>

@@ -1,42 +1,273 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-16T12:00:00.000Z",
+  "generatedAt": "2026-11-16T14:01:05.437Z",
   "title": "Design System: BBFrance",
   "extensions": {
     "colorMeta": {
-      "vestiaire-bg": { "role": "neutral", "displayName": "Noir de vestiaire", "canonical": "#111215", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
-      "vestiaire-surface": { "role": "neutral", "displayName": "Ardoise", "canonical": "#1a1c21", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
-      "vestiaire-surface-2": { "role": "neutral", "displayName": "Ardoise en relief", "canonical": "#252830", "tonalRamp": ["#0b0c0e", "#111215", "#1a1c21", "#252830", "#3a3e47", "#5c626d", "#8a909a", "#c9cdd3"] },
-      "vestiaire-border": { "role": "neutral", "displayName": "Joint gris", "canonical": "#2f333b", "tonalRamp": ["#14161a", "#1f2228", "#2f333b", "#40454f", "#555b66", "#717783", "#959ba5", "#c4c8ce"] },
-      "vestiaire-text": { "role": "neutral", "displayName": "Craie", "canonical": "#eceef1", "tonalRamp": ["#3a3e47", "#5c626d", "#7d838d", "#a3a9b3", "#c4c8ce", "#dcdfe3", "#eceef1", "#f7f8f9"] },
-      "vestiaire-text-muted": { "role": "neutral", "displayName": "Craie passée", "canonical": "#a3a9b3", "tonalRamp": ["#3a3e47", "#5c626d", "#7d838d", "#a3a9b3", "#c4c8ce", "#dcdfe3", "#eceef1", "#f7f8f9"] },
-      "blood-red": { "role": "primary", "displayName": "Rouge Blood Bowl", "canonical": "#c8102e", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
-      "blood-red-hover": { "role": "primary", "displayName": "Rouge Blood Bowl foncé", "canonical": "#a90d26", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
-      "blood-red-text": { "role": "primary", "displayName": "Rouge clair de lecture", "canonical": "#ff7b80", "tonalRamp": ["#3d0510", "#62091a", "#8a0c22", "#a90d26", "#c8102e", "#e8455a", "#ff7b80", "#ffd2d4"] },
-      "on-accent": { "role": "neutral", "displayName": "Blanc sur rouge", "canonical": "#ffffff" },
-      "unread-blue": { "role": "secondary", "displayName": "Bleu non-lu", "canonical": "#5aa9ff", "tonalRamp": ["#0a2342", "#123a6b", "#1d5698", "#2f78c8", "#5aa9ff", "#8cc3ff", "#bfdcff", "#e6f1ff"] },
-      "rank-gold": { "role": "tertiary", "displayName": "Or de rang", "canonical": "#e2b54a", "tonalRamp": ["#3a2a08", "#5c440f", "#80601a", "#a8812a", "#e2b54a", "#ecc873", "#f4dca3", "#fbf0d6"] },
-      "success-text": { "role": "neutral", "displayName": "Vert succès", "canonical": "#4ade80" },
-      "warning-text": { "role": "neutral", "displayName": "Ambre alerte", "canonical": "#fbbf24" },
-      "nav-bg": { "role": "neutral", "displayName": "Fond de barre", "canonical": "#16181c" }
+      "vestiaire-bg": {
+        "role": "neutral",
+        "displayName": "Noir de vestiaire",
+        "canonical": "#111215",
+        "tonalRamp": [
+          "#0b0c0e",
+          "#111215",
+          "#1a1c21",
+          "#252830",
+          "#3a3e47",
+          "#5c626d",
+          "#8a909a",
+          "#c9cdd3"
+        ]
+      },
+      "vestiaire-surface": {
+        "role": "neutral",
+        "displayName": "Ardoise",
+        "canonical": "#1a1c21",
+        "tonalRamp": [
+          "#0b0c0e",
+          "#111215",
+          "#1a1c21",
+          "#252830",
+          "#3a3e47",
+          "#5c626d",
+          "#8a909a",
+          "#c9cdd3"
+        ]
+      },
+      "vestiaire-surface-2": {
+        "role": "neutral",
+        "displayName": "Ardoise en relief",
+        "canonical": "#252830",
+        "tonalRamp": [
+          "#0b0c0e",
+          "#111215",
+          "#1a1c21",
+          "#252830",
+          "#3a3e47",
+          "#5c626d",
+          "#8a909a",
+          "#c9cdd3"
+        ]
+      },
+      "vestiaire-border": {
+        "role": "neutral",
+        "displayName": "Joint gris",
+        "canonical": "#2f333b",
+        "tonalRamp": [
+          "#14161a",
+          "#1f2228",
+          "#2f333b",
+          "#40454f",
+          "#555b66",
+          "#717783",
+          "#959ba5",
+          "#c4c8ce"
+        ]
+      },
+      "vestiaire-text": {
+        "role": "neutral",
+        "displayName": "Craie",
+        "canonical": "#eceef1",
+        "tonalRamp": [
+          "#3a3e47",
+          "#5c626d",
+          "#7d838d",
+          "#a3a9b3",
+          "#c4c8ce",
+          "#dcdfe3",
+          "#eceef1",
+          "#f7f8f9"
+        ]
+      },
+      "vestiaire-text-muted": {
+        "role": "neutral",
+        "displayName": "Craie passée",
+        "canonical": "#a3a9b3",
+        "tonalRamp": [
+          "#3a3e47",
+          "#5c626d",
+          "#7d838d",
+          "#a3a9b3",
+          "#c4c8ce",
+          "#dcdfe3",
+          "#eceef1",
+          "#f7f8f9"
+        ]
+      },
+      "blood-red": {
+        "role": "primary",
+        "displayName": "Rouge Blood Bowl",
+        "canonical": "#c8102e",
+        "tonalRamp": [
+          "#3d0510",
+          "#62091a",
+          "#8a0c22",
+          "#a90d26",
+          "#c8102e",
+          "#e8455a",
+          "#ff7b80",
+          "#ffd2d4"
+        ]
+      },
+      "blood-red-hover": {
+        "role": "primary",
+        "displayName": "Rouge Blood Bowl foncé",
+        "canonical": "#a90d26",
+        "tonalRamp": [
+          "#3d0510",
+          "#62091a",
+          "#8a0c22",
+          "#a90d26",
+          "#c8102e",
+          "#e8455a",
+          "#ff7b80",
+          "#ffd2d4"
+        ]
+      },
+      "blood-red-text": {
+        "role": "primary",
+        "displayName": "Rouge clair de lecture",
+        "canonical": "#ff7b80",
+        "tonalRamp": [
+          "#3d0510",
+          "#62091a",
+          "#8a0c22",
+          "#a90d26",
+          "#c8102e",
+          "#e8455a",
+          "#ff7b80",
+          "#ffd2d4"
+        ]
+      },
+      "on-accent": {
+        "role": "neutral",
+        "displayName": "Blanc sur rouge",
+        "canonical": "#ffffff"
+      },
+      "unread-blue": {
+        "role": "secondary",
+        "displayName": "Bleu non-lu",
+        "canonical": "#5aa9ff",
+        "tonalRamp": [
+          "#0a2342",
+          "#123a6b",
+          "#1d5698",
+          "#2f78c8",
+          "#5aa9ff",
+          "#8cc3ff",
+          "#bfdcff",
+          "#e6f1ff"
+        ]
+      },
+      "rank-gold": {
+        "role": "tertiary",
+        "displayName": "Or de rang",
+        "canonical": "#e2b54a",
+        "tonalRamp": [
+          "#3a2a08",
+          "#5c440f",
+          "#80601a",
+          "#a8812a",
+          "#e2b54a",
+          "#ecc873",
+          "#f4dca3",
+          "#fbf0d6"
+        ]
+      },
+      "success-text": {
+        "role": "neutral",
+        "displayName": "Vert succès",
+        "canonical": "#4ade80"
+      },
+      "warning-text": {
+        "role": "neutral",
+        "displayName": "Ambre alerte",
+        "canonical": "#fbbf24"
+      },
+      "nav-bg": {
+        "role": "neutral",
+        "displayName": "Fond de barre",
+        "canonical": "#16181c"
+      }
     },
     "typographyMeta": {
-      "headline": { "displayName": "Titre de page", "purpose": "Titre principal d'une page (h1), 1,875 rem sur ordinateur si besoin." },
-      "title": { "displayName": "Titre de carte", "purpose": "Titre d'une carte ou d'une section." },
-      "body": { "displayName": "Texte courant", "purpose": "Messages, contenus, champs de saisie (16 px minimum dans un champ)." },
-      "action": { "displayName": "Action", "purpose": "Texte des boutons et des onglets." },
-      "secondary": { "displayName": "Secondaire", "purpose": "Libellés, métadonnées, aide ; taille la plus utilisée." },
-      "label": { "displayName": "Étiquette", "purpose": "Badges, compteurs, libellés de la barre basse." }
+      "display": {
+        "displayName": "Grand titre",
+        "purpose": "Accueil et article seulement (text-bb-display)."
+      },
+      "display-lg": {
+        "displayName": "Grand titre (ordinateur)",
+        "purpose": "lg:text-bb-display-lg."
+      },
+      "headline-lg": {
+        "displayName": "Titre de page (ordinateur)",
+        "purpose": "lg:text-3xl."
+      },
+      "headline": {
+        "displayName": "Titre de page",
+        "purpose": "h1 d'une page (text-2xl)."
+      },
+      "section": {
+        "displayName": "Titre de section",
+        "purpose": "Section de lecture (text-xl)."
+      },
+      "title-lg": {
+        "displayName": "Titre mis en avant",
+        "purpose": "text-lg."
+      },
+      "lead": {
+        "displayName": "Lecture",
+        "purpose": "Texte long et titres de sujet (text-bb-lead)."
+      },
+      "title": {
+        "displayName": "Titre de carte",
+        "purpose": "CardTitle."
+      },
+      "body": {
+        "displayName": "Texte courant",
+        "purpose": "16 px minimum dans un champ."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Boutons et onglets."
+      },
+      "secondary": {
+        "displayName": "Secondaire",
+        "purpose": "Plus petit texte qu'on lit (text-sm)."
+      },
+      "label": {
+        "displayName": "Étiquette",
+        "purpose": "Capitales espacées (text-bb-label)."
+      },
+      "caption": {
+        "displayName": "Légende",
+        "purpose": "Badges, barre basse, unités (text-xs)."
+      }
     },
     "shadows": [
-      { "name": "bb-shadow", "value": "0 8px 24px rgba(0, 0, 0, 0.35)", "purpose": "Seule ombre du système : fenêtres, menus, panneaux, notifications." },
-      { "name": "bb-overlay", "value": "rgba(0, 0, 0, 0.6)", "purpose": "Voile derrière une fenêtre ouverte." }
+      {
+        "name": "bb-shadow",
+        "value": "0 8px 24px rgba(0, 0, 0, 0.35)",
+        "purpose": "Seule ombre du système : fenêtres, menus, panneaux, notifications."
+      },
+      {
+        "name": "bb-overlay",
+        "value": "rgba(0, 0, 0, 0.6)",
+        "purpose": "Voile derrière une fenêtre ouverte."
+      }
     ],
     "motion": [
-      { "name": "color-transition", "value": "color, background-color, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Changements d'état des boutons et liens (transition-colors de Tailwind) ; aucun mouvement." }
+      {
+        "name": "color-transition",
+        "value": "color, background-color, border-color 150ms cubic-bezier(0.4, 0, 0.2, 1)",
+        "purpose": "Changements d'état des boutons et liens (transition-colors de Tailwind) ; aucun mouvement."
+      }
     ],
     "breakpoints": [
-      { "name": "lg", "value": "1025px" }
+      {
+        "name": "lg",
+        "value": "1025px"
+      }
     ]
   },
   "components": [
@@ -108,14 +339,51 @@
       "Huit thèmes interchangeables qui ne changent que les couleurs."
     ],
     "rules": [
-      { "name": "The One Red Rule", "body": "Le rouge plein est réservé à l'action principale d'un écran et aux compteurs. Une page qui montre trois boutons rouges en a deux de trop : les autres passent en `secondary` ou `quiet`.", "section": "colors" },
-      { "name": "The Variable Only Rule", "body": "Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux huit thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.", "section": "colors" },
-      { "name": "The AA Everywhere Rule", "body": "Chaque paire texte et fond atteint le contraste AA dans chacun des huit thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.", "section": "colors" },
-      { "name": "The Weight Not Size Rule", "body": "Pour faire ressortir un élément, on monte le poids avant la taille. Une page n'a qu'un seul titre au-dessus de 1 rem.", "section": "typography" },
-      { "name": "The No Fantasy Type Rule", "body": "Aucune police décorative ou « fantasy » : l'univers du jeu passe par les mots et les images, pas par la typographie.", "section": "typography" },
-      { "name": "The Thumb Reach Rule", "body": "Toute cible d'appui mesure au moins 44 × 44 pixels (`--bb-tap`) ; une ligne de liste cliquable, au moins 56 pixels de haut.", "section": "layout" },
-      { "name": "The Flat Surface Rule", "body": "Une carte posée dans la page n'a pas d'ombre : elle a une bordure. L'ombre est réservée aux éléments qui passent au-dessus des autres.", "section": "elevation" },
-      { "name": "The No Glass Rule", "body": "Le verre dépoli (flou d'arrière-plan) est désactivé par défaut, parce qu'il ralentit les téléphones modestes. Seul un thème peut l'activer, par `--bb-glass-blur` (aujourd'hui seul « Sombre »), et un composant ne l'utilise qu'à travers la prop `glass` de `Card`, jamais avec un flou écrit en dur.", "section": "elevation" }
+      {
+        "name": "The One Red Rule",
+        "body": "Le rouge plein est réservé à l'action principale d'un écran et aux compteurs. Une page qui montre trois boutons rouges en a deux de trop : les autres passent en `secondary` ou `quiet`.",
+        "section": "colors"
+      },
+      {
+        "name": "The Variable Only Rule",
+        "body": "Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux huit thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.",
+        "section": "colors"
+      },
+      {
+        "name": "The AA Everywhere Rule",
+        "body": "Chaque paire texte et fond atteint le contraste AA dans chacun des huit thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.",
+        "section": "colors"
+      },
+      {
+        "name": "The Weight Not Size Rule",
+        "body": "Pour faire ressortir un élément, on monte le poids avant la taille. Une page n'a qu'un seul titre au-dessus de 1 rem.",
+        "section": "typography"
+      },
+      {
+        "name": "The No Fantasy Type Rule",
+        "body": "Aucune police décorative ou « fantasy » : l'univers du jeu passe par les mots et les images, pas par la typographie.",
+        "section": "typography"
+      },
+      {
+        "name": "The 14 Pixel Floor Rule",
+        "body": "Un texte qu'on lit (phrase, information, aperçu, libellé de champ) fait au moins 14 pixels (`text-sm`), sur téléphone comme sur ordinateur. Seuls les rôles Label (en capitales, 13 pixels) et Caption (12 pixels) descendent plus bas, et jamais sous 12 pixels.",
+        "section": "typography"
+      },
+      {
+        "name": "The Thumb Reach Rule",
+        "body": "Toute cible d'appui mesure au moins 44 × 44 pixels (`--bb-tap`) ; une ligne de liste cliquable, au moins 56 pixels de haut.",
+        "section": "layout"
+      },
+      {
+        "name": "The Flat Surface Rule",
+        "body": "Une carte posée dans la page n'a pas d'ombre : elle a une bordure. L'ombre est réservée aux éléments qui passent au-dessus des autres.",
+        "section": "elevation"
+      },
+      {
+        "name": "The No Glass Rule",
+        "body": "Le verre dépoli (flou d'arrière-plan) est désactivé par défaut, parce qu'il ralentit les téléphones modestes. Seul un thème peut l'activer, par `--bb-glass-blur` (aujourd'hui seul « Sombre »), et un composant ne l'utilise qu'à travers la prop `glass` de `Card`, jamais avec un flou écrit en dur.",
+        "section": "elevation"
+      }
     ],
     "dos": [
       "**Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans les huit thèmes.",
@@ -123,11 +391,12 @@
       "**Do** vérifier chaque écran en taille téléphone et dans les huit thèmes avant de le dire terminé.",
       "**Do** réserver le rouge plein à une seule action principale par écran.",
       "**Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.",
-      "**Do** écrire un texte de 16 pixels au moins dans les champs de saisie."
+      "**Do** écrire un texte de 16 pixels au moins dans les champs de saisie.",
+      "**Do** prendre la taille d'un texte dans l'échelle de la section Typography : 14 pixels au moins pour ce qu'on lit."
     ],
     "donts": [
       "**Don't** écrire une couleur en dur ni réintroduire les anciennes variables (`--primary`, `--card-bg`, `--glass-border`…).",
-      "**Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques.",
+      "**Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques. Seule exception : les cadres de rang des avatars.",
       "**Don't** généraliser le verre dépoli ni écrire un flou en dur.",
       "**Don't** produire un tableau de bord SaaS générique : dégradés violets, cartes à ombre douce, icônes dans des pastilles colorées.",
       "**Don't** ajouter une deuxième police ni charger une police depuis Google.",

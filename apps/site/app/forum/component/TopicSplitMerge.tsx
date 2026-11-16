@@ -234,7 +234,7 @@ export function MergeTopicDialog({
                       {isSelected && <Check size={16} aria-hidden="true" className="mt-0.5 shrink-0" />}
                       {topic.title}
                     </span>
-                    <span className="text-[0.8125rem] font-normal text-bb-text-muted">
+                    <span className="text-sm font-normal text-bb-text-muted">
                       {topic.forum.name} · {topic._count.posts} message{topic._count.posts > 1 ? "s" : ""}
                     </span>
                   </Button>

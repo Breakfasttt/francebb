@@ -19,7 +19,7 @@ import NewForumButton from "@/app/forum/component/NewForumButton";
 import LockButton from "@/app/forum/component/LockButton";
 
 /** Titre discret d'un groupe d'actions de la colonne. */
-const groupTitle = "m-0 border-0 p-0 text-[0.8125rem] font-bold tracking-wider text-bb-text-muted uppercase not-italic";
+const groupTitle = "m-0 border-0 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase not-italic";
 
 interface PrimaryActionsProps {
   forumId: string;

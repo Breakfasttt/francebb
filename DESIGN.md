@@ -18,11 +18,41 @@ colors:
   rank-gold: "#e2b54a"
   nav-bg: "#16181c"
 typography:
+  display:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.625rem"
+    fontWeight: 800
+    lineHeight: 1.15
+  display-lg:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "2.5rem"
+    fontWeight: 800
+    lineHeight: 1.08
+  headline-lg:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.875rem"
+    fontWeight: 700
+    lineHeight: 1.2
   headline:
     fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "1.5rem"
     fontWeight: 700
     lineHeight: 1.25
+  section:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.25rem"
+    fontWeight: 700
+    lineHeight: 1.3
+  title-lg:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.125rem"
+    fontWeight: 700
+    lineHeight: 1.375
+  lead:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "1.0625rem"
+    fontWeight: 400
+    lineHeight: 1.6
   title:
     fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
     fontSize: "1rem"
@@ -42,8 +72,14 @@ typography:
     fontWeight: 600
   label:
     fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.75rem"
+    fontSize: "0.8125rem"
     fontWeight: 700
+    lineHeight: 1.3
+    letterSpacing: "0.05em"
+  caption:
+    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
+    fontSize: "0.75rem"
+    fontWeight: 600
     lineHeight: 1
 rounded:
   sm: "8px"
@@ -97,19 +133,19 @@ components:
   badge-neutral:
     backgroundColor: "{colors.vestiaire-surface-2}"
     textColor: "{colors.vestiaire-text-muted}"
-    typography: "{typography.label}"
+    typography: "{typography.caption}"
     rounded: "{rounded.sm}"
     padding: "2px 6px"
   count-badge:
     backgroundColor: "{colors.blood-red}"
     textColor: "{colors.on-accent}"
-    typography: "{typography.label}"
+    typography: "{typography.caption}"
     rounded: "{rounded.full}"
     height: "20px"
   bottom-nav:
     backgroundColor: "{colors.nav-bg}"
     textColor: "{colors.vestiaire-text-muted}"
-    typography: "{typography.label}"
+    typography: "{typography.caption}"
     height: "52px"
 ---
 
@@ -174,15 +210,24 @@ Une palette quasi neutre, froide et sombre, réveillée par un rouge franc et tr
 **Character:** Une seule famille, Inter en version variable, servie par le site lui-même (`next/font/local`, fichier dans `apps/site/app/fonts/`). La hiérarchie vient du poids (gras pour les actions et les titres, demi-gras pour les libellés) bien plus que de la taille : l'échelle est courte, adaptée à l'écran d'un téléphone.
 
 ### Hierarchy
-- **Headline** (700, 1,5 rem, interligne 1,25) : titre principal d'une page (`h1`), passe à 1,875 rem sur ordinateur quand la page le demande.
-- **Title** (700, 1 rem) : titre d'une carte (`CardTitle`), sans majuscules ni italique.
+Chaque rôle a sa classe ; les classes `text-bb-…` sont définies dans `packages/ui/src/tokens.css` (carte 207), les autres sont celles de Tailwind. Aucune taille écrite à la main (`text-[1.05rem]`) : un besoin nouveau devient un rôle ici, puis une classe.
+
+- **Display** (800, 1,625 rem puis 2,5 rem sur ordinateur, `text-bb-display` et `lg:text-bb-display-lg`) : grand titre de l'accueil et d'un article, rien d'autre.
+- **Headline** (700, 1,5 rem, `text-2xl`, puis 1,875 rem sur ordinateur, `lg:text-3xl`) : titre principal d'une page (`h1`).
+- **Section** (700, 1,25 rem, `text-xl`) : titre d'une section de lecture (mentions légales, titre d'un article au hasard sur ordinateur).
+- **Title-lg** (700, 1,125 rem, `text-lg`) : titre mis en avant dans une carte.
+- **Lead** (400, 1,0625 rem, `text-bb-lead`) : texte de lecture long (article, présentation d'une ligue, page « Jouer ») et titre d'un sujet dans une liste du forum.
+- **Title** (700, 1 rem, `text-base`) : titre d'une carte (`CardTitle`), sans majuscules ni italique.
 - **Body** (400, 1 rem, interligne 1,625) : texte courant, messages du forum, champs de saisie. 16 pixels minimum dans un champ.
 - **Action** (700, 0,95 rem) : texte des boutons et des onglets (les onglets en 600).
-- **Secondary** (600, 0,875 rem) : libellés de formulaire, métadonnées, texte d'aide. C'est la taille la plus utilisée du site.
-- **Label** (700, 0,75 rem, interligne 1) : badges, pastilles de compteur, libellés de la barre basse.
+- **Secondary** (400 à 600, 0,875 rem, `text-sm`) : informations sous un titre (auteur, date, nombre de réponses), libellés de formulaire, texte d'aide, aperçu d'une conversation. C'est la taille la plus utilisée du site, et **la plus petite pour un texte qu'on lit**.
+- **Label** (700, 0,8125 rem, capitales espacées, `text-bb-label uppercase tracking-wide`) : intertitre d'un groupe de liens, en-tête de colonne, légende d'un groupe de champs, intitulé d'une donnée (`dt`).
+- **Caption** (600 à 700, 0,75 rem, `text-xs`) : badges, pastilles de compteur, libellés de la barre basse et des tuiles du panneau « Plus », unité sous un nombre (« points », « CAS »), heure d'un message.
 
 ### Named Rules
 **The Weight Not Size Rule.** Pour faire ressortir un élément, on monte le poids avant la taille. Une page n'a qu'un seul titre au-dessus de 1 rem.
+
+**The 14 Pixel Floor Rule.** Un texte qu'on lit (phrase, information, aperçu, libellé de champ) fait au moins 14 pixels (`text-sm`), sur téléphone comme sur ordinateur. Seuls les rôles Label (en capitales, 13 pixels) et Caption (12 pixels) descendent plus bas, et jamais sous 12 pixels.
 
 **The No Fantasy Type Rule.** Aucune police décorative ou « fantasy » : l'univers du jeu passe par les mots et les images, pas par la typographie.
 
@@ -198,7 +243,7 @@ Une palette quasi neutre, froide et sombre, réveillée par un rouge franc et tr
 
 ## Elevation & Depth
 
-Le système est plat. La profondeur vient d'abord de l'écart de teinte entre le fond, la surface et la surface en relief, et des bordures fines d'un pixel. Une seule ombre existe, réservée à ce qui flotte au-dessus de la page (fenêtres, menus, panneaux, notifications). Le voile sombre (`--bb-overlay`, noir à 60 %) isole une fenêtre ouverte.
+Le système est plat. La profondeur vient d'abord de l'écart de teinte entre le fond, la surface et la surface en relief, et des bordures fines d'un pixel. Une seule ombre existe (en dehors des cadres de rang des avatars, voir Components), réservée à ce qui flotte au-dessus de la page (fenêtres, menus, panneaux, notifications). Le voile sombre (`--bb-overlay`, noir à 60 %) isole une fenêtre ouverte.
 
 ### Shadow Vocabulary
 - **Ombre flottante** (`box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35)`, variable `--bb-shadow`) : fenêtres, menus déroulants, panneaux, notifications.
@@ -248,6 +293,12 @@ Tous les composants viennent de `packages/ui` (fondé sur shadcn et Radix) et se
 - **Onglets dans la page :** texte demi-gras de 0,95 rem, trait de 2 px rouge clair sous l'onglet ouvert. Rangée qui défile sur téléphone, avec fondu sur les bords.
 - **Pagination :** « ‹ Page 3 sur 5 › » en cases de 44 px, accès direct à la dernière page.
 
+### Cadres de rang (exception assumée)
+Les avatars des membres portent un cadre selon leur rang (`common/components/UserAvatar/UserAvatar.css`) : bronze, argent, or qui pulse, platine bleu électrique, diamant qui scintille, maître violet et rose qui tourne, grand maître rouge et or qui tourne. C'est **le seul endroit du site où le look « jeu vidéo » est permis** (lueurs, couleurs vives, mouvement), décision du responsable du projet : le rang est une récompense, il doit se voir. Ces couleurs sont écrites en dur et ne suivent pas le thème.
+- **Performance :** une animation de cadre ne joue que sur l'opacité ou la rotation, que la carte graphique calcule sans redessiner l'avatar. Jamais d'ombre (`box-shadow`) ni de filtre (`filter`) animés : une lueur qui pulse est un calque fixe dont seule l'opacité varie (carte 207).
+- **Mouvement réduit :** toutes les animations de cadre s'arrêtent quand le téléphone demande de réduire les animations.
+- **Membre banni :** cadre rouge barré et étiquette « Banni », sans animation.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -257,10 +308,11 @@ Tous les composants viennent de `packages/ui` (fondé sur shadcn et Radix) et se
 - **Do** réserver le rouge plein à une seule action principale par écran.
 - **Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.
 - **Do** écrire un texte de 16 pixels au moins dans les champs de saisie.
+- **Do** prendre la taille d'un texte dans l'échelle de la section Typography : 14 pixels au moins pour ce qu'on lit.
 
 ### Don't:
 - **Don't** écrire une couleur en dur ni réintroduire les anciennes variables (`--primary`, `--card-bg`, `--glass-border`…).
-- **Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques.
+- **Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques. Seule exception : les cadres de rang des avatars.
 - **Don't** généraliser le verre dépoli ni écrire un flou en dur.
 - **Don't** produire un tableau de bord SaaS générique : dégradés violets, cartes à ombre douce, icônes dans des pastilles colorées.
 - **Don't** ajouter une deuxième police ni charger une police depuis Google.

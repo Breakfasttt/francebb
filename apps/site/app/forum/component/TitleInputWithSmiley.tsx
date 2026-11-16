@@ -79,8 +79,8 @@ export default function TitleInputWithSmiley({
 
       {/* Aperçu du titre en direct */}
       {titleValue && titleValue.trim() !== "" && (
-        <div className="rounded-bb-md border-l-4 border-bb-accent bg-bb-accent-soft px-4 py-3 text-bb-text">
-          <span className="mb-1 block text-xs font-bold tracking-wide text-bb-text-muted uppercase">Aperçu du titre :</span>
+        <div className="rounded-bb-md border border-bb-accent-text/40 bg-bb-accent-soft px-4 py-3 text-bb-text">
+          <span className="mb-1 block text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">Aperçu du titre :</span>
           <div className="text-lg leading-snug font-extrabold break-words">
             <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(titleValue) }} />
           </div>

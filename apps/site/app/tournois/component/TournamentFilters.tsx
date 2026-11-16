@@ -191,7 +191,7 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     <div className="flex flex-col gap-5">
       {sections.map((section) => (
         <fieldset key={section.title} className="m-0 flex min-w-0 flex-col gap-3 border-0 p-0">
-          <legend className="mb-2 flex items-center gap-2 p-0 text-xs font-bold tracking-wide text-bb-text-muted uppercase">
+          <legend className="mb-2 flex items-center gap-2 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">
             {section.icon}
             {section.title}
           </legend>

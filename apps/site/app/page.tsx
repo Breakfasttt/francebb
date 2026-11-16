@@ -223,13 +223,13 @@ export default async function Home() {
         <section aria-labelledby="home-title" className="flex flex-col justify-center gap-4 rounded-bb-lg border border-bb-border bg-bb-surface px-5 py-6 lg:gap-6 lg:px-10 lg:py-9">
           <div className="flex flex-col gap-3">
             <span className={eyebrow}>{memberName ? `Bon retour, ${memberName}` : "La communauté française"}</span>
-            <h1 id="home-title" className="m-0 border-0 p-0 text-[1.625rem] leading-[1.15] font-extrabold tracking-[-0.02em] text-bb-text normal-case not-italic lg:text-[2.5rem] lg:leading-[1.08]">
+            <h1 id="home-title" className="m-0 border-0 p-0 text-bb-display font-extrabold tracking-[-0.02em] text-bb-text normal-case not-italic lg:text-bb-display-lg">
               Tournois, ligues et coachs de Blood Bowl en France
             </h1>
             {/* Pour le visiteur, visible aussi sur téléphone (carte 189), en deux lignes au plus : c'est ce qui explique
                 le site. Un membre le connaît déjà : son bandeau est plus court (carte 205). */}
             {!isAuth && (
-              <p className="m-0 max-w-[600px] text-[0.95rem] leading-relaxed text-bb-text-muted lg:text-[1.05rem]">
+              <p className="m-0 max-w-[600px] text-base leading-relaxed text-bb-text-muted lg:text-bb-lead">
                 Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue.
               </p>
             )}
@@ -316,7 +316,7 @@ export default async function Home() {
             >
               <h2 id="home-random-article" className={cn(eyebrow, "m-0 border-0 p-0 not-italic")}>Article au hasard</h2>
               <span className="flex min-w-0 flex-col gap-1">
-                <span className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text lg:line-clamp-3 lg:text-[1.2rem]">{selectedArticle.title}</span>
+                <span className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text lg:line-clamp-3 lg:text-xl">{selectedArticle.title}</span>
                 <span className="text-sm text-bb-text-muted">par {selectedArticle.author?.name || "Anonyme"}</span>
               </span>
               {/* Visible aussi sur téléphone (carte 205) : montre que le bloc est un lien */}

@@ -69,7 +69,7 @@ export function ResultsRanking({ results }: { results: TournamentResult[] }) {
   const columns = "grid grid-cols-[2rem_minmax(0,1fr)_4.25rem_3.25rem] gap-x-2 lg:grid-cols-[2.5rem_minmax(0,1.6fr)_6rem_minmax(0,1fr)_5rem_4rem_4.5rem]";
   return (
     <div className="overflow-hidden rounded-bb-md border border-bb-border">
-      <div aria-hidden="true" className={cn(columns, "bg-bb-surface-2 px-3 py-2 text-xs font-bold tracking-wide text-bb-text-muted uppercase")}>
+      <div aria-hidden="true" className={cn(columns, "bg-bb-surface-2 px-3 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase")}>
         <span>#</span>
         <span>Coach</span>
         <span className="hidden lg:block">NAF</span>

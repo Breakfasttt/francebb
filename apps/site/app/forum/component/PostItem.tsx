@@ -170,7 +170,7 @@ const PostItem: React.FC<PostItemProps> = ({
             {rankLabel && <Badge variant="rank">{rankLabel}</Badge>}
             {isFirstPostAlwaysVisible && <Badge variant="outline">Premier message</Badge>}
           </div>
-          <p className="m-0 text-[0.8125rem] leading-snug text-bb-text-muted">
+          <p className="m-0 text-sm leading-snug text-bb-text-muted">
             {roleLabel}
             <span aria-hidden="true"> · </span>
             <time dateTime={new Date(post.createdAt).toISOString()}>{longDate(post.createdAt)}</time>
@@ -247,15 +247,15 @@ const PostItem: React.FC<PostItemProps> = ({
             {!post.isModerated || isUserModerator || currentUserId === post.authorId ? (
               <div className="max-w-[70ch]">
                 {post.isModerated && (
-                  <p className="m-0 mb-2 text-xs text-bb-text-muted italic">[Contenu original visible par vous seul et les modérateurs]</p>
+                  <p className="m-0 mb-2 text-sm text-bb-text-muted italic">[Contenu original visible par vous seul et les modérateurs]</p>
                 )}
                 {(isBlocked || isBannedAuthor) && isRevealed && (
-                  <div className="mb-3 flex flex-wrap items-center gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-1 text-xs font-semibold text-bb-text-muted">
+                  <div className="mb-3 flex flex-wrap items-center gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-1 text-sm font-semibold text-bb-text-muted">
                     <Info size={14} aria-hidden="true" />
                     <span className="flex-1">
                       {isBannedAuthor ? "AFFICHAGE TEMPORAIRE (COACH BANNI)" : "AFFICHAGE TEMPORAIRE (UTILISATEUR BLOQUÉ)"}
                     </span>
-                    <Button type="button" variant="quiet" size="tap" onClick={() => setIsRevealed(false)} className="text-xs">
+                    <Button type="button" variant="quiet" size="tap" onClick={() => setIsRevealed(false)} className="text-sm">
                       Masquer à nouveau
                     </Button>
                   </div>

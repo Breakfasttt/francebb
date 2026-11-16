@@ -544,7 +544,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
 }
 
 /** Titre discret d'un groupe d'outils. */
-const groupTitle = "m-0 border-0 p-0 text-[0.8125rem] font-bold tracking-wider text-bb-text-muted uppercase not-italic";
+const groupTitle = "m-0 border-0 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase not-italic";
 const toolButton = "w-full justify-start";
 const ico = (Icon: typeof Eye) => <Icon size={18} aria-hidden="true" />;
 

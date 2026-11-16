@@ -136,7 +136,7 @@ export default function TagSelector({
 
       {showSuggestions && (
         <div className="absolute top-full right-0 left-0 z-[var(--z-index-dropdown)] mt-1 rounded-bb-md border border-bb-border bg-bb-surface p-1 shadow-bb">
-          <p className="m-0 px-3 pt-1 pb-1 text-xs font-semibold text-bb-text-muted">Tags existants</p>
+          <p className="m-0 px-3 pt-1 pb-1 text-sm font-semibold text-bb-text-muted">Tags existants</p>
           {filtered.map((tag) => (
             <Button
               key={tag}

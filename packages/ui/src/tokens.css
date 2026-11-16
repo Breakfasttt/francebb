@@ -57,6 +57,24 @@
   --breakpoint-lg: 1025px;
 }
 
+/*
+ * Tailles de texte nommées qui complètent l'échelle de Tailwind (carte 207, voir DESIGN.md, section Typography).
+ * Elles donnent les classes `text-bb-label`, `text-bb-lead`, `text-bb-display` et `text-bb-display-lg`.
+ * - label : étiquette en capitales espacées (intertitre d'un groupe, en-tête de colonne, légende) ;
+ * - lead : un cran au-dessus du texte courant, pour les textes de lecture longs et les titres de sujet d'une liste ;
+ * - display et display-lg : grand titre d'une page d'accueil ou d'article, sur téléphone puis sur ordinateur.
+ */
+@theme {
+  --text-bb-label: 0.8125rem;
+  --text-bb-label--line-height: 1.3;
+  --text-bb-lead: 1.0625rem;
+  --text-bb-lead--line-height: 1.6;
+  --text-bb-display: 1.625rem;
+  --text-bb-display--line-height: 1.15;
+  --text-bb-display-lg: 2.5rem;
+  --text-bb-display-lg--line-height: 1.08;
+}
+
 /* Classes Tailwind des variables v2 : `bg-bb-surface`, `text-bb-text-muted`, `border-bb-border`, etc. */
 @theme inline {
   --color-bb-bg: var(--bb-bg);

@@ -213,7 +213,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                     return (
                       <li key={post.id} className="flex items-start gap-3 border-b border-bb-border p-3 last:border-b-0 lg:px-4">
                         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                          <h3 className="m-0 flex min-w-0 items-start gap-1.5 border-0 p-0 text-[1.0625rem] leading-snug font-bold text-bb-text normal-case not-italic">
+                          <h3 className="m-0 flex min-w-0 items-start gap-1.5 border-0 p-0 text-bb-lead leading-snug font-bold text-bb-text normal-case not-italic">
                             {post.topic.tournamentId && (
                               <Trophy size={16} role="img" aria-label="Tournoi" className="mt-1 shrink-0 text-bb-accent-text" />
                             )}
@@ -224,7 +224,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                               dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }}
                             />
                           </h3>
-                          <p className="m-0 text-[0.8125rem] text-bb-text-muted">
+                          <p className="m-0 text-sm text-bb-text-muted">
                             dans{" "}
                             <strong className="font-semibold text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.forum.name) }} />{" "}
                             · par <strong className="font-semibold text-bb-text">{post.author.name}</strong> ·{" "}
@@ -243,7 +243,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                               )
                             )}
                           </p>
-                          <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-[0.8125rem] text-bb-text-muted">
+                          <p className="m-0 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-bb-text-muted">
                             <span className="inline-flex items-center gap-1" title="Vues du sujet">
                               <Eye size={14} aria-hidden="true" /> {post.topic.views || 0} vue{(post.topic.views || 0) > 1 ? "s" : ""}
                             </span>

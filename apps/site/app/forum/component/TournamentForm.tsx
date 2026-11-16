@@ -437,7 +437,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             </fieldset>
 
             {isCDF && (
-              <div className="rounded-bb-md border-l-4 border-bb-accent bg-bb-surface-2 px-3 py-2">
+              <div className="rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2">
                 <p className="m-0 text-sm font-semibold text-bb-text">
                   Type de classement CDF :{" "}
                   <span className="text-bb-accent-text">{!isTeam ? "Individuel" : (pairingType === "EQUIPE" ? "Équipe Totale" : "Équipe Partielle")}</span>

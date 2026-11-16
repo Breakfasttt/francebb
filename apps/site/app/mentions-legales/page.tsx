@@ -2,8 +2,6 @@ import React from 'react';
 import { Metadata } from 'next';
 import PageHeader from '@/common/components/PageHeader/PageHeader';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
-import './page.css';
-import './page-mobile.css';
 
 /**
  * Mentions légales et politique de confidentialité du site BBFrance (carte 126).
@@ -16,6 +14,17 @@ export const metadata: Metadata = {
   description: 'Éditeur, hébergement, données personnelles et droits des membres de BBFrance.',
 };
 
+/**
+ * Mise en forme du texte des sections (carte 207, classes Tailwind à la place de page.css) : titres de section
+ * soulignés d'un filet, paragraphes aérés, puces et liens de la couleur d'accent. Une colonne sur téléphone, deux sur
+ * ordinateur quand la largeur le permet.
+ */
+const sectionText =
+  "[&_h2]:m-0 [&_h2]:mb-4 [&_h2]:border-b [&_h2]:border-bb-border [&_h2]:pb-2 [&_h2]:text-xl [&_h2]:leading-snug [&_h2]:font-bold [&_h2]:text-bb-text " +
+  "[&_p]:m-0 [&_p]:mb-4 [&_p]:leading-[1.7] [&_p:last-child]:mb-0 " +
+  "[&_ul]:m-0 [&_ul]:mb-4 [&_ul]:list-disc [&_ul]:pl-5 [&_li]:mb-2.5 [&_li]:leading-relaxed [&_li]:marker:text-bb-accent-text " +
+  "[&_a]:font-semibold [&_a]:text-bb-accent-text [&_a]:underline [&_a]:underline-offset-2 [&_a]:[overflow-wrap:anywhere] [&_a:hover]:decoration-2";
+
 /** Date de la dernière modification du texte, à changer à chaque mise à jour. */
 const LAST_UPDATE = '31 octobre 2026';
 
@@ -24,15 +33,15 @@ export default function MentionsLegalesPage() {
   const contactLink = contact ? <a href={`mailto:${contact}`}>{contact}</a> : <strong>adresse de contact non configurée</strong>;
 
   return (
-    <div className="mentions-page-wrapper">
+    <div className="pb-8">
       <PageHeader
         title="Mentions légales"
         subtitle="Qui publie le site, et ce que nous faisons de tes données"
       />
 
-      <main className="container mentions-container">
-        <div className="mentions-grid">
-          <PremiumCard className="mentions-section">
+      <div className="mx-auto flex w-full max-w-[1280px] flex-col px-4 pt-2 pb-6 lg:px-8 lg:pt-4 lg:pb-8">
+        <div className={`grid grid-cols-1 gap-4 lg:grid-cols-[repeat(auto-fit,minmax(420px,1fr))] lg:gap-5 ${sectionText}`}>
+          <PremiumCard>
             <h2>1. Éditeur du site</h2>
             <p>
               BBFrance est un site communautaire consacré au jeu Blood Bowl, édité <strong>à titre non professionnel et bénévole</strong> par
@@ -43,7 +52,7 @@ export default function MentionsLegalesPage() {
             <p><strong>Contact :</strong> {contactLink}</p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>2. Hébergement</h2>
             <p>
               Le site et le passeport Blood Bowl sont hébergés par <strong>Vercel Inc.</strong>, 440 N Barranca Ave #4133, Covina,
@@ -52,7 +61,7 @@ export default function MentionsLegalesPage() {
             <p>Les bases de données sont hébergées par <strong>Neon</strong>, sur des serveurs situés à Francfort (Allemagne).</p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>3. Code source et propriété intellectuelle</h2>
             <p>
               Le code du site est ouvert et publié sur <a href="https://github.com/Breakfasttt/francebb" target="_blank" rel="noopener noreferrer">GitHub</a> sous
@@ -64,7 +73,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>4. Contenus publiés par les membres</h2>
             <p>
               Les messages, articles et ressources publiés par les membres restent sous la responsabilité de leurs auteurs. Pour
@@ -73,7 +82,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section" id="confidentialite">
+          <PremiumCard id="confidentialite">
             <h2>5. Tes données : qui en est responsable</h2>
             <p>
               Le responsable de tes données est <strong>breakyt</strong>, éditeur bénévole de BBFrance. Pour toute question ou demande
@@ -86,7 +95,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>6. Quelles données, pourquoi, combien de temps</h2>
             <ul>
               <li>
@@ -120,7 +129,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>7. Qui reçoit tes données</h2>
             <ul>
               <li>Les applications BBFrance auxquelles tu te connectes.</li>
@@ -143,7 +152,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>8. Tes droits</h2>
             <ul>
               <li><strong>Recevoir une copie de tes données</strong> : bouton « Télécharger mes données » de ton passeport.</li>
@@ -158,7 +167,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>9. Cookies</h2>
             <p>
               Le site et le passeport n’utilisent que des cookies nécessaires à leur fonctionnement : garder ta session ouverte,
@@ -167,7 +176,7 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
-          <PremiumCard className="mentions-section">
+          <PremiumCard>
             <h2>10. Limitation de responsabilité</h2>
             <p>
               L’équipe BBFrance s’efforce de publier des informations exactes, mais ne peut être tenue pour responsable des erreurs
@@ -176,11 +185,11 @@ export default function MentionsLegalesPage() {
           </PremiumCard>
         </div>
 
-        <div className="mentions-footer">
+        <div className="mt-8 p-4 text-center text-sm text-bb-text-muted [&_a]:font-semibold [&_a]:text-bb-accent-text [&_a]:underline [&_a]:underline-offset-2 [&_p]:m-0 [&_p]:mb-2">
           <p>Dernière mise à jour : {LAST_UPDATE}</p>
           <p><em>« Sur le terrain, tout est permis. Dans la loi, on suit les règles de Nuffle. »</em></p>
         </div>
-      </main>
+      </div>
     </div>
   );
 }

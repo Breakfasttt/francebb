@@ -59,7 +59,7 @@ function Fact({ icon, label, children }: { icon: React.ReactNode; label: string;
     <div className="flex min-w-0 items-start gap-2.5">
       <span aria-hidden="true" className="mt-0.5 shrink-0 text-bb-accent-text">{icon}</span>
       <div className="min-w-0">
-        <dt className="text-xs font-semibold tracking-wide text-bb-text-muted uppercase">{label}</dt>
+        <dt className="text-bb-label font-semibold tracking-wide text-bb-text-muted uppercase">{label}</dt>
         <dd className="m-0 text-[0.95rem] font-semibold break-words text-bb-text">{children}</dd>
       </div>
     </div>

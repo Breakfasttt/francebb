@@ -132,7 +132,7 @@ export default async function LigueDetailPage({
           {ligue.description ? (
             // Présentation saisie par la ligue (BBCode converti en HTML)
             <div
-              className="text-[1.05rem] leading-relaxed break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_strong]:font-bold"
+              className="text-bb-lead break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_strong]:font-bold"
               dangerouslySetInnerHTML={{ __html: parseBBCode(ligue.description) }}
             />
           ) : (

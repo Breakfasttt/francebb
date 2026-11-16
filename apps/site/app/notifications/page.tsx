@@ -98,7 +98,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
                         <span className={cn("text-[0.95rem] leading-snug break-words", isUnread ? "font-medium" : "text-bb-text-muted")}>
                           <NotificationText notification={notification} />
                         </span>
-                        <span className="text-[0.8125rem] text-bb-text-muted">{frenchDateTime(notification.createdAt)}</span>
+                        <span className="text-sm text-bb-text-muted">{frenchDateTime(notification.createdAt)}</span>
                       </span>
                       {isUnread && <UnreadDot className="mt-2" />}
                     </a>

@@ -145,7 +145,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           {forum.subForums.length > 0 && (
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-[0.8125rem] tracking-wider text-bb-text-muted uppercase">Sous-forums</CardTitle>
+                <CardTitle className="text-bb-label tracking-wider text-bb-text-muted uppercase">Sous-forums</CardTitle>
               </CardHeader>
               {forum.subForums.map((sub) => {
                 const lastTopic = sub.topics[0];
@@ -176,7 +176,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
           <Card className="overflow-hidden">
             {/* En-têtes de colonnes, sur ordinateur seulement (sur téléphone, chaque ligne nomme ses chiffres) */}
-            <div aria-hidden="true" className="hidden items-center gap-4 border-b border-bb-border px-4 py-2 text-[0.8125rem] font-semibold text-bb-text-muted lg:flex">
+            <div aria-hidden="true" className="hidden items-center gap-4 border-b border-bb-border px-4 py-2 text-sm font-semibold text-bb-text-muted lg:flex">
               <span className="flex-1 pl-[52px]">Sujet</span>
               <span className="w-24 text-right">Messages</span>
               <span className="w-20 text-right">Vues</span>

@@ -44,7 +44,7 @@ export default async function AuthErrorPage(props: {
           <div className="flex w-full flex-col gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 p-4">
             <p className="m-0 text-bb-text">{getErrorMessage(error)}</p>
             {/* Code technique de l'erreur, utile si le membre la signale */}
-            {error && <p className="m-0 text-xs break-all text-bb-text-muted">Code : {error}</p>}
+            {error && <p className="m-0 text-sm break-all text-bb-text-muted">Code : {error}</p>}
           </div>
 
           <Button asChild variant="primary" size="tap" className="w-full">

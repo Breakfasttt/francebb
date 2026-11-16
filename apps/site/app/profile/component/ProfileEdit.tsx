@@ -138,7 +138,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
               postCount={postCount}
               isModerator={isModerator}
             />
-            <span className="text-xs font-semibold text-bb-text-muted">Aperçu</span>
+            <span className="text-sm font-semibold text-bb-text-muted">Aperçu</span>
           </div>
           <div className="flex min-w-0 flex-1 flex-col gap-4">
             <Field label="URL de l'avatar" htmlFor="profile-image" hint="L'adresse d'une image en ligne, ou l'un des boutons ci-dessous.">
