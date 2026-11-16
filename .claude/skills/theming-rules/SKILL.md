@@ -1,11 +1,11 @@
 ---
 name: theming-rules
-description: Règles des 8 thèmes visuels de BBFrance - variables de couleur v2, verre dépoli, dégradé de fond, ordre d'affichage (z-index), ajout d'un thème. À lire avant de toucher aux couleurs ou au CSS.
+description: Règles des 5 thèmes visuels de BBFrance (générés depuis une source unique) - variables de couleur v2, verre dépoli, dégradé de fond, ordre d'affichage (z-index), ajout d'un thème. À lire avant de toucher aux couleurs ou au CSS.
 ---
 
 # Thèmes visuels BBFrance
 
-Le coach choisit l'un des **8 thèmes** du site : vestiaire (thème par défaut), saison3, naf, default (« Sombre »), light, blood, malpierre, nehekhara. Leur liste officielle (identifiant et nom affiché) est dans `apps/site/lib/themes.ts`. Le thème actif est indiqué par l'attribut `data-theme` sur la balise `<html>`.
+Le coach choisit l'un des **5 thèmes** du site (carte 218) : Sombre (identifiant `vestiaire`, thème par défaut), Saison 3, NAF, Néhékhara et Violet (identifiant `elfes-noirs`). **La source unique est `packages/ui/src/themes/themeData.mjs`** : le script `corepack pnpm themes:build` (à la racine du dépôt) en génère les fichiers de couleurs, `themes/index.css` et `themes/themeList.ts`, la liste lue par le site (`apps/site/lib/themes.ts`), et supprime le fichier d'un thème retiré. Ne jamais modifier ces fichiers générés à la main, ni changer l'identifiant d'un thème gardé (il est enregistré dans le profil des membres) ; un identifiant inconnu retombe sur le thème par défaut.
 
 Les couleurs de chaque thème sont dans `packages/ui/src/themes/<id>.css`, importés par `themes/index.css` puis par `packages/ui/src/tokens.css`. Vestiaire est aussi posé sur `:root` : c'est lui qui s'applique sans attribut `data-theme` (le hub, par exemple). Ces variables sont dites **v2** (préfixe `--bb-`) ; ce sont les seules. Les anciennes (`--primary`, `--card-bg`, `--glass-border`…) n'existent plus : ne pas les réécrire.
 
@@ -79,12 +79,12 @@ L'ordre de superposition est fixé dans `globals.css` (variables `--z-index-*`).
 
 ## Téléphone
 
-Seuil unique : `max-lg:` (jusqu'à 1024 px) et `lg:` (à partir de 1025 px), voir le skill `mobile-ux`. Tout changement de thème est vérifié en taille téléphone, dans les 8 thèmes.
+Seuil unique : `max-lg:` (jusqu'à 1024 px) et `lg:` (à partir de 1025 px), voir le skill `mobile-ux`. Tout changement de thème est vérifié en taille téléphone ; le contraste de tous les thèmes est vérifié par `contraste.spec.ts`, les captures portent sur 4 thèmes (`E2E_CAPTURE_THEMES`).
 
 ## Ajouter un thème
 
-1. Créer `packages/ui/src/themes/<id>.css` en copiant un thème existant (pour n'oublier aucune variable), sous `[data-theme="<id>"]`.
-2. L'importer dans `packages/ui/src/themes/index.css`.
-3. Ajouter son identifiant et son nom à `apps/site/lib/themes.ts` (inscription, profil, contrôle de l'action `updateTheme`).
-4. Ajouter sa pastille dans `apps/site/common/components/AppShell/ThemePicker.css`.
-5. Lancer `contraste.spec.ts` et `visual-themes.spec.ts`.
+1. Ajouter une entrée dans `packages/ui/src/themes/themeData.mjs` : `id` (en minuscules, avec des tirets, définitif), `label` et `base` : `scheme` (`dark` ou `light`), `bg`, `surface`, `accent`, et au besoin `text`, `unread`, `rank`, `navBg`, `danger`, `bgImage`. Le script calcule les autres couleurs et corrige celles qui manquent de contraste.
+2. Lancer `corepack pnpm themes:build`, puis le test `contraste.spec.ts`.
+3. Relire le thème à l'œil, sur téléphone (le calcul garantit la lisibilité, pas la beauté), et enregistrer le fichier de données avec les fichiers générés.
+
+Le sélecteur (`ThemePicker`) lit la liste générée : rien d'autre à modifier.

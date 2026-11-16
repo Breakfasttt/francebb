@@ -161,7 +161,7 @@ Les coulisses d'avant-match : une pièce sombre, rangée, où tout sert. On y vi
 
 L'interface est tactile et robuste. Elle est pensée pour un coach qui tient son téléphone d'une main, sur le lieu d'un tournoi : chaque zone d'appui fait au moins 44 pixels, le texte des champs fait 16 pixels pour éviter le zoom automatique de l'iPhone, et la navigation principale tient dans une barre basse à cinq onglets. La densité est moyenne : des listes serrées mais aérées par des lignes d'au moins 56 pixels et des séparateurs fins.
 
-Le Vestiaire est le thème par défaut parmi huit. Chaque thème garde ses couleurs et son esprit (Saison 3 en parchemin et bleu marine, NAF en bleu marine et jaune…), mais la mise en page, les formes et les composants sont les mêmes pour tous. Les styles refusés sont le look « jeu vidéo » chargé (textures, néons, typographies fantasy, effets métalliques), le verre dépoli généralisé, et le tableau de bord SaaS générique (dégradés violets, cartes à ombre douce, icônes dans des pastilles).
+Le Vestiaire (nommé « Sombre ») est le thème par défaut parmi cinq. Chaque thème garde ses couleurs et son esprit (Saison 3 en parchemin et bleu marine, NAF clair avec un bandeau rouge foncé…), mais la mise en page, les formes et les composants sont les mêmes pour tous. Les styles refusés sont le look « jeu vidéo » chargé (textures, néons, typographies fantasy, effets métalliques), le verre dépoli généralisé, et le tableau de bord SaaS générique (dégradés violets, cartes à ombre douce, icônes dans des pastilles).
 
 **Key Characteristics:**
 - Fond sombre et surfaces pleines, séparées par des bordures fines plutôt que par des ombres.
@@ -198,9 +198,9 @@ Une palette quasi neutre, froide et sombre, réveillée par un rouge franc et tr
 ### Named Rules
 **The One Red Rule.** Le rouge plein est réservé à l'action principale d'un écran et aux compteurs. Une page qui montre trois boutons rouges en a deux de trop : les autres passent en `secondary` ou `quiet`.
 
-**The Variable Only Rule.** Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux huit thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css` et les pastilles d'aperçu du choix de thème.
+**The Variable Only Rule.** Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux 5 thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css`, et les aperçus du choix de thème (chacun montre un autre thème que le thème actif).
 
-**The AA Everywhere Rule.** Chaque paire texte et fond atteint le contraste AA dans chacun des huit thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.
+**The AA Everywhere Rule.** Chaque paire texte et fond atteint le contraste AA dans chacun des 5 thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.
 
 ## Typography
 
@@ -293,6 +293,13 @@ Tous les composants viennent de `packages/ui` (fondé sur shadcn et Radix) et se
 - **Onglets dans la page :** texte demi-gras de 0,95 rem, trait de 2 px rouge clair sous l'onglet ouvert. Rangée qui défile sur téléphone, avec fondu sur les bords.
 - **Pagination :** « ‹ Page 3 sur 5 › » en cases de 44 px, accès direct à la dernière page.
 
+### Lignes du terrain de l'accueil (motif propre à l'accueil)
+L'accueil (`/`, carte 210) reprend deux lignes d'un terrain de Blood Bowl pour donner l'ordre de lecture, sur le fond du thème : il n'y a pas de terrain dessiné en fond (retiré à la demande du responsable, carte 214 annulée).
+- **En-but :** voile d'accent dégradé (de 19 % à 7 % de `--bb-accent`) fermé par un trait d'accent de 2 px, derrière le titre de l'accueil.
+- **Ligne de mêlée :** trait de 2 px en couleur du texte à 65 %, d'un bord à l'autre : horizontal sur téléphone, vertical entre deux colonnes sur ordinateur ; marquée « contre » (rôle Label) entre les deux camps du visiteur.
+- **Blocs :** surfaces pleines (`--bb-surface`, bordure d'un pixel, 16 px d'arrondi).
+- **Actions :** « Aller au forum » est le bouton principal de l'accueil (rouge plein, 52 px de haut) ; Discord, à côté, en bouton secondaire bordé de la couleur du texte discret.
+
 ### Cadres de rang (exception assumée)
 Les avatars des membres portent un cadre selon leur rang (`common/components/UserAvatar/UserAvatar.css`) : bronze, argent, or qui pulse, platine bleu électrique, diamant qui scintille, maître violet et rose qui tourne, grand maître rouge et or qui tourne. C'est **le seul endroit du site où le look « jeu vidéo » est permis** (lueurs, couleurs vives, mouvement), décision du responsable du projet : le rang est une récompense, il doit se voir. Ces couleurs sont écrites en dur et ne suivent pas le thème.
 - **Performance :** une animation de cadre ne joue que sur l'opacité ou la rotation, que la carte graphique calcule sans redessiner l'avatar. Jamais d'ombre (`box-shadow`) ni de filtre (`filter`) animés : une lueur qui pulse est un calque fixe dont seule l'opacité varie (carte 207).
@@ -302,9 +309,9 @@ Les avatars des membres portent un cadre selon leur rang (`common/components/Use
 ## Do's and Don'ts
 
 ### Do:
-- **Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans les huit thèmes.
+- **Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans tous les thèmes.
 - **Do** donner à toute cible d'appui au moins 44 × 44 pixels (`size="tap"`, `size="tap-icon"`, `min-h-11`).
-- **Do** vérifier chaque écran en taille téléphone et dans les huit thèmes avant de le dire terminé.
+- **Do** vérifier chaque écran en taille téléphone et dans plusieurs thèmes (au moins un sombre, un clair et Saison 3) avant de le dire terminé.
 - **Do** réserver le rouge plein à une seule action principale par écran.
 - **Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.
 - **Do** écrire un texte de 16 pixels au moins dans les champs de saisie.

@@ -25,14 +25,14 @@ async function serverTheme(page: Page, path = "/") {
 
 test.describe("carte 147 : thème d'un visiteur posé par le serveur", () => {
   test("le cookie du thème est lu par le serveur : la page arrive directement dans ce thème", async ({ page, context, baseURL }) => {
-    await context.addCookies([{ name: "bbfrance_theme", value: "blood", url: baseURL! }]);
-    expect(await serverTheme(page)).toBe("blood");
-    expect(await serverTheme(page, "/forum")).toBe("blood");
+    await context.addCookies([{ name: "bbfrance_theme", value: "nehekhara", url: baseURL! }]);
+    expect(await serverTheme(page)).toBe("nehekhara");
+    expect(await serverTheme(page, "/forum")).toBe("nehekhara");
 
     // Dans le navigateur, le thème reste celui du serveur une fois la page chargée
     await hideCookieBanner(page);
     await page.goto("/", { waitUntil: "networkidle" });
-    await expect(page.locator("html")).toHaveAttribute("data-theme", "blood");
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "nehekhara");
   });
 
   test("un cookie qui ne nomme pas un thème du site est ignoré (thème par défaut)", async ({ page, context, baseURL }) => {
@@ -55,8 +55,8 @@ test.describe("carte 147 : thème d'un visiteur posé par le serveur", () => {
   });
 
   test("un membre connecté garde le thème de son profil, quel que soit le cookie", async ({ page, context, baseURL }) => {
-    await context.addCookies([{ name: "bbfrance_theme", value: "blood", url: baseURL! }]);
-    await loginAs(page, themedModoId("light"));
-    expect(await serverTheme(page)).toBe("light");
+    await context.addCookies([{ name: "bbfrance_theme", value: "nehekhara", url: baseURL! }]);
+    await loginAs(page, themedModoId("saison3"));
+    expect(await serverTheme(page)).toBe("saison3");
   });
 });

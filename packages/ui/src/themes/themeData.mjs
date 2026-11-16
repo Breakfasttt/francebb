@@ -1,0 +1,173 @@
+/**
+ * Source unique des thèmes du site (ADR-0009, cartes 211 et 218). Ce fichier est la seule chose à modifier pour ajouter,
+ * renommer ou recolorer un thème ; le script `packages/ui/scripts/build-themes.mjs` (commande `themes:build`, à la
+ * racine du dépôt) en tire tout le reste :
+ * - un fichier de couleurs par thème, `packages/ui/src/themes/<id>.css` (les variables `--bb-*`, voir tokens.css) ;
+ * - `themes/index.css`, qui importe tous ces fichiers ;
+ * - `themes/themeList.ts`, la liste lue par le site (sélecteur, validation du thème enregistré, tests).
+ * Le script supprime aussi le fichier de couleurs d'un thème retiré de cette liste.
+ *
+ * Chaque thème a :
+ * - `id` : l'identifiant enregistré dans le profil des membres (`User.theme`) et posé sur `<html data-theme>`.
+ *   Ne jamais changer l'identifiant d'un thème gardé : les membres qui l'ont choisi le perdraient (ADR-0009). Un
+ *   identifiant inconnu (thème retiré) fait retomber le membre sur le thème par défaut, `vestiaire`.
+ * - `label` : le nom affiché au membre ;
+ * - `comment` et `selector` : l'en-tête et le sélecteur CSS du fichier généré (facultatifs) ;
+ * - `vars` : toutes les variables `--bb-*`, écrites à la main (thèmes de l'ADR-0006),
+ *   ou `base` : quelques couleurs de base, dont le script calcule les autres et corrige le contraste.
+ * Les fichiers générés sont enregistrés dans le dépôt : rien n'est calculé pendant que le site tourne.
+ *
+ * Carte 218 : le responsable a gardé 5 thèmes sur les 35 de l'ADR-0009. « Sombre » est l'ancien Vestiaire (thème par
+ * défaut, identifiant `vestiaire`) et « Violet » l'ancien thème des Elfes noirs (identifiant `elfes-noirs`).
+ */
+
+/** Les thèmes, dans l'ordre d'affichage du sélecteur. */
+export const THEMES = [
+  {
+    id: "vestiaire",
+    label: "Sombre",
+    comment: "/*\n * Thème « Vestiaire » (ADR 0006) : sombre et sobre, surfaces pleines, accent rouge Blood Bowl.\n * C'est le thème par défaut : il s'applique aussi sans attribut data-theme (:root).\n * Liste et rôle de chaque variable : packages/ui/src/tokens.css.\n */",
+    selector: ":root,\n[data-theme=\"vestiaire\"]",
+    vars: {
+      "scheme": "dark",
+      "bg": "#111215",
+      "surface": "#1a1c21",
+      "surface-2": "#252830",
+      "border": "#2f333b",
+      "text": "#eceef1",
+      "text-muted": "#a3a9b3",
+      "accent": "#c8102e",
+      "accent-hover": "#a90d26",
+      "on-accent": "#ffffff",
+      "accent-text": "#ff7b80",
+      "accent-soft": "rgba(255, 123, 128, 0.14)",
+      "danger": "#c8102e",
+      "on-danger": "#ffffff",
+      "danger-text": "#ff7b80",
+      "success-text": "#4ade80",
+      "warning-text": "#fbbf24",
+      "unread": "#5aa9ff",
+      "rank": "#e2b54a",
+      "focus": "#5aa9ff",
+      "nav-bg": "#16181c",
+      "nav-border": "#2f333b",
+      "nav-text": "#a3a9b3",
+      "nav-active": "#ff7b80",
+      "overlay": "rgba(0, 0, 0, 0.6)",
+      "shadow": "0 8px 24px rgba(0, 0, 0, 0.35)",
+      "glass-blur": "0px",
+    },
+  },
+  {
+    id: "saison3",
+    label: "Saison 3",
+    comment: "/* Thème « Saison 3 » : clair, parchemin et bleu marine, barre de navigation rouge (livre de règles officiel). */",
+    selector: "[data-theme=\"saison3\"]",
+    vars: {
+      "scheme": "light",
+      "bg": "#efebdd",
+      "bg-image": "linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%)",
+      "surface": "#fbf8ef",
+      "surface-2": "#e9e2cd",
+      "border": "#d3c9ae",
+      "text": "#1d1a15",
+      "text-muted": "#5b5446",
+      "accent": "#9e1d1d",
+      "accent-hover": "#7d1515",
+      "on-accent": "#ffffff",
+      "accent-text": "#9e1d1d",
+      "accent-soft": "rgba(158, 29, 29, 0.1)",
+      "danger": "#9e1d1d",
+      "on-danger": "#ffffff",
+      "danger-text": "#9e1d1d",
+      "success-text": "#1f6b32",
+      "warning-text": "#8a5a00",
+      "unread": "#004175",
+      "rank": "#8a6a12",
+      "focus": "#004175",
+      "nav-bg": "#9e1d1d",
+      "nav-border": "#7d1515",
+      "nav-text": "#f6dcdc",
+      "nav-active": "#ffcc00",
+      "overlay": "rgba(29, 26, 21, 0.5)",
+      "shadow": "0 8px 24px rgba(29, 26, 21, 0.18)",
+      "glass-blur": "0px",
+    },
+  },
+  {
+    id: "naf",
+    label: "NAF",
+    comment: "/* Thème « NAF » : clair, bandeau et liens rouge foncé, dans l'esprit du site de la NAF (thenaf.net). */",
+    selector: "[data-theme=\"naf\"]",
+    vars: {
+      "scheme": "light",
+      "bg": "#f4f4f4",
+      "surface": "#ffffff",
+      "surface-2": "#f3eeee",
+      "border": "#ddd3d3",
+      "text": "#2b2b2b",
+      "text-muted": "#595959",
+      "accent": "#990000",
+      "accent-hover": "#760000",
+      "on-accent": "#ffffff",
+      "accent-text": "#990000",
+      "accent-soft": "rgba(153, 0, 0, 0.08)",
+      "danger": "#b01a1a",
+      "on-danger": "#ffffff",
+      "danger-text": "#b01a1a",
+      "success-text": "#1f6b32",
+      "warning-text": "#8a5a00",
+      "unread": "#1d4ed8",
+      "rank": "#8a6508",
+      "focus": "#1d4ed8",
+      "nav-bg": "#990000",
+      "nav-border": "#760000",
+      "nav-text": "#f6d9d9",
+      "nav-active": "#ffffff",
+      "overlay": "rgba(43, 43, 43, 0.45)",
+      "shadow": "0 8px 24px rgba(43, 43, 43, 0.12)",
+      "glass-blur": "0px",
+    },
+  },
+  {
+    id: "nehekhara",
+    label: "Néhékhara",
+    comment: "/* Thème « Néhékhara » : sombre, ambre et turquoise des Rois des Tombes. */",
+    selector: "[data-theme=\"nehekhara\"]",
+    vars: {
+      "scheme": "dark",
+      "bg": "#0b0e14",
+      "bg-image": "radial-gradient(circle at 50% 50%, #1a1e2e 0%, #0b0e14 100%)",
+      "surface": "#141924",
+      "surface-2": "#1c2331",
+      "border": "#2a3344",
+      "text": "#f3eee2",
+      "text-muted": "#a9b0bd",
+      "accent": "#d97706",
+      "accent-hover": "#e8860c",
+      "on-accent": "#0b0e14",
+      "accent-text": "#f59e0b",
+      "accent-soft": "rgba(245, 158, 11, 0.14)",
+      "danger": "#c8102e",
+      "on-danger": "#ffffff",
+      "danger-text": "#ff8a8a",
+      "success-text": "#4ade80",
+      "warning-text": "#fbbf24",
+      "unread": "#3fc1b4",
+      "rank": "#f59e0b",
+      "focus": "#3fc1b4",
+      "nav-bg": "#080a0f",
+      "nav-border": "#2a3344",
+      "nav-text": "#a9b0bd",
+      "nav-active": "#f59e0b",
+      "overlay": "rgba(0, 0, 0, 0.65)",
+      "shadow": "0 8px 24px rgba(0, 0, 0, 0.45)",
+      "glass-blur": "0px",
+    },
+  },
+  {
+    id: "elfes-noirs",
+    label: "Violet",
+    base: { scheme: "dark", bg: "#0f0c14", surface: "#1a1523", accent: "#8e2dbf" },
+  },
+];

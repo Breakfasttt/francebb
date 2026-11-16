@@ -47,7 +47,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 ## Capabilities and Constraints
 
 - Fonctionnalités en ligne, décrites chacune dans `docs/features/<nom>/README.md` : forum, tournois, classement et statistiques, profils des membres, messagerie, notifications, articles, ressources et médias, ligues et carte, modération, administration.
-- Les coachs choisissent l'un des **8 thèmes visuels** (« Vestiaire » par défaut). Chaque thème garde ses couleurs et son esprit ; la mise en page est la même pour tous (ADR-0006). Un test vérifie le contraste AA dans chaque thème.
+- Les coachs choisissent l'un des **5 thèmes visuels** (carte 218) : Sombre (le thème par défaut, ancien Vestiaire), Saison 3 (le thème officiel), NAF, Néhékhara et Violet. Chaque thème a ses couleurs ; la mise en page est la même pour tous (ADR-0006). Un test vérifie le contraste AA dans chaque thème.
 - **Aucune fonctionnalité ne disparaît** lors d'une refonte d'écran : la liste de contrôle est `docs/refonte/inventaire.md`.
 - Les composants d'interface partagés vivent dans `packages/ui` (bibliothèque fondée sur shadcn et Radix) et sont réutilisés avant d'en créer de nouveaux (skill `reuse-first`).
 - Pas de nouvelle bibliothèque sans accord du responsable du projet. Une seule police, servie par le site lui-même : aucune donnée de visiteur n'est envoyée à Google.
@@ -58,7 +58,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 
 - Le nom est **BBFrance**. Les outils gardent leurs noms : **BBScheme**, **BBQuizz**.
 - Le vocabulaire du jeu et de la communauté est conservé : coach, roster, ligue, commissaire, CDF, NAF.
-- Les 8 thèmes et leurs noms (vestiaire, saison3, naf, default « Sombre », light, blood, malpierre, nehekhara) sont un engagement envers les membres ; la liste officielle est dans `apps/site/lib/themes.ts`.
+- Les identifiants des thèmes sont un engagement envers les membres : ils ne changent jamais, même quand un nom affiché change (ADR-0009). Saison 3 est le thème officiel, avec une pelouse. La source unique des thèmes est `packages/ui/src/themes/themeData.mjs`.
 - Le hub reprend une fois pour toutes les couleurs et la police du thème par défaut, sans choix de thème.
 
 ## Evidence on Hand
@@ -78,7 +78,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 
 ## Accessibility & Inclusion
 
-- Contraste AA (norme d'accessibilité WCAG) vérifié automatiquement dans chacun des 8 thèmes (`apps/site/tests/e2e/contraste.spec.ts`).
+- Contraste AA (norme d'accessibilité WCAG) vérifié automatiquement dans chacun des 5 thèmes (`apps/site/tests/e2e/contraste.spec.ts`).
 - Zones d'appui d'au moins 44 pixels (variable `--bb-tap`).
 - Les tests repèrent les actions par leur rôle et leur nom accessible : chaque bouton et chaque lien doit avoir un nom clair.
 - Le flou d'arrière-plan est désactivé par défaut, pour rester fluide sur les téléphones modestes.

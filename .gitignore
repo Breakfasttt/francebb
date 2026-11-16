@@ -62,3 +62,10 @@ yarn-error.log*
 
 # Réglages locaux de l'outil de conception Impeccable (propres à chaque poste)
 .impeccable/config.local.json
+
+# Fichiers de travail d'Impeccable (maquettes, captures, questions, audits) : seuls les briefs de page
+# (surfaces/) sont enregistrés, car ils fixent la direction de conception d'une page
+**/.impeccable/*
+!**/.impeccable/surfaces/
+!.impeccable/config.json
+!.impeccable/design.json

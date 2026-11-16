@@ -1,8 +1,9 @@
 /**
- * Contraste des 8 thèmes (ADR 0006, carte 077) : chaque paire texte / fond utilisée par l'interface doit atteindre
+ * Contraste de tous les thèmes du site (ADR 0006, carte 077 ; ADR 0009, carte 212) : chaque paire texte / fond utilisée par l'interface doit atteindre
  * le niveau AA de la norme WCAG, soit un écart de luminosité d'au moins 4,5 pour 1 (3 pour 1 pour un élément
- * non textuel comme une pastille). Le test lit directement les fichiers de packages/ui/src/themes/ : un thème
- * ajouté ou modifié est vérifié sans rien écrire de plus. Aucun navigateur n'est nécessaire.
+ * non textuel comme une pastille). Le test lit directement les fichiers générés dans packages/ui/src/themes/ (script
+ * themes:build) : un thème ajouté ou modifié dans themeData.mjs est vérifié sans rien écrire de plus, et un seul
+ * thème illisible fait échouer le test. Aucun navigateur n'est nécessaire.
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";

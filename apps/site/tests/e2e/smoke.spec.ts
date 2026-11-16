@@ -198,6 +198,7 @@ test("créer une ligue sans nom affiche une notification d'erreur", async ({ pag
 
 test("choisir le thème « Sombre » dans le profil enregistre l'identifiant default", async ({ page }) => {
   // Carte 062 : l'identifiant enregistré doit faire partie de la liste officielle des thèmes (lib/themes.ts).
+  // Depuis la carte 218, le thème « Sombre » est l'ancien Vestiaire, d'identifiant `vestiaire`.
   // Depuis la carte 092, le profil utilise le sélecteur de thème du menu du compte : chaque thème y est un bouton
   // radio (avant, un simple bouton).
   // Le test ne lit pas la base lui-même : la base de test n'accepte qu'une connexion, déjà tenue par le site
@@ -211,7 +212,7 @@ test("choisir le thème « Sombre » dans le profil enregistre l'identifiant def
     await expect.poll(async () => {
       await page.reload({ waitUntil: "domcontentloaded" });
       return page.locator("html").getAttribute("data-theme");
-    }).toBe("default");
+    }).toBe("vestiaire");
   } finally {
     // Le coach de test est créé avec le thème par défaut de la base, « saison3 » (globalSetup.ts)
     await page.goto("/profile?tab=edit", { waitUntil: "networkidle" });

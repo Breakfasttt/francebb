@@ -1,0 +1,30 @@
+/* Thème « Violet » (ADR-0009) : fichier généré par packages/ui/scripts/build-themes.mjs, ne pas modifier à la main. */
+[data-theme="elfes-noirs"] {
+  --bb-scheme: dark;
+  --bb-bg: #0f0c14;
+  --bb-surface: #1a1523;
+  --bb-surface-2: #282431;
+  --bb-border: #373240;
+  --bb-text: #e8e6ef;
+  --bb-text-muted: #918f97;
+  --bb-accent: #8e2dbf;
+  --bb-accent-hover: #7926a2;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #ae68d1;
+  --bb-accent-soft: rgba(174, 104, 209, 0.14);
+  --bb-danger: #c8102e;
+  --bb-on-danger: #ffffff;
+  --bb-danger-text: #da6275;
+  --bb-success-text: #4ade80;
+  --bb-warning-text: #fbbf24;
+  --bb-unread: #5aa9ff;
+  --bb-rank: #e2b54a;
+  --bb-focus: #5aa9ff;
+  --bb-nav-bg: #15111c;
+  --bb-nav-border: #373240;
+  --bb-nav-text: #918f97;
+  --bb-nav-active: #ae68d1;
+  --bb-overlay: rgba(0, 0, 0, 0.6);
+  --bb-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --bb-glass-blur: 0px;
+}

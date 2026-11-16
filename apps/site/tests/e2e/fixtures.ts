@@ -53,8 +53,18 @@ export const E2E = {
 /** Port du faux serveur BBScheme des tests (carte 179), qui joue le rôle de l'application apps/bbscheme. */
 export const E2E_BBSCHEME_PORT = 3199;
 
-/** Les 8 thèmes du site, dans l'ordre des captures de référence. */
-export const E2E_THEMES = ["vestiaire", "default", "light", "blood", "malpierre", "nehekhara", "saison3", "naf"];
+/**
+ * Les thèmes du site (carte 218). Le jeu de données de test contient un modérateur et un membre banni par thème de
+ * cette liste (`themedModoId`, `themedBannedId`). La lisibilité de chaque thème est vérifiée par le test de contraste.
+ */
+export const E2E_THEMES = ["vestiaire", "saison3", "naf", "nehekhara", "elfes-noirs"];
+
+/**
+ * Les 4 thèmes dont les pages clés sont capturées et comparées au pixel (cartes 212 et 218) : Sombre (identifiant
+ * vestiaire, thème par défaut), Saison 3 (clair, parchemin), NAF (bleu marine et jaune) et Néhékhara. Le thème Violet
+ * (elfes-noirs), ajouté sans capture de référence, est vérifié par le test de contraste.
+ */
+export const E2E_CAPTURE_THEMES = ["vestiaire", "saison3", "naf", "nehekhara"];
 
 /**
  * Carte 051 : pour un membre connecté, c'est le thème de son profil qui s'affiche. Le jeu de données contient donc

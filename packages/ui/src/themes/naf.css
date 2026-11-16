@@ -1,31 +1,30 @@
-/* Thème « NAF » : bleu marine et jaune, couleurs officielles de la NAF. */
+/* Thème « NAF » : clair, bandeau et liens rouge foncé, dans l'esprit du site de la NAF (thenaf.net). */
 [data-theme="naf"] {
-  --bb-scheme: dark;
-  --bb-bg: #011b33;
-  --bb-bg-image: radial-gradient(circle at 50% 50%, #012b5d 0%, #011b33 100%);
-  --bb-surface: #062a4c;
-  --bb-surface-2: #0c375f;
-  --bb-border: #1a4a78;
-  --bb-text: #f2f6fb;
-  --bb-text-muted: #adc1d7;
-  --bb-accent: #e6b000;
-  --bb-accent-hover: #c99a00;
-  --bb-on-accent: #011b33;
-  --bb-accent-text: #ffc93a;
-  --bb-accent-soft: rgba(255, 201, 58, 0.14);
-  --bb-danger: #c8102e;
+  --bb-scheme: light;
+  --bb-bg: #f4f4f4;
+  --bb-surface: #ffffff;
+  --bb-surface-2: #f3eeee;
+  --bb-border: #ddd3d3;
+  --bb-text: #2b2b2b;
+  --bb-text-muted: #595959;
+  --bb-accent: #990000;
+  --bb-accent-hover: #760000;
+  --bb-on-accent: #ffffff;
+  --bb-accent-text: #990000;
+  --bb-accent-soft: rgba(153, 0, 0, 0.08);
+  --bb-danger: #b01a1a;
   --bb-on-danger: #ffffff;
-  --bb-danger-text: #ff9b9b;
-  --bb-success-text: #5ee08a;
-  --bb-warning-text: #ffc93a;
-  --bb-unread: #7cc6ff;
-  --bb-rank: #ffc93a;
-  --bb-focus: #7cc6ff;
-  --bb-nav-bg: #00142a;
-  --bb-nav-border: #1a4a78;
-  --bb-nav-text: #adc1d7;
-  --bb-nav-active: #ffc93a;
-  --bb-overlay: rgba(0, 10, 20, 0.6);
-  --bb-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --bb-danger-text: #b01a1a;
+  --bb-success-text: #1f6b32;
+  --bb-warning-text: #8a5a00;
+  --bb-unread: #1d4ed8;
+  --bb-rank: #8a6508;
+  --bb-focus: #1d4ed8;
+  --bb-nav-bg: #990000;
+  --bb-nav-border: #760000;
+  --bb-nav-text: #f6d9d9;
+  --bb-nav-active: #ffffff;
+  --bb-overlay: rgba(43, 43, 43, 0.45);
+  --bb-shadow: 0 8px 24px rgba(43, 43, 43, 0.12);
   --bb-glass-blur: 0px;
 }

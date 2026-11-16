@@ -1,13 +1,14 @@
 /**
- * Non-régression visuelle P4 (épic E05) : pages clés et modale de signalement dans les 7 thèmes.
+ * Non-régression visuelle P4 (épic E05) : pages clés et modale de signalement, dans les 4 thèmes représentatifs
+ * `E2E_CAPTURE_THEMES` depuis la carte 212 (les autres thèmes sont vérifiés par le test de contraste).
  * Captures de référence prises avant la migration vers packages/ui, comparées au pixel après chaque carte.
  * Captures Windows : comparaison locale uniquement (rendu des polices différent sous Linux en CI).
  */
 import { test, expect, type Page } from "@playwright/test";
-import { E2E, E2E_THEMES, loginAs, themedBannedId, themedModoId } from "./fixtures";
+import { E2E, E2E_CAPTURE_THEMES, loginAs, themedBannedId, themedModoId } from "./fixtures";
 
 const REPORT_BUTTON = "button:has(svg.lucide-triangle-alert)";
-const THEMES = E2E_THEMES;
+const THEMES = E2E_CAPTURE_THEMES;
 
 async function useTheme(page: Page, theme: string) {
   // Pour un visiteur, ThemeProvider relit le thème depuis localStorage au montage

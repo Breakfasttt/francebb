@@ -11,7 +11,8 @@
     "lint:ratchet": "turbo run lint:ratchet",
     "check": "node scripts/check.mjs",
     "test:e2e": "turbo run test:e2e",
-    "kanban": "node scripts/kanban.mjs"
+    "kanban": "node scripts/kanban.mjs",
+    "themes:build": "node packages/ui/scripts/build-themes.mjs"
   },
   "devDependencies": {
     "turbo": "^2.5.4"
