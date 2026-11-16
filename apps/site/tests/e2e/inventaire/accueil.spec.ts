@@ -1,7 +1,8 @@
 /**
  * Inventaire de la refonte, section 5 « Accueil et pages fixes » de docs/refonte/inventaire.md (carte 090) :
- * l'accueil (titre sans logo, liens des rubriques, « Créer » une ligue ou un tournoi, prochains tournois, article au
- * hasard ; refait par la carte 155, puis par la carte 210 en deux accueils, visiteur et membre), le guide
+ * l'accueil (titre sans logo, « Créer » une ligue ou un tournoi, prochains tournois, article ; refait par la carte 155,
+ * puis par la carte 210 en deux accueils, visiteur et membre, qui partagent depuis le 17 novembre 2026 les mêmes
+ * blocs), le guide
  * `/jouer`, la page `/media`, les statistiques (publiques et réservées à l'administrateur), la page des bannis et la
  * page introuvable (404). Les mentions légales ne sont pas vérifiées ici : leur texte est réécrit par la carte 126.
  * Rejoué en taille ordinateur (projet chromium) et en taille téléphone (projet telephone). Les éléments sont
@@ -11,14 +12,14 @@
  * Données préparées par le test (et supprimées ou remises en place à la fin), toutes nommées « Inv Accueil … » :
  * - un forum de tournois et quatre tournois à venir, chacun avec son sujet (seuls les trois plus proches doivent
  *   apparaître sur l'accueil) ;
- * - un article, pour le bloc « Article au hasard » ;
+ * - un article, pour le bloc « Articles » ;
  * - un administrateur, pour les statistiques réservées ;
  * - les réglages du guide `/jouer` (première section vide, sections 2 à 5 remplies, sixième vide) et les chaînes
  *   Twitch et YouTube de `/media`. Les valeurs d'avant le test sont remises à la fin.
  *
  * Le lien Discord de l'accueil vient d'un réglage de l'administration gardé en cache une heure par le site. Depuis la
- * carte 189, ses liens n'apparaissent que si ce réglage est rempli : le test accepte les deux cas (aucun lien, ou deux
- * liens qui s'ouvrent dans un nouvel onglet), sans changer ce réglage, et vérifie qu'aucun lien ne mène nulle part (« # »).
+ * carte 189, ses liens n'apparaissent que si ce réglage est rempli : le test accepte les deux cas (aucun lien, ou le
+ * bouton de « Tu joues déjà », qui s'ouvre dans un nouvel onglet), sans changer ce réglage, et vérifie qu'aucun lien ne mène nulle part (« # »).
  *
  * La liste des prochains tournois est gardée en cache 60 secondes par le site (`unstable_cache`, étiquette
  * « home-tournaments »). Ce cache est enregistré sur le disque dans `.next` et survit au redémarrage du serveur de test,
@@ -160,60 +161,42 @@ test.afterAll(async () => {
 /** Contenu propre à la page (la coquille, avec sa navigation et son pied de page, est en dehors). */
 const content = (page: Page) => page.getByRole("main").first();
 
-/** Les liens des rubriques de l'accueil : début du nom accessible et adresse visée. */
-const TILES: [RegExp, string][] = [
-  [/^Jouer/, "/jouer"],
-  [/^Forum/, "/forum"],
-  [/^Ligues/, "/ligues"],
-  [/^Tournois/, "/tournois"],
-  [/^La Carte/, "/carte"],
-  [/^Championnat de France/, "/classement"],
-  [/^Articles/, "/articles"],
-  [/^Ressources/, "/ressources"],
-];
-
 /**
- * Derniers messages du forum (carte 205) : un message d'un forum public et un message du forum réservé à la
- * modération, datés d'une minute dans le futur pour passer devant les messages des autres tests. La liste est gardée
- * en cache 30 secondes par le site : on recharge jusqu'à la voir. Les tailles ordinateur et téléphone tournent en
- * même temps : chacune a ses propres messages (nom du projet dans l'identifiant), sinon la fin de l'une supprimerait
- * ceux que l'autre attend encore.
+ * Bloc « Derniers sujets du forum » du visiteur (depuis le 17 novembre 2026, le même bloc que le membre qui a tout lu) :
+ * le sujet public et le sujet du forum réservé à la modération passent en tête, leur dernier message daté d'une heure
+ * dans le futur ; leurs dates d'origine sont remises à la fin. Les tailles ordinateur et téléphone tournent en même
+ * temps et touchent les mêmes sujets : seule la date d'origine (dans le passé) est gardée pour être remise.
  */
-const latestPosts = (project: string) => ({
-  public: { id: `e2e_acc_post_public_${project}`, content: "Inv Accueil message public [b]en gras[/b]" },
-  secret: { id: `e2e_acc_post_secret_${project}`, content: "Inv Accueil message réservé" },
-});
+test.describe("accueil, sujets du forum", () => {
+  const originals = new Map<string, Date>();
 
-test.describe("accueil, derniers messages du forum", () => {
-  test.beforeAll(async ({}, testInfo) => {
-    const posts = latestPosts(testInfo.project.name);
+  test.beforeAll(async () => {
     await db(async (prisma) => {
-      const soon = new Date(Date.now() + 60_000);
-      await prisma.post.deleteMany({ where: { id: { in: [posts.public.id, posts.secret.id] } } });
-      await prisma.post.create({ data: { ...posts.public, topicId: E2E.topicId, authorId: E2E.coachId, createdAt: soon } });
-      await prisma.post.create({ data: { ...posts.secret, topicId: E2E.secretTopicId, authorId: E2E.modoId, createdAt: soon } });
+      for (const id of [E2E.topicId, E2E.secretTopicId]) {
+        const topic = await prisma.topic.findUniqueOrThrow({ where: { id }, select: { lastPostAt: true } });
+        // Une autre taille a déjà avancé la date : on ne garde que la vraie date d'origine
+        if (topic.lastPostAt.getTime() < Date.now()) originals.set(id, topic.lastPostAt);
+        await prisma.topic.update({ where: { id }, data: { lastPostAt: new Date(Date.now() + 3_600_000) } });
+      }
     });
   });
 
-  test.afterAll(async ({}, testInfo) => {
-    const posts = latestPosts(testInfo.project.name);
-    await db((prisma) => prisma.post.deleteMany({ where: { id: { in: [posts.public.id, posts.secret.id] } } }));
+  test.afterAll(async () => {
+    await db(async (prisma) => {
+      for (const [id, lastPostAt] of originals) await prisma.topic.update({ where: { id }, data: { lastPostAt } });
+    });
   });
 
-  test("un visiteur voit les messages publics, jamais ceux d'un forum réservé", async ({ page }, testInfo) => {
-    test.setTimeout(120_000);
-    await expect(async () => {
-      await page.goto("/", { waitUntil: "networkidle" });
-      const block = content(page).getByRole("region", { name: "Derniers messages" });
-      // Début du message sans les balises BBCode, et lien permanent vers le message
-      await expect(block.getByRole("link", { name: /Inv Accueil message public en gras/ }).first()).toHaveAttribute("href", /^\/forum\/post\/e2e_acc_post_public_/, { timeout: 2_000 });
-    }).toPass({ timeout: 90_000, intervals: [5_000] });
-    const block = content(page).getByRole("region", { name: "Derniers messages" });
-    await expect(block.getByText("Inv Accueil message réservé")).toHaveCount(0);
+  test("un visiteur voit les sujets publics, jamais ceux d'un forum réservé", async ({ page }, testInfo) => {
+    await page.goto("/", { waitUntil: "networkidle" });
+    const block = content(page).getByRole("region", { name: "Derniers sujets du forum" });
+    await expect(block.getByRole("link", { name: new RegExp(E2E.topicTitle) })).toHaveAttribute("href", `/forum/topic/${E2E.topicId}`);
     await expect(block.getByText(E2E.secretTopicTitle)).toHaveCount(0);
-    // Le lien « Voir le forum » tient sur une ligne et fait 44 pixels de haut
-    expect((await block.getByRole("link", { name: "Voir le forum" }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    await page.screenshot({ path: testInfo.outputPath("accueil-derniers-messages.png"), fullPage: true });
+    // Pour un visiteur : « Tout voir » (44 pixels de haut), ni bouton « Forum » ni phrase « Tu es à jour »
+    expect((await block.getByRole("link", { name: /^Tout voir/ }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await expect(block.getByRole("link", { name: "Forum", exact: true })).toHaveCount(0);
+    await expect(block.getByText(/Tu es à jour/)).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath("accueil-sujets-visiteur.png"), fullPage: true });
   });
 
   // Depuis la carte 210, un membre connecté a son propre accueil, sans « Derniers messages » : ce qui lui est réservé
@@ -244,46 +227,77 @@ test.describe("accueil, derniers messages du forum", () => {
 });
 
 test.describe("accueil", () => {
-  test("titre, rubriques et liens « Créer » pour un visiteur", async ({ page }, testInfo) => {
+  test("accueil du visiteur : les deux camps, puis les blocs du membre", async ({ page }, testInfo) => {
     await page.goto("/", { waitUntil: "networkidle" });
     const main = content(page);
     // Depuis la carte 155, l'accueil n'a plus de logo : son titre est un texte
-    await expect(main.getByRole("heading", { level: 1, name: /Blood Bowl en France/ })).toBeVisible();
+    await expect(main.getByRole("heading", { level: 1, name: "France Blood Bowl" })).toBeVisible();
     await expect(main.getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
-    // « Aller au forum », le bouton mis en avant (cartes 155 et 210)
-    await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
-    // Cherchés dans le bloc des rubriques : depuis la carte 205, les derniers messages du forum, dont le titre peut
-    // commencer par les mêmes mots (« Tournois… »), sont aussi sur l'accueil
-    const sections = main.getByRole("navigation", { name: "Rubriques du site" });
-    for (const [name, href] of TILES) {
-      await expect(sections.getByRole("link", { name }).first()).toHaveAttribute("href", href);
+
+    // La feuille de match : « Nouveau coach ? » d'abord (à gauche sur ordinateur, au-dessus sur téléphone), puis « Tu joues déjà »
+    const newcomers = main.getByRole("region", { name: "Nouveau coach ?" });
+    const players = main.getByRole("region", { name: "Tu joues déjà" });
+    const newcomersBox = (await newcomers.boundingBox())!;
+    const playersBox = (await players.boundingBox())!;
+    if (testInfo.project.name === "telephone") expect(newcomersBox.y).toBeLessThan(playersBox.y);
+    else expect(newcomersBox.x).toBeLessThan(playersBox.x);
+    await expect(newcomers.getByRole("link", { name: "Découvrir le jeu" })).toHaveAttribute("href", "/jouer");
+    await expect(newcomers.getByRole("link", { name: "Trouver une ligue" })).toHaveAttribute("href", "/carte?vue=ligues");
+    await expect(newcomers.getByRole("link", { name: "S'inscrire" })).toHaveAttribute("href", "/auth/login");
+    await expect(players.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
+    await expect(players.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/auth/login");
+    // Ni « contre » sur la ligne de mêlée, ni activité du jour (retirés le 17 novembre 2026)
+    await expect(main.getByText("contre", { exact: true })).toHaveCount(0);
+    await expect(players.getByText(/aujourd'hui/)).toHaveCount(0);
+    // Pas de doublon avec les blocs du dessous : ni Tournois, Classement ou Ressources dans les camps
+    for (const camp of [newcomers, players]) {
+      await expect(camp.getByRole("link", { name: /^(Tournois|Classement|Ressources)$/ })).toHaveCount(0);
     }
-    // La feuille de match (carte 210) : « Tu joues déjà » mène au forum, « Tu découvres » au guide du débutant
-    await expect(main.getByRole("heading", { level: 2, name: "Tu joues déjà" })).toBeVisible();
-    await expect(main.getByRole("heading", { level: 2, name: "Tu découvres" })).toBeVisible();
-    await expect(main.getByRole("link", { name: "Blood Bowl, c'est quoi ?" })).toHaveAttribute("href", "/jouer");
-    // Pas de classement sur l'accueil, seulement un lien vers lui ; pas de « Créer mon compte » au centre
+
+    // Puis les blocs de l'accueil du membre, dans le même ordre ; plus de blocs de rubriques
+    const order = ["Derniers sujets du forum", "Prochains tournois", /^Classement \d{4}$/, "Dernières ligues", "Articles", "Ressources", "Médias"];
+    let previousTop = -Infinity;
+    for (const name of order) {
+      const box = (await main.getByRole("region", { name }).boundingBox())!;
+      expect(box.y).toBeGreaterThan(previousTop);
+      previousTop = box.y;
+    }
+    await expect(main.getByRole("navigation", { name: "Rubriques du site" })).toHaveCount(0);
+    // « Trouver une ligue » est déjà en haut : pas de lien vers la carte dans le bloc des ligues
+    await expect(main.getByRole("link", { name: "Voir les ligues sur la carte" })).toHaveCount(0);
+    // Pas de « Créer mon compte » au centre
     await expect(main.getByRole("link", { name: /Créer mon compte/ })).toHaveCount(0);
-    // Liens Discord (carte 155) : le bouton du bandeau et la ligne du bloc « La communauté », seulement si
-    // l'invitation est réglée (carte 189). Aucun lien de l'accueil ne mène nulle part.
+
+    // Discord (cartes 155 et 189) : un seul bouton, dans « Tu joues déjà », et seulement si l'invitation est réglée.
+    // Aucun lien de l'accueil ne mène nulle part.
     const discord = main.getByRole("link", { name: /^(Discord|Rejoindre le Discord)/ });
-    expect([0, 2]).toContain(await discord.count());
+    expect([0, 1]).toContain(await discord.count());
     for (const link of await discord.all()) {
       await expect(link).toBeVisible();
       await expect(link).toHaveAttribute("target", "_blank");
     }
     await expect(main.locator('a[href="#"]')).toHaveCount(0);
 
-    // « Créer » une ligue ou un tournoi envoie un visiteur vers la connexion, en gardant la page visée. On regarde les
-    // blocs de rubriques seulement : quand la liste des tournois est vide (cache d'un lancement précédent), son
-    // message a aussi un lien « Créer un tournoi »
-    const create = main.getByRole("navigation", { name: "Rubriques du site" }).getByRole("link", { name: /Créer/ });
-    await expect(create).toHaveCount(2);
-    const hrefs = await create.evaluateAll((links) => links.map((link) => link.getAttribute("href") ?? ""));
-    expect(hrefs).toContainEqual(expect.stringMatching(/^\/auth\/login\?callbackUrl=.*new-tournament.*forumId/));
-    const ligueIndex = hrefs.findIndex((href) => /^\/auth\/login\?callbackUrl=(\/|%2F)ligues(\/|%2F)create$/.test(href));
-    expect(ligueIndex).toBeGreaterThanOrEqual(0);
-    const ligueCreate = create.nth(ligueIndex);
+    // « Créer », « Écrire » et « Proposer » envoient un visiteur vers la connexion, en gardant la page visée
+    await expect(main.getByRole("region", { name: "Prochains tournois" }).getByRole("link", { name: "Créer un tournoi" }))
+      .toHaveAttribute("href", /^\/auth\/login\?callbackUrl=.*new-tournament.*forumId/);
+    await expect(main.getByRole("link", { name: "Écrire un article" })).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Farticles%2Fcreate$/);
+    await expect(main.getByRole("link", { name: "Proposer une ressource" })).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Fressources%2Fsubmit$/);
+    const ligueCreate = main.getByRole("link", { name: "Créer une ligue" });
+    await expect(ligueCreate).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Fligues%2Fcreate$/);
+
+    const waypoints = page.getByRole("navigation", { name: "Sections de l'accueil" });
+    if (testInfo.project.name === "telephone") await expect(waypoints).toBeHidden();
+    else {
+      // Un repère de plus que le membre : « Accueil », pour le haut de la page (titre et camps)
+      await expect(waypoints.getByRole("link")).toHaveCount(8);
+      await expect(waypoints.getByRole("link").first()).toHaveAttribute("href", "#accueil");
+    }
+    // « Aller au forum » et « Se connecter » sur la même ligne
+    const forumBox = (await players.getByRole("link", { name: "Aller au forum" }).boundingBox())!;
+    const loginBox = (await players.getByRole("link", { name: "Se connecter" }).boundingBox())!;
+    if (testInfo.project.name !== "telephone") expect(Math.abs(forumBox.y - loginBox.y)).toBeLessThan(4);
+
     await page.screenshot({ path: testInfo.outputPath("accueil-visiteur.png"), fullPage: true });
     await ligueCreate.click();
     await expect(page).toHaveURL(/\/auth\/login\?callbackUrl=(\/|%2F)ligues(\/|%2F)create/);
@@ -341,15 +355,14 @@ test.describe("accueil", () => {
     await page.screenshot({ path: testInfo.outputPath("accueil-membre.png"), fullPage: true });
   });
 
-  test("prochains tournois et article au hasard", async ({ page }, testInfo) => {
+  test("prochains tournois et article", async ({ page }, testInfo) => {
     test.setTimeout(150_000);
     // La liste des prochains tournois est gardée en cache 60 secondes par le site : on recharge jusqu'à la voir
     await expect(async () => {
       await page.goto("/", { waitUntil: "networkidle" });
       const main = content(page);
       await expect(main.getByRole("heading", { name: /prochains tournois/i })).toBeVisible({ timeout: 2_000 });
-      // Cherchés dans leur bloc : depuis la carte 205, les messages de leurs sujets peuvent aussi figurer dans
-      // « Derniers messages », sous le titre du sujet (le nom du tournoi)
+      // Cherchés dans leur bloc : leurs sujets peuvent aussi figurer dans « Derniers sujets du forum »
       const tournaments = main.getByRole("region", { name: /prochains tournois/i });
       for (const t of TOURNAMENTS.slice(0, 3)) {
         await expect(tournaments.getByRole("link", { name: new RegExp(t.name) })).toHaveAttribute("href", `/forum/topic/${t.topicId}`, { timeout: 2_000 });
@@ -358,11 +371,10 @@ test.describe("accueil", () => {
     }).toPass({ timeout: 120_000, intervals: [5_000] });
 
     const main = content(page);
-    await expect(main.getByRole("heading", { name: /article au hasard/i })).toBeVisible();
-    // L'article est tiré au hasard parmi ceux de la base : n'importe lequel convient
+    // L'article du bloc « Articles » est tiré au hasard parmi ceux de la base : n'importe lequel convient
     const titles = await db((prisma) => prisma.article.findMany({ select: { id: true, title: true } }));
     const pattern = new RegExp(titles.map((a) => a.title.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"));
-    const article = main.getByRole("link", { name: pattern });
+    const article = main.getByRole("region", { name: "Articles" }).getByRole("link", { name: pattern });
     await expect(article).toBeVisible();
     expect(titles.map((a) => `/articles/${a.id}`)).toContain(await article.getAttribute("href"));
     await page.screenshot({ path: testInfo.outputPath("accueil-blocs.png"), fullPage: true });

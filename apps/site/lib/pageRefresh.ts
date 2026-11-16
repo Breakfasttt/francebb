@@ -11,7 +11,6 @@
  * serveur (`updateTag` n'est permis que là).
  */
 import { revalidatePath, updateTag } from "next/cache";
-import { HOME_LATEST_POSTS_TAG } from "@/lib/homeLatestPosts";
 
 /** Cache de la liste des forums (`app/forum/page.tsx`). */
 const FORUM_CATEGORIES_TAG = "forum-categories";
@@ -28,8 +27,6 @@ export function refreshTopic(topic: { id: string; forumIds: (string | null | und
   revalidatePath("/forum");
   revalidatePath("/forum/unread");
   updateTag(FORUM_CATEGORIES_TAG);
-  // Derniers messages de l'accueil (carte 205)
-  updateTag(HOME_LATEST_POSTS_TAG);
   if (topic.isTournament) refreshTournamentLists();
 }
 

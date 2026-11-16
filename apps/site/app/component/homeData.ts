@@ -10,7 +10,7 @@ import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
 import { TAKEN_PLACES_COUNT } from "@/lib/tournamentPlaces";
-import { parisDayStart, upcomingTournamentWhere } from "@/lib/tournamentDates";
+import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import { postExcerpt } from "@/lib/homeLatestPosts";
 import { getUnreadState } from "@/app/forum/unreadState";
@@ -67,27 +67,6 @@ export async function pickRandomArticle(count: number) {
   return randomArticles[0] ?? null;
 }
 
-/**
- * Activité du jour montrée au visiteur dans le camp « Tu joues déjà » (carte 210) : le nombre de messages publiés
- * depuis minuit (heure de Paris) dans les forums ouverts à ce lecteur, et le nombre de tournois à venir. Les messages
- * supprimés ou masqués par la modération ne comptent pas. Gardé une minute en cache, une entrée par ensemble de rôles.
- */
-export const getHomeActivity = unstable_cache(
-  async (roles: string[]) => {
-    const [postsToday, upcomingTournaments] = await Promise.all([
-      prisma.post.count({
-        where: { isDeleted: false, isModerated: false, createdAt: { gte: parisDayStart() }, topic: topicAccessWhere(roles) },
-      }),
-      prisma.tournament.count({
-        where: { AND: [upcomingTournamentWhere()], isFinished: false, isCancelled: false, ...TOURNAMENT_TOPIC_NOT_DELETED },
-      }),
-    ]);
-    return { postsToday, upcomingTournaments };
-  },
-  ["home-activity-v1"],
-  { revalidate: 60 }
-);
-
 /** Nombre de sujets du forum montrés sur l'accueil du membre. */
 const MEMBER_FORUM_TOPICS_COUNT = 3;
 
@@ -103,6 +82,14 @@ export async function getMemberForumTopics(userId: string) {
   if (topicIds.length > 0) {
     return { mode: "unread" as const, topics: await loadForumTopicRows(topicIds.slice(0, MEMBER_FORUM_TOPICS_COUNT)), total: topicIds.length };
   }
+  return getRecentForumTopics();
+}
+
+/**
+ * Les trois sujets au dernier message le plus récent, parmi les forums ouverts au lecteur (membre ou visiteur) : bloc
+ * « Forum » de l'accueil du visiteur, et de celui du membre qui a tout lu.
+ */
+export async function getRecentForumTopics() {
   const { roles } = await getForumAccess();
   const recent = await prisma.topic.findMany({
     where: topicAccessWhere(roles),
