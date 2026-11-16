@@ -1,7 +1,7 @@
 /**
  * Inventaire de la refonte, section 5 « Accueil et pages fixes » de docs/refonte/inventaire.md (carte 090) :
  * l'accueil (titre sans logo, liens des rubriques, « Créer » une ligue ou un tournoi, prochains tournois, article au
- * hasard ; refait par la carte 155), le guide
+ * hasard ; refait par la carte 155, puis par la carte 210 en deux accueils, visiteur et membre), le guide
  * `/jouer`, la page `/media`, les statistiques (publiques et réservées à l'administrateur), la page des bannis et la
  * page introuvable (404). Les mentions légales ne sont pas vérifiées ici : leur texte est réécrit par la carte 126.
  * Rejoué en taille ordinateur (projet chromium) et en taille téléphone (projet telephone). Les éléments sont
@@ -216,14 +216,29 @@ test.describe("accueil, derniers messages du forum", () => {
     await page.screenshot({ path: testInfo.outputPath("accueil-derniers-messages.png"), fullPage: true });
   });
 
-  test("un modérateur voit aussi le message du forum réservé", async ({ page }) => {
+  // Depuis la carte 210, un membre connecté a son propre accueil, sans « Derniers messages » : ce qui lui est réservé
+  // y apparaît dans « Non lus au forum ». Un membre ordinaire n'y voit jamais le sujet du forum réservé ; un
+  // modérateur, oui (son compte de test n'a jamais ouvert ce sujet).
+  test("non-lus du membre : jamais un sujet réservé, sauf pour un modérateur", async ({ page }) => {
     test.setTimeout(120_000);
-    await loginAs(page, E2E.modoId);
-    await expect(async () => {
+    // Le sujet réservé devient « non lu » pour tous le temps du test : son dernier message passe dans le futur
+    // (date d'origine remise à la fin), plus récent que toute lecture des comptes de test
+    const original = await db((prisma) => prisma.topic.findUniqueOrThrow({ where: { id: E2E.secretTopicId }, select: { lastPostAt: true } }));
+    await db((prisma) => prisma.topic.update({ where: { id: E2E.secretTopicId }, data: { lastPostAt: new Date(Date.now() + 3_600_000) } }));
+    try {
+      await loginAs(page, E2E.coachId);
       await page.goto("/", { waitUntil: "networkidle" });
-      const block = content(page).getByRole("region", { name: "Derniers messages" });
-      await expect(block.getByRole("link", { name: /Inv Accueil message réservé/ }).first()).toHaveAttribute("href", /^\/forum\/post\/e2e_acc_post_secret_/, { timeout: 2_000 });
-    }).toPass({ timeout: 90_000, intervals: [5_000] });
+      const coachBlock = content(page).getByRole("region", { name: "Non lus au forum" });
+      await expect(coachBlock).toBeVisible();
+      await expect(coachBlock.getByText(E2E.secretTopicTitle)).toHaveCount(0);
+
+      await loginAs(page, E2E.modoId);
+      await page.goto("/", { waitUntil: "networkidle" });
+      const modoBlock = content(page).getByRole("region", { name: "Non lus au forum" });
+      await expect(modoBlock.getByRole("link", { name: new RegExp(E2E.secretTopicTitle) })).toHaveAttribute("href", `/forum/topic/${E2E.secretTopicId}`);
+    } finally {
+      await db((prisma) => prisma.topic.update({ where: { id: E2E.secretTopicId }, data: { lastPostAt: original.lastPostAt } }));
+    }
   });
 });
 
@@ -234,7 +249,7 @@ test.describe("accueil", () => {
     // Depuis la carte 155, l'accueil n'a plus de logo : son titre est un texte
     await expect(main.getByRole("heading", { level: 1, name: /Blood Bowl en France/ })).toBeVisible();
     await expect(main.getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
-    // « Aller au forum », le bouton mis en avant (carte 155)
+    // « Aller au forum », le bouton mis en avant (cartes 155 et 210)
     await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
     // Cherchés dans le bloc des rubriques : depuis la carte 205, les derniers messages du forum, dont le titre peut
     // commencer par les mêmes mots (« Tournois… »), sont aussi sur l'accueil
@@ -242,8 +257,12 @@ test.describe("accueil", () => {
     for (const [name, href] of TILES) {
       await expect(sections.getByRole("link", { name }).first()).toHaveAttribute("href", href);
     }
-    // La phrase qui explique le site est visible, aussi sur téléphone (carte 189)
-    await expect(main.getByText(/Échangez sur le forum/)).toBeVisible();
+    // La feuille de match (carte 210) : « Tu joues déjà » mène au forum, « Tu découvres » au guide du débutant
+    await expect(main.getByRole("heading", { level: 2, name: "Tu joues déjà" })).toBeVisible();
+    await expect(main.getByRole("heading", { level: 2, name: "Tu découvres" })).toBeVisible();
+    await expect(main.getByRole("link", { name: "Blood Bowl, c'est quoi ?" })).toHaveAttribute("href", "/jouer");
+    // Pas de classement sur l'accueil, seulement un lien vers lui ; pas de « Créer mon compte » au centre
+    await expect(main.getByRole("link", { name: /Créer mon compte/ })).toHaveCount(0);
     // Liens Discord (carte 155) : le bouton du bandeau et la ligne du bloc « La communauté », seulement si
     // l'invitation est réglée (carte 189). Aucun lien de l'accueil ne mène nulle part.
     const discord = main.getByRole("link", { name: /^(Discord|Rejoindre le Discord)/ });
@@ -276,6 +295,27 @@ test.describe("accueil", () => {
       .evaluateAll((links) => links.map((link) => link.getAttribute("href") ?? ""));
     expect(hrefs).toContain("/ligues/create");
     expect(hrefs).toContainEqual(expect.stringMatching(/^\/forum\/new-tournament\?forumId=/));
+  });
+
+  // Carte 210 : l'accueil du membre suit l'ordre fixé par le responsable du projet, sans classement
+  test("accueil du membre : forum, non-lus, tournois, ligues, articles", async ({ page }, testInfo) => {
+    await loginAs(page, E2E.coachId);
+    await page.goto("/", { waitUntil: "networkidle" });
+    const main = content(page);
+    await expect(main.getByRole("heading", { level: 1, name: /^Salut / })).toBeVisible();
+    await expect(main.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
+    const order = ["Non lus au forum", "Prochains tournois", /Ligues de ta région|Dernières ligues/, "Articles"];
+    let previousTop = -Infinity;
+    // Sur téléphone, les blocs se suivent dans cet ordre ; sur ordinateur, ils sont en deux colonnes
+    for (const name of order) {
+      const box = (await main.getByRole("region", { name }).boundingBox())!;
+      if (testInfo.project.name === "telephone") expect(box.y).toBeGreaterThan(previousTop);
+      previousTop = box.y;
+    }
+    await expect(main.getByRole("link", { name: "Écrire un article" })).toHaveAttribute("href", "/articles/create");
+    await expect(main.getByRole("link", { name: "Voir les ligues sur la carte" })).toHaveAttribute("href", "/carte?vue=ligues");
+    await expect(main.getByRole("heading", { name: /classement/i })).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath("accueil-membre.png"), fullPage: true });
   });
 
   test("prochains tournois et article au hasard", async ({ page }, testInfo) => {

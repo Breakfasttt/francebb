@@ -1,172 +1,40 @@
 /**
- * Accueil du site (carte 155, d'après la maquette « D » choisie par le responsable ; ADR 0006). Pas de logo : le
- * titre de la page est un texte.
- * - En haut, un bandeau de présentation avec trois boutons : « Aller au forum » (le plus visible, en couleur
- *   d'accent), « Jouer à Blood Bowl ! » et « Rejoindre le Discord ». À côté (en dessous sur téléphone), les trois
- *   prochains tournois ; s'il n'y en a aucun, un message et le lien « Créer un tournoi ».
- * - Puis toutes les rubriques, rangées en trois blocs : « Débuter », « Jouer en compétition » (Tournois et Ligues y
- *   ont leur lien « Créer » ; pour un visiteur, il mène à la connexion, qui renvoie ensuite vers le formulaire) et
- *   « La communauté ».
- * - Les trois derniers messages du forum (carte 205), mis à jour sans recharger la page (`LatestPosts`), et l'article
- *   tiré au hasard (s'il n'y a aucun article, ce bloc n'est pas affiché). Sur ordinateur, ils sont côte à côte.
- * - Les rubriques viennent en dernier : sur téléphone, elles répètent la barre basse et le panneau « Plus », et sont
- *   donc compactes (le nom seul, sans la phrase de description).
- * Un membre connecté voit un bandeau plus court (carte 205) : la phrase qui présente le site est réservée au visiteur.
- * Les titres des trois blocs viennent de NAV_GROUPS (navItems.ts), partagés avec le panneau « Plus » (carte 189). Les
- * liens vers le Discord n'apparaissent que si l'invitation est réglée dans l'administration (carte 189).
+ * Accueil du site (carte 210). Deux accueils :
+ * - un visiteur non connecté voit la feuille de match (`VisitorHome`) : « Tu joues déjà » mène au forum,
+ *   « Tu découvres » à « Blood Bowl, c'est quoi ? », puis les tournois, les derniers messages, un article et les
+ *   rubriques ;
+ * - un membre connecté voit son tableau de bord (`MemberHome`) : le forum et ses non-lus d'abord, puis les tournois,
+ *   les ligues de sa région, les articles et les autres rubriques.
+ * Cette page ne fait que lire les données (requêtes en parallèle) et choisir l'accueil ; les requêtes sont dans
+ * `app/component/homeData.ts`. Le lien « Créer un tournoi » d'un visiteur mène à la connexion, qui renvoie ensuite
+ * vers le formulaire. Les liens Discord n'apparaissent que si l'invitation est réglée dans l'administration
+ * (carte 189). Les titres des trois blocs de rubriques du visiteur viennent de NAV_GROUPS (navItems.ts), partagés
+ * avec le panneau « Plus » (carte 189).
  */
 import { getActiveSession } from "@/lib/authGuard";
-import { DateBlock, placeText, topicHref } from "@/app/tournois/component/TournamentListItems";
 import { prisma } from "@/lib/prisma";
-import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
-import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
-import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import { NAV_GROUPS, type NavGroupId } from "@/common/components/AppShell/navItems";
-import { Button, cn } from "@bbfrance/ui";
-import { ArrowRight, ChevronRight, ExternalLink, MessageSquare, Plus } from "lucide-react";
-import { unstable_cache } from "next/cache";
-import Link from "next/link";
 import { getForumAccess } from "@/lib/forumAccess";
 import { getLatestPosts } from "@/lib/homeLatestPosts";
-import LatestPosts from "@/app/component/LatestPosts";
-
-// Cache pour les tournois (60 s). L'étiquette « home-tournaments » permet de retrouver ce cache (le vider, ou le
-// renouveler par `revalidateTag`) : le test tests/e2e/inventaire/accueil.spec.ts s'en sert pour effacer la liste
-// gardée d'un lancement précédent (carte 148).
-const getCachedTournaments = unstable_cache(
-  async () => {
-    return prisma.tournament.findMany({
-      // Pas de tournoi dont le sujet du forum est supprimé (carte 165). Un tournoi reste affiché jusqu'à la fin de son
-      // dernier jour, heure de Paris (carte 187, lib/tournamentDates.ts) : avant, il disparaissait dès son premier jour.
-      where: {
-        AND: [upcomingTournamentWhere()],
-        isFinished: false,
-        isCancelled: false,
-        ...TOURNAMENT_TOPIC_NOT_DELETED
-      },
-      orderBy: { date: 'asc' },
-      take: 3,
-      include: { organizer: { select: { name: true } }, topic: { select: { id: true } }, _count: TAKEN_PLACES_COUNT }
-    });
-  },
-  // Clé passée en v3 avec la carte 150 (comptage des inscriptions ajouté pour « x / y places ») : un ancien résultat
-  // gardé en cache, sans ce comptage, n'est jamais servi après la mise en ligne
-  ["next-tournaments-v3"],
-  { revalidate: 60, tags: ["home-tournaments"] }
-);
-
-// Cache pour les settings (1h)
-const getCachedDiscordInvite = unstable_cache(
-  async () => prisma.siteSetting.findUnique({ where: { key: 'discord_invite' } }),
-  ["discord-invite-setting"],
-  { revalidate: 3600 }
-);
-
-/**
- * Tire un article au hasard parmi les `count` articles visibles (non modérés) de la base, aucun s'il n'y en a pas.
- * Le tirage est hors du composant : React demande qu'un composant donne le même résultat à chaque rendu.
- */
-async function pickRandomArticle(count: number) {
-  if (count === 0) return null;
-  const randomArticles = await prisma.article.findMany({
-    // Jamais un article masqué par la modération (carte 139), comme dans le compte de l'appelant
-    where: { isModerated: false },
-    take: 1,
-    skip: Math.floor(Math.random() * count),
-    include: { author: true, tags: true }
-  });
-  return randomArticles[0] ?? null;
-}
-
-/**
- * Places d'un tournoi : « 5 / 16 places », ou « 5 inscrits » quand il n'a pas de nombre maximum (carte 205 ; l'ancien
- * « 5 / ∞ places » était peu clair).
- */
-function placesText(taken: number, max: number | null | undefined): string {
-  if (max) return `${taken} / ${max} places`;
-  return `${taken} inscrit${taken > 1 ? "s" : ""}`;
-}
-
-/** Contour de focus clavier commun aux liens de l'accueil. */
-const focusRing = "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus";
-
-/** Titre d'un bloc (sans les majuscules ni l'italique de l'ancien CSS des titres). */
-const blockTitle = "m-0 border-0 p-0 text-xl leading-tight font-extrabold text-bb-text normal-case not-italic";
-
-/** Petit titre en capitales, en couleur d'accent, au-dessus d'un contenu (« La communauté française »…). */
-const eyebrow = "text-sm font-bold tracking-[0.06em] text-bb-accent-text uppercase";
-
-/** Un lien d'un bloc de rubriques : le nom, une courte description, et éventuellement un lien « Créer » à droite. */
-interface SectionLink {
-  label: string;
-  description: string;
-  href: string;
-  /** Lien externe, ouvert dans un nouvel onglet (Discord) */
-  external?: boolean;
-  /** Adresse du formulaire de création ; null quand la création n'est pas possible (aucun forum de tournois) */
-  create?: { href: string | null; label: string };
-}
-
-/** Un bloc de rubriques : un titre, une phrase, puis une liste de liens séparés par un filet. */
-function SectionBlock({ id, title, description, links }: { id: string; title: string; description: string; links: SectionLink[] }) {
-  return (
-    <section aria-labelledby={id} className="flex flex-col gap-2 rounded-bb-lg border border-bb-border bg-bb-surface px-4 pt-4 pb-1 lg:gap-3 lg:px-6 lg:pt-[22px] lg:pb-2">
-      <div className="flex flex-col gap-1">
-        <h2 id={id} className={blockTitle}>{title}</h2>
-        {/* Sur téléphone, la phrase du bloc et celles des liens sont masquées : les rubriques y sont compactes */}
-        <p className="m-0 hidden text-sm text-bb-text-muted lg:block">{description}</p>
-      </div>
-      <ul className="m-0 flex list-none flex-col p-0">
-        {links.map((link) => {
-          const content = (
-            <>
-              <span className="flex items-center gap-1.5 text-base font-bold text-bb-text">
-                {link.label}
-                {link.external && <ExternalLink size={14} aria-hidden="true" className="shrink-0 text-bb-text-muted" />}
-                {link.external && <span className="sr-only">(nouvel onglet)</span>}
-              </span>
-              <span className="hidden text-sm text-bb-text-muted lg:block">{link.description}</span>
-            </>
-          );
-          const linkClass = `flex min-h-12 flex-1 flex-col justify-center gap-0.5 rounded-bb-md py-1.5 no-underline lg:min-h-14 ${focusRing}`;
-          return (
-            <li key={link.label} className="flex min-h-12 items-center gap-2.5 border-t border-bb-border lg:min-h-14">
-              {link.external ? (
-                <a href={link.href} target="_blank" rel="noopener noreferrer" className={linkClass}>{content}</a>
-              ) : (
-                <Link href={link.href} className={linkClass}>{content}</Link>
-              )}
-              {link.create?.href && (
-                <Link
-                  href={link.create.href}
-                  aria-label={link.create.label}
-                  className={`inline-flex min-h-11 shrink-0 items-center gap-1 rounded-bb-md bg-bb-accent-soft px-3 text-sm font-bold text-bb-accent-text no-underline transition-colors hover:bg-bb-surface-2 ${focusRing}`}
-                >
-                  <Plus size={15} aria-hidden="true" /> Créer
-                </Link>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </section>
-  );
-}
+import VisitorHome from "@/app/component/VisitorHome";
+import MemberHome from "@/app/component/MemberHome";
+import type { SectionLink } from "@/app/component/HomeBlocks";
+import {
+  getCachedDiscordInvite,
+  getCachedTournaments,
+  getHomeActivity,
+  getMemberLigues,
+  getMemberRegisteredTournamentIds,
+  getMemberUnreadTopics,
+  pickRandomArticle,
+} from "@/app/component/homeData";
 
 export default async function Home() {
   const session = await getActiveSession();
-  const isAuth = !!session?.user;
-  // Prénom ou pseudo du membre pour son bandeau (« Bon retour, … ») ; vide pour un visiteur
-  const memberName = isAuth ? session.user.name || "coach" : null;
+  const userId = session?.user?.id ?? null;
 
-  // 1. Requêtes parallélisées (certaines sont cachées)
-  const [
-    nextTournaments,
-    discordInvite,
-    tournamentForum,
-    articlesCount,
-    latestPosts
-  ] = await Promise.all([
+  // Requêtes communes aux deux accueils (certaines sont cachées)
+  const [nextTournaments, discordInvite, tournamentForum, articlesCount] = await Promise.all([
     getCachedTournaments(),
     getCachedDiscordInvite(),
     prisma.forum.findFirst({
@@ -174,21 +42,44 @@ export default async function Home() {
       select: { id: true }
     }),
     prisma.article.count({ where: { isModerated: false } }),
-    // Derniers messages des forums ouverts au lecteur (carte 205)
-    getForumAccess().then(({ roles }) => getLatestPosts(roles))
   ]);
-
-  // 2. Sélection d'un article (on reste dynamique ici pour le hasard)
+  // Sélection d'un article (on reste dynamique ici pour le hasard)
   const selectedArticle = await pickRandomArticle(articlesCount);
 
-  const ligueCreateHref = isAuth ? "/ligues/create" : "/auth/login?callbackUrl=/ligues/create";
+  const ligueCreateHref = userId ? "/ligues/create" : "/auth/login?callbackUrl=/ligues/create";
   const tournamentCreateHref = tournamentForum
-    ? isAuth
+    ? userId
       ? `/forum/new-tournament?forumId=${tournamentForum.id}`
       : `/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-tournament?forumId=${tournamentForum.id}`)}`
     : null;
   // Invitation Discord réglée dans l'administration ; sans elle, aucun bouton Discord n'est affiché (carte 189)
   const discordHref = discordInvite?.value?.trim() || null;
+
+  if (userId) {
+    const member = await prisma.user.findUnique({ where: { id: userId }, select: { region: true } });
+    const region = member?.region || null;
+    const [unread, ligues, registeredIds] = await Promise.all([
+      getMemberUnreadTopics(userId),
+      getMemberLigues(region),
+      getMemberRegisteredTournamentIds(userId, nextTournaments.map((tournament) => tournament.id)),
+    ]);
+    return (
+      <MemberHome
+        memberName={session?.user?.name || "coach"}
+        discordHref={discordHref}
+        unread={unread}
+        tournaments={nextTournaments}
+        registeredIds={registeredIds}
+        tournamentCreateHref={tournamentCreateHref}
+        ligues={{ ...ligues, regionHref: ligues.fromRegion && region ? `/ligues?region=${encodeURIComponent(region)}` : "/ligues" }}
+        article={selectedArticle}
+      />
+    );
+  }
+
+  // Visiteur : derniers messages et activité du jour, limités aux forums ouverts à tous
+  const { roles } = await getForumAccess();
+  const [latestPosts, activity] = await Promise.all([getLatestPosts(roles), getHomeActivity(roles)]);
 
   // Les liens de chaque groupe ; le titre et la phrase du groupe viennent de NAV_GROUPS (mêmes que le panneau « Plus »)
   const groupLinks: Record<NavGroupId, SectionLink[]> = {
@@ -216,123 +107,14 @@ export default async function Home() {
   }));
 
   return (
-    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-6 px-4 pt-5 pb-10 font-bb-sans text-base text-bb-text lg:gap-8 lg:px-6 lg:pt-10">
-      {/* Une seule grille : sur téléphone, les blocs se suivent dans l'ordre du code (bandeau, tournois, derniers
-          messages, article) ; sur ordinateur, deux colonnes : bandeau et tournois, puis derniers messages et article */}
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-        <section aria-labelledby="home-title" className="flex flex-col justify-center gap-4 rounded-bb-lg border border-bb-border bg-bb-surface px-5 py-6 lg:gap-6 lg:px-10 lg:py-9">
-          <div className="flex flex-col gap-3">
-            <span className={eyebrow}>{memberName ? `Bon retour, ${memberName}` : "La communauté française"}</span>
-            <h1 id="home-title" className="m-0 border-0 p-0 text-bb-display font-extrabold tracking-[-0.02em] text-bb-text normal-case not-italic lg:text-bb-display-lg">
-              Tournois, ligues et coachs de Blood Bowl en France
-            </h1>
-            {/* Pour le visiteur, visible aussi sur téléphone (carte 189), en deux lignes au plus : c'est ce qui explique
-                le site. Un membre le connaît déjà : son bandeau est plus court (carte 205). */}
-            {!isAuth && (
-              <p className="m-0 max-w-[600px] text-base leading-relaxed text-bb-text-muted lg:text-bb-lead">
-                Échangez sur le forum, trouvez un tournoi près de chez vous, rejoignez une ligue.
-              </p>
-            )}
-          </div>
-          {/* Sur téléphone, « Aller au forum » occupe toute la largeur, les deux autres boutons se partagent la
-              ligne suivante. Sur ordinateur, les trois sont alignés : Jouer, Forum, Discord. */}
-          <div className="grid grid-cols-2 gap-2.5 lg:flex lg:flex-wrap lg:items-center lg:gap-3">
-            <Button asChild variant="secondary" size="tap" className={cn("order-2 min-h-12 whitespace-normal text-center lg:order-none", !discordHref && "col-span-2")}>
-              <Link href="/jouer">Jouer à Blood Bowl !</Link>
-            </Button>
-            <Button asChild variant="primary" size="tap" className="order-1 col-span-2 min-h-[52px] px-6 text-base font-extrabold shadow-[0_6px_18px_var(--bb-accent-soft)] lg:order-none">
-              <Link href="/forum">
-                <MessageSquare size={20} aria-hidden="true" /> Aller au forum
-              </Link>
-            </Button>
-            {discordHref && (
-              <Button asChild variant="secondary" size="tap" className="order-3 min-h-12 lg:order-none">
-                <a href={discordHref} target="_blank" rel="noopener noreferrer">
-                  <span className="lg:hidden">Discord</span>
-                  <span className="hidden lg:inline">Rejoindre le Discord</span>
-                  <span className="sr-only">(nouvel onglet)</span>
-                </a>
-              </Button>
-            )}
-          </div>
-        </section>
-
-        <section aria-labelledby="home-next-tournaments" className="flex flex-col overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface">
-          {/* Titre et lien sur une seule ligne, même en 360 pixels de large (carte 205) */}
-          <div className="flex items-center justify-between gap-3 px-4 pt-3 pb-2 lg:px-[22px] lg:pt-4">
-            <h2 id="home-next-tournaments" className={cn(blockTitle, "min-w-0")}>Prochains tournois</h2>
-            <Link href="/tournois" className={`inline-flex min-h-11 shrink-0 items-center text-sm font-semibold whitespace-nowrap text-bb-accent-text no-underline ${focusRing}`}>
-              Tout voir<span className="sr-only"> : tous les tournois</span>
-            </Link>
-          </div>
-          {nextTournaments.length > 0 ? (
-            <ul className="m-0 list-none p-0">
-              {nextTournaments.map((tournament) => (
-                <li key={tournament.id} className="border-t border-bb-border">
-                  <Link
-                    href={topicHref(tournament)}
-                    className="flex items-center gap-3.5 px-4 py-3.5 text-inherit no-underline transition-colors hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:px-[22px]"
-                  >
-                    <DateBlock date={tournament.date} className="size-[52px] border-0 bg-bb-accent-soft" />
-                    <span className="flex min-w-0 flex-1 flex-col gap-0.5">
-                      <span className="text-base leading-snug font-bold break-words text-bb-text">{tournament.name}</span>
-                      <span className="text-sm text-bb-text-muted">
-                        {placeText(tournament)} · {placesText(takenPlaces(tournament), tournament.maxParticipants)}
-                      </span>
-                    </span>
-                    <ChevronRight size={18} aria-hidden="true" className="shrink-0 text-bb-text-muted" />
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="flex flex-1 flex-col items-center justify-center gap-3 border-t border-bb-border px-4 py-6 text-center lg:py-7">
-              <p className="m-0 text-base font-bold text-bb-text">Aucun tournoi prévu pour l&apos;instant</p>
-              <p className="m-0 max-w-[300px] text-sm leading-normal text-bb-text-muted">Vous organisez un tournoi ? Annoncez-le à la communauté.</p>
-              {tournamentCreateHref && (
-                <Link
-                  href={tournamentCreateHref}
-                  className={`inline-flex min-h-11 items-center gap-1 rounded-bb-md bg-bb-accent-soft px-4 text-sm font-bold text-bb-accent-text no-underline ${focusRing}`}
-                >
-                  <Plus size={15} aria-hidden="true" /> Créer un tournoi
-                </Link>
-              )}
-            </div>
-          )}
-        </section>
-
-        {/* Derniers messages du forum, mis à jour sans recharger la page (carte 205). Toute la largeur s'il n'y a pas
-            d'article à côté. */}
-        <div className={cn("flex flex-col", !selectedArticle && "lg:col-span-2")}>
-          <LatestPosts initialPosts={latestPosts} focusRing={focusRing} />
-        </div>
-
-        {/* Article tiré au hasard : rien n'est affiché s'il n'y a aucun article */}
-        {selectedArticle && (
-          <section aria-labelledby="home-random-article" className="flex">
-            <Link
-              href={`/articles/${selectedArticle.id}`}
-              className={cn("flex flex-1 flex-col gap-2 rounded-bb-lg bg-bb-surface-2 p-[18px] text-inherit no-underline lg:justify-center lg:gap-3 lg:px-7 lg:py-[22px]", focusRing)}
-            >
-              <h2 id="home-random-article" className={cn(eyebrow, "m-0 border-0 p-0 not-italic")}>Article au hasard</h2>
-              <span className="flex min-w-0 flex-col gap-1">
-                <span className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text lg:line-clamp-3 lg:text-xl">{selectedArticle.title}</span>
-                <span className="text-sm text-bb-text-muted">par {selectedArticle.author?.name || "Anonyme"}</span>
-              </span>
-              {/* Visible aussi sur téléphone (carte 205) : montre que le bloc est un lien */}
-              <span aria-hidden="true" className="inline-flex items-center gap-1 text-sm font-semibold text-bb-accent-text">
-                Lire l&apos;article <ArrowRight size={16} />
-              </span>
-            </Link>
-          </section>
-        )}
-      </div>
-
-      {/* Les rubriques en trois blocs : trois colonnes sur ordinateur (chacune à sa hauteur, sans vide sous les liens),
-          l'un sous l'autre et compacts sur téléphone */}
-      <nav aria-label="Rubriques du site" className="grid gap-4 lg:grid-cols-3 lg:items-start lg:gap-5">
-        {blocks.map((block) => <SectionBlock key={block.id} {...block} />)}
-      </nav>
-    </div>
+    <VisitorHome
+      discordHref={discordHref}
+      activity={activity}
+      tournaments={nextTournaments}
+      tournamentCreateHref={tournamentCreateHref}
+      latestPosts={latestPosts}
+      article={selectedArticle}
+      blocks={blocks}
+    />
   );
 }

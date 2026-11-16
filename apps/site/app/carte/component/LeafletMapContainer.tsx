@@ -29,6 +29,11 @@ interface LeafletMapProps {
   points: MapPoint[];
   viewType: "tournaments" | "ligues";
   isFullscreen?: boolean;
+  /**
+   * Petite carte posée dans une page (accueil du membre, carte 210) : cadrée sur ses points, sans zoom à la molette
+   * (la molette doit faire défiler la page, pas la carte). Désactivé par défaut : la page `/carte` ne change pas.
+   */
+  compact?: boolean;
 }
 
 /** Recalcule la taille de la carte quand la fenêtre ou le plein écran change (sinon, des zones restent grises). */
@@ -71,12 +76,24 @@ const markerIcon = (color: "red" | "gold") =>
     shadowSize: [41, 41],
   });
 
-export default function LeafletMapContainer({ points, viewType, isFullscreen = false }: LeafletMapProps) {
+/** Cadre la carte sur ses points (petite carte `compact`) ; un seul point garde un zoom de ville. */
+function FitToPoints({ points }: { points: MapPoint[] }) {
+  const map = useMap();
+  useEffect(() => {
+    const located = points.filter((p) => p.lat !== null && p.lng !== null);
+    if (located.length === 0) return;
+    const bounds = L.latLngBounds(located.map((p) => [p.lat as number, p.lng as number] as [number, number]));
+    map.fitBounds(bounds, { padding: [28, 28], maxZoom: 10 });
+  }, [map, points]);
+  return null;
+}
+
+export default function LeafletMapContainer({ points, viewType, isFullscreen = false, compact = false }: LeafletMapProps) {
   // Ce fichier n'est chargé que dans le navigateur (import dynamique sans rendu serveur) : Leaflet y est disponible
   const icons = useMemo(() => ({ red: markerIcon("red"), gold: markerIcon("gold") }), []);
 
   return (
-    <MapContainer center={[46.2276, 2.2137]} zoom={6} zoomControl={false} scrollWheelZoom={true} style={{ height: "100%", width: "100%" }}>
+    <MapContainer center={[46.2276, 2.2137]} zoom={6} zoomControl={false} scrollWheelZoom={!compact} style={{ height: "100%", width: "100%" }}>
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -84,6 +101,7 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
       <ZoomControl position="bottomright" zoomInTitle="Zoomer" zoomOutTitle="Dézoomer" />
 
       <MapResizer isFullscreen={isFullscreen} />
+      {compact && <FitToPoints points={points} />}
 
       {points.map((p) => (
         <Marker
