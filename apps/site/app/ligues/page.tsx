@@ -80,7 +80,7 @@ export default async function LiguesPage({
   );
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
         title="Ligues"
         subtitle={`${total} ligue${total > 1 ? "s" : ""} référencée${total > 1 ? "s" : ""}`}

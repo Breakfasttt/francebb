@@ -15,7 +15,7 @@ export default function VerifyRequestPage() {
             <Mail size={34} />
           </span>
 
-          <h1 id="verify-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+          <h1 id="verify-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
             Vérifiez votre boîte mail
           </h1>
 

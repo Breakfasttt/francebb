@@ -33,7 +33,6 @@ interface ResourceCardProps {
   onDelete?: () => void;
 }
 
-const FALLBACK_IMAGE = "/images/resource-placeholder.png";
 
 const linkClass =
   "text-bb-text no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus";
@@ -48,10 +47,14 @@ function destination(link: string, external: boolean): string {
   }
 }
 
-/** Image de la ressource ; l'image par défaut la remplace si elle manque ou ne se charge pas. */
+/**
+ * Image de la ressource, seulement si elle existe et se charge (DESIGN.md : pas d'image de remplissage). Sans image,
+ * rien n'est affiché et la ligne garde son texte seul.
+ */
 function ResourceImage({ src, className }: { src?: string | null; className?: string }) {
   const [failed, setFailed] = useState<string | null>(null);
-  const url = src && failed !== src ? src : FALLBACK_IMAGE;
+  if (!src || failed === src) return null;
+  const url = src;
   return (
     // Image hébergée n'importe où (ImgBB, site de l'outil) : pas d'optimisation next/image, dont les domaines sont limités
     // eslint-disable-next-line @next/next/no-img-element
@@ -150,7 +153,7 @@ export default function ResourceCard({ resource, view = "grid", canEdit, canDele
         {/* Des <div> et non des <span> : le titre est un <h2>, qu'un élément en ligne ne peut pas contenir */}
         <div className={cn("flex min-w-0 flex-1 flex-col gap-2 p-3 sm:p-4", menu && "max-sm:pr-12")}>
           {resource.isSystem && <div className="flex">{officialBadge}</div>}
-          <h2 className="m-0 line-clamp-2 border-0 p-0 text-lg leading-snug font-bold tracking-normal break-words text-bb-text normal-case not-italic">{resource.title}</h2>
+          <h2 className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text">{resource.title}</h2>
           <p className="m-0 line-clamp-2 text-[0.95rem] sm:line-clamp-3 leading-relaxed break-words text-bb-text-muted">{resource.description}</p>
           <Tags tags={resource.tags} max={4} />
           <div className="mt-auto flex items-center justify-between gap-2 border-t border-bb-border pt-3 text-sm">

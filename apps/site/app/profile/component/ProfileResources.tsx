@@ -91,7 +91,7 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
             {data.resources.map((res) => (
               <li key={res.id} className="flex flex-col gap-2 border-b border-bb-border px-4 py-3 last:border-b-0">
                 <div className="flex flex-wrap items-start justify-between gap-2">
-                  <h3 className="m-0 min-w-0 flex-1 border-0 p-0 text-base font-bold tracking-normal break-words text-bb-text normal-case not-italic">
+                  <h3 className="min-w-0 flex-1 text-base font-bold break-words text-bb-text">
                     {res.title}
                   </h3>
                   <StatusBadge status={res.status} />

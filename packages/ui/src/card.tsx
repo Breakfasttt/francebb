@@ -19,12 +19,12 @@ export function Card({ className, glass, ...props }: React.ComponentProps<"div">
 }
 
 export function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
-  return <div className={cn("flex items-center gap-2 border-b border-bb-border px-4 py-3", className)} {...props} />;
+  return <div className={cn("flex min-h-12 items-center gap-2 border-b border-bb-border bg-bb-surface-2 px-4 py-2", className)} {...props} />;
 }
 
-/** Titre de carte : sobre (ni majuscules ni italique hérités de l'ancien CSS des titres). */
+/** Titre de carte en voix Heading (DESIGN.md) : capitales semi-condensées, comme un en-tête de tableau. */
 export function CardTitle({ className, as: Tag = "h2", ...props }: React.ComponentProps<"h2"> & { as?: "h2" | "h3" | "h4" }) {
-  return <Tag className={cn("m-0 flex-1 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic", className)} {...props} />;
+  return <Tag className={cn("flex-1 font-bb-heading text-[0.95rem] text-bb-text", className)} {...props} />;
 }
 
 export function CardBody({ className, ...props }: React.ComponentProps<"div">) {

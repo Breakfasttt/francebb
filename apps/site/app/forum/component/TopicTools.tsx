@@ -825,7 +825,7 @@ function SplitBar() {
         aria-label="Scission du sujet"
         className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[var(--z-index-page-bar)] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden"
       >
-        <div className="mx-auto flex max-w-[1232px] items-center justify-between gap-2">
+        <div className="mx-auto flex max-w-[1760px] items-center justify-between gap-2">
           <p className="m-0 min-w-0 text-sm font-semibold text-bb-text" aria-live="polite">
             {splitCountText(count)}
           </p>
@@ -913,7 +913,7 @@ export function TopicReplyBar() {
       <div aria-hidden="true" className="h-16 lg:hidden" />
       {!replyOnScreen && (
         <div data-page-bottom-bar className="fixed inset-x-0 bottom-[var(--app-bottom-nav-space)] z-[var(--z-index-page-bar)] border-t border-bb-border bg-bb-surface px-3 py-1.5 lg:hidden [html[data-typing=true]_&]:hidden">
-          <div className="mx-auto flex max-w-[1232px] items-center justify-between gap-2">
+          <div className="mx-auto flex max-w-[1760px] items-center justify-between gap-2">
             {/* Pagination resserrée pour tenir sur 360 pixels : le bouton « Page N sur M » perd sa largeur minimale et
                 peut passer sur deux lignes quand les numéros sont longs (« Page 15 sur 15 » à côté de « Répondre ») */}
             {t.totalPages > 1 ? (

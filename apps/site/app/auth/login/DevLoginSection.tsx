@@ -64,7 +64,7 @@ export default function DevLoginSection({ initialUsers, callbackUrl }: DevLoginS
         <Button type="button" variant="quiet" size="tap" className="px-2" onClick={() => setShowSelector(false)}>
           <ArrowLeft size={16} aria-hidden="true" /> Retour
         </Button>
-        <h2 id="dev-login-title" className="m-0 flex-1 border-0 p-0 text-right text-sm font-bold text-bb-text-muted normal-case not-italic">
+        <h2 id="dev-login-title" className="flex-1 text-right text-sm font-bold text-bb-text-muted">
           Comptes de test
         </h2>
       </div>

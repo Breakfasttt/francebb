@@ -35,7 +35,7 @@ export default async function BannedPage() {
           <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-full bg-bb-surface-2 text-bb-danger-text">
             <Ban size={36} />
           </span>
-          <h1 id="banned-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+          <h1 id="banned-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
             Compte banni
           </h1>
           <p className="m-0 text-bb-text-muted">
@@ -43,7 +43,7 @@ export default async function BannedPage() {
           </p>
 
           <div className="w-full rounded-bb-md border border-bb-border bg-bb-surface-2 p-4 text-left">
-            <h2 className="m-0 border-0 p-0 text-sm font-bold text-bb-text-muted normal-case not-italic">Raison du bannissement</h2>
+            <h2 className="text-sm font-bold text-bb-text-muted">Raison du bannissement</h2>
             <p className="m-0 mt-1 break-words text-bb-text">
               « {user.banReason || "Raison non spécifiée."} »
             </p>

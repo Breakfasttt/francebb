@@ -63,9 +63,10 @@ const moreItem = (href: string) => MORE_NAV.find((item) => item.href === href)!;
 
 /** Liens directs de la barre haute sur ordinateur (le reste est dans son menu « Plus »). */
 export const DESKTOP_NAV: NavItem[] = [
-  PRIMARY_NAV[0],
+  // Pas d'« Accueil » sur ordinateur : le nom du site, à gauche de la barre, y mène
   PRIMARY_NAV[1],
   PRIMARY_NAV[2],
+  moreItem("/classement"),
   moreItem("/ligues"),
   moreItem("/articles"),
   moreItem("/ressources"),

@@ -109,18 +109,28 @@ function ArticleFilterFields({ prefix, availableTags }: { prefix: string; availa
 }
 
 /** Colonne des filtres de l'ordinateur (masquée sur téléphone, où le panneau « Filtrer les articles » la remplace). */
-export function ArticleFilterAside({ availableTags }: { availableTags: string[] }) {
+/** Panneau gauche de l'ordinateur (DESIGN.md) : action principale puis filtres, comme la page des tournois. */
+export function ArticleFilterAside({ availableTags, createHref, showFilters = true }: { availableTags: string[]; createHref?: string | null; showFilters?: boolean }) {
   const { hrefWith } = useParamUpdater();
   return (
     <aside aria-label="Filtres des articles" className="hidden lg:block">
-      <div className="sticky top-20 flex flex-col gap-4 rounded-bb-lg border border-bb-border bg-bb-surface p-4">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">Filtres</h2>
-          <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
-            <Link href={hrefWith(RESET)} scroll={false}>Réinitialiser</Link>
+      <div className="sticky top-20 flex flex-col gap-5">
+        {createHref && (
+          <Button asChild variant="primary" size="tap" className="w-full">
+            <Link href={createHref}>Écrire un article</Link>
           </Button>
-        </div>
-        <ArticleFilterFields prefix="aside" availableTags={availableTags} />
+        )}
+        {showFilters && (
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
+              <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
+                <Link href={hrefWith(RESET)} scroll={false}>Réinitialiser</Link>
+              </Button>
+            </div>
+            <ArticleFilterFields prefix="aside" availableTags={availableTags} />
+          </div>
+        )}
       </div>
     </aside>
   );
@@ -130,7 +140,7 @@ export function ArticleListControls({ total, availableTags }: { total: number; a
   const { searchParams, hrefWith, update, tags } = useParamUpdater();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const currentSort = searchParams.get("sort") || "date_desc";
-  const currentView = searchParams.get("view") === "list" ? "list" : "grid";
+  const currentView = searchParams.get("view") === "grid" ? "grid" : "list";
   const author = searchParams.get("author") || "";
 
   // Recherche dans le titre et le texte : l'adresse change 400 ms après la dernière touche (avant, à l'appui sur
@@ -159,7 +169,7 @@ export function ArticleListControls({ total, availableTags }: { total: number; a
       aria-pressed={currentView === view}
       title={label}
       onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-[10px]", currentView === view && "bg-bb-surface-2 text-bb-text")}
+      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
     >
       {icon}
     </Button>

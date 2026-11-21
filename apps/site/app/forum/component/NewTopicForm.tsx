@@ -74,7 +74,7 @@ export default function NewTopicForm({ forumId, userCanStick, cancelHref }: { fo
         {/* Colonne « Publication » (ordinateur) ; sur téléphone, seules les cases de modération restent ici */}
         <aside aria-label="Publication" className={userCanStick ? "" : "max-lg:hidden"}>
           <Card className="flex flex-col gap-3 p-4 lg:sticky lg:top-20">
-            <h2 className="m-0 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+            <h2 className="flex items-center gap-2 text-base font-bold text-bb-text">
               <MessageSquarePlus size={18} aria-hidden="true" className="text-bb-accent-text" />
               Publication
             </h2>

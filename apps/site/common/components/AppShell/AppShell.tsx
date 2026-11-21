@@ -17,7 +17,7 @@
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Bell, ChevronDown, LogIn, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
+import { Bell, ChevronDown, LogOut, Mail, Palette, Settings, ShieldAlert, User } from "lucide-react";
 import { ActionMenu, Avatar, Button, CountBadge, Sheet, SheetContent, cn } from "@bbfrance/ui";
 import SiteLogo from "@/common/components/SiteLogo/SiteLogo";
 import DebugAuthWidget from "@/common/components/DebugAuthWidget/DebugAuthWidget";
@@ -80,7 +80,7 @@ function useTypingFlag() {
 const navLinkClass = (active: boolean) =>
   cn(
     // Lien actif : couleur et trait sous le lien, sans fond (le contraste reste celui de la barre dans chaque thème)
-    "inline-flex min-h-11 items-center border-b-2 px-3 text-[0.95rem] font-semibold",
+    "inline-flex min-h-11 items-center border-b-2 px-3 font-bb-heading text-[0.95rem]",
     active ? "border-bb-nav-active text-bb-nav-active" : "border-transparent text-bb-nav-text hover:border-bb-nav-text"
   );
 
@@ -108,7 +108,6 @@ function NotificationBell({ count, active }: { count: number; active: boolean })
 export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: AppShellProps) {
   const { unreadCount, notificationCount, pendingModCount } = useNavCounts(counts);
   const pathname = usePathname();
-  const isHome = pathname === "/";
   // Sur la page de connexion, le bouton « Se connecter / S'inscrire » de la barre haute ne sert à rien (carte 190)
   const showLoginButton = !user && pathname !== "/auth/login";
   // Écrans plein écran sans barre basse : les écrans de rédaction du forum (carte 087). L'éditeur BBScheme, qui en
@@ -131,24 +130,22 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
         {/* Téléphone */}
         <div className="flex h-14 items-center gap-2 px-2 lg:hidden">
           {/* SiteLogo est lui-même un lien vers l'accueil */}
-          {!isHome && <SiteLogo scale={0.5} />}
+          <SiteLogo scale={0.72} className="px-2" />
           <div className="flex-1" />
           {/* Comptes de test, en développement seulement (carte 204) */}
           <DebugAuthWidget className={devButtonClass} />
           {user && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
           {showLoginButton && (
-            // Sans icône sur téléphone : le texte entier tient à côté du logo dès 360 pixels de large
-            <Button asChild variant="primary" size="tap" className="px-3 whitespace-nowrap">
-              <Link href="/auth/login">Se connecter / S&apos;inscrire</Link>
+            // Secondaire : le rouge reste à l'action principale de la page (DESIGN.md, un seul rouge par écran)
+            <Button asChild variant="secondary" size="tap" className="px-3 whitespace-nowrap">
+              <Link href="/auth/login">Connexion</Link>
             </Button>
           )}
         </div>
 
         {/* Ordinateur */}
-        <div className="mx-auto hidden h-16 max-w-[1280px] items-center gap-4 px-6 lg:flex">
-          <div className={cn("flex items-center", isHome && "invisible")}>
-            <SiteLogo scale={0.6} />
-          </div>
+        <div className="mx-auto hidden h-16 max-w-[1760px] items-center gap-6 px-6 lg:flex xl:px-8">
+          <SiteLogo scale={0.85} />
           <nav aria-label="Navigation principale" className="flex flex-1 flex-wrap items-center gap-1">
             {DESKTOP_NAV.map((item) => (
               <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined} className={navLinkClass(isActive(pathname, item.href))}>
@@ -159,7 +156,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
               label="Plus de rubriques"
               items={desktopMoreItems}
               linkComponent={Link}
-              triggerClassName="px-3 gap-1 font-semibold text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
+              triggerClassName="px-3 gap-1 font-bb-heading text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
               trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>}
             />
           </nav>
@@ -202,10 +199,8 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
                 <Palette size={20} aria-hidden="true" />
               </Button>
               {showLoginButton && (
-                <Button asChild variant="primary" size="tap">
-                  <Link href="/auth/login">
-                    <LogIn size={16} aria-hidden="true" /> Se connecter / S&apos;inscrire
-                  </Link>
+                <Button asChild variant="secondary" size="tap">
+                  <Link href="/auth/login">Connexion / inscription</Link>
                 </Button>
               )}
             </div>

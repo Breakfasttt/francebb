@@ -79,7 +79,7 @@ export default async function LigueDetailPage({
   ];
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       {/* Lien de retour vers la liste, à toutes les tailles d'écran (44 pixels de haut) */}
       <div className="pt-3 lg:pt-4">
         <Link href="/ligues" className="inline-flex min-h-11 items-center gap-1 text-sm font-semibold text-bb-accent-text no-underline hover:underline">
@@ -92,7 +92,7 @@ export default async function LigueDetailPage({
         <div className="flex items-start gap-4">
           <LigueBlason image={ligue.image} alt={`Blason ${ligue.name}`} size={80} />
           <div className="flex min-w-0 flex-1 flex-col gap-2">
-            <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-3xl">
+            <h1 className="font-bb-display text-[1.75rem] lg:text-[2.25rem] break-words text-bb-text">
               {ligue.name}
             </h1>
             <div className="flex flex-wrap items-center gap-2">

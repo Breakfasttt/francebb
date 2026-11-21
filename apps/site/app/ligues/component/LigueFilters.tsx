@@ -75,7 +75,7 @@ export default function LigueFilters({ zones, total }: LigueFiltersProps) {
       aria-pressed={currentView === view}
       title={label}
       onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-[10px]", currentView === view && "bg-bb-surface-2 text-bb-text")}
+      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
     >
       {icon}
     </Button>

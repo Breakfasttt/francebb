@@ -36,7 +36,7 @@ export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, cont
   // fondu qu'elle défile : LinkTabs de @bbfrance/ui s'en charge depuis la carte 190.
   // La place des notifications sous le contenu est réservée par la coquille (AppShell.css, --app-toast-space)
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
       <ForumListHeader title={title} subtitle={subtitle} backHref="/" backTitle="Retour" backPreferHistory />
 
       {loading ? (

@@ -15,8 +15,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { BookOpen, Plus } from "lucide-react";
-import { Button, Card, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
+import { Button, Card, ConfirmDialog, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { useDebounce } from "@/common/hooks/useDebounce";
 import { readList, readPositiveInt, useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
@@ -106,18 +105,11 @@ function RessourcesList() {
   const resources = data?.resources ?? [];
 
   // Carte 141 : le bouton n'est montré qu'aux membres connectés (un visiteur serait renvoyé vers la connexion)
-  const submitButton = user?.id ? (
-    <Button asChild variant="primary" size="tap">
-      <Link href="/ressources/submit" className="no-underline">
-        <Plus size={18} aria-hidden="true" />
-        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
-        <span>Soumettre<span className="max-sm:sr-only"> une ressource</span></span>
-      </Link>
-    </Button>
-  ) : null;
+  // Action principale : en haut du panneau gauche sur ordinateur, dans l'en-tête sur téléphone (DESIGN.md)
+  const submitHref = user?.id ? "/ressources/submit" : null;
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Ressources"
         subtitle={
@@ -128,11 +120,15 @@ function RessourcesList() {
         backHref="/"
         backTitle="Retour à l'accueil"
       >
-        {submitButton}
+        {submitHref && (
+          <Button asChild variant="primary" size="tap" className="lg:hidden">
+            <Link href={submitHref}>Proposer une ressource</Link>
+          </Button>
+        )}
       </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-6">
-        <ResourceFilterAside tags={tags} onTagsChange={changeTags} availableTags={availableTags} />
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+        <ResourceFilterAside tags={tags} onTagsChange={changeTags} availableTags={availableTags} submitHref={submitHref} />
 
         <section aria-label="Ressources trouvées" aria-busy={loading} className="flex min-w-0 flex-col gap-4">
           <ResourceListControls
@@ -183,11 +179,9 @@ function RessourcesList() {
               )}
             </div>
           ) : (
-            <Card>
-              <EmptyState icon={<BookOpen size={40} />} title="Aucune ressource trouvée" action={submitButton}>
-                Aucune ressource ne correspond à vos critères. Essayez d&apos;autres mots ou d&apos;autres tags, ou proposez la vôtre !
-              </EmptyState>
-            </Card>
+            <p className="rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-5 text-bb-text-muted">
+              Aucune ressource ne correspond. Essaie d&apos;autres mots ou d&apos;autres tags, ou propose la tienne.
+            </p>
           )}
         </section>
       </div>

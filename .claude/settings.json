@@ -4,14 +4,23 @@
       "Bash(pnpm kanban*)",
       "Bash(pnpm typecheck)",
       "Bash(pnpm lint:ratchet*)",
-      "Bash(pnpm test:e2e)",
-      "Bash(node apps/site/scripts/debt-count.mjs)"
+      "Bash(pnpm check)",
+      "Bash(corepack pnpm check)",
+      "Bash(node apps/site/scripts/debt-count.mjs)",
+      "Bash(npx impeccable detect*)"
     ],
     "deny": [
-      "Bash(npx prisma migrate reset*)",
-      "Bash(pnpm exec prisma migrate reset*)",
-      "Bash(npx prisma db push --force-reset*)",
-      "Bash(pnpm exec prisma db push --force-reset*)",
+      "Bash(*prisma migrate reset*)",
+      "Bash(*db push --force-reset*)",
+      "Bash(*db push*--accept-data-loss*)",
+      "Edit(**/.env)",
+      "Edit(**/.env.local)",
+      "Edit(**/.env.*.local)",
+      "Edit(**/.env.production)",
+      "Write(**/.env)",
+      "Write(**/.env.local)",
+      "Write(**/.env.*.local)",
+      "Write(**/.env.production)",
       "Bash(git push --force*)",
       "Bash(git push -f*)"
     ]
@@ -20,6 +29,15 @@
     "PreToolUse": [
       {
         "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/block-deps.mjs\""
+          }
+        ]
+      },
+      {
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -40,5 +58,11 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "security-guidance@claude-plugins-official": true
+  },
+  "env": {
+    "ENABLE_STOP_REVIEW": "0"
   }
 }

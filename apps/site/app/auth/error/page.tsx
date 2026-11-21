@@ -37,7 +37,7 @@ export default async function AuthErrorPage(props: {
             <AlertCircle size={36} />
           </span>
 
-          <h1 id="auth-error-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+          <h1 id="auth-error-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
             Erreur d&apos;authentification
           </h1>
 

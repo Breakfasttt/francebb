@@ -44,10 +44,11 @@
  * Les valeurs ci-dessous ne dépendent pas du thème.
  */
 :root {
-  --bb-font-sans: var(--font-bb, "Inter"), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --bb-radius-sm: 8px;
-  --bb-radius-md: 12px;
-  --bb-radius-lg: 16px;
+  --bb-font-sans: var(--font-bb, "Archivo"), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Angles presque droits (DESIGN.md, « Formes et profondeur ») : 3 px badges, 5 px boutons et champs, 6 px panneaux */
+  --bb-radius-sm: 3px;
+  --bb-radius-md: 5px;
+  --bb-radius-lg: 6px;
   --bb-radius-full: 999px;
   --bb-tap: 44px;
 }
@@ -73,6 +74,29 @@
   --text-bb-display--line-height: 1.15;
   --text-bb-display-lg: 2.5rem;
   --text-bb-display-lg--line-height: 1.08;
+}
+
+/*
+ * Les deux voix de titre (DESIGN.md, « Typographie ») : la police Archivo est variable en largeur.
+ * - font-bb-display : condensé, très gras, capitales (titre de page, nom du site, grands chiffres) ;
+ * - font-bb-heading : semi-condensé, gras, capitales espacées (en-têtes de section, de tableau, de panneau).
+ * Sans la police du site (hub, système), le navigateur garde une largeur normale : rien ne casse.
+ */
+@utility font-bb-display {
+  font-family: var(--bb-font-sans);
+  font-stretch: 68%;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+}
+
+@utility font-bb-heading {
+  font-family: var(--bb-font-sans);
+  font-stretch: 75%;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 /* Classes Tailwind des variables v2 : `bg-bb-surface`, `text-bb-text-muted`, `border-bb-border`, etc. */

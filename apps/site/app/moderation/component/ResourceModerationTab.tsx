@@ -64,7 +64,7 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <Layout size={20} className="text-bb-text-muted" aria-hidden="true" />
-        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">Ressources à valider</h2>
+        <h2 className="flex-1 text-lg font-bold text-bb-text">Ressources à valider</h2>
         <Badge variant="neutral">{total} en attente</Badge>
       </div>
 
@@ -87,7 +87,7 @@ export default function ResourceModerationTab({ onActionSuccess }: ResourceModer
                 )}
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                   <div className="flex flex-wrap items-start justify-between gap-x-3 gap-y-1">
-                    <h3 className="m-0 border-0 p-0 text-base font-bold break-words text-bb-text normal-case not-italic">{res.title}</h3>
+                    <h3 className="text-base font-bold break-words text-bb-text">{res.title}</h3>
                     <span className="inline-flex shrink-0 items-center gap-1 text-sm text-bb-text-muted">
                       <Clock size={14} aria-hidden="true" />
                       {formatDistanceToNow(new Date(res.createdAt), { addSuffix: true, locale: fr })}

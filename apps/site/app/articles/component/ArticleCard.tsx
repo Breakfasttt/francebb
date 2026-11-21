@@ -136,7 +136,7 @@ export default function ArticleCard({ article, view = "grid" }: ArticleCardProps
           {moderated}
         </span>
       )}
-      <h2 className="m-0 line-clamp-2 border-0 p-0 text-lg leading-snug font-bold break-words text-bb-text normal-case not-italic">
+      <h2 className="line-clamp-2 text-lg leading-snug font-bold break-words text-bb-text">
         {article.title}
       </h2>
       {snippet && <p className="m-0 line-clamp-3 text-[0.95rem] leading-relaxed break-words text-bb-text-muted">{snippet}</p>}

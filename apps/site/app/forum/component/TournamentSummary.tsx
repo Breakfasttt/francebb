@@ -4,6 +4,7 @@
  * vers la carte, participants, prix, plateforme, édition, règles, type) et la logistique (repas, logement, accueil
  * le vendredi). Sur téléphone, les informations passent sur deux colonnes, puis une seule sur un très petit écran.
  */
+import { DEFAULT_GAME_EDITION } from "@/lib/tournamentForm";
 import React from "react";
 import Link from "next/link";
 import { Calendar, CheckCircle2, Coins, ExternalLink, Info, Layers, MapPin, Monitor, Shield, Trophy, Users, XCircle } from "lucide-react";
@@ -132,7 +133,7 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             ))}
           </div>
           <h2
-            className="m-0 mt-1 border-0 p-0 text-xl leading-tight font-bold break-words text-bb-text normal-case not-italic lg:text-2xl"
+            className="mt-1 text-xl leading-tight font-bold break-words text-bb-text lg:text-2xl"
             dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.name) }}
           />
           {(tournament.ligue || tournament.ligueCustom) && (
@@ -187,8 +188,8 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
           )}
         </Fact>
         <Fact icon={<Monitor size={18} />} label="Plateforme">{tournament.platform || 'Tabletop'}</Fact>
-        <Fact icon={<Layers size={18} />} label="Édition">{tournament.gameEdition || 'BB25'}</Fact>
-        <Fact icon={<Shield size={18} />} label="Ruleset">{tournament.ruleset || 'Libre'}</Fact>
+        <Fact icon={<Layers size={18} />} label="Édition">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Fact>
+        {tournament.ruleset && <Fact icon={<Shield size={18} />} label="Ruleset">{tournament.ruleset}</Fact>}
         <Fact icon={<Info size={18} />} label="Type de tournoi">{tournament.structure || 'Resurrection'}</Fact>
       </dl>
 

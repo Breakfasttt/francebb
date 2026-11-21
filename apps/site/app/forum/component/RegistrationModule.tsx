@@ -260,11 +260,11 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
         <SheetContent title={`Détails de l'équipe : ${selectedTeamDetails?.name ?? ""}`} side={isDesktop ? "center" : "bottom"}>
           <div className="flex flex-col gap-4 pt-1 pb-3">
             <section>
-              <h3 className="m-0 mb-2 border-0 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase not-italic">Capitaine</h3>
+              <h3 className="mb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">Capitaine</h3>
               <MemberLine user={selectedTeamDetails?.captain} size={40} />
             </section>
             <section>
-              <h3 className="m-0 mb-2 border-0 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase not-italic">
+              <h3 className="mb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">
                 Membres ({selectedTeamDetails?.members?.length || 0})
               </h3>
               {selectedTeamDetails?.members?.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Aucun membre additionnel</p>}
@@ -466,7 +466,7 @@ function TeamRegistrationMode({ tournament, currentUser, canManage, onShowTeamDe
 
 function SectionTitle({ icon, title, count }: { icon: ReactNode; title: string; count: number }) {
   return (
-    <h3 className="m-0 mb-2 flex items-center gap-2 border-0 p-0 text-sm font-bold text-bb-text normal-case not-italic">
+    <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-bb-text">
       <span aria-hidden="true" className="text-bb-text-muted">{icon}</span>
       {title} ({count})
     </h3>

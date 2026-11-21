@@ -77,7 +77,7 @@ export default function NewLookBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
     <section
       role="region"
       aria-label="Nouveau look du site"
-      className="mx-auto mt-3 flex w-[calc(100%-1.5rem)] max-w-[1232px] flex-wrap items-center gap-3 rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-3 font-bb-sans text-bb-text"
+      className="mx-auto mt-3 flex w-[calc(100%-1.5rem)] max-w-[1760px] flex-wrap items-center gap-3 rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-3 font-bb-sans text-bb-text"
     >
       <Sparkles size={22} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
       <p className="m-0 min-w-0 flex-[1_1_240px] text-[0.95rem] leading-snug">

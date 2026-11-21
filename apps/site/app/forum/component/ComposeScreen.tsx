@@ -38,7 +38,7 @@ export default function ComposeScreen({ breadcrumbs, title, subtitle, backHref, 
       <header className="flex items-start gap-3 pt-3 pb-3 lg:pt-5 lg:pb-4">
         <BackButton href={backHref} title={backTitle} />
         <div className="min-w-0 flex-1">
-          <h1 className="m-0 border-0 p-0 text-xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-2xl">{title}</h1>
+          <h1 className="text-xl leading-tight font-bold break-words text-bb-text lg:text-2xl">{title}</h1>
           <p className="m-0 mt-1 text-sm break-words text-bb-text-muted">{subtitle}</p>
         </div>
       </header>
@@ -99,7 +99,7 @@ export function RecentPostsRecap({
 }) {
   return (
     <section aria-labelledby="recap-title" className="mt-8 lg:mt-10">
-      <h2 id="recap-title" className="m-0 mb-3 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text-muted normal-case not-italic">
+      <h2 id="recap-title" className="mb-3 flex items-center gap-2 text-base font-bold text-bb-text-muted">
         <Clock size={18} aria-hidden="true" />
         Rappel des derniers messages
       </h2>

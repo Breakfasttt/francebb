@@ -64,7 +64,7 @@ export function LigueCard({ ligue, zoneLabel }: { ligue: LigueListItem; zoneLabe
       <div className="flex items-start gap-3">
         <LigueBlason image={ligue.image} size={56} />
         <div className="flex min-w-0 flex-1 flex-col items-start gap-1.5">
-          <h2 className="m-0 line-clamp-2 border-0 p-0 text-base leading-snug font-bold break-words text-bb-text normal-case not-italic">{ligue.name}</h2>
+          <h2 className="line-clamp-2 text-base leading-snug font-bold break-words text-bb-text">{ligue.name}</h2>
           <Badge variant="outline">{ligue.acronym}</Badge>
         </div>
       </div>

@@ -98,7 +98,7 @@ export default async function HowToPlayPage() {
                     </span>
                     <div className="min-w-0">
                       <p className="m-0 text-sm font-semibold text-bb-accent-text">Étape {index + 1}</p>
-                      <h2 className="m-0 border-0 p-0 text-xl leading-tight font-bold text-bb-text normal-case not-italic">{section.title}</h2>
+                      <h2 className="text-xl leading-tight font-bold text-bb-text">{section.title}</h2>
                     </div>
                   </header>
 
@@ -124,7 +124,7 @@ export default async function HowToPlayPage() {
         })}
 
         <Card className="flex flex-col items-center gap-3 p-6 text-center lg:p-8">
-          <h2 className="m-0 border-0 p-0 text-xl leading-tight font-bold text-bb-text normal-case not-italic">Prêt à lancer vos premiers dés ?</h2>
+          <h2 className="text-xl leading-tight font-bold text-bb-text">Prêt à lancer vos premiers dés ?</h2>
           <p className="m-0 max-w-prose text-bb-text-muted">Rejoignez les milliers de coachs français déjà présents sur le forum et dans les ligues.</p>
           <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
             <Button asChild variant="primary" size="tap">

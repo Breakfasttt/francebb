@@ -3,6 +3,7 @@
  * liste (`TournamentRow`). La carte entière, comme la ligne entière, est un lien vers le sujet du forum du tournoi.
  * Le badge de statut (« Annulé », « Terminé », « Passé ») est partagé par les deux.
  */
+import { DEFAULT_GAME_EDITION } from "@/lib/tournamentForm";
 import Link from "next/link";
 import { CalendarDays, MapPin, Users } from "lucide-react";
 import { Badge, Card, cn } from "@bbfrance/ui";
@@ -85,7 +86,7 @@ export function TournamentCard({ tournament, now }: { tournament: TournamentList
         <div className="flex items-start gap-3">
           <DateBlock date={tournament.date} />
           <div className="min-w-0 flex-1">
-            <h3 className="m-0 border-0 p-0 text-base leading-snug font-bold break-words text-bb-text normal-case not-italic">{tournament.name}</h3>
+            <h3 className="text-base leading-snug font-bold break-words text-bb-text">{tournament.name}</h3>
             <p className={cn("m-0 mt-1 flex items-start gap-1.5 text-sm", muted)}>
               <MapPin size={15} aria-hidden="true" className="mt-0.5 shrink-0" />
               <span className="min-w-0 break-words">
@@ -107,8 +108,8 @@ export function TournamentCard({ tournament, now }: { tournament: TournamentList
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          <Badge variant="accent">{tournament.gameEdition || "BB20"}</Badge>
-          <Badge variant="outline">Règles : {tournament.ruleset || "NAF"}</Badge>
+          <Badge variant="neutral">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Badge>
+          {tournament.ruleset && <Badge variant="neutral">Règles : {tournament.ruleset}</Badge>}
           {tournament.structure && <Badge variant="neutral">{tournament.structure}</Badge>}
           {tournament.mealsIncluded && <Badge variant="neutral">Repas inclus</Badge>}
           {tournament.lodgingAtVenue && <Badge variant="neutral">Dodo sur place</Badge>}
@@ -146,7 +147,7 @@ export function TournamentRow({ tournament, now }: { tournament: TournamentListI
         <p className={cn("m-0 mt-0.5 text-sm", muted)}>Par {tournament.organizer.name}</p>
         {/* Téléphone : lieu, format et prix sous le nom (sur ordinateur, ils ont leurs colonnes) */}
         <p className={cn("m-0 mt-0.5 text-sm break-words lg:hidden", muted)}>
-          {placeText(tournament)} · {tournament.gameEdition || "BB20"} · {tournament.ruleset || "NAF"} ·{" "}
+          {placeText(tournament)} · {tournament.gameEdition || DEFAULT_GAME_EDITION}{tournament.ruleset ? ` · ${tournament.ruleset}` : ""} ·{" "}
           <span className="font-semibold text-bb-text">{priceText(tournament.price)}</span>
           {isActive && ` · ${takenPlaces(tournament)}/${tournament.maxParticipants || "∞"} places`}
         </p>
@@ -158,8 +159,8 @@ export function TournamentRow({ tournament, now }: { tournament: TournamentListI
         </p>
       </div>
       <div className="hidden flex-wrap gap-1 lg:flex">
-        <Badge variant="accent">{tournament.gameEdition || "BB20"}</Badge>
-        <Badge variant="outline">{tournament.ruleset || "NAF"}</Badge>
+        <Badge variant="neutral">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Badge>
+        {tournament.ruleset && <Badge variant="neutral">{tournament.ruleset}</Badge>}
       </div>
       <div className="hidden text-sm lg:block">
         {isActive ? (

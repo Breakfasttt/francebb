@@ -14,7 +14,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Clock, Euro, Home, LayoutGrid, LayoutList, MapPin, Search, SlidersHorizontal, Sparkles, Trophy, X } from "lucide-react";
+import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
 import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent, cn } from "@bbfrance/ui";
 import { useDebounce } from "@/common/hooks/useDebounce";
 import { REGION_BY_DEPARTMENT } from "@/lib/france";
@@ -124,10 +124,9 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     ? places.departments.filter((dept) => REGION_BY_DEPARTMENT[dept.key] === selectedRegion)
     : places.departments;
 
-  const sections: { title: string; icon: ReactNode; filters: FilterDef[] }[] = [
+  const sections: { title: string; filters: FilterDef[] }[] = [
     {
       title: "Localisation",
-      icon: <MapPin size={16} aria-hidden="true" />,
       filters: [
         { name: "region", label: "Région", type: "select", options: places.regions.map((region) => ({ value: region.key, label: region.label })) },
         { name: "dept", label: "Département", type: "select", options: deptsList.map((dept) => ({ value: dept.key, label: dept.label })) },
@@ -135,7 +134,6 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Format et jeu",
-      icon: <Trophy size={16} aria-hidden="true" />,
       filters: [
         { name: "isTeam", label: "Mode de jeu", type: "select", options: [{ value: "false", label: "Individuel" }, { value: "true", label: "Par équipe" }] },
         {
@@ -154,7 +152,6 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Circuits et labels",
-      icon: <Sparkles size={16} aria-hidden="true" />,
       filters: [
         { name: "isNAF", label: "Homologué NAF", type: "checkbox" },
         { name: "isCDF", label: "Coupe de France (CDF)", type: "checkbox" },
@@ -165,7 +162,6 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Logistique",
-      icon: <Home size={16} aria-hidden="true" />,
       filters: [
         { name: "lodging", label: "Logement sur place", type: "checkbox" },
         { name: "meals", label: "Repas compris", type: "checkbox" },
@@ -174,7 +170,6 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Budget et places",
-      icon: <Euro size={16} aria-hidden="true" />,
       filters: [
         { name: "maxPrice", label: "Prix max (€)", type: "number" },
         { name: "minPlaces", label: "Places restantes min.", type: "number" },
@@ -182,7 +177,6 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Visibilité",
-      icon: <Clock size={16} aria-hidden="true" />,
       filters: [{ name: "history", label: "Voir tournois passés / annulés", type: "checkbox" }],
     },
   ];
@@ -191,8 +185,7 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     <div className="flex flex-col gap-5">
       {sections.map((section) => (
         <fieldset key={section.title} className="m-0 flex min-w-0 flex-col gap-3 border-0 p-0">
-          <legend className="mb-2 flex items-center gap-2 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">
-            {section.icon}
+          <legend className="mb-2 p-0 font-bb-heading text-bb-label text-bb-text-muted">
             {section.title}
           </legend>
           {section.filters.map((filter) => {
@@ -249,18 +242,32 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
 }
 
 /** Colonne des filtres de l'ordinateur (masquée sur téléphone, où le panneau « Filtrer les tournois » la remplace). */
-export function TournamentFilterAside({ places }: { places: PlaceOptions }) {
+/**
+ * Panneau gauche de l'ordinateur (DESIGN.md) : l'action principale « Annoncer un tournoi » en haut, puis les filtres
+ * (masqués quand il n'y a rien à filtrer). Sur téléphone, le panneau « Filtrer les tournois » remplace les filtres et
+ * l'en-tête de page porte l'action principale.
+ */
+export function TournamentFilterAside({ places, createHref, showFilters = true }: { places: PlaceOptions; createHref?: string | null; showFilters?: boolean }) {
   const { hrefWith } = useParamUpdater();
   return (
     <aside aria-label="Filtres des tournois" className="hidden lg:block">
-      <div className="sticky top-20 flex max-h-[calc(100dvh-8rem)] flex-col gap-4 overflow-y-auto rounded-bb-lg border border-bb-border bg-bb-surface p-4">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">Filtres</h2>
-          <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
-            <Link href={resetHref(hrefWith)}>Réinitialiser</Link>
+      <div className="sticky top-20 flex max-h-[calc(100dvh-6rem)] flex-col gap-5 overflow-y-auto overscroll-contain">
+        {createHref && (
+          <Button asChild variant="primary" size="tap" className="w-full">
+            <Link href={createHref}>Annoncer un tournoi</Link>
           </Button>
-        </div>
-        <TournamentFilterFields prefix="aside" places={places} />
+        )}
+        {showFilters && (
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center justify-between gap-2">
+              <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
+              <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
+                <Link href={resetHref(hrefWith)}>Réinitialiser</Link>
+              </Button>
+            </div>
+            <TournamentFilterFields prefix="aside" places={places} />
+          </div>
+        )}
       </div>
     </aside>
   );
@@ -277,7 +284,7 @@ export function TournamentListControls({ total, places }: { total: number; place
   const { searchParams, hrefWith, update } = useParamUpdater();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const currentSort = searchParams.get("sort") || "date_asc";
-  const currentView = searchParams.get("view") || "grid";
+  const currentView = searchParams.get("view") || "list";
 
   // Recherche par nom : l'adresse change 400 ms après la dernière touche (avant, à chaque touche)
   const urlQuery = searchParams.get("query") || "";
@@ -302,7 +309,7 @@ export function TournamentListControls({ total, places }: { total: number; place
       aria-pressed={currentView === view}
       title={label}
       onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-[10px]", currentView === view && "bg-bb-surface-2 text-bb-text")}
+      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
     >
       {icon}
     </Button>
@@ -341,8 +348,8 @@ export function TournamentListControls({ total, places }: { total: number; place
             ))}
           </Select>
           <div role="group" aria-label="Affichage" className="flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
-            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
             {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
+            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
           </div>
         </div>
       </div>

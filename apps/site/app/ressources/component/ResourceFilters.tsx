@@ -12,6 +12,7 @@
  * Avant la refonte, ces réglages étaient dans une colonne `ResourceFilterSidebar`, rangée sur téléphone derrière le
  * bouton flottant de `MobileFilterWrapper`.
  */
+import Link from "next/link";
 import { useState, type ReactNode } from "react";
 import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
 import { Button, CountBadge, Input, Label, Sheet, SheetContent, cn } from "@bbfrance/ui";
@@ -44,17 +45,25 @@ function TagFilter({ prefix, tags, onTagsChange, availableTags }: TagFilterProps
 }
 
 /** Colonne des filtres de l'ordinateur (masquée sur téléphone, où le panneau « Filtrer les ressources » la remplace). */
-export function ResourceFilterAside(props: TagFilterProps) {
+export function ResourceFilterAside({ submitHref, ...props }: TagFilterProps & { submitHref?: string | null }) {
   return (
     <aside aria-label="Filtres des ressources" className="hidden lg:block">
-      <div className="sticky top-20 flex flex-col gap-4 rounded-bb-lg border border-bb-border bg-bb-surface p-4">
-        <div className="flex items-center justify-between gap-2">
-          <h2 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">Filtres</h2>
-          <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" disabled={props.tags.length === 0} onClick={() => props.onTagsChange([])}>
-            Réinitialiser
+      {/* Panneau gauche (DESIGN.md) : action principale puis filtres, comme les tournois et les articles */}
+      <div className="sticky top-20 flex flex-col gap-5">
+        {submitHref && (
+          <Button asChild variant="primary" size="tap" className="w-full">
+            <Link href={submitHref}>Proposer une ressource</Link>
           </Button>
+        )}
+        <div className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-2">
+            <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
+            <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" disabled={props.tags.length === 0} onClick={() => props.onTagsChange([])}>
+              Réinitialiser
+            </Button>
+          </div>
+          <TagFilter prefix="aside" {...props} />
         </div>
-        <TagFilter prefix="aside" {...props} />
       </div>
     </aside>
   );
@@ -81,7 +90,7 @@ export function ResourceListControls({ total, query, onQueryChange, view, onView
       aria-pressed={view === value}
       title={label}
       onClick={() => onViewChange(value)}
-      className={cn("rounded-[10px]", view === value && "bg-bb-surface-2 text-bb-text")}
+      className={cn("rounded-bb-md", view === value && "bg-bb-surface-2 text-bb-text")}
     >
       {icon}
     </Button>

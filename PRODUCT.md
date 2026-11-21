@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Ce fichier décrit BBFrance comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle d'un futur `DESIGN.md` et du skill `ui`.
+> Ce fichier décrit BBFrance comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle de `DESIGN.md` et du skill `ui`.
 
 ## Platform
 
@@ -49,8 +49,8 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 - Fonctionnalités en ligne, décrites chacune dans `docs/features/<nom>/README.md` : forum, tournois, classement et statistiques, profils des membres, messagerie, notifications, articles, ressources et médias, ligues et carte, modération, administration.
 - Les coachs choisissent l'un des **5 thèmes visuels** (carte 218) : Sombre (le thème par défaut, ancien Vestiaire), Saison 3 (le thème officiel), NAF, Néhékhara et Violet. Chaque thème a ses couleurs ; la mise en page est la même pour tous (ADR-0006). Un test vérifie le contraste AA dans chaque thème.
 - **Aucune fonctionnalité ne disparaît** lors d'une refonte d'écran : la liste de contrôle est `docs/refonte/inventaire.md`.
-- Les composants d'interface partagés vivent dans `packages/ui` (bibliothèque fondée sur shadcn et Radix) et sont réutilisés avant d'en créer de nouveaux (skill `reuse-first`).
-- Pas de nouvelle bibliothèque sans accord du responsable du projet. Une seule police, servie par le site lui-même : aucune donnée de visiteur n'est envoyée à Google.
+- Les composants d'interface partagés vivent dans `packages/ui` (composants Radix pour le comportement, mis en forme selon `DESIGN.md`) et sont réutilisés avant d'en créer de nouveaux (skill `reuse-first`).
+- Pas de nouvelle bibliothèque sans accord du responsable du projet. Une seule police (Archivo, variable en graisse et en largeur), servie par le site lui-même : aucune donnée de visiteur n'est envoyée à Google.
 - Les données des membres sont protégées (RGPD) : les emails ne sortent jamais par défaut, et un compte supprimé est anonymisé.
 - Pas encore décidé : la date de mise en ligne du hub, et la relance de BBScheme et de BBQuizz.
 

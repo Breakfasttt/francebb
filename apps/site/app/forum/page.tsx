@@ -1,19 +1,21 @@
 /**
- * Accueil du forum (refonte, carte 085) : catégories repliables en cartes, un bandeau pour le membre qui a du non-lu,
- * un bandeau de bienvenue pour le visiteur non connecté (carte 185), et la colonne d'actions (à droite sur ordinateur, dans « Cette page » du panneau « Plus » sur téléphone).
+ * Accueil du forum (DESIGN.md, « Le forum ») : catégories repliables en tableaux, un bandeau pour le membre qui a du
+ * non-lu, un bandeau de bienvenue pour le visiteur (carte 185). Coquille SiteLayout : outils à gauche (sous la liste
+ * sur téléphone), dernières discussions à droite sur grand écran.
  */
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
-import { UnreadDot } from "@/app/forum/component/ForumListItems";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import ForumCategory, { type ForumIndexCategory } from "@/app/forum/component/ForumCategory";
 import DeletionToast from "@/app/forum/component/DeletionToast";
 import { ForumVisitorBanner } from "@/app/forum/component/ForumVisitorInvite";
 import { getUnreadState } from "@/app/forum/unreadState";
-import { getForumAccess } from "@/lib/forumAccess";
+import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
+import SiteLayout, { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
+import { frenchDateTime } from "@/app/forum/component/ForumListItems";
 
 import { unstable_cache } from "next/cache";
 
@@ -57,14 +59,28 @@ const getCachedCategories = unstable_cache(
   { revalidate: 60, tags: ["forum-categories"] }
 );
 
+// Dernières discussions (colonne de contexte) : les 8 sujets au message le plus récent, pour ce niveau d'accès
+const getCachedRecentTopics = unstable_cache(
+  async (roles: string[]) =>
+    prisma.topic.findMany({
+      where: { ...topicAccessWhere(roles), isArchived: false },
+      orderBy: { lastPostAt: "desc" },
+      take: 8,
+      select: { id: true, title: true, lastPostAt: true, lastPostAuthor: { select: { name: true } }, _count: { select: { posts: true } } },
+    }),
+  ["forum-recent-topics-v1"],
+  { revalidate: 60, tags: ["forum-categories"] }
+);
+
 export default async function ForumPage() {
   const session = await getActiveSession();
   const userId = session?.user?.id;
 
   const access = await getForumAccess();
-  const [categories, unread] = await Promise.all([
+  const [categories, unread, recentTopics] = await Promise.all([
     getCachedCategories(access.roles),
     userId ? getUnreadState(userId) : null,
+    getCachedRecentTopics(access.roles),
   ]);
 
   // Forums (sous-forums compris) contenant au moins un topic non lu
@@ -75,35 +91,51 @@ export default async function ForumPage() {
   );
   const unreadCount = unread?.count ?? 0;
 
-  return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader title="Forum" subtitle="L'espace de discussion de la communauté Blood Bowl française" backHref="/" />
-
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
-        <div className="flex min-w-0 flex-col gap-4">
-          <DeletionToast />
-          {/* Visiteur non connecté : bandeau d'accueil qui explique le site et invite à créer un compte (carte 185) */}
-          {!userId && <ForumVisitorBanner />}
-          {unreadCount > 0 && (
-            <Link
-              href="/forum/unread"
-              className="flex min-h-12 items-center gap-3 rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-2 text-bb-text hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:outline-bb-focus"
-            >
-              <UnreadDot />
-              <span className="flex-1 font-semibold">
-                {unreadCount} {unreadCount > 1 ? "sujets non lus" : "sujet non lu"}
-              </span>
-              <span className="flex items-center gap-0.5 text-sm font-bold text-bb-accent-text">
-                Voir <ChevronRight size={16} aria-hidden="true" />
+  const context = recentTopics.length > 0 && (
+    <section aria-labelledby="forum-recent-title" className="flex flex-col">
+      <PanelTitle id="forum-recent-title">Dernières discussions</PanelTitle>
+      <ol className="flex flex-col border-t border-bb-border">
+        {recentTopics.map((topic) => (
+          <li key={topic.id} className="border-b border-bb-border">
+            <Link href={`/forum/topic/${topic.id}`} className="flex flex-col gap-0.5 py-2.5 no-underline hover:text-bb-accent-text">
+              <span className="line-clamp-2 text-[0.95rem] font-semibold leading-snug text-bb-text">{topic.title}</span>
+              <span className="text-sm text-bb-text-muted tabular-nums">
+                {topic.lastPostAuthor?.name ?? "Anonyme"} · {frenchDateTime(topic.lastPostAt)}
               </span>
             </Link>
-          )}
-          {categories.map((category) => (
-            <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} />
-          ))}
-        </div>
-        <ForumSidebar />
-      </div>
-    </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+  );
+
+  return (
+    <SiteLayout
+      header={<ForumListHeader title="Forum" subtitle="L'espace de discussion de la communauté Blood Bowl française" backHref="/" />}
+      aside={<ForumSidebar />}
+      asideLabel="Outils du forum"
+      context={context}
+      contextLabel="Dernières discussions"
+    >
+      <DeletionToast />
+      {/* Visiteur non connecté : bandeau d'accueil qui explique le site et invite à créer un compte (carte 185) */}
+      {!userId && <ForumVisitorBanner />}
+      {unreadCount > 0 && (
+        <Link
+          href="/forum/unread"
+          className="flex min-h-12 items-center gap-3 rounded-bb-lg border border-bb-border border-l-[3px] border-l-bb-unread bg-bb-surface px-4 py-2 text-bb-text no-underline hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:outline-bb-focus"
+        >
+          <span className="flex-1 font-semibold">
+            {unreadCount} {unreadCount > 1 ? "sujets non lus" : "sujet non lu"}
+          </span>
+          <span className="flex items-center gap-0.5 text-sm font-bold text-bb-accent-text">
+            Voir <ChevronRight size={16} aria-hidden="true" />
+          </span>
+        </Link>
+      )}
+      {categories.map((category) => (
+        <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} />
+      ))}
+    </SiteLayout>
   );
 }

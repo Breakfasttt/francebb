@@ -173,7 +173,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <Icon size={20} className="text-bb-text-muted" aria-hidden="true" />
-        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">{title}</h2>
+        <h2 className="flex-1 text-lg font-bold text-bb-text">{title}</h2>
         <Badge variant="neutral">{total} en attente</Badge>
       </div>
 
@@ -314,7 +314,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                   {report && (
                     <div id={detailsId} className="flex flex-col gap-3 border-t border-bb-border bg-bb-surface-2 p-4">
                       <div className="flex items-center gap-2">
-                        <h3 className="m-0 flex-1 border-0 p-0 text-sm font-bold text-bb-text normal-case not-italic">
+                        <h3 className="flex-1 text-sm font-bold text-bb-text">
                           Signalement {activeDetailIndex + 1} sur {group.reports.length}
                         </h3>
                         {group.reports.length > 1 && (

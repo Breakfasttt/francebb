@@ -80,7 +80,7 @@ export default async function LoginPage(props: {
       <section aria-labelledby="login-title" className="w-full max-w-md">
         <Card className="flex flex-col gap-5 p-5 lg:p-8">
           <header className="flex flex-col gap-1 text-center">
-            <h1 id="login-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">
+            <h1 id="login-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
               Connexion
             </h1>
             <p className="m-0 text-sm text-bb-text-muted">

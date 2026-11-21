@@ -92,6 +92,6 @@ Le cliquet contrôle aussi les paquets partagés : `packages/ui` et `packages/bb
 
 ## Données
 
-- Base **Postgres** : Neon en production, `prisma dev` en local (`scripts/local-postgres.mjs`, sans Docker). Le site et le hub ont chacun leur base ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md)).
+- Base **Postgres** : Neon en production, `prisma dev` en local (`scripts/local-postgres.mjs`, sans Docker). Le site, le hub, BBQuizz et BBScheme ont chacun leur base ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md), [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)).
 - Changement de structure de la base : uniquement par une migration Prisma (`pnpm db:migrate`), jamais à la main. Les migrations sont appliquées automatiquement à chaque déploiement (`vercel-build`).
 - Aucune donnée de membre ne doit être supprimée sans accord exprès.

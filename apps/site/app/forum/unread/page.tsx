@@ -30,7 +30,7 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
   const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
         title="Messages non lus"
         subtitle="Liste des sujets ayant de nouvelles activités depuis votre dernière visite"

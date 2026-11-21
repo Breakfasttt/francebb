@@ -174,7 +174,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
             <Avatar name={others[0].user.name} src={others[0].user.image} size={40} />
           ))}
         <div className="min-w-0 flex-1">
-          <h2 className="m-0 truncate border-0 p-0 text-lg leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">{title}</h2>
+          <h2 className="truncate text-lg leading-tight font-bold text-bb-text">{title}</h2>
           {conversation && (
             <p className="m-0 truncate text-sm text-bb-text-muted">{isGroup ? `Groupe · ${participants.length} participants` : "Discussion privée"}</p>
           )}

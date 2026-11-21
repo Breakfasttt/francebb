@@ -12,7 +12,7 @@
 import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronRight, Github, LogIn, LogOut, Settings, ShieldAlert } from "lucide-react";
+import { ChevronRight, LogOut } from "lucide-react";
 import { Avatar, Button, CountBadge } from "@bbfrance/ui";
 import ThemePicker from "./ThemePicker";
 import { NAV_GROUPS, isActive, moreNavFor } from "./navItems";
@@ -29,7 +29,7 @@ interface MorePanelProps {
   pendingModCount: number;
 }
 
-const sectionTitle = "m-0 border-0 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase not-italic";
+const sectionTitle = "m-0 border-0 p-0 font-bb-heading text-bb-label text-bb-text-muted not-italic";
 
 export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, isMod, pendingModCount }: MorePanelProps) {
   const pathname = usePathname();
@@ -86,7 +86,7 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
           ) : (
             <Button asChild variant="primary" size="tap">
               <Link href="/auth/login">
-                <LogIn size={18} aria-hidden="true" /> Se connecter / S&apos;inscrire
+                Se connecter / S&apos;inscrire
               </Link>
             </Button>
           )}
@@ -98,15 +98,15 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
               return (
                 <section key={group.id} className="flex flex-col gap-2" aria-labelledby={`more-group-${group.id}`}>
                   <h2 id={`more-group-${group.id}`} className={sectionTitle}>{group.title}</h2>
-                  <ul className="m-0 grid list-none grid-cols-4 gap-2 p-0">
-                    {groupItems.map(({ label, href, icon: Icon }) => (
-                      <li key={href}>
+                  {/* Rubriques en lignes sur deux colonnes, séparées par des filets (DESIGN.md : pas de mosaïque de tuiles) */}
+                  <ul className="m-0 grid list-none grid-cols-2 gap-x-4 border-t border-bb-border p-0">
+                    {groupItems.map(({ label, href }) => (
+                      <li key={href} className="border-b border-bb-border">
                         <Link
                           href={href}
                           aria-current={isActive(pathname, href) ? "page" : undefined}
-                          className="flex min-h-[72px] flex-col items-center justify-center gap-1.5 rounded-bb-lg border border-bb-border bg-bb-bg px-1 text-center text-xs font-semibold text-bb-text aria-[current=page]:border-bb-accent aria-[current=page]:bg-bb-accent-soft"
+                          className="flex min-h-12 items-center border-l-[3px] border-transparent pl-2 font-semibold text-bb-text aria-[current=page]:border-bb-accent-text aria-[current=page]:text-bb-accent-text"
                         >
-                          <Icon size={22} className="text-bb-accent-text" aria-hidden="true" />
                           {label}
                         </Link>
                       </li>
@@ -123,13 +123,13 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
               <div className="grid grid-cols-2 gap-2">
                 {isMod && (
                   <Link href="/moderation" className="flex min-h-12 items-center gap-2 rounded-bb-md border border-bb-border px-3 font-semibold">
-                    <ShieldAlert size={18} aria-hidden="true" /> Modération
+                    Modération
                     <CountBadge count={pendingModCount} className="ml-auto" aria-label={`${pendingModCount} en attente`} />
                   </Link>
                 )}
                 {isAdmin && (
                   <Link href="/administration" className="flex min-h-12 items-center gap-2 rounded-bb-md border border-bb-border px-3 font-semibold">
-                    <Settings size={18} aria-hidden="true" /> Administration
+                    Administration
                   </Link>
                 )}
               </div>
@@ -150,10 +150,9 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-bb-border pt-2 text-sm text-bb-text-muted">
             <Link href="/mentions-legales" className="flex min-h-11 items-center">Mentions légales</Link>
-            <a href="https://github.com/Breakfasttt/francebb" target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center gap-1">
-              <Github size={14} aria-hidden="true" /> GitHub
+            <a href="https://github.com/Breakfasttt/francebb" target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center">
+              Code source
             </a>
-            <span>Conçu avec l&apos;aide de l&apos;IA</span>
           </div>
         </div>
       </div>

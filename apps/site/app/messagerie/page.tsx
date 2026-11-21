@@ -54,14 +54,14 @@ function MessagerieContent() {
 
   if (userId) {
     return (
-      <div className="mx-auto w-full max-w-[1232px] px-4 py-10 font-bb-sans text-bb-text">
+      <div className="mx-auto w-full max-w-[1760px] px-4 py-10 font-bb-sans text-bb-text">
         <EmptyState icon={<MessagesSquare size={32} />} title="Ouverture de la conversation…" />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pt-3 font-bb-sans text-base text-bb-text lg:grid lg:h-[calc(100dvh-8.5rem)] lg:min-h-[480px] lg:grid-cols-[minmax(300px,360px)_1fr] lg:gap-4 lg:px-6 lg:pt-4">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pt-3 font-bb-sans text-base text-bb-text lg:grid lg:h-[calc(100dvh-8.5rem)] lg:min-h-[480px] lg:grid-cols-[minmax(300px,360px)_1fr] lg:gap-4 lg:px-6 lg:pt-4">
       {/* Colonne de la liste ; sur téléphone, cachée quand une conversation est ouverte */}
       <section aria-labelledby="messagerie-title" className={activeId ? "max-lg:hidden lg:flex lg:min-h-0 lg:flex-col" : "lg:flex lg:min-h-0 lg:flex-col"}>
         {/* Titre et sous-titre sur toute la largeur, puis le bouton « Nouvelle conversation » sur toute la largeur.
@@ -70,7 +70,7 @@ function MessagerieContent() {
           <div className="flex items-center gap-3">
             <BackButton href="/" title="Retour à l'accueil" className="lg:hidden" />
             <div className="min-w-0 flex-1">
-              <h1 id="messagerie-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
+              <h1 id="messagerie-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
                 Messagerie
               </h1>
               <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Vos discussions privées avec les autres coachs</p>
@@ -110,7 +110,7 @@ function MessagerieContent() {
 
 function LoadingList() {
   return (
-    <div className="mx-auto flex w-full max-w-[1232px] flex-col gap-3 px-3 pt-3 lg:px-6 lg:pt-4">
+    <div className="mx-auto flex w-full max-w-[1760px] flex-col gap-3 px-3 pt-3 lg:px-6 lg:pt-4">
       <Skeleton className="h-10 w-48" />
       <Skeleton className="h-16 w-full" />
       <Skeleton className="h-16 w-full" />

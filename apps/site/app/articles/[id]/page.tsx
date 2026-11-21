@@ -94,7 +94,7 @@ export default async function ArticleDetailPage({
               ))}
             </ul>
           )}
-          <h1 className="m-0 border-0 p-0 text-bb-display font-bold tracking-normal break-words text-bb-text normal-case not-italic lg:text-bb-display-lg">
+          <h1 className="text-bb-display font-bold break-words text-bb-text lg:text-bb-display-lg">
             {article.title}
           </h1>
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-bb-border pb-4">

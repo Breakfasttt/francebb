@@ -26,7 +26,7 @@ export default function ErrorScreen({ onRetry, digest }: ErrorScreenProps) {
         </span>
         <div>
           <p className="m-0 text-sm font-bold tracking-wide text-bb-accent-text">Un problème est survenu</p>
-          <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">Match interrompu par l&apos;orage !</h1>
+          <h1 className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">Match interrompu par l&apos;orage !</h1>
         </div>
         <p className="m-0 text-bb-text-muted">
           Cette page n&apos;a pas pu s&apos;afficher. Ce n&apos;est pas de votre faute : réessayez dans un instant.

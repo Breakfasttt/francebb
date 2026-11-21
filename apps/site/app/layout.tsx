@@ -2,7 +2,6 @@ import { getSession } from "@/lib/authGuard";
 import AuthProvider from "@/common/components/AuthProvider/AuthProvider";
 import BannedRedirect from "@/common/components/BannedRedirect/BannedRedirect";
 import { UserRole, isModerator, getRolePower, ROLE_POWER } from "@/lib/roles";
-import { Github, BarChart3 } from "lucide-react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import Link from "next/link";
@@ -21,14 +20,16 @@ import { Suspense } from "react";
 import "./tailwind.css";
 
 
-// Police du site (ADR 0006, carte 079) : Inter, servie par le site lui-même (licence libre OFL, app/fonts/).
-// Le build ne demande pas de réseau et aucune donnée de visiteur ne part chez Google. La variable CSS --font-bb
-// est lue par les variables v2 (--bb-font-sans, packages/ui/src/tokens.css).
-const interFont = localFont({
-  src: "./fonts/inter-latin-wght.woff2",
+// Police du site (DESIGN.md) : Archivo variable (graisse 100-900, largeur 62-125 %), servie par le site lui-même
+// (licence libre OFL, app/fonts/). La largeur donne deux voix avec un seul fichier : texte normal et titres condensés
+// (font-bb-display, font-bb-heading). Aucune donnée de visiteur ne part chez Google. La variable CSS --font-bb est lue
+// par les variables v2 (--bb-font-sans, packages/ui/src/tokens.css).
+const siteFont = localFont({
+  src: "./fonts/archivo-latin-var.woff2",
   weight: "100 900",
   display: "swap",
   variable: "--font-bb",
+  declarations: [{ prop: "font-stretch", value: "62% 125%" }],
 });
 
 /** Lien du pied de page : discret, souligné au survol. */
@@ -63,7 +64,7 @@ export default async function RootLayout({
   const navCounts = user?.id ? getNavCounts(user.id, isMod) : undefined;
 
   return (
-    <html lang="fr" data-theme={userTheme} className={interFont.variable} suppressHydrationWarning>
+    <html lang="fr" data-theme={userTheme} className={siteFont.variable} suppressHydrationWarning>
       <body suppressHydrationWarning className="flex min-h-screen flex-col">
         {/* Lien « Aller au contenu » (carte 189) : caché, il apparaît en haut à gauche dès qu'on arrive dessus avec la
             touche Tabulation (c'est le premier élément de la page), et permet de sauter la barre de navigation pour aller droit au contenu de la page. */}
@@ -106,19 +107,16 @@ export default async function RootLayout({
             <Link href="/mentions-legales" className={footerLinkClass}>
               Mentions légales
             </Link>
-            <span className="italic opacity-75">
-              Conçu avec l’aide de l’IA
-            </span>
-            <a 
-              href="https://github.com/Breakfasttt/francebb" 
-              target="_blank" 
-              rel="noopener noreferrer" 
+            <a
+              href="https://github.com/Breakfasttt/francebb"
+              target="_blank"
+              rel="noopener noreferrer"
               className={footerLinkClass}
             >
-              <Github size={14} aria-hidden="true" /> GitHub
+              Code source
             </a>
             <Link href="/statistiques" className={footerLinkClass}>
-              <BarChart3 size={14} aria-hidden="true" /> Statistiques
+              Statistiques
             </Link>
           </footer>
 

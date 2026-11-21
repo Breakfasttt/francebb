@@ -15,15 +15,26 @@ const relativePath = relative(projectDir, filePath);
 
 if (!/\.(tsx?|m?js)$/.test(filePath) || relativePath.startsWith("..")) process.exit(0);
 
-let appDir = dirname(filePath);
-while (!existsSync(join(appDir, "eslint.config.mjs"))) {
-  const parent = dirname(appDir);
-  if (parent === appDir || relative(projectDir, parent).startsWith("..")) process.exit(0);
-  appDir = parent;
+// packages/ui et packages/bbscheme-player : config partagée du site (comme le cliquet lint-ratchet)
+const siteDir = join(projectDir, "apps", "site");
+const packageMatch = relativePath.replace(/\\/g, "/").match(/^packages\/(ui|bbscheme-player)\//);
+
+let appDir;
+let options = {};
+if (packageMatch) {
+  appDir = join(projectDir, "packages", packageMatch[1]);
+  options = { overrideConfigFile: join(siteDir, "eslint.packages.config.mjs") };
+} else {
+  appDir = dirname(filePath);
+  while (!existsSync(join(appDir, "eslint.config.mjs"))) {
+    const parent = dirname(appDir);
+    if (parent === appDir || relative(projectDir, parent).startsWith("..")) process.exit(0);
+    appDir = parent;
+  }
 }
 
-const { ESLint } = createRequire(join(appDir, "package.json"))("eslint");
-const eslint = new ESLint({ cwd: appDir });
+const { ESLint } = createRequire(join(packageMatch ? siteDir : appDir, "package.json"))("eslint");
+const eslint = new ESLint({ cwd: appDir, ...options });
 if (await eslint.isPathIgnored(filePath)) process.exit(0);
 
 const [result] = await eslint.lintFiles([filePath]);

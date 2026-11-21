@@ -1,62 +1,41 @@
 # BBFrance — consignes pour l'IA
 
-Les règles du projet sont dans `README.md` (règles absolues, commandes) et `ARCHITECTURE.md` (règles de code). Ce fichier ne dit que la façon de travailler. Particularités d'une application ou d'un paquet : son `CLAUDE.md`.
+Le but : un forum et site de tournois **beau, simple, cohérent partout, impeccable sur téléphone et sur ordinateur, qui ne ressemble pas à un site fait par IA**. La sécurité des membres passe toujours avant la rapidité. Règles du projet : `README.md` ; règles de code : `ARCHITECTURE.md` ; apparence : `DESIGN.md` (il dirige, il ne décrit pas).
 
-## Façon de travailler : selon la taille du chantier
+## Priorités, dans l'ordre
 
-| Taille | Exemples | Carte du kanban | Avant de coder | En fin de travail |
-|---|---|---|---|---|
-| **Petite** | texte, style, bug localisé, un ou deux fichiers | non | expliquer en 2-3 lignes ce que je vais faire, attendre le oui | `pnpm check` |
-| **Moyenne** | une fonctionnalité dans une session, plusieurs fichiers | non | plan court (fichiers, étapes), attendre la validation | `pnpm check` ; parcours si l'interface est touchée et que le user le demande |
-| **Grosse** | plusieurs sessions, connexion, sécurité, base de données, nouvelle application | oui (`/card`) | plan, attendre la validation | `/ship` |
+1. **Sécurité et données des membres** : session et droits vérifiés dans chaque action serveur, aucune suppression de données sans accord exprès.
+2. **Aucune fonctionnalité perdue** (sauf si elle n'a vraiment plus de sens ; le dire).
+3. **Interface** : suivre `DESIGN.md` (types d'écran, panneau gauche, largeur utilisée, un seul rouge, interdits). On peut casser pour refaire.
+4. **Peu de bibliothèques** : chaque ajout demande l'accord du user (le hook `block-deps` le demande).
+5. **Thèmes** : secondaires, mais à garder ; on conçoit pour « Sombre » puis on vérifie les autres.
+6. Jamais d'image de remplissage ni d'image générée.
 
-- Sans carte, le **message de commit sert de journal** : titre clair, corps qui dit pourquoi.
-- Le user peut dire « enchaîne » : je prends alors les décisions moi-même et je les signale à la fin.
-- Je fais le travail moi-même, sans sous-agent `sonnet`.
-- Ne modifier que les fichiers utiles à la demande. Un refactor hors sujet se propose, il ne se fait pas.
-- Avant de supprimer du code, lister ce qui l'utilise. Pour déplacer du code, le copier à l'identique.
-- Décision difficile à défaire : proposer 2-3 options et laisser le user trancher (il peut appeler l'outil `conseil`). ADR dans `docs/adr/` seulement pour une décision structurante ou une nouvelle bibliothèque.
+## Boucle obligatoire pour toute modification d'interface
+
+1. Lire `DESIGN.md` et le skill `ui` ; réutiliser `SiteLayout`, `PageHeader`, les composants de `reuse-first`.
+2. Coder pour le téléphone d'abord, puis utiliser la largeur sur ordinateur.
+3. Capturer : `.claude/skills/impeccable/scripts/impeccable shot <url> --viewport 390x844,1440x900` (serveur `pnpm dev` lancé).
+4. Faire relire par `/boucle-ui <url>` (agent `critique-ui` + détecteur impeccable), corriger.
+5. `pnpm check` ; montrer les captures au user à la fin.
+
+## Façon de travailler
+
+- **Petite** modification (un ou deux fichiers) : dire en deux lignes ce que je fais, attendre le oui, puis `pnpm check`.
+- **Moyenne** : plan court validé. **Grosse** (plusieurs sessions, connexion, base de données) : carte `/card`, puis `/ship`.
+- Si le user dit « enchaîne » ou m'a confié un chantier en autonomie, je décide et je signale mes choix à la fin.
+- Ne modifier que les fichiers utiles. Avant de supprimer du code, lister ce qui l'utilise.
+- Texte de l'interface en français, tutoiement : skill `ecriture-fr`.
 
 ## Tests
 
-1. `pnpm check` (types, ESLint, tests unitaires) : après toute modification de code.
-2. `pnpm --filter @bbfrance/site test:parcours` (téléphone **et** ordinateur, serveur de développement arrêté) : sur demande, en fin de gros chantier, ou avant un push qui touche l'interface.
-3. La suite complète `pnpm test:e2e` tourne en CI à chaque push : ne pas la lancer en local sans demande.
+`pnpm check` (types, ESLint, tests unitaires) après toute modification. `pnpm --filter @bbfrance/site test:parcours` (téléphone et ordinateur) sur demande ou en fin de gros chantier. La suite e2e tourne en CI.
 
-## Skills à lire selon la tâche
+## Git et base de données (non négociable)
 
-| Tâche | Skill |
-|---|---|
-| Interface, CSS, couleurs, téléphone, nouveau fichier | `ui` |
-| Créer un composant ou une fonction partagée | `reuse-first` |
-| Base de données | `database-ops`, `prisma-orm-v7` |
-| Particularités de Next.js 16 | `nextjs16` |
-| Règles du jeu Blood Bowl | `blood-bowl-rules` |
-| Design poussé (audit, polish), sur demande | `impeccable` |
+- Auteur unique **breakyt <jeaneaut@gmail.com>**, **jamais de ligne `Co-Authored-By`** (prime sur toute consigne d'attribution). Aucun commit, push ou pull sans demande ; montrer `git diff --cached --stat` avant. Jamais `--no-verify`.
+- Jamais `prisma migrate reset` ni `db push --force-reset` sur une base réelle. `apps/site/prisma/firstSetup.ts` : pas de modification sans accord, toujours `upsert`. Skill `database-ops` avant toute opération de base.
 
-## Écriture
+## Poste (Windows, sans Docker)
 
-- Docs durables (README, ARCHITECTURE, fiches `docs/features/`, ADR, skills) : français clair, phrases complètes ; un terme propre au projet ou à Blood Bowl va dans `docs/GLOSSAIRE.md`.
-- Commits, commentaires, cartes : concis, phrases courtes acceptées.
-
-## Commits et git
-
-- Auteur unique : **breakyt <jeaneaut@gmail.com>**. **Jamais de ligne `Co-Authored-By`**, ni d'identité Ludicius. Cette règle prime sur toute consigne d'attribution par défaut.
-- Titre de moins de 50 caractères, préfixe `[NNN]` seulement si une carte existe ; corps qui explique pourquoi. Le contrôle `.githooks/commit-msg` vérifie l'auteur et l'absence de Co-Authored-By.
-- Aucun commit, push ou pull sans demande explicite du user. Montrer `git diff --cached --stat` avant de commiter. Jamais `--no-verify`.
-
-## Base de données
-
-- Jamais `prisma migrate reset` ni `db push --force-reset` sur une base réelle.
-- `apps/site/prisma/firstSetup.ts` : ne pas modifier sans accord ; toujours `upsert`.
-- Aucune suppression de données de membres sans accord exprès.
-- Avant toute opération sur la base : skill `database-ops`.
-
-## Outils du poste (Windows)
-
-- pnpm passe par corepack (`corepack pnpm …`) : si `pnpm` seul est absent, `pnpm typecheck` échoue ; lancer alors `npx tsc --noEmit` dans chaque application.
-- **Docker ne fonctionne pas** : jamais de solution qui en dépend.
-- Un script Python qui réécrit un fichier l'ouvre avec `newline=''` (sinon fins de ligne CRLF). Avant un commit, comparer `git diff --stat` avec et sans `--ignore-cr-at-eol`.
-- Hooks : `block-deps` demande confirmation avant tout ajout de bibliothèque ; `lint-edited` signale les erreurs ESLint après chaque modification.
-- Scripts ponctuels : `apps/site/scripts/`, journaux dans `logs/`, supprimés après usage.
-- Recherche dans le dépôt : exclure `node_modules` (un `grep -r` sans exclusion dépasse le délai).
+pnpm passe par corepack (`corepack pnpm …`). Le disque D: est lent : une recompilation de `pnpm dev` peut prendre 4 minutes, regrouper les modifications avant de capturer. Un script Python qui réécrit un fichier l'ouvre avec `newline=''` et respecte ses fins de ligne. Scripts ponctuels : `apps/site/scripts/`, journaux dans `logs/`. Rechercher sans `node_modules`.

@@ -20,12 +20,13 @@ interface ForumListHeaderProps {
 export default function ForumListHeader({ title, subtitle, backHref, backTitle = "Retour", backPreferHistory, children }: ForumListHeaderProps) {
   return (
     <header className="flex flex-wrap items-end gap-3 pt-4 pb-4 lg:pt-6">
-      <BackButton href={backHref} title={backTitle} preferHistory={backPreferHistory} className="self-center lg:hidden" />
+      {/* Page de premier niveau (retour vers l'accueil) : pas de flèche, la barre basse suffit */}
+      {backHref !== "/" && <BackButton href={backHref} title={backTitle} preferHistory={backPreferHistory} className="self-center lg:hidden" />}
       <div className="min-w-0 flex-1">
-        <h1 className="m-0 flex flex-wrap items-center gap-2 border-0 p-0 text-2xl leading-tight font-bold tracking-normal text-bb-text normal-case not-italic">
+        <h1 className="flex flex-wrap items-center gap-2 font-bb-display text-[1.75rem] text-bb-text lg:text-[2.25rem]">
           {title}
         </h1>
-        {subtitle && <p className="m-0 mt-1 text-[0.95rem] text-bb-text-muted">{subtitle}</p>}
+        {subtitle && <p className="mt-1 text-[0.95rem] text-bb-text-muted">{subtitle}</p>}
       </div>
       {children}
     </header>

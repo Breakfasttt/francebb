@@ -40,7 +40,7 @@ export default function ChatBubble({ message, isSelf, showName, showAvatar }: Ch
       )}
       <div
         className={cn(
-          "flex max-w-[85%] min-w-0 flex-col gap-0.5 rounded-[18px] px-3.5 py-2 text-[0.98rem] leading-snug lg:max-w-[70%]",
+          "flex max-w-[85%] min-w-0 flex-col gap-0.5 rounded-bb-lg px-3.5 py-2 text-[0.98rem] leading-snug lg:max-w-[70%]",
           isSelf
             ? "rounded-br-[6px] border border-bb-accent-text/30 bg-bb-accent-soft text-bb-text"
             : "rounded-bl-[6px] border border-bb-border bg-bb-surface-2 text-bb-text"

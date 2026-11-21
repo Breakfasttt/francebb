@@ -252,7 +252,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const topicClosed = isTopicClosedFor(topicState, false);
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <MarkAsRead topicId={id} shownPostId={posts[posts.length - 1]?.id} />
 
       <TopicToolsProvider
@@ -280,15 +280,16 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         isCancelled={topic.tournament?.isCancelled || false}
         registrationsLocked={topic.tournament?.registrationsLocked || false}
       >
-        <div className="pt-3 lg:pt-4">
+        {/* Fil d'Ariane sur ordinateur ; sur téléphone, le lien du forum sous le titre et le bouton retour suffisent */}
+        <div className="pt-3 max-lg:hidden lg:pt-4">
           <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
         </div>
 
         {/* En-tête du sujet : retour, titre, badge « ARCHIVÉ », nom du forum et, sur téléphone, les outils */}
         <header className="flex items-start gap-3 pt-3 pb-4 lg:pt-5">
-          <BackButton title="Retour au forum" />
+          <BackButton title="Retour au forum" className="lg:hidden" />
           <div className="min-w-0 flex-1">
-            <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic">
+            <h1 className="text-[1.6rem] leading-tight font-extrabold break-words text-bb-text [font-stretch:88%] lg:text-[2rem]">
               <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
               {topic.isArchived && (
                 <Badge variant="neutral" className="ml-2 align-middle">
@@ -296,7 +297,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 </Badge>
               )}
             </h1>
-            <p className="m-0 mt-1 text-sm">
+            <p className="mt-1 text-sm lg:hidden">
               <Link
                 href={`/forum/${topic.forumId}`}
                 className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center"
@@ -316,7 +317,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           />
         )}
 
-        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
+        {/* Outils du sujet dans le panneau gauche (DESIGN.md : actions à gauche), messages à droite */}
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+          <TopicToolsAside />
           <div className="flex min-w-0 flex-col gap-4">
             {/* Blocs du tournoi : résumé, résultats quand il est terminé, inscriptions (refaits à la carte 089) */}
             {topic.tournament && (
@@ -345,7 +348,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             )}
 
             {/* Ordinateur : pagination en haut de la liste (sur téléphone, elle est dans la barre du bas) */}
-            <div className="hidden justify-end lg:flex">
+            <div className="hidden justify-end empty:hidden lg:flex">
               <TopicPageNav />
             </div>
 
@@ -407,7 +410,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
               // réponse, et la trouver sur cet encart les faisait seulement défiler jusqu'à lui (carte 111)
               <Card className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">
                 <LockIcon size={32} aria-hidden="true" className="text-bb-danger-text" />
-                <h2 className="m-0 border-0 p-0 text-lg font-bold text-bb-danger-text normal-case not-italic">
+                <h2 className="text-lg font-bold text-bb-danger-text">
                   {topic.isArchived && !topic.isLocked && !topic.forum.isLocked ? "Sujet archivé" : "Sujet verrouillé"}
                 </h2>
                 <p className="m-0 max-w-[50ch] text-sm text-bb-text-muted">
@@ -418,8 +421,6 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
               </Card>
             )}
           </div>
-
-          <TopicToolsAside />
         </div>
 
         <TopicReplyBar />

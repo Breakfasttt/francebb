@@ -140,7 +140,7 @@ export default function ProfileSidebar({
             />
           </div>
           <div className="flex min-w-0 flex-col gap-1.5 lg:items-center">
-            <h2 className="m-0 border-0 p-0 text-xl leading-tight font-bold tracking-normal break-words text-bb-text normal-case not-italic">
+            <h2 className="text-xl leading-tight font-bold break-words text-bb-text">
               {user.name}
             </h2>
             <div className="flex flex-wrap gap-1.5 lg:justify-center">

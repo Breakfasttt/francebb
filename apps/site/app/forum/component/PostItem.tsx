@@ -3,9 +3,10 @@
 /**
  * Un message d'un sujet du forum (refonte, carte 086), repéré par l'ancre id="post-<id>".
  *
- * - En-tête compact : avatar avec son cadre de rang (40 pixels sur téléphone, 48 sur ordinateur), pseudo, badge de
- *   rang, puis une ligne discrète « rôle · date · #N » (et « modifié le … »). Un appui sur l'avatar ou le pseudo ouvre
- *   la « fiche coach » (PostAuthorSheet) avec les statistiques de l'auteur et les boutons Profil et MP.
+ * - Chaque message est un bloc net (DESIGN.md, « Le forum »). Sur ordinateur, l'auteur est dans une colonne à gauche du
+ *   texte (avatar 80 px avec son cadre de rang, pseudo, rang, rôle, nombre de messages, ligue, région) ; sur téléphone,
+ *   il tient sur une ligne compacte en tête du message. Le bandeau du message montre la date et l'heure exactes et
+ *   le numéro (lien permanent). Un appui sur l'avatar ou le pseudo ouvre la « fiche coach » (PostAuthorSheet).
  * - À droite, le bouton « ⋯ » (PostMoreMenu) regroupe les actions rares : partager, signaler, marquer comme non lu,
  *   modifier, supprimer, modérer ou restaurer.
  * - Corps du message en 16 pixels, largeur de lecture limitée à environ 70 caractères ; citations sur fond de surface ;
@@ -77,9 +78,16 @@ interface PostItemProps {
   topicHasReplies?: boolean;
 }
 
-/** Date et heure à la française, comme avant la refonte (« 12 mars 2026 à 10:00 »). */
-const longDate = (date: Date | string) =>
-  new Date(date).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" });
+/**
+ * Date et heure exactes d'un message, toujours visibles (DESIGN.md) : « 21/11/2026 à 14:32 », à l'heure de Paris
+ * (le serveur peut tourner à l'heure universelle).
+ */
+const exactDate = (date: Date | string) => {
+  const value = new Date(date);
+  const day = value.toLocaleDateString("fr-FR", { timeZone: "Europe/Paris" });
+  const time = value.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris" });
+  return `${day} à ${time}`;
+};
 
 /**
  * Mise en forme du corps du message. Les citations, produites par lib/bbcode.ts avec des styles écrits dans la balise,
@@ -139,25 +147,64 @@ const PostItem: React.FC<PostItemProps> = ({
     />
   );
 
+  const ligueLabel = author.ligues?.[0] ? (author.ligues[0].acronym || author.ligues[0].name) : author.ligueCustom || null;
+  const regionLabel = author.region ? regionLabels[author.region] : undefined;
+  const createdIso = new Date(post.createdAt).toISOString();
+
   return (
     <article
       id={`post-${post.id}`}
       aria-label={`Message #${index + 1} de ${name}`}
       className={cn(
-        "scroll-mt-20 rounded-bb-lg border bg-bb-surface text-bb-text",
-        isFirstPostAlwaysVisible ? "border-2 border-bb-accent" : "border-bb-border"
+        "grid scroll-mt-20 overflow-hidden rounded-bb-lg border bg-bb-surface text-bb-text lg:grid-cols-[200px_minmax(0,1fr)]",
+        isFirstPostAlwaysVisible ? "border-bb-accent" : "border-bb-border"
       )}
     >
-      {/* En-tête : avatar, pseudo et rang, ligne discrète, menu « ⋯ » */}
-      <header className="flex items-start gap-2.5 px-3 pt-3 lg:gap-3 lg:px-5 lg:pt-4">
+      {/* Ordinateur : colonne de l'auteur à gauche du texte (DESIGN.md, « Le forum ») */}
+      <div className="hidden flex-col items-center gap-1.5 border-r border-bb-border bg-bb-surface-2/40 px-3 py-5 text-center lg:flex">
+        <Button type="button" variant="quiet" tabIndex={-1} aria-hidden="true" onClick={openAuthor} className="h-auto shrink-0 rounded-full p-0 hover:bg-transparent">
+          {avatar(80)}
+        </Button>
+        <Button
+          type="button"
+          variant="quiet"
+          aria-label={`Voir la fiche de ${name}`}
+          onClick={openAuthor}
+          className="mt-1 h-auto min-h-0 max-w-full rounded-bb-sm px-1 py-0.5 text-base font-bold whitespace-normal text-bb-text hover:bg-transparent hover:text-bb-accent-text"
+        >
+          <span className="min-w-0 break-words">{name}</span>
+        </Button>
+        {rankLabel && <Badge variant="rank">{rankLabel}</Badge>}
+        <dl className="mt-1 flex flex-col gap-0.5 text-sm text-bb-text-muted">
+          <dt className="sr-only">Rôle</dt>
+          <dd>{roleLabel}</dd>
+          <dt className="sr-only">Messages</dt>
+          <dd className="tabular-nums">{postCount.toLocaleString("fr-FR")} {postCount > 1 ? "messages" : "message"}</dd>
+          {ligueLabel && (
+            <>
+              <dt className="sr-only">Ligue</dt>
+              <dd className="break-words">{ligueLabel}</dd>
+            </>
+          )}
+          {regionLabel && (
+            <>
+              <dt className="sr-only">Région</dt>
+              <dd>{regionLabel}</dd>
+            </>
+          )}
+        </dl>
+      </div>
+
+      <div className="flex min-w-0 flex-col">
+      {/* Bandeau du message : auteur (téléphone seulement), date et heure exactes, numéro, menu « ⋯ » */}
+      <header className="flex items-start gap-2.5 border-b border-bb-border px-3 py-2.5 lg:items-center lg:px-5 lg:py-1.5">
         {/* L'avatar ouvre aussi la fiche ; le pseudo (ci-dessous) porte le nom lu par les lecteurs d'écran */}
-        <Button type="button" variant="quiet" tabIndex={-1} aria-hidden="true" onClick={openAuthor} className="shrink-0 rounded-full p-0 hover:bg-transparent">
-          <span className="lg:hidden">{avatar(40)}</span>
-          <span className="hidden lg:block">{avatar(48)}</span>
+        <Button type="button" variant="quiet" tabIndex={-1} aria-hidden="true" onClick={openAuthor} className="h-auto shrink-0 rounded-full p-0 hover:bg-transparent lg:hidden">
+          {avatar(40)}
         </Button>
 
-        <div className="flex min-w-0 flex-1 flex-col gap-0.5 pt-1 lg:pt-1.5">
-          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+        <div className="flex min-w-0 flex-1 flex-col gap-0.5">
+          <div className="flex flex-wrap items-center gap-x-2 gap-y-1 lg:hidden">
             <Button
               type="button"
               variant="quiet"
@@ -168,20 +215,22 @@ const PostItem: React.FC<PostItemProps> = ({
               <span className="min-w-0 break-words">{name}</span>
             </Button>
             {rankLabel && <Badge variant="rank">{rankLabel}</Badge>}
-            {isFirstPostAlwaysVisible && <Badge variant="outline">Premier message</Badge>}
           </div>
-          <p className="m-0 text-sm leading-snug text-bb-text-muted">
-            {roleLabel}
-            <span aria-hidden="true"> · </span>
-            <time dateTime={new Date(post.createdAt).toISOString()}>{longDate(post.createdAt)}</time>
-            <span aria-hidden="true"> · </span>
-            <span>#{index + 1}</span>
+          <p className="flex flex-wrap items-center gap-x-1.5 text-sm leading-snug text-bb-text-muted tabular-nums">
+            <span className="lg:hidden">{roleLabel}</span>
+            <span aria-hidden="true" className="lg:hidden">·</span>
+            <time dateTime={createdIso} className="font-semibold text-bb-text">{exactDate(post.createdAt)}</time>
+            <span aria-hidden="true">·</span>
+            <a href={`#post-${post.id}`} className="text-bb-text-muted no-underline hover:text-bb-accent-text" aria-label={`Lien vers le message numéro ${index + 1}`}>
+              #{index + 1}
+            </a>
             {isEdited && (
               <>
-                <span aria-hidden="true"> · </span>
-                <span>modifié le {longDate(post.updatedAt)}</span>
+                <span aria-hidden="true">·</span>
+                <span>modifié le {exactDate(post.updatedAt)}</span>
               </>
             )}
+            {isFirstPostAlwaysVisible && <Badge variant="outline" className="ml-1">Premier message</Badge>}
           </p>
         </div>
 
@@ -209,7 +258,7 @@ const PostItem: React.FC<PostItemProps> = ({
         />
       </header>
 
-      <div className="px-3 pt-2 pb-3 lg:pr-6 lg:pb-4 lg:pl-[92px]">
+      <div className="flex flex-1 flex-col px-3 pt-3 pb-3 lg:px-6 lg:pt-4 lg:pb-4">
         {post.isDeleted ? (
           <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-4 text-center text-sm text-bb-text-muted italic">
             {deletedBy === "moderation"
@@ -221,7 +270,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <span aria-hidden="true" className={isBannedAuthor ? "text-bb-danger-text" : "text-bb-text-muted"}>
               {isBannedAuthor ? <Ban size={28} /> : <EyeOff size={28} />}
             </span>
-            <h3 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+            <h3 className="text-base font-bold text-bb-text">
               {isBannedAuthor ? `Coach banni : ${author.name}` : `Utilisateur bloqué : ${author.name}`}
             </h3>
             <p className="m-0 max-w-[60ch] text-sm text-bb-text-muted">
@@ -245,7 +294,7 @@ const PostItem: React.FC<PostItemProps> = ({
             )}
 
             {!post.isModerated || isUserModerator || currentUserId === post.authorId ? (
-              <div className="max-w-[70ch]">
+              <div className="max-w-[78ch]">
                 {post.isModerated && (
                   <p className="m-0 mb-2 text-sm text-bb-text-muted italic">[Contenu original visible par vous seul et les modérateurs]</p>
                 )}
@@ -314,6 +363,7 @@ const PostItem: React.FC<PostItemProps> = ({
           </>
         )}
       </div>
+      </div>
 
       <PostAuthorSheet
         open={authorOpen}
@@ -321,7 +371,7 @@ const PostItem: React.FC<PostItemProps> = ({
         author={author}
         roleLabel={roleLabel}
         rankLabel={rankLabel}
-        regionLabel={author.region ? regionLabels[author.region] : undefined}
+        regionLabel={regionLabel}
         isAuthorModerator={isAuthorModerator}
         currentUserId={currentUserId}
       />

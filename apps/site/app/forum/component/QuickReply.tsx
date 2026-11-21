@@ -64,7 +64,7 @@ export default function QuickReply({ topicId }: { topicId: string }) {
   return (
     <>
       <Card id="quick-reply-area" className="scroll-mt-20 p-3 lg:p-5">
-        <h2 className="m-0 mb-3 flex items-center gap-2 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">
+        <h2 className="mb-3 flex items-center gap-2 text-lg font-bold text-bb-text">
           <MessageSquare size={20} aria-hidden="true" className="text-bb-accent-text" />
           Votre réponse
         </h2>

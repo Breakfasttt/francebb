@@ -80,7 +80,7 @@ function SortableCategoryItem({ category, onEditClick, roleLabels, children }: {
           <GripVertical size={20} aria-hidden="true" />
         </span>
         <div className="flex min-w-0 flex-1 flex-wrap items-center gap-2 py-1">
-          <h3 className="m-0 min-w-0 border-0 p-0 text-base font-bold break-words text-bb-text normal-case not-italic">{category.name}</h3>
+          <h3 className="min-w-0 text-base font-bold break-words text-bb-text">{category.name}</h3>
           <AccessBadge allowedRoles={category.allowedRoles} roleLabels={roleLabels} />
         </div>
         <Button type="button" variant="quiet" size="tap" className="px-2" aria-expanded={expanded} onClick={() => setExpanded(!expanded)}>

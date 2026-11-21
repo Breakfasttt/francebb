@@ -7,8 +7,7 @@
  * La recherche elle-même (paramètres `?query&tag&author&sort&view&page`, conditions, tris) n'a pas changé.
  */
 import Link from "next/link";
-import { FileText, Plus } from "lucide-react";
-import { Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { Button, Card, PageNav } from "@bbfrance/ui";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
@@ -31,7 +30,8 @@ export default async function ArticlesPage({
   const tag = params.tag as string | undefined;
   const author = params.author as string | undefined;
   const sort = (params.sort as string) || "date_desc";
-  const view = (params.view as string) || "grid";
+  // Liste par défaut (DESIGN.md : lignes plutôt que cartes) ; la grille reste au choix
+  const view = (params.view as string) || "list";
   const page = parseInt(params.page as string) || 1;
   const limit = view === "grid" ? 12 : 20;
   const skip = (page - 1) * limit;
@@ -101,32 +101,31 @@ export default async function ArticlesPage({
     return text ? `/articles?${text}` : "/articles";
   };
 
-  const createButton = session ? (
-    <Button asChild variant="primary" size="tap">
-      <Link href="/articles/create" className="no-underline">
-        <Plus size={18} aria-hidden="true" />
-        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
-        <span>Créer<span className="max-sm:sr-only"> un article</span></span>
-      </Link>
-    </Button>
-  ) : null;
+  // Action principale de la rubrique : en haut du panneau gauche sur ordinateur, dans l'en-tête sur téléphone
+  const createHref = session ? "/articles/create" : null;
+  const hasFilters = Object.entries(params).some(([key, value]) => !["page", "view", "sort"].includes(key) && !!value);
+  const showControls = total > 0 || hasFilters;
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Articles"
         subtitle={`Guides, récits et analyses de la communauté · ${total} article${total > 1 ? "s" : ""} trouvé${total > 1 ? "s" : ""}`}
         backHref="/"
         backTitle="Retour à l'accueil"
       >
-        {createButton}
+        {createHref && (
+          <Button asChild variant="primary" size="tap" className="lg:hidden">
+            <Link href={createHref}>Écrire un article</Link>
+          </Button>
+        )}
       </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[280px_minmax(0,1fr)] lg:items-start lg:gap-6">
-        <ArticleFilterAside availableTags={availableTags} />
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+        <ArticleFilterAside availableTags={availableTags} createHref={createHref} showFilters={showControls} />
 
         <section aria-label="Articles trouvés" className="flex min-w-0 flex-col gap-4">
-          <ArticleListControls total={total} availableTags={availableTags} />
+          {showControls && <ArticleListControls total={total} availableTags={availableTags} />}
 
           {articles.length > 0 ? (
             <>
@@ -151,11 +150,11 @@ export default async function ArticlesPage({
               )}
             </>
           ) : (
-            <Card>
-              <EmptyState icon={<FileText size={40} />} title="Aucun article trouvé" action={createButton ?? undefined}>
-                Essayez d&apos;autres filtres, ou soyez le premier à en écrire un !
-              </EmptyState>
-            </Card>
+            <p className="rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-5 text-bb-text-muted">
+              {hasFilters
+                ? "Aucun article ne correspond à ces filtres. Retire un filtre pour élargir la recherche."
+                : "Pas encore d'article publié. Un guide, un compte-rendu de tournoi ? Écris le premier."}
+            </p>
           )}
         </section>
       </div>

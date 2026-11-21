@@ -40,7 +40,7 @@ function Block({ icon, title, action, children }: { icon: ReactNode; title: stri
   return (
     <Card className="flex flex-col gap-4 p-4 lg:p-5">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="m-0 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+        <h2 className="flex items-center gap-2 text-base font-bold text-bb-text">
           <span aria-hidden="true" className="text-bb-accent-text">{icon}</span>
           {title}
         </h2>
@@ -386,7 +386,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
       {/* Colonne « Publication » (ordinateur) */}
       <aside aria-label="Publication" className="hidden lg:block">
         <Card className="flex flex-col gap-3 p-4 lg:sticky lg:top-20">
-          <h2 className="m-0 flex items-center gap-2 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">
+          <h2 className="flex items-center gap-2 text-base font-bold text-bb-text">
             <span aria-hidden="true" className="text-bb-accent-text">{saveIcon}</span>
             Publication
           </h2>

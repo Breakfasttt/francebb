@@ -200,7 +200,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
             </Card>
           ) : (
             <>
-              <h2 className="m-0 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">
+              <h2 className="text-lg font-bold text-bb-text">
                 {totalMatches} résultat{totalMatches > 1 ? "s" : ""}
                 {totalPages > 1 && <span className="font-normal text-bb-text-muted"> · page {page} sur {totalPages}</span>}
               </h2>
@@ -213,7 +213,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                     return (
                       <li key={post.id} className="flex items-start gap-3 border-b border-bb-border p-3 last:border-b-0 lg:px-4">
                         <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-                          <h3 className="m-0 flex min-w-0 items-start gap-1.5 border-0 p-0 text-bb-lead leading-snug font-bold text-bb-text normal-case not-italic">
+                          <h3 className="flex min-w-0 items-start gap-1.5 text-bb-lead leading-snug font-bold text-bb-text">
                             {post.topic.tournamentId && (
                               <Trophy size={16} role="img" aria-label="Tournoi" className="mt-1 shrink-0 text-bb-accent-text" />
                             )}

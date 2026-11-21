@@ -37,7 +37,7 @@ export default async function OnboardingPage(props: { searchParams: Promise<{ ca
     <div className="flex justify-center px-3 py-6 font-bb-sans text-base text-bb-text lg:py-12">
       <section aria-labelledby="onboarding-title" className="flex w-full max-w-2xl flex-col gap-4">
         <header className="flex flex-col gap-1">
-          <h1 id="onboarding-title" className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic lg:text-3xl">
+          <h1 id="onboarding-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
             Bienvenue Coach !
           </h1>
           {!user.hasFinishedOnboarding && (

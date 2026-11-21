@@ -148,7 +148,7 @@ export default function ReferenceDataTab() {
 
           {isCreating && (
             <div className="flex flex-col gap-4 rounded-bb-md border border-bb-border bg-bb-surface-2 p-3 lg:p-4">
-              <h3 className="m-0 border-0 p-0 text-base font-bold text-bb-text normal-case not-italic">Nouvelle donnée</h3>
+              <h3 className="text-base font-bold text-bb-text">Nouvelle donnée</h3>
               <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2">
                 <Field label="Groupe" htmlFor="ref-new-group" hint="Exemple : COACH_REGION">
                   <Input id="ref-new-group" value={newForm.group} onChange={(e) => setNewForm({ ...newForm, group: e.target.value })} />

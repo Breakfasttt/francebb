@@ -11,14 +11,14 @@
  */
 import { useState, useSyncExternalStore } from "react";
 import Link from "next/link";
-import { MessageSquare, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Button, Card } from "@bbfrance/ui";
 
 const DISMISS_KEY = "bbfrance_forum_visitor_banner_closed";
 
 const loginHref = (callbackUrl: string) => `/auth/login?callbackUrl=${encodeURIComponent(callbackUrl)}`;
 
-const title = "m-0 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic";
+const title = "text-lg font-bold text-bb-text";
 
 /** Bouton commun aux deux invitations. */
 function JoinButton({ callbackUrl, className }: { callbackUrl: string; className?: string }) {
@@ -64,34 +64,29 @@ export function ForumVisitorBanner() {
   };
 
   return (
-    <Card className="relative flex flex-col gap-3 border-bb-accent px-4 py-4 pr-14" role="region" aria-labelledby="forum-visitor-banner-title">
-      <h2 id="forum-visitor-banner-title" className={title}>
-        Bienvenue sur BBFrance
-      </h2>
-      <p className="m-0 text-[0.95rem] text-bb-text-muted">
-        Le site de la communauté française de Blood Bowl : on y parle du jeu, de ses équipes et de ses tournois. Tout se
-        lit sans compte ; pour écrire, un compte se crée en un appui avec Discord, Google ou une adresse e-mail.
-      </p>
-      <JoinButton callbackUrl="/forum" className="self-start max-sm:w-full" />
-      <Button type="button" variant="quiet" size="tap-icon" aria-label="Masquer ce message de bienvenue" onClick={close} className="absolute top-1 right-1">
-        <X size={20} aria-hidden="true" />
+    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-bb-lg border border-bb-border border-l-[3px] border-l-bb-accent bg-bb-surface py-2 pr-2 pl-4" role="region" aria-label="Participer au forum">
+      <p className="min-w-0 flex-1 text-[0.95rem] text-bb-text-muted">Tout se lit sans compte. Pour écrire, connecte-toi : le compte se crée en un clic.</p>
+      <JoinButton callbackUrl="/forum" className="shrink-0" />
+      <Button type="button" variant="quiet" size="tap-icon" aria-label="Masquer ce message" onClick={close} className="shrink-0">
+        <X size={18} aria-hidden="true" />
       </Button>
-    </Card>
+    </div>
   );
 }
 
 export function TopicVisitorInvite({ callbackUrl }: { callbackUrl: string }) {
   return (
-    <Card className="flex flex-col items-center gap-3 px-4 py-6 text-center" role="region" aria-labelledby="topic-visitor-invite-title">
-      <MessageSquare size={28} aria-hidden="true" className="text-bb-accent-text" />
-      <h2 id="topic-visitor-invite-title" className={title}>
-        Envie de participer ?
-      </h2>
-      <p className="m-0 max-w-[50ch] text-[0.95rem] text-bb-text-muted">
-        Connectez-vous pour répondre à ce sujet. Pas encore de compte ? Il se crée en un appui avec Discord, Google ou
-        une adresse e-mail, et vous revenez ici ensuite.
-      </p>
-      <JoinButton callbackUrl={callbackUrl} className="max-sm:w-full" />
+    <Card className="flex flex-col gap-3 border-l-[3px] border-l-bb-accent px-4 py-4 sm:flex-row sm:items-center sm:justify-between" role="region" aria-labelledby="topic-visitor-invite-title">
+      <div className="flex flex-col gap-1">
+        <h2 id="topic-visitor-invite-title" className={title}>
+          Envie de répondre ?
+        </h2>
+        <p className="max-w-[60ch] text-[0.95rem] text-bb-text-muted">
+          Connecte-toi pour participer. Pas encore de compte ? Il se crée en un clic avec Discord, Google ou un e-mail,
+          et tu reviens ici ensuite.
+        </p>
+      </div>
+      <JoinButton callbackUrl={callbackUrl} className="shrink-0 max-sm:w-full" />
     </Card>
   );
 }

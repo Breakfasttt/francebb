@@ -1,30 +1,14 @@
 /**
- * Accueil d'un membre connecté (carte 210, revu le 16 novembre 2026 à la demande du responsable du projet) : une seule
- * colonne qui défile, sans bandeau d'accueil, dans cet ordre :
- * 1. le forum : ses trois derniers sujets non lus, ou, s'il a tout lu, les trois sujets les plus récents ; le bouton
- *    « Forum » est dans l'en-tête du bloc ;
- * 2. les prochains tournois avec « Créer » ;
- * 3. la tête du classement du Championnat de France de l'année ;
- * 4. les ligues de sa région avec « Créer » et la carte ;
- * 5. les articles avec « Écrire » ;
- * 6. les dernières ressources avec « Proposer » ;
- * 7. les chaînes vidéo (médias).
- * Statistiques reste au pied de page, Membres dans le panneau « Plus » et sur le forum, Jouer dans le panneau « Plus ».
- * Sur ordinateur, des repères à droite de l'écran (`HomeWaypoints`) mènent d'un bloc à l'autre. Les blocs sont dans
- * `HomeSections.tsx`, partagés avec l'accueil du visiteur.
+ * Accueil d'un membre connecté (DESIGN.md, type « Tableau de bord ») : pas de mosaïque de blocs, mais un flux.
+ * - Colonne principale : le forum (ses derniers non-lus, ou les sujets récents s'il a tout lu), les prochains tournois
+ *   (avec ceux où il est inscrit), un article au hasard.
+ * - Colonne de contexte (à droite sur ordinateur, dessous sur téléphone) : la tête du classement de l'année, les ligues
+ *   de sa région, les dernières ressources, les chaînes vidéo.
+ * Les blocs sont dans `HomeSections.tsx` et `HomeBlocks.tsx`, partagés avec l'accueil du visiteur.
  */
+import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
 import { NextTournaments } from "./HomeBlocks";
-import HomeWaypoints from "./HomeWaypoints";
-import {
-  Anchor,
-  ArticlesBlock,
-  ForumBlock,
-  HOME_WAYPOINTS,
-  LiguesBlock,
-  MediaBlock,
-  RankingBlock,
-  ResourcesBlock,
-} from "./HomeSections";
+import { ArticlesBlock, ForumBlock, LiguesBlock, MediaBlock, RankingBlock, ResourcesBlock } from "./HomeSections";
 import type { HomeRankingEntry, HomeResource, HomeTournament, MemberForumTopics, MemberLigue, pickRandomArticle } from "./homeData";
 
 export default function MemberHome({
@@ -52,20 +36,23 @@ export default function MemberHome({
 }) {
   const year = new Date().getFullYear();
   return (
-    <div className="font-bb-sans text-base text-bb-text">
+    <SiteLayout
+      className="pt-4 lg:pt-6"
+      contextFrom="lg"
+      contextLabel="Classement, ligues et ressources"
+      context={
+        <>
+          <RankingBlock ranking={ranking} year={year} />
+          <LiguesBlock {...ligues} createHref="/ligues/create" />
+          <ResourcesBlock resources={resources} createHref="/ressources/submit" />
+          <MediaBlock media={media} />
+        </>
+      }
+    >
       <h1 className="sr-only">Accueil</h1>
-      <div className="mx-auto flex w-full max-w-[760px] flex-col gap-4 px-4 pt-4 pb-10 lg:gap-6 lg:px-6 lg:pt-8 lg:pb-16">
-        <Anchor id="forum"><ForumBlock forum={forum} discordHref={discordHref} /></Anchor>
-        <Anchor id="tournois">
-          <NextTournaments tournaments={tournaments} createHref={tournamentCreateHref} createInHeader registeredIds={registeredIds} />
-        </Anchor>
-        <Anchor id="classement"><RankingBlock ranking={ranking} year={year} /></Anchor>
-        <Anchor id="ligues"><LiguesBlock {...ligues} createHref="/ligues/create" /></Anchor>
-        <Anchor id="articles"><ArticlesBlock article={article} createHref="/articles/create" /></Anchor>
-        <Anchor id="ressources"><ResourcesBlock resources={resources} createHref="/ressources/submit" /></Anchor>
-        <Anchor id="medias"><MediaBlock media={media} /></Anchor>
-      </div>
-      <HomeWaypoints items={HOME_WAYPOINTS} />
-    </div>
+      <ForumBlock forum={forum} discordHref={discordHref} />
+      <NextTournaments tournaments={tournaments} createHref={tournamentCreateHref} createInHeader registeredIds={registeredIds} />
+      <ArticlesBlock article={article} createHref="/articles/create" />
+    </SiteLayout>
   );
 }

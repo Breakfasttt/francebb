@@ -44,19 +44,19 @@ test.beforeAll(async () => {
   });
 });
 
-test("[tous] le logo ramène à l'accueil ; sur l'accueil, la barre n'en affiche pas", async ({ page }) => {
+test("[tous] le nom du site ramène à l'accueil, sans image de logo", async ({ page }) => {
   await acceptCookies(page);
   await page.goto("/forum", { waitUntil: "networkidle" });
-  const logo = page.getByRole("banner").getByRole("link", { name: "Blood Bowl France" }).filter({ visible: true });
+  const logo = page.getByRole("banner").getByRole("link", { name: "BBFrance, accueil" }).filter({ visible: true });
   await expect(logo).toHaveCount(1);
   await expect(logo).toHaveAttribute("href", "/");
   // Zone de toucher d'au moins 44 pixels de haut
   expect((await logo.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   await logo.click();
   await page.waitForURL((url) => url.pathname === "/");
-  await expect(page.getByRole("banner").getByRole("link", { name: "Blood Bowl France" }).filter({ visible: true })).toHaveCount(0);
-  // Depuis la carte 155, l'accueil n'a plus de grand logo non plus : son titre est un texte
-  await expect(page.getByRole("main").getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
+  // Le nom reste affiché sur l'accueil ; aucune image d'écusson dans la barre ni dans la page (DESIGN.md)
+  await expect(page.getByRole("banner").getByRole("link", { name: "BBFrance, accueil" }).filter({ visible: true })).toHaveCount(1);
+  await expect(page.getByRole("banner").getByRole("img")).toHaveCount(0);
   await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
 });
 

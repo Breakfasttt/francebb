@@ -29,7 +29,7 @@ export default async function StatistiquesPage() {
   const stats = await getDashboardStats();
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
         title="Statistiques"
         subtitle="État des lieux du Blood Bowl en France"

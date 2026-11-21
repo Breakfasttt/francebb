@@ -4,8 +4,9 @@
  * badge de statut de tournoi). Chaque ligne est un lien unique, facile à toucher sur téléphone (64 pixels au moins).
  * Aucun état ni effet ici : ces composants servent aussi bien dans une page serveur que dans un composant client.
  */
+import type { ReactNode } from "react";
 import Link from "next/link";
-import { Folder, Lock, Pin, Trophy } from "lucide-react";
+import { Lock, Pin, Trophy } from "lucide-react";
 import { Avatar, Badge } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { isTournamentOver } from "@/lib/tournamentDates";
@@ -72,49 +73,56 @@ export interface ForumRowData {
 }
 
 /**
- * Ligne d'un forum : icône carrée (trophée pour un forum de tournois, dossier sinon), nom (gras s'il contient du
- * non-lu), cadenas, description, dernier sujet sur une ligne tronquée, puis « N sujets · Dernier : X · date et heure »
- * (auteur et date du dernier message de ce sujet). Un forum vide n'affiche que « Aucun sujet », sans « 0 sujet »
- * en dessous (carte 190).
+ * Ligne d'un forum, en tableau (DESIGN.md, « Le forum ») : nom (gras s'il contient du non-lu, marqueur bleu à gauche),
+ * cadenas, description discrète ; puis, en colonnes sur ordinateur, le nombre de sujets et le dernier message (titre
+ * du sujet, auteur, date et heure). Sur téléphone, ces informations passent sous le nom sur une ligne discrète.
+ * Un forum vide n'affiche que « Aucun sujet » (carte 190).
  */
 export function ForumRow({ forum }: { forum: ForumRowData }) {
   const { lastTopic } = forum;
-  const Icon = forum.isTournamentForum ? Trophy : Folder;
   return (
     <Link
       href={`/forum/${forum.id}`}
-      className="flex min-h-16 items-start gap-3 border-b border-bb-border px-3 py-3 text-bb-text last:border-b-0 hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:px-4"
+      className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-1 border-b border-l-[3px] border-b-bb-border px-3 py-3 text-bb-text no-underline last:border-b-0 hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:grid-cols-[minmax(0,1fr)_88px_minmax(0,300px)] lg:items-center lg:px-4 ${forum.hasNew ? "border-l-bb-unread" : "border-l-transparent"}`}
     >
-      <span
-        aria-hidden="true"
-        className={`flex size-10 shrink-0 items-center justify-center rounded-bb-md bg-bb-surface-2 ${forum.hasNew ? "text-bb-accent-text" : "text-bb-text-muted"}`}
-      >
-        <Icon size={20} />
-      </span>
-      <span className="flex min-w-0 flex-1 flex-col gap-0.5">
+      <span className="flex min-w-0 flex-col gap-0.5">
         <span className="flex min-w-0 items-center gap-1.5">
+          {forum.isTournamentForum && <Trophy size={15} role="img" aria-label="Forum de tournois" className="shrink-0 text-bb-text-muted" />}
           <InlineBBCode text={forum.name} className={`min-w-0 text-base leading-snug break-words ${forum.hasNew ? "font-bold" : "font-semibold"}`} />
           {forum.isLocked && <LockMark label="Forum verrouillé" size={14} />}
+          {forum.hasNew && <span className="sr-only">(messages non lus)</span>}
         </span>
         {forum.description && <span className="text-sm leading-snug text-bb-text-muted">{forum.description}</span>}
-        {lastTopic ? (
-          <span className="mt-0.5 flex min-w-0 items-center gap-1.5 text-sm">
-            {lastTopic.isTournament && <Trophy size={13} aria-hidden="true" className="shrink-0 text-bb-text-muted" />}
-            <span className="min-w-0 truncate">{lastTopic.title}</span>
+      </span>
+      <span className="text-sm text-bb-text-muted tabular-nums max-lg:hidden lg:text-right">
+        <span className="font-semibold text-bb-text lg:block lg:text-base">{forum.topicCount.toLocaleString("fr-FR")}</span>{" "}
+        {forum.topicCount > 1 ? "sujets" : "sujet"}
+      </span>
+      {lastTopic ? (
+        <span className="flex min-w-0 flex-col text-sm">
+          <span className="flex min-w-0 items-center gap-1.5">
+            <span className="min-w-0 truncate text-bb-text">{lastTopic.title}</span>
             <TournamentStatusBadge tournament={lastTopic.tournament} />
           </span>
-        ) : (
-          <span className="mt-0.5 text-sm text-bb-text-muted">Aucun sujet</span>
-        )}
-        {(forum.topicCount > 0 || lastTopic) && (
-          <span className="text-sm text-bb-text-muted">
-            {forum.topicCount} {forum.topicCount > 1 ? "sujets" : "sujet"}
-            {lastTopic && ` · Dernier : ${lastTopic.lastPostAuthorName ?? "Anonyme"} · ${frenchDateTime(lastTopic.lastPostAt)}`}
+          <span className="truncate text-bb-text-muted tabular-nums">
+            {lastTopic.lastPostAuthorName ?? "Anonyme"} · {frenchDateTime(lastTopic.lastPostAt)}
           </span>
-        )}
-      </span>
-      {forum.hasNew && <UnreadDot className="mt-2" />}
+        </span>
+      ) : (
+        <span className="text-sm text-bb-text-muted">Aucun sujet</span>
+      )}
     </Link>
+  );
+}
+
+/** En-tête des colonnes d'une liste de forums, sur ordinateur (voix Heading). */
+export function ForumColumnsHeader({ title }: { title: ReactNode }) {
+  return (
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-x-6 font-bb-heading text-bb-label text-bb-text-muted lg:grid-cols-[minmax(0,1fr)_88px_minmax(0,300px)]">
+      <span>{title}</span>
+      <span className="hidden text-right lg:block">Sujets</span>
+      <span className="hidden lg:block">Dernier message</span>
+    </div>
   );
 }
 

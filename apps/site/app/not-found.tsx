@@ -16,7 +16,7 @@ export default function NotFound() {
         </span>
         <div>
           <p className="m-0 text-sm font-bold tracking-wide text-bb-accent-text">Erreur 404</p>
-          <h1 className="m-0 border-0 p-0 text-2xl leading-tight font-bold text-bb-text normal-case not-italic">Terrain impraticable !</h1>
+          <h1 className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">Terrain impraticable !</h1>
         </div>
         <p className="m-0 text-bb-text-muted">
           Oups ! Il semblerait que le ballon soit sorti des limites du terrain.

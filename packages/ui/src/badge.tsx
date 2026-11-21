@@ -11,7 +11,8 @@ export const badgeVariants = cva(
     variants: {
       variant: {
         neutral: "border-bb-border bg-bb-surface-2 text-bb-text-muted",
-        accent: "border-transparent bg-bb-accent text-bb-on-accent",
+        // Voile d'accent, jamais de rouge plein : le rouge plein est réservé à l'action principale et aux compteurs (DESIGN.md)
+        accent: "border-transparent bg-bb-accent-soft text-bb-accent-text",
         outline: "border-bb-accent-text bg-transparent text-bb-accent-text",
         rank: "border-bb-rank bg-transparent text-bb-rank",
         unread: "border-transparent bg-bb-unread text-bb-bg",

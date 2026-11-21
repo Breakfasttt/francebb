@@ -1,83 +1,27 @@
 ---
 name: nextjs16
-description: Key facts and links for Next.js 16. Use for planning, writing, and troubleshooting Next.js 16 changes.
+description: Faits utiles de Next.js 16.2 pour BBFrance (APIs asynchrones, cache, proxy, Turbopack) et où lire la doc officielle livrée avec Next. À lire avant d'écrire une page, une action serveur, du cache ou de toucher à proxy.ts.
 ---
 
-## Links
+# Next.js 16 dans BBFrance
 
-- Docs: https://nextjs.org/docs
-- Upgrade guide (v16): https://nextjs.org/docs/app/guides/upgrading/version-16
-- Release notes/blog: https://nextjs.org/blog/next-16
+**La source de vérité est la documentation livrée avec Next**, à la bonne version : `node_modules/next/dist/docs/` (`01-app/` pour l'App Router). La lire avant d'écrire du code Next qu'on ne connaît pas bien ; ne pas se fier à sa mémoire.
 
-## Upgrade
+## Ce qui piège en 16
 
-```sh
-# Automated upgrade
-npx @next/codemod@canary upgrade latest
+- **APIs de requête asynchrones** : `await params`, `await searchParams`, `await cookies()`, `await headers()`. L'accès direct n'existe plus.
+- **Cache** :
+  - `revalidateTag(tag, profile)` exige un profil (`"max"`, ou `{ expire }`), la forme à un argument est dépréciée ;
+  - `updateTag(tag)` (actions serveur seulement) relit tout de suite ce qu'on vient d'écrire ;
+  - `refresh()` (actions serveur seulement) recharge les données non mises en cache ;
+  - `cacheLife` et `cacheTag` n'ont plus le préfixe `unstable_`.
+- **`proxy.ts`** remplace `middleware.ts` et ne tourne qu'en Node. Dans BBFrance (carte 017), le proxy utilise la configuration complète d'Auth.js (`auth.ts`). Seuls le proxy et `/api/auth/*` peuvent réécrire le cookie de session : `auth()` dans un composant serveur ou une action lit le cookie mais n'enregistre jamais un jeton rafraîchi. Le proxy pose aussi la CSP avec un nonce.
+- **Turbopack** est le compilateur par défaut ; `next dev` écrit dans `.next/dev` et un verrou empêche deux serveurs en même temps.
+- **Routes parallèles** : chaque emplacement exige un `default.js`.
+- **`next/image`** : `images.remotePatterns` (et non `images.domains`) ; une image locale avec paramètres d'URL exige `images.localPatterns`.
+- **Défilement** : Next ne neutralise plus `scroll-behavior: smooth` pendant la navigation.
+- **ESLint** se lance directement (plus de `next lint`).
 
-# Manual upgrade
-npm install next@latest react@latest react-dom@latest
+## Outils
 
-# New project
-npx create-next-app@latest
-```
-
-Codemod covers (high-level): moves Turbopack config, migrates `next lint` → ESLint CLI, migrates `middleware` → `proxy`, removes some `unstable_` prefixes, removes route-level `experimental_ppr`.
-
-TypeScript: also upgrade `@types/react` and `@types/react-dom`.
-
-## What’s New (v16)
-
-- Cache Components: opt-in caching via the `"use cache"` directive; evolves/absorbs PPR.
-- Next.js DevTools MCP: Model Context Protocol integration for AI-assisted debugging.
-- `proxy.ts`: clearer network boundary; `middleware.ts` deprecated for most use.
-- Better logs/metrics: more detailed `next dev` and build timing output.
-
-## Performance / DX
-
-- Turbopack: stable; default bundler (opt out with `next dev --webpack`, `next build --webpack`).
-- If you have a custom `webpack` config, `next build` may fail (to prevent misconfiguration). Fix by migrating config, using `next build --webpack`, or using Turbopack and removing/ignoring the webpack config.
-- Turbopack config moved: `experimental.turbopack` → top-level `turbopack` in `next.config.*`.
-- Turbopack migration gotchas:
-	- Sass imports: remove the Webpack-only `~` prefix (e.g. `@import 'bootstrap/...';`).
-	- Browser bundles must not import Node built-ins (e.g. `fs`). If unavoidable, use `turbopack.resolveAlias` as a stopgap.
-- Turbopack filesystem cache (dev, beta): `experimental.turbopackFileSystemCacheForDev: true`.
-- React Compiler support: stable opt-in via `reactCompiler: true` (expect higher build/compile cost).
-- Build Adapters API: alpha (custom build adapters).
-- Routing/prefetching rewrite: layout deduplication + incremental prefetching.
-
-## Caching APIs (key signatures)
-
-- `revalidateTag(tag, profile)` now requires a cacheLife profile (or `{ expire }`) for SWR behavior.
-- `updateTag(tag)` (Server Actions only): read-your-writes semantics.
-- `refresh()` (Server Actions only): refresh uncached data; does not mutate cache.
-- `cacheLife` and `cacheTag` are stable (no `unstable_` prefix).
-
-## Requirements (v16)
-
-- Node.js: 20.9+ (Node 18 not supported)
-- TypeScript: 5.1+
-- Browsers: Chrome/Edge/Firefox 111+, Safari 16.4+
-
-## Breaking / Behavior Changes (high-impact)
-
-- Async Request APIs: sync access removed. Use `await params`, `await searchParams`, `await cookies()`, `await headers()`, `await draftMode()`.
-- Tip (TypeScript): `npx next typegen` can generate helpers like `PageProps`, `LayoutProps`, `RouteContext` to migrate `params/searchParams` types safely.
-- Metadata images: `opengraph-image`, `twitter-image`, `icon`, `apple-icon` now receive `params` (and `id`) as Promises in the image function.
-- Sitemaps: `sitemap({ id })` now receives `id` as a Promise when using `generateSitemaps`.
-- Parallel routes: slots require explicit `default.js`.
-- `next/image` defaults changed (cache TTL, sizes/qualities); local `src` with query strings requires `images.localPatterns`.
-
-Other notable behavior changes:
-
-- `next dev` and `next build` use separate output dirs (`next dev` → `.next/dev`) and a lockfile prevents concurrent instances.
-- Scroll behavior: Next.js no longer overrides global `scroll-behavior: smooth` during navigations; add `data-scroll-behavior="smooth"` on `<html>` to restore the previous override behavior.
-- ESLint: `@next/eslint-plugin-next` defaults to ESLint Flat Config; legacy `.eslintrc` projects may need migration.
-
-## Removed / Deprecated (high-level)
-
-- Removed: AMP support; `next lint` (use ESLint/Biome directly); `eslint` option in `next.config.*`; `serverRuntimeConfig/publicRuntimeConfig` (use env vars); `experimental.ppr` + route-level `experimental_ppr`; `unstable_rootParams`.
-- Deprecated: `middleware.ts` filename (prefer `proxy.ts`); `next/legacy/image`; `images.domains` (prefer `images.remotePatterns`); `revalidateTag(tag)` single-arg form.
-- `proxy.ts` note: `proxy` runs on `nodejs` only; Edge runtime is not supported in `proxy`. Keep `middleware.ts` if you must stay on Edge.
-  - BBFrance (card 017): `proxy.ts` uses the full Auth.js config from `auth.ts` (database access allowed). Only the proxy and `/api/auth/*` can rewrite the session cookie: `auth()` in a Server Component or Server Action reads the cookie but never persists a refreshed JWT.
-- Config rename example: `skipMiddlewareUrlNormalize` → `skipProxyUrlNormalize`.
+- Serveur MCP `next-devtools` (déclaré dans `.mcp.json`) : erreurs de compilation, routes, journaux et actions serveur du serveur de développement lancé. S'en servir pendant la boucle d'interface plutôt que de deviner.

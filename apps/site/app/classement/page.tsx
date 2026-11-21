@@ -22,7 +22,7 @@ import { Suspense, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { Download, HelpCircle, History, Info, Medal, Pencil, Plus, Settings2, Shield, Trash2, Trophy, Users } from "lucide-react";
+import { Download, HelpCircle, History, Medal, Pencil, Plus, Settings2, Shield, Trash2 } from "lucide-react";
 import {
   ActionMenu,
   Button,
@@ -274,7 +274,7 @@ function Classement() {
             : "Les 4 meilleurs résultats de chaque coach sur l'année, calculés en direct.";
 
   return (
-    <div className="mx-auto w-full max-w-[1100px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Championnat de France"
         subtitle="Le classement des coachs de la communauté Blood Bowl France"
@@ -294,26 +294,25 @@ function Classement() {
       <Tabs value={activeTab} onValueChange={changeTab}>
         <TabsList aria-label="Vues du classement" className="max-lg:-mx-3 max-lg:px-3">
           <TabsTrigger value="year">
-            <Trophy size={18} aria-hidden="true" /> Année {latestLiveYear}
+            Année {latestLiveYear}
           </TabsTrigger>
           <TabsTrigger value="rolling">
-            <History size={18} aria-hidden="true" /> Glissant
+            Glissant
           </TabsTrigger>
           <TabsTrigger value="roster">
-            <Users size={18} aria-hidden="true" /> Par roster
+            Par roster
           </TabsTrigger>
           <TabsTrigger value="hof">
-            <Medal size={18} aria-hidden="true" /> Hall of Fame
+            Hall of Fame
           </TabsTrigger>
           <TabsTrigger value="archives">
-            <History size={18} aria-hidden="true" /> Archives
+            Archives
           </TabsTrigger>
         </TabsList>
       </Tabs>
 
       <div className="flex flex-col gap-3 py-4 lg:flex-row lg:items-end lg:justify-between">
         <p className="m-0 flex items-start gap-1.5 text-sm text-bb-text-muted">
-          <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
           {periodNote}
         </p>
         {isYearView && liveYears.length > 1 && (
@@ -416,8 +415,7 @@ function Classement() {
               </li>
             </ul>
             <p className="m-0 flex items-start gap-1.5 text-sm text-bb-text-muted">
-              <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-              Pour le classement par roster, seuls les 2 meilleurs scores avec la même race sont retenus.
+                  Pour le classement par roster, seuls les 2 meilleurs scores avec la même race sont retenus.
             </p>
           </div>
         </SheetContent>

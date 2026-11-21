@@ -192,10 +192,9 @@ test.describe("accueil, sujets du forum", () => {
     const block = content(page).getByRole("region", { name: "Derniers sujets du forum" });
     await expect(block.getByRole("link", { name: new RegExp(E2E.topicTitle) })).toHaveAttribute("href", `/forum/topic/${E2E.topicId}`);
     await expect(block.getByText(E2E.secretTopicTitle)).toHaveCount(0);
-    // Pour un visiteur : « Tout voir » (44 pixels de haut), ni bouton « Forum » ni phrase « Tu es à jour »
-    expect((await block.getByRole("link", { name: /^Tout voir/ }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
-    await expect(block.getByRole("link", { name: "Forum", exact: true })).toHaveCount(0);
-    await expect(block.getByText(/Tu es à jour/)).toHaveCount(0);
+    // « Aller au forum » (44 pixels de haut), discret, et pas de phrase « Tu as tout lu » pour un visiteur
+    expect((await block.getByRole("link", { name: /^Aller au forum/ }).boundingBox())!.height).toBeGreaterThanOrEqual(44);
+    await expect(block.getByText(/Tu as tout lu/)).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("accueil-sujets-visiteur.png"), fullPage: true });
   });
 
@@ -227,80 +226,52 @@ test.describe("accueil, sujets du forum", () => {
 });
 
 test.describe("accueil", () => {
-  test("accueil du visiteur : les deux camps, puis les blocs du membre", async ({ page }, testInfo) => {
+  test("accueil du visiteur : la bande du haut, puis le tableau de bord", async ({ page }, testInfo) => {
     await page.goto("/", { waitUntil: "networkidle" });
     const main = content(page);
-    // Depuis la carte 155, l'accueil n'a plus de logo : son titre est un texte
-    await expect(main.getByRole("heading", { level: 1, name: "France Blood Bowl" })).toBeVisible();
-    await expect(main.getByRole("img", { name: "Blood Bowl France" })).toHaveCount(0);
+    // Le titre est un texte (aucun logo ni écusson, DESIGN.md)
+    await expect(main.getByRole("heading", { level: 1, name: /Blood Bowl en France/i })).toBeVisible();
 
-    // La feuille de match : « Nouveau coach ? » d'abord (à gauche sur ordinateur, au-dessus sur téléphone), puis « Tu joues déjà »
-    const newcomers = main.getByRole("region", { name: "Nouveau coach ?" });
-    const players = main.getByRole("region", { name: "Tu joues déjà" });
-    const newcomersBox = (await newcomers.boundingBox())!;
-    const playersBox = (await players.boundingBox())!;
-    if (testInfo.project.name === "telephone") expect(newcomersBox.y).toBeLessThan(playersBox.y);
-    else expect(newcomersBox.x).toBeLessThan(playersBox.x);
-    await expect(newcomers.getByRole("link", { name: "Découvrir le jeu" })).toHaveAttribute("href", "/jouer");
-    await expect(newcomers.getByRole("link", { name: "Trouver une ligue" })).toHaveAttribute("href", "/carte?vue=ligues");
-    await expect(newcomers.getByRole("link", { name: "S'inscrire" })).toHaveAttribute("href", "/auth/login");
-    await expect(players.getByRole("link", { name: "Aller au forum" })).toHaveAttribute("href", "/forum");
-    await expect(players.getByRole("link", { name: "Se connecter" })).toHaveAttribute("href", "/auth/login");
-    // Ni « contre » sur la ligne de mêlée, ni activité du jour (retirés le 17 novembre 2026)
-    await expect(main.getByText("contre", { exact: true })).toHaveCount(0);
-    await expect(players.getByText(/aujourd'hui/)).toHaveCount(0);
-    // Pas de doublon avec les blocs du dessous : ni Tournois, Classement ou Ressources dans les camps
-    for (const camp of [newcomers, players]) {
-      await expect(camp.getByRole("link", { name: /^(Tournois|Classement|Ressources)$/ })).toHaveCount(0);
-    }
+    // La bande du haut : l'action principale (seul bouton rouge), puis « Découvrir le jeu »
+    const intro = main.getByRole("region", { name: /Blood Bowl en France/i });
+    await expect(intro.getByRole("link", { name: "Créer mon compte" })).toHaveAttribute("href", "/auth/login");
+    await expect(intro.getByRole("link", { name: "Découvrir le jeu" })).toHaveAttribute("href", "/jouer");
+    // Plus de camps « Nouveau coach ? » / « Tu joues déjà » ni de repères de défilement
+    await expect(main.getByRole("region", { name: "Nouveau coach ?" })).toHaveCount(0);
+    await expect(page.getByRole("navigation", { name: "Sections de l'accueil" })).toHaveCount(0);
 
-    // Puis les blocs de l'accueil du membre, dans le même ordre ; plus de blocs de rubriques
-    const order = ["Derniers sujets du forum", "Prochains tournois", /^Classement \d{4}$/, "Dernières ligues", "Articles", "Ressources", "Médias"];
+    // Flux principal (forum, tournois, articles) puis contexte (classement, ligues, ressources, médias) : à droite sur
+    // ordinateur, dessous sur téléphone
+    const flow = ["Derniers sujets du forum", "Prochains tournois", "Articles"];
+    const context = [/^Classement \d{4}$/, "Dernières ligues", "Ressources", "Médias"];
     let previousTop = -Infinity;
-    for (const name of order) {
+    for (const name of flow) {
       const box = (await main.getByRole("region", { name }).boundingBox())!;
       expect(box.y).toBeGreaterThan(previousTop);
       previousTop = box.y;
     }
-    await expect(main.getByRole("navigation", { name: "Rubriques du site" })).toHaveCount(0);
-    // « Trouver une ligue » est déjà en haut : pas de lien vers la carte dans le bloc des ligues
-    await expect(main.getByRole("link", { name: "Voir les ligues sur la carte" })).toHaveCount(0);
-    // Pas de « Créer mon compte » au centre
-    await expect(main.getByRole("link", { name: /Créer mon compte/ })).toHaveCount(0);
-
-    // Discord (cartes 155 et 189) : un seul bouton, dans « Tu joues déjà », et seulement si l'invitation est réglée.
-    // Aucun lien de l'accueil ne mène nulle part.
-    const discord = main.getByRole("link", { name: /^(Discord|Rejoindre le Discord)/ });
-    expect([0, 1]).toContain(await discord.count());
-    for (const link of await discord.all()) {
-      await expect(link).toBeVisible();
-      await expect(link).toHaveAttribute("target", "_blank");
+    const forumBox = (await main.getByRole("region", { name: "Derniers sujets du forum" }).boundingBox())!;
+    const rankingBox = (await main.getByRole("region", { name: context[0] }).boundingBox())!;
+    if (testInfo.project.name === "telephone") expect(rankingBox.y).toBeGreaterThan(previousTop);
+    else expect(rankingBox.x).toBeGreaterThan(forumBox.x + forumBox.width - 1);
+    previousTop = -Infinity;
+    for (const name of context) {
+      const box = (await main.getByRole("region", { name }).boundingBox())!;
+      expect(box.y).toBeGreaterThan(previousTop);
+      previousTop = box.y;
     }
+
+    // Discord : au plus un lien, dans un nouvel onglet ; aucun lien ne mène nulle part
+    const discord = main.getByRole("link", { name: /^Discord/ });
+    expect([0, 1]).toContain(await discord.count());
+    for (const link of await discord.all()) await expect(link).toHaveAttribute("target", "_blank");
     await expect(main.locator('a[href="#"]')).toHaveCount(0);
 
-    // « Créer », « Écrire » et « Proposer » envoient un visiteur vers la connexion, en gardant la page visée
-    await expect(main.getByRole("region", { name: "Prochains tournois" }).getByRole("link", { name: "Créer un tournoi" }))
-      .toHaveAttribute("href", /^\/auth\/login\?callbackUrl=.*new-tournament.*forumId/);
-    await expect(main.getByRole("link", { name: "Écrire un article" })).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Farticles%2Fcreate$/);
-    await expect(main.getByRole("link", { name: "Proposer une ressource" })).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Fressources%2Fsubmit$/);
-    const ligueCreate = main.getByRole("link", { name: "Créer une ligue" });
-    await expect(ligueCreate).toHaveAttribute("href", /^\/auth\/login\?callbackUrl=%2Fligues%2Fcreate$/);
-
-    const waypoints = page.getByRole("navigation", { name: "Sections de l'accueil" });
-    if (testInfo.project.name === "telephone") await expect(waypoints).toBeHidden();
-    else {
-      // Un repère de plus que le membre : « Accueil », pour le haut de la page (titre et camps)
-      await expect(waypoints.getByRole("link")).toHaveCount(8);
-      await expect(waypoints.getByRole("link").first()).toHaveAttribute("href", "#accueil");
+    // Pas de « Créer » vers la connexion dans les en-têtes de bloc pour un visiteur
+    for (const name of ["Écrire un article", "Proposer une ressource", "Créer une ligue"]) {
+      await expect(main.getByRole("link", { name })).toHaveCount(0);
     }
-    // « Aller au forum » et « Se connecter » sur la même ligne
-    const forumBox = (await players.getByRole("link", { name: "Aller au forum" }).boundingBox())!;
-    const loginBox = (await players.getByRole("link", { name: "Se connecter" }).boundingBox())!;
-    if (testInfo.project.name !== "telephone") expect(Math.abs(forumBox.y - loginBox.y)).toBeLessThan(4);
-
     await page.screenshot({ path: testInfo.outputPath("accueil-visiteur.png"), fullPage: true });
-    await ligueCreate.click();
-    await expect(page).toHaveURL(/\/auth\/login\?callbackUrl=(\/|%2F)ligues(\/|%2F)create/);
   });
 
   test("« Créer » mène directement au formulaire pour un membre", async ({ page }) => {
@@ -314,26 +285,20 @@ test.describe("accueil", () => {
 
   // Accueil du membre (carte 210, revu le 16 novembre 2026) : une seule colonne, dans l'ordre fixé par le responsable
   // du projet, sans bandeau d'accueil ni pastilles de rubriques ; des repères de défilement sur ordinateur seulement
-  test("accueil du membre : une colonne, du forum aux médias", async ({ page }, testInfo) => {
+  test("accueil du membre : le flux puis le contexte", async ({ page }, testInfo) => {
     await loginAs(page, E2E.coachId);
     await page.goto("/", { waitUntil: "networkidle" });
     const main = content(page);
     await expect(main.getByRole("heading", { level: 1, name: /^Salut / })).toHaveCount(0);
-    await expect(main.getByRole("link", { name: "Forum", exact: true })).toHaveAttribute("href", "/forum");
-    const order = [
-      /Non lus au forum|Derniers sujets du forum/,
-      "Prochains tournois",
-      /^Classement \d{4}$/,
-      /Ligues de ta région|Dernières ligues/,
-      "Articles",
-      "Ressources",
-      "Médias",
-    ];
-    let previousTop = -Infinity;
-    for (const name of order) {
-      const box = (await main.getByRole("region", { name }).boundingBox())!;
-      expect(box.y).toBeGreaterThan(previousTop);
-      previousTop = box.y;
+    await expect(main.getByRole("link", { name: /^Aller au forum/ })).toHaveAttribute("href", "/forum");
+    // Flux principal puis contexte, chacun dans son ordre (deux colonnes sur ordinateur, une sur téléphone)
+    for (const order of [[/Non lus au forum|Derniers sujets du forum/, "Prochains tournois", "Articles"], [/^Classement \d{4}$/, /Ligues de ta région|Dernières ligues/, "Ressources", "Médias"]]) {
+      let previousTop = -Infinity;
+      for (const name of order) {
+        const box = (await main.getByRole("region", { name }).boundingBox())!;
+        expect(box.y).toBeGreaterThan(previousTop);
+        previousTop = box.y;
+      }
     }
     await expect(main.getByRole("link", { name: "Écrire un article" })).toHaveAttribute("href", "/articles/create");
     await expect(main.getByRole("link", { name: "Proposer une ressource" })).toHaveAttribute("href", "/ressources/submit");
@@ -344,14 +309,7 @@ test.describe("accueil", () => {
     for (const href of ["/statistiques", "/membres", "/jouer"]) {
       await expect(main.locator(`a[href="${href}"]`)).toHaveCount(0);
     }
-    const waypoints = page.getByRole("navigation", { name: "Sections de l'accueil" });
-    if (testInfo.project.name === "telephone") {
-      await expect(waypoints).toBeHidden();
-    } else {
-      await expect(waypoints.getByRole("link")).toHaveCount(7);
-      await waypoints.getByRole("link", { name: "Médias" }).click();
-      await expect(waypoints.getByRole("link", { name: "Médias" })).toHaveAttribute("aria-current", "location");
-    }
+    await expect(page.getByRole("navigation", { name: "Sections de l'accueil" })).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("accueil-membre.png"), fullPage: true });
   });
 

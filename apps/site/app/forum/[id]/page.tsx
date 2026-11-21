@@ -9,9 +9,9 @@ import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
-import { Card, CardHeader, CardTitle, EmptyState, PageNav } from "@bbfrance/ui";
-import { MessageSquare } from "lucide-react";
+import { Card, CardHeader, CardTitle, PageNav } from "@bbfrance/ui";
 import ForumSidebar, { ForumPrimaryActions } from "@/app/forum/component/ForumSidebar";
+import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { ForumRow, LockMark, TopicRow, UnreadDot } from "@/app/forum/component/ForumListItems";
 import { parseInlineBBCode } from "@/lib/bbcode";
@@ -115,7 +115,20 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   const canModerate = isModerator(session?.user?.role);
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <SiteLayout
+      asideLabel="Actions du forum"
+      aside={
+        <ForumSidebar
+          forumId={id}
+          forumName={forum.name}
+          categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined}
+          parentForumId={id}
+          isLocked={forum.isLocked}
+          isTournamentForum={forum.isTournamentForum}
+        />
+      }
+      header={
+        <>
       <div className="pt-3 lg:pt-4">
         <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
       </div>
@@ -129,9 +142,9 @@ export default async function ForumDetailPage({ params, searchParams }: { params
         }
         subtitle={forum.description}
       />
-
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
-        <div className="flex min-w-0 flex-col gap-4">
+        </>
+      }
+    >
           {/* Téléphone : les actions principales restent visibles en haut de la liste */}
           <ForumPrimaryActions
             forumId={id}
@@ -145,7 +158,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
           {forum.subForums.length > 0 && (
             <Card className="overflow-hidden">
               <CardHeader>
-                <CardTitle className="text-bb-label tracking-wider text-bb-text-muted uppercase">Sous-forums</CardTitle>
+                <CardTitle className="font-bb-heading text-bb-label text-bb-text-muted">Sous-forums</CardTitle>
               </CardHeader>
               {forum.subForums.map((sub) => {
                 const lastTopic = sub.topics[0];
@@ -176,7 +189,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
 
           <Card className="overflow-hidden">
             {/* En-têtes de colonnes, sur ordinateur seulement (sur téléphone, chaque ligne nomme ses chiffres) */}
-            <div aria-hidden="true" className="hidden items-center gap-4 border-b border-bb-border px-4 py-2 text-sm font-semibold text-bb-text-muted lg:flex">
+            <div aria-hidden="true" className="hidden items-center gap-4 border-b border-bb-border bg-bb-surface-2 px-4 py-2.5 font-bb-heading text-bb-label text-bb-text-muted lg:flex">
               <span className="flex-1 pl-[52px]">Sujet</span>
               <span className="w-24 text-right">Messages</span>
               <span className="w-20 text-right">Vues</span>
@@ -206,7 +219,7 @@ export default async function ForumDetailPage({ params, searchParams }: { params
                 );
               })
             ) : (
-              <EmptyState icon={<MessageSquare size={36} />} title="Aucun sujet dans ce forum pour le moment." />
+              <p className="px-4 py-6 text-bb-text-muted">Pas encore de sujet ici. Lance la première discussion.</p>
             )}
           </Card>
 
@@ -217,17 +230,6 @@ export default async function ForumDetailPage({ params, searchParams }: { params
             linkComponent={Link}
             className="self-center"
           />
-        </div>
-
-        <ForumSidebar
-          forumId={id}
-          forumName={forum.name}
-          categoryId={forum.categoryId || forum.parentForum?.categoryId || undefined}
-          parentForumId={id}
-          isLocked={forum.isLocked}
-          isTournamentForum={forum.isTournamentForum}
-        />
-      </div>
-    </div>
+    </SiteLayout>
   );
 }

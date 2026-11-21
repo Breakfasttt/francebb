@@ -40,7 +40,7 @@ export default function ProfileArticles({ userId, isOwnProfile }: ProfileArticle
 
   return (
     <section aria-label={isOwnProfile ? "Mes articles publiés" : "Articles publiés"} className="flex flex-col items-center gap-4">
-      <h2 className="m-0 flex w-full items-center gap-2 border-0 p-0 text-lg font-bold tracking-normal text-bb-text normal-case not-italic">
+      <h2 className="flex w-full items-center gap-2 text-lg font-bold text-bb-text">
         <FileText size={18} className="text-bb-text-muted" aria-hidden="true" />
         {isOwnProfile ? "Mes articles publiés" : "Articles publiés"}
       </h2>

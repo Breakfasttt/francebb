@@ -27,7 +27,7 @@ export default async function MediaPage() {
   const youtubeList = config.youtube_channels?.split(",").map((s: string) => s.trim()).filter(Boolean) || [];
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
         title="Vidéos et directs"
         subtitle="Suivez l'actualité du Blood Bowl en direct et en rediffusion"

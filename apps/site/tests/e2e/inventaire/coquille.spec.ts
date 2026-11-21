@@ -24,8 +24,8 @@ test.describe("coquille : visiteur", () => {
     for (const label of ["Accueil", "Forum", "Tournois"]) {
       await expect(nav.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
-    // Le visiteur voit « Se connecter / S'inscrire » : la connexion crée le compte la première fois (carte 189)
-    await expect(page.getByRole("link", { name: "Se connecter / S'inscrire" }).filter({ visible: true }).first()).toHaveAttribute("href", "/auth/login");
+    // Le visiteur voit « Connexion » dans la barre (bouton secondaire : le rouge reste à l'action de la page)
+    await expect(page.getByRole("banner").getByRole("link", { name: /^Connexion/ }).filter({ visible: true }).first()).toHaveAttribute("href", "/auth/login");
 
     if (isPhone(page)) {
       await expect(nav.getByRole("link", { name: "Messages" })).toBeVisible();

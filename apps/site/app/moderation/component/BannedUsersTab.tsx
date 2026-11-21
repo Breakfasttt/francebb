@@ -59,7 +59,7 @@ export default function BannedUsersTab() {
     <div className="flex flex-col gap-3">
       <div className="flex flex-wrap items-center gap-2">
         <UserX size={20} className="text-bb-danger-text" aria-hidden="true" />
-        <h2 className="m-0 flex-1 border-0 p-0 text-lg font-bold text-bb-text normal-case not-italic">Coachs bannis</h2>
+        <h2 className="flex-1 text-lg font-bold text-bb-text">Coachs bannis</h2>
         {!(loading && users.length === 0) && <Badge variant="danger">{total} banni{total > 1 ? "s" : ""}</Badge>}
       </div>
 

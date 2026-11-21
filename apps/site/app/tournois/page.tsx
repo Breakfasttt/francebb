@@ -9,8 +9,7 @@
  */
 import { getReferenceLists } from "@/lib/referenceData";
 import Link from "next/link";
-import { SearchX } from "lucide-react";
-import { Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { Button, Card, PageNav } from "@bbfrance/ui";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
@@ -70,7 +69,8 @@ export default async function TournamentsPage({
   const ligueId = params.ligueId as string | undefined;
 
   const sort = (params.sort as string) || "date_asc";
-  const view = (params.view as string) || "grid";
+  // Liste en tableau par défaut (DESIGN.md : lignes plutôt que cartes) ; la grille reste au choix
+  const view = (params.view as string) || "list";
   const showHistory = params.history === "true";
 
   const page = parseInt(params.page as string) || 1;
@@ -156,7 +156,15 @@ export default async function TournamentsPage({
       : Object.values(DEPARTMENTS_BY_REGION).flat().sort().map((key) => ({ key, label: key })),
   };
 
-  const total = await prisma.tournament.count({ where });
+  const [total, tournamentForum] = await Promise.all([
+    prisma.tournament.count({ where }),
+    prisma.forum.findFirst({ where: { isTournamentForum: true }, select: { id: true } }),
+  ]);
+  // Action principale de la rubrique : annoncer un tournoi (la connexion d'abord pour un visiteur)
+  const createHref = tournamentForum ? `/forum/new-tournament?forumId=${tournamentForum.id}` : null;
+  // Recherche, tri et filtres masqués quand il n'y a rien à filtrer (DESIGN.md)
+  const hasFilters = Object.entries(params).some(([key, value]) => !["page", "view", "sort"].includes(key) && !!value);
+  const showControls = total > 0 || hasFilters;
   const totalPages = Math.ceil(total / limit);
 
   const tournaments = await prisma.tournament.findMany({
@@ -184,19 +192,25 @@ export default async function TournamentsPage({
   };
 
   return (
-    <div className="mx-auto w-full max-w-[1232px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Tournois"
         subtitle={`${total} tournoi${total > 1 ? "s" : ""}${showHistory ? ", passés compris" : " à venir"}`}
         backHref="/"
         backTitle="Retour à l'accueil"
-      />
+      >
+        {createHref && (
+          <Button asChild variant="primary" size="tap" className="lg:hidden">
+            <Link href={createHref}>Annoncer un tournoi</Link>
+          </Button>
+        )}
+      </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[272px_minmax(0,1fr)] lg:items-start lg:gap-6">
-        <TournamentFilterAside places={places} />
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+        <TournamentFilterAside places={places} createHref={createHref} showFilters={showControls} />
 
         <section aria-label="Tournois trouvés" className="flex min-w-0 flex-col gap-4">
-          <TournamentListControls total={total} places={places} />
+          {showControls && <TournamentListControls total={total} places={places} />}
 
           {tournaments.length > 0 ? (
             <>
@@ -209,7 +223,7 @@ export default async function TournamentsPage({
               ) : (
                 <Card className="overflow-hidden">
                   {/* En-tête des colonnes (ordinateur) */}
-                  <div aria-hidden="true" className="hidden border-b border-bb-border bg-bb-surface-2 px-4 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:grid lg:grid-cols-[48px_minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_7rem_5.5rem] lg:gap-4">
+                  <div aria-hidden="true" className="hidden border-b border-bb-border bg-bb-surface-2 px-4 py-2.5 font-bb-heading text-bb-label text-bb-text-muted lg:grid lg:grid-cols-[48px_minmax(0,2fr)_minmax(0,1.4fr)_minmax(0,1fr)_7rem_5.5rem] lg:gap-4">
                     <span>Date</span>
                     <span>Tournoi</span>
                     <span>Lieu</span>
@@ -228,11 +242,11 @@ export default async function TournamentsPage({
               </div>
             </>
           ) : (
-            <Card>
-              <EmptyState icon={<SearchX size={40} />} title="Aucun tournoi trouvé">
-                Essayez de modifier vos filtres ou de réinitialiser la recherche.
-              </EmptyState>
-            </Card>
+            <p className="rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-5 text-bb-text-muted">
+              {hasFilters
+                ? "Aucun tournoi ne correspond à ces filtres. Retire un filtre pour élargir la recherche."
+                : "Pas de tournoi annoncé pour le moment. Tu en organises un ? Annonce-le à la communauté."}
+            </p>
           )}
         </section>
       </div>

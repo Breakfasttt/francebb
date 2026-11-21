@@ -5,13 +5,13 @@ description: Procédure sûre pour toute opération sur les bases de données Po
 
 # Opérations sur la base de données
 
-Le site et le hub ont chacun leur base **Postgres** : hébergée chez **Neon** en production, lancée en local par `prisma dev` (sans Docker). Décision et raisons : `docs/adr/0004-reorganisation-et-postgres.md`.
+Le site, le hub, BBQuizz et BBScheme ont chacun leur base **Postgres** (ADR-0008) : hébergée chez **Neon** en production, lancée en local par `prisma dev` (sans Docker). Décision et raisons : `docs/adr/0004-reorganisation-et-postgres.md`.
 
 ## Règles absolues
 
 - **Jamais** `prisma migrate reset` ni `db push --force-reset` sur une base réelle : ils effacent tout.
 - Aucune suppression de données de membres sans accord exprès.
-- Les adresses des bases ne sont jamais écrites dans un fichier du dépôt : variables d'environnement uniquement (`DATABASE_URL` pour le site, `HUB_DATABASE_URL` pour le hub).
+- Les adresses des bases ne sont jamais écrites dans un fichier du dépôt : variables d'environnement uniquement (`DATABASE_URL` pour le site, `HUB_DATABASE_URL` pour le hub, `BBQUIZZ_DATABASE_URL` et `BBSCHEME_DATABASE_URL` pour les deux applications en attente).
 - `apps/site/prisma/firstSetup.ts` (données de base) : ne pas modifier sans accord ; toujours `upsert` (crée ou met à jour, ne duplique jamais).
 
 ## Changer la structure de la base
@@ -51,6 +51,17 @@ L'outil `scripts/local-postgres.mjs` démarre de petits serveurs Postgres avec `
 - `apps/site/prisma/generated-client` est suivi par git et produit par `prisma generate` (générateur `prisma-client-js`). Il ne doit contenir que ce que ce générateur produit. Jusqu'à la carte 172, d'anciens fichiers `.ts` générés pour SQLite y traînaient : `tsx` les choisissait et tout script qui importait le client échouait. Pour vérifier : générer dans un dossier temporaire de `apps/site` et comparer les deux listes de fichiers.
 - En local, `pnpm db:migrate` peut échouer (erreur P3006) : la base fantôme de Prisma est copiée de `template1`, qui est aussi la base de développement. Contournement : `npx prisma migrate diff --from-config-datasource --to-schema prisma/schema.prisma --script`, écrire le SQL dans `prisma/migrations/<horodatage>_<nom>/migration.sql`, puis `npx prisma migrate deploy` et `npx prisma generate`, et augmenter `CLIENT_VERSION` dans `lib/prisma.ts`.
 - Requêtes SQL écrites à la main : une requête entière par `prisma.$queryRaw`…``, une liste avec `= ANY(${liste})`. Les morceaux `Prisma.sql` et `Prisma.join` importés du client généré ne sont pas reconnus (carte 170).
+
+## Prisma 7 : ce qui piège
+
+Le dépôt est en Prisma 7.5 ; chaque application a son `prisma.config.ts`.
+- Prisma ne charge plus `.env` tout seul : c'est la configuration ou le script qui charge les variables.
+- `migrate dev` et `db push` ne lancent plus `prisma generate` : le lancer à la main après une migration.
+- Plus de remplissage automatique après une migration : `pnpm db:setup` ou `pnpm dev` s'en chargent.
+- Le client se crée avec l'adaptateur `@prisma/adapter-pg` (voir `apps/site/lib/prisma.ts`).
+- `prisma.$use` n'existe plus : passer par les extensions du client (`prismaWithEmail` en est une).
+- Le site garde exprès le générateur `prisma-client-js` : ne pas basculer vers `prisma-client`.
+- Guide officiel : https://www.prisma.io/docs/orm/more/upgrade-guides/upgrading-versions/upgrading-to-prisma-7
 
 ## Particularités de Postgres à connaître
 

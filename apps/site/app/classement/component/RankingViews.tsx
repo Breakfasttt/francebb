@@ -177,7 +177,7 @@ export function RosterList({ entries }: { entries: RankingEntry[] }) {
               {index < 3 ? <Trophy size={20} /> : <Shield size={20} />}
             </span>
             <div className="min-w-0 flex-1">
-              <h2 className="m-0 border-0 p-0 text-base font-bold break-words text-bb-text normal-case not-italic">{entry.roster}</h2>
+              <h2 className="text-base font-bold break-words text-bb-text">{entry.roster}</h2>
               <p className="m-0 mt-0.5 flex flex-wrap items-center gap-x-2 text-sm text-bb-text-muted">
                 <span>Meilleur coach :</span>
                 {entry.userId ? (
@@ -206,7 +206,7 @@ export function HallOfFame({ years }: { years: HallOfFameYear[] }) {
       {years.map((entry) => (
         <li key={entry.year}>
           <Card className="flex h-full flex-col gap-3 p-4">
-            <h2 className="m-0 flex items-center justify-between border-0 p-0 text-xl font-bold text-bb-text normal-case not-italic">
+            <h2 className="flex items-center justify-between text-xl font-bold text-bb-text">
               <span>{entry.year}</span>
               <Trophy size={22} aria-hidden="true" className="text-bb-rank" />
             </h2>

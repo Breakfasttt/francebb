@@ -1,327 +1,148 @@
 ---
 name: BBFrance
-description: Le site de la communauté française de Blood Bowl, pensé d'abord pour le téléphone.
+description: Le forum et le site de tournois de la communauté française de Blood Bowl, sur téléphone et sur ordinateur.
 colors:
-  vestiaire-bg: "#111215"
-  vestiaire-surface: "#1a1c21"
-  vestiaire-surface-2: "#252830"
-  vestiaire-border: "#2f333b"
-  vestiaire-text: "#eceef1"
-  vestiaire-text-muted: "#a3a9b3"
-  blood-red: "#c8102e"
-  blood-red-hover: "#a90d26"
+  bg: "#111215"
+  surface: "#1a1c21"
+  surface-2: "#252830"
+  border: "#2f333b"
+  text: "#eceef1"
+  text-muted: "#a3a9b3"
+  accent: "#c8102e"
+  accent-hover: "#a90d26"
   on-accent: "#ffffff"
-  blood-red-text: "#ff7b80"
-  success-text: "#4ade80"
-  warning-text: "#fbbf24"
-  unread-blue: "#5aa9ff"
-  rank-gold: "#e2b54a"
+  accent-text: "#ff7b80"
+  unread: "#5aa9ff"
+  rank: "#e2b54a"
   nav-bg: "#16181c"
 typography:
   display:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.625rem"
+    fontFamily: "Archivo (variable), largeur 68 %"
     fontWeight: 800
-    lineHeight: 1.15
-  display-lg:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "2.5rem"
-    fontWeight: 800
-    lineHeight: 1.08
-  headline-lg:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.875rem"
+    textTransform: uppercase
+  heading:
+    fontFamily: "Archivo (variable), largeur 75 %"
     fontWeight: 700
-    lineHeight: 1.2
-  headline:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.5rem"
-    fontWeight: 700
-    lineHeight: 1.25
-  section:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.25rem"
-    fontWeight: 700
-    lineHeight: 1.3
-  title-lg:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.125rem"
-    fontWeight: 700
-    lineHeight: 1.375
-  lead:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1.0625rem"
+    textTransform: uppercase
+  body:
+    fontFamily: "Archivo (variable), largeur 100 %"
+    fontSize: "1rem"
     fontWeight: 400
     lineHeight: 1.6
-  title:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 700
-  body:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "1rem"
-    fontWeight: 400
-    lineHeight: 1.625
-  action:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.95rem"
-    fontWeight: 700
-  secondary:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.875rem"
-    fontWeight: 600
-  label:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.8125rem"
-    fontWeight: 700
-    lineHeight: 1.3
-    letterSpacing: "0.05em"
-  caption:
-    fontFamily: "Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif"
-    fontSize: "0.75rem"
-    fontWeight: 600
-    lineHeight: 1
 rounded:
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
+  sm: "3px"
+  md: "5px"
+  lg: "6px"
   full: "999px"
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "24px"
   tap: "44px"
-components:
-  button-primary:
-    backgroundColor: "{colors.blood-red}"
-    textColor: "{colors.on-accent}"
-    typography: "{typography.action}"
-    rounded: "{rounded.md}"
-    padding: "0 16px"
-    height: "44px"
-  button-primary-hover:
-    backgroundColor: "{colors.blood-red-hover}"
-  button-secondary:
-    backgroundColor: "{colors.vestiaire-surface-2}"
-    textColor: "{colors.vestiaire-text}"
-    typography: "{typography.action}"
-    rounded: "{rounded.md}"
-    padding: "0 16px"
-    height: "44px"
-  button-quiet:
-    textColor: "{colors.vestiaire-text-muted}"
-    typography: "{typography.action}"
-    rounded: "{rounded.md}"
-    padding: "0 16px"
-    height: "44px"
-  button-quiet-hover:
-    backgroundColor: "{colors.vestiaire-surface-2}"
-    textColor: "{colors.vestiaire-text}"
-  card:
-    backgroundColor: "{colors.vestiaire-surface}"
-    textColor: "{colors.vestiaire-text}"
-    rounded: "{rounded.lg}"
-  input:
-    backgroundColor: "{colors.vestiaire-surface-2}"
-    textColor: "{colors.vestiaire-text}"
-    typography: "{typography.body}"
-    rounded: "{rounded.md}"
-    padding: "0 12px"
-    height: "44px"
-  badge-neutral:
-    backgroundColor: "{colors.vestiaire-surface-2}"
-    textColor: "{colors.vestiaire-text-muted}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.sm}"
-    padding: "2px 6px"
-  count-badge:
-    backgroundColor: "{colors.blood-red}"
-    textColor: "{colors.on-accent}"
-    typography: "{typography.caption}"
-    rounded: "{rounded.full}"
-    height: "20px"
-  bottom-nav:
-    backgroundColor: "{colors.nav-bg}"
-    textColor: "{colors.vestiaire-text-muted}"
-    typography: "{typography.caption}"
-    height: "52px"
 ---
 
-# Design System: BBFrance
+# Design System : BBFrance
 
-> Ce fichier décrit l'apparence actuelle de BBFrance, relevée dans le code. Il est lu par l'outil de conception Impeccable (skill `impeccable`) pour que les nouveaux écrans restent cohérents. Les valeurs de l'en-tête (entre les lignes `---`) sont celles du thème par défaut « Vestiaire » ; la source de vérité reste le code : `packages/ui/src/tokens.css` et `packages/ui/src/themes/`. Les règles des thèmes et du téléphone sont dans le skill `ui`.
+> Ce fichier **dirige** l'apparence du site : toute nouvelle page ou refonte s'y conforme. Les couleurs de l'en-tête sont celles du thème par défaut « Sombre » ; la source de vérité des couleurs reste `packages/ui/src/themes/themeData.mjs`, celle des tailles et polices `packages/ui/src/tokens.css`. Le rangement des fichiers et l'outillage technique sont dans le skill `ui`, l'inventaire des composants dans le skill `reuse-first`.
 
-## Overview
+## L'idée : la feuille de match
 
-**Creative North Star: "Le Vestiaire"**
+BBFrance n'est ni une application SaaS ni un jeu vidéo. C'est **le forum et le tableau des tournois** d'une communauté de joueurs de plateau. Le modèle est la **feuille de match et le tableau d'affichage du club** : des lignes nettes, des chiffres qui se lisent d'un coup d'œil, des titres en capitales serrées comme sur un maillot ou un tableau de score, et un seul rouge pour ce qui compte.
 
-Les coulisses d'avant-match : une pièce sombre, rangée, où tout sert. On y vient pour se préparer, pas pour admirer le décor. Le fond est presque noir, les surfaces sont pleines et se distinguent par de légers écarts de gris, et une seule couleur forte, le rouge Blood Bowl, signale ce qui compte : l'action principale, le compteur à lire, l'onglet ouvert.
+Trois principes, dans cet ordre :
+1. **Lisible avant d'être joli.** Un coach doit trouver le prochain tournoi, sa place au classement ou la discussion qui l'intéresse sans réfléchir.
+2. **Dense mais rangé.** Un forum se lit en lignes, pas en cartes. On montre plus d'information par écran, séparée par des filets fins et des alignements stricts, pas par des boîtes.
+3. **Une voix de terrain.** Les capitales condensées, les chiffres tabulaires et le vocabulaire de la communauté donnent le caractère. Pas les effets.
 
-L'interface est tactile et robuste. Elle est pensée pour un coach qui tient son téléphone d'une main, sur le lieu d'un tournoi : chaque zone d'appui fait au moins 44 pixels, le texte des champs fait 16 pixels pour éviter le zoom automatique de l'iPhone, et la navigation principale tient dans une barre basse à cinq onglets. La densité est moyenne : des listes serrées mais aérées par des lignes d'au moins 56 pixels et des séparateurs fins.
+## Typographie
 
-Le Vestiaire (nommé « Sombre ») est le thème par défaut parmi cinq. Chaque thème garde ses couleurs et son esprit (Saison 3 en parchemin et bleu marine, NAF clair avec un bandeau rouge foncé…), mais la mise en page, les formes et les composants sont les mêmes pour tous. Les styles refusés sont le look « jeu vidéo » chargé (textures, néons, typographies fantasy, effets métalliques), le verre dépoli généralisé, et le tableau de bord SaaS générique (dégradés violets, cartes à ombre douce, icônes dans des pastilles).
+Une seule famille, **Archivo** en police variable (axes graisse et largeur), servie par le site lui-même (`apps/site/app/fonts/`, licence OFL). La largeur variable donne deux voix avec un seul fichier :
 
-**Key Characteristics:**
-- Fond sombre et surfaces pleines, séparées par des bordures fines plutôt que par des ombres.
-- Un seul accent, le rouge Blood Bowl, utilisé avec parcimonie.
-- Une seule police, Inter, en gras pour les actions et les titres.
-- Cibles tactiles de 44 pixels partout, barre de navigation basse sur téléphone.
-- Cinq thèmes interchangeables qui ne changent que les couleurs.
+- **Display** (`font-bb-display`) : Archivo condensé (largeur 68 %), graisse 800, **capitales**, interlettrage léger. Pour le titre d'une page (`h1`), le nom du site, les grands chiffres (score, points, classement).
+- **Heading** (`font-bb-heading`) : Archivo semi-condensé (75 %), graisse 700, capitales, interlettrage 0,04 em. Pour les en-têtes de section et de tableau, les intitulés de panneau (« Catégories », « Dernières discussions »), la navigation principale sur ordinateur.
+- **Texte** (`font-bb-sans`) : Archivo normal, 400 pour lire, 600 pour un titre de ligne ou un pseudo. Interligne 1,6 dans les messages.
+- **Chiffres** : toujours `tabular-nums` dans les tableaux, compteurs et dates, pour qu'ils s'alignent en colonne.
 
-## Colors
+Règles :
+- **Les capitales sont réservées aux voix Display et Heading.** Un titre de sujet, un bouton, un message restent en casse normale.
+- Un texte qu'on lit fait au moins 14 px ; un champ de saisie 16 px (pas de zoom automatique sur iPhone).
+- Pas de police fantasy, pas d'italique décoratif, pas de texte en dégradé.
 
-Une palette quasi neutre, froide et sombre, réveillée par un rouge franc et trois couleurs de signal (bleu, or, vert).
+## Couleur
 
-### Primary
-- **Rouge Blood Bowl** (`blood-red`) : fond du bouton principal, pastille de compteur, badge d'accent. C'est aussi la couleur des actions destructrices (`--bb-danger`), ce qui garde la palette courte.
-- **Rouge Blood Bowl foncé** (`blood-red-hover`) : survol du bouton principal.
-- **Rouge clair de lecture** (`blood-red-text`) : le rouge en version lisible sur fond sombre, pour un texte, une icône, l'onglet ouvert (`--bb-accent-text`, `--bb-nav-active`) ou un message d'erreur (`--bb-danger-text`). Son voile à 14 % d'opacité (`--bb-accent-soft`) marque le fond d'un élément actif.
+Le thème par défaut est sombre et froid. **Un seul accent, le rouge Blood Bowl**, et il est rare :
+- **Rouge plein** : l'action principale de l'écran (une seule), les pastilles de compteur.
+- **Rouge de lecture** (`accent-text`) : l'élément actif (onglet, rubrique sélectionnée, trait à gauche), un lien de titre au survol.
+- **Bleu** (`unread`) : « nouveau » (non lu) et le contour du focus clavier.
+- **Or** (`rank`) : le rang des coachs, rien d'autre.
+- Tout le reste est en gris : fond, surface, filets, texte et texte discret.
 
-### Secondary
-- **Bleu non-lu** (`unread-blue`) : sujets et messages non lus, et contour du focus clavier (`--bb-focus`). Le bleu dit « il y a du nouveau » ou « tu es ici ».
+Toute couleur passe par une variable `--bb-*` (ou la classe `bb-*` qui la porte), jamais en dur : c'est ce qui fait marcher les 5 thèmes. Les thèmes sont secondaires : on conçoit pour « Sombre », puis on vérifie les autres avec le test de contraste (`apps/site/tests/e2e/contraste.spec.ts`).
 
-### Tertiary
-- **Or de rang** (`rank-gold`) : cadre et badge de rang des membres (`--bb-rank`). Réservé à la reconnaissance.
+## Formes et profondeur
 
-### Neutral
-- **Noir de vestiaire** (`vestiaire-bg`) : fond de la page.
-- **Ardoise** (`vestiaire-surface`) : cartes et panneaux.
-- **Ardoise en relief** (`vestiaire-surface-2`) : champs de saisie, citations, bouton secondaire, survol des boutons discrets.
-- **Joint gris** (`vestiaire-border`) : bordures et séparateurs, y compris ceux de la navigation.
-- **Craie** (`vestiaire-text`) : texte principal.
-- **Craie passée** (`vestiaire-text-muted`) : texte secondaire, toujours au contraste AA.
-- **Fond de barre** (`nav-bg`) : barre du haut, barre basse et pied de page, un cran plus clair que la page.
-- Signaux : **vert succès** (`success-text`) et **ambre alerte** (`warning-text`), en texte ou en contour, jamais en grand aplat.
+- **Angles presque droits** : 3 px (badges), 5 px (boutons, champs), 6 px (panneaux). Le cercle est réservé aux avatars et aux pastilles.
+- **Plat.** Les zones se distinguent par un écart de teinte et des filets d'un pixel. L'ombre est réservée à ce qui flotte (menus, fenêtres, notifications).
+- **Filets plutôt que boîtes** : dans une liste, chaque ligne est séparée par un filet ; on n'enferme pas chaque ligne dans une carte.
+- **Trait d'accent** : 3 px à gauche de l'élément actif d'un panneau, 2 px sous l'onglet actif.
 
-### Named Rules
-**The One Red Rule.** Le rouge plein est réservé à l'action principale d'un écran et aux compteurs. Une page qui montre trois boutons rouges en a deux de trop : les autres passent en `secondary` ou `quiet`.
+## Mise en page
 
-**The Variable Only Rule.** Une couleur s'écrit toujours par sa variable `--bb-` (ou la classe `bb-` qui la porte), jamais en dur. C'est ce qui permet aux 5 thèmes de fonctionner. Seules exceptions : les couleurs de jeu du lecteur BBScheme, les cadres de rang de `UserAvatar.css`, et les aperçus du choix de thème (chacun montre un autre thème que le thème actif).
+### Le téléphone d'abord, l'ordinateur en entier
 
-**The AA Everywhere Rule.** Chaque paire texte et fond atteint le contraste AA dans chacun des 5 thèmes ; le test `apps/site/tests/e2e/contraste.spec.ts` le vérifie.
+- **Téléphone (jusqu'à 1024 px)** : une colonne, barre du haut de 56 px, barre basse à cinq onglets. Le panneau de gauche devient une rangée de filtres qui défile ou un tiroir ; la colonne de contexte passe sous le contenu ou disparaît. Cibles d'au moins 44 px.
+- **Ordinateur (à partir de 1025 px)** : **on utilise la largeur**. Pas de colonne centrée étroite avec de grands vides. La coquille (`SiteLayout`) a trois zones :
+  - **panneau gauche** (240 px) : l'action principale de la rubrique en haut (« Nouveau sujet », « Annoncer un tournoi »), puis la navigation de la rubrique (catégories avec compteurs, filtres), collé au défilement ;
+  - **contenu** : fluide, il prend toute la place restante ;
+  - **contexte à droite** (300 px, à partir de 1440 px) : seulement s'il sert (dernières discussions, prochain tournoi, membres en ligne). Jamais de remplissage.
+- **Largeur de lecture** : seul le texte long (corps d'un message, d'un article) est limité à environ 75 caractères ; le reste de la ligne sert aux informations (auteur, date, actions).
+- Contenu borné à 1760 px pour les très grands écrans, avec des marges de 24 à 32 px.
 
-## Typography
+### Les types d'écran (même grammaire partout)
 
-**Display Font:** Inter (avec system-ui, -apple-system, Segoe UI, Roboto)
-**Body Font:** Inter (même famille)
+| Type | Pages | Structure |
+|---|---|---|
+| **Liste** | forum, catégorie, tournois, classement, membres, articles, ligues, ressources | en-tête de page, panneau gauche (action + filtres), tableau de lignes, pagination |
+| **Détail** | sujet, tournoi, profil, article, ligue | en-tête (titre, fil d'Ariane, actions), contenu, contexte à droite |
+| **Formulaire** | créer, modifier, réglages | une colonne de 720 px au plus, boutons d'envoi en bas (collés en bas sur téléphone) |
+| **Tableau de bord** | accueil visiteur, accueil membre | une colonne principale de flux + contexte, pas de mosaïque de blocs |
+| **Administration** | modération, administration | panneau gauche d'onglets, contenu en tableau |
 
-**Character:** Une seule famille, Inter en version variable, servie par le site lui-même (`next/font/local`, fichier dans `apps/site/app/fonts/`). La hiérarchie vient du poids (gras pour les actions et les titres, demi-gras pour les libellés) bien plus que de la taille : l'échelle est courte, adaptée à l'écran d'un téléphone.
+### Logiques communes
 
-### Hierarchy
-Chaque rôle a sa classe ; les classes `text-bb-…` sont définies dans `packages/ui/src/tokens.css` (carte 207), les autres sont celles de Tailwind. Aucune taille écrite à la main (`text-[1.05rem]`) : un besoin nouveau devient un rôle ici, puis une classe.
+- **En-tête de page** (`PageHeader`) : titre en voix Display, fil d'Ariane au-dessus (une seule ligne, tronquée au milieu sur téléphone), action principale à droite sur ordinateur.
+- **Une seule action principale par écran**, toujours au même endroit : en haut du panneau gauche sur ordinateur, dans l'en-tête de page sur téléphone. Les autres actions sont secondaires ou discrètes, ou rangées dans un menu « … ».
+- **Recherche, filtres, tri** : même composant partout ; **cachés quand la liste est vide**.
+- **État vide** (`EmptyState`) : une phrase qui dit ce qui se passe et, s'il y en a une, l'action qui le change. Pas d'icône géante, pas de « Oups ».
+- **Dates** : dans une liste, la date relative (« il y a 2 h ») avec la date complète au survol ; dans un message, **la date et l'heure exactes** (« 21/11/2026 à 14:32 »), visibles.
+- **Lexique** : un mot par action, partout : Créer, Modifier, Supprimer, Répondre, Citer, Signaler, Enregistrer, Annuler. Tutoiement partout (communauté de joueurs).
 
-- **Display** (800, 1,625 rem puis 2,5 rem sur ordinateur, `text-bb-display` et `lg:text-bb-display-lg`) : grand titre de l'accueil et d'un article, rien d'autre.
-- **Headline** (700, 1,5 rem, `text-2xl`, puis 1,875 rem sur ordinateur, `lg:text-3xl`) : titre principal d'une page (`h1`).
-- **Section** (700, 1,25 rem, `text-xl`) : titre d'une section de lecture (mentions légales, titre d'un article au hasard sur ordinateur).
-- **Title-lg** (700, 1,125 rem, `text-lg`) : titre mis en avant dans une carte.
-- **Lead** (400, 1,0625 rem, `text-bb-lead`) : texte de lecture long (article, présentation d'une ligue, page « Jouer ») et titre d'un sujet dans une liste du forum.
-- **Title** (700, 1 rem, `text-base`) : titre d'une carte (`CardTitle`), sans majuscules ni italique.
-- **Body** (400, 1 rem, interligne 1,625) : texte courant, messages du forum, champs de saisie. 16 pixels minimum dans un champ.
-- **Action** (700, 0,95 rem) : texte des boutons et des onglets (les onglets en 600).
-- **Secondary** (400 à 600, 0,875 rem, `text-sm`) : informations sous un titre (auteur, date, nombre de réponses), libellés de formulaire, texte d'aide, aperçu d'une conversation. C'est la taille la plus utilisée du site, et **la plus petite pour un texte qu'on lit**.
-- **Label** (700, 0,8125 rem, capitales espacées, `text-bb-label uppercase tracking-wide`) : intertitre d'un groupe de liens, en-tête de colonne, légende d'un groupe de champs, intitulé d'une donnée (`dt`).
-- **Caption** (600 à 700, 0,75 rem, `text-xs`) : badges, pastilles de compteur, libellés de la barre basse et des tuiles du panneau « Plus », unité sous un nombre (« points », « CAS »), heure d'un message.
+## Le forum (modèle de référence)
 
-### Named Rules
-**The Weight Not Size Rule.** Pour faire ressortir un élément, on monte le poids avant la taille. Une page n'a qu'un seul titre au-dessus de 1 rem.
+- **Liste des catégories** : sections repliables avec un en-tête en voix Heading ; chaque forum est une ligne : nom (600) et description (discrète) à gauche, nombre de sujets et de messages en colonnes, dernier message (avatar, titre tronqué, auteur, date) à droite. Sur téléphone, la ligne passe sur deux niveaux.
+- **Liste des sujets** : une ligne par sujet : état (non lu en bleu, épinglé, verrouillé) par un petit marqueur, titre, auteur et date de création, réponses et vues en colonnes, dernier message à droite.
+- **Sujet** : **chaque message est un bloc net**, séparé du suivant. **L'auteur est dans une colonne à gauche du texte** (avatar avec cadre de rang, pseudo, rôle, nombre de messages, ligue) ; sur téléphone, cette colonne devient une ligne compacte en tête du message. En haut du message : **date et heure exactes** et numéro (`#12`), lien permanent. Citations encadrées avec l'auteur cité, repliables si longues. Pagination en haut et en bas. Actions du message (Répondre, Citer, …) en bas à droite, discrètes.
+- **Sujet de tournoi** : le même sujet, avec en tête une fiche du tournoi (date, lieu, format, places) et les actions d'inscription.
 
-**The 14 Pixel Floor Rule.** Un texte qu'on lit (phrase, information, aperçu, libellé de champ) fait au moins 14 pixels (`text-sm`), sur téléphone comme sur ordinateur. Seuls les rôles Label (en capitales, 13 pixels) et Caption (12 pixels) descendent plus bas, et jamais sous 12 pixels.
+## Icônes
 
-**The No Fantasy Type Rule.** Aucune police décorative ou « fantasy » : l'univers du jeu passe par les mots et les images, pas par la typographie.
+Lucide, **seulement quand l'icône apporte du sens** : navigation de la barre basse, état (verrou, épingle), action répétée en ligne (répondre, citer). **Pas d'icône devant chaque libellé**, pas d'icône dans une pastille colorée, pas d'icône décorative dans un titre ou un état vide.
 
-## Layout
+## Mouvement
 
-- **Seuil unique** : téléphone jusqu'à 1024 pixels, ordinateur à partir de 1025 pixels (`max-lg:` et `lg:`). Il n'y a pas d'autre point de rupture.
-- **Téléphone** : barre du haut de 56 pixels, contenu en une colonne, barre de navigation basse fixe à cinq onglets (Accueil, Forum, Tournois, Messages, Plus). L'onglet « Plus » ouvre un panneau qui contient le reste. Les formulaires longs passent en plein écran, sans la barre basse, avec leurs boutons collés en bas.
-- **Ordinateur** : barre du haut de 64 pixels avec la navigation en ligne, contenu centré sur 1280 pixels au plus, colonne latérale quand la page en a besoin (onglets verticaux de la modération et de l'administration).
-- **Rythme** : multiples de 4 pixels. Marges intérieures courantes de 16 pixels sur les côtés et 12 pixels en hauteur (en-tête de carte, ligne de liste), écarts de 8 à 12 pixels entre éléments.
-- **Défilement** : jamais de défilement horizontal de la page. Une rangée d'onglets trop longue défile seule, avec un fondu sur le bord où il reste des onglets.
+Rare et court (150 à 200 ms), seulement pour un changement d'état (ouverture d'un menu, d'un tiroir). Rien ne bouge au survol d'une ligne à part la couleur. Tout s'arrête si le système demande de réduire les animations. Exception assumée : les **cadres de rang** des avatars (`apps/site/common/components/UserAvatar/`), le seul endroit au look « jeu vidéo » (lueurs, rotation), parce que le rang est une récompense.
 
-**The Thumb Reach Rule.** Toute cible d'appui mesure au moins 44 × 44 pixels (`--bb-tap`) ; une ligne de liste cliquable, au moins 56 pixels de haut.
+## Interdits
 
-## Elevation & Depth
+Ces motifs signent un site généré par IA ou un modèle tout fait. Ils sont refusés :
+- les dégradés violets ou indigo, le texte en dégradé, le verre dépoli, les halos ;
+- la **mosaïque de cartes** icône + titre + phrase, et la page faite de blocs identiques empilés « Titre … Tout voir » ;
+- les blocs « Tu découvres / Tu joues déjà » et autres scissions de public ;
+- les emoji dans les titres, l'icône devant chaque libellé, les badges décoratifs ;
+- tout centré, les grands vides latéraux sur ordinateur, l'espacement identique partout ;
+- plus d'un bouton rouge plein par écran ;
+- les états vides passe-partout (grande icône + « Aucun élément pour l'instant ») ;
+- les logos dessinés ou les images générées : le nom **BBFRANCE** s'écrit en voix Display, sans écusson ;
+- les images de remplissage (placeholder) ;
+- les formules creuses : « Découvrez », « N'hésitez pas », « crucial », « Bienvenue sur la plateforme de référence ».
 
-Le système est plat. La profondeur vient d'abord de l'écart de teinte entre le fond, la surface et la surface en relief, et des bordures fines d'un pixel. Une seule ombre existe (en dehors des cadres de rang des avatars, voir Components), réservée à ce qui flotte au-dessus de la page (fenêtres, menus, panneaux, notifications). Le voile sombre (`--bb-overlay`, noir à 60 %) isole une fenêtre ouverte.
+## Écriture
 
-### Shadow Vocabulary
-- **Ombre flottante** (`box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35)`, variable `--bb-shadow`) : fenêtres, menus déroulants, panneaux, notifications.
-
-### Named Rules
-**The Flat Surface Rule.** Une carte posée dans la page n'a pas d'ombre : elle a une bordure. L'ombre est réservée aux éléments qui passent au-dessus des autres.
-
-**The No Glass Rule.** Le verre dépoli (flou d'arrière-plan) est désactivé par défaut, parce qu'il ralentit les téléphones modestes. Seul un thème peut l'activer, par `--bb-glass-blur` (aujourd'hui seul « Sombre »), et un composant ne l'utilise qu'à travers la prop `glass` de `Card`, jamais avec un flou écrit en dur.
-
-## Shapes
-
-Des angles adoucis, jamais tout ronds sauf pour les pastilles. Trois arrondis suffisent : 8 pixels pour les petits éléments (badges), 12 pixels pour ce qu'on touche (boutons, champs, onglets verticaux, cases de pagination), 16 pixels pour ce qui contient (cartes, panneaux). Le cercle complet est réservé aux avatars et aux pastilles de compteur. Les bordures font un pixel, toujours de la couleur `--bb-border` ; un trait plus épais ne sert qu'à marquer l'état actif (2 pixels sous un onglet, 3 pixels à gauche d'un onglet vertical).
-
-## Components
-
-Tous les composants viennent de `packages/ui` (fondé sur shadcn et Radix) et se réutilisent avant d'en créer un nouveau (skill `reuse-first`). Leur caractère commun : tactiles et robustes.
-
-### Buttons
-- **Shape :** angles adoucis (12 px), texte en gras, icône et texte espacés de 8 px.
-- **Primary :** fond rouge Blood Bowl, texte blanc, taille tactile `tap` (44 px de haut, 16 px de marge sur les côtés). Une seule par écran.
-- **Secondary :** fond ardoise en relief, bordure grise, texte craie ; la bordure s'éclaircit au survol.
-- **Quiet :** sans fond, texte craie passée ; au survol, fond ardoise en relief et texte craie. Pour les actions de second plan et les boutons d'icône (`tap-icon`, 44 × 44 px).
-- **Danger :** fond rouge, texte blanc, légère transparence au survol, pour supprimer ou bannir.
-- **Hover / Focus :** changement de couleur seulement, sans mouvement. Focus clavier : contour bleu de 2 px décalé de 2 px.
-- **Disabled :** opacité à 50 %, plus de clic.
-
-### Chips (badges)
-- **Style :** petite étiquette en gras de 12 px, angles de 8 px, contour d'un pixel. Variantes : neutre (fond ardoise en relief), accent (fond rouge), contour rouge, rang (contour or), non-lu (fond bleu), danger, succès.
-- **Pastille de compteur :** rond rouge de 20 px, nombre en gras blanc, « 9+ » au-delà de neuf, rien quand le compte est nul.
-
-### Cards / Containers
-- **Corner Style :** 16 px.
-- **Background :** ardoise (`--bb-surface`).
-- **Shadow Strategy :** aucune ombre (voir The Flat Surface Rule).
-- **Border :** un pixel gris joint ; l'en-tête est séparé du corps par la même bordure.
-- **Internal Padding :** 16 px pour le corps, 12 × 16 px pour l'en-tête et les lignes de liste.
-
-### Inputs / Fields
-- **Style :** fond ardoise en relief, bordure grise d'un pixel, angles de 12 px, 44 px de haut, texte de 16 px.
-- **Focus :** bordure et contour bleus de 2 px.
-- **Error / Disabled :** bordure rouge et message rouge juste sous le champ, relié au champ pour les lecteurs d'écran ; jamais dans une notification. Désactivé : opacité à 60 %.
-- **Structure :** `Field` empile libellé (14 px, demi-gras), champ, puis aide ou erreur.
-
-### Navigation
-- **Barre basse (téléphone) :** fond de barre, bordure haute, cinq cases égales d'au moins 52 px. Icône au-dessus d'un libellé de 12 px ; onglet ouvert en rouge clair et en gras, les autres en craie passée. Pastille de compteur sur l'icône.
-- **Barre du haut (ordinateur) :** 64 px, liens en ligne, lien ouvert marqué par `aria-current="page"` et la couleur active.
-- **Onglets dans la page :** texte demi-gras de 0,95 rem, trait de 2 px rouge clair sous l'onglet ouvert. Rangée qui défile sur téléphone, avec fondu sur les bords.
-- **Pagination :** « ‹ Page 3 sur 5 › » en cases de 44 px, accès direct à la dernière page.
-
-### Lignes du terrain de l'accueil (motif propre à l'accueil)
-L'accueil (`/`, carte 210) reprend deux lignes d'un terrain de Blood Bowl pour donner l'ordre de lecture, sur le fond du thème : il n'y a pas de terrain dessiné en fond (retiré à la demande du responsable, carte 214 annulée).
-- **En-but :** voile d'accent dégradé (de 19 % à 7 % de `--bb-accent`) fermé par un trait d'accent de 2 px, derrière le titre de l'accueil.
-- **Ligne de mêlée :** trait de 2 px en couleur du texte à 65 %, d'un bord à l'autre : horizontal sur téléphone, vertical entre deux colonnes sur ordinateur ; sans texte entre les deux camps du visiteur (le « contre » a été retiré le 17 novembre 2026).
-- **Blocs :** surfaces pleines (`--bb-surface`, bordure d'un pixel, 16 px d'arrondi).
-- **Actions :** « Aller au forum » est le bouton principal de l'accueil du visiteur (rouge plein, 52 px de haut) ; Discord, à côté, en bouton secondaire bordé de la couleur du texte discret.
-- **Accueil du membre :** depuis le 16 novembre 2026, ni en-but ni ligne de mêlée : une colonne centrée de 760 px ; le bouton « Forum » (principal, plein) est dans l'en-tête du bloc forum. Sur ordinateur, repères de défilement à droite : points de 10 px bordés de 2 px reliés par un trait de 2 px (`--bb-border`), la partie parcourue et le point en cours en `--bb-accent`, nom du bloc en pastille (`--bb-accent-soft` pour le bloc en cours).
-
-### Cadres de rang (exception assumée)
-Les avatars des membres portent un cadre selon leur rang (`common/components/UserAvatar/UserAvatar.css`) : bronze, argent, or qui pulse, platine bleu électrique, diamant qui scintille, maître violet et rose qui tourne, grand maître rouge et or qui tourne. C'est **le seul endroit du site où le look « jeu vidéo » est permis** (lueurs, couleurs vives, mouvement), décision du responsable du projet : le rang est une récompense, il doit se voir. Ces couleurs sont écrites en dur et ne suivent pas le thème.
-- **Performance :** une animation de cadre ne joue que sur l'opacité ou la rotation, que la carte graphique calcule sans redessiner l'avatar. Jamais d'ombre (`box-shadow`) ni de filtre (`filter`) animés : une lueur qui pulse est un calque fixe dont seule l'opacité varie (carte 207).
-- **Mouvement réduit :** toutes les animations de cadre s'arrêtent quand le téléphone demande de réduire les animations.
-- **Membre banni :** cadre rouge barré et étiquette « Banni », sans animation.
-
-## Do's and Don'ts
-
-### Do:
-- **Do** utiliser les variables `--bb-` et les classes `bb-` pour toute couleur, dans tous les thèmes.
-- **Do** donner à toute cible d'appui au moins 44 × 44 pixels (`size="tap"`, `size="tap-icon"`, `min-h-11`).
-- **Do** vérifier chaque écran en taille téléphone et dans plusieurs thèmes (au moins un sombre, un clair et Saison 3) avant de le dire terminé.
-- **Do** réserver le rouge plein à une seule action principale par écran.
-- **Do** séparer les surfaces par une bordure d'un pixel et un écart de teinte, et garder l'ombre pour ce qui flotte.
-- **Do** écrire un texte de 16 pixels au moins dans les champs de saisie.
-- **Do** prendre la taille d'un texte dans l'échelle de la section Typography : 14 pixels au moins pour ce qu'on lit.
-
-### Don't:
-- **Don't** écrire une couleur en dur ni réintroduire les anciennes variables (`--primary`, `--card-bg`, `--glass-border`…).
-- **Don't** adopter un look « jeu vidéo » chargé : textures, néons, typographies fantasy, effets métalliques. Seule exception : les cadres de rang des avatars.
-- **Don't** généraliser le verre dépoli ni écrire un flou en dur.
-- **Don't** produire un tableau de bord SaaS générique : dégradés violets, cartes à ombre douce, icônes dans des pastilles colorées.
-- **Don't** ajouter une deuxième police ni charger une police depuis Google.
-- **Don't** créer un défilement horizontal de la page ou un point de rupture autre que 1024/1025 pixels.
+Français simple, tutoiement, phrases courtes. Le vocabulaire de la communauté (coach, roster, ligue, commissaire, CDF, NAF, TV, sortie) est utilisé tel quel. Un bouton dit ce qu'il fait (« Annoncer le tournoi », pas « Valider »). Le skill `ecriture-fr` donne les règles, `humaniseur-fr` sert à une passe complète sur un texte long.

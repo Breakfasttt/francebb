@@ -5,7 +5,7 @@ description: Tout ce qu'il faut pour toucher à l'interface de BBFrance - où ra
 
 # Interface de BBFrance
 
-Les chemins sont relatifs à `apps/site`, sauf mention contraire. L'inventaire de ce qui existe déjà est dans le skill `reuse-first` : le lire avant de créer un composant.
+Les chemins sont relatifs à `apps/site`, sauf mention contraire. Ce skill dit **comment** faire (fichiers, variables, coquille, technique). **Le goût et la grammaire des écrans sont dans `DESIGN.md`** (racine du dépôt) : le lire avant toute modification d'interface. L'inventaire de ce qui existe déjà est dans le skill `reuse-first` : le lire avant de créer un composant.
 
 **Règle absolue du projet** : le site doit être impeccable sur téléphone **et** sur ordinateur. La plupart des coachs utilisent un téléphone. On écrit d'abord pour le téléphone, sans rien casser sur ordinateur.
 
@@ -173,6 +173,8 @@ Une autre largeur ne sert qu'à ajuster une grille (3 colonnes de cartes à 2, u
 
 ### Mise en page
 
+- **Toute page de liste ou de détail utilise `SiteLayout`** (`common/components/SiteLayout/SiteLayout.tsx`) : `header` (en-tête de page), `aside` (panneau gauche : action principale puis navigation de la rubrique, avec `PanelTitle` et `PanelLink`), contenu, `context` (colonne de droite à partir de 1440 px, ou 1025 px avec `contextFrom="lg"` pour un tableau de bord). Largeur bornée à 1760 px : la page utilise l'écran, jamais une colonne étroite centrée.
+- Titres : voix Display (`font-bb-display`) pour le titre de page, voix Heading (`font-bb-heading`) pour les en-têtes de section, de tableau et de panneau (`CardTitle` l'applique déjà). Le texte des membres (titre de sujet, message) reste en casse normale.
 - Sur téléphone, on empile en une colonne et on garde de l'air.
 - Un tableau trop large passe en liste de cartes (exemple : `app/membres/component/MembersTable.tsx`) ou défile dans son propre cadre (`overflow-x-auto`), jamais la page entière.
 - Un composant trop complexe à adapter : on simplifie son affichage sur téléphone.
@@ -182,7 +184,7 @@ Une autre largeur ne sert qu'à ajuster une grille (3 colonnes de cartes à 2, u
 
 `common/components/AppShell/` (`AppShell.tsx`, `MorePanel.tsx`, `navItems.ts`, `AppShell.css`).
 
-- **Barre du haut** : logo (sauf sur l'accueil) ; « Se connecter / S'inscrire » pour un visiteur ; cloche des notifications avec pastille pour un membre.
+- **Barre du haut** : le nom BBFRANCE composé en typographie (`SiteLogo`, sans image ni écusson), navigation en voix Heading sur ordinateur ; « Connexion » en bouton secondaire pour un visiteur (le rouge reste à l'action principale de la page) ; cloche des notifications avec pastille pour un membre.
 - **Barre basse** : Accueil, Forum, Tournois, Messages, Plus. Un seul onglet allumé (`activeBottomTab` de `navItems.ts`) ; « Plus » l'est quand son panneau est ouvert ou que la page y est rangée. Elle se cache pendant la saisie (attribut `data-typing` sur `<html>`), et ne revient que 350 ms après la perte du focus, pour qu'un appui juste après la saisie ne soit pas décalé.
 - **Panneau « Plus »** : profil ou connexion ; rubriques de `MORE_NAV` (ajouter une rubrique = une ligne dans `navItems.ts`, avec son `group`), rangées en trois groupes (`NAV_GROUPS`) ; modération et administration pour l'équipe ; choix du thème ; déconnexion ; pied de page. `membersOnly` réserve une rubrique aux membres connectés. Ni onglets ni filtres dans ce panneau.
 - **Lien « Aller au contenu »** : premier élément, visible au focus clavier, vers `<main id="contenu">`.
@@ -200,7 +202,7 @@ Une autre largeur ne sert qu'à ajuster une grille (3 colonnes de cartes à 2, u
 
 ### Titre de page et bouton retour
 
-`BackButton` (44 px sur téléphone) à gauche du titre, à toutes les tailles. `ForumListHeader`, `ComposeScreen`, la messagerie et `PageHeader` le font. Fiches d'un article ou d'une ligue : lien « Tous les articles » / « Toutes les ligues » au-dessus du contenu.
+`BackButton` (44 px) à gauche du titre **sur téléphone seulement** (`className="lg:hidden"`) : sur ordinateur, la navigation et le fil d'Ariane suffisent. `ForumListHeader` et `PageHeader` le font. Fiches d'un article ou d'une ligue : lien « Tous les articles » / « Toutes les ligues » au-dessus du contenu.
 
 ### Onglets
 
@@ -208,7 +210,7 @@ En haut de la page, avec `LinkTabs` : une rangée qui défile de côté, estomp�
 
 ### Filtres d'une liste
 
-- Ordinateur : colonne « Filtres » à gauche des résultats.
+- Ordinateur : colonne « Filtres » à gauche des résultats, sous l'action principale de la rubrique. Recherche, tri et filtres sont **masqués quand la liste est vide** et qu'aucun filtre n'est posé.
 - Téléphone : bouton « Filtres » au-dessus des résultats avec le nombre de filtres actifs (`CountBadge`), qui ouvre un `Sheet` (mêmes filtres, « Réinitialiser », « Voir N résultats ») ; chaque filtre actif rappelé en pastille avec une croix.
 - Modèles à copier : `app/articles/component/ArticleFilters.tsx` (page serveur), `app/ressources/component/ResourceFilters.tsx` (liste chargée dans le navigateur).
 - **Les filtres sont toujours écrits dans l'adresse** : un lien partagé ou un retour arrière retrouve la même liste. Page serveur : `searchParams`. Liste navigateur : `useSearchParams` au départ, puis `useSyncUrlFilters` (`common/hooks/useUrlFilters.ts`), sans recharger ni remplir l'historique.

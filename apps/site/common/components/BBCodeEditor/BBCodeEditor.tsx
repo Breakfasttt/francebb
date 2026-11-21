@@ -871,7 +871,7 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         const tools = group.tools.filter((tool) => !(isDesktop && PHONE_ONLY_MORE_TOOLS.has(tool.id)));
         return (
           <section key={group.title} aria-label={group.title} className="flex flex-col gap-1.5">
-            <h3 className="m-0 border-0 p-0 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase not-italic">{group.title}</h3>
+            <h3 className="text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">{group.title}</h3>
             <div className="grid grid-cols-2 gap-1.5">
               {tools.map((tool) => (
                 <Button

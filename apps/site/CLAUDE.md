@@ -16,7 +16,7 @@ Le site Next.js 16 : forum, tournois, profils, messagerie, classement, affichage
 
 ## Points à connaître
 
-- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Bases Postgres locales sans Docker (`scripts/local-postgres.mjs`) : `pnpm dev [vide|exemple|prod]` prépare la base du profil choisi (`../../scripts/dev.mjs`, données fictives dans `prisma/seedScript/exampleData.ts`, sauvegardes JSON de la production par `scripts/site-backup.ts`) ; la base des tests est recréée vide à chaque `pnpm test:e2e`.
+- **Base de données** : structure dans `prisma/schema.prisma`. Le client Prisma est généré dans `prisma/generated-client` (`pnpm exec prisma generate`). Bases Postgres locales sans Docker (`../../scripts/local-postgres.mjs`, à la racine du dépôt) : `pnpm dev [vide|exemple|prod]` prépare la base du profil choisi (`../../scripts/dev.mjs`, données fictives dans `prisma/seedScript/exampleData.ts`, sauvegardes JSON de la production par `scripts/site-backup.ts`) ; la base des tests est recréée vide à chaque `pnpm test:e2e`.
 - **Connexion des membres** : `auth.ts`, `auth.config.ts`, `proxy.ts` (code exécuté avant chaque page) et `lib/authGuard.ts` (`getActiveSession` refuse les visiteurs non connectés et les bannis).
 - **Forum** : toute requête sur les catégories, forums, sujets ou messages passe par `lib/forumAccess.ts`, qui cache aux membres ce qui est réservé à certains rôles.
 - **Emails des membres** : le client `prisma` par défaut ne les renvoie jamais ; `prismaWithEmail` est réservé à la connexion et aux mails.
