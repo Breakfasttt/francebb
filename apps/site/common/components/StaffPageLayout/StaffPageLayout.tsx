@@ -10,7 +10,8 @@
  */
 import Link from "next/link";
 import type { ComponentProps, ReactNode } from "react";
-import { Card, LinkTabs, Skeleton, type LinkTab } from "@bbfrance/ui";
+import { LinkTabs, Skeleton, type LinkTab } from "@bbfrance/ui";
+import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 
 /** Lien d'onglet sans retour en haut de la page : le contenu change juste à côté des onglets. */
@@ -31,29 +32,35 @@ interface StaffPageLayoutProps {
   children?: ReactNode;
 }
 
-export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs, contentLabel, loading, children }: StaffPageLayoutProps) {
+export default function StaffPageLayout({ title, subtitle, tabsLabel, tabs: tabsWithIcons, contentLabel, loading, children }: StaffPageLayoutProps) {
+  // DESIGN.md : pas d'icône devant chaque libellé ; les onglets n'affichent que leur nom
+  const tabs = tabsWithIcons.map((tab) => ({ ...tab, icon: undefined }));
   // Sur téléphone, la rangée d'onglets se place d'elle-même sur l'onglet ouvert (« Coachs bannis »…) et montre par un
   // fondu qu'elle défile : LinkTabs de @bbfrance/ui s'en charge depuis la carte 190.
   // La place des notifications sous le contenu est réservée par la coquille (AppShell.css, --app-toast-space)
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-6 font-bb-sans text-base text-bb-text lg:px-6 lg:pb-10 xl:px-8">
       <ForumListHeader title={title} subtitle={subtitle} backHref="/" backTitle="Retour" backPreferHistory />
 
       {loading ? (
-        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-6" aria-label="Chargement">
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-6" aria-label="Chargement">
           <Skeleton className="h-11 w-full lg:h-96" />
           <Skeleton className="h-96 w-full" />
         </div>
       ) : (
-        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6">
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6">
           {/* Téléphone : rangée d'onglets en haut ; elle touche les bords de l'écran pour défiler de côté */}
           <div className="-mx-3 min-w-0 lg:hidden">
             <LinkTabs label={tabsLabel} tabs={tabs} linkComponent={TabLink} className="px-3" />
           </div>
-          {/* Ordinateur : colonne d'onglets, qui reste visible quand on fait défiler le contenu */}
-          <Card className="hidden p-2 lg:sticky lg:top-24 lg:block">
-            <LinkTabs label={tabsLabel} tabs={tabs} orientation="vertical" linkComponent={TabLink} />
-          </Card>
+          {/* Ordinateur : panneau gauche (DESIGN.md), même allure que le profil et le classement, collé au défilement */}
+          <nav aria-label={tabsLabel} className="hidden flex-col lg:sticky lg:top-20 lg:flex">
+            {tabs.map((tab) => (
+              <PanelLink key={tab.href} href={tab.href} active={tab.active} count={tab.count || undefined} linkComponent={TabLink}>
+                {tab.label}
+              </PanelLink>
+            ))}
+          </nav>
           <section aria-label={contentLabel} className="flex min-w-0 flex-col gap-4">
             {children}
           </section>

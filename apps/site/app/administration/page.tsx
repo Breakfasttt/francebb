@@ -71,7 +71,7 @@ export default function AdministrationPage() {
 
   const layoutProps = {
     title: "Administration",
-    subtitle: "Gestion avancée de la plateforme",
+    subtitle: "Réglages du site, rôles et structure du forum",
     tabsLabel: "Onglets de l'administration",
     tabs,
   };

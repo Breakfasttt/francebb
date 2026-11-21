@@ -29,9 +29,11 @@ export interface ForumIndexCategory {
 interface CategoryProps {
   category: ForumIndexCategory;
   unreadForumIds: string[];
+  /** Nombre de messages par forum (identifiant du forum vers nombre) */
+  postCounts: Record<string, number>;
 }
 
-export default function ForumCategory({ category, unreadForumIds }: CategoryProps) {
+export default function ForumCategory({ category, unreadForumIds, postCounts }: CategoryProps) {
   const categoryHasNew = category.forums.some((forum) => unreadForumIds.includes(forum.id));
   const [isExpanded, setIsExpanded] = useState(true);
   const listId = useId();
@@ -48,7 +50,7 @@ export default function ForumCategory({ category, unreadForumIds }: CategoryProp
         className="min-h-11 w-full justify-start gap-2 rounded-none bg-bb-surface-2 px-3 py-2 text-left font-normal whitespace-normal text-bb-text hover:bg-bb-surface-2 focus-visible:-outline-offset-2 lg:px-4"
       >
         <span className="min-w-0 flex-1">
-          <ForumColumnsHeader title={<span className="flex items-center gap-2 text-bb-text">{category.name}{categoryHasNew && <UnreadDot />}</span>} />
+          <ForumColumnsHeader withPosts title={<span className="flex items-center gap-2 text-bb-text">{category.name}{categoryHasNew && <UnreadDot />}</span>} />
         </span>
         <ChevronDown size={18} aria-hidden="true" className={`shrink-0 text-bb-text-muted transition-transform ${isExpanded ? "" : "-rotate-90"}`} />
       </Button>
@@ -67,6 +69,7 @@ export default function ForumCategory({ category, unreadForumIds }: CategoryProp
                   isLocked: forum.isLocked,
                   isTournamentForum: forum.isTournamentForum,
                   topicCount: forum._count.topics,
+                  postCount: postCounts[forum.id] ?? 0,
                   hasNew: unreadForumIds.includes(forum.id),
                   lastTopic: lastTopic && {
                     title: lastTopic.title,

@@ -8,7 +8,7 @@
  */
 import { useEffect, useState, useTransition } from "react";
 import Link from "next/link";
-import { BookOpen, Gamepad2, Map, MonitorSmartphone, Save, ShieldCheck, Trophy, Users } from "lucide-react";
+import { Gamepad2, Map, MonitorSmartphone, Save, ShieldCheck, Trophy, Users } from "lucide-react";
 import { Button, Card, CardBody, CardHeader, CardTitle, Skeleton, toast } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { getHowToPlaySettings, updateHowToPlaySettings } from "../actions";
@@ -72,7 +72,6 @@ export default function HowToPlayTab() {
     <div className="flex flex-col gap-4">
       <Card className="overflow-hidden">
         <CardHeader>
-          <BookOpen size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Guide « Jouer »</CardTitle>
         </CardHeader>
         <CardBody>
@@ -95,7 +94,6 @@ export default function HowToPlayTab() {
               <Card key={section.key} className="overflow-hidden">
                 <section aria-label={section.title}>
                   <CardHeader>
-                    <Icon size={18} className="text-bb-text-muted" aria-hidden="true" />
                     <CardTitle as="h3">
                       <label htmlFor={section.key}>{section.title}</label>
                     </CardTitle>

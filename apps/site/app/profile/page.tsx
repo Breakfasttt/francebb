@@ -17,6 +17,7 @@ import { UserX } from "lucide-react";
 import { Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
 
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
@@ -100,7 +101,7 @@ export default function ProfilePage() {
 
   // Carte 063 : le titre de la page s'affiche tout de suite, sans attendre les données du membre.
   const header = (
-    <ForumListHeader title="Mon compte" subtitle="Gérez vos informations et votre activité" backHref="/" backTitle="Retour" backPreferHistory />
+    <ForumListHeader title="Mon compte" subtitle="Tes informations, tes réglages et ton activité" backHref="/" backTitle="Retour" backPreferHistory />
   );
 
   if (loading || status === "loading") {
@@ -131,10 +132,21 @@ export default function ProfilePage() {
       {header}
 
       <div className={PROFILE_LAYOUT_CLASS}>
-        <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
+        {/* Panneau gauche (DESIGN.md) : la fiche du membre, puis les rubriques du compte en navigation verticale */}
+        <div className="flex flex-col gap-5 lg:sticky lg:top-20">
+          <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
+          <nav aria-label="Rubriques du compte" className="hidden flex-col lg:flex">
+            {tabs.map((tab) => (
+              <PanelLink key={tab.href} href={tab.href} active={tab.active} linkComponent={TabLink}>
+                {tab.label}
+              </PanelLink>
+            ))}
+          </nav>
+        </div>
 
         <section aria-label={TABS.find((t) => t.id === activeTab)?.label} className="flex min-w-0 flex-col gap-4">
-          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="-mx-3 px-3 lg:mx-0 lg:px-0" />
+          {/* Téléphone : rangée d'onglets qui défile */}
+          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="-mx-3 px-3 lg:hidden" />
 
           {activeTab === "followed" && <ProfileFollowedTopics />}
           {activeTab === "activity" && <ProfileActivity activities={activities} userName={user.name} />}

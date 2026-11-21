@@ -35,7 +35,6 @@ export default function ProfileFollowedTopics() {
     <div className="flex flex-col items-center gap-4">
       <Card className="w-full overflow-hidden">
         <CardHeader>
-          <Bookmark size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Mes sujets suivis</CardTitle>
         </CardHeader>
         {loading ? (
@@ -44,7 +43,7 @@ export default function ProfileFollowedTopics() {
           </div>
         ) : data.topics.length === 0 ? (
           <EmptyState icon={<Bookmark size={32} />} title="Aucun sujet suivi">
-            Pour suivre un sujet, choisissez « Suivre le sujet » dans ses outils.
+            Pour suivre un sujet, choisis « Suivre le sujet » dans ses outils.
           </EmptyState>
         ) : (
           <ul className="m-0 list-none p-0">

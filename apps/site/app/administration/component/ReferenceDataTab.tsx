@@ -8,7 +8,7 @@
  * `getAllReferenceDataAdmin`, `createReferenceData`, `updateReferenceData` et `deleteReferenceData` sont inchangées.
  */
 import { useEffect, useState, useTransition } from "react";
-import { Check, Database, Edit2, Plus, Trash2, X } from "lucide-react";
+import { Check, Edit2, Plus, Trash2, X } from "lucide-react";
 import {
   Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Field, Input, Label, Skeleton, Switch, toast,
 } from "@bbfrance/ui";
@@ -134,7 +134,6 @@ export default function ReferenceDataTab() {
     <div className="flex flex-col gap-4">
       <Card className="overflow-hidden">
         <CardHeader className="flex-wrap">
-          <Database size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Données de référence</CardTitle>
           {!isCreating && (
             <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" onClick={() => setIsCreating(true)}>

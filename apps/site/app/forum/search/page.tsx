@@ -194,7 +194,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           {posts.length === 0 ? (
             <Card>
               <EmptyState icon={<SearchX size={40} />} title="Aucun résultat">
-                Rien ne correspond à vos filtres. Essayez d&apos;élargir votre recherche : moins de mots, une période plus longue
+                Rien ne correspond à tes filtres. Élargis ta recherche : moins de mots, une période plus longue
                 ou tous les forums.
               </EmptyState>
             </Card>

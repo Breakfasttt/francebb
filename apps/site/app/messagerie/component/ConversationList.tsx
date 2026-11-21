@@ -10,8 +10,8 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { format, formatDistanceToNow, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
-import { MessagesSquare, Users } from "lucide-react";
-import { Avatar, CountBadge, EmptyState, Skeleton, cn } from "@bbfrance/ui";
+import { Users } from "lucide-react";
+import { Avatar, CountBadge, Skeleton, cn } from "@bbfrance/ui";
 import { getConversations } from "../actions";
 import { conversationTitle, plainPreview } from "./conversationText";
 
@@ -64,9 +64,9 @@ export default function ConversationList({ activeId, version }: ConversationList
 
   if (conversations.length === 0) {
     return (
-      <EmptyState icon={<MessagesSquare size={32} />} title="Aucune conversation pour le moment.">
-        Commencez à discuter avec d&apos;autres coachs !
-      </EmptyState>
+      <p className="px-3 py-4 text-bb-text-muted">
+        Pas encore de conversation. Écris à un coach depuis son profil ou avec « Nouvelle conversation ».
+      </p>
     );
   }
 
@@ -127,7 +127,7 @@ export default function ConversationList({ activeId, version }: ConversationList
                 <span className={cn("truncate text-sm", unreadCount > 0 ? "text-bb-text" : "text-bb-text-muted")}>
                   {lastMsg ? (
                     <>
-                      <span className="font-semibold">{lastMsg.authorId === currentUserId ? "Vous" : lastMsg.author.name} : </span>
+                      <span className="font-semibold">{lastMsg.authorId === currentUserId ? "Toi" : lastMsg.author.name} : </span>
                       {plainPreview(lastMsg.content)}
                     </>
                   ) : (

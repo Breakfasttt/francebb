@@ -11,7 +11,7 @@
  */
 import { Suspense, useCallback, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, MessagesSquare, Plus } from "lucide-react";
+import { MessagesSquare, Plus } from "lucide-react";
 import { Button, Card, EmptyState, Skeleton, toast } from "@bbfrance/ui";
 import ConversationList from "./component/ConversationList";
 import ConversationView from "./component/ConversationView";
@@ -92,15 +92,11 @@ function MessagerieContent() {
           <ConversationView key={activeId} conversationId={activeId} onChange={refreshList} onClose={() => router.push("/messagerie")} />
         </Card>
       ) : (
-        <Card className="hidden lg:flex lg:min-h-0 lg:flex-col lg:items-center lg:justify-center">
-          <EmptyState icon={<MessagesSquare size={40} />} title="Choisissez une conversation">
-            <p className="m-0">Ou commencez-en une nouvelle avec le bouton « Nouvelle conversation ».</p>
-            <p className="m-0 mt-4 flex items-start justify-center gap-2 text-left">
-              <Lock size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-              <span>{ENCRYPTION_NOTE}</span>
-            </p>
-          </EmptyState>
-        </Card>
+        // Aucune conversation ouverte : une phrase et la note de chiffrement, sans icône géante (DESIGN.md)
+        <div className="hidden flex-col gap-3 px-2 py-4 lg:flex">
+          <p className="text-bb-text">Choisis une conversation dans la liste, ou commence-en une avec « Nouvelle conversation ».</p>
+          <p className="max-w-[60ch] text-sm text-bb-text-muted">{ENCRYPTION_NOTE}</p>
+        </div>
       )}
 
       {showNew && <NewConversationModal onClose={() => setShowNew(false)} />}

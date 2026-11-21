@@ -263,7 +263,9 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
  * l'en-tête de page porte l'action principale.
  */
 export function TournamentFilterAside({ places, createHref, showFilters = true }: { places: PlaceOptions; createHref?: string | null; showFilters?: boolean }) {
-  const { hrefWith } = useParamUpdater();
+  const { hrefWith, searchParams } = useParamUpdater();
+  // « Réinitialiser » n'apparaît que si un filtre est posé
+  const hasActive = Array.from(searchParams.entries()).some(([key, value]) => !NOT_FILTERS.has(key) && !!value);
   return (
     <aside aria-label="Filtres des tournois" className="hidden lg:block">
       <div className="sticky top-20 flex max-h-[calc(100dvh-6rem)] flex-col gap-5 overflow-y-auto overscroll-contain">
@@ -275,10 +277,12 @@ export function TournamentFilterAside({ places, createHref, showFilters = true }
         {showFilters && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
-              <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
-              <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
-                <Link href={resetHref(hrefWith)}>Réinitialiser</Link>
-              </Button>
+              <h2 className="font-bb-heading text-bb-label text-bb-text-muted">Filtres</h2>
+              {hasActive && (
+                <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
+                  <Link href={resetHref(hrefWith)}>Réinitialiser</Link>
+                </Button>
+              )}
             </div>
             <TournamentFilterFields prefix="aside" places={places} />
           </div>

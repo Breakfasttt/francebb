@@ -8,7 +8,7 @@
  * `deleteCustomRole` et `reorderRoles` sont inchangées.
  */
 import { useEffect, useState, useTransition } from "react";
-import { GripVertical, Lock, Plus, ShieldCheck, Trash2 } from "lucide-react";
+import { GripVertical, Lock, Plus, Trash2 } from "lucide-react";
 import { Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Field, Input, Label, Skeleton, toast } from "@bbfrance/ui";
 import { getRolePower } from "@/lib/roles";
 import { createCustomRole, deleteCustomRole, getAllRoles, reorderRoles } from "../actions";
@@ -226,7 +226,6 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
     <div className="flex flex-col gap-4">
       <Card className="overflow-hidden">
         <CardHeader>
-          <Plus size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Nouveau rôle</CardTitle>
         </CardHeader>
         <CardBody>
@@ -262,7 +261,6 @@ export default function RolesTab({ currentUserRole, isSuperAdmin }: RolesTabProp
 
       <Card className="overflow-hidden">
         <CardHeader>
-          <ShieldCheck size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Hiérarchie</CardTitle>
           {isPending && <span className="text-sm text-bb-text-muted">Enregistrement…</span>}
         </CardHeader>

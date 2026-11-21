@@ -7,7 +7,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { AtSign, Bell, Mail, MessageSquareReply, Trophy } from "lucide-react";
-import { Avatar, Card, EmptyState, PageNav, cn } from "@bbfrance/ui";
+import { Avatar, Card, PageNav, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { UnreadDot, frenchDateTime } from "@/app/forum/component/ForumListItems";
@@ -34,21 +34,21 @@ function NotificationText({ notification }: { notification: NotificationRow }) {
   );
   switch (notification.type) {
     case "MENTION":
-      return <>{actor} vous a mentionné dans « {topicTitle} »</>;
+      return <>{actor} t&apos;a mentionné dans « {topicTitle} »</>;
     case "FOLLOWED_REPLY":
-      return <>{actor} a répondu dans « {topicTitle} », un sujet que vous suivez</>;
+      return <>{actor} a répondu dans « {topicTitle} », un sujet que tu suis</>;
     case "TOURNAMENT_PROMOTED":
-      return <>Une place s&apos;est libérée dans le tournoi « {topicTitle} » : vous passez de la liste d&apos;attente aux pré-inscrits</>;
+      return <>Une place s&apos;est libérée dans le tournoi « {topicTitle} » : tu passes de la liste d&apos;attente aux pré-inscrits</>;
     case "TOURNAMENT_FORMAT_CHANGED":
       return (
         <>
-          {actor} a changé le format du tournoi « {topicTitle} » (individuel ou par équipes) : votre inscription a été supprimée,
-          inscrivez-vous de nouveau si vous le souhaitez
+          {actor} a changé le format du tournoi « {topicTitle} » (individuel ou par équipes) : ton inscription a été supprimée,
+          inscris-toi de nouveau si tu le souhaites
         </>
       );
     default: {
       const group = notification.conversation?.isGroup ? notification.conversation.name : null;
-      return group ? <>{actor} vous a écrit dans la conversation « {group} »</> : <>{actor} vous a envoyé un message privé</>;
+      return group ? <>{actor} t&apos;a écrit dans la conversation « {group} »</> : <>{actor} t&apos;a envoyé un message privé</>;
     }
   }
 }
@@ -61,10 +61,10 @@ export default async function NotificationsPage({ searchParams }: { searchParams
   const { notifications, unread, totalPages } = data;
 
   return (
-    <div className="mx-auto w-full max-w-[960px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Notifications"
-        subtitle="Mentions, réponses dans vos sujets suivis, messages privés et tournois"
+        subtitle="Mentions, réponses dans tes sujets suivis, messages privés et tournois"
         backHref="/"
         backTitle="Retour à l'accueil"
       >
@@ -107,9 +107,9 @@ export default async function NotificationsPage({ searchParams }: { searchParams
               })}
             </ul>
           ) : (
-            <EmptyState icon={<Bell size={40} />} title="Aucune notification">
-              Vous serez prévenu ici quand un membre vous mentionne, répond dans un sujet que vous suivez ou vous écrit, et quand votre inscription à un tournoi change.
-            </EmptyState>
+            <p className="px-4 py-5 text-bb-text-muted">
+              Rien de nouveau. Tu seras prévenu ici quand un membre te mentionne, répond dans un sujet que tu suis ou t&apos;écrit, et quand ton inscription à un tournoi change.
+            </p>
           )}
         </Card>
 

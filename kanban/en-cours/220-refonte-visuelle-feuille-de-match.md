@@ -50,14 +50,18 @@ Le 21 novembre 2026, le responsable a fixé la priorité : un site beau, simple,
 - [x] Fiche de tournoi : sans icônes ni trophée, nom une seule fois, inscrits en clair, logistique écrite, badges neutres ; « Se connecter pour s'inscrire » pour un visiteur ; « Inscrits (N) » hors gestion.
 - [x] Filtres des tournois : localisation et format visibles, le reste derrière « Plus de filtres » (ordinateur).
 - [x] Date relative dans les listes (`RelativeTime`), date complète au survol.
-- [ ] Forum : colonne « Messages » (il faut compter les messages par forum).
+- [x] Forum : colonne « Messages » (une requête groupée en cache 60 s), unités masquées sur ordinateur.
 - [x] Sujet : « Se connecter pour répondre » pour un visiteur dans le panneau gauche.
 - [ ] Sujet : icône des outils sur téléphone plus explicite.
 - [x] Pied de page sur ordinateur dans le flux.
 - [ ] Fondu au bord des onglets qui défilent (classement sur téléphone).
 - [x] Passe 2 (relecture critique-ui) : « Jouer » sans illustrations générées (page de lecture avec sommaire à gauche) ; statistiques en tableau de score ; médias sans états vides passe-partout ; fiche de ligue en page de détail (fil d'Ariane, rôles réunis, contexte à droite) ; écusson de remplacement supprimé (blason seulement s'il existe) ; chargement des ressources en lignes ; un seul bouton rouge sur un sujet de tournoi ; panneau gauche à 240 px partout ; mois des dates en discret ; « Palmarès » ; classement sans rouge sur les points.
 - [ ] Texte de « Jouer » (saisi dans l'administration) : tutoiement, sous-titre en casse normale ; passe `humaniseur-fr`.
-- [ ] « Réinitialiser » des filtres seulement quand un filtre est actif ; colonne NAF du classement masquée si vide.
+- [x] « Réinitialiser » des filtres seulement quand un filtre est actif ; colonne NAF du classement masquée si vide.
+- [x] Passe 3 (pages membres) : profil avec fiche et rubriques dans le panneau gauche ; administration et modération (`StaffPageLayout`) en liens de panneau sans icônes ; icônes retirées devant les titres de panneau ; journal de modération (purge discrète, cachée si vide) ; messagerie, notifications et non-lus tutoyés, sans icône géante ; non-lus dans la coquille du forum ; annuaire des membres en lignes sur téléphone, « Message privé » en lien texte ; `EmptyState` partagé aligné à gauche, sans icône ; bandeau visiteur du forum corrigé sur téléphone.
+- [ ] Tutoiement de tout le site : environ 128 « vous » restants dans les textes (formulaires, notifications de succès) ; adapter les tests qui les citent.
+- [ ] Annuaire des membres : filtres dans un panneau gauche (`SiteLayout`), « Changer le rôle » dans le menu « … ».
+- [ ] Accueil : la critique demande encore moins de blocs encadrés (flux sans cadre) ; à trancher avec le user.
 - [ ] Revue de cohérence finale de toutes les pages (profil, messagerie, membres, statistiques, médias, administration, modération), puis déclinaison des 4 autres thèmes et test de contraste.
 - [ ] Parcours téléphone et ordinateur (`test:parcours`) ; les tests e2e qui cherchent l'ancien logo ou « Se connecter / S'inscrire » peuvent devoir être mis à jour.
 

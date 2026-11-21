@@ -72,15 +72,31 @@ const getCachedRecentTopics = unstable_cache(
   { revalidate: 60, tags: ["forum-categories"] }
 );
 
+// Nombre de messages par forum (messages et sujets non supprimés) : une seule requête groupée, gardée 60 secondes.
+// Il n'est affiché que pour les forums que le visiteur peut voir (getCachedCategories filtre déjà les forums).
+const getCachedPostCounts = unstable_cache(
+  async (): Promise<Record<string, number>> => {
+    const rows = await prisma.$queryRaw<{ forumId: string; count: bigint }[]>`
+      SELECT t."forumId" AS "forumId", COUNT(p.id) AS count
+      FROM "Post" p JOIN "Topic" t ON t.id = p."topicId"
+      WHERE p."isDeleted" = false AND t."isDeleted" = false
+      GROUP BY t."forumId"`;
+    return Object.fromEntries(rows.map((row) => [row.forumId, Number(row.count)]));
+  },
+  ["forum-post-counts-v1"],
+  { revalidate: 60, tags: ["forum-categories"] }
+);
+
 export default async function ForumPage() {
   const session = await getActiveSession();
   const userId = session?.user?.id;
 
   const access = await getForumAccess();
-  const [categories, unread, recentTopics] = await Promise.all([
+  const [categories, unread, recentTopics, postCounts] = await Promise.all([
     getCachedCategories(access.roles),
     userId ? getUnreadState(userId) : null,
     getCachedRecentTopics(access.roles),
+    getCachedPostCounts(),
   ]);
 
   // Forums (sous-forums compris) contenant au moins un topic non lu
@@ -134,7 +150,7 @@ export default async function ForumPage() {
         </Link>
       )}
       {categories.map((category) => (
-        <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} />
+        <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} postCounts={postCounts} />
       ))}
     </SiteLayout>
   );

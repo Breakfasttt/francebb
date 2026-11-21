@@ -474,7 +474,7 @@ test.describe("3.9 sujets non lus", () => {
     await dialog.getByRole("button", { name: "Confirmer" }).click();
     await expect(dialog).toBeHidden();
     await page.goto("/forum/unread", { waitUntil: "networkidle" });
-    await expect(page.getByText(/Vous êtes à jour/)).toBeVisible();
+    await expect(page.getByText(/Tu as tout lu/)).toBeVisible();
     const back = page.getByRole("link", { name: /forum/i }).filter({ visible: true }).filter({ hasText: /Retour/ });
     await expect(back.first()).toHaveAttribute("href", "/forum");
     await page.screenshot({ path: testInfo.outputPath("non-lus-vide.png"), fullPage: false });

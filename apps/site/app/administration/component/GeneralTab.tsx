@@ -6,7 +6,6 @@
  * inchangées.
  */
 import { useEffect, useState, useTransition } from "react";
-import { Globe, Save } from "lucide-react";
 import { Button, Card, CardBody, CardHeader, CardTitle, Field, Input, Skeleton, toast } from "@bbfrance/ui";
 import { getSiteSetting, updateSiteSetting } from "../actions";
 
@@ -43,11 +42,9 @@ export default function GeneralTab() {
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <Globe size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Paramètres généraux</CardTitle>
       </CardHeader>
       <CardBody className="flex flex-col gap-4">
-        <p className="m-0 text-[0.95rem] text-bb-text-muted">Configuration globale du site BBFrance.</p>
         {isLoading ? (
           <Skeleton className="h-20 w-full" />
         ) : (
@@ -67,7 +64,6 @@ export default function GeneralTab() {
           </Field>
         )}
         <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto lg:self-end" disabled={isPending || isLoading} onClick={handleSave}>
-          <Save size={18} aria-hidden="true" />
           {isPending ? "Enregistrement…" : "Enregistrer"}
         </Button>
       </CardBody>

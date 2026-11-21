@@ -64,10 +64,11 @@ export function ForumVisitorBanner() {
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-x-4 gap-y-2 rounded-bb-lg border border-bb-border border-l-[3px] border-l-bb-accent bg-bb-surface py-2 pr-2 pl-4" role="region" aria-label="Participer au forum">
+    // Téléphone : texte puis bouton pleine largeur, croix en haut à droite ; ordinateur : une seule ligne
+    <div className="relative flex flex-col gap-3 rounded-bb-lg border border-bb-border border-l-[3px] border-l-bb-accent bg-bb-surface py-3 pr-12 pl-4 sm:flex-row sm:items-center sm:gap-4 sm:py-2" role="region" aria-label="Participer au forum">
       <p className="min-w-0 flex-1 text-[0.95rem] text-bb-text-muted">Tout se lit sans compte. Pour écrire, connecte-toi : le compte se crée en un clic.</p>
-      <JoinButton callbackUrl="/forum" className="shrink-0" />
-      <Button type="button" variant="quiet" size="tap-icon" aria-label="Masquer ce message" onClick={close} className="shrink-0">
+      <JoinButton callbackUrl="/forum" className="shrink-0 max-sm:w-full" />
+      <Button type="button" variant="quiet" size="tap-icon" aria-label="Masquer ce message" onClick={close} className="absolute top-0.5 right-0.5">
         <X size={18} aria-hidden="true" />
       </Button>
     </div>

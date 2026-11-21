@@ -73,7 +73,7 @@ test("[membre] mention sous la cloche, filtrée par les droits du forum, puis lu
   expect(box?.height ?? 0).toBeGreaterThanOrEqual(44);
   await bell.click();
   await expect(page).toHaveURL(/\/notifications$/, { timeout: 60_000 });
-  const row = page.getByRole("link", { name: /vous a mentionné dans/ });
+  const row = page.getByRole("link", { name: /t.a mentionné dans/ });
   await expect(row).toBeVisible();
   await row.click();
   await expect(page).toHaveURL(new RegExp(`/forum/topic/${TOPIC.id}\\?page=1#post-`), { timeout: 60_000 });

@@ -62,6 +62,8 @@ export interface ForumRowData {
   isLocked: boolean;
   isTournamentForum: boolean;
   topicCount: number;
+  /** Nombre de messages du forum (accueil du forum) ; sans lui, la colonne « Messages » n'est pas affichée */
+  postCount?: number;
   hasNew: boolean;
   lastTopic?: {
     title: string;
@@ -84,7 +86,7 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
   return (
     <Link
       href={`/forum/${forum.id}`}
-      className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-1 border-b border-l-[3px] border-b-bb-border px-3 py-3 text-bb-text no-underline last:border-b-0 hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:grid-cols-[minmax(0,1fr)_88px_minmax(0,300px)] lg:items-center lg:px-4 ${forum.hasNew ? "border-l-bb-unread" : "border-l-transparent"}`}
+      className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-1 border-b border-l-[3px] border-b-bb-border px-3 py-3 text-bb-text no-underline last:border-b-0 hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:items-center lg:px-4 ${forum.postCount !== undefined ? FORUM_COLUMNS_WITH_POSTS : FORUM_COLUMNS} ${forum.hasNew ? "border-l-bb-unread" : "border-l-transparent"}`}
     >
       <span className="flex min-w-0 flex-col gap-0.5">
         <span className="flex min-w-0 items-center gap-1.5">
@@ -97,8 +99,14 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
       </span>
       <span className="text-sm text-bb-text-muted tabular-nums max-lg:hidden lg:text-right">
         <span className="font-semibold text-bb-text lg:block lg:text-base">{forum.topicCount.toLocaleString("fr-FR")}</span>{" "}
-        {forum.topicCount > 1 ? "sujets" : "sujet"}
+        <span className="lg:sr-only">{forum.topicCount > 1 ? "sujets" : "sujet"}</span>
       </span>
+      {forum.postCount !== undefined && (
+        <span className="text-sm text-bb-text-muted tabular-nums max-lg:hidden lg:text-right">
+          <span className="font-semibold text-bb-text lg:block lg:text-base">{forum.postCount.toLocaleString("fr-FR")}</span>{" "}
+          <span className="lg:sr-only">{forum.postCount > 1 ? "messages" : "message"}</span>
+        </span>
+      )}
       {lastTopic ? (
         <span className="flex min-w-0 flex-col text-sm">
           <span className="flex min-w-0 items-center gap-1.5">
@@ -116,12 +124,17 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
   );
 }
 
+/** Colonnes d'une ligne de forum sur ordinateur : nom, sujets, (messages), dernier message. */
+const FORUM_COLUMNS = "lg:grid-cols-[minmax(0,1fr)_88px_minmax(0,300px)]";
+const FORUM_COLUMNS_WITH_POSTS = "lg:grid-cols-[minmax(0,1fr)_88px_96px_minmax(0,300px)]";
+
 /** En-tête des colonnes d'une liste de forums, sur ordinateur (voix Heading). */
-export function ForumColumnsHeader({ title }: { title: ReactNode }) {
+export function ForumColumnsHeader({ title, withPosts = false }: { title: ReactNode; withPosts?: boolean }) {
   return (
-    <div className="grid grid-cols-[minmax(0,1fr)] gap-x-6 font-bb-heading text-bb-label text-bb-text-muted lg:grid-cols-[minmax(0,1fr)_88px_minmax(0,300px)]">
+    <div className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 font-bb-heading text-bb-label text-bb-text-muted ${withPosts ? FORUM_COLUMNS_WITH_POSTS : FORUM_COLUMNS}`}>
       <span>{title}</span>
       <span className="hidden text-right lg:block">Sujets</span>
+      {withPosts && <span className="hidden text-right lg:block">Messages</span>}
       <span className="hidden lg:block">Dernier message</span>
     </div>
   );

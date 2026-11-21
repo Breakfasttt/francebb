@@ -57,10 +57,12 @@ export function ResourceFilterAside({ submitHref, ...props }: TagFilterProps & {
         )}
         <div className="flex flex-col gap-4">
           <div className="flex items-center justify-between gap-2">
-            <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
-            <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" disabled={props.tags.length === 0} onClick={() => props.onTagsChange([])}>
-              Réinitialiser
-            </Button>
+            <h2 className="font-bb-heading text-bb-label text-bb-text-muted">Filtres</h2>
+            {props.tags.length > 0 && (
+              <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" onClick={() => props.onTagsChange([])}>
+                Réinitialiser
+              </Button>
+            )}
           </div>
           <TagFilter prefix="aside" {...props} />
         </div>

@@ -66,7 +66,6 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
     <div className="flex flex-col items-center gap-4">
       <Card className="w-full overflow-hidden">
         <CardHeader>
-          <Layout size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Mes ressources soumises</CardTitle>
           {data && <CountBadge count={data.resources.length} />}
         </CardHeader>

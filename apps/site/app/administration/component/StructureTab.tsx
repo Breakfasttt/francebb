@@ -468,7 +468,6 @@ export default function StructureTab() {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="flex-wrap">
-        <FolderGit2 size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Structure du forum</CardTitle>
         <Button type="button" variant="primary" size="tap" className="w-full lg:w-auto" onClick={openCreateCategory}>
           <Plus size={18} aria-hidden="true" />

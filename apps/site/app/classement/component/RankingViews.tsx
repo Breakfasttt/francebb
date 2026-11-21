@@ -57,21 +57,23 @@ export function formatPoints(points: number) {
 
 // Ordinateur : rang, coach, NAF, tournois joués, points, bouton de détail. Téléphone : rang, coach, points, bouton.
 const columns = "grid grid-cols-[2.25rem_minmax(0,1fr)_auto_2.75rem] items-center gap-x-2 lg:grid-cols-[3rem_minmax(0,1fr)_7rem_7rem_6rem_2.75rem] lg:gap-x-3";
+/** Même grille sans la colonne NAF, quand aucun coach du classement n'a de numéro (une colonne de « - » ne dit rien) */
+const columnsNoNaf = "grid grid-cols-[2.25rem_minmax(0,1fr)_auto_2.75rem] items-center gap-x-2 lg:grid-cols-[3rem_minmax(0,1fr)_7rem_6rem_2.75rem] lg:gap-x-3";
 
-function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
+function RankingRow({ entry, rank, showNaf = true }: { entry: RankingEntry; rank: number; showNaf?: boolean }) {
   const [open, setOpen] = useState(false);
   const detailsId = `cdf-details-${rank}`;
   const results = entry.bestResults ?? [];
 
   return (
     <li className="border-t border-bb-border first:border-t-0">
-      <div className={cn(columns, "px-3 py-2 lg:px-4")}>
+      <div className={cn(showNaf ? columns : columnsNoNaf, "px-3 py-2 lg:px-4")}>
         <span className={cn("text-center text-lg font-bold tabular-nums", rankTone(rank))}>{rank}</span>
         <span className="min-w-0">
           <span className="block font-semibold break-words text-bb-text">{entry.name}</span>
           {!entry.userId && <span className="block text-sm text-bb-text-muted lg:hidden">Non associé à un membre</span>}
         </span>
-        <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.nafNumber ? `#${entry.nafNumber}` : "-"}</span>
+        {showNaf && <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.nafNumber ? `#${entry.nafNumber}` : "-"}</span>}
         <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.count ?? results.length}</span>
         <span className="text-right">
           <span className="block text-lg leading-tight font-bold text-bb-text tabular-nums">{formatPoints(entry.totalPoints)}</span>
@@ -148,19 +150,20 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
 }
 
 export function RankingList({ entries }: { entries: RankingEntry[] }) {
+  const showNaf = entries.some((entry) => !!entry.nafNumber);
   return (
     <Card className="overflow-hidden">
-      <div aria-hidden="true" className={cn(columns, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 font-bb-heading text-bb-label text-bb-text-muted lg:px-4")}>
+      <div aria-hidden="true" className={cn(showNaf ? columns : columnsNoNaf, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 font-bb-heading text-bb-label text-bb-text-muted lg:px-4")}>
         <span className="text-center">#</span>
         <span>Coach</span>
-        <span className="hidden lg:block">NAF</span>
+        {showNaf && <span className="hidden lg:block">NAF</span>}
         <span className="hidden lg:block">Tournois</span>
         <span className="text-right">Points</span>
         <span />
       </div>
       <ol className="m-0 list-none p-0">
         {entries.map((entry, index) => (
-          <RankingRow key={entry.id ?? `${entry.name}-${index}`} entry={entry} rank={index + 1} />
+          <RankingRow key={entry.id ?? `${entry.name}-${index}`} entry={entry} rank={index + 1} showNaf={showNaf} />
         ))}
       </ol>
     </Card>

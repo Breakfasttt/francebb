@@ -10,8 +10,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Clock, FileText, Link as LinkIcon, Trash2 } from "lucide-react";
-import { Badge, Button, Card, CardHeader, CardTitle, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
+import { Clock, Link as LinkIcon } from "lucide-react";
+import { Badge, Button, Card, CardHeader, CardTitle, ConfirmDialog, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { cleanupModerationLogs, getModerationLogs } from "../actions";
 
@@ -149,12 +149,11 @@ export default function LogsTab({ userRole }: LogsTabProps) {
   return (
     <Card className="overflow-hidden">
       <CardHeader className="flex-wrap">
-        <FileText size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Journal d&apos;audit</CardTitle>
-        {canPurge && (
-          <Button type="button" variant="secondary" size="tap" disabled={isCleaning} onClick={() => setIsConfirmOpen(true)} className="text-bb-danger-text">
-            <Trash2 size={16} aria-hidden="true" />
-            {isCleaning ? "Purge…" : "Purger > 3 mois"}
+        {/* Action rare et destructrice : discrète, et seulement quand il y a quelque chose à purger */}
+        {canPurge && logs.length > 0 && (
+          <Button type="button" variant="quiet" size="tap" disabled={isCleaning} onClick={() => setIsConfirmOpen(true)} className="text-sm text-bb-danger-text">
+            {isCleaning ? "Purge…" : "Purger les entrées de plus de 3 mois"}
           </Button>
         )}
       </CardHeader>
@@ -164,7 +163,7 @@ export default function LogsTab({ userRole }: LogsTabProps) {
           {[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 w-full" />)}
         </div>
       ) : logs.length === 0 ? (
-        <EmptyState icon={<FileText size={32} />} title="Aucun log enregistré pour le moment." />
+        <p className="px-4 py-5 text-bb-text-muted">Aucune action de modération enregistrée.</p>
       ) : (
         <ul aria-label="Actions de modération" className={`m-0 list-none p-0 ${loading ? "opacity-60" : ""}`}>
           {logs.map((log) => {

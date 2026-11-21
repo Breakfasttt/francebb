@@ -63,7 +63,8 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Écrire et afficher un message BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu, styles dans `BBCodeContent/bbcode.css`) |
 | Smileys | `SmileyGrid` |
 | Bouton retour d'une page ouverte depuis plusieurs endroits (panneau « Plus », menu du compte) | `BackButton` avec `preferHistory` (ou `ForumListHeader` avec `backPreferHistory`) : revient à la page précédente si elle fait partie du site, suit `href` sinon. Les pages visitées sont notées par `InAppHistoryTracker`, monté dans `app/layout.tsx` |
-| Coquille d'une page | `SiteLayout` (`common/components/SiteLayout/`) : en-tête, panneau gauche, contenu, contexte à droite ; `PanelTitle` (intitulé de groupe en voix Heading) et `PanelLink` (ligne de navigation avec trait d'accent et compteur) pour remplir les panneaux |
+| Coquille d'une page | `SiteLayout` (`common/components/SiteLayout/`) : en-tête, panneau gauche, contenu, contexte à droite ; `PanelTitle` (intitulé de groupe en voix Heading), `PanelLink` (ligne de navigation avec trait d'accent et compteur) et `panelItemClass` (même allure pour un bouton d'onglet tenu par l'état) pour remplir les panneaux |
+| Date d'une liste | `RelativeTime` (`common/components/RelativeTime/`) : « il y a 2 heures », date complète au survol ; `fullFrenchDateTime` pour « 21/11/2026 à 14:32 » |
 | En-tête de page et bouton retour | `PageHeader` (titre en voix Display, bouton retour sur téléphone), `ForumListHeader` (`app/forum/component/`, même style pour les pages du forum et des tournois), `BackButton` |
 | Nom du site | `SiteLogo` : « BBFRANCE » composé en typographie, lien vers l'accueil (aucune image de logo) |
 | Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |

@@ -16,7 +16,7 @@
  */
 import { useEffect, useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
-import { Bell, CheckCircle2, KeyRound, Link as LinkIcon, Mail, ShieldAlert, Trash2, Unlink, XCircle } from "lucide-react";
+import { CheckCircle2, KeyRound, Link as LinkIcon, Mail, Trash2, Unlink, XCircle } from "lucide-react";
 import { Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Label, Switch, toast } from "@bbfrance/ui";
 import { deleteAccount, updateNotificationSettings, unlinkAccount, isEmailConfigured, getPassportUrl } from "../actions";
 
@@ -136,7 +136,6 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
       {passportUrl && (
         <Card>
           <CardHeader>
-            <KeyRound size={18} className="text-bb-text-muted" aria-hidden="true" />
             <CardTitle>Passeport Blood Bowl</CardTitle>
           </CardHeader>
           <CardBody className="flex flex-col items-start gap-3">
@@ -155,7 +154,6 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
       {/* Moyens de connexion */}
       <Card className="overflow-hidden">
         <CardHeader>
-          <ShieldAlert size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Moyens de connexion</CardTitle>
         </CardHeader>
         <ul className="m-0 list-none p-0">
@@ -209,7 +207,6 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
       {/* Notifications : e-mails et abonnement automatique (carte 167) */}
       <Card className="overflow-hidden">
         <CardHeader>
-          <Bell size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Notifications</CardTitle>
         </CardHeader>
         <p className="m-0 border-b border-bb-border px-4 py-3 text-sm text-bb-text-muted">
@@ -257,7 +254,6 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
       {/* Zone de danger */}
       <Card className="border-bb-danger-text">
         <CardHeader>
-          <Trash2 size={18} className="text-bb-danger-text" aria-hidden="true" />
           <CardTitle className="text-bb-danger-text">Zone de danger</CardTitle>
         </CardHeader>
         <CardBody className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">

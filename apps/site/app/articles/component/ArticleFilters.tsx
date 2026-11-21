@@ -111,7 +111,9 @@ function ArticleFilterFields({ prefix, availableTags }: { prefix: string; availa
 /** Colonne des filtres de l'ordinateur (masquée sur téléphone, où le panneau « Filtrer les articles » la remplace). */
 /** Panneau gauche de l'ordinateur (DESIGN.md) : action principale puis filtres, comme la page des tournois. */
 export function ArticleFilterAside({ availableTags, createHref, showFilters = true }: { availableTags: string[]; createHref?: string | null; showFilters?: boolean }) {
-  const { hrefWith } = useParamUpdater();
+  const { hrefWith, searchParams } = useParamUpdater();
+  // « Réinitialiser » n'apparaît que si un filtre est posé
+  const hasActive = Object.keys(RESET).some((key) => !!searchParams.get(key));
   return (
     <aside aria-label="Filtres des articles" className="hidden lg:block">
       <div className="sticky top-20 flex flex-col gap-5">
@@ -123,10 +125,12 @@ export function ArticleFilterAside({ availableTags, createHref, showFilters = tr
         {showFilters && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">
-              <h2 className="font-bb-heading text-bb-label text-bb-text">Filtres</h2>
-              <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
-                <Link href={hrefWith(RESET)} scroll={false}>Réinitialiser</Link>
-              </Button>
+              <h2 className="font-bb-heading text-bb-label text-bb-text-muted">Filtres</h2>
+              {hasActive && (
+                <Button asChild variant="quiet" size="tap" className="px-2 text-sm">
+                  <Link href={hrefWith(RESET)} scroll={false}>Réinitialiser</Link>
+                </Button>
+              )}
             </div>
             <ArticleFilterFields prefix="aside" availableTags={availableTags} />
           </div>

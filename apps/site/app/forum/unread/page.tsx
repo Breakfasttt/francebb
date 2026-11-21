@@ -5,12 +5,15 @@
 import Link from "next/link";
 import { getActiveSession } from "@/lib/authGuard";
 import { redirect } from "next/navigation";
-import { Check, MessageSquare, Trophy } from "lucide-react";
-import { Avatar, Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { Trophy } from "lucide-react";
+import { Avatar, Card, PageNav } from "@bbfrance/ui";
+import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
+import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
+import ForumSidebar from "../component/ForumSidebar";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getUnreadTopics } from "../actions";
 import ForumListHeader from "../component/ForumListHeader";
-import { UnreadDot, frenchDateTime } from "../component/ForumListItems";
+import { UnreadDot } from "../component/ForumListItems";
 import MarkAllAsReadButton from "../component/MarkAllAsReadButton";
 import MarkTopicReadButton from "./component/MarkTopicReadButton";
 
@@ -30,17 +33,21 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
   const totalPages = Math.ceil(total / POSTS_PER_PAGE);
 
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader
-        title="Messages non lus"
-        subtitle="Liste des sujets ayant de nouvelles activités depuis votre dernière visite"
-        backHref="/forum"
-        backTitle="Retour au forum"
-      >
-        {unreadTopics.length > 0 && <MarkAllAsReadButton className="max-lg:w-full" />}
-      </ForumListHeader>
-
-      <div className="flex flex-col gap-4">
+    // Coquille du forum (DESIGN.md) : outils du forum dans le panneau gauche
+    <SiteLayout
+      asideLabel="Outils du forum"
+      aside={<ForumSidebar />}
+      header={
+        <ForumListHeader
+          title="Messages non lus"
+          subtitle="Les sujets qui ont bougé depuis ta dernière visite"
+          backHref="/forum"
+          backTitle="Retour au forum"
+        >
+          {unreadTopics.length > 0 && <MarkAllAsReadButton className="max-lg:w-full" />}
+        </ForumListHeader>
+      }
+    >
         <Card className="overflow-hidden">
           {unreadTopics.length > 0 ? (
             <ul className="m-0 list-none p-0">
@@ -74,7 +81,7 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
                           <span className="min-w-0 truncate">Dernier : {topic.lastPostAuthor?.name ?? "Anonyme"}</span>
                           <span>
                             <span className="lg:hidden">· </span>
-                            {frenchDateTime(topic.lastPostAt)}
+                            <RelativeTime date={topic.lastPostAt} />
                           </span>
                         </span>
                       </span>
@@ -85,19 +92,12 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
               ))}
             </ul>
           ) : (
-            <EmptyState
-              icon={<MessageSquare size={40} />}
-              title="Aucun nouveau message"
-              action={
-                <Button asChild variant="primary" size="tap">
-                  <Link href="/forum">
-                    <Check size={18} aria-hidden="true" /> Retour à l&apos;index du forum
-                  </Link>
-                </Button>
-              }
-            >
-              Vous êtes à jour ! Tous les sujets ont été lus.
-            </EmptyState>
+            <p className="flex flex-wrap items-center gap-x-3 px-4 py-5 text-bb-text-muted">
+              Tu as tout lu.
+              <Link href="/forum" className="inline-flex min-h-11 items-center font-semibold text-bb-text no-underline hover:text-bb-accent-text">
+                Aller au forum
+              </Link>
+            </p>
           )}
         </Card>
 
@@ -108,7 +108,6 @@ export default async function UnreadPostsPage({ searchParams }: { searchParams: 
           linkComponent={Link}
           className="self-center"
         />
-      </div>
-    </div>
+    </SiteLayout>
   );
 }

@@ -15,7 +15,7 @@
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { ArrowDown, ArrowUp, ArrowUpDown, Ban, Mail, Search, SearchX, SlidersHorizontal, Trash2, UserCheck, X } from "lucide-react";
+import { ArrowDown, ArrowUp, ArrowUpDown, Ban, Search, SearchX, SlidersHorizontal, Trash2, UserCheck, X } from "lucide-react";
 import {
   ActionMenu, Badge, Button, Card, ConfirmDialog, CountBadge, DESKTOP_QUERY, EmptyState, Field, Input, PageNav, Select,
   Sheet, SheetContent, toast, useMediaQuery,
@@ -340,7 +340,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           type="button"
           variant="quiet"
           onClick={() => handleSort(key)}
-          className="min-h-11 w-full justify-start gap-1.5 rounded-none px-3 text-bb-label font-bold tracking-wide uppercase"
+          className="min-h-11 w-full justify-start gap-1.5 rounded-none px-3 font-bb-heading text-bb-label"
         >
           {label}
           <Icon size={14} aria-hidden="true" className={active ? "text-bb-accent-text" : "opacity-50"} />
@@ -397,8 +397,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
       {paginatedUsers.length === 0 ? (
         <Card>
-          <EmptyState icon={<SearchX size={32} />} title="Aucun membre ne correspond à vos critères de recherche.">
-            Essayez un autre nom ou retirez un filtre.
+          <EmptyState icon={<SearchX size={32} />} title="Aucun membre ne correspond à ta recherche.">
+            Essaie un autre nom ou retire un filtre.
           </EmptyState>
         </Card>
       ) : (
@@ -413,8 +413,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   {sortHeader("naf", "N° NAF")}
                   {sortHeader("region", "Région")}
                   {sortHeader("ligue", "Ligue(s)")}
-                  <th scope="col" className="px-3 text-bb-label font-bold tracking-wide uppercase">Message</th>
-                  {showRoles && <th scope="col" className="px-3 text-bb-label font-bold tracking-wide uppercase">Gestion du rôle</th>}
+                  <th scope="col" className="px-3 font-bb-heading text-bb-label">Message</th>
+                  {showRoles && <th scope="col" className="px-3 font-bb-heading text-bb-label">Gestion du rôle</th>}
                   {(showMod || showDelete) && <th scope="col" className="px-3"><span className="sr-only">Actions</span></th>}
                 </tr>
               </thead>
@@ -433,9 +433,9 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                     <td className="px-3 py-1.5"><div className="flex flex-wrap gap-1">{ligueBadges(user)}</div></td>
                     <td className="px-3 py-1.5">
                       {canMessage(user) && (
-                        <Button asChild variant="secondary" size="tap" className="px-3">
-                          <Link href={`/messagerie?userId=${user.id}`}><Mail size={16} aria-hidden="true" /> Message privé</Link>
-                        </Button>
+                        <Link href={`/messagerie?userId=${user.id}`} className="inline-flex min-h-11 items-center text-sm font-semibold whitespace-nowrap text-bb-text-muted no-underline hover:text-bb-accent-text lg:min-h-0">
+                          Message privé
+                        </Link>
                       )}
                     </td>
                     {showRoles && <td className="min-w-48 px-3 py-1.5">{roleSelect(user)}</td>}
@@ -447,10 +447,10 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </Card>
 
           {/* Téléphone : un membre par carte */}
-          <ul className="m-0 flex list-none flex-col gap-3 p-0 lg:hidden">
+          <ul className="flex flex-col overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface lg:hidden">
             {paginatedUsers.map((user) => (
               <li key={user.id}>
-                <Card className={`flex flex-col gap-3 p-4 ${user.isBanned ? "bg-bb-surface-2" : ""}`}>
+                <div className={`flex flex-col gap-2 border-b border-bb-border px-3 py-3 ${user.isBanned ? "bg-bb-surface-2" : ""}`}>
                   <div className="flex items-start gap-2">
                     <div className="flex min-w-0 flex-1 flex-col gap-1">
                       {nameLink(user)}
@@ -462,7 +462,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                     {(showMod || showDelete) && actionMenu(user)}
                   </div>
 
-                  <dl className="m-0 grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
+                  <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
                     <div className="flex flex-col">
                       <dt className="text-bb-text-muted">N° NAF</dt>
                       <dd className="m-0">{nafCell(user)}</dd>
@@ -478,9 +478,9 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   </dl>
 
                   {canMessage(user) && (
-                    <Button asChild variant="secondary" size="tap" className="w-full">
-                      <Link href={`/messagerie?userId=${user.id}`}><Mail size={16} aria-hidden="true" /> Message privé</Link>
-                    </Button>
+                    <Link href={`/messagerie?userId=${user.id}`} className="inline-flex min-h-11 items-center self-start text-sm font-semibold text-bb-text-muted no-underline hover:text-bb-accent-text">
+                      Message privé
+                    </Link>
                   )}
                   {showRoles && canEditTargetRole(currentUserRole, user.role as UserRole) && (
                     <div className="flex flex-col gap-1.5">
@@ -488,7 +488,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                       {roleSelect(user)}
                     </div>
                   )}
-                </Card>
+                </div>
               </li>
             ))}
           </ul>

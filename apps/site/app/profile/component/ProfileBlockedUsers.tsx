@@ -49,7 +49,6 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
     <div className="flex flex-col gap-4">
       <Card className="overflow-hidden">
         <CardHeader>
-          <UserX size={18} className="text-bb-text-muted" aria-hidden="true" />
           <CardTitle>Utilisateurs bloqués</CardTitle>
         </CardHeader>
         {blockedUsers === null ? (
@@ -58,7 +57,7 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
           </div>
         ) : blockedUsers.length === 0 ? (
           <EmptyState icon={<UserX size={32} />} title="Aucun utilisateur bloqué">
-            Vous pouvez bloquer un membre depuis son profil.
+            Tu peux bloquer un membre depuis son profil.
           </EmptyState>
         ) : (
           <ul className="m-0 list-none p-0">

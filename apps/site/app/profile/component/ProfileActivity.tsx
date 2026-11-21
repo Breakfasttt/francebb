@@ -29,7 +29,6 @@ export default function ProfileActivity({ activities, userName }: ProfileActivit
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <MessageSquare size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Activité récente du forum</CardTitle>
       </CardHeader>
       {activities.length === 0 ? (

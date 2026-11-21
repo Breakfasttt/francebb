@@ -73,7 +73,6 @@ export default function InfoMailsTab() {
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <Mail size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Annonces par e-mail</CardTitle>
       </CardHeader>
       <CardBody className="flex flex-col gap-4">

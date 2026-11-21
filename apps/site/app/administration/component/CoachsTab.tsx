@@ -77,7 +77,6 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
   return (
     <Card className="overflow-hidden">
       <CardHeader>
-        <Users size={18} className="text-bb-text-muted" aria-hidden="true" />
         <CardTitle>Rôles des membres</CardTitle>
       </CardHeader>
       <CardBody className="flex flex-col gap-3">
@@ -109,7 +108,7 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
 
       {!isLoading && users.length === 0 ? (
         <EmptyState icon={<Users size={32} />} title="Aucun utilisateur trouvé">
-          Essayez une autre recherche.
+          Essaie une autre recherche.
         </EmptyState>
       ) : (
         <ul aria-label="Membres" className={`m-0 list-none border-t border-bb-border p-0 ${isLoading ? "opacity-60" : ""}`}>
