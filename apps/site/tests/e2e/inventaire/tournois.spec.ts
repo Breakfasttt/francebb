@@ -289,24 +289,13 @@ test.describe("4 tournois : la liste /tournois", () => {
     await expect(showsTournament(page, OLD.name)).toHaveCount(0);
     await expect(showsTournament(page, DONE.name)).toHaveCount(0);
     await expect(showsTournament(page, CANCELLED.name)).toHaveCount(0);
-    // Pagination présente ; la page 3 de la grille montre les 4 derniers
+    // Pagination présente ; une seule présentation en lignes, 20 tournois par page : la page 2 montre les 4 derniers
     await expect(page.getByRole("navigation", { name: "Pagination" }).filter({ visible: true }).first()).toBeVisible();
-    await page.goto(listUrl({ page: "3" }), { waitUntil: "networkidle" });
-    await expect(tournamentLinks(page)).toHaveCount(4);
-
-    // Liste : 20 tournois par page
-    await page.goto(listUrl(), { waitUntil: "networkidle" });
-    await (await control(page, "button", /liste/i)).click();
-    await page.waitForURL(/view=list/);
-    await page.waitForLoadState("networkidle");
-    await page.keyboard.press("Escape");
     await expect(tournamentLinks(page)).toHaveCount(20);
     await page.screenshot({ path: testInfo.outputPath("liste-lignes.png"), fullPage: false });
-    await page.goto(listUrl({ view: "list", page: "2" }), { waitUntil: "networkidle" });
+    await page.goto(listUrl({ page: "2" }), { waitUntil: "networkidle" });
     await expect(tournamentLinks(page)).toHaveCount(4);
-    // Retour à la grille
-    await (await control(page, "button", /grille|cartes/i)).click();
-    await page.waitForURL(/view=grid/);
+    await expect(page.getByRole("button", { name: /grille|cartes/i })).toHaveCount(0);
   });
 
   test("[tous] filtres : chaque réglage écrit son paramètre dans l'adresse", async ({ page }, testInfo) => {

@@ -348,18 +348,19 @@ test.describe("pages fixes", () => {
     await expect(main.getByText("Contenu en cours de rédaction")).toBeVisible();
     for (const [title, text] of [
       ["Comment y jouer ?", "Texte Inv de la section 2"],
-      ["Communauté & Ligues", "Texte Inv de la section 3"],
-      ["Rejoindre un Tournoi", "Texte Inv de la section 4"],
+      ["Communauté et ligues", "Texte Inv de la section 3"],
+      ["Rejoindre un tournoi", "Texte Inv de la section 4"],
       ["NAF, CdF & RTC", "Texte Inv de la section 5"],
     ]) {
       await expect(main.getByRole("heading", { name: title })).toBeVisible();
       await expect(main.getByText(text)).toBeVisible();
-      await expect(main.getByRole("img", { name: title })).toBeVisible();
     }
     // Sixième section vide : masquée
-    await expect(main.getByRole("heading", { name: "Challenges Régionaux" })).toHaveCount(0);
+    await expect(main.getByRole("heading", { name: "Challenges régionaux" })).toHaveCount(0);
+    // Plus d'illustrations générées (DESIGN.md)
+    await expect(main.locator("img")).toHaveCount(0);
 
-    const next = main.getByRole("link", { name: /Prochaine étape/ });
+    const next = main.getByRole("link", { name: /^Étape suivante/ });
     expect(await next.count()).toBeGreaterThanOrEqual(4);
     await expect(next.first()).toHaveAttribute("href", "#how_to_play_platforms");
     await next.first().click();

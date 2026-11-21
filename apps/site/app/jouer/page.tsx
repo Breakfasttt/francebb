@@ -1,16 +1,16 @@
-import Image from "next/image";
 import Link from "next/link";
 import { getHowToPlaySettings } from "@/app/administration/actions";
 import { parseBBCode } from "@/lib/bbcode";
-import { Gamepad2, MonitorSmartphone, Users, Trophy, ShieldCheck, Map, ChevronRight } from "lucide-react";
-import { Button, Card } from "@bbfrance/ui";
+import { Button } from "@bbfrance/ui";
+import SiteLayout, { PanelTitle, panelItemClass } from "@/common/components/SiteLayout/SiteLayout";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 
 /**
  * Page « Jouer » : le guide du coach débutant (refonte, carte 090, ADR 0006).
  * Le texte de chaque section est saisi dans l'administration (réglages du site `how_to_play_…`). Une section vide est
- * masquée, sauf la première, qui affiche alors un texte d'attente. Une seule colonne, de largeur de lecture : chaque
- * section est une carte avec son illustration en bandeau, son titre et un lien « Prochaine étape » vers la suivante.
+ * masquée, sauf la première, qui affiche alors un texte d'attente. Page de lecture (DESIGN.md) : sommaire des étapes
+ * dans le panneau gauche, texte calé à gauche à largeur de lecture, lien vers l'étape suivante. Les illustrations
+ * générées ont été retirées (carte 220).
  * Les ancres des sections (`#how_to_play_…`) n'ont pas changé.
  */
 
@@ -20,39 +20,27 @@ export default async function HowToPlayPage() {
   const sections = [
     {
       key: "how_to_play_what_is_bb",
-      title: "C'est quoi Blood Bowl ?",
-      icon: Gamepad2,
-      image: "/images/how-to-play/intro.png"
+      title: "C'est quoi Blood Bowl ?"
     },
     {
       key: "how_to_play_platforms",
-      title: "Comment y jouer ?",
-      icon: MonitorSmartphone,
-      image: "/images/how-to-play/platforms.png"
+      title: "Comment y jouer ?"
     },
     {
       key: "how_to_play_community",
-      title: "Communauté & Ligues",
-      icon: Users,
-      image: "/images/how-to-play/community.png"
+      title: "Communauté et ligues"
     },
     {
       key: "how_to_play_tournaments",
-      title: "Rejoindre un Tournoi",
-      icon: Trophy,
-      image: "/images/how-to-play/tournaments.png"
+      title: "Rejoindre un tournoi"
     },
     {
       key: "how_to_play_naf_cdf_rtc",
-      title: "NAF, CdF & RTC",
-      icon: ShieldCheck,
-      image: "/images/how-to-play/official.png"
+      title: "NAF, CdF & RTC"
     },
     {
       key: "how_to_play_challenges",
-      title: "Challenges Régionaux",
-      icon: Map,
-      image: "/images/how-to-play/challenges.png"
+      title: "Challenges régionaux"
     }
   ];
 
@@ -62,80 +50,67 @@ export default async function HowToPlayPage() {
   const visibleSections = sections.filter((section, index) => index === 0 || Boolean(settings[section.key]));
 
   return (
-    <div className="mx-auto w-full max-w-[880px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader
-        title="Guide du coach"
-        subtitle="Tout ce qu'il faut savoir pour débuter l'aventure Blood Bowl en France"
-        backHref="/"
-        backTitle="Retour à l'accueil"
-      />
-
-      <div className="flex flex-col gap-4 lg:gap-6">
+    <SiteLayout
+      asideOnMobile="hidden"
+      asideLabel="Sommaire du guide"
+      header={
+        <ForumListHeader
+          title="Guide du coach"
+          subtitle="Tout ce qu'il faut savoir pour débuter à Blood Bowl en France"
+          backHref="/"
+          backTitle="Retour à l'accueil"
+        />
+      }
+      aside={
+        <nav aria-labelledby="guide-toc-title" className="flex flex-col">
+          <PanelTitle id="guide-toc-title">Les étapes</PanelTitle>
+          {visibleSections.map((section, index) => (
+            <a key={section.key} href={`#${section.key}`} className={panelItemClass(false)}>
+              <span className="w-5 shrink-0 text-sm text-bb-text-muted tabular-nums">{index + 1}</span>
+              <span className="min-w-0 flex-1">{section.title}</span>
+            </a>
+          ))}
+        </nav>
+      }
+    >
+      {/* Page de lecture (DESIGN.md) : texte calé à gauche à largeur de lecture, sections séparées par des filets,
+          sans illustration ni icône décorative */}
+      <div className="flex max-w-[75ch] flex-col">
         {visibleSections.map((section, index) => {
           const content = settings[section.key];
           const nextSection = visibleSections[index + 1];
-          const Icon = section.icon;
-
           return (
             // scroll-mt : l'ancre ne passe pas sous la barre du haut, collée en haut de l'écran
-            <article key={section.key} id={section.key} className="scroll-mt-20">
-              <Card className="overflow-hidden">
-                <div className="relative aspect-[16/7] w-full bg-bb-surface-2">
-                  {/* L'image remplit son bandeau ; « sizes » donne sa largeur affichée (880 pixels au plus) */}
-                  <Image
-                    src={section.image}
-                    alt={section.title}
-                    fill
-                    sizes="(max-width: 880px) 100vw, 880px"
-                    className="object-cover"
-                  />
-                </div>
-
-                <div className="flex flex-col gap-4 p-4 lg:p-6">
-                  <header className="flex items-center gap-3">
-                    <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-bb-md bg-bb-accent-soft text-bb-accent-text">
-                      <Icon size={22} />
-                    </span>
-                    <div className="min-w-0">
-                      <p className="m-0 text-sm font-semibold text-bb-accent-text">Étape {index + 1}</p>
-                      <h2 className="text-xl leading-tight font-bold text-bb-text">{section.title}</h2>
-                    </div>
-                  </header>
-
-                  {/* Texte mis en forme saisi dans l'administration (BBCode converti en HTML) */}
-                  <div
-                    className="text-bb-lead break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_strong]:font-bold"
-                    dangerouslySetInnerHTML={{ __html: parseBBCode(content || "Contenu en cours de rédaction...") }}
-                  />
-
-                  {nextSection && (
-                    <div className="flex justify-end border-t border-bb-border pt-4">
-                      <Button asChild variant="secondary" size="tap">
-                        <a href={`#${nextSection.key}`} className="no-underline">
-                          Prochaine étape <ChevronRight size={18} aria-hidden="true" />
-                        </a>
-                      </Button>
-                    </div>
-                  )}
-                </div>
-              </Card>
+            <article key={section.key} id={section.key} className="scroll-mt-20 border-b border-bb-border py-6 first:pt-0">
+              <p className="font-bb-heading text-bb-label text-bb-accent-text">Étape {index + 1}</p>
+              <h2 className="mt-1 text-2xl leading-tight font-extrabold text-bb-text [font-stretch:88%]">{section.title}</h2>
+              {/* Texte mis en forme saisi dans l'administration (BBCode converti en HTML) */}
+              <div
+                className="mt-3 text-bb-lead break-words text-bb-text [&_a]:text-bb-accent-text [&_a]:underline [&_b]:font-bold [&_img]:h-auto [&_img]:max-w-full [&_strong]:font-bold"
+                dangerouslySetInnerHTML={{ __html: parseBBCode(content || "Contenu en cours de rédaction...") }}
+              />
+              {nextSection && (
+                <a href={`#${nextSection.key}`} className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-bb-text-muted no-underline hover:text-bb-accent-text">
+                  Étape suivante : {nextSection.title}
+                </a>
+              )}
             </article>
           );
         })}
 
-        <Card className="flex flex-col items-center gap-3 p-6 text-center lg:p-8">
-          <h2 className="text-xl leading-tight font-bold text-bb-text">Prêt à lancer vos premiers dés ?</h2>
-          <p className="m-0 max-w-prose text-bb-text-muted">Rejoignez les milliers de coachs français déjà présents sur le forum et dans les ligues.</p>
-          <div className="mt-2 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+        <section aria-labelledby="guide-next-title" className="flex flex-col gap-3 py-6">
+          <h2 id="guide-next-title" className="font-bb-heading text-[0.95rem] text-bb-text">Et maintenant ?</h2>
+          <p className="text-bb-text-muted">Crée ton compte pour écrire sur le forum et t&apos;inscrire aux tournois, ou parcours le forum sans compte.</p>
+          <div className="flex flex-col gap-3 sm:flex-row">
             <Button asChild variant="primary" size="tap">
-              <Link href="/auth/login" className="no-underline">Créer mon compte</Link>
+              <Link href="/auth/login">Créer mon compte</Link>
             </Button>
             <Button asChild variant="secondary" size="tap">
-              <Link href="/forum" className="no-underline">Parcourir le forum</Link>
+              <Link href="/forum">Parcourir le forum</Link>
             </Button>
           </div>
-        </Card>
+        </section>
       </div>
-    </div>
+    </SiteLayout>
   );
 }

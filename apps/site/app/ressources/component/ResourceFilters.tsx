@@ -13,9 +13,9 @@
  * bouton flottant de `MobileFilterWrapper`.
  */
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
-import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
-import { Button, CountBadge, Input, Label, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import { useState } from "react";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Button, CountBadge, Input, Label, Sheet, SheetContent } from "@bbfrance/ui";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 
 export type ResourceView = "grid" | "list";
@@ -73,28 +73,12 @@ interface ResourceListControlsProps extends TagFilterProps {
   total: number;
   query: string;
   onQueryChange: (query: string) => void;
-  view: ResourceView;
-  onViewChange: (view: ResourceView) => void;
 }
 
-export function ResourceListControls({ total, query, onQueryChange, view, onViewChange, ...tagProps }: ResourceListControlsProps) {
+export function ResourceListControls({ total, query, onQueryChange, ...tagProps }: ResourceListControlsProps) {
   const [filtersOpen, setFiltersOpen] = useState(false);
   const { tags, onTagsChange } = tagProps;
 
-  const viewButton = (value: ResourceView, label: string, icon: ReactNode) => (
-    <Button
-      type="button"
-      variant="quiet"
-      size="tap-icon"
-      aria-label={label}
-      aria-pressed={view === value}
-      title={label}
-      onClick={() => onViewChange(value)}
-      className={cn("rounded-bb-md", view === value && "bg-bb-surface-2 text-bb-text")}
-    >
-      {icon}
-    </Button>
-  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -118,10 +102,6 @@ export function ResourceListControls({ total, query, onQueryChange, view, onView
             Filtres
             <CountBadge count={tags.length} aria-label={`${tags.length} actif${tags.length > 1 ? "s" : ""}`} />
           </Button>
-          <div role="group" aria-label="Affichage" className="ml-auto flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
-            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
-            {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
-          </div>
         </div>
       </div>
 

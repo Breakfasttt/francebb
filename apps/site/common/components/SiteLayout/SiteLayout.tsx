@@ -105,18 +105,19 @@ export function PanelLink({
   linkComponent: React.ElementType;
 }) {
   return (
-    <LinkComponent
-      href={href}
-      aria-current={active ? "page" : undefined}
-      className={cn(
-        "flex min-h-11 items-center gap-2 border-l-[3px] py-1.5 pr-2 pl-3 text-[0.95rem] no-underline",
-        active
-          ? "border-bb-accent-text bg-bb-accent-soft font-semibold text-bb-text"
-          : "border-transparent text-bb-text-muted hover:border-bb-border hover:text-bb-text"
-      )}
-    >
+    <LinkComponent href={href} aria-current={active ? "page" : undefined} className={panelItemClass(active)}>
       <span className="min-w-0 flex-1 truncate">{children}</span>
       {count !== undefined && <span className="text-sm text-bb-text-muted tabular-nums">{count}</span>}
     </LinkComponent>
+  );
+}
+
+/** Allure commune d'un élément du panneau gauche : trait d'accent de 3 px et voile quand il est actif. */
+export function panelItemClass(active?: boolean) {
+  return cn(
+    "flex min-h-11 w-full items-center gap-2 border-l-[3px] py-1.5 pr-2 pl-3 text-left text-[0.95rem] no-underline",
+    active
+      ? "border-bb-accent-text bg-bb-accent-soft font-semibold text-bb-text"
+      : "border-transparent text-bb-text-muted hover:border-bb-border hover:text-bb-text"
   );
 }

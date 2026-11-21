@@ -7,13 +7,13 @@
  */
 import { getReferenceData } from "@/lib/referenceData";
 import Link from "next/link";
-import { Plus, Shield } from "lucide-react";
-import { Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { Button, Card, PageNav } from "@bbfrance/ui";
+import SiteLayout, { PanelLink, PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
 import { prisma } from "@/lib/prisma";
 import type { Prisma } from "@/prisma/generated-client";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import LigueFilters from "./component/LigueFilters";
-import { LigueCard, LigueRow } from "./component/LigueCard";
+import { LigueRow } from "./component/LigueCard";
 
 export const dynamic = "force-dynamic";
 
@@ -25,9 +25,9 @@ export default async function LiguesPage({
   const params = await searchParams;
   const query = params.query as string | undefined;
   const region = params.region as string | undefined;
-  const view = (params.view as string) || "grid";
+  // Une seule présentation, en lignes (DESIGN.md : un annuaire se lit en liste, comme le forum et les tournois)
   const page = parseInt(params.page as string) || 1;
-  const limit = view === "grid" ? 12 : 20;
+  const limit = 20;
   const skip = (page - 1) * limit;
 
   const where: Prisma.LigueWhereInput = {};
@@ -69,45 +69,62 @@ export default async function LiguesPage({
     return text ? `/ligues?${text}` : "/ligues";
   };
 
-  const createButton = (
-    <Button asChild variant="primary" size="tap">
-      <Link href="/ligues/create" className="no-underline">
-        <Plus size={18} aria-hidden="true" />
-        {/* Libellé court sur téléphone pour tenir à côté du titre ; le lecteur d'écran lit le libellé complet (carte 197) */}
-        <span>Créer<span className="max-sm:sr-only"> une ligue</span></span>
-      </Link>
-    </Button>
+  // Lien d'une zone dans le panneau gauche : garde la recherche, repart de la première page
+  const zoneHref = (key: string) => {
+    const next = new URLSearchParams();
+    if (query) next.set("query", query);
+    if (key) next.set("region", key);
+    const text = next.toString();
+    return text ? `/ligues?${text}` : "/ligues";
+  };
+
+  // Panneau gauche (DESIGN.md) : action principale, puis les zones comme navigation de la rubrique
+  const aside = (
+    <>
+      <Button asChild variant="primary" size="tap" className="w-full">
+        <Link href="/ligues/create">Créer une ligue</Link>
+      </Button>
+      <nav aria-labelledby="ligues-zones-title" className="flex flex-col">
+        <PanelTitle id="ligues-zones-title">Zones</PanelTitle>
+        <PanelLink href={zoneHref("")} active={!region} linkComponent={Link}>Toutes les zones</PanelLink>
+        {zones.map((zone) => (
+          <PanelLink key={zone.key} href={zoneHref(zone.key)} active={region === zone.key} linkComponent={Link}>
+            {zone.label}
+          </PanelLink>
+        ))}
+      </nav>
+      <PanelLink href="/carte?vue=ligues" linkComponent={Link}>Voir les ligues sur la carte</PanelLink>
+    </>
   );
 
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader
-        title="Ligues"
-        subtitle={`${total} ligue${total > 1 ? "s" : ""} référencée${total > 1 ? "s" : ""}`}
-        backHref="/"
-        backTitle="Retour à l'accueil"
-      >
-        {createButton}
-      </ForumListHeader>
-
+    <SiteLayout
+      asideOnMobile="hidden"
+      asideLabel="Zones des ligues"
+      aside={aside}
+      header={
+        <ForumListHeader
+          title="Ligues"
+          subtitle={`${total} ligue${total > 1 ? "s" : ""} référencée${total > 1 ? "s" : ""}`}
+          backHref="/"
+          backTitle="Retour à l'accueil"
+        >
+          <Button asChild variant="primary" size="tap" className="lg:hidden">
+            <Link href="/ligues/create">Créer une ligue</Link>
+          </Button>
+        </ForumListHeader>
+      }
+    >
       <section aria-label="Ligues trouvées" className="flex min-w-0 flex-col gap-4">
         <LigueFilters zones={zones} total={total} />
 
         {ligues.length > 0 ? (
           <>
-            {view === "grid" ? (
-              <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                {ligues.map((ligue) => (
-                  <LigueCard key={ligue.id} ligue={ligue} zoneLabel={zoneLabels.get(ligue.geographicalZone ?? "")} />
-                ))}
-              </div>
-            ) : (
-              <Card className="overflow-hidden">
-                {ligues.map((ligue) => (
-                  <LigueRow key={ligue.id} ligue={ligue} zoneLabel={zoneLabels.get(ligue.geographicalZone ?? "")} />
-                ))}
-              </Card>
-            )}
+            <Card className="overflow-hidden">
+              {ligues.map((ligue) => (
+                <LigueRow key={ligue.id} ligue={ligue} zoneLabel={zoneLabels.get(ligue.geographicalZone ?? "")} />
+              ))}
+            </Card>
 
             {totalPages > 1 && (
               <div className="flex justify-center">
@@ -116,13 +133,11 @@ export default async function LiguesPage({
             )}
           </>
         ) : (
-          <Card>
-            <EmptyState icon={<Shield size={40} />} title="Aucune ligue trouvée" action={createButton}>
-              Essayez une autre recherche, ou référencez votre ligue dans cette zone.
-            </EmptyState>
-          </Card>
+          <p className="rounded-bb-lg border border-bb-border bg-bb-surface px-4 py-5 text-bb-text-muted">
+            Aucune ligue ne correspond. Essaie une autre recherche, ou référence ta ligue.
+          </p>
         )}
       </section>
-    </div>
+    </SiteLayout>
   );
 }

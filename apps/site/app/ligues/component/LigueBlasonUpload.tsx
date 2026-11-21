@@ -51,7 +51,7 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
 
   return (
     <div className="flex items-center gap-4">
-      <LigueBlason image={image || null} alt={image ? "Aperçu du blason" : ""} size={96} />
+      <LigueBlason image={image || null} alt={image ? "Aperçu du blason" : ""} size={96} showPlaceholder />
       <div className="flex min-w-0 flex-1 flex-col items-start gap-2">
         <Button type="button" variant="secondary" size="tap" onClick={() => fileInputRef.current?.click()} disabled={isUploading}>
           {isUploading ? <Loader2 size={18} aria-hidden="true" className="animate-spin" /> : <Upload size={18} aria-hidden="true" />}

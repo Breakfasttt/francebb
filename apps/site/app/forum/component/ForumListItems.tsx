@@ -4,6 +4,7 @@
  * badge de statut de tournoi). Chaque ligne est un lien unique, facile à toucher sur téléphone (64 pixels au moins).
  * Aucun état ni effet ici : ces composants servent aussi bien dans une page serveur que dans un composant client.
  */
+import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { Lock, Pin, Trophy } from "lucide-react";
@@ -105,7 +106,7 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
             <TournamentStatusBadge tournament={lastTopic.tournament} />
           </span>
           <span className="truncate text-bb-text-muted tabular-nums">
-            {lastTopic.lastPostAuthorName ?? "Anonyme"} · {frenchDateTime(lastTopic.lastPostAt)}
+            {lastTopic.lastPostAuthorName ?? "Anonyme"} · <RelativeTime date={lastTopic.lastPostAt} />
           </span>
         </span>
       ) : (
@@ -181,7 +182,7 @@ export function TopicRow({ topic }: { topic: TopicRowData }) {
             <span className="min-w-0 truncate">Dernier : {topic.lastPostAuthorName ?? "Anonyme"}</span>
             <span>
               <span className="lg:hidden">· </span>
-              {frenchDateTime(topic.lastPostAt)}
+              <RelativeTime date={topic.lastPostAt} />
             </span>
           </span>
         </span>

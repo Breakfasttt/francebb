@@ -318,7 +318,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         )}
 
         {/* Outils du sujet dans le panneau gauche (DESIGN.md : actions à gauche), messages à droite */}
-        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+        <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
           <TopicToolsAside />
           <div className="flex min-w-0 flex-col gap-4">
             {/* Blocs du tournoi : résumé, résultats quand il est terminé, inscriptions (refaits à la carte 089) */}

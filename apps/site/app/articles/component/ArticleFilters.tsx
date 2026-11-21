@@ -14,11 +14,11 @@
  * Avant la refonte, ces réglages étaient dans une colonne `ArticleFilterSidebar`, rangée sur téléphone derrière le
  * bouton flottant de `MobileFilterWrapper`.
  */
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { LayoutGrid, LayoutList, Search, SlidersHorizontal, User, X } from "lucide-react";
-import { Button, CountBadge, Input, Label, Select, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import { Search, SlidersHorizontal, User, X } from "lucide-react";
+import { Button, CountBadge, Input, Label, Select, Sheet, SheetContent } from "@bbfrance/ui";
 import TagSelector from "@/common/components/TagSelector/TagSelector";
 import { useDebounce } from "@/common/hooks/useDebounce";
 
@@ -140,7 +140,6 @@ export function ArticleListControls({ total, availableTags }: { total: number; a
   const { searchParams, hrefWith, update, tags } = useParamUpdater();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const currentSort = searchParams.get("sort") || "date_desc";
-  const currentView = searchParams.get("view") === "grid" ? "grid" : "list";
   const author = searchParams.get("author") || "";
 
   // Recherche dans le titre et le texte : l'adresse change 400 ms après la dernière touche (avant, à l'appui sur
@@ -160,20 +159,6 @@ export function ArticleListControls({ total, availableTags }: { total: number; a
     ...(author ? [{ key: "author", text: `Auteur : ${author}`, href: hrefWith({ author: "" }) }] : []),
   ];
 
-  const viewButton = (view: "grid" | "list", label: string, icon: ReactNode) => (
-    <Button
-      type="button"
-      variant="quiet"
-      size="tap-icon"
-      aria-label={label}
-      aria-pressed={currentView === view}
-      title={label}
-      onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
-    >
-      {icon}
-    </Button>
-  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -207,10 +192,6 @@ export function ArticleListControls({ total, availableTags }: { total: number; a
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </Select>
-          <div role="group" aria-label="Affichage" className="flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
-            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
-            {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
-          </div>
         </div>
       </div>
 

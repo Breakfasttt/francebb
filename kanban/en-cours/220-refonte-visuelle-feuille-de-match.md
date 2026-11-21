@@ -44,14 +44,20 @@ Le 21 novembre 2026, le responsable a fixé la priorité : un site beau, simple,
 
 ## À faire (relecture critique-ui du 21/11)
 
-- [ ] Ligues : `SiteLayout`, « Créer une ligue » en haut du panneau gauche, liste en lignes par défaut.
-- [ ] Classement : onglets en `PanelLink` dans le panneau gauche, aide dessous, points en couleur du texte, or réservé au rang.
-- [ ] Articles, ressources, tournois : retirer la bascule grille/liste ; ressources en lignes (titre, description, étiquette, domaine).
-- [ ] Fiche de tournoi (`TournamentSummary.tsx`) : retirer les icônes des informations et le trophée ; nom du tournoi une seule fois ; « 2 (p:1) » écrit en clair ; pour un visiteur, une action « S'inscrire » qui mène à la connexion ; options absentes écrites (« Repas non inclus ») plutôt que barrées.
-- [ ] Filtres des tournois : Région et Format visibles, le reste derrière « Plus de filtres ».
-- [ ] Forum : colonne « Messages » (il faut compter les messages par forum) ; date relative dans les listes, date complète au survol.
-- [ ] Sujet : panneau gauche avec l'action principale (Répondre ou Se connecter) ; icône des outils sur téléphone explicite.
-- [ ] Pied de page sur ordinateur dans le flux plutôt que fixé ; fondu au bord des onglets qui défilent.
+- [x] Ligues : `SiteLayout`, « Créer une ligue » et les zones dans le panneau gauche, liste en lignes.
+- [x] Classement : vues dans le panneau gauche (`panelItemClass`), aide dessous ; onglets gardés sur téléphone. Reste : couleur des points et or du rang.
+- [x] Articles, ressources, tournois : bascule grille/liste retirée, une seule présentation en lignes ; image de ressource seulement si elle existe.
+- [x] Fiche de tournoi : sans icônes ni trophée, nom une seule fois, inscrits en clair, logistique écrite, badges neutres ; « Se connecter pour s'inscrire » pour un visiteur ; « Inscrits (N) » hors gestion.
+- [x] Filtres des tournois : localisation et format visibles, le reste derrière « Plus de filtres » (ordinateur).
+- [x] Date relative dans les listes (`RelativeTime`), date complète au survol.
+- [ ] Forum : colonne « Messages » (il faut compter les messages par forum).
+- [x] Sujet : « Se connecter pour répondre » pour un visiteur dans le panneau gauche.
+- [ ] Sujet : icône des outils sur téléphone plus explicite.
+- [x] Pied de page sur ordinateur dans le flux.
+- [ ] Fondu au bord des onglets qui défilent (classement sur téléphone).
+- [x] Passe 2 (relecture critique-ui) : « Jouer » sans illustrations générées (page de lecture avec sommaire à gauche) ; statistiques en tableau de score ; médias sans états vides passe-partout ; fiche de ligue en page de détail (fil d'Ariane, rôles réunis, contexte à droite) ; écusson de remplacement supprimé (blason seulement s'il existe) ; chargement des ressources en lignes ; un seul bouton rouge sur un sujet de tournoi ; panneau gauche à 240 px partout ; mois des dates en discret ; « Palmarès » ; classement sans rouge sur les points.
+- [ ] Texte de « Jouer » (saisi dans l'administration) : tutoiement, sous-titre en casse normale ; passe `humaniseur-fr`.
+- [ ] « Réinitialiser » des filtres seulement quand un filtre est actif ; colonne NAF du classement masquée si vide.
 - [ ] Revue de cohérence finale de toutes les pages (profil, messagerie, membres, statistiques, médias, administration, modération), puis déclinaison des 4 autres thèmes et test de contraste.
 - [ ] Parcours téléphone et ordinateur (`test:parcours`) ; les tests e2e qui cherchent l'ancien logo ou « Se connecter / S'inscrire » peuvent devoir être mis à jour.
 

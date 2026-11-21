@@ -18,8 +18,10 @@
  * qui gèrent le tournoi (carte 174, voir `RegistrationTournament`).
  */
 import { useState, useTransition, type ReactNode } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { AlertCircle, CheckCircle2, ChevronDown, Clock, ListOrdered, Lock, Pencil, Plus, UserMinus, UserPlus, Users } from "lucide-react";
-import { Avatar, Badge, Button, Card, ConfirmDialog, CountBadge, DESKTOP_QUERY, Field, Input, Select, Sheet, SheetContent, cn, toast, useMediaQuery } from "@bbfrance/ui";
+import { Avatar, Badge, Button, Card, ConfirmDialog, DESKTOP_QUERY, Field, Input, Select, Sheet, SheetContent, cn, toast, useMediaQuery } from "@bbfrance/ui";
 import {
   joinTournament,
   leaveTournament,
@@ -83,6 +85,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const [confirm, setConfirm] = useState<ConfirmState>({ open: false, title: "", message: "", label: "", action: async () => {} });
 
   const canManage = isOrganizer || isCommissioner;
+  const pathname = usePathname();
   // Même règle que le serveur (carte 186) : pas d'inscription à un tournoi annulé, terminé, passé ou fermé
   const isOver = isTournamentOver(tournament);
   const isActionBlocked = tournament.registrationsLocked || tournament.isFinished || tournament.isCancelled || isOver;
@@ -184,8 +187,15 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const totalInscrits = (tournament.registrations?.length || 0) + (tournament.teams?.length || 0);
   const actionButton = "w-full sm:w-auto";
 
-  // Action du membre connecté
+  // Action du membre connecté ; un visiteur est invité à se connecter pour s'inscrire, puis revient sur ce sujet
   let userActions: ReactNode = null;
+  if (!currentUser && !isActionBlocked) {
+    userActions = (
+      <Button asChild variant="primary" size="tap">
+        <Link href={`/auth/login?callbackUrl=${encodeURIComponent(pathname)}`}>Se connecter pour s&apos;inscrire</Link>
+      </Button>
+    );
+  }
   if (currentUser) {
     if (tournament.isTeam) {
       // Équipe : toujours montrer la gestion de son équipe ; sinon, « Inscrire une équipe » seulement si c'est ouvert
@@ -289,9 +299,9 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             aria-expanded={isExpanded}
             onClick={() => setIsExpanded(!isExpanded)}
           >
-            <Users size={18} aria-hidden="true" className="text-bb-accent-text" />
-            <span>Gestion des inscriptions</span>
-            <CountBadge count={totalInscrits} max={999} aria-label={`${totalInscrits} inscrit${totalInscrits > 1 ? "s" : ""}`} />
+            {/* « Gestion » pour l'organisateur et les commissaires ; pour les autres, la liste des inscrits */}
+            <span className="font-bb-heading text-[0.95rem]">{canManage ? "Gestion des inscriptions" : "Inscrits"}</span>
+            <span className="text-sm text-bb-text-muted tabular-nums">({totalInscrits})</span>
             <ChevronDown size={18} aria-hidden="true" className={cn("ml-auto shrink-0 text-bb-text-muted transition-transform lg:ml-1", isExpanded && "rotate-180")} />
           </Button>
 

@@ -7,29 +7,18 @@ import React from 'react';
 import ForumListHeader from '@/app/forum/component/ForumListHeader';
 import { getDashboardStats } from './actions';
 import StatCard from './component/StatCard/StatCard';
-import { 
-  Users, 
-  Trophy, 
-  FileText, 
-  MessageSquare, 
-  Eye, 
-  Activity, 
-  Database, 
-  AlertCircle,
-  HardDrive,
-  Send
-} from 'lucide-react';
 
 export const dynamic = 'force-dynamic';
 
-const sectionTitle = "m-0 border-0 p-0 text-lg leading-tight font-bold text-bb-text normal-case not-italic";
-const grid = "m-0 grid grid-cols-2 gap-3 lg:grid-cols-3 lg:gap-4";
+const sectionTitle = "font-bb-heading text-[0.95rem] text-bb-text";
+// Tableau de score : cases jointes, séparées par des filets d'un pixel (le fond de la grille fait le filet)
+const grid = "grid grid-cols-2 gap-px overflow-hidden rounded-bb-lg border border-bb-border bg-bb-border lg:grid-cols-3 xl:grid-cols-6";
 
 export default async function StatistiquesPage() {
   const stats = await getDashboardStats();
 
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Statistiques"
         subtitle="État des lieux du Blood Bowl en France"
@@ -45,37 +34,31 @@ export default async function StatistiquesPage() {
             <StatCard 
               label="Utilisateurs" 
               value={stats.public.users} 
-              icon={<Users size={18} />}
-              description="Coachs inscrits sur la plateforme"
+              description="Coachs inscrits"
             />
             <StatCard 
               label="Ligues" 
               value={stats.public.ligues} 
-              icon={<Trophy size={18} />}
               description="Ligues et associations actives"
             />
             <StatCard 
               label="Articles" 
               value={stats.public.articles} 
-              icon={<FileText size={18} />}
               description="Actualités et guides publiés"
             />
             <StatCard 
               label="Sujets du forum" 
               value={stats.public.topics} 
-              icon={<MessageSquare size={18} />}
               description="Discussions ouvertes sur le forum"
             />
             <StatCard 
               label="Vues totales" 
               value={stats.public.totalViews.toLocaleString('fr-FR')} 
-              icon={<Eye size={18} />}
               description="Consultations cumulées des sujets"
             />
             <StatCard 
               label="En ligne" 
               value={stats.public.onlineUsers} 
-              icon={<Activity size={18} />}
               description="Membres ayant lu le forum ces 15 dernières minutes"
             />
           </dl>
@@ -89,31 +72,26 @@ export default async function StatistiquesPage() {
               <StatCard 
                 label="Courriels du mois" 
                 value={stats.admin.monthlyMails} 
-                icon={<Send size={18} />}
                 description="Courriels envoyés ce mois-ci"
               />
               <StatCard 
                 label="Taille de la base" 
                 value={stats.admin.dbSize} 
-                icon={<Database size={18} />}
                 description="Place occupée par la base de données"
               />
               <StatCard 
                 label="Signalements" 
                 value={stats.admin.pendingReports} 
-                icon={<AlertCircle size={18} />}
                 description="En attente de traitement"
               />
               <StatCard 
                 label="Ressources" 
                 value={stats.admin.pendingResources} 
-                icon={<FileText size={18} />}
                 description="En attente de validation"
               />
               <StatCard 
                 label="Quota de stockage" 
                 value={stats.admin.storageQuota} 
-                icon={<HardDrive size={18} />}
                 description="Limite de stockage allouée"
               />
             </dl>

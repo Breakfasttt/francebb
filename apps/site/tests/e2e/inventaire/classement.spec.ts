@@ -163,7 +163,7 @@ const TABS = {
   year: /^(Classement|Année) \d{4}$/,
   rolling: /Glissant/,
   roster: /Par roster/i,
-  hof: /^Hall of Fame$/,
+  hof: /^Palmarès$/,
   archives: /^Archives$/,
 };
 

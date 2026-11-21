@@ -10,11 +10,11 @@
  * Chaque réglage change l'adresse de la page (`?view&query&region`), que la page serveur relit : les paramètres sont
  * les mêmes qu'avant la refonte. Changer la recherche ou la zone ramène à la première page des résultats.
  */
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
-import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent } from "@bbfrance/ui";
 import { useDebounce } from "@/common/hooks/useDebounce";
 
 interface LigueFiltersProps {
@@ -44,7 +44,6 @@ export default function LigueFilters({ zones, total }: LigueFiltersProps) {
   const update = (changes: Record<string, string>) => router.push(hrefWith(changes), { scroll: false });
 
   const region = searchParams.get("region") || "";
-  const currentView = searchParams.get("view") || "grid";
   const zoneLabel = zones.find((zone) => zone.key === region)?.label ?? region;
 
   // Recherche : l'adresse change 400 ms après la dernière touche, comme avant la refonte
@@ -64,21 +63,6 @@ export default function LigueFilters({ zones, total }: LigueFiltersProps) {
         <option key={zone.key} value={zone.key}>{zone.label}</option>
       ))}
     </>
-  );
-
-  const viewButton = (view: "grid" | "list", label: string, icon: ReactNode) => (
-    <Button
-      type="button"
-      variant="quiet"
-      size="tap-icon"
-      aria-label={label}
-      aria-pressed={currentView === view}
-      title={label}
-      onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
-    >
-      {icon}
-    </Button>
   );
 
   return (
@@ -103,17 +87,7 @@ export default function LigueFilters({ zones, total }: LigueFiltersProps) {
             Filtres
             <CountBadge count={region ? 1 : 0} aria-label="1 actif" />
           </Button>
-          {/* Ordinateur : le filtre de zone reste visible */}
-          <div className="hidden lg:block lg:w-60">
-            <Select aria-label="Zone" value={region} onChange={(event) => update({ region: event.target.value })}>
-              {zoneOptions}
-            </Select>
-          </div>
-          <div className="flex-1 lg:hidden" />
-          <div role="group" aria-label="Affichage" className="flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
-            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
-            {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
-          </div>
+          {/* Ordinateur : les zones sont dans le panneau gauche de la page */}
         </div>
       </div>
 

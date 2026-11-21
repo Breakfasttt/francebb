@@ -174,12 +174,12 @@ test.describe("carte 132 : pages fixes", () => {
     await expect(page.getByRole("heading", { name: "Communauté & Ligues" })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Challenges Régionaux" })).toHaveCount(0);
 
-    const next = page.getByRole("link", { name: /Prochaine étape/ });
+    const next = page.getByRole("link", { name: /^Étape suivante/ });
     // Quatre sections affichées : trois liens, le dernier vers la section 5, aucun sur la section 5
     await expect(next).toHaveCount(3);
     const targets = await next.evaluateAll((links) => links.map((link) => link.getAttribute("href")));
     expect(targets).toEqual(["#how_to_play_platforms", "#how_to_play_tournaments", "#how_to_play_naf_cdf_rtc"]);
-    await expect(page.locator("#how_to_play_naf_cdf_rtc").getByRole("link", { name: /Prochaine étape/ })).toHaveCount(0);
+    await expect(page.locator("#how_to_play_naf_cdf_rtc").getByRole("link", { name: /^Étape suivante/ })).toHaveCount(0);
 
     // Le lien de la section 2 saute la section 3, masquée, et mène à une section qui existe
     await next.nth(1).click();
@@ -309,7 +309,7 @@ test.describe("en taille téléphone", () => {
   test("/jouer, /membres et la page d'un article tiennent dans l'écran, cibles d'au moins 44 pixels", async ({ page }) => {
     await page.goto("/jouer", { waitUntil: "networkidle" });
     await expectNoHorizontalScroll(page);
-    const next = page.getByRole("link", { name: /Prochaine étape/ }).first();
+    const next = page.getByRole("link", { name: /^Étape suivante/ }).first();
     expect((await next.boundingBox())?.height ?? 0).toBeGreaterThanOrEqual(44);
 
     await page.goto(`/articles/${LIGUE_ARTICLE.id}`, { waitUntil: "networkidle" });

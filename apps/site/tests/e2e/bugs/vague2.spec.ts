@@ -136,12 +136,12 @@ test("149 : un visiteur qui ouvre l'écran de nouveau sujet est envoyé vers la 
 const tournamentLink = (page: Page, name: string) => page.getByRole("link", { name: new RegExp(name) }).filter({ visible: true }).first();
 
 test("150 : la liste des tournois compte les places d'après les inscriptions réelles", async ({ page }) => {
-  // Affichage en grille (par défaut) : « x / y places » sur la carte du tournoi
+  // Liste en lignes (seule présentation depuis la carte 220) : « x/y places »
   await page.goto(`/tournois?${new URLSearchParams({ query: "Bug V2" }).toString()}`, { waitUntil: "networkidle" });
   // 3 inscriptions (inscrits et préinscrits), la liste d'attente ne prend pas de place
-  await expect(tournamentLink(page, RECENT.name)).toContainText("3 / 20 places");
+  await expect(tournamentLink(page, RECENT.name)).toContainText(/3 ?\/ ?20/);
   // Ancien tournoi sans inscription sur le site : le nombre importé de l'ancien site reste affiché
-  await expect(tournamentLink(page, OLD.name)).toContainText("7 / 10 places");
+  await expect(tournamentLink(page, OLD.name)).toContainText(/7 ?\/ ?10/);
 
   // Affichage en liste : même compte
   await page.goto(`/tournois?${new URLSearchParams({ query: "Bug V2", view: "list" }).toString()}`, { waitUntil: "networkidle" });

@@ -3,6 +3,7 @@
  * non-lu, un bandeau de bienvenue pour le visiteur (carte 185). Coquille SiteLayout : outils à gauche (sous la liste
  * sur téléphone), dernières discussions à droite sur grand écran.
  */
+import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import ForumSidebar from "@/app/forum/component/ForumSidebar";
@@ -15,7 +16,6 @@ import { ForumVisitorBanner } from "@/app/forum/component/ForumVisitorInvite";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import SiteLayout, { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
-import { frenchDateTime } from "@/app/forum/component/ForumListItems";
 
 import { unstable_cache } from "next/cache";
 
@@ -100,7 +100,7 @@ export default async function ForumPage() {
             <Link href={`/forum/topic/${topic.id}`} className="flex flex-col gap-0.5 py-2.5 no-underline hover:text-bb-accent-text">
               <span className="line-clamp-2 text-[0.95rem] font-semibold leading-snug text-bb-text">{topic.title}</span>
               <span className="text-sm text-bb-text-muted tabular-nums">
-                {topic.lastPostAuthor?.name ?? "Anonyme"} · {frenchDateTime(topic.lastPostAt)}
+                {topic.lastPostAuthor?.name ?? "Anonyme"} · <RelativeTime date={topic.lastPostAt} />
               </span>
             </Link>
           </li>

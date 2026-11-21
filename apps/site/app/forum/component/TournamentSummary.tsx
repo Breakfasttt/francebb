@@ -7,9 +7,8 @@
 import { DEFAULT_GAME_EDITION } from "@/lib/tournamentForm";
 import React from "react";
 import Link from "next/link";
-import { Calendar, CheckCircle2, Coins, ExternalLink, Info, Layers, MapPin, Monitor, Shield, Trophy, Users, XCircle } from "lucide-react";
-import { Badge, Card, cn } from "@bbfrance/ui";
-import { parseInlineBBCode } from "@/lib/bbcode";
+import { ExternalLink } from "lucide-react";
+import { Badge, Card } from "@bbfrance/ui";
 
 interface TournamentSummaryProps {
   tournament: {
@@ -54,15 +53,12 @@ interface TournamentSummaryProps {
   };
 }
 
-/** Une information pratique : icône, intitulé discret, valeur. */
-function Fact({ icon, label, children }: { icon: React.ReactNode; label: string; children: React.ReactNode }) {
+/** Une information pratique : intitulé en voix Heading, valeur (DESIGN.md : pas d'icône devant chaque libellé). */
+function Fact({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="flex min-w-0 items-start gap-2.5">
-      <span aria-hidden="true" className="mt-0.5 shrink-0 text-bb-accent-text">{icon}</span>
-      <div className="min-w-0">
-        <dt className="text-bb-label font-semibold tracking-wide text-bb-text-muted uppercase">{label}</dt>
-        <dd className="m-0 text-[0.95rem] font-semibold break-words text-bb-text">{children}</dd>
-      </div>
+    <div className="min-w-0">
+      <dt className="font-bb-heading text-bb-label text-bb-text-muted">{label}</dt>
+      <dd className="mt-0.5 text-[0.95rem] font-semibold break-words text-bb-text">{children}</dd>
     </div>
   );
 }
@@ -108,59 +104,59 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
   const waiting = byStatus("WAITING_LIST");
   const mercs = tournament.mercenaries || [];
 
+  // Logistique écrite en clair (plutôt que des étiquettes barrées, qui se lisent mal)
   const options = [
-    { label: "Repas inclus", active: tournament.mealsIncluded },
-    { label: "Dodo sur place", active: tournament.lodgingAtVenue },
-    { label: "Accueil vendredi", active: tournament.fridayArrival },
+    tournament.mealsIncluded ? "Repas inclus" : "Repas non inclus",
+    tournament.lodgingAtVenue ? "Dodo sur place" : "Pas de dodo sur place",
+    tournament.fridayArrival ? "Accueil le vendredi" : "Pas d'accueil le vendredi",
   ];
+  // Participants en toutes lettres (l'ancien « 2 (p:1) » était illisible)
+  const plural = (count: number, word: string) => `${count} ${word}${count > 1 ? "s" : ""}`;
+  const unit = tournament.isTeam ? "équipe" : "coach";
+  const participantDetails = [
+    preReg.length > 0 && plural(preReg.length, "pré-inscrit"),
+    waiting.length > 0 && `${waiting.length} en attente`,
+    mercs.length > 0 && plural(mercs.length, "mercenaire"),
+  ].filter(Boolean).join(" · ");
 
   return (
     <Card className="flex flex-col gap-4 p-4 lg:p-5">
-      <div className="flex items-start gap-3">
-        <span aria-hidden="true" className="flex size-11 shrink-0 items-center justify-center rounded-bb-md bg-bb-accent-soft text-bb-accent-text">
-          <Trophy size={22} />
-        </span>
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2">
-            {tournament.isCancelled ? (
-              <Badge variant="danger">Annulé</Badge>
-            ) : tournament.isFinished ? (
-              <Badge variant="success">Terminé</Badge>
-            ) : null}
-            {tournament.isTeam && <Badge variant="outline">Par équipe de {tournament.coachsPerTeam}</Badge>}
-            {championships.map((c) => (
-              <Badge key={c.label} variant="accent">{c.label}</Badge>
-            ))}
-          </div>
-          <h2
-            className="mt-1 text-xl leading-tight font-bold break-words text-bb-text lg:text-2xl"
-            dangerouslySetInnerHTML={{ __html: parseInlineBBCode(tournament.name) }}
-          />
-          {(tournament.ligue || tournament.ligueCustom) && (
-            <p className="m-0 mt-1 flex flex-wrap items-center gap-1.5 text-sm text-bb-text-muted">
-              <Shield size={14} aria-hidden="true" />
-              <span>Organisé par</span>
-              {tournament.ligue ? (
-                <Link href={`/ligue/${tournament.ligue.id}`} className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
-                  {tournament.ligue.name}
-                </Link>
-              ) : (
-                <span className="font-semibold text-bb-text">{tournament.ligueCustom}</span>
-              )}
-            </p>
-          )}
-        </div>
+      {/* Le nom du tournoi est déjà le titre de la page : la fiche n'a qu'un intitulé discret */}
+      <div className="flex flex-wrap items-center gap-2">
+        <h2 className="font-bb-heading text-[0.95rem] text-bb-text">Fiche du tournoi</h2>
+        {tournament.isCancelled ? (
+          <Badge variant="danger">Annulé</Badge>
+        ) : tournament.isFinished ? (
+          <Badge variant="success">Terminé</Badge>
+        ) : null}
+        {tournament.isTeam && <Badge variant="neutral">Par équipe de {tournament.coachsPerTeam}</Badge>}
+        {championships.map((c) => (
+          <Badge key={c.label} variant="neutral">{c.label}</Badge>
+        ))}
       </div>
+      {(tournament.ligue || tournament.ligueCustom) && (
+        <p className="-mt-2 flex flex-wrap items-center gap-1.5 text-sm text-bb-text-muted">
+          <span>Organisé par</span>
+          {tournament.ligue ? (
+            <Link href={`/ligue/${tournament.ligue.id}`} className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
+              {tournament.ligue.name}
+            </Link>
+          ) : (
+            <span className="font-semibold text-bb-text">{tournament.ligueCustom}</span>
+          )}
+        </p>
+      )}
 
-      <dl className="m-0 grid grid-cols-2 gap-x-3 gap-y-3 border-t border-bb-border pt-4 lg:grid-cols-4 lg:gap-x-4">
-        <Fact icon={<Calendar size={18} />} label="Date et durée">
+      <dl className="grid grid-cols-2 gap-x-4 gap-y-4 border-t border-bb-border pt-4 lg:grid-cols-4">
+        <Fact label="Date et durée">
           {formatDate(tournament.date)} ({tournament.days || 1} jour{parseInt(tournament.days || '1') > 1 ? 's' : ''})
         </Fact>
-        <Fact icon={<MapPin size={18} />} label="Lieu">
+        <Fact label="Lieu">
           {isActuallySpecified ? (
             <a href={gmapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-bb-accent-text hover:underline max-lg:min-h-11">
               <span className="break-words">{displayAddress}</span>
               <ExternalLink size={13} aria-hidden="true" className="shrink-0" />
+              <span className="sr-only">(nouvel onglet)</span>
             </a>
           ) : (
             <span className="font-normal text-bb-text-muted">{tournament.location}</span>
@@ -171,15 +167,14 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             </span>
           )}
         </Fact>
-        <Fact icon={<Users size={18} />} label="Participants">
-          {validated.length}
-          {preReg.length > 0 && <span className="ml-1 text-sm font-normal text-bb-text-muted" title="Pré-inscrits">(p:{preReg.length})</span>}
-          {waiting.length > 0 && <span className="ml-1 text-sm font-normal text-bb-text-muted" title="Liste d'attente">(a:{waiting.length})</span>}
-          {mercs.length > 0 && <span className="ml-1 text-sm font-normal text-bb-text-muted" title="Mercenaires">(m:{mercs.length})</span>}
-          {` / ${tournament.maxParticipants || '∞'} ${tournament.isTeam ? 'équipes' : 'coachs'}`}
+        <Fact label="Participants">
+          <span className="tabular-nums">
+            {plural(validated.length, "inscrit")} sur {tournament.maxParticipants ? plural(tournament.maxParticipants, unit) : `${unit}s illimités`}
+          </span>
+          {participantDetails && <span className="block text-sm font-normal text-bb-text-muted">{participantDetails}</span>}
         </Fact>
-        <Fact icon={<Coins size={18} />} label="Inscription (PAF)">
-          {tournament.price != null ? `${tournament.price} €` : 'N/A'}
+        <Fact label="Inscription (PAF)">
+          {tournament.price != null ? `${tournament.price} €` : 'Non précisée'}
           {(tournament.priceMeals || tournament.priceLodging) && (
             <span className="block text-sm font-normal text-bb-text-muted">
               {tournament.priceMeals && `Repas : +${tournament.priceMeals} € `}
@@ -187,27 +182,16 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             </span>
           )}
         </Fact>
-        <Fact icon={<Monitor size={18} />} label="Plateforme">{tournament.platform || 'Tabletop'}</Fact>
-        <Fact icon={<Layers size={18} />} label="Édition">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Fact>
-        {tournament.ruleset && <Fact icon={<Shield size={18} />} label="Ruleset">{tournament.ruleset}</Fact>}
-        <Fact icon={<Info size={18} />} label="Type de tournoi">{tournament.structure || 'Resurrection'}</Fact>
+        <Fact label="Plateforme">{tournament.platform || 'Tabletop'}</Fact>
+        <Fact label="Édition">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Fact>
+        {tournament.ruleset && <Fact label="Ruleset">{tournament.ruleset}</Fact>}
+        <Fact label="Type de tournoi">{tournament.structure || 'Resurrection'}</Fact>
       </dl>
 
-      <ul aria-label="Logistique" className="m-0 flex list-none flex-wrap gap-2 p-0">
-        {options.map((option) => (
-          <li
-            key={option.label}
-            className={cn(
-              "inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-sm font-semibold",
-              option.active ? "border-bb-success-text text-bb-success-text" : "border-bb-border text-bb-text-muted line-through decoration-1"
-            )}
-          >
-            {option.active ? <CheckCircle2 size={15} aria-hidden="true" /> : <XCircle size={15} aria-hidden="true" />}
-            <span>{option.label}</span>
-            <span className="sr-only">{option.active ? " : oui" : " : non"}</span>
-          </li>
-        ))}
-      </ul>
+      <p className="border-t border-bb-border pt-3 text-sm text-bb-text-muted">
+        <span className="sr-only">Logistique : </span>
+        {options.join(" · ")}
+      </p>
     </Card>
   );
 };

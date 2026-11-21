@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { Button, Card, EmptyState } from "@bbfrance/ui";
-import { ExternalLink, Radio, Youtube } from "lucide-react";
+import { Button, Card } from "@bbfrance/ui";
+import { ExternalLink } from "lucide-react";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 
 /**
@@ -12,7 +12,7 @@ import ForumListHeader from "@/app/forum/component/ForumListHeader";
 
 export const dynamic = "force-dynamic";
 
-const sectionTitle = "m-0 flex items-center gap-2 border-0 p-0 text-lg leading-tight font-bold text-bb-text normal-case not-italic";
+const sectionTitle = "font-bb-heading text-[0.95rem] text-bb-text";
 
 export default async function MediaPage() {
   const settings = await prisma.siteSetting.findMany({
@@ -27,21 +27,26 @@ export default async function MediaPage() {
   const youtubeList = config.youtube_channels?.split(",").map((s: string) => s.trim()).filter(Boolean) || [];
 
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Vidéos et directs"
-        subtitle="Suivez l'actualité du Blood Bowl en direct et en rediffusion"
+        subtitle="Les directs et les vidéos de la communauté"
         backHref="/"
         backTitle="Retour à l'accueil"
       />
 
       <div className="flex flex-col gap-8">
+        {/* Rien de configuré : une phrase, sans boîte ni état vide passe-partout (DESIGN.md) */}
+        {twitchList.length === 0 && youtubeList.length === 0 && (
+          <p className="text-bb-text-muted">Pas encore de chaîne référencée. L&apos;équipe du site peut en ajouter depuis l&apos;administration.</p>
+        )}
+        {/* Une section sans chaîne n'est pas affichée */}
+        {twitchList.length > 0 && (
         <section aria-labelledby="media-twitch" className="flex flex-col gap-3">
           <h2 id="media-twitch" className={sectionTitle}>
-            <Radio size={22} aria-hidden="true" className="text-bb-accent-text" /> Directs Twitch
+            Directs Twitch
           </h2>
-          {twitchList.length > 0 ? (
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-4 lg:grid-cols-2 min-[1440px]:grid-cols-3">
               {twitchList.map((channel: string) => (
                 <Card key={channel} className="overflow-hidden">
                   <div className="aspect-video w-full bg-bb-surface-2">
@@ -64,19 +69,15 @@ export default async function MediaPage() {
                 </Card>
               ))}
             </div>
-          ) : (
-            <Card>
-              <EmptyState title="Aucune chaîne Twitch configurée." />
-            </Card>
-          )}
         </section>
+        )}
 
+        {youtubeList.length > 0 && (
         <section aria-labelledby="media-youtube" className="flex flex-col gap-3">
           <h2 id="media-youtube" className={sectionTitle}>
-            <Youtube size={22} aria-hidden="true" className="text-bb-accent-text" /> Dernières vidéos
+            Dernières vidéos
           </h2>
-          {youtubeList.length > 0 ? (
-            <div className="grid gap-4 lg:grid-cols-2">
+            <div className="grid gap-4 lg:grid-cols-2 min-[1440px]:grid-cols-3">
               {youtubeList.map((channelId: string) => {
                 // Liste de lecture « Uploads » de la chaîne : son identifiant est celui de la chaîne, avec UU au lieu de UC
                 const playlistId = channelId.replace(/^UC/, "UU");
@@ -96,12 +97,8 @@ export default async function MediaPage() {
                 );
               })}
             </div>
-          ) : (
-            <Card>
-              <EmptyState title="Aucune chaîne YouTube configurée." />
-            </Card>
-          )}
         </section>
+        )}
       </div>
     </div>
   );

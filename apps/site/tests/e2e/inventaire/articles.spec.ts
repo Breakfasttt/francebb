@@ -243,27 +243,16 @@ test.describe("Inventaire 10 : articles", () => {
     await page.waitForURL(/query=Inv/);
     if (isPhone(page)) await page.keyboard.press("Escape");
 
-    // Grille : 12 articles par page (22 articles de remplissage)
+    // Une seule présentation, en lignes (carte 220) : 20 articles par page (22 articles de remplissage)
     await page.goto("/articles?query=Inv+Art+Remplissage", { waitUntil: "networkidle" });
-    await page.screenshot({ path: testInfo.outputPath("articles-grille.png"), fullPage: false });
-    expect(await shownArticles(page)).toHaveLength(12);
+    await page.screenshot({ path: testInfo.outputPath("articles-liste.png"), fullPage: false });
+    expect(await shownArticles(page)).toHaveLength(20);
     await expect(page.getByRole("navigation", { name: "Pagination" }).filter({ visible: true }).first()).toBeVisible();
     await page.goto("/articles?query=Inv+Art+Remplissage&page=2", { waitUntil: "networkidle" });
-    expect(await shownArticles(page)).toHaveLength(10);
-
-    // Liste : 20 articles par page
-    await page.goto("/articles?query=Inv+Art+Remplissage", { waitUntil: "networkidle" });
-    await (await buttonOrLink(page, /liste/i)).click();
-    await page.waitForURL(/view=list/);
-    await page.waitForLoadState("networkidle");
-    if (isPhone(page)) await page.keyboard.press("Escape");
-    expect(await shownArticles(page)).toHaveLength(20);
-    await page.screenshot({ path: testInfo.outputPath("articles-liste.png"), fullPage: false });
-    await page.goto("/articles?view=list&query=Inv+Art+Remplissage&page=2", { waitUntil: "networkidle" });
     expect(await shownArticles(page)).toHaveLength(2);
-    await (await buttonOrLink(page, /grille/i)).click();
-    await page.waitForURL(/view=grid/);
-    if (isPhone(page)) await page.keyboard.press("Escape");
+    // Plus de bascule grille / liste
+    await expect(page.getByRole("button", { name: /grille/i })).toHaveCount(0);
+
 
     // Tag : choisi parmi les suggestions, il écrit `tag` dans l'adresse
     await page.goto("/articles?query=Inv+Art", { waitUntil: "networkidle" });

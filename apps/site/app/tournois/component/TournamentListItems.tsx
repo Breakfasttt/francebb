@@ -68,7 +68,7 @@ export function DateBlock({ date, className }: { date: Date; className?: string 
       className={cn("flex size-12 shrink-0 flex-col items-center justify-center rounded-bb-md border border-bb-border bg-bb-surface-2 leading-none", className)}
     >
       <span className="text-lg font-bold text-bb-text">{value.getDate()}</span>
-      <span className="mt-0.5 text-xs font-semibold text-bb-accent-text uppercase">{value.toLocaleDateString("fr-FR", { month: "short" }).replace(".", "")}</span>
+      <span className="mt-0.5 text-xs font-semibold text-bb-text-muted uppercase">{value.toLocaleDateString("fr-FR", { month: "short" }).replace(".", "")}</span>
     </div>
   );
 }
@@ -164,9 +164,8 @@ export function TournamentRow({ tournament, now }: { tournament: TournamentListI
       </div>
       <div className="hidden text-sm lg:block">
         {isActive ? (
-          <span className={cn("inline-flex items-center gap-1", muted)}>
-            <Users size={14} aria-hidden="true" />
-            {takenPlaces(tournament)}/{tournament.maxParticipants || "∞"}
+          <span className={cn("tabular-nums", muted)}>
+            {takenPlaces(tournament)}/{tournament.maxParticipants || "∞"} places
           </span>
         ) : (
           status

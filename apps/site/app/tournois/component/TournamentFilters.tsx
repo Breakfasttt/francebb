@@ -11,11 +11,11 @@
  * Chaque réglage change l'adresse de la page (`?region=…&isNAF=true…`), que la page serveur relit : les paramètres
  * de l'adresse sont les mêmes qu'avant la refonte. Changer un filtre ramène à la première page des résultats.
  */
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { LayoutGrid, LayoutList, Search, SlidersHorizontal, X } from "lucide-react";
-import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent, cn } from "@bbfrance/ui";
+import { Search, SlidersHorizontal, X } from "lucide-react";
+import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent } from "@bbfrance/ui";
 import { useDebounce } from "@/common/hooks/useDebounce";
 import { REGION_BY_DEPARTMENT } from "@/lib/france";
 
@@ -181,9 +181,7 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
   ];
 
-  return (
-    <div className="flex flex-col gap-5">
-      {sections.map((section) => (
+  const renderSection = (section: (typeof sections)[number]) => (
         <fieldset key={section.title} className="m-0 flex min-w-0 flex-col gap-3 border-0 p-0">
           <legend className="mb-2 p-0 font-bb-heading text-bb-label text-bb-text-muted">
             {section.title}
@@ -236,7 +234,24 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
             );
           })}
         </fieldset>
-      ))}
+  );
+
+  // Panneau de l'ordinateur : localisation et format visibles, le reste replié derrière « Plus de filtres » (DESIGN.md :
+  // les contrôles ne doivent pas l'emporter sur le contenu). Dans le panneau du téléphone, tout est visible.
+  const visible = prefix === "aside" ? sections.slice(0, 2) : sections;
+  const folded = prefix === "aside" ? sections.slice(2) : [];
+  return (
+    <div className="flex flex-col gap-5">
+      {visible.map(renderSection)}
+      {folded.length > 0 && (
+        <details className="group flex flex-col gap-5">
+          <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 text-[0.95rem] font-semibold text-bb-text-muted hover:text-bb-text">
+            <span className="group-open:hidden">Plus de filtres</span>
+            <span className="hidden group-open:inline">Moins de filtres</span>
+          </summary>
+          <div className="mt-3 flex flex-col gap-5">{folded.map(renderSection)}</div>
+        </details>
+      )}
     </div>
   );
 }
@@ -284,7 +299,6 @@ export function TournamentListControls({ total, places }: { total: number; place
   const { searchParams, hrefWith, update } = useParamUpdater();
   const [filtersOpen, setFiltersOpen] = useState(false);
   const currentSort = searchParams.get("sort") || "date_asc";
-  const currentView = searchParams.get("view") || "list";
 
   // Recherche par nom : l'adresse change 400 ms après la dernière touche (avant, à chaque touche)
   const urlQuery = searchParams.get("query") || "";
@@ -300,20 +314,6 @@ export function TournamentListControls({ total, places }: { total: number; place
     .filter(([key, value]) => !NOT_FILTERS.has(key) && value)
     .map(([key, value]) => ({ key, text: chipText(key, value, places) }));
 
-  const viewButton = (view: "grid" | "list", label: string, icon: ReactNode) => (
-    <Button
-      type="button"
-      variant="quiet"
-      size="tap-icon"
-      aria-label={label}
-      aria-pressed={currentView === view}
-      title={label}
-      onClick={() => update({ view, page: searchParams.get("page") || "" })}
-      className={cn("rounded-bb-md", currentView === view && "bg-bb-surface-2 text-bb-text")}
-    >
-      {icon}
-    </Button>
-  );
 
   return (
     <div className="flex flex-col gap-3">
@@ -347,10 +347,6 @@ export function TournamentListControls({ total, places }: { total: number; place
               <option key={option.value} value={option.value}>{option.label}</option>
             ))}
           </Select>
-          <div role="group" aria-label="Affichage" className="flex shrink-0 rounded-bb-md border border-bb-border bg-bb-surface p-0.5">
-            {viewButton("list", "Affichage en liste", <LayoutList size={18} aria-hidden="true" />)}
-            {viewButton("grid", "Affichage en grille", <LayoutGrid size={18} aria-hidden="true" />)}
-          </div>
         </div>
       </div>
 

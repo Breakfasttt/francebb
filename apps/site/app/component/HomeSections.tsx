@@ -5,12 +5,13 @@
  * Pour un visiteur : pas de bouton « Forum » ni de lien Discord dans le bloc forum, pas de lien vers la carte dans le
  * bloc des ligues (le haut de son accueil les porte déjà), et les liens « Créer » mènent à la connexion.
  */
+import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
 import { Avatar, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
-import { UnreadDot, frenchDateTime } from "@/app/forum/component/ForumListItems";
+import { UnreadDot } from "@/app/forum/component/ForumListItems";
 import LigueBlason from "@/app/ligues/component/LigueBlason";
 import { CreateLink, MoreLink, blockSurface, blockTitle, focusRing } from "./HomeBlocks";
 import LiguesMiniMap from "./LiguesMiniMap";
@@ -64,7 +65,7 @@ export function ForumBlock({ forum, discordHref, visitor = false }: { forum: Mem
                     <span className="line-clamp-2 min-w-0 text-base leading-snug font-bold break-words text-bb-text" dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.title) }} />
                   </span>
                   <span className="text-sm text-bb-text-muted">
-                    <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forumName) }} /> · {topic.lastPostAuthorName} · {frenchDateTime(topic.lastPostAt)}
+                    <span dangerouslySetInnerHTML={{ __html: parseInlineBBCode(topic.forumName) }} /> · {topic.lastPostAuthorName} · <RelativeTime date={topic.lastPostAt} />
                   </span>
                   {topic.excerpt && <span className="line-clamp-2 text-sm leading-normal break-words text-bb-text">{topic.excerpt}</span>}
                 </span>

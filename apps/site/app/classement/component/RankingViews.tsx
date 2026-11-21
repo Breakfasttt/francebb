@@ -46,7 +46,7 @@ export interface HallOfFameYear {
 function rankTone(rank: number) {
   if (rank === 1) return "text-bb-rank";
   if (rank === 2) return "text-bb-text";
-  if (rank === 3) return "text-bb-warning-text";
+  if (rank === 3) return "text-bb-text";
   return "text-bb-text-muted";
 }
 
@@ -74,7 +74,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
         <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.nafNumber ? `#${entry.nafNumber}` : "-"}</span>
         <span className="hidden text-sm text-bb-text-muted tabular-nums lg:block">{entry.count ?? results.length}</span>
         <span className="text-right">
-          <span className="block text-lg leading-tight font-bold text-bb-accent-text tabular-nums">{formatPoints(entry.totalPoints)}</span>
+          <span className="block text-lg leading-tight font-bold text-bb-text tabular-nums">{formatPoints(entry.totalPoints)}</span>
           <span className="block text-xs text-bb-text-muted lg:sr-only">points</span>
         </span>
         <Button
@@ -109,7 +109,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
           </p>
           {results.length > 0 ? (
             <div>
-              <p className="m-0 mb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">Meilleurs tournois retenus</p>
+              <p className="mb-2 font-bb-heading text-bb-label text-bb-text-muted">Meilleurs tournois retenus</p>
               <ul className="m-0 grid list-none grid-cols-1 gap-x-4 p-0 lg:grid-cols-2">
                 {results.map((result, index) => {
                   const title = result.tournamentName || result.name || "Tournoi";
@@ -132,7 +132,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
                           </span>
                         )}
                       </span>
-                      <span className="shrink-0 font-bold text-bb-accent-text tabular-nums">{formatPoints(result.points)} pts</span>
+                      <span className="shrink-0 font-bold text-bb-text tabular-nums">{formatPoints(result.points)} pts</span>
                     </li>
                   );
                 })}
@@ -150,7 +150,7 @@ function RankingRow({ entry, rank }: { entry: RankingEntry; rank: number }) {
 export function RankingList({ entries }: { entries: RankingEntry[] }) {
   return (
     <Card className="overflow-hidden">
-      <div aria-hidden="true" className={cn(columns, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase lg:px-4")}>
+      <div aria-hidden="true" className={cn(columns, "border-b border-bb-border bg-bb-surface-2 px-3 py-2 font-bb-heading text-bb-label text-bb-text-muted lg:px-4")}>
         <span className="text-center">#</span>
         <span>Coach</span>
         <span className="hidden lg:block">NAF</span>
@@ -190,7 +190,7 @@ export function RosterList({ entries }: { entries: RankingEntry[] }) {
               </p>
             </div>
             <span className="shrink-0 text-right">
-              <span className="block text-lg leading-tight font-bold text-bb-accent-text tabular-nums">{formatPoints(entry.totalPoints)}</span>
+              <span className="block text-lg leading-tight font-bold text-bb-text tabular-nums">{formatPoints(entry.totalPoints)}</span>
               <span className="block text-xs text-bb-text-muted">points</span>
             </span>
           </Card>

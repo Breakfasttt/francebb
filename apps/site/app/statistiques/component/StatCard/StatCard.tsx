@@ -8,21 +8,21 @@ import React from 'react';
 interface StatCardProps {
   label: string;
   value: string | number;
-  icon: React.ReactNode;
+  /** Gardée pour compatibilité, plus affichée (DESIGN.md : pas d'icône décorative) */
+  icon?: React.ReactNode;
   description?: string;
 }
 
-export default function StatCard({ label, value, icon, description }: StatCardProps) {
+/**
+ * Une case du tableau de score (DESIGN.md) : grand chiffre en voix Display, intitulé en voix Heading, précision
+ * discrète. Pas d'icône. Les cases sont séparées par les filets de leur grille (page statistiques).
+ */
+export default function StatCard({ label, value, description }: StatCardProps) {
   return (
-    <div className="flex flex-col gap-1 rounded-bb-lg border border-bb-border bg-bb-surface p-3 lg:p-4">
-      <dt className="flex items-center gap-2 text-sm font-semibold text-bb-text-muted">
-        <span aria-hidden="true" className="flex size-8 shrink-0 items-center justify-center rounded-bb-md bg-bb-accent-soft text-bb-accent-text">
-          {icon}
-        </span>
-        <span className="min-w-0 break-words">{label}</span>
-      </dt>
-      <dd className="m-0 text-2xl leading-tight font-bold break-words text-bb-text lg:text-3xl">{value}</dd>
-      {description && <dd className="m-0 text-sm text-bb-text-muted">{description}</dd>}
+    <div className="flex flex-col gap-1 bg-bb-surface p-4 lg:p-5">
+      <dt className="font-bb-heading text-bb-label text-bb-text-muted">{label}</dt>
+      <dd className="font-bb-display text-[2rem] text-bb-text tabular-nums lg:text-[2.75rem]">{value}</dd>
+      {description && <dd className="text-sm text-bb-text-muted">{description}</dd>}
     </div>
   );
 }

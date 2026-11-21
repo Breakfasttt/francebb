@@ -606,6 +606,13 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
           </Button>
         )}
 
+        {/* Visiteur : l'action principale du sujet est de se connecter pour répondre (retour sur ce sujet ensuite) */}
+        {!t.currentUserId && !t.isLocked && !t.isForumLocked && !t.isArchived && (
+          <Button asChild variant={t.isTournament ? "secondary" : "primary"} size="tap" className={toolButton}>
+            <Link href={`/auth/login?callbackUrl=${encodeURIComponent(`/forum/topic/${t.topicId}`)}`}>Se connecter pour répondre</Link>
+          </Button>
+        )}
+
         {t.currentUserId && (
           <Button
             type="button"

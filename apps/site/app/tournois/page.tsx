@@ -70,7 +70,8 @@ export default async function TournamentsPage({
 
   const sort = (params.sort as string) || "date_asc";
   // Liste en tableau par défaut (DESIGN.md : lignes plutôt que cartes) ; la grille reste au choix
-  const view = (params.view as string) || "list";
+  // Une seule présentation, en lignes (DESIGN.md) : l'ancien paramètre « view » est ignoré
+  const view: string = "list";
   const showHistory = params.history === "true";
 
   const page = parseInt(params.page as string) || 1;
@@ -206,7 +207,7 @@ export default async function TournamentsPage({
         )}
       </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
         <TournamentFilterAside places={places} createHref={createHref} showFilters={showControls} />
 
         <section aria-label="Tournois trouvés" className="flex min-w-0 flex-col gap-4">
@@ -228,7 +229,7 @@ export default async function TournamentsPage({
                     <span>Tournoi</span>
                     <span>Lieu</span>
                     <span>Format</span>
-                    <span>Statut</span>
+                    <span>Places</span>
                     <span className="text-right">Prix</span>
                   </div>
                   {tournaments.map((tournament) => (

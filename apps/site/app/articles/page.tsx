@@ -31,7 +31,8 @@ export default async function ArticlesPage({
   const author = params.author as string | undefined;
   const sort = (params.sort as string) || "date_desc";
   // Liste par défaut (DESIGN.md : lignes plutôt que cartes) ; la grille reste au choix
-  const view = (params.view as string) || "list";
+  // Une seule présentation, en lignes (DESIGN.md) : l'ancien paramètre « view » est ignoré
+  const view: string = "list";
   const page = parseInt(params.page as string) || 1;
   const limit = view === "grid" ? 12 : 20;
   const skip = (page - 1) * limit;
@@ -121,7 +122,7 @@ export default async function ArticlesPage({
         )}
       </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
         <ArticleFilterAside availableTags={availableTags} createHref={createHref} showFilters={showControls} />
 
         <section aria-label="Articles trouvés" className="flex min-w-0 flex-col gap-4">

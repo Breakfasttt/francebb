@@ -42,7 +42,8 @@ function RessourcesList() {
   const [query, setQuery] = useState(() => searchParams.get("q") ?? "");
   const debouncedQuery = useDebounce(query, 300);
   const [tags, setTags] = useState<string[]>(() => readList(searchParams.get("tags")));
-  const [view, setView] = useState<ResourceView>(() => (searchParams.get("vue") === "liste" ? "list" : "grid"));
+  // Une seule présentation, en lignes (DESIGN.md) : l'ancien paramètre « vue » est ignoré
+  const view: ResourceView = "list";
   const [page, setPage] = useState(() => readPositiveInt(searchParams.get("page"), 1));
   useSyncUrlFilters({ q: debouncedQuery.trim(), tags, vue: view === "list" ? "liste" : "", page }, { page: 1 });
   const [availableTags, setAvailableTags] = useState<string[]>([]);
@@ -127,7 +128,7 @@ function RessourcesList() {
         )}
       </ForumListHeader>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[260px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
         <ResourceFilterAside tags={tags} onTagsChange={changeTags} availableTags={availableTags} submitHref={submitHref} />
 
         <section aria-label="Ressources trouvées" aria-busy={loading} className="flex min-w-0 flex-col gap-4">
@@ -135,18 +136,16 @@ function RessourcesList() {
             total={total}
             query={query}
             onQueryChange={changeQuery}
-            view={view}
-            onViewChange={setView}
             tags={tags}
             onTagsChange={changeTags}
             availableTags={availableTags}
           />
 
           {loading || !data ? (
-            // Chargement : des cartes grises à la place des ressources
-            <div className="grid gap-3 sm:grid-cols-2" aria-label="Chargement des ressources">
-              {Array.from({ length: 6 }, (_, index) => (
-                <Skeleton key={index} className="h-72 rounded-bb-lg" />
+            // Chargement : des lignes grises, à l'image de la liste qui s'affiche ensuite
+            <div className="flex flex-col overflow-hidden rounded-bb-lg border border-bb-border" aria-label="Chargement des ressources">
+              {Array.from({ length: 5 }, (_, index) => (
+                <Skeleton key={index} className="h-16 rounded-none border-b border-bb-border last:border-b-0" />
               ))}
             </div>
           ) : resources.length > 0 ? (

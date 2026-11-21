@@ -41,8 +41,10 @@ import {
   TabsTrigger,
   toast,
   useMediaQuery,
+  cn,
 } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import { PanelTitle, panelItemClass } from "@/common/components/SiteLayout/SiteLayout";
 import { useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import { isAdmin, isModerator } from "@/lib/roles";
 import {
@@ -57,6 +59,15 @@ import { HallOfFame, RankingList, RosterList, type HallOfFameYear, type RankingE
 
 type RankingYear = { year: number; isArchived: boolean };
 type TabValue = "year" | "rolling" | "roster" | "hof" | "archives";
+
+/** Les vues du classement, dans l'ordre (le libellé « Année » reçoit l'année en cours à l'affichage). */
+const RANKING_TABS: { value: TabValue; label: string }[] = [
+  { value: "year", label: "Année" },
+  { value: "rolling", label: "Glissant" },
+  { value: "roster", label: "Par roster" },
+  { value: "hof", label: "Palmarès" },
+  { value: "archives", label: "Archives" },
+];
 
 /** Vue du classement lue dans l'adresse (`?vue=CDF_2026`, `ROLLING`, `ROSTER_2025`, `HOF`, `ARCHIVES`), ou rien. */
 function readRankingFilter(value: string | null): RankingFilter | null {
@@ -284,14 +295,37 @@ function Classement() {
       >
         <div className="flex w-full items-center gap-2 lg:w-auto">
           {/* Sur un petit téléphone, le libellé passe sur deux lignes plutôt que de pousser « Gestion » hors de l'écran */}
-          <Button type="button" variant="secondary" size="tap" className="min-w-0 py-1.5 text-left whitespace-normal max-lg:flex-1" onClick={() => setIsHelpOpen(true)}>
+          <Button type="button" variant="secondary" size="tap" className="min-w-0 py-1.5 text-left whitespace-normal max-lg:flex-1 lg:hidden" onClick={() => setIsHelpOpen(true)}>
             <HelpCircle size={18} aria-hidden="true" /> Comment sont calculés les points ?
           </Button>
           {managementMenu}
         </div>
       </ForumListHeader>
 
-      <Tabs value={activeTab} onValueChange={changeTab}>
+      {/* Ordinateur : les vues dans le panneau gauche (DESIGN.md) ; téléphone : rangée d'onglets */}
+      <div className="flex flex-col lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+        <aside aria-label="Vues du classement" className="hidden lg:sticky lg:top-20 lg:flex lg:flex-col lg:gap-5">
+          <nav aria-labelledby="ranking-views-title" className="flex flex-col">
+            <PanelTitle id="ranking-views-title">Vues</PanelTitle>
+            {RANKING_TABS.map((tab) => (
+              <Button
+                key={tab.value}
+                type="button"
+                variant="quiet"
+                aria-current={activeTab === tab.value ? "page" : undefined}
+                onClick={() => changeTab(tab.value)}
+                className={cn(panelItemClass(activeTab === tab.value), "h-auto justify-start rounded-none font-normal hover:bg-transparent")}
+              >
+                {tab.value === "year" ? `Année ${latestLiveYear}` : tab.label}
+              </Button>
+            ))}
+          </nav>
+          <Button type="button" variant="secondary" size="tap" className="w-full justify-start whitespace-normal text-left" onClick={() => setIsHelpOpen(true)}>
+            Comment sont calculés les points ?
+          </Button>
+        </aside>
+        <div className="flex min-w-0 flex-col">
+      <Tabs value={activeTab} onValueChange={changeTab} className="lg:hidden">
         <TabsList aria-label="Vues du classement" className="max-lg:-mx-3 max-lg:px-3">
           <TabsTrigger value="year">
             Année {latestLiveYear}
@@ -303,7 +337,7 @@ function Classement() {
             Par roster
           </TabsTrigger>
           <TabsTrigger value="hof">
-            Hall of Fame
+            Palmarès
           </TabsTrigger>
           <TabsTrigger value="archives">
             Archives
@@ -384,9 +418,11 @@ function Classement() {
         <RankingList entries={ranking} />
       )}
 
-      <p className="m-0 mt-8 text-center text-sm text-bb-text-muted">
+      <p className="mt-8 text-sm text-bb-text-muted">
         Le Championnat de France est régi par les règles de la Team France Blood Bowl.
       </p>
+        </div>
+      </div>
 
       <Sheet open={isHelpOpen} onOpenChange={setIsHelpOpen}>
         <SheetContent title="Calcul des points CDF" side={isDesktop ? "center" : "bottom"}>

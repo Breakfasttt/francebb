@@ -225,27 +225,15 @@ test.describe("Inventaire 9 : ligues et carte", () => {
     await page.waitForURL(/query=Inv/);
     if (isPhone(page)) await page.keyboard.press("Escape");
 
-    // Grille : 12 ligues par page (22 ligues de remplissage)
+    // Une seule présentation, en lignes (carte 220) : 20 ligues par page (22 ligues de remplissage)
     await page.goto("/ligues?query=Inv+Lig+Remplissage", { waitUntil: "networkidle" });
-    await page.screenshot({ path: testInfo.outputPath("ligues-grille.png"), fullPage: false });
-    expect(await shownLigues(page)).toHaveLength(12);
+    await page.screenshot({ path: testInfo.outputPath("ligues-liste.png"), fullPage: false });
+    expect(await shownLigues(page)).toHaveLength(20);
     await expect(page.getByRole("navigation", { name: "Pagination" }).filter({ visible: true }).first()).toBeVisible();
     await page.goto("/ligues?query=Inv+Lig+Remplissage&page=2", { waitUntil: "networkidle" });
-    expect(await shownLigues(page)).toHaveLength(10);
-
-    // Liste : 20 ligues par page
-    await page.goto("/ligues?query=Inv+Lig+Remplissage", { waitUntil: "networkidle" });
-    await (await viewSwitch(page, /liste/i)).click();
-    await page.waitForURL(/view=list/);
-    await page.waitForLoadState("networkidle");
-    if (isPhone(page)) await page.keyboard.press("Escape");
-    expect(await shownLigues(page)).toHaveLength(20);
-    await page.screenshot({ path: testInfo.outputPath("ligues-liste.png"), fullPage: false });
-    await page.goto("/ligues?view=list&query=Inv+Lig+Remplissage&page=2", { waitUntil: "networkidle" });
     expect(await shownLigues(page)).toHaveLength(2);
-    await (await viewSwitch(page, /grille/i)).click();
-    await page.waitForURL(/view=grid/);
-    if (isPhone(page)) await page.keyboard.press("Escape");
+    await expect(page.getByRole("button", { name: /grille/i })).toHaveCount(0);
+
 
     // Recherche par acronyme
     await page.goto("/ligues?query=ILB", { waitUntil: "networkidle" });
@@ -341,11 +329,11 @@ test.describe("Inventaire 9 : ligues et carte", () => {
     await expect(page.getByText(CHEF.name).first()).toBeVisible();
     await expect(page.getByText(/Chef de ligue/i).first()).toBeVisible();
     await expect(page.getByText(COMM.name).first()).toBeVisible();
-    // Cinq prochains tournois et « Voir tout »
+    // Cinq prochains tournois et « Tous ses tournois »
     const tournaments = page.getByRole("link", { name: /Inv Lig Tournoi/ }).filter({ visible: true });
     await expect(tournaments).toHaveCount(5);
     await expect(tournaments.filter({ hasText: tournamentName(6) })).toHaveCount(0);
-    const all = page.getByRole("link", { name: /Voir tout/ }).filter({ visible: true }).first();
+    const all = page.getByRole("link", { name: /Tous ses tournois/ }).filter({ visible: true }).first();
     await expect(all).toHaveAttribute("href", `/tournois?ligueId=${ALPHA.id}`);
 
     // Membres de la ligue (liste affichée aux membres connectés)
