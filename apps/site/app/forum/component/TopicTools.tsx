@@ -865,8 +865,9 @@ export function TopicToolsAside() {
 export function TopicToolsButton() {
   const t = useTools();
   return (
-    <Button type="button" variant="secondary" size="tap-icon" aria-label="Outils du sujet" className="shrink-0 lg:hidden" onClick={t.openSheet}>
-      <SlidersHorizontal size={20} aria-hidden="true" />
+    // Libellé visible : une icône seule ne disait pas ce que fait le bouton (carte 220)
+    <Button type="button" variant="secondary" size="tap" aria-label="Outils du sujet" className="shrink-0 gap-1.5 px-3 lg:hidden" onClick={t.openSheet}>
+      <SlidersHorizontal size={18} aria-hidden="true" /> Outils
     </Button>
   );
 }
