@@ -29,8 +29,8 @@ export default function ErrorScreen({ onRetry, digest }: ErrorScreenProps) {
           <h1 className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">Match interrompu par l&apos;orage !</h1>
         </div>
         <p className="m-0 text-bb-text-muted">
-          Cette page n&apos;a pas pu s&apos;afficher. Ce n&apos;est pas de votre faute : réessayez dans un instant.
-          Si le problème continue, revenez un peu plus tard.
+          Cette page n&apos;a pas pu s&apos;afficher. Ce n&apos;est pas de ta faute : réessaie dans un instant.
+          Si le problème continue, reviens un peu plus tard.
         </p>
         <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
           <Button type="button" variant="primary" size="tap" className="w-full sm:w-auto" onClick={onRetry}>

@@ -73,7 +73,7 @@ function MessagerieContent() {
               <h1 id="messagerie-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
                 Messagerie
               </h1>
-              <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Vos discussions privées avec les autres coachs</p>
+              <p className="m-0 mt-0.5 text-sm text-bb-text-muted">Tes discussions privées avec les autres coachs</p>
             </div>
           </div>
           <Button type="button" variant="primary" size="tap" onClick={() => setShowNew(true)} className="w-full gap-1.5">

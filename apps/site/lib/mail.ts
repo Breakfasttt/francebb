@@ -43,7 +43,7 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
       from: process.env.EMAIL_FROM || '"BBFrance" <noreply@bbfrance.fr>',
       to,
       subject,
-      text: text || "Veuillez ouvrir cet email dans un client supportant le HTML.",
+      text: text || "Ouvre cet email dans un client qui affiche le HTML.",
       html,
     });
 
@@ -100,7 +100,7 @@ export function getEmailTemplate(content: string, title: string) {
           </div>
           <div class="footer">
             <p>&copy; ${new Date().getFullYear()} BBFrance - Le portail du Blood Bowl en France</p>
-            <p>Vous recevez cet email car vous êtes inscrit sur BBFrance. Vous pouvez gérer vos préférences de notification dans votre profil.</p>
+            <p>Tu reçois cet email car tu es inscrit sur BBFrance. Tu peux gérer tes préférences de notification dans ton profil.</p>
           </div>
         </div>
       </body>
@@ -119,7 +119,7 @@ export async function sendPmNotification(toEmail: string, senderName: string, me
 
   const content = `
     <p>Bonjour,</p>
-    <p><strong class="accent">${escapeHtml(senderName)}</strong> vous a envoyé un nouveau message privé sur BBFrance :</p>
+    <p><strong class="accent">${escapeHtml(senderName)}</strong> t'a envoyé un nouveau message privé sur BBFrance :</p>
     <div style="background: #f9f9f9; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; font-style: italic;">
       "${escapeHtml(messagePreview)}"
     </div>
@@ -139,7 +139,7 @@ export async function sendFollowNotification(toEmail: string, authorName: string
   const title = "Nouvelle réponse";
   const content = `
     <p>Bonjour,</p>
-    <p>Un nouveau message a été posté par <strong class="accent">${escapeHtml(authorName)}</strong> dans un sujet que vous suivez :</p>
+    <p>Un nouveau message a été posté par <strong class="accent">${escapeHtml(authorName)}</strong> dans un sujet que tu suis :</p>
     <p style="font-size: 18px; font-weight: bold; margin: 20px 0;">${escapeHtml(topicTitle)}</p>
     <a href="${process.env.AUTH_URL}/forum/topic/${encodeURIComponent(topicId)}" class="btn">Consulter la réponse</a>
   `;

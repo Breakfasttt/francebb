@@ -39,7 +39,7 @@ export default async function BannedPage() {
             Compte banni
           </h1>
           <p className="m-0 text-bb-text-muted">
-            Votre compte a été suspendu par l’équipe de modération. Vous ne pouvez plus accéder aux fonctionnalités du site.
+            Ton compte a été suspendu par l’équipe de modération. Tu ne peux plus accéder aux fonctionnalités du site.
           </p>
 
           <div className="w-full rounded-bb-md border border-bb-border bg-bb-surface-2 p-4 text-left">

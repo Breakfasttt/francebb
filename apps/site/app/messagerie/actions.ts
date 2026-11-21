@@ -264,7 +264,7 @@ export async function startConversation(userIds: string[], name?: string): Promi
     const isGroup = allParticipants.length > 2 || !!name;
 
     if (await hasBlockBetween(myId, allParticipants.filter(uid => uid !== myId))) {
-        return { success: false, error: "Impossible de démarrer une conversation avec un membre qui vous a bloqué ou que vous avez bloqué." };
+        return { success: false, error: "Impossible de démarrer une conversation avec un membre qui t'a bloqué ou que tu as bloqué." };
     }
 
     // Vérifier la limite de 50 conversations
@@ -272,7 +272,7 @@ export async function startConversation(userIds: string[], name?: string): Promi
         where: { userId: myId, deletedAt: null }
     });
     if (myConvCount >= CONVERSATION_LIMIT) {
-        return { success: false, error: `Vous avez atteint la limite de ${CONVERSATION_LIMIT} conversations.` };
+        return { success: false, error: `Tu as atteint la limite de ${CONVERSATION_LIMIT} conversations.` };
     }
 
     // Si c'est un 1v1, vérifier si elle existe déjà. Elle doit compter exactement ces deux membres : chacun des deux y
@@ -407,7 +407,7 @@ export async function inviteToGroup(conversationId: string, userIds: string[]): 
     if (!inviter || inviter.deletedAt) return { success: false, error: "Accès refusé" };
 
     if (await hasBlockBetween(myId, userIds.filter(uid => uid !== myId))) {
-        return { success: false, error: "Impossible d'inviter un membre qui vous a bloqué ou que vous avez bloqué." };
+        return { success: false, error: "Impossible d'inviter un membre qui t'a bloqué ou que tu as bloqué." };
     }
 
     // Filtrer pour ne pas ajouter des personnes déjà présentes
@@ -462,7 +462,7 @@ export async function renameConversation(conversationId: string, name: string): 
 
     if (!conv) return { success: false, error: "Conversation introuvable" };
     if (!conv.isGroup) return { success: false, error: "Seules les conversations de groupe peuvent être renommées" };
-    if (conv.participants.length === 0) return { success: false, error: "Vous ne participez pas à cette conversation" };
+    if (conv.participants.length === 0) return { success: false, error: "Tu ne participes pas à cette conversation" };
 
     await prisma.conversation.update({
         where: { id: conversationId },

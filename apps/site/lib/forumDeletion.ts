@@ -46,25 +46,25 @@ export function decidePostDeletion(input: {
     if (topicHasTournament) {
       return {
         kind: "refuse",
-        error: "Ce message présente le tournoi : il ne peut pas être supprimé. Pour retirer le tournoi, annulez-le depuis les outils du sujet.",
+        error: "Ce message présente le tournoi : il ne peut pas être supprimé. Pour retirer le tournoi, annule-le depuis les outils du sujet.",
       };
     }
     if (otherVisiblePosts > 0) {
       return {
         kind: "refuse",
         error:
-          "C'est le premier message du sujet et d'autres membres y ont répondu : il ne peut plus être supprimé. Vous pouvez le modifier, ou demander à la modération de supprimer le sujet.",
+          "C'est le premier message du sujet et d'autres membres y ont répondu : il ne peut plus être supprimé. Tu peux le modifier, ou demander à la modération de supprimer le sujet.",
       };
     }
     return { kind: "deleteTopic" };
   }
 
   if (!viewerIsModerator) return { kind: "refuse", error: "Seuls l'auteur du message et les modérateurs peuvent le supprimer." };
-  if (!input.reason?.trim()) return { kind: "refuse", error: "Indiquez la raison de la suppression." };
+  if (!input.reason?.trim()) return { kind: "refuse", error: "Indique la raison de la suppression." };
   if (isFirstPost) {
     return {
       kind: "refuse",
-      error: "C'est le premier message du sujet : pour le retirer, supprimez le sujet entier depuis les outils de modération.",
+      error: "C'est le premier message du sujet : pour le retirer, supprime le sujet entier depuis les outils de modération.",
     };
   }
   return { kind: "deletePost", byModeration: true };
@@ -83,7 +83,7 @@ export function topicDeletionRefusal(input: {
   if (input.isDeleted) return "Ce sujet est déjà supprimé.";
   const tournament = input.tournament;
   if (tournament && tournament.resultCount > 0 && !tournament.isCancelled) {
-    return "Ce sujet porte un tournoi qui a des résultats publiés. Annulez d'abord le tournoi (s'il est terminé, réouvrez-le puis annulez-le), puis supprimez le sujet.";
+    return "Ce sujet porte un tournoi qui a des résultats publiés. Annule d'abord le tournoi (s'il est terminé, rouvre-le puis annule-le), puis supprime le sujet.";
   }
   return null;
 }

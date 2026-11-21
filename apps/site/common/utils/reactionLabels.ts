@@ -25,5 +25,5 @@ export function reactionName(emoji: string): string {
 /** Nom lu pour une pastille avec compteur : « Pouce levé, 3 réactions (votre réaction) ». */
 export function reactionPillLabel(emoji: string, count: number, hasReacted: boolean): string {
   const plural = count > 1 ? "réactions" : "réaction";
-  return `${reactionName(emoji)}, ${count} ${plural}${hasReacted ? " (votre réaction)" : ""}`;
+  return `${reactionName(emoji)}, ${count} ${plural}${hasReacted ? " (ta réaction)" : ""}`;
 }

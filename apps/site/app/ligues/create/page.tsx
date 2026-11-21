@@ -21,7 +21,7 @@ export default async function CreateLiguePage() {
   return (
     <ComposeScreen
       title="Créer une ligue"
-      subtitle="Regroupez votre communauté Blood Bowl locale"
+      subtitle="Regroupe ta communauté Blood Bowl locale"
       backHref="/ligues"
       backTitle="Retour aux ligues"
     >

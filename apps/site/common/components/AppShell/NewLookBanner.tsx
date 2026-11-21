@@ -81,7 +81,7 @@ export default function NewLookBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
     >
       <Sparkles size={22} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
       <p className="m-0 min-w-0 flex-[1_1_240px] text-[0.95rem] leading-snug">
-        <strong>BBFrance fait peau neuve.</strong> Le site passe au thème « Vestiaire ». Vous préférez votre ancien thème, « {label} » ?
+        <strong>BBFrance fait peau neuve.</strong> Le site passe au thème « Vestiaire ». Tu préfères ton ancien thème, « {label} » ?
       </p>
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="secondary" size="tap" onClick={goBack} disabled={isPending}>

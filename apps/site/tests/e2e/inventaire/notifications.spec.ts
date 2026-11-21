@@ -45,7 +45,7 @@ test("[membre] mention sous la cloche, filtrée par les droits du forum, puis lu
   // Le coach répond dans le sujet public en mentionnant le modérateur
   await loginAs(page, E2E.coachId);
   await page.goto(`/forum/topic/${TOPIC.id}`, { waitUntil: "networkidle" });
-  await page.getByPlaceholder("Écrivez votre réponse ici...").fill(`${REPLY} [mention=${E2E.modoId}]Modo[/mention]`);
+  await page.getByPlaceholder("Écris ta réponse ici...").fill(`${REPLY} [mention=${E2E.modoId}]Modo[/mention]`);
   await page.getByRole("button", { name: "Envoyer ma réponse" }).click();
   await expect(page.getByText(REPLY, { exact: false })).toBeVisible({ timeout: 20_000 });
 
@@ -58,7 +58,7 @@ test("[membre] mention sous la cloche, filtrée par les droits du forum, puis lu
   // Le modérateur mentionne le coach dans un forum réservé à l'équipe : le coach n'est pas prévenu
   await loginAs(page, E2E.modoId);
   await page.goto(`/forum/topic/${SECRET_TOPIC.id}`, { waitUntil: "networkidle" });
-  await page.getByPlaceholder("Écrivez votre réponse ici...").fill(`${REPLY} [mention=${E2E.coachId}]Coach[/mention]`);
+  await page.getByPlaceholder("Écris ta réponse ici...").fill(`${REPLY} [mention=${E2E.coachId}]Coach[/mention]`);
   await page.getByRole("button", { name: "Envoyer ma réponse" }).click();
   await expect(page.getByText(REPLY, { exact: false })).toBeVisible({ timeout: 20_000 });
   await expect.poll(() => withTestDb((prisma) => prisma.post.count({ where: { topicId: SECRET_TOPIC.id } })), { timeout: 30_000 }).toBe(2);

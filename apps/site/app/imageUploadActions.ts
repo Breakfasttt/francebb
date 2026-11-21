@@ -47,7 +47,7 @@ type ImgbbResponse = { success?: boolean; data?: { url?: unknown }; error?: { me
  */
 export async function uploadImage(formData: FormData): Promise<ImageUploadResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté pour envoyer une image." };
+  if (!session?.user?.id) return { success: false, error: "Tu dois être connecté pour envoyer une image." };
 
   const file = formData.get("image");
   if (!(file instanceof File) || file.size === 0) {
@@ -72,7 +72,7 @@ export async function uploadImage(formData: FormData): Promise<ImageUploadResult
   const apiKey = process.env.IMGBB_API_KEY;
   if (!apiKey) {
     console.error("Envoi d'image impossible : la variable IMGBB_API_KEY n'est pas renseignée.");
-    return { success: false, error: "L'envoi d'images n'est pas configuré sur le site. Prévenez un administrateur." };
+    return { success: false, error: "L'envoi d'images n'est pas configuré sur le site. Préviens un administrateur." };
   }
 
   const body = new FormData();
@@ -90,9 +90,9 @@ export async function uploadImage(formData: FormData): Promise<ImageUploadResult
       return { success: true, url };
     }
     console.error("Envoi d'image refusé par ImgBB :", data.error?.message);
-    return { success: false, error: "Le service d'hébergement d'images a refusé l'envoi. Réessayez plus tard." };
+    return { success: false, error: "Le service d'hébergement d'images a refusé l'envoi. Réessaie plus tard." };
   } catch (error) {
     console.error("Envoi d'image vers ImgBB impossible :", error);
-    return { success: false, error: "Le service d'hébergement d'images ne répond pas. Réessayez plus tard." };
+    return { success: false, error: "Le service d'hébergement d'images ne répond pas. Réessaie plus tard." };
   }
 }

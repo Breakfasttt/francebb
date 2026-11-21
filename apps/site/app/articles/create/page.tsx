@@ -16,7 +16,7 @@ export default async function CreateArticlePage() {
   return (
     <ComposeScreen
       title="Créer un article"
-      subtitle="Partagez votre expertise ou vos aventures avec la communauté."
+      subtitle="Partage ton expertise ou tes aventures avec la communauté."
       backHref="/articles"
       backTitle="Retour aux articles"
     >

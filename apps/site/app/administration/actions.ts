@@ -54,7 +54,7 @@ export async function updateCoachRole(targetUserId: string, newRole: string) {
     return { success: false, error: "Impossible de modifier un utilisateur de rang supérieur ou égal." };
   }
   if (myPower <= newRolePower && userRole !== "SUPERADMIN") {
-    return { success: false, error: "Vous ne pouvez pas donner un rôle supérieur ou égal au vôtre." };
+    return { success: false, error: "Tu ne peux pas donner un rôle supérieur ou égal au tien." };
   }
 
   await prisma.user.update({
@@ -101,7 +101,7 @@ export async function createCustomRole(data: { name: string, label: string, colo
   }
 
   if (data.power >= myPower && userRole !== "SUPERADMIN") {
-    return { success: false, error: "Vous ne pouvez pas créer un rôle plus puissant ou égal au vôtre." };
+    return { success: false, error: "Tu ne peux pas créer un rôle plus puissant ou égal au tien." };
   }
 
   // Un rôle personnalisé reste sous Modérateur : lib/roles.ts ne connaît que les rôles de base et

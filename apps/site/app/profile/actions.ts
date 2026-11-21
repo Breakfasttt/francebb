@@ -76,7 +76,7 @@ export async function getPassportUrl(): Promise<string | null> {
 export async function toggleBlockUser(blockedId: string): Promise<ActionResult & { isBlocked?: boolean }> {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non connecté" };
-  if (session.user.id === blockedId) return { success: false, error: "Vous ne pouvez pas vous bloquer vous-même" };
+  if (session.user.id === blockedId) return { success: false, error: "Tu ne peux pas te bloquer toi-même" };
 
   // Vérifier si la cible est un staff (ADMIN/MODO)
   const targetUser = await prisma.user.findUnique({
@@ -85,7 +85,7 @@ export async function toggleBlockUser(blockedId: string): Promise<ActionResult &
   });
 
   if (targetUser && (targetUser.role === "ADMIN" || targetUser.role === "MODERATOR" || targetUser.role === "SUPERADMIN")) {
-    return { success: false, error: "Vous ne pouvez pas bloquer un membre de l'équipe (Administrateur/Modérateur)" };
+    return { success: false, error: "Tu ne peux pas bloquer un membre de l'équipe (Administrateur/Modérateur)" };
   }
 
   const existingBlock = await prisma.block.findUnique({
@@ -281,7 +281,7 @@ export async function unlinkAccount(provider: string): Promise<ActionResult> {
   });
 
   if (accounts.length <= 1) {
-    return { success: false, error: "Vous devez garder au moins une méthode de connexion active." };
+    return { success: false, error: "Tu dois garder au moins une méthode de connexion active." };
   }
 
   await prisma.account.deleteMany({

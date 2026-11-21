@@ -287,8 +287,8 @@ export default function ProfileSidebar({
             onOpenChange={setShowBlockModal}
             title={isBlocked ? `Débloquer ${user.name}` : `Bloquer ${user.name}`}
             message={isBlocked
-              ? `Ses messages seront de nouveau visibles et ${user.name} pourra de nouveau vous contacter.`
-              : `Ses messages seront masqués et ${user.name} ne pourra plus vous contacter.`}
+              ? `Ses messages seront de nouveau visibles et ${user.name} pourra de nouveau te contacter.`
+              : `Ses messages seront masqués et ${user.name} ne pourra plus te contacter.`}
             confirmLabel={isBlocked ? "Débloquer" : "Bloquer"}
             pending={isPending}
             onConfirm={handleToggleBlock}

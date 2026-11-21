@@ -71,13 +71,13 @@ export function teamCompositionError(team: TeamComposition): string | null {
   }
 
   const others = new Set(team.otherTeamCoachIds);
-  if (others.has(team.captainId)) return "Vous faites déjà partie d'une autre équipe de ce tournoi.";
+  if (others.has(team.captainId)) return "Tu fais déjà partie d'une autre équipe de ce tournoi.";
   if (team.memberIds.some((id) => others.has(id))) return "Un des coachs choisis fait déjà partie d'une autre équipe de ce tournoi.";
 
   // Un capitaine n'ajoute que des volontaires : les coachs inscrits comme mercenaires (ou déjà dans son équipe)
   const allowed = new Set([...team.mercenaryIds, ...team.currentMemberIds]);
   if (team.memberIds.some((id) => !allowed.has(id))) {
-    return "Vous ne pouvez ajouter que des coachs inscrits comme mercenaires dans ce tournoi.";
+    return "Tu ne peux ajouter que des coachs inscrits comme mercenaires dans ce tournoi.";
   }
   return null;
 }

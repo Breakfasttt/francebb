@@ -33,7 +33,7 @@ const QUICK_TOPIC = "e2e_edi_rapide";
 const LOCKED_FORUM = { id: "e2e_edi_forum_verrou", name: "Inv Éditeur Forum Verrouillé" };
 
 const MORE_TOOLS = "Plus d'outils de mise en forme";
-const REPLY_PLACEHOLDER = "Tapez votre réponse ici...";
+const REPLY_PLACEHOLDER = "Tape ta réponse ici...";
 
 /** Supprime tout ce que ce test a créé (y compris un reste d'un lancement interrompu). */
 async function cleanUp() {
@@ -466,7 +466,7 @@ test.describe("3.5 modifier un message", () => {
   test("[auteur] éditeur prérempli, rappel avec « (Ce message) », « Annuler », enregistrement puis retour au message", async ({ page }, testInfo) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/post/${postId(4)}/edit`, { waitUntil: "networkidle" });
-    const textarea = page.getByPlaceholder("Modifiez votre message ici...");
+    const textarea = page.getByPlaceholder("Modifie ton message ici...");
     await expect(textarea).toHaveValue("Message quatre à modifier");
     await expect(page.getByText("Rappel des derniers messages")).toBeVisible();
     await expect(page.getByText("(Ce message)")).toBeVisible();
@@ -482,7 +482,7 @@ test.describe("3.5 modifier un message", () => {
   test("[modo] peut modifier le message d'un autre ; [membre] un autre est renvoyé vers le sujet", async ({ page }) => {
     await loginAs(page, E2E.modoId);
     await page.goto(`/forum/post/${postId(3)}/edit`, { waitUntil: "networkidle" });
-    await expect(page.getByPlaceholder("Modifiez votre message ici...")).toHaveValue("Message trois du rappel");
+    await expect(page.getByPlaceholder("Modifie ton message ici...")).toHaveValue("Message trois du rappel");
 
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/post/${postId(3)}/edit`);
@@ -548,7 +548,7 @@ test.describe("réponse rapide", () => {
   test("[membre] les outils de l'éditeur et l'envoi fonctionnent dans la réponse rapide", async ({ page }, testInfo) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${QUICK_TOPIC}?page=1`, { waitUntil: "networkidle" });
-    const textarea = page.getByPlaceholder("Écrivez votre réponse ici...");
+    const textarea = page.getByPlaceholder("Écris ta réponse ici...");
     await writeAndSelect(textarea, "Réponse rapide en gras");
     await applyTool(page, "Gras");
     await expect(textarea).toHaveValue("[b]Réponse rapide en gras[/b]");

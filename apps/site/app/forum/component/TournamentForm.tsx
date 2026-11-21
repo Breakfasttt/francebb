@@ -266,7 +266,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             <div className="flex flex-col gap-1.5">
               <p className="m-0 text-sm font-semibold text-bb-text">Ligue organisatrice (facultatif)</p>
               <LigueSearch initialLigue={initialData?.ligue} initialCustom={initialData?.ligueCustom} placeholder="Rechercher une ligue ou saisir un nom personnalisé..." />
-              <p className={hint}>Laissez vide si le tournoi n&apos;est rattaché à aucune ligue.</p>
+              <p className={hint}>Laisse vide si le tournoi n&apos;est rattaché à aucune ligue.</p>
             </div>
           </Block>
 
@@ -275,7 +275,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
               <Field label="Date de début (obligatoire)" htmlFor="tDate">
                 <Input id="tDate" type="date" name="tDate" required value={startDate} onChange={handleStartDateChange} />
               </Field>
-              <Field label="Date de fin" htmlFor="tEndDate" hint="Laissez vide pour un tournoi d'un jour.">
+              <Field label="Date de fin" htmlFor="tEndDate" hint="Laisse vide pour un tournoi d'un jour.">
                 <Input id="tEndDate" type="date" name="tEndDate" value={endDate} onChange={(e) => setEndDate(e.target.value)} min={startDate} />
               </Field>
             </div>
@@ -392,7 +392,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
 
             {(initialData?.isOrganizer ?? true) && (
               <div className="flex flex-col gap-1.5">
-                <p className="m-0 text-sm font-semibold text-bb-text">Commissaires (en plus de vous)</p>
+                <p className="m-0 text-sm font-semibold text-bb-text">Commissaires (en plus de toi)</p>
                 <UserSearch
                   selectedUsers={commissaires}
                   onSelect={(user) => setCommissaires(prev => [...prev, user])}
@@ -431,7 +431,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
                 <p className={cn(hint, "mt-2")}>
                   {isCDF
                     ? "Ce tournoi compte pour la Coupe de France (CDF). Seuls les modérateurs et les administrateurs peuvent changer ce choix."
-                    : "La Coupe de France (CDF) est accordée par les modérateurs et les administrateurs : demandez-leur de l'ajouter à votre tournoi."}
+                    : "La Coupe de France (CDF) est accordée par les modérateurs et les administrateurs : demande-leur de l'ajouter à ton tournoi."}
                 </p>
               )}
             </fieldset>
@@ -514,7 +514,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
                 name="content"
                 required={true}
                 defaultValue={initialData?.postContent}
-                placeholder="Détaillez ici votre tournoi, horaires, lots, etc. Le parser BBCode est disponible."
+                placeholder="Détaille ici ton tournoi, horaires, lots, etc. Le parser BBCode est disponible."
                 rows={18}
               />
             </div>

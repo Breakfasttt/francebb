@@ -33,7 +33,7 @@ export default function AIAssistantSheet({ open, onOpenChange, prompt }: { open:
     <Sheet open={open} onOpenChange={onOpenChange}>
       <SheetContent
         title="Assistant de mise en forme par IA"
-        description="Une consigne contenant les règles du forum et votre message est prête : copiez-la, puis collez-la dans l'IA de votre choix."
+        description="Une consigne contenant les règles du forum et ton message est prête : copie-la, puis colle-la dans l'IA de ton choix."
         side={isDesktop ? "center" : "bottom"}
       >
         <div className="flex flex-col gap-3 pb-2">
@@ -50,7 +50,7 @@ export default function AIAssistantSheet({ open, onOpenChange, prompt }: { open:
               </Button>
             ))}
           </div>
-          <p className="m-0 text-center text-sm text-bb-text-muted">La consigne est aussi copiée automatiquement quand vous ouvrez une IA.</p>
+          <p className="m-0 text-center text-sm text-bb-text-muted">La consigne est aussi copiée automatiquement quand tu ouvres une IA.</p>
         </div>
       </SheetContent>
     </Sheet>

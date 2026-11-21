@@ -59,8 +59,10 @@ Le 21 novembre 2026, le responsable a fixé la priorité : un site beau, simple,
 - [ ] Texte de « Jouer » (saisi dans l'administration) : tutoiement, sous-titre en casse normale ; passe `humaniseur-fr`.
 - [x] « Réinitialiser » des filtres seulement quand un filtre est actif ; colonne NAF du classement masquée si vide.
 - [x] Passe 3 (pages membres) : profil avec fiche et rubriques dans le panneau gauche ; administration et modération (`StaffPageLayout`) en liens de panneau sans icônes ; icônes retirées devant les titres de panneau ; journal de modération (purge discrète, cachée si vide) ; messagerie, notifications et non-lus tutoyés, sans icône géante ; non-lus dans la coquille du forum ; annuaire des membres en lignes sur téléphone, « Message privé » en lien texte ; `EmptyState` partagé aligné à gauche, sans icône ; bandeau visiteur du forum corrigé sur téléphone.
-- [ ] Tutoiement de tout le site : environ 128 « vous » restants dans les textes (formulaires, notifications de succès) ; adapter les tests qui les citent.
-- [ ] Annuaire des membres : filtres dans un panneau gauche (`SiteLayout`), « Changer le rôle » dans le menu « … ».
+- [x] Tutoiement de tout le site (environ 235 textes : erreurs, notifications, formulaires, e-mails, impératifs) ; 11 fichiers de tests adaptés.
+- [x] Annuaire des membres : filtres dans le panneau gauche sur ordinateur.
+- [ ] Annuaire des membres : « Changer le rôle » dans le menu « … ».
+- [x] Sécurité : le nombre de messages par forum n'est envoyé au navigateur que pour les forums visibles (revue security-guidance).
 - [ ] Accueil : la critique demande encore moins de blocs encadrés (flux sans cadre) ; à trancher avec le user.
 - [ ] Revue de cohérence finale de toutes les pages (profil, messagerie, membres, statistiques, médias, administration, modération), puis déclinaison des 4 autres thèmes et test de contraste.
 - [ ] Parcours téléphone et ordinateur (`test:parcours`) ; les tests e2e qui cherchent l'ancien logo ou « Se connecter / S'inscrire » peuvent devoir être mis à jour.

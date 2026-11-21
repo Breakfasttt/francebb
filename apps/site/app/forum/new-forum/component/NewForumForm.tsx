@@ -75,13 +75,13 @@ export default function NewForumForm({
         </Field>
 
         <Field label="Description" htmlFor="description" hint="Une phrase qui dit ce qu'on trouve dans ce forum.">
-          <Textarea id="description" name="description" rows={3} placeholder="Décrivez brièvement le contenu de ce forum" />
+          <Textarea id="description" name="description" rows={3} placeholder="Décris brièvement le contenu de ce forum" />
         </Field>
 
         <fieldset className="m-0 flex min-w-0 flex-col gap-4 border-0 p-0">
           <legend className="mb-3 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase">Emplacement</legend>
           <div className="grid gap-4 lg:grid-cols-2">
-            <Field label="Catégorie principale" htmlFor="categoryId" hint="Sans catégorie, choisissez un forum parent.">
+            <Field label="Catégorie principale" htmlFor="categoryId" hint="Sans catégorie, choisis un forum parent.">
               <Select
                 id="categoryId"
                 name="categoryId"
@@ -98,7 +98,7 @@ export default function NewForumForm({
               </Select>
             </Field>
 
-            <Field label="Forum parent (facultatif)" htmlFor="parentForumId" hint="Laissez « Aucun » pour un forum principal.">
+            <Field label="Forum parent (facultatif)" htmlFor="parentForumId" hint="Laisse « Aucun » pour un forum principal.">
               <Select id="parentForumId" name="parentForumId" value={selectedParent} onChange={(e) => setSelectedParent(e.target.value)}>
                 <option value="">Aucun (forum principal)</option>
                 {availableParents.map(f => (

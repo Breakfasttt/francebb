@@ -25,7 +25,7 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      toast.error("Veuillez sélectionner une image valide.");
+      toast.error("Sélectionne une image valide.");
       return;
     }
 
@@ -34,7 +34,7 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
       const result = await uploadImageFile(file);
       if (result.success && result.url) {
         setImage(result.url);
-        toast.success("Blason envoyé. Pensez à enregistrer la ligue.");
+        toast.success("Blason envoyé. Pense à enregistrer la ligue.");
       } else {
         toast.error(result.error || "L'envoi du blason a échoué.");
       }
@@ -46,7 +46,7 @@ export default function LigueBlasonUpload({ initialImage }: LigueBlasonUploadPro
 
   const removeImage = () => {
     setImage("");
-    toast.success("Blason retiré. Pensez à enregistrer la ligue.");
+    toast.success("Blason retiré. Pense à enregistrer la ligue.");
   };
 
   return (

@@ -22,8 +22,8 @@ export default function InfoMailsTab() {
 
   const handleSend = () => {
     const nextErrors = {
-      subject: subject.trim() ? undefined : "Indiquez l'objet du mail.",
-      content: content.trim() ? undefined : "Écrivez le message.",
+      subject: subject.trim() ? undefined : "Indique l'objet du mail.",
+      content: content.trim() ? undefined : "Écris le message.",
     };
     setErrors(nextErrors);
     if (nextErrors.subject || nextErrors.content) {

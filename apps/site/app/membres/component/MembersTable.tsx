@@ -27,6 +27,7 @@ import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { readPositiveInt, useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
 
 const USERS_PER_PAGE = 25;
 
@@ -350,10 +351,21 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   };
 
   return (
-    <div className="flex flex-col gap-4">
-      {/* Recherche, bouton « Filtres » (téléphone) et filtres (ordinateur) */}
-      <div className="flex flex-col gap-3 lg:flex-row lg:items-end">
-        <div className="flex items-end gap-2 lg:w-80 lg:shrink-0">
+    // Liste (DESIGN.md) : filtres dans le panneau gauche sur ordinateur, dans un panneau ouvert par « Filtres » sur téléphone
+    <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
+      <aside aria-label="Filtres de l'annuaire" className="hidden flex-col gap-4 lg:sticky lg:top-20 lg:flex">
+        <div className="flex items-center justify-between gap-2">
+          <PanelTitle className="mb-0">Filtres</PanelTitle>
+          {activeFilters.length > 0 && (
+            <Button type="button" variant="quiet" size="tap" className="px-2 text-sm" onClick={resetFilters}>Réinitialiser</Button>
+          )}
+        </div>
+        {filterFields("members-filter")}
+      </aside>
+    <div className="flex min-w-0 flex-col gap-4">
+      {/* Recherche et bouton « Filtres » (téléphone) */}
+      <div className="flex flex-col gap-3">
+        <div className="flex items-end gap-2">
           <div className="relative min-w-0 flex-1">
             <Search size={18} className="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-bb-text-muted" aria-hidden="true" />
             <Input
@@ -370,10 +382,6 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             <SlidersHorizontal size={18} aria-hidden="true" /> Filtres
             <CountBadge count={activeFilters.length} />
           </Button>
-        </div>
-        <div className="hidden flex-1 gap-3 lg:grid lg:grid-cols-[1fr_1fr_1fr_auto] lg:items-end">
-          {filterFields("members-filter")}
-          <Button type="button" variant="quiet" size="tap" onClick={resetFilters}>Réinitialiser</Button>
         </div>
       </div>
 
@@ -545,7 +553,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         open={!!roleModal}
         onOpenChange={(open) => { if (!open) setRoleModal(null); }}
         title={roleModal ? `Changer le rôle de ${roleModal.userName}` : "Changer le rôle"}
-        message={roleModal ? `Voulez-vous vraiment donner le rôle « ${ROLE_LABELS[roleModal.newRole]} » à ${roleModal.userName} ?` : ""}
+        message={roleModal ? `Tu veux vraiment donner le rôle « ${ROLE_LABELS[roleModal.newRole]} » à ${roleModal.userName} ?` : ""}
         pending={isPending}
         onConfirm={confirmRoleChange}
       />
@@ -586,6 +594,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           </div>
         </SheetContent>
       </Sheet>
+    </div>
     </div>
   );
 }

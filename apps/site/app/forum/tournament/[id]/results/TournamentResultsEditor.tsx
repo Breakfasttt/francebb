@@ -511,7 +511,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         open={isClearOpen}
         onOpenChange={setIsClearOpen}
         title="Vider les résultats"
-        message="Êtes-vous sûr de vouloir vider tous les résultats et matchs de ce tournoi ? Cette action est définitive et irréversible."
+        message="Tu veux vraiment vider tous les résultats et matchs de ce tournoi ? Cette action est définitive et irréversible."
         confirmLabel="Vider les résultats"
         danger
         pending={isSaving}
@@ -532,7 +532,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         <AlertTriangle size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-bb-warning-text" />
         <p className="m-0 text-bb-text">
           <strong>Note importante sur l&apos;import NAF :</strong> le fichier XML ne contient pas les données de classement final.
-          Il ne prend pas en compte les tie-breakers spécifiques à votre tournoi (ex : SOS, Opp-Opp, points de peinture…).
+          Il ne prend pas en compte les tie-breakers spécifiques à ton tournoi (ex : SOS, Opp-Opp, points de peinture…).
           Le classement doit être contrôlé et ajusté manuellement après l&apos;import.
         </p>
       </Card>
@@ -611,7 +611,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                 </SortableContext>
               </ol>
             </DndContext>
-            {results.length === 0 && <p className="m-0 p-4 text-center text-sm text-bb-text-muted">Aucun coach pour l&apos;instant : ajoutez-en un ou importez un rapport NAF.</p>}
+            {results.length === 0 && <p className="m-0 p-4 text-center text-sm text-bb-text-muted">Aucun coach pour l&apos;instant : ajoutes-en un ou importe un rapport NAF.</p>}
           </Card>
         </TabsContent>
 
@@ -703,7 +703,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
               </ul>
             </Card>
           ))}
-          {rounds.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Ajoutez une ronde pour commencer la saisie des matchs.</p>}
+          {rounds.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Ajoute une ronde pour commencer la saisie des matchs.</p>}
         </TabsContent>
       </Tabs>
 

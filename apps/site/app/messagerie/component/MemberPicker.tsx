@@ -64,7 +64,7 @@ export default function MemberPicker({ selected, onChange, excludeIds = [], inpu
             type="text"
             value={query}
             onChange={(e) => handleSearch(e.target.value)}
-            placeholder="Tapez un nom..."
+            placeholder="Tape un nom..."
             autoComplete="off"
             className="pr-10"
           />

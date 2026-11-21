@@ -131,7 +131,7 @@ test("la recherche de membres se fait par pseudo, jamais par email", async ({ pa
   await loginAs(page, E2E.coachId);
   await page.goto("/messagerie", { waitUntil: "networkidle" });
   await page.getByText("Nouvelle conversation").first().click();
-  const search = page.getByPlaceholder("Tapez un nom...");
+  const search = page.getByPlaceholder("Tape un nom...");
   await search.fill("modo@e2e");
   await expect(page.getByText("Aucun résultat")).toBeVisible();
   await search.fill("Modo E2");
@@ -148,7 +148,7 @@ test("un membre sans avatar affiche l'avatar par défaut, sans image introuvable
   await loginAs(page, E2E.coachId);
   await page.goto("/messagerie", { waitUntil: "networkidle" });
   await page.getByText("Nouvelle conversation").first().click();
-  await page.getByPlaceholder("Tapez un nom...").fill("Modo E2");
+  await page.getByPlaceholder("Tape un nom...").fill("Modo E2");
   await expect(page.getByRole("dialog").locator(".member-avatar-fallback").first()).toBeVisible();
   expect(missingImages).toEqual([]);
 });

@@ -366,7 +366,7 @@ export async function deleteForum(forumId: string, forumName: string): Promise<A
 export async function createTopic(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté pour créer un sujet." };
+    return { success: false, error: "Tu dois être connecté pour créer un sujet." };
   }
 
   const title = formData.get("title") as string;
@@ -391,7 +391,7 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
   if (!forum) return { success: false, error: "Forum introuvable." };
 
   if (forum?.isLocked && !isModerator(session.user.role)) {
-    return { success: false, error: "Ce forum est verrouillé. Vous ne pouvez pas y créer de nouveau sujet." };
+    return { success: false, error: "Ce forum est verrouillé. Tu ne peux pas y créer de nouveau sujet." };
   }
 
   // Données de tournoi si applicable : formulaire lu par la même fonction qu'à la modification (carte 201)
@@ -476,7 +476,7 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
 export async function createPost(topicId: string, content: string): Promise<ActionResult & { postId?: string }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté pour répondre." };
+    return { success: false, error: "Tu dois être connecté pour répondre." };
   }
   // Message non vide et de 30 000 caractères au plus (carte 169)
   const contentError = postContentError(content);
@@ -547,7 +547,7 @@ export async function createPost(topicId: string, content: string): Promise<Acti
 export async function updatePost(postId: string, content: string): Promise<ActionResult & { topicId?: string; page?: number }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté pour modifier un message." };
+    return { success: false, error: "Tu dois être connecté pour modifier un message." };
   }
 
   const contentError = postContentError(content);
@@ -562,8 +562,8 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     return {
       success: false,
       error: existingPost.authorId !== session.user.id && !viewer.isModerator
-        ? "Vous n'avez pas l'autorisation de modifier ce message."
-        : "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus modifier ce message.",
+        ? "Tu n'as pas l'autorisation de modifier ce message."
+        : "Ce sujet est verrouillé ou archivé. Tu ne peux plus modifier ce message.",
     };
   }
 
@@ -710,7 +710,7 @@ export async function unmoderatePost(postId: string): Promise<ActionResult> {
 export async function deletePost(postId: string, reason?: string): Promise<ActionResult & { topicDeleted?: boolean; topicTitle?: string }> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
   const userId = session.user.id;
 
@@ -718,7 +718,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
 
   if (!post) return { success: false, error: "Message introuvable." };
   if (isLockedFor(post, session.user.role)) {
-    return { success: false, error: "Ce sujet est verrouillé ou archivé. Vous ne pouvez plus supprimer ce message." };
+    return { success: false, error: "Ce sujet est verrouillé ou archivé. Tu ne peux plus supprimer ce message." };
   }
 
   // Le premier message du sujet (même ordre que la page du sujet) et le nombre de réponses encore visibles
@@ -917,7 +917,7 @@ export async function deleteTopic(topicId: string, reason: string): Promise<Acti
   });
   if (refusal) return { success: false, error: refusal };
   const cleanReason = reason?.trim();
-  if (!cleanReason) return { success: false, error: "Indiquez la raison de la suppression." };
+  if (!cleanReason) return { success: false, error: "Indique la raison de la suppression." };
 
   await markTopicDeleted(topicId, session.user.id, cleanReason);
 
@@ -1004,7 +1004,7 @@ export async function moveTopic(topicId: string, newForumId: string): Promise<Ac
 export async function updateTopicTitle(topicId: string, title: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
 
   const titleError = topicTitleError(title);
@@ -1021,7 +1021,7 @@ export async function updateTopicTitle(topicId: string, title: string): Promise<
   const sessionUser = session.user as { id: string; role: string };
   const viewerIsModerator = isModerator(sessionUser.role);
   if (topic.authorId !== sessionUser.id && !viewerIsModerator) {
-    return { success: false, error: "Vous n'avez pas l'autorisation de modifier ce sujet." };
+    return { success: false, error: "Tu n'as pas l'autorisation de modifier ce sujet." };
   }
   if (isTopicClosedFor(writeState(topic), viewerIsModerator)) {
     return { success: false, error: "Ce sujet est verrouillé ou archivé : seul un modérateur peut encore le renommer." };
@@ -1046,7 +1046,7 @@ export async function updateTopicTitle(topicId: string, title: string): Promise<
  */
 export async function togglePostReaction(postId: string, emoji: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user?.id) return { success: false, error: "Tu dois être connecté." };
 
   const userId = session.user.id;
 
@@ -1342,7 +1342,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
   if (!canManageTournament(viewer, tournament)) {
-    return { success: false, error: "Vous n'avez pas les droits pour modifier ce tournoi." };
+    return { success: false, error: "Tu n'as pas les droits pour modifier ce tournoi." };
   }
   // L'organisateur (ou un modérateur) est seul à pouvoir changer les commissaires
   const isOrganizer = tournament.organizerId === session.user.id;
@@ -1413,7 +1413,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
     if (formatChangeLossCount(losses) > 0 && formData.get("confirmFormatChange") !== "yes") {
       return {
         success: false,
-        error: `Changer le format du tournoi supprimera ${formatChangeLossText(losses)} : confirmez ce changement.`
+        error: `Changer le format du tournoi supprimera ${formatChangeLossText(losses)} : confirme ce changement.`
       };
     }
     formatChangeRecipients = [
@@ -1543,7 +1543,7 @@ export async function joinTournament(tournamentId: string) {
   const tournament = await loadTournamentForRegistration(tournamentId);
   if (!tournament) return { success: false, error: "Tournoi introuvable" };
   if (tournament.isTeam) {
-    return { success: false, error: "Ce tournoi se joue par équipes : inscrivez une équipe ou proposez-vous comme mercenaire." };
+    return { success: false, error: "Ce tournoi se joue par équipes : inscris une équipe ou propose-toi comme mercenaire." };
   }
   const refusal = newRegistrationRefusal(tournament);
   if (refusal) return { success: false, error: refusal };
@@ -1636,7 +1636,7 @@ export async function toggleMercenary(tournamentId: string) {
         where: { tournamentId, OR: [{ captainId: userId }, { members: { some: { userId } } }] },
         select: { id: true }
       });
-      if (team) return "Vous faites déjà partie d'une équipe de ce tournoi.";
+      if (team) return "Tu fais déjà partie d'une équipe de ce tournoi.";
       await tx.tournamentMercenary.create({ data: { tournamentId, userId } });
       return null;
     });
@@ -1875,7 +1875,7 @@ export async function updateRegistrationStatus(params: {
     // Organisateur, commissaire ou modérateur : règle écrite une seule fois (lib/tournamentRights.ts, carte 201)
     const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
     if (!canManageTournament(viewer, tournament)) {
-      return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette inscription." };
+      return { success: false, error: "Tu n'as pas l'autorisation de modifier cette inscription." };
     }
     // Le paiement est l'affaire de l'organisateur et des commissaires du tournoi, pas de la modération du site
     // (décision du responsable, carte 177). Un modérateur peut nommer un commissaire si l'organisateur est absent.

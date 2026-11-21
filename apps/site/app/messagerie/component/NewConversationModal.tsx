@@ -14,7 +14,7 @@ import MemberPicker, { type PickedMember } from "./MemberPicker";
 
 /** Note sur la confidentialité des messages, affichée à la création d'une conversation. */
 export const ENCRYPTION_NOTE =
-  "Vos messages sont chiffrés (AES-256). Seuls les participants de la conversation peuvent lire les échanges. L'administration n'a pas accès à vos discussions privées.";
+  "Tes messages sont chiffrés (AES-256). Seuls les participants de la conversation peuvent lire les échanges. L'administration n'a pas accès à tes discussions privées.";
 
 export default function NewConversationModal({ onClose }: { onClose: () => void }) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);

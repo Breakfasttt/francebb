@@ -476,9 +476,9 @@ test.describe("fenêtres de modération et de signalement", () => {
     }
     // Sans raison : erreur affichée sous la liste des raisons (carte 194)
     await dialog.getByRole("button", { name: "Envoyer le signalement" }).click();
-    await expect(page.getByText("Choisissez une raison.")).toBeVisible();
+    await expect(page.getByText("Choisis une raison.")).toBeVisible();
     await dialog.getByRole("button", { name: "Bot" }).click();
-    await dialog.getByPlaceholder(/Détaillez votre signalement/).fill("Précision du test de recherche");
+    await dialog.getByPlaceholder(/Détaille ton signalement/).fill("Précision du test de recherche");
     await page.screenshot({ path: testInfo.outputPath("fenetre-signaler.png"), fullPage: false });
     await dialog.getByRole("button", { name: "Envoyer le signalement" }).click();
     await expect(page.getByText("Signalement envoyé à l'équipe")).toBeVisible();

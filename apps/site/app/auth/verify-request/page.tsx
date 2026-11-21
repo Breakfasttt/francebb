@@ -16,12 +16,12 @@ export default function VerifyRequestPage() {
           </span>
 
           <h1 id="verify-title" className="font-bb-display text-[1.75rem] lg:text-[2.25rem] text-bb-text">
-            Vérifiez votre boîte mail
+            Vérifie ta boîte mail
           </h1>
 
-          <p className="m-0 text-bb-text">Un lien de connexion vient de vous être envoyé par email.</p>
+          <p className="m-0 text-bb-text">Un lien de connexion vient de t&apos;être envoyé par email.</p>
           <p className="m-0 text-bb-text-muted">
-            Cliquez sur le lien contenu dans le message pour vous connecter instantanément.
+            Clique sur le lien contenu dans le message pour te connecter instantanément.
           </p>
 
           <Button asChild variant="primary" size="tap" className="w-full">
@@ -29,7 +29,7 @@ export default function VerifyRequestPage() {
           </Button>
 
           <p className="m-0 text-sm text-bb-text-muted">
-            Si vous ne recevez rien, vérifiez vos messages indésirables (spams).
+            Si tu ne reçois rien, vérifie tes messages indésirables (spams).
           </p>
         </Card>
       </section>

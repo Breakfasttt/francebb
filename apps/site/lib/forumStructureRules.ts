@@ -67,16 +67,16 @@ export function forumDeletionRefusal(input: {
     return "Impossible de supprimer le dernier forum ouvert à tous.";
   }
   if (input.subForums > 0) {
-    return `Ce forum contient ${input.subForums} sous-forum${input.subForums > 1 ? "s" : ""}. Supprimez-les ou déplacez-les d'abord.`;
+    return `Ce forum contient ${input.subForums} sous-forum${input.subForums > 1 ? "s" : ""}. Supprime-les ou déplace-les d'abord.`;
   }
   if (input.visibleTopics > 0) {
     const n = input.visibleTopics;
-    return `Ce forum contient encore ${n} sujet${n > 1 ? "s" : ""}. Déplacez-les d'abord vers un autre forum, ou supprimez-les.`;
+    return `Ce forum contient encore ${n} sujet${n > 1 ? "s" : ""}. Déplace-les d'abord vers un autre forum, ou supprime-les.`;
   }
   if (input.deletedTopics > 0) {
     const n = input.deletedTopics;
     const s = n > 1 ? "s" : "";
-    return `Ce forum contient ${n} sujet${s} supprimé${s}, gardé${s} pour pouvoir être restauré${s}. Restaurez-les et déplacez-les vers un autre forum avant de supprimer celui-ci.`;
+    return `Ce forum contient ${n} sujet${s} supprimé${s}, gardé${s} pour pouvoir être restauré${s}. Restaure-les et déplace-les vers un autre forum avant de supprimer celui-ci.`;
   }
   return null;
 }

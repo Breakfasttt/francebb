@@ -33,8 +33,8 @@ const EDITOR_TOPIC = "e2e_bugf_editeur";
 const TOURNAMENT = { id: "e2e_bugf_tournoi", topic: "e2e_bugf_tournoi_topic" };
 
 const pagedPostId = (n: number) => `e2e_bugf_p${String(n).padStart(2, "0")}`;
-const QUICK_REPLY_PLACEHOLDER = "Écrivez votre réponse ici...";
-const REPLY_PLACEHOLDER = "Tapez votre réponse ici...";
+const QUICK_REPLY_PLACEHOLDER = "Écris ta réponse ici...";
+const REPLY_PLACEHOLDER = "Tape ta réponse ici...";
 
 /** Supprime tout ce que ce fichier a créé (y compris un reste d'un lancement interrompu). */
 async function cleanUp() {
@@ -164,7 +164,7 @@ test.describe("Carte 111 : « Citer » sur un sujet verrouillé", () => {
   test("[membre] pas de « Citer » ni de zone de réponse ; [modo] « Citer » remplit la réponse rapide", async ({ page }) => {
     await loginAs(page, READER.id);
     await page.goto(`/forum/topic/${LOCKED_TOPIC}?page=1`, { waitUntil: "networkidle" });
-    await expect(page.getByText(/Vous ne pouvez plus répondre à ce sujet/)).toBeVisible();
+    await expect(page.getByText(/Tu ne peux plus répondre à ce sujet/)).toBeVisible();
     await expect(page.locator(`#post-${LOCKED_POST}`).getByRole("button", { name: "Citer" })).toHaveCount(0);
     await expect(page.locator("#quick-reply-area")).toHaveCount(0);
 

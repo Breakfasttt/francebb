@@ -83,7 +83,7 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
               </Button>
             }
           >
-            Vous n&apos;avez pas encore partagé de ressource avec la communauté.
+            Tu n&apos;as pas encore partagé de ressource avec la communauté.
           </EmptyState>
         ) : (
           <ul className="m-0 list-none p-0">
@@ -124,7 +124,7 @@ export default function ProfileResources({ userId }: ProfileResourcesProps) {
         open={!!deletingId}
         onOpenChange={(open) => { if (!open) setDeletingId(null); }}
         title="Supprimer la ressource"
-        message="Voulez-vous vraiment supprimer cette ressource ? Cette action est irréversible."
+        message="Tu veux vraiment supprimer cette ressource ? Cette action est irréversible."
         confirmLabel="Supprimer"
         danger
         pending={isPending}

@@ -72,7 +72,7 @@ test("le signalement sans raison affiche une erreur sous les raisons", async ({ 
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
   await page.locator(REPORT_BUTTON).filter({ visible: true }).first().click();
   await page.getByRole("button", { name: "Envoyer le signalement" }).click();
-  await expect(page.getByText("Choisissez une raison.")).toBeVisible();
+  await expect(page.getByText("Choisis une raison.")).toBeVisible();
 });
 
 test("la modale de signalement est un dialog accessible, fermé par Échap", async ({ page }) => {

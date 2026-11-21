@@ -51,7 +51,7 @@ export default function EditPostForm({ postId, initialContent }: { postId: strin
   return (
     <form onSubmit={handleSubmit}>
       <DraftBanner draft={draft} />
-      <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Modifiez votre message ici..." ariaLabel="Votre message" rows={12} screen />
+      <BBCodeEditor key={draft.editorKey} name="content" defaultValue={draft.value} onChange={draft.onChange} placeholder="Modifie ton message ici..." ariaLabel="Ton message" rows={12} screen />
 
       <ComposeActionBar>
         <CancelComposeButton draft={draft} />

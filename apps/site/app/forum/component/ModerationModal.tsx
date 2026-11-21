@@ -55,7 +55,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
       <SheetContent
         title={`Modérer ${words.the} de ${authorName}`}
         side={isDesktop ? "center" : "bottom"}
-        description={`Le contenu ${words.ofThe} sera masqué pour les membres, mais restera visible pour vous et pour son auteur.`}
+        description={`Le contenu ${words.ofThe} sera masqué pour les membres, mais restera visible pour toi et pour son auteur.`}
       >
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-1 pb-2">
           <Field label="Raison de la modération" htmlFor="moderation-reason">

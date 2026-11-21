@@ -37,7 +37,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
   const [isPending, startTransition] = useTransition();
   const handleSubmit = () => {
     if (!reason) {
-      setReasonError("Choisissez une raison.");
+      setReasonError("Choisis une raison.");
       return;
     }
 
@@ -69,7 +69,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
       >
         <div className="flex flex-col gap-4 pt-1 pb-2">
           <p className="m-0 text-[0.95rem] text-bb-text-muted">
-            Vous signalez : <strong className="font-semibold break-words text-bb-text">{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
+            Tu signales : <strong className="font-semibold break-words text-bb-text">{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
           </p>
 
           <div role="group" aria-labelledby="report-reason-label" aria-describedby={reasonError ? "report-reason-error" : undefined} className="flex flex-col gap-2">
@@ -102,7 +102,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
               id="report-details"
               value={details}
               onChange={(e) => setDetails(e.target.value)}
-              placeholder="Détaillez votre signalement si nécessaire..."
+              placeholder="Détaille ton signalement si nécessaire..."
               rows={3}
               className="min-h-24 resize-none"
             />

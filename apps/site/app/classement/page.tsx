@@ -182,7 +182,7 @@ function Classement() {
   // lui-même l'erreur si l'import échoue.
   function handleImport() {
     if (Number.isNaN(importYear)) {
-      setImportYearError("Indiquez l'année à importer.");
+      setImportYearError("Indique l'année à importer.");
       document.getElementById("import-year")?.focus();
       return;
     }
@@ -433,13 +433,13 @@ function Classement() {
             </p>
             <ul className="m-0 flex flex-col gap-2 pl-5">
               <li>
-                <strong>Sélection des scores :</strong> seuls vos 4 meilleurs résultats sur la période (12 mois glissants
-                ou année civile) sont cumulés pour votre score total.
+                <strong>Sélection des scores :</strong> seuls tes 4 meilleurs résultats sur la période (12 mois glissants
+                ou année civile) sont cumulés pour ton score total.
               </li>
               <li>
                 <strong>La formule :</strong> <code className="rounded-bb-sm bg-bb-surface-2 px-1">Score = R × (Nc − Pl) / (Nc + Pl − 2)</code>
                 <br />
-                <span className="text-sm text-bb-text-muted">Nc = nombre de participants, Pl = votre place, R = valeur de référence du tournoi.</span>
+                <span className="text-sm text-bb-text-muted">Nc = nombre de participants, Pl = ta place, R = valeur de référence du tournoi.</span>
               </li>
               <li>
                 <strong>Poids du tournoi (R) :</strong> le score maximum (R) dépend du type de tournoi (100 en individuel),
@@ -460,7 +460,7 @@ function Classement() {
       <Sheet open={isImportOpen} onOpenChange={setIsImportOpen}>
         <SheetContent title="Importer des archives" side={isDesktop ? "center" : "bottom"}>
           <div className="flex flex-col gap-4 pb-2">
-            <p className="m-0 text-[0.95rem] text-bb-text">Indiquez l&apos;année à récupérer depuis l&apos;ancien site (teamfrancebb.fr).</p>
+            <p className="m-0 text-[0.95rem] text-bb-text">Indique l&apos;année à récupérer depuis l&apos;ancien site (teamfrancebb.fr).</p>
             <Field label="Année cible" htmlFor="import-year" hint="L'import récupère les noms, les numéros NAF et les points totaux, puis ouvre l'éditeur d'archives." error={importYearError}>
               <Input
                 id="import-year"
@@ -491,7 +491,7 @@ function Classement() {
         open={isArchiveConfirmOpen}
         onOpenChange={setIsArchiveConfirmOpen}
         title="Confirmer l'archivage"
-        message={`Voulez-vous figer le classement de l'année ${currentYearData?.year ?? ""} ? Un instantané sera pris et affiché à la place du calcul en direct.`}
+        message={`Tu veux figer le classement de l'année ${currentYearData?.year ?? ""} ? Un instantané sera pris et affiché à la place du calcul en direct.`}
         confirmLabel="Archiver"
         pending={pending}
         onConfirm={handleArchive}
@@ -501,7 +501,7 @@ function Classement() {
         open={isDeleteConfirmOpen}
         onOpenChange={setIsDeleteConfirmOpen}
         title="Supprimer l'archive (1/2)"
-        message="Êtes-vous sûr de vouloir supprimer cette archive ? Le classement de cette année sera de nouveau calculé en direct."
+        message="Tu veux vraiment supprimer cette archive ? Le classement de cette année sera de nouveau calculé en direct."
         confirmLabel="Continuer"
         danger
         onConfirm={() => {
@@ -514,7 +514,7 @@ function Classement() {
         open={isDeleteConfirmLevel2Open}
         onOpenChange={setIsDeleteConfirmLevel2Open}
         title="Confirmation finale (2/2)"
-        message="Cette action est irréversible. Confirmez-vous la suppression définitive de l'archive ?"
+        message="Cette action est irréversible. Tu confirmes la suppression définitive de l'archive ?"
         confirmLabel="Supprimer définitivement"
         danger
         pending={pending}

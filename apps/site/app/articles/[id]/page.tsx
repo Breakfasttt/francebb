@@ -163,7 +163,7 @@ export default async function ArticleDetailPage({
             {canRead && (
               <p className="m-0 flex items-center gap-1.5 text-sm font-semibold text-bb-text-muted">
                 <EyeOff size={16} aria-hidden="true" />
-                Contenu original visible par vous seul et les modérateurs.
+                Contenu original visible par toi seul et les modérateurs.
               </p>
             )}
           </Card>

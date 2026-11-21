@@ -67,7 +67,7 @@ export default async function MembersPage() {
   ]);
 
   return (
-    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
+    <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Membres"
         subtitle={`Annuaire des coachs de la communauté : ${allUsers.length} membre${allUsers.length > 1 ? "s" : ""}`}

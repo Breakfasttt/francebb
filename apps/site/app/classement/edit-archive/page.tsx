@@ -69,7 +69,7 @@ export default async function EditArchivePage({ searchParams }: { searchParams: 
     >
       {importError && (
         <p role="alert" className="m-0 mb-4 rounded-bb-md border border-solid border-bb-danger bg-bb-surface-2 p-3 text-[0.95rem] text-bb-text">
-          Import impossible : {importError} Vous pouvez saisir l&apos;archive à la main ci-dessous.
+          Import impossible : {importError} Tu peux saisir l&apos;archive à la main ci-dessous.
         </p>
       )}
       <ArchiveEditor initialData={initialData} allUsers={allUsers} />

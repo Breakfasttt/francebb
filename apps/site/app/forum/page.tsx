@@ -106,6 +106,11 @@ export default async function ForumPage() {
       .map((forum) => forum.id)
   );
   const unreadCount = unread?.count ?? 0;
+  // Sécurité : ForumCategory est un composant client. On ne lui envoie que les nombres des forums que ce visiteur peut
+  // voir (déjà filtrés par getCachedCategories), jamais l'identifiant ni l'activité d'un forum réservé.
+  const visiblePostCounts: Record<string, number> = Object.fromEntries(
+    categories.flatMap((category) => category.forums.map((forum) => [forum.id, postCounts[forum.id] ?? 0]))
+  );
 
   const context = recentTopics.length > 0 && (
     <section aria-labelledby="forum-recent-title" className="flex flex-col">
@@ -150,7 +155,7 @@ export default async function ForumPage() {
         </Link>
       )}
       {categories.map((category) => (
-        <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} postCounts={postCounts} />
+        <ForumCategory key={category.id} category={category} unreadForumIds={unreadForumIds} postCounts={visiblePostCounts} />
       ))}
     </SiteLayout>
   );

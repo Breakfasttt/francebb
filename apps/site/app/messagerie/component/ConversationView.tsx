@@ -134,7 +134,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
         toast.error(res.error || "Impossible de quitter la conversation");
         return;
       }
-      toast.success("Vous avez quitté la conversation");
+      toast.success("Tu as quitté la conversation");
       setLeaveOpen(false);
       onChange?.();
       onClose();
@@ -207,7 +207,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
             <Skeleton className="h-12 w-3/5" />
           </div>
         ) : messages.length === 0 ? (
-          <EmptyState title="Aucun message pour l'instant">Écrivez le premier message ci-dessous.</EmptyState>
+          <EmptyState title="Aucun message pour l'instant">Écris le premier message ci-dessous.</EmptyState>
         ) : (
           messages.map((msg, index) => {
             // La liste va du plus récent au plus ancien : index + 1 est le message d'avant, index - 1 celui d'après
@@ -235,8 +235,8 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
           name="message"
           defaultValue={content}
           onChange={setContent}
-          placeholder="Écrivez votre message..."
-          ariaLabel="Votre message"
+          placeholder="Écris ton message..."
+          ariaLabel="Ton message"
           maxLength={MAX_LENGTH}
           rows={2}
         />
@@ -257,7 +257,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
                 <Link href={`/spy/${p.user.id}`} className="flex min-h-14 items-center gap-3 px-1 text-bb-text no-underline hover:text-bb-accent-text">
                   <Avatar name={p.user.name} src={p.user.image} size={36} aria-hidden="true" />
                   <span className="min-w-0 flex-1 truncate font-semibold">{p.user.name}</span>
-                  {p.user.id === myId && <span className="text-sm text-bb-text-muted">(vous)</span>}
+                  {p.user.id === myId && <span className="text-sm text-bb-text-muted">(toi)</span>}
                 </Link>
               </li>
             ))}
@@ -284,7 +284,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
         open={leaveOpen}
         onOpenChange={setLeaveOpen}
         title="Quitter la conversation ?"
-        message="Si vous quittez cette conversation, elle sera supprimée de votre liste. S'il ne reste alors qu'un seul participant, elle sera définitivement supprimée, avec tous ses messages."
+        message="Si tu quittes cette conversation, elle sera supprimée de ta liste. S'il ne reste alors qu'un seul participant, elle sera définitivement supprimée, avec tous ses messages."
         confirmLabel="Quitter"
         danger
         pending={leaving}

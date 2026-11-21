@@ -64,7 +64,7 @@ export default function NewTopicForm({ forumId, userCanStick, cancelHref }: { fo
               name="content"
               defaultValue={draft.value}
               onChange={draft.onChange}
-              placeholder="Tapez votre message ici... Utilisez les boutons ou les balises BBCode."
+              placeholder="Tape ton message ici... Utilise les boutons ou les balises BBCode."
               rows={20}
               screen
             />

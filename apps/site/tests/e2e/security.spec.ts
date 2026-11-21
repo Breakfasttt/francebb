@@ -200,7 +200,7 @@ test("un modérateur ne peut pas débannir un membre de rang égal, mais débann
     // Refus : le serveur bloque le débannissement d'un membre de rang égal
     await (await bannedRow(E2E.bannedModoName)).getByRole("button", { name: "Débannir" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
-    await expect(page.getByText("Vous ne pouvez pas débannir ce membre (hiérarchie insuffisante)")).toBeVisible();
+    await expect(page.getByText("Tu ne peux pas débannir ce membre (hiérarchie insuffisante)")).toBeVisible();
 
     // Autorisé : le coach, de rang inférieur, est débanni
     await (await bannedRow("Cible E2E")).getByRole("button", { name: "Débannir" }).click();

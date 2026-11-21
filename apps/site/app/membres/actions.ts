@@ -29,7 +29,7 @@ export async function updateUserRole(userId: string, newRole: UserRole): Promise
   }
 
   if (ROLE_POWER[newRole] >= ROLE_POWER[me.role as UserRole] && me.role !== "SUPERADMIN") {
-    return { success: false, error: "Vous ne pouvez pas attribuer un rôle supérieur ou égal au vôtre" };
+    return { success: false, error: "Tu ne peux pas attribuer un rôle supérieur ou égal au tien" };
   }
 
   await prisma.user.update({
@@ -67,7 +67,7 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
   if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    return { success: false, error: `Vous ne pouvez pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)` };
+    return { success: false, error: `Tu ne peux pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)` };
   }
 
   await prisma.user.update({
@@ -112,7 +112,7 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
   if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
   if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    return { success: false, error: "Vous ne pouvez pas supprimer ce membre (hiérarchie insuffisante)" };
+    return { success: false, error: "Tu ne peux pas supprimer ce membre (hiérarchie insuffisante)" };
   }
 
   // Comme la suppression de compte par le membre (deleteAccount) : ses sujets, messages, articles et résultats

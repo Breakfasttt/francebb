@@ -173,7 +173,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
     <div className="mx-auto w-full max-w-[1000px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
       <ForumListHeader
         title="Recherche avancée"
-        subtitle="Trouvez un message ou un sujet parmi tous les forums."
+        subtitle="Trouve un message ou un sujet parmi tous les forums."
         backHref="/forum"
         backTitle="Retour au forum"
       />

@@ -92,7 +92,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
       try {
         const result = await finishOnboarding(data);
         if (result?.success) {
-          toast.success("Synchronisation de votre profil...");
+          toast.success("Synchronisation de ton profil...");
           // CRITIQUE : Il FAUT mettre à jour la session côté client 
           // pour que le cookie JWT soit régénéré avec le flag hasFinishedOnboarding: true
           await update({ 
@@ -121,7 +121,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
 
         {/* Avatar */}
         <Card>
-          <CardHeader><CardTitle>Votre avatar</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Ton avatar</CardTitle></CardHeader>
           <CardBody className="flex flex-col items-center gap-4 sm:flex-row">
             <UserAvatar image={formData.image} selectedRank={formData.avatarFrame as Rank} size={96} postCount={0} />
             <div className="flex w-full flex-col gap-2 sm:flex-row sm:flex-wrap">
@@ -141,17 +141,17 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
 
         {/* Profil de coach */}
         <Card>
-          <CardHeader><CardTitle>Votre profil de coach</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Ton profil de coach</CardTitle></CardHeader>
           <CardBody className="grid grid-cols-1 gap-4 lg:grid-cols-2">
             <Field label="Pseudo" htmlFor="onboarding-name" hint="3 caractères au moins. C'est le nom affiché sur le forum." className="lg:col-span-2">
               <Input id="onboarding-name" name="name" defaultValue={formData.name} required minLength={3} placeholder="Ex : Grumbly" autoComplete="nickname" />
             </Field>
-            <Field label="Numéro NAF" htmlFor="onboarding-naf" hint="Facultatif. C'est votre numéro de membre de la NAF, l'association internationale des joueurs de tournoi de Blood Bowl.">
+            <Field label="Numéro NAF" htmlFor="onboarding-naf" hint="Facultatif. C'est ton numéro de membre de la NAF, l'association internationale des joueurs de tournoi de Blood Bowl.">
               <Input id="onboarding-naf" name="nafNumber" defaultValue={formData.nafNumber} placeholder="Ex : 12345" inputMode="numeric" />
             </Field>
             <Field label="Région" htmlFor="onboarding-region" hint="Facultatif.">
               <Select id="onboarding-region" name="region" defaultValue={formData.region}>
-                <option value="">Choisissez...</option>
+                <option value="">Choisis...</option>
                 {regions.map(r => <option key={r.key} value={r.key}>{r.label}</option>)}
               </Select>
             </Field>
@@ -163,7 +163,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
 
         {/* Ligues */}
         <Card>
-          <CardHeader><CardTitle>Vos ligues</CardTitle></CardHeader>
+          <CardHeader><CardTitle>Tes ligues</CardTitle></CardHeader>
           <CardBody>
             <MultiLigueSearch initialLigues={user.ligues} initialCustom={user.ligueCustom} />
           </CardBody>
@@ -174,7 +174,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
           <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
           <CardBody className="flex flex-col gap-1.5">
             <Label htmlFor="onboarding-signature">Signature (texte mis en forme)</Label>
-            <p className="m-0 text-sm text-bb-text-muted">Facultatif. Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus. Les boutons de l&apos;éditeur mettent le texte en gras, en couleur, ajoutent un lien…</p>
+            <p className="m-0 text-sm text-bb-text-muted">Facultatif. Elle s&apos;affiche sous tes messages du forum, 250 caractères au plus. Les boutons de l&apos;éditeur mettent le texte en gras, en couleur, ajoutent un lien…</p>
             <BBCodeEditor id="onboarding-signature" name="signature" defaultValue={formData.signature} maxLength={250} rows={3} onChange={(v) => setFormData(p => ({ ...p, signature: v }))} />
           </CardBody>
         </Card>
@@ -183,7 +183,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
         <Card>
           <CardHeader><CardTitle>Thème du site</CardTitle></CardHeader>
           <CardBody className="flex flex-col gap-3">
-            <p className="m-0 text-sm text-bb-text-muted">Vous pourrez le changer à tout moment depuis le menu de votre compte.</p>
+            <p className="m-0 text-sm text-bb-text-muted">Tu pourras le changer à tout moment depuis le menu de ton compte.</p>
             <ThemePicker isLoggedIn />
           </CardBody>
         </Card>

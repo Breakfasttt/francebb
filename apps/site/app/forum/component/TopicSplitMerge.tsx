@@ -54,8 +54,8 @@ export function SplitTopicDialog({
 
   const handleConfirm = () => {
     const nextErrors = {
-      title: title.trim() ? undefined : "Donnez un titre au nouveau sujet.",
-      forum: forumId ? undefined : "Choisissez le forum du nouveau sujet.",
+      title: title.trim() ? undefined : "Donne un titre au nouveau sujet.",
+      forum: forumId ? undefined : "Choisis le forum du nouveau sujet.",
     };
     setErrors(nextErrors);
     if (nextErrors.title || nextErrors.forum) {
@@ -170,7 +170,7 @@ export function MergeTopicDialog({
 
   const handleConfirm = () => {
     if (!selected) {
-      setSelectedError("Choisissez le sujet qui recevra les messages.");
+      setSelectedError("Choisis le sujet qui recevra les messages.");
       document.getElementById("merge-topic-search")?.focus();
       return;
     }
@@ -198,7 +198,7 @@ export function MergeTopicDialog({
       onConfirm={handleConfirm}
     >
       <div className="flex flex-col gap-3">
-        <Field label="Sujet d'arrivée" htmlFor="merge-topic-search" hint="Tapez au moins deux lettres du titre, ou l'identifiant du sujet." error={selectedError}>
+        <Field label="Sujet d'arrivée" htmlFor="merge-topic-search" hint="Tape au moins deux lettres du titre, ou l'identifiant du sujet." error={selectedError}>
           <Input
             id="merge-topic-search"
             type="search"

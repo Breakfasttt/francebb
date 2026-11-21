@@ -153,11 +153,11 @@ export default function PostMoreMenu({
   // sans ouvrir de confirmation (le serveur refuse de toute façon)
   const openAuthorDelete = () => {
     if (isFirstPost && isTournament) {
-      toast.error("Ce message présente le tournoi : il ne peut pas être supprimé. Pour retirer le tournoi, annulez-le depuis les outils du sujet.");
+      toast.error("Ce message présente le tournoi : il ne peut pas être supprimé. Pour retirer le tournoi, annule-le depuis les outils du sujet.");
       return;
     }
     if (isFirstPost && topicHasReplies) {
-      toast.error("C'est le premier message du sujet et d'autres membres y ont répondu : il ne peut plus être supprimé. Vous pouvez le modifier.");
+      toast.error("C'est le premier message du sujet et d'autres membres y ont répondu : il ne peut plus être supprimé. Tu peux le modifier.");
       return;
     }
     setDeleteOpen(true);
@@ -197,7 +197,7 @@ export default function PostMoreMenu({
         onClose={() => setRestoreOpen(false)}
         onConfirm={handleUnmoderate}
         title="Restaurer le message"
-        message="Voulez-vous vraiment annuler la modération de ce message ? Le contenu sera à nouveau visible par tous."
+        message="Tu veux vraiment annuler la modération de ce message ? Le contenu sera à nouveau visible par tous."
         confirmLabel="Restaurer"
       />
 
@@ -208,7 +208,7 @@ export default function PostMoreMenu({
         message={
           deletesTopic
             ? "C'est le seul message de ce sujet : le supprimer supprime aussi le sujet, qui disparaîtra du forum."
-            : "Votre message sera remplacé par la mention « Ce message a été supprimé par son auteur » et son texte ne sera plus visible. Vous ne pourrez pas revenir en arrière."
+            : "Ton message sera remplacé par la mention « Ce message a été supprimé par son auteur » et son texte ne sera plus visible. Tu ne pourras pas revenir en arrière."
         }
         confirmLabel="Supprimer"
         danger
@@ -232,7 +232,7 @@ export default function PostMoreMenu({
         pending={isPending}
         onConfirm={() => {
           if (!modDeleteReason.trim()) {
-            setModDeleteReasonError("Indiquez la raison de la suppression.");
+            setModDeleteReasonError("Indique la raison de la suppression.");
             document.getElementById(`delete-reason-${postId}`)?.focus();
             return;
           }

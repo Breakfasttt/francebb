@@ -464,7 +464,7 @@ test.describe("Inventaire 10 : articles", () => {
     await field(/ligue/i).fill("Inv Art Lig");
     await page.getByText(`${LIGUE.name} (${LIGUE.acronym})`).first().click();
     // Contenu en BBCode
-    await field(/Contenu|Rédigez/).fill("[b]Article écrit par le test[/b]");
+    await field(/Contenu|Rédige/).fill("[b]Article écrit par le test[/b]");
     await leaveField(page);
     await page.screenshot({ path: testInfo.outputPath("article-creation.png"), fullPage: true });
     await page.getByRole("button", { name: /Publier/ }).filter({ visible: true }).first().click();
@@ -483,7 +483,7 @@ test.describe("Inventaire 10 : articles", () => {
     await loginAs(page, AUTHOR.id);
     await page.goto(`/articles/edit/${EDITABLE.id}`, { waitUntil: "networkidle" });
     await expect(field(/^Titre/)).toHaveValue(EDITABLE.title);
-    await expect(field(/Contenu|Rédigez/)).toHaveValue(EDITABLE.content);
+    await expect(field(/Contenu|Rédige/)).toHaveValue(EDITABLE.content);
     await expect(field(/ligue/i)).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("article-modification.png"), fullPage: true });
     await field(/^Titre/).fill(`${EDITABLE.title} (modifié)`);

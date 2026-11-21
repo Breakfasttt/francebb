@@ -415,8 +415,8 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 </h2>
                 <p className="m-0 max-w-[50ch] text-sm text-bb-text-muted">
                   {topic.isArchived && !topic.isLocked && !topic.forum.isLocked
-                    ? "Vous ne pouvez plus répondre ni réagir à ce sujet car il a été archivé par la modération."
-                    : "Vous ne pouvez plus répondre à ce sujet car il a été verrouillé par la modération."}
+                    ? "Tu ne peux plus répondre ni réagir à ce sujet car il a été archivé par la modération."
+                    : "Tu ne peux plus répondre à ce sujet car il a été verrouillé par la modération."}
                 </p>
               </Card>
             )}

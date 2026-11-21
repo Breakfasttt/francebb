@@ -85,7 +85,7 @@ export async function searchAddressAction(query: string) {
 export async function createLigue(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    return { success: false, error: "Vous devez être connecté pour créer une ligue." };
+    return { success: false, error: "Tu dois être connecté pour créer une ligue." };
   }
 
   const name = formData.get("name") as string;
@@ -170,7 +170,7 @@ export async function updateLigue(id: string, formData: FormData): Promise<Actio
   const isMod = isModerator(session.user.role);
 
   if (!isCreator && !isCommissaire && !isMod) {
-    return { success: false, error: "Vous n'avez pas l'autorisation de modifier cette ligue." };
+    return { success: false, error: "Tu n'as pas l'autorisation de modifier cette ligue." };
   }
 
   const name = formData.get("name") as string;

@@ -49,7 +49,7 @@ export default function DeleteForumButton({ forumId, forumName }: DeleteForumBut
         onClose={() => !isPending && setIsModalOpen(false)}
         onConfirm={handleDelete}
         title={`Supprimer le forum : ${forumName}`}
-        message={`Supprimer le forum « ${forumName} » et ses sous-forums ? Seul un forum vide peut être supprimé : s'il contient encore des sujets, déplacez-les d'abord vers un autre forum.`}
+        message={`Supprimer le forum « ${forumName} » et ses sous-forums ? Seul un forum vide peut être supprimé : s'il contient encore des sujets, déplace-les d'abord vers un autre forum.`}
       />
     </>
   );

@@ -45,7 +45,7 @@ export default function CancelComposeButton({ draft, href, className }: { draft:
         open={confirmOpen}
         onOpenChange={setConfirmOpen}
         title="Abandonner ce message ?"
-        message="Ce que vous avez écrit sera perdu, brouillon compris."
+        message="Ce que tu as écrit sera perdu, brouillon compris."
         confirmLabel="Abandonner"
         cancelLabel="Continuer à écrire"
         danger

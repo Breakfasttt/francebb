@@ -49,7 +49,7 @@ export async function getNotifications(page = 1) {
 export async function markAllNotificationsRead(): Promise<ActionResult> {
   const session = await getActiveSession();
   const userId = session?.user?.id;
-  if (!userId) return { success: false, error: "Vous devez être connecté." };
+  if (!userId) return { success: false, error: "Tu dois être connecté." };
 
   await prisma.notification.updateMany({ where: { userId, readAt: null }, data: { readAt: new Date() } });
   revalidatePath("/notifications");

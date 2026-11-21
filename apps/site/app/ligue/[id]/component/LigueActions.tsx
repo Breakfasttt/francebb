@@ -63,7 +63,7 @@ export default function LigueActions({ ligueId, ligueName, canEdit, canManage, c
 
   const handleTransfer = async () => {
     if (!newOwner) {
-      setNewOwnerError("Choisissez d'abord le nouveau chef de ligue.");
+      setNewOwnerError("Choisis d'abord le nouveau chef de ligue.");
       return;
     }
     setPending(true);
@@ -117,7 +117,7 @@ export default function LigueActions({ ligueId, ligueName, canEdit, canManage, c
           <Sheet open={transferOpen} onOpenChange={closeTransfer}>
             <SheetContent
               title="Transférer la propriété"
-              description={`Choisissez le coach qui deviendra chef de la ligue « ${ligueName} ». Vous perdrez la gestion des commissaires et la possibilité de supprimer la ligue.`}
+              description={`Choisis le coach qui deviendra chef de la ligue « ${ligueName} ». Tu perdras la gestion des commissaires et la possibilité de supprimer la ligue.`}
               side={isDesktop ? "center" : "bottom"}
               onInteractOutside={(event) => event.preventDefault()}
             >

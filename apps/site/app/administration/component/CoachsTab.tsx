@@ -81,8 +81,8 @@ export default function CoachsTab({ currentUserRole, isSuperAdmin }: CoachsTabPr
       </CardHeader>
       <CardBody className="flex flex-col gap-3">
         <p className="m-0 text-[0.95rem] text-bb-text-muted">
-          Recherchez un coach pour lui donner un nouveau rôle. Vous ne pouvez donner que des rôles{" "}
-          <strong className="text-bb-text">inférieurs au vôtre</strong>.
+          Cherche un coach pour lui donner un nouveau rôle. Tu ne peux donner que des rôles{" "}
+          <strong className="text-bb-text">inférieurs au tien</strong>.
         </p>
         <Field label="Rechercher un coach" htmlFor="coach-search">
           <div className="relative">

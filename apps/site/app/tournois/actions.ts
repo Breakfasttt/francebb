@@ -19,7 +19,7 @@ import { logModerationAction } from "@/lib/moderationLog";
  */
 export async function finishTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user) return { success: false, error: "Tu dois être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -36,7 +36,7 @@ export async function finishTournament(tournamentId: string): Promise<ActionResu
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
   if (!canManageTournament(viewer, tournament)) {
     console.warn(`[finishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -53,7 +53,7 @@ export async function finishTournament(tournamentId: string): Promise<ActionResu
  */
 export async function cancelTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user) return { success: false, error: "Tu dois être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -70,7 +70,7 @@ export async function cancelTournament(tournamentId: string): Promise<ActionResu
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
   if (!canManageTournament(viewer, tournament)) {
     console.warn(`[cancelTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId} (Organisateur: ${tournament.organizerId})`);
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -92,7 +92,7 @@ export async function cancelTournament(tournamentId: string): Promise<ActionResu
  */
 export async function restoreTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user) return { success: false, error: "Tu dois être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -109,7 +109,7 @@ export async function restoreTournament(tournamentId: string): Promise<ActionRes
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
   if (!canManageTournament(viewer, tournament)) {
     console.warn(`[restoreTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
 
   await prisma.tournament.update({
@@ -323,7 +323,7 @@ export async function parseNafReport(xmlContent: string) {
  */
 export async function unfinishTournament(tournamentId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user) return { success: false, error: "Tu dois être connecté." };
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
@@ -340,7 +340,7 @@ export async function unfinishTournament(tournamentId: string): Promise<ActionRe
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
   if (!canManageTournament(viewer, tournament)) {
     console.warn(`[unfinishTournament] Accès refusé pour l'utilisateur ${session.user.id} (Rôle: ${session.user.role}) sur le tournoi ${tournamentId}`);
-    return { success: false, error: "Vous devez être connecté." };
+    return { success: false, error: "Tu dois être connecté." };
   }
 
   await (prisma.tournament as any).update({
@@ -405,7 +405,7 @@ export async function clearTournamentResults(tournamentId: string): Promise<Acti
  */
 export async function setCdfValidation(tournamentId: string, validate: boolean): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id) return { success: false, error: "Vous devez être connecté." };
+  if (!session?.user?.id) return { success: false, error: "Tu dois être connecté." };
   if (!isModerator(session.user.role)) {
     return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent valider les résultats d'un tournoi CDF." };
   }

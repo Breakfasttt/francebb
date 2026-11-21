@@ -217,7 +217,7 @@ export default function LogsTab({ userRole }: LogsTabProps) {
         open={isConfirmOpen}
         onOpenChange={setIsConfirmOpen}
         title="Purger le journal d'audit"
-        message="Voulez-vous supprimer définitivement tous les logs de modération de plus de 3 mois ? Cette action est irréversible."
+        message="Tu veux supprimer définitivement tous les logs de modération de plus de 3 mois ? Cette action est irréversible."
         confirmLabel="Purger les logs"
         danger
         onConfirm={onConfirmCleanup}

@@ -84,7 +84,7 @@ export default async function LoginPage(props: {
               Connexion
             </h1>
             <p className="m-0 text-sm text-bb-text-muted">
-              Choisissez comment vous connecter. Un compte est créé automatiquement à la première connexion.
+              Choisis comment te connecter. Un compte est créé automatiquement à la première connexion.
             </p>
           </header>
 
@@ -157,7 +157,7 @@ export default async function LoginPage(props: {
                 }
               }}
             >
-              <Field label="Adresse email" htmlFor="email" hint="Vous recevrez un lien qui vous connecte sans mot de passe.">
+              <Field label="Adresse email" htmlFor="email" hint="Tu recevras un lien qui te connecte sans mot de passe.">
                 <Input id="email" name="email" type="email" autoComplete="email" placeholder="nom@exemple.fr" required />
               </Field>
               <SubmitButton className="w-full" icon={<LogIn size={18} aria-hidden="true" />}>
@@ -190,7 +190,7 @@ export default async function LoginPage(props: {
           )}
 
           <p className="m-0 text-center text-sm text-bb-text-muted">
-            En vous connectant, vous acceptez nos{" "}
+            En te connectant, tu acceptes nos{" "}
             <Link href="/mentions-legales" className="inline-flex min-h-11 items-center text-bb-accent-text underline">mentions légales</Link>.
           </p>
         </Card>

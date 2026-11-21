@@ -35,13 +35,13 @@ interface ProfileSettingsProps {
 type NotifKey = "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics";
 
 const NOTIFICATIONS: { id: NotifKey; label: string; desc: string }[] = [
-  { id: "notifPm", label: "Messages privés", desc: "Un e-mail pour un nouveau message dans votre messagerie." },
-  { id: "notifFollowedTopic", label: "Sujets suivis", desc: "Un e-mail pour un nouveau message dans un sujet que vous suivez." },
+  { id: "notifPm", label: "Messages privés", desc: "Un e-mail pour un nouveau message dans ta messagerie." },
+  { id: "notifFollowedTopic", label: "Sujets suivis", desc: "Un e-mail pour un nouveau message dans un sujet que tu suis." },
   { id: "notifNewsletter", label: "Newsletter et annonces", desc: "Les e-mails d'information importants sur le site." },
   {
     id: "autoFollowTopics",
     label: "Suivre automatiquement mes sujets",
-    desc: "Suivre les sujets que vous créez et ceux auxquels vous répondez.",
+    desc: "Suivre les sujets que tu crées et ceux auxquels tu réponds.",
   },
 ];
 
@@ -88,7 +88,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
     startDeletion(async () => {
       const result = await deleteAccount();
       if (result.success) {
-        toast.success("Compte supprimé avec succès. Vous allez être redirigé...");
+        toast.success("Compte supprimé avec succès. Tu vas être redirigé...");
         setTimeout(() => {
           window.location.href = "/";
         }, 2000);
@@ -102,7 +102,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
 
   const handleUnlink = (provider: string) => {
     if (accountCount <= 1) {
-      toast.error("Vous ne pouvez pas délier votre unique méthode de connexion.");
+      toast.error("Tu ne peux pas délier ton unique méthode de connexion.");
       return;
     }
     startUnlinking(async () => {
@@ -210,8 +210,8 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           <CardTitle>Notifications</CardTitle>
         </CardHeader>
         <p className="m-0 border-b border-bb-border px-4 py-3 text-sm text-bb-text-muted">
-          Les mentions, les réponses dans vos sujets suivis et les messages privés s&apos;affichent toujours sous la cloche du
-          site. Ces réglages choisissent les e-mails que vous recevez en plus, et le suivi automatique des sujets.
+          Les mentions, les réponses dans tes sujets suivis et les messages privés s&apos;affichent toujours sous la cloche du
+          site. Ces réglages choisissent les e-mails que tu reçois en plus, et le suivi automatique des sujets.
         </p>
         <ul className="m-0 list-none p-0">
           {NOTIFICATIONS.map((item) => (
@@ -232,7 +232,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         {process.env.NODE_ENV === "development" && (
           <CardBody className="flex flex-col items-start gap-3 border-t border-dashed border-bb-border">
             <p className="m-0 text-sm text-bb-text-muted">
-              <strong>Développement :</strong> envoie une newsletter fictive à votre adresse pour vérifier son rendu.
+              <strong>Développement :</strong> envoie une newsletter fictive à ton adresse pour vérifier son rendu.
             </p>
             <Button
               type="button"
@@ -260,7 +260,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           <div className="flex flex-col gap-1">
             <p className="m-0 font-bold text-bb-text">Suppression irréversible du compte</p>
             <p className="m-0 text-sm leading-relaxed text-bb-text-muted">
-              Vos données personnelles (messages privés, suivis, réglages) sont supprimées. Vos messages publics restent,
+              Tes données personnelles (messages privés, suivis, réglages) sont supprimées. Tes messages publics restent,
               rattachés au compte « Coach Inconnu ».
             </p>
           </div>
@@ -281,7 +281,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         open={showConfirmModal}
         onOpenChange={setShowConfirmModal}
         title="Supprimer mon compte (étape 1 sur 2)"
-        message="Êtes-vous absolument sûr de vouloir supprimer votre compte ? Cette action est irréversible et conforme à vos droits RGPD."
+        message="Tu veux vraiment supprimer ton compte ? Cette action est irréversible et conforme à tes droits RGPD."
         confirmLabel="Continuer"
         danger
         onConfirm={() => {
@@ -294,7 +294,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         open={showFinalModal}
         onOpenChange={setShowFinalModal}
         title="Supprimer mon compte (dernière étape)"
-        message="Toutes vos données personnelles seront effacées. Êtes-vous certain de vouloir continuer ?"
+        message="Toutes tes données personnelles seront effacées. Tu veux vraiment continuer ?"
         confirmLabel="Tout supprimer définitivement"
         danger
         pending={isDeleting}

@@ -52,7 +52,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId,
 
   const handleToggle = (emoji: string) => {
     if (!currentUserId) {
-      toast.error("Vous devez être connecté pour réagir.");
+      toast.error("Tu dois être connecté pour réagir.");
       return;
     }
 
@@ -127,7 +127,7 @@ export default function PostReactions({ postId, initialReactions, currentUserId,
           onClick={() => handleToggle(emoji)}
           aria-pressed={hasReacted}
           aria-label={reactionPillLabel(emoji, count, hasReacted)}
-          title={hasReacted ? "Retirer votre réaction" : "Réagir"}
+          title={hasReacted ? "Retirer ta réaction" : "Réagir"}
           disabled={isPending || !canReact}
           aria-busy={isPending}
           // Sans droit de réagir, la pastille reste nette (simple compteur) ; pendant un envoi, elle s'estompe (carte 193)

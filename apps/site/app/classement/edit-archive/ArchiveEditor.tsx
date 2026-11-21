@@ -159,8 +159,8 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
 
   const handleSave = async () => {
     const nextErrors = {
-      year: !year || Number.isNaN(year) ? "Indiquez l'année du championnat." : undefined,
-      name: name.trim() ? undefined : "Donnez un nom à l'archive.",
+      year: !year || Number.isNaN(year) ? "Indique l'année du championnat." : undefined,
+      name: name.trim() ? undefined : "Donne un nom à l'archive.",
     };
     setErrors(nextErrors);
     if (nextErrors.year || nextErrors.name) {
@@ -237,7 +237,7 @@ export default function ArchiveEditor({ initialData, allUsers }: ArchiveEditorPr
         >
           {entries.length === 0 ? (
             <p className="m-0 rounded-bb-md border border-dashed border-bb-border px-4 py-8 text-center text-[0.95rem] text-bb-text-muted">
-              Aucune ligne pour l&apos;instant. Appuyez sur « Ajouter un coach » pour commencer.
+              Aucune ligne pour l&apos;instant. Appuie sur « Ajouter un coach » pour commencer.
             </p>
           ) : (
             <div className="flex flex-col gap-3 lg:gap-0">

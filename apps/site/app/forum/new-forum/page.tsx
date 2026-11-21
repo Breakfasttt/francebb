@@ -26,7 +26,7 @@ export default async function NewForumPage({ searchParams }: { searchParams: Pro
     // Écran de rédaction, comme la création d'un sujet : sans barre basse sur téléphone, boutons collés en bas (carte 196)
     <ComposeScreen
       title="Créer un forum"
-      subtitle="Ajoutez une nouvelle section ou un sous-forum à la communauté."
+      subtitle="Ajoute une nouvelle section ou un sous-forum à la communauté."
       backHref="/forum"
       backTitle="Retour au forum"
     >

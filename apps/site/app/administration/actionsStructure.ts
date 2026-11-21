@@ -55,7 +55,7 @@ export async function updateCategory(id: string, data: { name: string, descripti
   // Rule: au moins une catégorie "ALL"
   if (data.allowedRoles !== "ALL") {
     const publicCats = await prisma.category.count({ where: { allowedRoles: "ALL", id: { not: id } } });
-    if (publicCats === 0) return { success: false, error: "Impossible: Vous devez garder au moins UNE catégorie ouverte à 'ALL'." };
+    if (publicCats === 0) return { success: false, error: "Impossible : tu dois garder au moins UNE catégorie ouverte à 'ALL'." };
   }
 
   await prisma.category.update({
@@ -82,7 +82,7 @@ export async function deleteCategory(id: string) {
     if (publicCats === 0) return { success: false, error: "Impossible de supprimer la dernière catégorie publique ('ALL')." };
   }
 
-  if (cat._count.forums > 0) return { success: false, error: "La catégorie n'est pas vide (déplacez d'abord ses forums)." };
+  if (cat._count.forums > 0) return { success: false, error: "La catégorie n'est pas vide (déplace d'abord ses forums)." };
 
   await prisma.category.delete({ where: { id } });
   refreshForumStructure();

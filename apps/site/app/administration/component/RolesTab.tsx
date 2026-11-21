@@ -114,7 +114,7 @@ function SortableRoleItem({ role, myPower, isSuperAdmin, onDelete, disabled }: {
           <Trash2 size={18} aria-hidden="true" />
         </Button>
       ) : (
-        <Badge variant="neutral" title="Hiérarchie bloquée : rôle de rang égal ou supérieur au vôtre">
+        <Badge variant="neutral" title="Hiérarchie bloquée : rôle de rang égal ou supérieur au tien">
           <Lock size={12} aria-hidden="true" />
           Bloqué
         </Badge>

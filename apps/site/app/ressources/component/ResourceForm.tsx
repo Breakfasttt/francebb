@@ -83,7 +83,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
       const result = await uploadImageFile(file);
       if (result.success && result.url) {
         setImageUrl(result.url);
-        toast.success("Image envoyée. Pensez à enregistrer la ressource.");
+        toast.success("Image envoyée. Pense à enregistrer la ressource.");
       } else {
         toast.error(result.error || "L'envoi de l'image a échoué.");
       }
@@ -151,7 +151,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
                 name="description"
                 value={description}
                 onChange={(event) => setDescription(event.target.value.substring(0, DESCRIPTION_MAX))}
-                placeholder="Décrivez brièvement l'utilité de cette ressource…"
+                placeholder="Décris brièvement l'utilité de cette ressource…"
                 required
                 rows={3}
                 aria-describedby="description-count"
@@ -217,7 +217,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
                 </div>
                 <p className={hint}>
                   <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-                  Collez l&apos;adresse d&apos;une image, ou envoyez un fichier depuis votre appareil (il est hébergé sur ImgBB).
+                  Colle l&apos;adresse d&apos;une image, ou envoie un fichier depuis ton appareil (il est hébergé sur ImgBB).
                 </p>
               </div>
             </div>
@@ -242,7 +242,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
                 <TagSelector id="resource-tags" value={tags} onChange={setTags} suggestions={suggestions} placeholder="Ex : Outil, Guide, Roster…" />
                 <p className={hint}>
                   <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-                  Appuyez sur Entrée pour ajouter un tag. Un tag qui n&apos;existe pas encore est créé automatiquement.
+                  Appuie sur Entrée pour ajouter un tag. Un tag qui n&apos;existe pas encore est créé automatiquement.
                 </p>
               </div>
             )}

@@ -96,7 +96,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const handleJoin = () => {
     startTransition(async () => {
       const res = await joinTournament(tournament.id);
-      if (res.success && res.waitingList) toast.success("Le tournoi est complet : vous êtes inscrit sur la liste d'attente.");
+      if (res.success && res.waitingList) toast.success("Le tournoi est complet : tu es inscrit sur la liste d'attente.");
       else if (res.success) toast.success("Pré-inscription réussie !");
       else toast.error(res.error || "Erreur");
     });
@@ -107,7 +107,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   };
 
   const handleLeave = () => {
-    openConfirm("Désinscription", "Voulez-vous vraiment annuler votre inscription à ce tournoi ?", "Quitter le tournoi", async () => {
+    openConfirm("Désinscription", "Tu veux vraiment annuler ton inscription à ce tournoi ?", "Quitter le tournoi", async () => {
       const res = await leaveTournament(tournament.id);
       if (res.success) toast.success("Désinscription effectuée");
       else toast.error(res.error || "Erreur");
@@ -116,7 +116,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
 
   const handleCreateTeamSubmit = () => {
     if (!newTeamName.trim()) {
-      setTeamNameError("Donnez un nom à votre équipe.");
+      setTeamNameError("Donne un nom à ton équipe.");
       document.getElementById("team-name")?.focus();
       return;
     }
@@ -132,7 +132,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
           editingTeamId
             ? "Équipe mise à jour !"
             : waitingList
-              ? "Le tournoi est complet : votre équipe est inscrite sur la liste d'attente."
+              ? "Le tournoi est complet : ton équipe est inscrite sur la liste d'attente."
               : "Équipe inscrite avec succès !"
         );
         setIsTeamModalOpen(false);
@@ -177,7 +177,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const isMercenary = tournament.mercenaries?.some((m: any) => m.userId === currentUser?.id);
 
   const handleDeleteTeam = (teamId: string) => {
-    openConfirm("Supprimer l'équipe", "Voulez-vous vraiment supprimer votre équipe ? Tous les membres seront désinscrits.", "Supprimer l'équipe", async () => {
+    openConfirm("Supprimer l'équipe", "Tu veux vraiment supprimer ton équipe ? Tous les membres seront désinscrits.", "Supprimer l'équipe", async () => {
       const res = await deleteTeam(teamId);
       if (res.success) toast.success("Équipe supprimée");
       else toast.error(res.error || "Erreur");
@@ -368,12 +368,12 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
                 Membres de l&apos;équipe ({selectedMembers.length + 1} / {tournament.coachsPerTeam})
               </p>
               <p className="m-0 text-sm text-bb-text-muted">
-                Vous êtes automatiquement inclus comme capitaine. Choisissez jusqu&apos;à {tournament.coachsPerTeam - 1} coéquipiers parmi
+                Tu es automatiquement inclus comme capitaine. Choisis jusqu&apos;à {tournament.coachsPerTeam - 1} coéquipiers parmi
                 les coachs qui se sont proposés comme mercenaires : seuls les volontaires peuvent être ajoutés.
               </p>
               {teammateCandidates.length === 0 ? (
                 <p className="m-0 rounded-bb-md bg-bb-surface-2 px-3 py-2 text-sm text-bb-text-muted italic">
-                  Aucun mercenaire pour l&apos;instant. Vous pouvez inscrire l&apos;équipe maintenant et la compléter plus tard.
+                  Aucun mercenaire pour l&apos;instant. Tu peux inscrire l&apos;équipe maintenant et la compléter plus tard.
                 </p>
               ) : (
                 <ul className="m-0 flex max-h-[40dvh] list-none flex-col gap-2 overflow-y-auto p-0">

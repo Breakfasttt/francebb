@@ -10,7 +10,7 @@ import { IMAGE_UPLOAD_MAX_BYTES, IMAGE_UPLOAD_MAX_LABEL } from "./imageUploadLim
 /** Envoie le fichier et renvoie `{ success, url }` ou `{ success: false, error }` ; ne lève jamais d'erreur. */
 export async function uploadImageFile(file: File): Promise<ImageUploadResult> {
   if (!file.type.startsWith("image/")) {
-    return { success: false, error: "Veuillez choisir un fichier image." };
+    return { success: false, error: "Choisis un fichier image." };
   }
   if (file.size > IMAGE_UPLOAD_MAX_BYTES) {
     return { success: false, error: `L'image est trop lourde : ${IMAGE_UPLOAD_MAX_LABEL} au maximum.` };

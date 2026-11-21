@@ -36,7 +36,7 @@ export default function MarkAllAsReadButton({ className }: { className?: string 
         onClose={() => !isLoading && setIsConfirming(false)}
         onConfirm={handleConfirm}
         title="Tout marquer comme lu"
-        message="Êtes-vous sûr de vouloir marquer tous les sujets du forum comme lus ? Cette action est irréversible."
+        message="Tu veux vraiment marquer tous les sujets du forum comme lus ? Cette action est irréversible."
       />
     </>
   );

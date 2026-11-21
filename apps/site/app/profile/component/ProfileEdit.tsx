@@ -156,7 +156,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
                 Envoyer une image
               </Button>
             </div>
-            <Field label="Contour d'avatar" htmlFor="profile-frame" hint={isModerator ? undefined : `Les contours se débloquent avec vos messages (vous en avez ${postCount}).`}>
+            <Field label="Contour d'avatar" htmlFor="profile-frame" hint={isModerator ? undefined : `Les contours se débloquent avec tes messages (tu en as ${postCount}).`}>
               <Select id="profile-frame" name="avatarFrame" value={formData.avatarFrame} onChange={(e) => setField("avatarFrame", e.target.value)}>
                 {FRAMES.map((frame) => {
                   const min = frame.id === "auto" || frame.id === "none" ? 0 : RANK_REQUIREMENTS[frame.id];
@@ -185,11 +185,11 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
           </Field>
           <Field label="Région de tournoi" htmlFor="profile-region" hint="Facultatif.">
             <Select id="profile-region" name="region" value={formData.region} onChange={(e) => setField("region", e.target.value)}>
-              <option value="">Sélectionnez une région</option>
+              <option value="">Choisis une région</option>
               {regions.map((r) => <option key={r.key} value={r.key}>{r.label}</option>)}
             </Select>
           </Field>
-          <Field label="Équipe Blood Bowl principale" htmlFor="profile-equipe" hint="Le nom de votre équipe fétiche, 100 caractères au plus." className="lg:col-span-2">
+          <Field label="Équipe Blood Bowl principale" htmlFor="profile-equipe" hint="Le nom de ton équipe fétiche, 100 caractères au plus." className="lg:col-span-2">
             <Input id="profile-equipe" name="equipe" value={formData.equipe} onChange={(e) => setField("equipe", e.target.value)} maxLength={100} placeholder="Ex : The Greentide Raiders" />
           </Field>
         </CardBody>
@@ -199,7 +199,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
       <Card>
         <CardHeader><CardTitle>Mes ligues</CardTitle></CardHeader>
         <CardBody className="flex flex-col gap-2">
-          <p className="m-0 text-sm text-bb-text-muted">Associez-vous à une ou plusieurs ligues référencées, ou ajoutez-en une librement.</p>
+          <p className="m-0 text-sm text-bb-text-muted">Associe-toi à une ou plusieurs ligues référencées, ou ajoutes-en une librement.</p>
           <MultiLigueSearch initialLigues={user.ligues} initialCustom={user.ligueCustom ?? undefined} />
         </CardBody>
       </Card>
@@ -209,7 +209,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
         <CardHeader><CardTitle>Signature</CardTitle></CardHeader>
         <CardBody className="flex flex-col gap-1.5">
           <Label htmlFor="signature">Signature du forum (BBCode)</Label>
-          <p className="m-0 text-sm text-bb-text-muted">Elle s&apos;affiche sous vos messages du forum, 250 caractères au plus.</p>
+          <p className="m-0 text-sm text-bb-text-muted">Elle s&apos;affiche sous tes messages du forum, 250 caractères au plus.</p>
           <BBCodeEditor
             id="signature"
             name="signature"
@@ -225,7 +225,7 @@ export default function ProfileEdit({ user, postCount, onUpdate, isModerator = f
       <Card>
         <CardHeader><CardTitle>Thème du site</CardTitle></CardHeader>
         <CardBody className="flex flex-col gap-3">
-          <p className="m-0 text-sm text-bb-text-muted">Le thème change tout de suite et il est enregistré dans votre profil.</p>
+          <p className="m-0 text-sm text-bb-text-muted">Le thème change tout de suite et il est enregistré dans ton profil.</p>
           <ThemePicker isLoggedIn />
         </CardBody>
       </Card>

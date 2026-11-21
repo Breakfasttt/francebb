@@ -55,7 +55,7 @@ export default async function EditResourcePage({ params }: { params: Promise<{ i
               </Button>
             }
           >
-            Vous n&apos;avez pas les droits nécessaires pour modifier cette ressource.
+            Tu n&apos;as pas les droits nécessaires pour modifier cette ressource.
           </EmptyState>
         </Card>
       )}

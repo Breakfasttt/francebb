@@ -81,8 +81,8 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const nextErrors = {
-      title: title.trim() ? undefined : "Donnez un titre à l'article.",
-      content: content.trim() ? undefined : "Écrivez le contenu de l'article.",
+      title: title.trim() ? undefined : "Donne un titre à l'article.",
+      content: content.trim() ? undefined : "Écris le contenu de l'article.",
     };
     setErrors(nextErrors);
     if (nextErrors.title || nextErrors.content) {
@@ -161,7 +161,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
               />
               <p className={hint}>
                 <Info size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-                Appuyez sur Entrée pour ajouter un tag. Un tag qui n&apos;existe pas encore est créé automatiquement.
+                Appuie sur Entrée pour ajouter un tag. Un tag qui n&apos;existe pas encore est créé automatiquement.
               </p>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -178,7 +178,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
               />
               <p className={hint}>
                 <Shield size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
-                Liez cet article à une ligue précise.
+                Lie cet article à une ligue précise.
               </p>
             </div>
           </Block>
@@ -193,7 +193,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
                   setContent(value);
                   if (errors.content) setErrors((prev) => ({ ...prev, content: undefined }));
                 }}
-                placeholder="Rédigez votre article ici..."
+                placeholder="Rédige ton article ici..."
                 rows={16}
               />
             </Field>

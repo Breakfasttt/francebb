@@ -126,11 +126,11 @@ test.describe("connexion", () => {
 });
 
 test.describe("vérification de l'email et erreur", () => {
-  test("« Vérifiez votre boîte mail » ramène à la connexion", async ({ page }, testInfo) => {
+  test("« Vérifie ta boîte mail » ramène à la connexion", async ({ page }, testInfo) => {
     await page.goto("/auth/verify-request", { waitUntil: "networkidle" });
     const main = content(page);
-    await expect(main.getByRole("heading", { name: "Vérifiez votre boîte mail", level: 1 })).toBeVisible();
-    await expect(main.getByText(/lien de connexion vient de vous être envoyé/)).toBeVisible();
+    await expect(main.getByRole("heading", { name: "Vérifie ta boîte mail", level: 1 })).toBeVisible();
+    await expect(main.getByText(/lien de connexion vient de t'être envoyé/)).toBeVisible();
     await expect(main.getByText(/messages indésirables/)).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("verification.png"), fullPage: true });
     await main.getByRole("link", { name: "Retour à la connexion" }).click();
@@ -223,7 +223,7 @@ test.describe("inscription (onboarding)", () => {
 
     // Inscription terminée : la page affiche l'écran de succès, qui mène au site
     await page.goto("/auth/onboarding", { waitUntil: "networkidle" });
-    await expect(content(page).getByText("Votre profil est configuré avec succès.")).toBeVisible();
+    await expect(content(page).getByText("Ton profil est configuré avec succès.")).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("inscription-succes.png"), fullPage: true });
     await content(page).getByRole("button", { name: "Entrer sur le site" }).click();
     await expect(page).toHaveURL(/localhost:\d+\/$/);

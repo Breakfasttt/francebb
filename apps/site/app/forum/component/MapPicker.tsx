@@ -170,7 +170,7 @@ export default function MapPicker({ initialCenter, initialSearch, onSelect, onCa
       <p className="m-0 flex items-start gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-2 text-sm text-bb-text-muted">
         <MapPin size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
         <span className="min-w-0 break-words">
-          {address || (position ? `${position[0].toFixed(5)}, ${position[1].toFixed(5)}` : "Touchez la carte pour choisir un lieu")}
+          {address || (position ? `${position[0].toFixed(5)}, ${position[1].toFixed(5)}` : "Touche la carte pour choisir un lieu")}
         </span>
       </p>
 

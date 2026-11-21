@@ -18,12 +18,12 @@ export default async function AuthErrorPage(props: {
       case "Configuration":
         return "Il y a un problème avec la configuration du serveur d'authentification.";
       case "AccessDenied":
-        return "L'accès vous a été refusé.";
+        return "L'accès t'a été refusé.";
       case "Verification":
         return "Le lien de connexion par e-mail a expiré ou a déjà été utilisé.";
       case "EmailNotVerified":
         // Carte 160 : Discord ou Google indique que l'adresse du compte n'a pas été confirmée
-        return "L'adresse e-mail de ce compte n'est pas encore confirmée chez Discord ou Google. Confirmez-la chez eux, puis réessayez.";
+        return "L'adresse e-mail de ce compte n'est pas encore confirmée chez Discord ou Google. Confirme-la chez eux, puis réessaie.";
       default:
         return "Une erreur inattendue est survenue lors de l'authentification.";
     }

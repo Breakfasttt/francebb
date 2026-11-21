@@ -44,7 +44,7 @@ export default function ThemePicker({ isLoggedIn }: { isLoggedIn: boolean }) {
     startTransition(async () => {
       const result = await updateTheme(id);
       if (result.success) await refreshSession();
-      else toast.error("Le thème n'a pas pu être enregistré dans votre profil.");
+      else toast.error("Le thème n'a pas pu être enregistré dans ton profil.");
     });
   };
 

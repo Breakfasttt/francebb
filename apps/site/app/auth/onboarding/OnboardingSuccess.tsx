@@ -26,7 +26,7 @@ export default function OnboardingSuccess({ callbackUrl }: { callbackUrl: string
       <span aria-hidden="true" className="flex size-16 items-center justify-center rounded-full bg-bb-accent-soft text-bb-success-text">
         <CheckCircle2 size={36} />
       </span>
-      <p className="m-0 text-bb-text">Votre profil est configuré avec succès.</p>
+      <p className="m-0 text-bb-text">Ton profil est configuré avec succès.</p>
       <Button type="button" variant="primary" size="tap" className="w-full sm:w-auto" onClick={handleEntry}>
         Entrer sur le site <ArrowRight size={18} aria-hidden="true" />
       </Button>

@@ -52,7 +52,7 @@ export default function NewForumButton({
             Le nombre maximum de sous-forums (<strong>{LIMIT}</strong>) a été atteint pour ce forum.
           </p>
           <p className="m-0 text-sm text-bb-text-muted">
-            Veuillez supprimer ou réorganiser les sous-forums existants avant d&apos;en créer un nouveau.
+            Supprime ou réorganise les sous-forums existants avant d&apos;en créer un nouveau.
           </p>
           <Button type="button" variant="primary" size="tap" className="w-full" onClick={() => setIsModalOpen(false)}>
             Compris

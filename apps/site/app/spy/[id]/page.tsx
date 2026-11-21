@@ -107,7 +107,7 @@ export default function SpyProfilePage() {
   const header = (
     <ForumListHeader
       title={user ? <>Profil de {user.name}</> : "Profil d'un membre"}
-      subtitle={user ? `Consultez le profil de ${user.name}` : undefined}
+      subtitle={user ? `Consulte le profil de ${user.name}` : undefined}
       backHref="/"
       backTitle="Retour à l'accueil"
     />

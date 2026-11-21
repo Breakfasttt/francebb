@@ -88,8 +88,8 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
         <CardBody className="flex gap-3">
           <Info size={18} className="mt-0.5 shrink-0 text-bb-text-muted" aria-hidden="true" />
           <p className="m-0 text-sm leading-relaxed text-bb-text-muted">
-            Le blocage est à sens unique : vous ne voyez plus les messages de ces membres et ils ne peuvent plus vous
-            contacter. Ils voient toujours vos messages publics, sauf s&apos;ils vous ont bloqué à leur tour.
+            Le blocage est à sens unique : tu ne vois plus les messages de ces membres et ils ne peuvent plus te
+            contacter. Ils voient toujours tes messages publics, sauf s&apos;ils t&apos;ont bloqué à leur tour.
           </p>
         </CardBody>
       </Card>
@@ -100,7 +100,7 @@ export default function ProfileBlockedUsers({ roleLabels }: { roleLabels?: Recor
           if (!open) setUnblocking(null);
         }}
         title={`Débloquer ${unblocking?.name ?? "ce membre"}`}
-        message={`Ses messages seront de nouveau visibles et ${unblocking?.name ?? "ce membre"} pourra de nouveau vous contacter.`}
+        message={`Ses messages seront de nouveau visibles et ${unblocking?.name ?? "ce membre"} pourra de nouveau te contacter.`}
         confirmLabel="Débloquer"
         pending={isPending}
         onConfirm={() => {

@@ -562,7 +562,7 @@ test.describe("3.3 un message", () => {
     for (const reason of ["Spam / Publicité", "Harcèlement / Insultes", "Contenu inapproprié / NSFW", "Bot", "Autre (préciser ci-dessous)"]) {
       await expect(dialog.getByRole("button", { name: reason })).toBeVisible();
     }
-    await expect(dialog.getByPlaceholder(/Détaillez votre signalement/)).toBeVisible();
+    await expect(dialog.getByPlaceholder(/Détaille ton signalement/)).toBeVisible();
     await page.keyboard.press("Escape");
     await expect(dialog).toBeHidden();
 
@@ -593,7 +593,7 @@ test.describe("3.3 un message", () => {
       const post = postCard(page, postId(5));
       await expect(post.getByText(/modéré par Modo E2E/)).toBeVisible();
       await expect(post.getByText("Contenu modéré e2e")).toBeVisible();
-      await expect(post.getByText(/visible par vous seul et les modérateurs/)).toBeVisible();
+      await expect(post.getByText(/visible par toi seul et les modérateurs/)).toBeVisible();
     }
   });
 
@@ -662,7 +662,7 @@ test.describe("3.3 un message", () => {
     await loginAs(page, READER.id);
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
     // Un brouillon déjà tapé : la citation s'ajoute à la fin, sans le remplacer
-    const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
+    const editor = page.getByPlaceholder("Écris ta réponse ici...");
     await editor.fill("Mon brouillon");
 
     await postCard(page, postId(1)).scrollIntoViewIfNeeded();
@@ -744,7 +744,7 @@ test.describe("3.3 un message", () => {
     expect((await quoteSelection.boundingBox())!.height).toBeGreaterThanOrEqual(44);
     await quoteSelection.click();
 
-    const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
+    const editor = page.getByPlaceholder("Écris ta réponse ici...");
     // Le message n°10 est du coach de test : seul le passage sélectionné est cité, en texte brut
     await expect(editor).toHaveValue(new RegExp(`^\\[quote=${E2E.coachId}\\|${postId(10)}\\|[^\\]]*\\]numéro 10 du sujet\\[/quote\\]\\n$`));
     await expect(page.getByText("Citation ajoutée").first()).toBeVisible();
@@ -813,35 +813,35 @@ test.describe("3.3 réponse rapide", () => {
 
     await loginAs(page, READER.id);
     await page.goto(topicUrl(SMALL_TOPIC), { waitUntil: "networkidle" });
-    const editor = page.getByPlaceholder("Écrivez votre réponse ici...");
+    const editor = page.getByPlaceholder("Écris ta réponse ici...");
     await editor.fill("Réponse rapide de l'inventaire");
     await page.screenshot({ path: testInfo.outputPath("reponse-rapide.png"), fullPage: false });
     await page.getByRole("button", { name: "Envoyer ma réponse" }).click();
     const reply = page.getByText("Réponse rapide de l'inventaire", { exact: true });
     await expect(reply).toBeVisible({ timeout: 20_000 });
     await expect(reply).toBeInViewport();
-    await expect(page.getByPlaceholder("Écrivez votre réponse ici...")).toHaveValue("");
+    await expect(page.getByPlaceholder("Écris ta réponse ici...")).toHaveValue("");
   });
 
   test("[membre] sujet ou forum verrouillé : encart « Sujet verrouillé » et bandeau ; [modo] peut répondre", async ({ page }, testInfo) => {
     await loginAs(page, READER.id);
     await page.goto(topicUrl(LOCKED_TOPIC), { waitUntil: "networkidle" });
-    await expect(page.getByText(/Vous ne pouvez plus répondre à ce sujet/)).toBeVisible();
-    await expect(page.getByPlaceholder("Écrivez votre réponse ici...")).toHaveCount(0);
+    await expect(page.getByText(/Tu ne peux plus répondre à ce sujet/)).toBeVisible();
+    await expect(page.getByPlaceholder("Écris ta réponse ici...")).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("sujet-verrouille.png"), fullPage: false });
     let tools = await topicTools(page);
     await expect(tools.getByText("Sujet verrouillé", { exact: true }).filter({ visible: true }).first()).toBeVisible();
     await closePanels(page);
 
     await page.goto(topicUrl(LOCKED_FORUM_TOPIC), { waitUntil: "networkidle" });
-    await expect(page.getByText(/Vous ne pouvez plus répondre à ce sujet/)).toBeVisible();
+    await expect(page.getByText(/Tu ne peux plus répondre à ce sujet/)).toBeVisible();
     tools = await topicTools(page);
     await expect(tools.getByText("Forum verrouillé", { exact: true }).filter({ visible: true }).first()).toBeVisible();
     await closePanels(page);
 
     await loginAs(page, E2E.modoId);
     await page.goto(topicUrl(LOCKED_TOPIC), { waitUntil: "networkidle" });
-    await expect(page.getByPlaceholder("Écrivez votre réponse ici...")).toBeVisible();
+    await expect(page.getByPlaceholder("Écris ta réponse ici...")).toBeVisible();
     await expect(page.getByRole("button", { name: "Envoyer ma réponse" })).toBeVisible();
   });
 });

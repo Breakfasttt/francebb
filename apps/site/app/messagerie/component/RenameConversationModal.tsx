@@ -45,7 +45,7 @@ export default function RenameConversationModal({ conversationId, currentName, o
       <SheetContent title="Renommer le groupe" side={isDesktop ? "center" : "bottom"}>
         <form onSubmit={handleSave} className="flex flex-col gap-4 pt-1 pb-2">
           <Field label="Nouveau titre" htmlFor={inputId}>
-            <Input id={inputId} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Entrez un titre..." autoFocus={isDesktop} />
+            <Input id={inputId} type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Entre un titre..." autoFocus={isDesktop} />
           </Field>
           <div className="flex flex-col gap-2 lg:flex-row-reverse">
             <Button type="submit" variant="primary" size="tap" className="w-full lg:w-auto" disabled={loading}>

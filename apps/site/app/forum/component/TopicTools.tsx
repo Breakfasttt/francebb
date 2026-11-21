@@ -213,7 +213,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const handleFinish = () =>
     openConfirm(
       "Terminer le tournoi",
-      "Voulez-vous marquer ce tournoi comme TERMINÉ ? Cela coupera les inscriptions et le marquera comme passé.",
+      "Tu veux marquer ce tournoi comme TERMINÉ ? Cela coupera les inscriptions et le marquera comme passé.",
       async () => {
         const res = await finishTournament(tournamentId!);
         if (res.success) {
@@ -231,7 +231,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const handleUnfinish = () =>
     openConfirm(
       "Réouvrir le tournoi",
-      "Voulez-vous marquer ce tournoi comme ACTIF ? Cela réouvrira les inscriptions.",
+      "Tu veux marquer ce tournoi comme ACTIF ? Cela réouvrira les inscriptions.",
       async () => {
         const res = await unfinishTournament(tournamentId!);
         if (res.success) {
@@ -249,7 +249,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const handleCancel = () =>
     openConfirm(
       "Annuler le tournoi",
-      "Voulez-vous vraiment annuler ce tournoi ? Il sera marqué « Annulé » et ses résultats ne compteront pas au classement. Vous pourrez le rétablir plus tard.",
+      "Tu veux vraiment annuler ce tournoi ? Il sera marqué « Annulé » et ses résultats ne compteront pas au classement. Tu pourras le rétablir plus tard.",
       async () => {
         const res = await cancelTournament(tournamentId!);
         if (res.success) {
@@ -268,7 +268,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
   const handleRestore = () =>
     openConfirm(
       "Rétablir le tournoi",
-      "Voulez-vous rétablir ce tournoi ? Il ne sera plus marqué « Annulé », et ses résultats éventuels compteront de nouveau au classement.",
+      "Tu veux rétablir ce tournoi ? Il ne sera plus marqué « Annulé », et ses résultats éventuels compteront de nouveau au classement.",
       async () => {
         const res = await restoreTournament(tournamentId!);
         if (res.success) {
@@ -286,7 +286,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
     const actionLabel = registrationsLocked ? "réouvrir" : "bloquer";
     openConfirm(
       `${registrationsLocked ? "Réouvrir" : "Bloquer"} les inscriptions`,
-      `Voulez-vous vraiment ${actionLabel} les inscriptions pour ce tournoi ?`,
+      `Tu veux vraiment ${actionLabel} les inscriptions pour ce tournoi ?`,
       async () => {
         const res = await toggleTournamentRegistrations(tournamentId!);
         if (res?.success) {
@@ -335,7 +335,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
 
   const handleDeleteTopic = () => {
     if (!deleteReason.trim()) {
-      setDeleteReasonError("Indiquez la raison de la suppression.");
+      setDeleteReasonError("Indique la raison de la suppression.");
       document.getElementById("topic-delete-reason")?.focus();
       return;
     }
@@ -440,7 +440,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
         setSplitSelected((current) => (current.includes(postId) ? current.filter((id) => id !== postId) : [...current, postId])),
       openDialog: () => {
         if (splitSelected.length === 0) {
-          toast.error("Cochez au moins un message à déplacer.");
+          toast.error("Coche au moins un message à déplacer.");
           return;
         }
         setShowSplitDialog(true);
@@ -770,7 +770,7 @@ export function DeletedTopicBanner({
           <p className="m-0 text-sm break-words text-bb-text-muted">
             Supprimé {who}
             {when ? ` le ${when}` : ""}
-            {reason ? `, raison : ${reason}` : ""}. Les membres ne le voient plus ; vous le voyez parce que vous êtes modérateur.
+            {reason ? `, raison : ${reason}` : ""}. Les membres ne le voient plus ; tu le vois parce que tu es modérateur.
           </p>
         </div>
       </div>
@@ -812,7 +812,7 @@ export function SplitPostCheckbox({ postId, isFirstPost }: { postId: string; isF
 
 /** « Cochez les messages à déplacer », ou le nombre de messages cochés. */
 function splitCountText(count: number) {
-  return count === 0 ? "Cochez les messages à déplacer" : `${count} message${count > 1 ? "s" : ""} choisi${count > 1 ? "s" : ""}`;
+  return count === 0 ? "Coche les messages à déplacer" : `${count} message${count > 1 ? "s" : ""} choisi${count > 1 ? "s" : ""}`;
 }
 
 /**

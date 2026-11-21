@@ -51,7 +51,7 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
 
   const handleToggle = (emoji: string) => {
     if (!currentUserId) {
-      toast.error("Vous devez être connecté pour réagir.");
+      toast.error("Tu dois être connecté pour réagir.");
       return;
     }
 
@@ -114,7 +114,7 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
           size="tap"
           aria-pressed={currentUserId ? hasReacted : undefined}
           aria-label={reactionPillLabel(emoji, count, hasReacted)}
-          title={hasReacted ? "Retirer votre réaction" : "Réagir"}
+          title={hasReacted ? "Retirer ta réaction" : "Réagir"}
           onClick={() => handleToggle(emoji)}
           disabled={isPending || !currentUserId}
           aria-busy={isPending}

@@ -114,7 +114,7 @@ export default function BannedUsersTab() {
         open={selectedUserId !== null}
         onOpenChange={(open) => { if (!open) setSelectedUserId(null); }}
         title="Débannir l'utilisateur"
-        message="Voulez-vous vraiment débannir cet utilisateur ? Il pourra à nouveau se connecter et participer sur le site."
+        message="Tu veux vraiment débannir cet utilisateur ? Il pourra à nouveau se connecter et participer sur le site."
         confirmLabel="Débannir"
         pending={unbanning}
         onConfirm={onConfirmUnban}

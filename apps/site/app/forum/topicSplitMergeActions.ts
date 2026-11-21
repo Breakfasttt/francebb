@@ -64,7 +64,7 @@ export async function splitTopic(topicId: string, postIds: string[], title: stri
   }
 
   const ids = Array.from(new Set(Array.isArray(postIds) ? postIds.filter((id) => typeof id === "string") : []));
-  if (ids.length === 0) return { success: false, error: "Choisissez au moins un message à déplacer." };
+  if (ids.length === 0) return { success: false, error: "Choisis au moins un message à déplacer." };
   if (ids.length > SPLIT_MAX_POSTS) return { success: false, error: `Au plus ${SPLIT_MAX_POSTS} messages à la fois.` };
   const titleError = topicTitleError(title);
   if (titleError) return { success: false, error: titleError };
@@ -83,7 +83,7 @@ export async function splitTopic(topicId: string, postIds: string[], title: stri
 
   const firstPost = await prisma.post.findFirst({ where: { topicId }, orderBy: [{ createdAt: "asc" }, { id: "asc" }], select: { id: true } });
   if (firstPost && ids.includes(firstPost.id)) {
-    return { success: false, error: "Le premier message reste dans le sujet d'origine : retirez-le de la sélection." };
+    return { success: false, error: "Le premier message reste dans le sujet d'origine : retire-le de la sélection." };
   }
 
   const moved = await prisma.post.findMany({
@@ -92,7 +92,7 @@ export async function splitTopic(topicId: string, postIds: string[], title: stri
     select: { id: true, createdAt: true, authorId: true },
   });
   if (moved.length !== ids.length) {
-    return { success: false, error: "Certains messages choisis ne font plus partie de ce sujet. Rechargez la page." };
+    return { success: false, error: "Certains messages choisis ne font plus partie de ce sujet. Recharge la page." };
   }
   const oldest = moved[0];
 
@@ -129,7 +129,7 @@ export async function mergeTopics(sourceId: string, targetId: string): Promise<A
     return { success: false, error: "Seuls les modérateurs peuvent fusionner des sujets." };
   }
   const moderatorId = session.user.id;
-  if (!targetId || sourceId === targetId) return { success: false, error: "Choisissez un autre sujet." };
+  if (!targetId || sourceId === targetId) return { success: false, error: "Choisis un autre sujet." };
 
   const { roles } = await getForumAccess();
   const select = { id: true, title: true, forumId: true, tournamentId: true, views: true } as const;

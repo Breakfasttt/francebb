@@ -251,7 +251,7 @@ export default function StructureTab() {
 
       // Même parent seulement
       if (draggedForum.categoryId !== targetForum.categoryId || draggedForum.parentForumId !== targetForum.parentForumId) {
-        toast("Utilisez le menu ⋯ du forum pour changer de niveau", { icon: "ℹ️" });
+        toast("Utilise le menu ⋯ du forum pour changer de niveau", { icon: "ℹ️" });
         return;
       }
 

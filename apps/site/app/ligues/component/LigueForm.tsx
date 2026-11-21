@@ -196,7 +196,7 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
           <Block icon={<Users size={18} />} title="Commissaires">
             {canEditCommissaires ? (
               <>
-                <p className={hint}>Désignez d&apos;autres membres pour vous aider à gérer la ligue (modifier sa fiche, gérer ses tournois).</p>
+                <p className={hint}>Désigne d&apos;autres membres pour t&apos;aider à gérer la ligue (modifier sa fiche, gérer ses tournois).</p>
                 <UserSearch
                   selectedUsers={commissaires.map((user) => ({ ...user, avatarFrame: user.avatarFrame ?? null }))}
                   onSelect={(user) => setCommissaires((prev) => (prev.some((u) => u.id === user.id) ? prev : [...prev, user]))}
@@ -231,7 +231,7 @@ export default function LigueForm({ ligueId, initialData, referenceData, commiss
                 id="description"
                 name="description"
                 defaultValue={initialData?.description || ""}
-                placeholder="Présentez votre ligue aux nouveaux coachs..."
+                placeholder="Présente ta ligue aux nouveaux coachs..."
                 rows={12}
               />
             </div>

@@ -54,7 +54,7 @@ test("une équipe trop grande est refusée, capitaine compris", () => {
 });
 
 test("un coach déjà dans une autre équipe du tournoi est refusé, capitaine compris", () => {
-  assert.match(teamCompositionError({ ...team, captainId: "x" }), /Vous faites déjà partie/);
+  assert.match(teamCompositionError({ ...team, captainId: "x" }), /Tu fais déjà partie/);
   assert.match(teamCompositionError({ ...team, memberIds: ["a", "y"], mercenaryIds: ["a", "y"] }), /autre équipe/);
 });
 

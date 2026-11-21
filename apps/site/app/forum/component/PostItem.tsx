@@ -276,7 +276,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <p className="m-0 max-w-[60ch] text-sm text-bb-text-muted">
               {isBannedAuthor
                 ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
-                : "Ce contenu est masqué car vous avez bloqué cet utilisateur. Vous pouvez le gérer dans votre gestion de compte."}
+                : "Ce contenu est masqué car tu as bloqué cet utilisateur. Tu peux le gérer dans la gestion de ton compte."}
             </p>
             <Button type="button" variant="secondary" size="tap" onClick={() => setIsRevealed(true)}>
               <Eye size={18} aria-hidden="true" /> Afficher le message
@@ -296,7 +296,7 @@ const PostItem: React.FC<PostItemProps> = ({
             {!post.isModerated || isUserModerator || currentUserId === post.authorId ? (
               <div className="max-w-[78ch]">
                 {post.isModerated && (
-                  <p className="m-0 mb-2 text-sm text-bb-text-muted italic">[Contenu original visible par vous seul et les modérateurs]</p>
+                  <p className="m-0 mb-2 text-sm text-bb-text-muted italic">[Contenu original visible par toi seul et les modérateurs]</p>
                 )}
                 {(isBlocked || isBannedAuthor) && isRevealed && (
                   <div className="mb-3 flex flex-wrap items-center gap-2 rounded-bb-md bg-bb-surface-2 px-3 py-1 text-sm font-semibold text-bb-text-muted">

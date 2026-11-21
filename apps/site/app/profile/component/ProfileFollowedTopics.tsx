@@ -38,7 +38,7 @@ export default function ProfileFollowedTopics() {
           <CardTitle>Mes sujets suivis</CardTitle>
         </CardHeader>
         {loading ? (
-          <div className="flex flex-col gap-3 p-4" aria-label="Chargement de vos sujets suivis">
+          <div className="flex flex-col gap-3 p-4" aria-label="Chargement de tes sujets suivis">
             {[0, 1, 2].map((i) => <Skeleton key={i} className="h-11 w-full" />)}
           </div>
         ) : data.topics.length === 0 ? (
