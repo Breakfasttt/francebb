@@ -376,3 +376,14 @@ Ces essais viennent des cartes terminées après la refonte. Le numéro entre pa
 - [ ] Créer une nouvelle clé ImgBB, supprimer l'ancienne qui a été publique, renseigner `IMGBB_API_KEY` sur Vercel et retirer `NEXT_PUBLIC_IMGBB_API_KEY` (voir `DEPLOY.md`), puis envoyer une image sur le site en ligne : elle s'affiche (carte 141).
 - [ ] Après une branche de sauvegarde Neon, lancer `scripts/find-trapped-bbcode.mjs` sur la base de production pour retrouver les messages piégés, puis retirer ce script du dépôt. Sur le site en ligne, les spoilers s'ouvrent et se ferment toujours (carte 159).
 - [ ] Au premier déploiement de la recherche plein texte, vérifier que la migration crée bien l'extension `unaccent` (sinon la créer dans l'éditeur SQL de Neon, voir `DEPLOY.md`) et qu'elle reste rapide sur la vraie table des messages ; puis chercher « equipe » sur le forum en ligne : les messages qui contiennent « équipe » sont trouvés (carte 191).
+
+## 23. Refonte visuelle « feuille de match » (carte 220)
+
+Les tests automatiques ont été adaptés au nouveau rendu mais n'ont pas pu être lancés (intégration continue coupée, mémoire insuffisante sur le poste) : ces essais à la main sont d'autant plus utiles.
+
+- [ ] **Vrai téléphone, visiteur.** Accueil, forum, un sujet, la liste des tournois, les ligues et le classement : rien ne déborde, le nom BBFRANCE est lisible en haut, un seul bouton rouge par écran, la barre basse ne cache rien.
+- [ ] **Vrai téléphone, membre.** Dans un sujet, l'auteur tient sur une ligne en tête du message avec la date et l'heure ; le bouton « Outils » ouvre le panneau des outils ; « Répondre » fonctionne.
+- [ ] **Ordinateur, grand écran (1920 pixels).** Les pages utilisent la largeur (panneau à gauche, contenu, colonne de droite sur le forum et l'accueil) sans grands vides sur les côtés ; dans un sujet, l'auteur est dans une colonne à gauche du texte.
+- [ ] **Les 5 thèmes.** Changer de thème depuis la barre du haut : dans chacun, le nom du site, les titres en capitales et les lignes de tableau restent lisibles (Saison 3 et NAF ont une barre rouge).
+- [ ] **Administrateur.** Dans l'annuaire des membres, « Changer le rôle » s'ouvre depuis le menu « … » de la ligne et la confirmation change bien le rôle ; administration et modération se parcourent par le panneau de gauche.
+- [ ] **Administration, page « Jouer ».** Reprendre le texte saisi dans « Guide du débutant » : tutoiement et sous-titre en casse normale (le site tutoie partout).

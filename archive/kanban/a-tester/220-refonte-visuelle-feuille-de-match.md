@@ -71,4 +71,8 @@ Le 21 novembre 2026, le responsable a fixé la priorité : un site beau, simple,
 
 ## Résultat
 
-À remplir à la fin.
+Le site suit une seule grammaire, décrite dans `DESIGN.md` : coquille `SiteLayout` (panneau gauche avec l'action principale, contenu sur toute la largeur, colonne de contexte), lignes séparées par des filets plutôt que des cartes, titres en capitales condensées (Archivo), un seul bouton rouge par écran, texte tutoyé, nom du site en typographie sans écusson. Le forum suit les goûts du responsable : auteur à gauche du texte, chaque réponse délimitée, date et heure exactes. Trois passes de relecture par l'agent `critique-ui` et des captures dans les 5 thèmes ont servi de contrôle (`docs/design/captures/`).
+
+L'outillage IA est en place pour la suite : `DESIGN.md` qui dirige, skills `ui`, `ecriture-fr`, `humaniseur-fr`, `web-design-guidelines`, agent `critique-ui`, commande `/boucle-ui`, script `apps/site/scripts/captures-membre.mjs`, plugin security-guidance (il a relevé et fait corriger une fuite pendant le chantier).
+
+Restent hors de ce chantier : le texte de « Jouer » en base (à reprendre dans l'administration) et la vérification des tests e2e, adaptés mais non lancés (voir `TESTS-MANUELS.md`, section 23).

@@ -221,7 +221,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <span aria-hidden="true" className="lg:hidden">·</span>
             <time dateTime={createdIso} className="font-semibold text-bb-text">{exactDate(post.createdAt)}</time>
             <span aria-hidden="true">·</span>
-            <a href={`#post-${post.id}`} className="text-bb-text-muted no-underline hover:text-bb-accent-text" aria-label={`Lien vers le message numéro ${index + 1}`}>
+            <a href={`#post-${post.id}`} className="-my-3 inline-flex min-h-11 min-w-11 items-center justify-center text-bb-text-muted no-underline hover:text-bb-accent-text lg:my-0 lg:min-h-0 lg:min-w-0" aria-label={`Lien vers le message numéro ${index + 1}`}>
               #{index + 1}
             </a>
             {isEdited && (
