@@ -1,6 +1,7 @@
 /*
   SiteLogo : le nom du site composé en typographie (DESIGN.md : pas d'écusson ni de logo dessiné), lien vers l'accueil.
-  « BB » en rouge de lecture, « FRANCE » en couleur de la barre, voix Display (Archivo condensé, capitales).
+  Couleurs de la barre du haut (et non de la page) : sa couleur active pour « BB », son texte éclairci pour « FRANCE ».
+  Ainsi le nom reste lisible dans chaque thème, y compris ceux à barre rouge (Saison 3, NAF). Voix Display.
   La zone cliquable fait au moins 44 pixels de haut.
 */
 import Link from "next/link";
@@ -18,13 +19,14 @@ export default function SiteLogo({ scale = 1, className }: SiteLogoProps) {
       href="/"
       aria-label="BBFrance, accueil"
       className={cn(
-        "inline-flex min-h-11 items-center rounded-bb-sm font-bb-display leading-none text-bb-text no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus",
+        "inline-flex min-h-11 items-center rounded-bb-sm font-bb-display leading-none no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus",
         className
       )}
       style={{ fontSize: `${Math.round(36 * scale)}px` }}
     >
       <span aria-hidden="true">
-        <span className="text-bb-accent-text">BB</span>FRANCE
+        <span className="text-bb-nav-active">BB</span>
+        <span className="text-bb-nav-text brightness-[1.35]">FRANCE</span>
       </span>
     </Link>
   );

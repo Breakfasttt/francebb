@@ -545,7 +545,8 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
 
 /** Titre discret d'un groupe d'outils. */
 const groupTitle = "m-0 border-0 p-0 text-bb-label font-bold tracking-wider text-bb-text-muted uppercase not-italic";
-const toolButton = "w-full justify-start";
+// Libellés parfois longs (« Se connecter pour répondre ») : ils passent à la ligne dans la colonne étroite
+const toolButton = "h-auto w-full justify-start py-2 text-left whitespace-normal";
 const ico = (Icon: typeof Eye) => <Icon size={18} aria-hidden="true" />;
 
 /** Un groupe d'outils : une carte dans la colonne de l'ordinateur, une section séparée par un filet dans les panneaux. */

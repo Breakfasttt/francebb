@@ -2,6 +2,13 @@
   "detector": {
     "ignoreRules": [],
     "ignoreFiles": [],
-    "ignoreValues": []
+    "ignoreValues": [
+      {
+        "rule": "design-system-font",
+        "value": "tahoma",
+        "createdAt": "2026-11-21T20:11:33.301Z",
+        "reason": "Claude, carte 220 : police de repli des e-mails (lib/mail.ts), les clients de messagerie ne chargent pas Archivo"
+      }
+    ]
   }
 }

@@ -61,7 +61,8 @@ Le 21 novembre 2026, le responsable a fixé la priorité : un site beau, simple,
 - [x] Passe 3 (pages membres) : profil avec fiche et rubriques dans le panneau gauche ; administration et modération (`StaffPageLayout`) en liens de panneau sans icônes ; icônes retirées devant les titres de panneau ; journal de modération (purge discrète, cachée si vide) ; messagerie, notifications et non-lus tutoyés, sans icône géante ; non-lus dans la coquille du forum ; annuaire des membres en lignes sur téléphone, « Message privé » en lien texte ; `EmptyState` partagé aligné à gauche, sans icône ; bandeau visiteur du forum corrigé sur téléphone.
 - [x] Tutoiement de tout le site (environ 235 textes : erreurs, notifications, formulaires, e-mails, impératifs) ; 11 fichiers de tests adaptés.
 - [x] Annuaire des membres : filtres dans le panneau gauche sur ordinateur.
-- [ ] Annuaire des membres : « Changer le rôle » dans le menu « … ».
+- [x] Annuaire des membres : « Changer le rôle » dans le menu « … » (panneau de choix), colonnes allégées.
+- [x] Thèmes : captures dans les 5 thèmes (`THEME=… node apps/site/scripts/captures-membre.mjs visiteur`) ; nom du site aux couleurs de la barre (illisible sur les barres rouges de Saison 3 et NAF), boutons du panneau du sujet qui passent à la ligne.
 - [x] Sécurité : le nombre de messages par forum n'est envoyé au navigateur que pour les forums visibles (revue security-guidance).
 - [ ] Accueil : la critique demande encore moins de blocs encadrés (flux sans cadre) ; à trancher avec le user.
 - [ ] Revue de cohérence finale de toutes les pages (profil, messagerie, membres, statistiques, médias, administration, modération), puis déclinaison des 4 autres thèmes et test de contraste.

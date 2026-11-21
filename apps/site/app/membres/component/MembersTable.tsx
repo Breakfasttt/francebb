@@ -111,6 +111,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const [filtersOpen, setFiltersOpen] = useState(false);
 
   const [roleModal, setRoleModal] = useState<{ userId: string; userName: string; newRole: UserRole } | null>(null);
+  // Membre dont on change le rôle : le choix se fait dans un panneau ouvert depuis le menu « ⋯ » de sa ligne
+  const [roleSheetUser, setRoleSheetUser] = useState<Member | null>(null);
   const [banModal, setBanModal] = useState<{ userId: string; userName: string; isBanned: boolean } | null>(null);
   const [deleteModal, setDeleteModal] = useState<{ userId: string; userName: string } | null>(null);
 
@@ -267,7 +269,10 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         aria-label={`Changer le rôle de ${user.name}`}
         value={user.role}
         disabled={isPending}
-        onChange={(e) => setRoleModal({ userId: user.id, userName: user.name, newRole: e.target.value as UserRole })}
+        onChange={(e) => {
+          setRoleSheetUser(null);
+          setRoleModal({ userId: user.id, userName: user.name, newRole: e.target.value as UserRole });
+        }}
       >
         <option value={user.role} disabled>Changer le rôle…</option>
         {selectableRoles.map((role) => <option key={role} value={role}>{ROLE_LABELS[role]}</option>)}
@@ -276,7 +281,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       <span className="text-sm text-bb-text-muted italic">Verrouillé</span>
     );
 
-  /** Menu « ⋯ » d'un membre : bannir ou débannir, supprimer. */
+  /** Menu « ⋯ » d'un membre : changer le rôle, bannir ou débannir, supprimer (DESIGN.md : les actions rares dans le menu). */
   const actionMenu = (user: Member) => {
     const canModerate = canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN";
     return (
@@ -284,6 +289,11 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         label={`Actions pour ${user.name}`}
         title={user.name}
         items={[
+          {
+            label: "Changer le rôle",
+            hidden: !showRoles || !canEditTargetRole(currentUserRole, user.role as UserRole),
+            onSelect: () => setRoleSheetUser(user),
+          },
           {
             label: user.isBanned ? "Débannir" : "Bannir",
             icon: user.isBanned ? <UserCheck size={18} aria-hidden="true" /> : <Ban size={18} aria-hidden="true" />,
@@ -422,8 +432,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                   {sortHeader("region", "Région")}
                   {sortHeader("ligue", "Ligue(s)")}
                   <th scope="col" className="px-3 font-bb-heading text-bb-label">Message</th>
-                  {showRoles && <th scope="col" className="px-3 font-bb-heading text-bb-label">Gestion du rôle</th>}
-                  {(showMod || showDelete) && <th scope="col" className="px-3"><span className="sr-only">Actions</span></th>}
+                  {(showMod || showDelete || showRoles) && <th scope="col" className="px-3"><span className="sr-only">Actions</span></th>}
                 </tr>
               </thead>
               <tbody>
@@ -446,8 +455,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                         </Link>
                       )}
                     </td>
-                    {showRoles && <td className="min-w-48 px-3 py-1.5">{roleSelect(user)}</td>}
-                    {(showMod || showDelete) && <td className="px-1 py-1.5 text-right">{actionMenu(user)}</td>}
+                    {(showMod || showDelete || showRoles) && <td className="px-1 py-1.5 text-right">{actionMenu(user)}</td>}
                   </tr>
                 ))}
               </tbody>
@@ -467,7 +475,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                         {user.isBanned && <Badge variant="danger"><Ban size={12} aria-hidden="true" /> Banni</Badge>}
                       </div>
                     </div>
-                    {(showMod || showDelete) && actionMenu(user)}
+                    {(showMod || showDelete || showRoles) && actionMenu(user)}
                   </div>
 
                   <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-sm">
@@ -489,12 +497,6 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
                     <Link href={`/messagerie?userId=${user.id}`} className="inline-flex min-h-11 items-center self-start text-sm font-semibold text-bb-text-muted no-underline hover:text-bb-accent-text">
                       Message privé
                     </Link>
-                  )}
-                  {showRoles && canEditTargetRole(currentUserRole, user.role as UserRole) && (
-                    <div className="flex flex-col gap-1.5">
-                      <span className="text-sm font-semibold text-bb-text" aria-hidden="true">Rôle</span>
-                      {roleSelect(user)}
-                    </div>
                   )}
                 </div>
               </li>
@@ -566,6 +568,17 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         pending={isPending}
         onConfirm={confirmBanToggle}
       />
+
+      <Sheet open={!!roleSheetUser} onOpenChange={(open) => { if (!open) setRoleSheetUser(null); }}>
+        <SheetContent side={isDesktop ? "center" : "bottom"} title={roleSheetUser ? `Rôle de ${roleSheetUser.name}` : "Changer le rôle"}>
+          {roleSheetUser && (
+            <div className="flex flex-col gap-2 pb-2">
+              <p className="text-sm text-bb-text-muted">Rôle actuel : {roleLabel(roleSheetUser.role)}</p>
+              {roleSelect(roleSheetUser)}
+            </div>
+          )}
+        </SheetContent>
+      </Sheet>
 
       <Sheet open={!!deleteModal} onOpenChange={(open) => { if (!open) setDeleteModal(null); }}>
         <SheetContent

@@ -594,6 +594,8 @@ test.describe("Inventaire : profil et membres", () => {
 
     // Changer le rôle
     await search(page, memberName(4));
+    // Depuis la carte 220, le choix du rôle s'ouvre depuis le menu « ⋯ » de la ligne
+    await memberAction(page, memberName(4), /^Changer le rôle/);
     await page.getByRole("combobox", { name: `Changer le rôle de ${memberName(4)}` }).filter({ visible: true }).selectOption({ label: "RTC" });
     await page.getByRole("dialog", { name: /rôle/ }).getByRole("button", { name: /^(Confirmer|Changer le rôle)$/ }).click();
     await expect.poll(() => db(async (prisma) => (await prisma.user.findUnique({ where: { id: memberId(4) } }))?.role)).toBe("RTC");
