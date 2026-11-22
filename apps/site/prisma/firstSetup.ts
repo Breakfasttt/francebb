@@ -431,7 +431,13 @@ Ces challenges permettent d'avoir des objectifs à taille humaine et de créer d
       "UC3OcOxECWlfg5Rbq3XJCF_A|AFTER LUTECE",
       "UC3kZ_QcjJgAPen57Xwwcj4g|Cyanide Studio",
       "UCwdh3MTrFq3sXlB4ct8B-Fg|Warhammer",
+      "UCo8aTn6u6HOawVuzG3pNFiA|Silsei",
     ].join("\n"),
+  });
+  // Chaînes Twitch de départ (validées par le responsable le 22/11/2026), un nom par ligne
+  siteSettings.push({
+    key: "twitch_channels",
+    value: ["bloodbowlmalta", "bigadin", "bashtactics_pink_charlie", "lokragen", "breakytt", "silsei", "jol_tyra"].join("\n"),
   });
 
   for (const setting of siteSettings) {
