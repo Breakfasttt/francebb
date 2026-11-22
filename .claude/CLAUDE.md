@@ -29,7 +29,7 @@ Le but : un forum et site de tournois **beau, simple, cohérent partout, impecca
 
 ## Tests
 
-`pnpm check` (types, ESLint, tests unitaires) après toute modification. `pnpm --filter @bbfrance/site test:parcours` (téléphone et ordinateur) sur demande ou en fin de gros chantier. La suite e2e tourne en CI.
+`pnpm check` (types, ESLint, tests unitaires) après toute modification. `pnpm --filter @bbfrance/site test:parcours` (téléphone et ordinateur) sur demande ou en fin de gros chantier. Suite e2e complète : seulement sur demande (la CI GitHub est désactivée).
 
 ## Git et base de données (non négociable)
 
@@ -38,4 +38,4 @@ Le but : un forum et site de tournois **beau, simple, cohérent partout, impecca
 
 ## Poste (Windows, sans Docker)
 
-pnpm passe par corepack (`corepack pnpm …`). Le disque D: est lent : une recompilation de `pnpm dev` peut prendre 4 minutes, regrouper les modifications avant de capturer. Un script Python qui réécrit un fichier l'ouvre avec `newline=''` et respecte ses fins de ligne. Scripts ponctuels : `apps/site/scripts/`, journaux dans `logs/`. Rechercher sans `node_modules`.
+pnpm passe par corepack (`corepack pnpm …`). Le dépôt est sur `C:\dev\bbfrance` (SSD NVMe) depuis le 21/11/2026 ; l'ancienne copie sur D: (SSD SATA lent, recompilations de plusieurs minutes) ne sert plus. Regrouper quand même les modifications avant de capturer. Un script Python qui réécrit un fichier l'ouvre avec `newline=''` et respecte ses fins de ligne. Scripts ponctuels : `apps/site/scripts/`, journaux dans `logs/`. Rechercher sans `node_modules`.
