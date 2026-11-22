@@ -38,7 +38,7 @@ Le RGPD demande de tenir un registre de ce qu'on fait des données, et d'informe
 
 > **Nouveau : le passeport Blood Bowl**
 >
-> Ton compte BBFrance devient ton passeport Blood Bowl : une seule connexion (Discord, Google ou lien par email) pour toutes les applications BBFrance, et un profil de coach commun (pseudo, avatar, NAF, région).
+> Ton compte FranceBB devient ton passeport Blood Bowl : une seule connexion (Discord, Google ou lien par email) pour toutes les applications FranceBB, et un profil de coach commun (pseudo, avatar, NAF, région).
 >
 > Depuis ton passeport, tu peux :
 > - modifier ton profil, qui se met à jour partout ;

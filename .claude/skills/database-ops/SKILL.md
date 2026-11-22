@@ -1,6 +1,6 @@
 ---
 name: database-ops
-description: Procédure sûre pour toute opération sur les bases de données Postgres de BBFrance (structure, données de base, bases locales, production Neon). À lire avant de toucher au schéma Prisma ou à une base réelle.
+description: Procédure sûre pour toute opération sur les bases de données Postgres de FranceBB (structure, données de base, bases locales, production Neon). À lire avant de toucher au schéma Prisma ou à une base réelle.
 ---
 
 # Opérations sur la base de données

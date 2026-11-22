@@ -1,11 +1,15 @@
 ---
 name: ecriture-fr
-description: Règles d'écriture du texte visible sur le site BBFrance (boutons, titres, états vides, messages d'erreur, aides) — voix de la communauté Blood Bowl, tutoiement, mots bannis, typographie française. À lire avant d'écrire ou de modifier un texte de l'interface.
+description: Règles d'écriture du texte visible sur le site FranceBB (boutons, titres, états vides, messages d'erreur, aides) — voix de la communauté Blood Bowl, tutoiement, mots bannis, typographie française. À lire avant d'écrire ou de modifier un texte de l'interface.
 ---
 
 # Écrire le texte du site
 
 Le site parle comme un membre de la communauté qui aide un autre coach : direct, simple, sans jargon marketing.
+
+## Le nom du site
+
+**France Blood Bowl**, abrégé **FranceBB**. Jamais « Blood Bowl France », jamais « BBFrance » (les noms techniques comme les paquets `@bbfrance/*` restent tels quels).
 
 ## La voix
 

@@ -1,9 +1,9 @@
 ---
 name: ui
-description: Tout ce qu'il faut pour toucher à l'interface de BBFrance - où ranger un fichier, composants (boutons, formulaires, fenêtres, notifications), affichage téléphone et ordinateur (seuil de 1024 pixels, coquille, filtres, plein écran), 5 thèmes et variables de couleur v2, z-index. À lire avant toute modification d'interface, de CSS ou de couleur, et avant de créer un fichier.
+description: Tout ce qu'il faut pour toucher à l'interface de FranceBB - où ranger un fichier, composants (boutons, formulaires, fenêtres, notifications), affichage téléphone et ordinateur (seuil de 1024 pixels, coquille, filtres, plein écran), 5 thèmes et variables de couleur v2, z-index. À lire avant toute modification d'interface, de CSS ou de couleur, et avant de créer un fichier.
 ---
 
-# Interface de BBFrance
+# Interface de FranceBB
 
 Les chemins sont relatifs à `apps/site`, sauf mention contraire. Ce skill dit **comment** faire (fichiers, variables, coquille, technique). **Le goût et la grammaire des écrans sont dans `DESIGN.md`** (racine du dépôt) : le lire avant toute modification d'interface. L'inventaire de ce qui existe déjà est dans le skill `reuse-first` : le lire avant de créer un composant.
 
@@ -36,7 +36,7 @@ Noms : composants du site en `PascalCase` (`UserAvatar.tsx`), autres fichiers en
 
 ### Les 5 thèmes
 
-Sombre (`vestiaire`, par défaut), Saison 3, NAF, Néhékhara et Violet (`elfes-noirs`).
+Saison 3 (`saison3`, par défaut depuis le 22/11/2026), Sombre (`vestiaire`), NAF, Néhékhara et Violet (`elfes-noirs`).
 
 - **Source unique : `packages/ui/src/themes/themeData.mjs`.** `corepack pnpm themes:build` (racine) génère les fichiers `themes/<id>.css`, `themes/index.css`, `themes/themeList.ts` et la liste lue par le site (`lib/themes.ts`). Ne jamais modifier ces fichiers générés à la main.
 - Ne jamais changer l'identifiant d'un thème existant : il est enregistré dans le profil des membres. Un identifiant inconnu retombe sur le thème par défaut.

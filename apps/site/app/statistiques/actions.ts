@@ -1,5 +1,5 @@
 /**
- * Page de statistiques globales de BBFrance.
+ * Page de statistiques globales de FranceBB.
  * Affiche des compteurs pour les utilisateurs, ligues, articles, etc.
  * Les compteurs ignorent les sujets et messages supprimés, les membres bannis et le compte fantôme.
  * Section Admin avec données techniques (emails, BDD, éléments en attente).

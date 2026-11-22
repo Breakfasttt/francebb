@@ -8,7 +8,7 @@ export default function HomePage() {
     <main style={{ boxSizing: "border-box", maxWidth: 560, margin: "0 auto", padding: "48px 16px", fontSize: 18, lineHeight: 1.6 }}>
       <h1 style={{ fontSize: 28, margin: "0 0 16px" }}>Le quiz revient bientôt</h1>
       <p style={{ margin: 0 }}>
-        Le quiz de Blood Bowl France fait une pause. Les questions et les scores sont gardés : ils seront de retour avec
+        Le quiz de France Blood Bowl fait une pause. Les questions et les scores sont gardés : ils seront de retour avec
         lui.
       </p>
     </main>

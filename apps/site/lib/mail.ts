@@ -48,7 +48,7 @@ interface SendMailOptions {
 export async function sendMail({ to, subject, html, text }: SendMailOptions) {
   try {
     const info = await transporter.sendMail({
-      from: process.env.EMAIL_FROM || '"BBFrance" <noreply@bbfrance.fr>',
+      from: process.env.EMAIL_FROM || '"FranceBB" <noreply@localhost>',
       to,
       subject,
       text: text || "Ouvre cet email dans un client qui affiche le HTML.",
@@ -77,7 +77,7 @@ export async function sendMail({ to, subject, html, text }: SendMailOptions) {
 }
 
 /**
- * Template de base pour les emails BBFrance. `content` est du HTML déjà prêt (les valeurs qu'il contient ont été
+ * Template de base pour les emails FranceBB. `content` est du HTML déjà prêt (les valeurs qu'il contient ont été
  * neutralisées par l'appelant) ; `title` est un simple texte, neutralisé ici.
  */
 export function getEmailTemplate(content: string, title: string) {
@@ -100,15 +100,15 @@ export function getEmailTemplate(content: string, title: string) {
       <body>
         <div class="container">
           <div class="header">
-            <h1>BBFrance</h1>
+            <h1>FranceBB</h1>
           </div>
           <div class="content">
             <h2 style="color: #1d3557; margin-top: 0;">${escapeHtml(title)}</h2>
             ${content}
           </div>
           <div class="footer">
-            <p>&copy; ${new Date().getFullYear()} BBFrance - Le portail du Blood Bowl en France</p>
-            <p>Tu reçois cet email car tu es inscrit sur BBFrance. Tu peux gérer tes préférences de notification dans ton profil.</p>
+            <p>&copy; ${new Date().getFullYear()} FranceBB - Le portail du Blood Bowl en France</p>
+            <p>Tu reçois cet email car tu es inscrit sur FranceBB. Tu peux gérer tes préférences de notification dans ton profil.</p>
           </div>
         </div>
       </body>
@@ -127,7 +127,7 @@ export async function sendPmNotification(toEmail: string, senderName: string, me
 
   const content = `
     <p>Bonjour,</p>
-    <p><strong class="accent">${escapeHtml(senderName)}</strong> t'a envoyé un nouveau message privé sur BBFrance :</p>
+    <p><strong class="accent">${escapeHtml(senderName)}</strong> t'a envoyé un nouveau message privé sur FranceBB :</p>
     <div style="background: #f9f9f9; border-left: 4px solid #e63946; padding: 15px; margin: 20px 0; font-style: italic;">
       "${escapeHtml(messagePreview)}"
     </div>
@@ -135,7 +135,7 @@ export async function sendPmNotification(toEmail: string, senderName: string, me
   `;
   return sendMail({
     to: toEmail,
-    subject: `[BBFrance] Nouveau message de ${senderName}`,
+    subject: `[FranceBB] Nouveau message de ${senderName}`,
     html: getEmailTemplate(content, title),
   });
 }
@@ -153,7 +153,7 @@ export async function sendFollowNotification(toEmail: string, authorName: string
   `;
   return sendMail({
     to: toEmail,
-    subject: `[BBFrance] Nouveau message dans "${topicTitle}"`,
+    subject: `[FranceBB] Nouveau message dans "${topicTitle}"`,
     html: getEmailTemplate(content, title),
   });
 }
@@ -178,7 +178,7 @@ export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
   `).join("");
 
   const content = `
-    <p>Bonjour Coach ! Voici les actualités qu'il ne fallait pas manquer sur BBFrance :</p>
+    <p>Bonjour Coach ! Voici les actualités qu'il ne fallait pas manquer sur FranceBB :</p>
     
     <h3 style="color: #1d3557; border-bottom: 2px solid #1d3557; padding-bottom: 5px; margin-top: 30px;">🔥 Les sujets populaires</h3>
     ${topicsHtml.length > 0 ? topicsHtml : "<p>Aucun sujet cette semaine.</p>"}
@@ -187,11 +187,11 @@ export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
     ${tournamentsHtml.length > 0 ? tournamentsHtml : "<p>Aucun tournoi prévu prochainement.</p>"}
 
     <div style="margin-top: 30px; text-align: center;">
-      <a href="${process.env.AUTH_URL}" class="btn" style="background:#1d3557;">Retourner sur BBFrance</a>
+      <a href="${process.env.AUTH_URL}" class="btn" style="background:#1d3557;">Retourner sur FranceBB</a>
     </div>
   `;
 
-  return getEmailTemplate(content, "Gazette de BBFrance");
+  return getEmailTemplate(content, "Gazette de FranceBB");
 }
 
 /**
@@ -199,5 +199,5 @@ export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
  * et retours à la ligne (`announcementBodyHtml`, lib/announcementMail.ts). Les autres balises BBCode sont retirées.
  */
 export function getAnnouncementTemplate(text: string) {
-  return getEmailTemplate(`<p>${announcementBodyHtml(text)}</p>`, "Annonce Officielle BBFrance");
+  return getEmailTemplate(`<p>${announcementBodyHtml(text)}</p>`, "Annonce Officielle FranceBB");
 }

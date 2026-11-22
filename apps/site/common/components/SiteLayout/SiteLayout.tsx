@@ -5,6 +5,8 @@
  * - Entre 1025 et 1439 px, la colonne de contexte passe sous le contenu.
  * - Téléphone : une colonne. Le panneau gauche est affiché sous le contenu (`asideOnMobile="bottom"`), au-dessus
  *   (`"top"`) ou pas du tout (`"hidden"`, la page affiche alors ses actions autrement) ; le contexte passe en dessous.
+ * - Accueils (tableau de bord sans panneau gauche) : `contextSide="left"` met la colonne de contexte à gauche, comme le
+ *   panneau gauche du reste du site ; sur téléphone, elle reste sous le contenu.
  */
 import type { ReactNode } from "react";
 import { cn } from "@bbfrance/ui";
@@ -24,6 +26,8 @@ interface SiteLayoutProps {
   /** Largeur d'écran à partir de laquelle le contexte passe à droite : 1440 px par défaut, 1025 px (`"lg"`) pour un
    *  tableau de bord sans panneau gauche (accueils) */
   contextFrom?: "lg" | "xl";
+  /** Côté de la colonne de contexte sur ordinateur (`"left"` : accueils, seulement sans panneau gauche) */
+  contextSide?: "left" | "right";
   children: ReactNode;
   className?: string;
 }
@@ -36,6 +40,7 @@ export default function SiteLayout({
   context,
   contextLabel = "En ce moment",
   contextFrom = "xl",
+  contextSide = "right",
   children,
   className,
 }: SiteLayoutProps) {
@@ -48,7 +53,8 @@ export default function SiteLayout({
           aside ? "lg:grid-cols-[240px_minmax(0,1fr)]" : "lg:grid-cols-[minmax(0,1fr)]",
           aside && context && "min-[1440px]:grid-cols-[240px_minmax(0,1fr)_300px]",
           !aside && context && contextFrom === "xl" && "min-[1440px]:grid-cols-[minmax(0,1fr)_300px]",
-          !aside && context && contextFrom === "lg" && "lg:grid-cols-[minmax(0,1fr)_320px] min-[1440px]:grid-cols-[minmax(0,1fr)_380px]"
+          !aside && context && contextFrom === "lg" && contextSide === "right" && "lg:grid-cols-[minmax(0,1fr)_320px] min-[1440px]:grid-cols-[minmax(0,1fr)_380px]",
+          !aside && context && contextFrom === "lg" && contextSide === "left" && "lg:grid-cols-[320px_minmax(0,1fr)] min-[1440px]:grid-cols-[380px_minmax(0,1fr)]"
         )}
       >
         {aside && (
@@ -68,7 +74,11 @@ export default function SiteLayout({
         {context && (
           <aside
             aria-label={contextLabel}
-            className={cn("flex min-w-0 flex-col gap-5", contextFrom === "xl" && "min-[1440px]:sticky min-[1440px]:top-20")}
+            className={cn(
+              "flex min-w-0 flex-col gap-5",
+              contextFrom === "xl" && "min-[1440px]:sticky min-[1440px]:top-20",
+              !aside && contextSide === "left" && "lg:order-first"
+            )}
           >
             {context}
           </aside>

@@ -4,7 +4,7 @@
  * texte destiné à l'IA, pas des couleurs du site.
  */
 export function buildAIPrompt(content: string): string {
-  return `Tu es "BB-Assistant", l'intelligence artificielle experte en formatage BBCode pour le forum "France Blood Bowl" (BBFrance).
+  return `Tu es "BB-Assistant", l'intelligence artificielle experte en formatage BBCode pour le forum "France Blood Bowl" (FranceBB).
 Ton rôle est de métamorphoser le texte brut de l'utilisateur en un post de forum parfaitement structuré, lisible et visuellement impressionnant.
 
 CONTEXTE VISUEL (Modern UI) :

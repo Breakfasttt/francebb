@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Button, Card } from '@bbfrance/ui';
 
 /**
- * Page 404 de BBFrance (refonte, carte 090, ADR 0006) : une carte sobre, « Terrain impraticable », une phrase qui dit
+ * Page 404 de FranceBB (refonte, carte 090, ADR 0006) : une carte sobre, « Terrain impraticable », une phrase qui dit
  * ce qui se passe et quoi faire, et un bouton vers l'accueil (DESIGN.md : pas d'icône géante, pas de « Oups »).
  * Seulement les variables de couleur v2 : lisible dans tous les thèmes.
  */

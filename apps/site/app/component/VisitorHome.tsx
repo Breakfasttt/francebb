@@ -3,12 +3,15 @@
  * - En haut, une bande courte : ce qu'est le site en une phrase, l'action principale (créer son compte, la seule en
  *   rouge), « Découvrir le jeu » pour qui ne connaît pas Blood Bowl, et la carte des ligues. Pas de grand titre
  *   centré ni de scission « nouveau / déjà joueur ».
- * - Puis le même tableau de bord que le membre : forum et tournois au centre, classement, ligues, articles,
- *   ressources et médias à droite (dessous sur téléphone). Les liens « Créer » mènent à la connexion.
+ * - Puis le même tableau de bord que le membre : colonne de gauche avec les tournois, les ligues, les ressources et le
+ *   classement ; à droite, le forum, les articles et les médias (sur téléphone, le contenu puis la colonne de gauche).
+ *   Les liens « Créer » mènent à la connexion.
  */
 import Link from "next/link";
 import { Button } from "@bbfrance/ui";
+import { DiscordIcon } from "@/common/components/Icons/SocialIcons";
 import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
+import type { YoutubeChannel } from "@/lib/mediaChannels";
 import { NextTournaments } from "./HomeBlocks";
 import { ArticlesBlock, ForumBlock, LiguesBlock, MediaBlock, RankingBlock, ResourcesBlock } from "./HomeSections";
 import type { HomeRankingEntry, HomeResource, HomeTournament, MemberForumTopics, MemberLigue, pickRandomArticle } from "./homeData";
@@ -32,15 +35,15 @@ export default function VisitorHome({
   article: Awaited<ReturnType<typeof pickRandomArticle>>;
   ranking: HomeRankingEntry[];
   resources: HomeResource[];
-  media: { twitch: string[]; youtube: string[] };
+  media: YoutubeChannel[];
 }) {
   const year = new Date().getFullYear();
   return (
     <SiteLayout
       contextFrom="lg"
-      contextLabel="Classement, ligues et ressources"
+      contextLabel="Tournois, ligues, ressources et classement"
       header={
-        <section aria-labelledby="home-title" className="flex flex-col gap-4 border-b border-bb-border pt-6 pb-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10 lg:pt-10 lg:pb-8">
+        <section aria-labelledby="home-title" className="flex flex-col gap-4 pt-6 pb-6 lg:flex-row lg:items-end lg:justify-between lg:gap-10 lg:pt-10 lg:pb-8">
           <div className="max-w-[60ch]">
             <h1 id="home-title" className="font-bb-display text-[2.25rem] text-bb-text lg:text-[3.25rem]">
               Blood Bowl <span className="text-bb-accent-text">en France</span>
@@ -58,8 +61,9 @@ export default function VisitorHome({
               <Link href="/jouer">Découvrir le jeu</Link>
             </Button>
             {discordHref && (
-              <Button asChild variant="quiet" size="tap" className="min-h-12 px-4 text-base">
-                <a href={discordHref} target="_blank" rel="noopener noreferrer">
+              <Button asChild variant="quiet" size="tap" className="min-h-12 bg-bb-discord px-5 text-base text-white hover:bg-bb-discord-hover hover:text-white">
+                <a href={discordHref} target="_blank" rel="noopener noreferrer" className="gap-2">
+                  <DiscordIcon size={20} className="text-white" />
                   Discord<span className="sr-only"> (nouvel onglet)</span>
                 </a>
               </Button>
@@ -67,19 +71,20 @@ export default function VisitorHome({
           </div>
         </section>
       }
+      contextSide="left"
       context={
         <>
-          <RankingBlock ranking={ranking} year={year} />
+          {/* Visiteur : « Annoncer un tournoi » seulement quand la liste est vide (il passe par la connexion) */}
+          <NextTournaments tournaments={tournaments} createHref={tournamentCreateHref} />
           <LiguesBlock {...ligues} />
           <ResourcesBlock resources={resources} />
-          <MediaBlock media={media} />
+          <RankingBlock ranking={ranking} year={year} />
         </>
       }
     >
       <ForumBlock forum={forum} discordHref={null} visitor />
-      {/* Visiteur : « Annoncer un tournoi » seulement quand la liste est vide (il passe par la connexion) */}
-      <NextTournaments tournaments={tournaments} createHref={tournamentCreateHref} />
       <ArticlesBlock article={article} />
+      <MediaBlock channels={media} />
     </SiteLayout>
   );
 }

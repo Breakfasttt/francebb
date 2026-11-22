@@ -3,7 +3,7 @@ description: Boucle de relecture d'un écran - captures téléphone et ordinateu
 argument-hint: <chemin de la page, ex. /forum> [fichiers de la page]
 ---
 
-Relire l'écran `$ARGUMENTS` de BBFrance.
+Relire l'écran `$ARGUMENTS` de FranceBB.
 
 1. Vérifier que le serveur répond (`curl -s -o /dev/null -w "%{http_code}" http://localhost:3000/`). Sinon, lancer `corepack pnpm dev` en arrière-plan et attendre (la première compilation peut prendre 5 minutes sur ce poste).
 2. Capturer la page : `.claude/skills/impeccable/scripts/impeccable shot http://localhost:3000<chemin> --viewport 390x844,1440x900 --full --out docs/design/captures/<nom-court>`. Si une capture expire, recharger la page avec `curl` puis recommencer.

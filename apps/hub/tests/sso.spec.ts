@@ -110,10 +110,10 @@ test("connexion par email depuis le bouton du site, sans aucun écran du hub", a
   rmSync(MAIL_FILE, { force: true });
   const hubButtonSeen = await watchHubButtons(page);
   await page.goto(`${SITE}/auth/login`);
-  // Mêmes boutons qu'hors mode hub, et plus de bouton « compte BBFrance »
+  // Mêmes boutons qu'hors mode hub, et plus de bouton « compte FranceBB »
   await expect(page.getByRole("button", { name: "Se connecter avec Discord" })).toBeVisible();
   await expect(page.getByRole("button", { name: "Se connecter avec Google" })).toBeVisible();
-  await expect(page.getByRole("button", { name: /compte BBFrance/i })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: /compte FranceBB/i })).toHaveCount(0);
 
   await page.getByPlaceholder("nom@exemple.fr").fill("coach@e2e.test");
   await page.getByRole("button", { name: "Recevoir un lien de connexion par e-mail" }).click();
@@ -250,7 +250,7 @@ test("un compte banni au hub ne peut plus se connecter au site", async ({ page }
   await page.getByLabel("Email").fill("coach@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
   await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
-  await expect(page.getByText("Ce compte BBFrance a été suspendu.")).toBeVisible();
+  await expect(page.getByText("Ce compte FranceBB a été suspendu.")).toBeVisible();
   expect(await siteSessionName(page)).toBeUndefined();
 });
 

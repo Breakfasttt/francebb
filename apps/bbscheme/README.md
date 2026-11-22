@@ -1,6 +1,6 @@
 # BBScheme — application des schémas tactiques
 
-BBScheme est l'éditeur de schémas tactiques de Blood Bowl France : on y place les joueurs sur un terrain, on dessine les déplacements et on enchaîne des images pour expliquer une action. Les schémas publiés s'affichent, animés, dans les messages du forum du site.
+BBScheme est l'éditeur de schémas tactiques de France Blood Bowl : on y place les joueurs sur un terrain, on dessine les déplacements et on enchaîne des images pour expliquer une action. Les schémas publiés s'affichent, animés, dans les messages du forum du site.
 
 Depuis la carte 179 (décision ADR-0008), BBScheme est une application à part dans le dépôt, avec sa propre base de données Postgres.
 

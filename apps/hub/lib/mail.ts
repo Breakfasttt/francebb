@@ -30,7 +30,7 @@ ${text}`);
     return true;
   }
   try {
-    await transporter.sendMail({ from: process.env.EMAIL_FROM || '"BBFrance" <noreply@bbfrance.fr>', to: email, subject, text });
+    await transporter.sendMail({ from: process.env.EMAIL_FROM || '"FranceBB" <noreply@localhost>', to: email, subject, text });
     return true;
   } catch (error) {
     console.error("[hub] échec de l'envoi d'un message de compte :", error);
@@ -48,11 +48,11 @@ export async function sendMagicLinkEmail(email: string, url: string): Promise<bo
   }
   try {
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM || '"BBFrance" <noreply@bbfrance.fr>',
+      from: process.env.EMAIL_FROM || '"FranceBB" <noreply@localhost>',
       to: email,
-      subject: "Ton lien de connexion BBFrance",
-      text: `Bonjour,\n\nPour te connecter à BBFrance, ouvre ce lien (valable quelques minutes) :\n${url}\n\nSi tu n'as rien demandé, ignore ce message.`,
-      html: `<p>Bonjour,</p><p>Pour te connecter à BBFrance, clique sur le lien ci-dessous (valable quelques minutes) :</p><p><a href="${url}">Se connecter à BBFrance</a></p><p>Si tu n'as rien demandé, ignore ce message.</p>`,
+      subject: "Ton lien de connexion FranceBB",
+      text: `Bonjour,\n\nPour te connecter à FranceBB, ouvre ce lien (valable quelques minutes) :\n${url}\n\nSi tu n'as rien demandé, ignore ce message.`,
+      html: `<p>Bonjour,</p><p>Pour te connecter à FranceBB, clique sur le lien ci-dessous (valable quelques minutes) :</p><p><a href="${url}">Se connecter à FranceBB</a></p><p>Si tu n'as rien demandé, ignore ce message.</p>`,
     });
     return true;
   } catch (error) {

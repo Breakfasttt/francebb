@@ -7,7 +7,7 @@ description: Où trouver les règles du jeu Blood Bowl et les sources de la comm
 
 ## Source locale, à consulter en premier
 
-Le livre de règles (LRB, saison 3) est dans le dépôt : `apps/site/public/data/docs/lrb_s3.txt`. Le chercher avec Grep ou le lire avec Read pour toute question technique : compétences, rosters (listes d'équipes et de joueurs), déroulement d'un tour.
+Le livre de règles (LRB, saison 3) est dans le dépôt : `docs/regles/lrb_s3.txt`. Le chercher avec Grep ou le lire avec Read pour toute question technique : compétences, rosters (listes d'équipes et de joueurs), déroulement d'un tour.
 
 ## Sources en ligne
 

@@ -61,7 +61,7 @@ Depuis la carte 180 (décision ADR-0008), le quiz n'est plus dans le site : c'es
 
 | Fonctionnalité | Endroit | Effet |
 |---|---|---|
-| Hub | Connexion OIDC | Prévu : un seul compte BBFrance pour le quiz et le site. |
+| Hub | Connexion OIDC | Prévu : un seul compte FranceBB pour le quiz et le site. |
 
 Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 

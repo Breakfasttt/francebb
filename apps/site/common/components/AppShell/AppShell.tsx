@@ -139,8 +139,8 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
           <DebugAuthWidget className={devButtonClass} />
           {user && !bare && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
           {showLoginButton && (
-            // Secondaire : le rouge reste à l'action principale de la page (DESIGN.md, un seul rouge par écran)
-            <Button asChild variant="secondary" size="tap" className="px-3 whitespace-nowrap">
+            // Rouge : la connexion est l'action attendue d'un visiteur sur tout le site (choix du responsable, 22/11/2026)
+            <Button asChild variant="primary" size="tap" className="px-3 whitespace-nowrap">
               <Link href="/auth/login">Connexion</Link>
             </Button>
           )}
@@ -205,7 +205,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
                 <Palette size={20} aria-hidden="true" />
               </Button>
               {showLoginButton && (
-                <Button asChild variant="secondary" size="tap">
+                <Button asChild variant="primary" size="tap">
                   <Link href="/auth/login">Connexion / inscription</Link>
                 </Button>
               )}

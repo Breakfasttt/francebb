@@ -26,6 +26,7 @@
  */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../prisma/generated-client";
+import { DEFAULT_SITE_THEME } from "../lib/themes";
 
 // --- Lecture de la sauvegarde SQLite ---------------------------------------------------------------------------------
 
@@ -283,8 +284,8 @@ async function main() {
         isBanned: bool(row, "isBanned"),
         banReason: textOrNull(row, "banReason"),
         avatarFrame: textOrNull(row, "avatarFrame"),
-        theme: "vestiaire",
-        previousTheme: oldTheme === "vestiaire" ? null : oldTheme,
+        theme: DEFAULT_SITE_THEME,
+        previousTheme: oldTheme === DEFAULT_SITE_THEME ? null : oldTheme,
         equipe: textOrNull(row, "equipe"),
         ligueCustom: textOrNull(row, "ligueCustom"),
         legacyId: textOrNull(row, "legacyId"),

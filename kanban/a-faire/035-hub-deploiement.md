@@ -24,3 +24,7 @@ Le user ne met rien en ligne tant que le hub et le site ne fonctionnent pas ense
 - tâche VS Code « Hub + site » (`.vscode/tasks.json`), qui lance les deux serveurs dans deux terminaux.
 
 À essayer par le user : connexion par lien email (le lien s'affiche dans le terminal du hub tant qu'aucun service d'envoi de mails n'est configuré), retour sur le site, déconnexion globale, puis Discord et Google avec les adresses de retour `http://localhost:4000/api/auth/callback/discord` et `…/google`.
+
+## Préparation du déploiement (2026-11-22)
+
+Parcours complet hub + site, depuis zéro : [DEPLOY.md](../../DEPLOY.md) (étapes 1 à 10). Test local en mode production, sans connexion : `pnpm prod-local prepare | build | start | clean` (`scripts/prod-local.mjs`, DEPLOY étape 2). Domaine pas encore choisi. BBScheme et BBQuizz restent hors ligne (DEPLOY annexe B).

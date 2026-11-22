@@ -1,31 +1,32 @@
-/* Thème « Saison 3 » : clair, parchemin et bleu marine, barre de navigation rouge (livre de règles officiel). */
+/* Thème « Saison 3 », thème par défaut : les couleurs du livre de règles officiel (2025) — parchemin chaud, bandeaux bleu marine (pages d'histoire), titres rouges, jaune des pieds de page. */
 [data-theme="saison3"] {
   --bb-scheme: light;
-  --bb-bg: #efebdd;
-  --bb-bg-image: linear-gradient(135deg, #efebdd 0%, #d8d4c5 100%);
-  --bb-surface: #fbf8ef;
-  --bb-surface-2: #e9e2cd;
-  --bb-border: #d3c9ae;
-  --bb-text: #1d1a15;
-  --bb-text-muted: #5b5446;
-  --bb-accent: #9e1d1d;
-  --bb-accent-hover: #7d1515;
+  --bb-bg: #ead9bf;
+  --bb-bg-image: linear-gradient(135deg, #f2e5d3 0%, #e2cdaa 100%);
+  --bb-surface: #f7ecdb;
+  --bb-surface-2: #dfc59c;
+  --bb-border: #c4a57a;
+  --bb-text: #231a12;
+  --bb-text-muted: #5f4a36;
+  --bb-accent: #8b1919;
+  --bb-accent-hover: #6e1212;
   --bb-on-accent: #ffffff;
-  --bb-accent-text: #9e1d1d;
-  --bb-accent-soft: rgba(158, 29, 29, 0.1);
-  --bb-danger: #9e1d1d;
+  --bb-accent-text: #8b1919;
+  --bb-accent-soft: rgba(139, 25, 25, 0.1);
+  --bb-danger: #8b1919;
   --bb-on-danger: #ffffff;
-  --bb-danger-text: #9e1d1d;
-  --bb-success-text: #1f6b32;
-  --bb-warning-text: #8a5a00;
-  --bb-unread: #004175;
-  --bb-rank: #8a6a12;
-  --bb-focus: #004175;
-  --bb-nav-bg: #9e1d1d;
-  --bb-nav-border: #7d1515;
-  --bb-nav-text: #f6dcdc;
-  --bb-nav-active: #ffcc00;
-  --bb-overlay: rgba(29, 26, 21, 0.5);
-  --bb-shadow: 0 8px 24px rgba(29, 26, 21, 0.18);
+  --bb-danger-text: #8b1919;
+  --bb-success-text: #2f5b1c;
+  --bb-warning-text: #7a4d00;
+  --bb-unread: #293c76;
+  --bb-rank: #7a5a0c;
+  --bb-focus: #293c76;
+  --bb-nav-bg: #2b3b76;
+  --bb-nav-border: #1c2852;
+  --bb-nav-text: #ece3cf;
+  --bb-nav-active: #f5c518;
+  --bb-logo-accent: #ff6b5e;
+  --bb-overlay: rgba(35, 26, 18, 0.5);
+  --bb-shadow: 0 8px 24px rgba(35, 26, 18, 0.2);
   --bb-glass-blur: 0px;
 }

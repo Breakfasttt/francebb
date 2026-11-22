@@ -411,7 +411,7 @@ export async function sendTestAnnouncement(subject: string, content: string) {
   const me = await prismaWithEmail.user.findUnique({ where: { id: userId }, select: { email: true } });
   if (!me?.email) return { success: false, error: "Ton compte n'a pas d'adresse e-mail." };
   const { sendMail, getAnnouncementTemplate } = await import("@/lib/mail");
-  const result = await sendMail({ to: me.email, subject: `[Essai] [BBFrance Info] ${subject}`, html: getAnnouncementTemplate(content) });
+  const result = await sendMail({ to: me.email, subject: `[Essai] [FranceBB Info] ${subject}`, html: getAnnouncementTemplate(content) });
   return result.success ? { success: true } : { success: false, error: "L'essai n'est pas parti : vérifie la configuration du serveur de mail." };
 }
 
@@ -441,7 +441,7 @@ export async function sendAnnouncementBatch(subject: string, content: string, af
 
   const { sendMail, getAnnouncementTemplate, isFakeMail } = await import("@/lib/mail");
   const html = getAnnouncementTemplate(content);
-  const fullSubject = `[BBFrance Info] ${subject}`;
+  const fullSubject = `[FranceBB Info] ${subject}`;
 
   let sent = 0;
   for (const [index, user] of users.entries()) {

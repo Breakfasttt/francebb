@@ -43,7 +43,7 @@ export function readRequestedLogin(searchParams: SearchParams): { method: LoginM
 /**
  * Adresse à ouvrir après le clic sur le lien magique : la demande d'autorisation d'origine, rejouée sur
  * /oauth2/authorize. Le membre y arrive connecté au hub, qui le renvoie donc aussitôt vers l'application
- * (sans écran de consentement pour une application BBFrance). Sans demande OIDC en cours, renvoie undefined.
+ * (sans écran de consentement pour une application FranceBB). Sans demande OIDC en cours, renvoie undefined.
  *
  * La partie après « ? » est encodée une fois de plus : Better Auth décode deux fois l'adresse de retour du
  * lien magique (une fois en lisant l'adresse du lien, une fois avec decodeURIComponent). Sans cet encodage,

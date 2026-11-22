@@ -25,15 +25,15 @@ const daysAhead = (days: number) => new Date(Date.now() + days * DAY);
 
 const MEMBERS = [
   { id: "exemple-superadmin", name: "Grand Manitou", role: "SUPERADMIN", theme: "saison3", region: "R1-IDF", equipe: "Humains" },
-  { id: "exemple-admin", name: "Admin Orque", role: "ADMIN", theme: "vestiaire", region: "R4-SE", equipe: "Orques Noirs" },
+  { id: "exemple-admin", name: "Admin Orque", role: "ADMIN", theme: "saison3", region: "R4-SE", equipe: "Orques Noirs" },
   { id: "exemple-modo", name: "Modo Nain", role: "MODERATOR", theme: "naf", region: "R3-NE", equipe: "Nains" },
   { id: "exemple-rtc", name: "Arbitre Sud-Ouest", role: "RTC", theme: "nehekhara", region: "R5-SO", equipe: "Khemri" },
   { id: "exemple-chef-ligue", name: "Chef de la Ligue Pictave", role: "CHEF_LIGUE", theme: "elfes-noirs", region: "R5-SO", equipe: "Elfes Noirs" },
-  { id: "exemple-coach-1", name: "Gobelin Furtif", role: "COACH", theme: "vestiaire", region: "R2-NO", equipe: "Gobelins" },
+  { id: "exemple-coach-1", name: "Gobelin Furtif", role: "COACH", theme: "saison3", region: "R2-NO", equipe: "Gobelins" },
   { id: "exemple-coach-2", name: "Skaven Pressé", role: "COACH", theme: "saison3", region: "R1-IDF", equipe: "Skavens" },
   { id: "exemple-coach-3", name: "Halfling Gourmand", role: "COACH", theme: "naf", region: "R4-SE", equipe: "Halflings" },
   { id: "exemple-coach-4", name: "Lézard Patient", role: "COACH", theme: "nehekhara", region: "R3-NE", equipe: "Hommes-Lézards" },
-  { id: "exemple-nouveau", name: "Tout Nouveau", role: "COACH", theme: "vestiaire", region: null, equipe: null, onboarding: false },
+  { id: "exemple-nouveau", name: "Tout Nouveau", role: "COACH", theme: "saison3", region: null, equipe: null, onboarding: false },
   // Carte 221 : de quoi tester les droits entre égaux et les rôles personnalisés.
   { id: "exemple-admin-2", name: "Admin Elfe", role: "ADMIN", theme: "elfes-noirs", region: "R2-NO", equipe: "Haut-Elfes" },
   { id: "exemple-modo-2", name: "Modo Amazone", role: "MODERATOR", theme: "saison3", region: "R4-SE", equipe: "Amazones" },
@@ -169,7 +169,7 @@ async function seedForum() {
     startDaysAgo: 30,
     isSticky: true,
     posts: [
-      { author: "exemple-admin", content: "Bienvenue sur BBFrance ! Dites-nous qui vous êtes, votre équipe et votre région." },
+      { author: "exemple-admin", content: "Bienvenue sur FranceBB ! Dites-nous qui vous êtes, votre équipe et votre région." },
       { author: "exemple-coach-1", content: "Salut ! Je joue [b]Gobelins[/b] depuis deux ans, du côté de Rouen." },
       { author: "exemple-coach-3", content: "Halflings ici, pour le plaisir de perdre avec le sourire." },
       { author: "exemple-nouveau", content: "Bonjour, je découvre le jeu. Par quelle équipe commencer ?" },

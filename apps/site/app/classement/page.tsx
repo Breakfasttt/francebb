@@ -295,7 +295,7 @@ function Classement() {
     <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
         title="Championnat de France"
-        subtitle="Le classement des coachs de la communauté Blood Bowl France"
+        subtitle="Le classement des coachs de la communauté France Blood Bowl"
         backHref="/"
         backTitle="Retour"
         backPreferHistory

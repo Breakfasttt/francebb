@@ -2,7 +2,7 @@
 
 /**
  * Invitations à participer, affichées seulement aux visiteurs non connectés (carte 185) :
- * - `ForumVisitorBanner` : court bandeau en haut de l'accueil du forum, qui explique ce qu'est BBFrance. Le visiteur
+ * - `ForumVisitorBanner` : court bandeau en haut de l'accueil du forum, qui explique ce qu'est FranceBB. Le visiteur
  *   peut le fermer ; ce choix est gardé dans le navigateur (localStorage), et le bandeau ne revient plus.
  * - `TopicVisitorInvite` : encart « Envie de participer ? » en bas d'un sujet, à la place de la zone de réponse. Il ne
  *   se ferme pas : c'est le seul moyen visible de répondre.

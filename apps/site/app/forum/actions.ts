@@ -1,5 +1,5 @@
 /**
- * Actions serveur pour le forum de BBFrance.
+ * Actions serveur pour le forum de FranceBB.
  * Regroupe la gestion des topics, posts, lectures, modération et création de tournois via le forum.
  */
 "use server";

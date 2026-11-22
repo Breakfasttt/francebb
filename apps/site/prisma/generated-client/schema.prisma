@@ -48,7 +48,7 @@ model User {
   /// Fin d'un bannissement temporaire (carte 222) ; vide pour un bannissement définitif. Levé à la première visite après cette date.
   bannedUntil              DateTime?
   avatarFrame              String?                   @default("auto")
-  theme                    String                    @default("vestiaire")
+  theme                    String                    @default("saison3")
   // Thème du membre avant la refonte (carte 078), pour lui proposer d'y revenir (carte 083)
   previousTheme            String?
   equipe                   String?

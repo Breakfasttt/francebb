@@ -179,7 +179,7 @@ export async function geocodeAddress(
   if (!query.trim()) return null;
   try {
     const response = await fetchImpl(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query.trim())}&format=json&limit=1`, {
-      headers: { "User-Agent": "BBFrance-App" },
+      headers: { "User-Agent": "FranceBB-App" },
     });
     const results: { lat: string; lon: string }[] = await response.json();
     if (!results?.length) return null;

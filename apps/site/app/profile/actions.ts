@@ -9,7 +9,7 @@ import { revalidatePath } from "next/cache";
 import { encrypt, decrypt } from "@/lib/crypto";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 import type { ActionResult } from "@/lib/actionResult";
-import { isSiteTheme } from "@/lib/themes";
+import { DEFAULT_SITE_THEME, isSiteTheme } from "@/lib/themes";
 import { isHubAuthMode } from "@/auth";
 import { hubOrigin, updateHubProfile } from "@/lib/hub/hubAccount";
 import { getRoleLabelMap } from "@/lib/roleLabels";
@@ -239,7 +239,7 @@ export async function updateTheme(theme: string): Promise<ActionResult> {
 }
 
 /**
- * Thème que le membre avait avant le passage de tous au thème Vestiaire (cartes 078 et 083), pour le bandeau
+ * Thème que le membre avait avant le passage de tous au thème par défaut (cartes 078 et 083), pour le bandeau
  * « Nouveau look » ; null pour un visiteur, un membre inscrit après la bascule, ou un thème qui n'existe plus.
  */
 export async function getPreviousTheme(): Promise<string | null> {
@@ -247,7 +247,7 @@ export async function getPreviousTheme(): Promise<string | null> {
   if (!session?.user?.id) return null;
   const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { previousTheme: true } });
   const previous = user?.previousTheme;
-  return previous && isSiteTheme(previous) && previous !== "vestiaire" ? previous : null;
+  return previous && isSiteTheme(previous) && previous !== DEFAULT_SITE_THEME ? previous : null;
 }
 
 /**
@@ -336,7 +336,7 @@ export async function sendTestNewsletter() {
   
   return sendMail({
     to: session.user.email,
-    subject: "[BBFrance] Gazette Hebdomadaire",
+    subject: "[FranceBB] Gazette Hebdomadaire",
     html: getNewsletterTemplate(popularTopics, upcomingTournaments),
   });
 }

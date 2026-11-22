@@ -6,15 +6,18 @@
  * bloc des ligues (le haut de son accueil les porte déjà), et les liens « Créer » mènent à la connexion.
  */
 import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, ExternalLink } from "lucide-react";
-import { Avatar, cn } from "@bbfrance/ui";
+import { Avatar, Skeleton, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { UnreadDot } from "@/app/forum/component/ForumListItems";
 import LigueBlason from "@/app/ligues/component/LigueBlason";
 import { CreateLink, MoreLink, blockSurface, blockTitle, focusRing } from "./HomeBlocks";
 import LiguesMiniMap from "./LiguesMiniMap";
+import { pickHomeVideos } from "./homeData";
+import type { YoutubeChannel } from "@/lib/mediaChannels";
 import type { HomeRankingEntry, HomeResource, MemberForumTopics, MemberLigue, pickRandomArticle } from "./homeData";
 
 /** En-tête d'un bloc : le titre à gauche, les liens à droite, sur une seule ligne même en 360 pixels. */
@@ -254,30 +257,61 @@ export function ResourcesBlock({ resources, createHref }: { resources: HomeResou
   );
 }
 
-export function MediaBlock({ media }: { media: { twitch: string[]; youtube: string[] } }) {
-  const channels = [
-    ...media.twitch.map((name) => ({ key: `twitch-${name}`, name, kind: "Twitch" })),
-    ...media.youtube.map((name) => ({ key: `youtube-${name}`, name, kind: "YouTube" })),
-  ];
+/**
+ * Bloc Médias : la dernière vidéo de 3 chaînes YouTube tirées au hasard (la liste complète, Twitch compris, est sur
+ * /media). Les vidéos arrivent à part (Suspense) : un flux YouTube lent ne retarde jamais le reste de l'accueil.
+ * Chaque vidéo s'ouvre sur YouTube, dans un nouvel onglet ; l'image passe par le site (next.config.ts, RGPD).
+ */
+export function MediaBlock({ channels }: { channels: YoutubeChannel[] }) {
   return (
     <section aria-labelledby="home-media" className={blockSurface}>
-      <BlockHeader id="home-media" title="Médias">
+      <BlockHeader id="home-media" title="Dernières vidéos">
         <MoreLink href="/media" srLabel="les vidéos et directs">Tout voir</MoreLink>
       </BlockHeader>
       {channels.length > 0 ? (
-        <ul className="m-0 list-none p-0">
-          {channels.map(({ key, name, kind }) => (
-            <li key={key} className="border-t border-bb-border">
-              <Link href="/media" className={cn(rowLink, "items-center")}>
-                <span className="min-w-0 flex-1 truncate text-base font-semibold text-bb-text">{name}</span>
-                <span className="shrink-0 text-sm text-bb-text-muted">{kind}</span>
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <Suspense fallback={<VideoGrid>{[0, 1, 2].map((i) => <Skeleton key={i} className="aspect-video w-full" />)}</VideoGrid>}>
+          <HomeVideos channels={channels} />
+        </Suspense>
       ) : (
         <EmptyLine>Pas encore de chaîne vidéo référencée.</EmptyLine>
       )}
     </section>
+  );
+}
+
+function VideoGrid({ children }: { children: ReactNode }) {
+  return <div className="grid gap-4 border-t border-bb-border p-4 sm:grid-cols-3 lg:p-5">{children}</div>;
+}
+
+async function HomeVideos({ channels }: { channels: YoutubeChannel[] }) {
+  const videos = await pickHomeVideos(channels);
+  if (videos.length === 0) return <EmptyLine>Les vidéos ne répondent pas pour le moment. Elles sont toutes sur la page Médias.</EmptyLine>;
+  return (
+    <VideoGrid>
+      {videos.map((video) => (
+        <a
+          key={video.videoId}
+          href={`https://www.youtube.com/watch?v=${video.videoId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={cn("group flex min-w-0 flex-col gap-2 rounded-bb-md text-inherit no-underline", focusRing)}
+        >
+          <span className="relative block aspect-video w-full overflow-hidden rounded-bb-md bg-bb-surface-2">
+            <Image
+              src={`https://i.ytimg.com/vi/${video.videoId}/hqdefault.jpg`}
+              alt=""
+              fill
+              sizes="(min-width: 1440px) 380px, (min-width: 640px) 33vw, 100vw"
+              className="object-cover transition-transform duration-150 group-hover:scale-[1.02]"
+            />
+          </span>
+          <span className="line-clamp-2 text-base leading-snug font-bold text-bb-text group-hover:underline">{video.title}</span>
+          <span className="text-sm text-bb-text-muted">
+            {video.channelName}
+            <span className="sr-only"> (YouTube, nouvel onglet)</span>
+          </span>
+        </a>
+      ))}
+    </VideoGrid>
   );
 }

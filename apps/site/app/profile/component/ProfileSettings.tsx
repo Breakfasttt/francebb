@@ -140,7 +140,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           </CardHeader>
           <CardBody className="flex flex-col items-start gap-3">
             <p className="m-0 text-[0.95rem] leading-relaxed text-bb-text-muted">
-              Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications BBFrance. Les
+              Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications FranceBB. Les
               appareils connectés, le téléchargement de tes données et la suppression de ton compte se gèrent sur ton
               passeport.
             </p>

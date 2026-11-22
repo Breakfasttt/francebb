@@ -7,8 +7,8 @@ body {
   --app-bottom-nav-space: 0px;
 }
 
-/* Zone du contenu de chaque page (app/layout.tsx). Sur ordinateur, la place du pied de page fixé en bas : la fin de
-   la page peut toujours défiler au-dessus. */
+/* Zone du contenu de chaque page (app/layout.tsx). Elle s'étire pour pousser le pied de page en bas de l'écran sur
+   une page courte ; sur ordinateur, le pied de page est collé en bas et garde sa place dans le flux. */
 .main-layout-wrapper {
   position: relative;
   flex: 1;

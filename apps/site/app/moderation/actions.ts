@@ -1,5 +1,5 @@
 /**
- * Actions serveur pour la modération de BBFrance.
+ * Actions serveur pour la modération de FranceBB.
  * Gère les signalements (reports), le journal d'audit (ModerationLog),
  * le bannissement des utilisateurs et le nettoyage des logs.
  */

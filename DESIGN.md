@@ -1,5 +1,5 @@
 ---
-name: BBFrance
+name: FranceBB
 description: Le forum et le site de tournois de la communauté française de Blood Bowl, sur téléphone et sur ordinateur.
 colors:
   bg: "#111215"
@@ -38,13 +38,13 @@ spacing:
   tap: "44px"
 ---
 
-# Design System : BBFrance
+# Design System : FranceBB
 
-> Ce fichier **dirige** l'apparence du site : toute nouvelle page ou refonte s'y conforme. Les couleurs de l'en-tête sont celles du thème par défaut « Sombre » ; la source de vérité des couleurs reste `packages/ui/src/themes/themeData.mjs`, celle des tailles et polices `packages/ui/src/tokens.css`. Le rangement des fichiers et l'outillage technique sont dans le skill `ui`, l'inventaire des composants dans le skill `reuse-first`.
+> Ce fichier **dirige** l'apparence du site : toute nouvelle page ou refonte s'y conforme. Le thème par défaut est « Saison 3 » (clair, parchemin, barre de navigation rouge, depuis le 22/11/2026) ; les couleurs de l'en-tête de ce fichier sont celles du thème « Sombre », qui reste la référence de la grammaire des couleurs ci-dessous ; la source de vérité des couleurs reste `packages/ui/src/themes/themeData.mjs`, celle des tailles et polices `packages/ui/src/tokens.css`. Le rangement des fichiers et l'outillage technique sont dans le skill `ui`, l'inventaire des composants dans le skill `reuse-first`.
 
 ## L'idée : la feuille de match
 
-BBFrance n'est ni une application SaaS ni un jeu vidéo. C'est **le forum et le tableau des tournois** d'une communauté de joueurs de plateau. Le modèle est la **feuille de match et le tableau d'affichage du club** : des lignes nettes, des chiffres qui se lisent d'un coup d'œil, des titres en capitales serrées comme sur un maillot ou un tableau de score, et un seul rouge pour ce qui compte.
+FranceBB n'est ni une application SaaS ni un jeu vidéo. C'est **le forum et le tableau des tournois** d'une communauté de joueurs de plateau. Le modèle est la **feuille de match et le tableau d'affichage du club** : des lignes nettes, des chiffres qui se lisent d'un coup d'œil, des titres en capitales serrées comme sur un maillot ou un tableau de score, et un seul rouge pour ce qui compte.
 
 Trois principes, dans cet ordre :
 1. **Lisible avant d'être joli.** Un coach doit trouver le prochain tournoi, sa place au classement ou la discussion qui l'intéresse sans réfléchir.
@@ -67,14 +67,15 @@ Règles :
 
 ## Couleur
 
-Le thème par défaut est sombre et froid. **Un seul accent, le rouge Blood Bowl**, et il est rare :
-- **Rouge plein** : l'action principale de l'écran (une seule), les pastilles de compteur.
+Dans chaque thème, **un seul accent, le rouge Blood Bowl**, et il est rare :
+- **Rouge plein** : l'action principale de l'écran (une seule), les pastilles de compteur, et le bouton « Connexion » de la barre du haut pour un visiteur (choix du responsable, 22/11/2026).
+- **Bleu Discord** (`bb-discord`, identique dans tous les thèmes) : seulement les boutons qui mènent au serveur Discord, pour qu'on les reconnaisse d'un coup d'œil.
 - **Rouge de lecture** (`accent-text`) : l'élément actif (onglet, rubrique sélectionnée, trait à gauche), un lien de titre au survol.
 - **Bleu** (`unread`) : « nouveau » (non lu) et le contour du focus clavier.
 - **Or** (`rank`) : le rang des coachs, rien d'autre.
 - Tout le reste est en gris : fond, surface, filets, texte et texte discret.
 
-Toute couleur passe par une variable `--bb-*` (ou la classe `bb-*` qui la porte), jamais en dur : c'est ce qui fait marcher les 5 thèmes. Les thèmes sont secondaires : on conçoit pour « Sombre », puis on vérifie les autres avec le test de contraste (`apps/site/tests/e2e/contraste.spec.ts`).
+Toute couleur passe par une variable `--bb-*` (ou la classe `bb-*` qui la porte), jamais en dur : c'est ce qui fait marcher les 5 thèmes. On conçoit pour « Saison 3 », le thème par défaut, puis on vérifie les autres (« Sombre » d'abord) avec le test de contraste (`apps/site/tests/e2e/contraste.spec.ts`).
 
 ## Formes et profondeur
 
@@ -103,7 +104,7 @@ Toute couleur passe par une variable `--bb-*` (ou la classe `bb-*` qui la porte)
 | **Liste** | forum, catégorie, tournois, classement, membres, articles, ligues, ressources | en-tête de page, panneau gauche (action + filtres), tableau de lignes, pagination |
 | **Détail** | sujet, tournoi, profil, article, ligue | en-tête (titre, fil d'Ariane, actions), contenu, contexte à droite |
 | **Formulaire** | créer, modifier, réglages | une colonne de 720 px au plus, boutons d'envoi en bas (collés en bas sur téléphone) |
-| **Tableau de bord** | accueil visiteur, accueil membre | une colonne principale de flux + contexte, pas de mosaïque de blocs |
+| **Tableau de bord** | accueil visiteur, accueil membre | colonne de contexte **à gauche** (tournois, ligues, ressources, classement), comme le panneau gauche du reste du site, et flux principal à droite (forum, articles, médias) ; pas de mosaïque de blocs |
 | **Administration** | modération, administration | panneau gauche d'onglets, contenu en tableau |
 
 ### Logiques communes

@@ -88,7 +88,7 @@ export default async function PassportPage(props: { searchParams: Promise<Record
 
       <PassportSection id="export" title="Mes données">
         <Muted>
-          Un fichier avec tout ce que le hub et les applications BBFrance savent de toi (profil, connexions, et les
+          Un fichier avec tout ce que le hub et les applications FranceBB savent de toi (profil, connexions, et les
           données de chaque application).
         </Muted>
         <a className={linkButton} href="/api/v1/account/export" download>Télécharger mes données</a>

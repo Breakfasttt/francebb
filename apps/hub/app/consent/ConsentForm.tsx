@@ -19,7 +19,7 @@ export default function ConsentForm({ appName, rights }: { appName: string; righ
   return (
     <CenteredCard title={`Autoriser ${appName} ?`}>
       <p className="m-0">
-        <strong>{appName}</strong> n&apos;est pas une application BBFrance. Elle demande à pouvoir :
+        <strong>{appName}</strong> n&apos;est pas une application FranceBB. Elle demande à pouvoir :
       </p>
       <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-sm text-bb-text-muted">
         {rights.map((right) => (

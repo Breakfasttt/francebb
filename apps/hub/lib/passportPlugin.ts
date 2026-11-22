@@ -53,7 +53,7 @@ async function resolveCoach(ctx: EndpointContext, requiredScope: string) {
   if (!userId) throw new APIError("UNAUTHORIZED", { message: "Connexion requise." });
   const user = (await ctx.context.internalAdapter.findUserById(userId)) as Record<string, unknown> | null;
   if (!user) throw new APIError("UNAUTHORIZED", { message: "Compte introuvable." });
-  if (user.banned) throw new APIError("FORBIDDEN", { message: "Ce compte BBFrance a été suspendu.", code: "BANNED" });
+  if (user.banned) throw new APIError("FORBIDDEN", { message: "Ce compte FranceBB a été suspendu.", code: "BANNED" });
   return user;
 }
 
@@ -69,7 +69,7 @@ export const passportPlugin = () =>
             // Applications tierces refusées tant que le réglage d'ouverture n'est pas activé (carte 127)
             const clientId = (ctx.query as Record<string, unknown> | undefined)?.client_id;
             if (typeof clientId === "string" && !thirdPartyAppsEnabled() && (await isThirdPartyClient(clientId))) {
-              throw new APIError("FORBIDDEN", { message: "Les applications tierces ne sont pas encore ouvertes sur le passeport BBFrance." });
+              throw new APIError("FORBIDDEN", { message: "Les applications tierces ne sont pas encore ouvertes sur le passeport FranceBB." });
             }
             const session = await getSessionFromCtx(ctx);
             if ((session?.user as Record<string, unknown> | undefined)?.deletionScheduledAt) throw ctx.redirect("/?suppression=en-cours");

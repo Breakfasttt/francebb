@@ -4,7 +4,7 @@ import React from "react";
  * Icône officielle Discord SVG
  */
 export const DiscordIcon = ({ size = 20, className = "" }: { size?: number, className?: string }) => (
-  <svg 
+  <svg aria-hidden="true" 
     xmlns="http://www.w3.org/2000/svg" 
     width={size} 
     height={size} 
@@ -20,7 +20,7 @@ export const DiscordIcon = ({ size = 20, className = "" }: { size?: number, clas
  * Icône officielle Google SVG (Multicolore)
  */
 export const GoogleIcon = ({ size = 20, className = "" }: { size?: number, className?: string }) => (
-  <svg 
+  <svg aria-hidden="true" 
     xmlns="http://www.w3.org/2000/svg" 
     width={size} 
     height={size} 

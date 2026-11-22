@@ -102,7 +102,7 @@ export default function OnboardingForm({ user, callbackUrl }: { user: any; callb
           });
           
           document.cookie = "onboarding_sync=true; path=/; max-age=60";
-          toast.success("Bienvenue sur BBFrance !");
+          toast.success("Bienvenue sur FranceBB !");
           // Redirection forcée pour s'assurer que le middleware capte le nouveau cookie
           window.location.href = callbackUrl;
         } else {

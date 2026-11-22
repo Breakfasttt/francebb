@@ -1,5 +1,5 @@
 /**
- * Bannissement global d'un compte BBFrance, au niveau du hub (carte 037).
+ * Bannissement global d'un compte FranceBB, au niveau du hub (carte 037).
  * Usage : node scripts/ban-user.mjs <email> "<raison>"      → bannit
  *         node scripts/ban-user.mjs <email> --unban           → lève le bannissement
  * Adresse de la base : HUB_DATABASE_URL (en local, lue dans .env.local écrit par `pnpm db:start`).

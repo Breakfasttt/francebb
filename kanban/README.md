@@ -1,4 +1,4 @@
-# Kanban BBFrance
+# Kanban FranceBB
 
 Le kanban ne sert qu'aux **gros chantiers** : un travail qui demande plusieurs séances, ou qui touche la connexion des membres, la sécurité, la base de données ou une nouvelle application. Une petite ou moyenne modification n'a pas de carte : son message de commit sert de journal (titre clair, corps qui dit pourquoi).
 

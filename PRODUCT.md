@@ -2,7 +2,7 @@
 
 <!-- impeccable:product-schema 1 -->
 
-> Ce fichier décrit BBFrance comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle de `DESIGN.md` et du skill `ui`.
+> Ce fichier décrit FranceBB comme produit : à qui il sert, pourquoi il existe et ce qu'il faut préserver. Il est lu par l'outil de conception Impeccable (skill `impeccable`) avant tout travail d'interface. Il vaut pour toutes les applications du dépôt ; une application peut le préciser plus tard avec son propre `PRODUCT.md`. Il ne décrit pas l'apparence (couleurs, polices, composants) : c'est le rôle de `DESIGN.md` et du skill `ui`.
 
 ## Platform
 
@@ -10,7 +10,7 @@ web
 
 ## Users
 
-BBFrance s'adresse à la communauté française de **Blood Bowl**, un jeu de plateau de football fantastique. Les joueurs s'appellent des **coachs**. Quatre profils, tous confirmés comme importants :
+FranceBB s'adresse à la communauté française de **Blood Bowl**, un jeu de plateau de football fantastique. Les joueurs s'appellent des **coachs**. Quatre profils, tous confirmés comme importants :
 
 - **Le coach qui joue en tournoi.** Il s'inscrit à un tournoi, suit les résultats et sa place au classement national. Il consulte souvent le site sur son téléphone, en déplacement ou sur le lieu du tournoi.
 - **L'organisateur de tournoi** (et ses commissaires). Il annonce le tournoi, gère les inscriptions et les paiements, puis saisit les résultats qui alimentent le classement.
@@ -56,7 +56,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 
 ## Brand Commitments
 
-- Le nom est **BBFrance**. Les outils gardent leurs noms : **BBScheme**, **BBQuizz**.
+- Le nom est **France Blood Bowl**, abrégé **FranceBB** (jamais « Blood Bowl France » ni « BBFrance »). Les outils gardent leurs noms : **BBScheme**, **BBQuizz**.
 - Le vocabulaire du jeu et de la communauté est conservé : coach, roster, ligue, commissaire, CDF, NAF.
 - Les identifiants des thèmes sont un engagement envers les membres : ils ne changent jamais, même quand un nom affiché change (ADR-0009). Saison 3 est le thème officiel, avec une pelouse. La source unique des thèmes est `packages/ui/src/themes/themeData.mjs`.
 - Le hub reprend une fois pour toutes les couleurs et la police du thème par défaut, sans choix de thème.

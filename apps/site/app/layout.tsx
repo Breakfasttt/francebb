@@ -35,7 +35,7 @@ const siteFont = localFont({
 const footerLinkClass = "inline-flex items-center gap-1.5 py-1 text-bb-nav-text no-underline opacity-85 hover:text-bb-nav-active hover:underline hover:opacity-100";
 
 export const metadata: Metadata = {
-  title: "BBFrance - Tournois de Blood Bowl en France",
+  title: "FranceBB - Tournois de Blood Bowl en France",
   description: "La plateforme de référence pour les tournois de Blood Bowl en France.",
 };
 
@@ -101,19 +101,12 @@ export default async function RootLayout({
           </main>
           
           {/* Pied de page, sur ordinateur seulement (sur téléphone, ces liens sont dans le panneau « Plus »).
-              Dans le flux, en bas de la page : fixé, il cachait la fin de chaque page (carte 220). */}
-          <footer className="hidden items-center justify-center gap-6 border-t border-bb-nav-border bg-bb-nav-bg px-4 py-2 font-bb-sans text-sm text-bb-nav-text lg:flex">
+              Collé en bas de l'écran (sticky) tout en gardant sa place à la fin du flux : il reste visible pendant le
+              défilement, et la fin de la page remonte toujours au-dessus de lui (un pied « fixed » la cachait, carte 220). */}
+          <footer className="sticky bottom-0 z-[var(--z-index-nav)] hidden items-center justify-center gap-6 border-t border-bb-nav-border bg-bb-nav-bg px-4 py-2 font-bb-sans text-sm text-bb-nav-text lg:flex">
             <Link href="/mentions-legales" className={footerLinkClass}>
               Mentions légales
             </Link>
-            <a
-              href="https://github.com/Breakfasttt/francebb"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={footerLinkClass}
-            >
-              Code source
-            </a>
             <Link href="/statistiques" className={footerLinkClass}>
               Statistiques
             </Link>

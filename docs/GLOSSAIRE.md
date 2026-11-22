@@ -12,7 +12,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **App Router** | Façon dont Next.js organise les pages : chaque dossier de `app/` correspond à une adresse du site (`app/forum/` → `/forum`). |
 | **Auth.js** | Bibliothèque qui gère la connexion des membres sur le site aujourd'hui. |
 | **Backup** | Copie de sauvegarde d'une base de données. |
-| **Barre de navigation basse** | Sur téléphone, barre fixée en bas de l'écran avec les destinations principales toujours visibles, à portée du pouce. Celle de BBFrance a cinq onglets : Accueil, Forum, Tournois, Messages et Plus. L'onglet « Plus » ouvre un panneau qui contient tout le reste (ADR 0006). |
+| **Barre de navigation basse** | Sur téléphone, barre fixée en bas de l'écran avec les destinations principales toujours visibles, à portée du pouce. Celle de FranceBB a cinq onglets : Accueil, Forum, Tournois, Messages et Plus. L'onglet « Plus » ouvre un panneau qui contient tout le reste (ADR 0006). |
 | **BBCode** | Petit langage de mise en forme des messages du forum (`[b]gras[/b]`, `[url]…[/url]`). |
 | **beforeunload** | Événement que le navigateur envoie juste avant de quitter une page (onglet fermé, page rechargée, adresse tapée). Une page peut alors faire demander « Quitter le site ? » ; le texte de cette question est imposé par le navigateur. Les écrans de rédaction du forum s'en servent quand un message est en cours (carte 181). |
 | **Better Auth** | Bibliothèque de connexion utilisée par le hub. |
@@ -22,7 +22,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Branche** (git) | Version parallèle du code, sur laquelle on travaille sans toucher la version principale avant de fusionner. |
 | **Build** | Préparation du site pour la mise en ligne. S'il échoue, le site ne peut pas être déployé. |
 | **Cache** | Résultat gardé en mémoire pour ne pas le recalculer à chaque visite. |
-| **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur BBFrance, elle relit en base le rôle, le bannissement, le thème et le pseudo à chaque lecture de la session, et les range dans le cookie de session : un bannissement prend donc effet dès la page suivante. |
+| **Callback `jwt`** | Fonction d'Auth.js appelée chaque fois que la session d'un membre est lue. Sur FranceBB, elle relit en base le rôle, le bannissement, le thème et le pseudo à chaque lecture de la session, et les range dans le cookie de session : un bannissement prend donc effet dès la page suivante. |
 | **CDP** (*Chrome DevTools Protocol*) | Protocole qui permet à un programme de piloter Chrome de l'intérieur. Les tests s'en servent pour ce que Playwright ne sait pas faire seul, par exemple simuler deux doigts posés sur l'écran (`Input.dispatchTouchEvent`). |
 | **Canvas** | Zone de dessin du navigateur, utilisable par le code d'une page. L'éditeur de messages s'en sert pour réduire une photo trop grande avant de l'envoyer (carte 184). |
 | **Carte** (kanban) | Fichier qui décrit un gros chantier : pourquoi, quoi faire, résultat. Les petites modifications n'ont pas de carte. Voir `kanban/README.md`. |
@@ -55,7 +55,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **HTML** | Script lancé automatiquement à un moment précis : avant un commit (`.githooks/`), ou quand l'IA modifie un fichier (`.claude/hooks/`). |
 | **Hook React** (`useQuelqueChose`) | Fonction réutilisable qui ajoute un comportement à un composant React (lire la largeur de l'écran, réagir à un geste…). Ceux du site sont dans `apps/site/common/hooks/`. À ne pas confondre avec le hook « script » ci-dessus. |
 | **Hotfix** | Petite correction urgente appliquée directement sur la version en ligne. |
-| **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications BBFrance. |
+| **Hub** (de connexion) | Application séparée (`apps/hub`) qui gère les comptes : on se connecte une fois, et on est reconnu sur toutes les applications FranceBB. |
 | **id_token** | Jeton signé que le hub remet au site après une connexion : « voici qui est connecté ». |
 | **Iframe** (cadre intégré) | Morceau d'une page web affiché à l'intérieur d'une autre page, comme une fenêtre. L'éditeur BBScheme, aujourd'hui en attente (carte 179), permettait ainsi à un autre site de montrer un schéma avec l'adresse `/bbscheme?id=…&embed=true` (carte 100). |
 | **Import dynamique** (`import()`) | Chargement d'une bibliothèque seulement au moment où l'on s'en sert, au lieu de l'envoyer au navigateur avec la page. Exemple : les bibliothèques d'export GIF de l'éditeur BBScheme ne sont téléchargées que quand le coach clique sur le bouton d'export. La page s'ouvre plus vite. |
@@ -111,7 +111,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **prisma dev** | Commande de Prisma qui lance un petit serveur Postgres sur l'ordinateur, sans rien installer (et sans Docker). Utilisée pour les bases locales du projet via `scripts/local-postgres.mjs`. Ce petit serveur ne sert qu'une connexion à la fois : un test qui ouvre sa propre connexion pendant que le site tourne doit attendre que le site lâche la sienne, parfois longtemps (carte 067). Préparer plutôt les données une fois pour toutes dans `globalSetup.ts`. |
 | **Production** (prod) | La version en ligne du site, utilisée par les vrais membres. |
 | **Prompt** (consigne) | Texte que l'on donne à une intelligence artificielle pour lui dire quoi faire. L'assistant de mise en forme de l'éditeur de messages prépare un prompt avec les règles du BBCode du forum et le message du coach ; le coach le colle dans Gemini, Claude ou ChatGPT. |
-| **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur BBFrance, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
+| **Proxy** (`proxy.ts`) | Code exécuté par Next.js avant chaque page et chaque action serveur (anciennement appelé *middleware*). Sur FranceBB, il vérifie la session et réécrit le cookie de session quand il a été relu en base. |
 | **Push** | Envoi des commits locaux vers GitHub. |
 | **Radix** | Bibliothèque de composants d'interface accessibles mais sans style (menus, fenêtres, onglets, interrupteurs). Elle gère le clavier et les lecteurs d'écran. Installée dans `packages/ui` sous le nom `radix-ui`, et utilisée par les composants shadcn/ui. |
 | **RBAC** (*Role-Based Access Control*) | Droits accordés selon le rôle du membre (coach, modérateur, admin…). Voir `apps/site/lib/roles.ts`. |
@@ -126,7 +126,7 @@ Les mots techniques et acronymes utilisés dans le projet, expliqués simplement
 | **Rollback** (retour arrière) | Revenir à la version précédente quand une mise à jour pose problème. |
 | **Safe area (zone protégée)** | Partie de l'écran d'un iPhone que ne recouvrent ni l'encoche en haut ni la barre d'accueil en bas. Une barre fixée en bas doit ajouter cette marge (`env(safe-area-inset-bottom)`), sinon ses boutons passent sous la barre d'accueil. |
 | **Schéma** (base de données) | La liste des tables, de leurs colonnes et de leurs liens. |
-| **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. BBFrance n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (barre de navigation basse, panneau « Plus », filtres derrière un bouton « Filtres ») ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en Tailwind, ce sont les préfixes `max-lg:` et `lg:` ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
+| **Seuil téléphone/ordinateur** (*breakpoint*) | Largeur d'écran à laquelle le site change d'affichage. FranceBB n'en a qu'un : jusqu'à 1024 pixels de large, l'affichage téléphone (barre de navigation basse, panneau « Plus », filtres derrière un bouton « Filtres ») ; au-delà, l'affichage ordinateur. En CSS, il s'écrit `@media (max-width: 1024px)` (une *media query* : règle appliquée seulement à certaines largeurs) ; en Tailwind, ce sont les préfixes `max-lg:` et `lg:` ; en JavaScript, c'est la constante `MOBILE_BREAKPOINT` (carte 055). |
 | **`select`** (Prisma) | Liste des champs qu'une demande à la base doit lire, par exemple seulement le pseudo et l'avatar d'un membre. Sans elle, Prisma lit toute la fiche ; si cette fiche est ensuite confiée à un composant affiché dans le navigateur, tous ses champs se retrouvent dans le code de la page. |
 | **Seed** / **firstSetup** | Script qui remplit une base neuve avec les données de base (rôles, catégories du forum, listes de référence). |
 | **shadcn/ui** | Collection de composants d'interface copiés dans le projet (`packages/ui`) et adaptés à nos 5 thèmes (variables v2). |

@@ -37,7 +37,7 @@ test.describe("carte 147 : thème d'un visiteur posé par le serveur", () => {
 
   test("un cookie qui ne nomme pas un thème du site est ignoré (thème par défaut)", async ({ page, context, baseURL }) => {
     await context.addCookies([{ name: "bbfrance_theme", value: "inconnu", url: baseURL! }]);
-    expect(await serverTheme(page)).toBe("vestiaire");
+    expect(await serverTheme(page)).toBe("saison3");
   });
 
   test("un thème gardé dans le navigateur est recopié dans le cookie, puis servi par le serveur", async ({ page, context }) => {

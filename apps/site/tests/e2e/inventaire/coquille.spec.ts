@@ -36,7 +36,7 @@ test.describe("coquille : visiteur", () => {
       await expect(page.getByRole("complementary", { name: "Outils du forum" }).getByRole("link", { name: "Recherche avancée" })).toBeVisible();
       await openMore(page);
       const panel = page.getByRole("dialog", { name: "Plus" });
-      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "Code source"]) {
+      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales"]) {
         await expect(panel.getByRole("link", { name: label })).toBeVisible();
       }
       // Rubriques rangées dans les mêmes groupes que l'accueil (carte 189) ; l'annuaire des membres, réservé aux
@@ -53,8 +53,9 @@ test.describe("coquille : visiteur", () => {
       await page.keyboard.press("Escape");
       await expect(panel).toBeHidden();
     } else {
-      // Pied de page de la carte 220 : « Code source » mène au dépôt GitHub, Médias n'y est plus
-      for (const label of ["Mentions légales", "Code source", "Statistiques"]) {
+      // Pied de page : mentions légales et statistiques (« Code source » retiré le 22/11/2026 ; le dépôt reste cité
+      // dans les mentions légales), Médias n'y est plus (carte 220)
+      for (const label of ["Mentions légales", "Statistiques"]) {
         await expect(page.getByRole("contentinfo").getByRole("link", { name: label })).toBeVisible();
       }
       await page.getByRole("button", { name: "Plus de rubriques" }).click();

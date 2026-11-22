@@ -41,7 +41,7 @@ const hubProviders = isHubAuthMode
   ? [
       {
         id: "hub",
-        name: "Compte BBFrance",
+        name: "Compte FranceBB",
         type: "oidc" as const,
         issuer: process.env.HUB_ISSUER,
         clientId: process.env.HUB_CLIENT_ID,

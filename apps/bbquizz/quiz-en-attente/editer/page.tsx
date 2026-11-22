@@ -14,7 +14,7 @@ import EditQuestion from "./EditQuestion";
 import { getAllQuizQuestions } from "../actions";
 
 export const metadata = {
-  title: "Gestion Quizz - BBFrance",
+  title: "Gestion Quizz - FranceBB",
 };
 
 export default async function EditerPage(props: { searchParams: Promise<{ edit?: string }> }) {

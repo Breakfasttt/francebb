@@ -13,7 +13,7 @@ export default function GlobalError({ error, unstable_retry }: { error: Error & 
   return (
     <html lang="fr">
       <body className="min-h-screen bg-bb-bg text-bb-text">
-        <title>Un problème est survenu - BBFrance</title>
+        <title>Un problème est survenu - FranceBB</title>
         <ErrorScreen onRetry={unstable_retry} digest={error.digest} />
       </body>
     </html>

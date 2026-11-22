@@ -1,6 +1,6 @@
 ---
 name: reuse-first
-description: Inventaire des composants, hooks et helpers existants de BBFrance + doublons connus. À lire AVANT de créer un composant, hook, helper, server action de recherche ou d'ajouter une dépendance.
+description: Inventaire des composants, hooks et helpers existants de FranceBB + doublons connus. À lire AVANT de créer un composant, hook, helper, server action de recherche ou d'ajouter une dépendance.
 ---
 
 # Réutiliser avant de créer

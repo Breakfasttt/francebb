@@ -1,6 +1,6 @@
 # Références visuelles
 
-Captures de forums modernes que le responsable du projet aime (21 novembre 2026). Ce sont des **inspirations, pas des modèles à copier** : BBFrance garde sa propre identité (voir `DESIGN.md`).
+Captures de forums modernes que le responsable du projet aime (21 novembre 2026). Ce sont des **inspirations, pas des modèles à copier** : FranceBB garde sa propre identité (voir `DESIGN.md`).
 
 | Fichier | Site | Ce qu'on en retient |
 |---|---|---|

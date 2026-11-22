@@ -11,7 +11,7 @@ import ValiderContent from "./ValiderContent";
 import { getQuizSuggestions } from "../actions";
 
 export const metadata = {
-  title: "Validation Quizz - BBFrance",
+  title: "Validation Quizz - FranceBB",
 };
 
 export default async function ValiderPage() {

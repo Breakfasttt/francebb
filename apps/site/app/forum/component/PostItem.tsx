@@ -277,7 +277,7 @@ const PostItem: React.FC<PostItemProps> = ({
             </h3>
             <p className="m-0 max-w-[60ch] text-sm text-bb-text-muted">
               {isBannedAuthor
-                ? "Ce membre a été banni de la plateforme BBFrance. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
+                ? "Ce membre a été banni de la plateforme FranceBB. Ses messages sont masqués par défaut pour protéger la sérénité du forum."
                 : "Ce contenu est masqué car tu as bloqué cet utilisateur. Tu peux le gérer dans la gestion de ton compte."}
             </p>
             <Button type="button" variant="secondary" size="tap" onClick={() => setIsRevealed(true)}>

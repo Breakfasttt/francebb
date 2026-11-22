@@ -1,4 +1,4 @@
-# Règles de sécurité propres à BBFrance
+# Règles de sécurité propres à FranceBB
 
 Lu par le plugin `security-guidance` à chaque revue (commit et push). Pas de secret ici.
 

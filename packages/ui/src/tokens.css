@@ -41,7 +41,10 @@
  *   --bb-scheme (light ou dark, pour les contrôles natifs du navigateur) ;
  * - --bb-bg-image (facultatif) : léger dégradé posé sur le fond de la page, propre à l'esprit d'un thème ; un thème
  *   qui ne le définit pas garde un fond uni.
- * Les valeurs ci-dessous ne dépendent pas du thème.
+ * - --bb-logo-accent (facultatif) : couleur du « BB » du logo ; sans elle, celle de la rubrique active (--bb-nav-active).
+ *   Saison 3 la met en rouge, pour un logo bleu, blanc, rouge.
+ * Les valeurs ci-dessous ne dépendent pas du thème (dont --bb-discord, la couleur officielle de Discord, réservée
+ * aux boutons qui mènent au serveur Discord : blanc dessus, contraste 4,6:1).
  */
 :root {
   --bb-font-sans: var(--font-bb, "Archivo"), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -51,6 +54,8 @@
   --bb-radius-lg: 6px;
   --bb-radius-full: 999px;
   --bb-tap: 44px;
+  --bb-discord: #5865f2;
+  --bb-discord-hover: #4752c4;
 }
 
 /* Seuil `lg:` aligné sur celui du site : téléphone jusqu'à 1024 px inclus, ordinateur à partir de 1025 px. */
@@ -124,6 +129,9 @@
   --color-bb-nav-border: var(--bb-nav-border);
   --color-bb-nav-text: var(--bb-nav-text);
   --color-bb-nav-active: var(--bb-nav-active);
+  --color-bb-logo-accent: var(--bb-logo-accent, var(--bb-nav-active));
+  --color-bb-discord: var(--bb-discord);
+  --color-bb-discord-hover: var(--bb-discord-hover);
   --color-bb-overlay: var(--bb-overlay);
   --radius-bb-sm: var(--bb-radius-sm);
   --radius-bb-md: var(--bb-radius-md);

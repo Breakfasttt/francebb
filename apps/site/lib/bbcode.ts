@@ -1,5 +1,5 @@
 /**
- * Moteur de rendu BBCode pour BBFrance.
+ * Moteur de rendu BBCode pour FranceBB.
  * Gère la transformation du BBCode en HTML sécurisé.
  * Supporte : formatting, couleurs, spoilers, accordéons, citations, galeries, YouTube et Twitch.
  */

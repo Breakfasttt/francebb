@@ -11,7 +11,7 @@ import SubmitButton from "@/common/components/Form/SubmitButton";
 import { DiscordIcon, GoogleIcon } from "@/common/components/Icons/SocialIcons";
 
 export const metadata = {
-  title: "Connexion - BBFrance",
+  title: "Connexion - FranceBB",
 };
 
 /*

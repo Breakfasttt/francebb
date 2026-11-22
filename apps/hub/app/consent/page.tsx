@@ -1,5 +1,5 @@
 /**
- * Consentement OIDC (carte 127) : affiché seulement pour une application tierce (les applications BBFrance sont
+ * Consentement OIDC (carte 127) : affiché seulement pour une application tierce (les applications FranceBB sont
  * enregistrées sans consentement). Le nom de l'application et ses droits, expliqués en français, viennent de la
  * demande d'autorisation signée présente dans l'adresse.
  */

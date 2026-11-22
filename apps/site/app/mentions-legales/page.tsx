@@ -5,14 +5,14 @@ import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
 import TwitchConsentReset from '@/common/components/TwitchEmbed/TwitchConsentReset';
 
 /**
- * Mentions légales et politique de confidentialité du site BBFrance (carte 126).
+ * Mentions légales et politique de confidentialité du site FranceBB (carte 126).
  * Le texte suit le registre des traitements (docs/rgpd/registre.md) : toute nouvelle donnée collectée, ou toute
  * durée de conservation modifiée, se reporte dans les deux. L’adresse de contact vient de la variable CONTACT_EMAIL.
  */
 
 export const metadata: Metadata = {
-  title: 'Mentions légales et confidentialité - BBFrance',
-  description: 'Éditeur, hébergement, données personnelles et droits des membres de BBFrance.',
+  title: 'Mentions légales et confidentialité - FranceBB',
+  description: 'Éditeur, hébergement, données personnelles et droits des membres de FranceBB.',
 };
 
 /**
@@ -45,7 +45,7 @@ export default function MentionsLegalesPage() {
           <PremiumCard>
             <h2>1. Éditeur du site</h2>
             <p>
-              BBFrance est un site communautaire consacré au jeu Blood Bowl, édité <strong>à titre non professionnel et bénévole</strong> par
+              FranceBB est un site communautaire consacré au jeu Blood Bowl, édité <strong>à titre non professionnel et bénévole</strong> par
               <strong> breakyt</strong>. Conformément à la loi pour la confiance dans l’économie numérique, l’identité de l’éditeur a été
               communiquée à l’hébergeur.
             </p>
@@ -70,7 +70,7 @@ export default function MentionsLegalesPage() {
             </p>
             <p>
               <strong>Blood Bowl</strong> est une marque déposée de <strong>Games Workshop Limited</strong>. Les noms, logos et termes propres au
-              jeu appartiennent à Games Workshop. BBFrance est un site de fans, à but non lucratif, sans lien officiel avec Games Workshop.
+              jeu appartiennent à Games Workshop. FranceBB est un site de fans, à but non lucratif, sans lien officiel avec Games Workshop.
             </p>
           </PremiumCard>
 
@@ -86,12 +86,12 @@ export default function MentionsLegalesPage() {
           <PremiumCard id="confidentialite">
             <h2>5. Tes données : qui en est responsable</h2>
             <p>
-              Le responsable de tes données est <strong>breakyt</strong>, éditeur bénévole de BBFrance. Pour toute question ou demande
+              Le responsable de tes données est <strong>breakyt</strong>, éditeur bénévole de FranceBB. Pour toute question ou demande
               sur tes données : {contactLink}.
             </p>
             <p>
-              Ton compte BBFrance s’appelle le <strong>passeport Blood Bowl</strong>. Tu te connectes une seule fois, avec Discord,
-              Google ou un lien envoyé par email, et le passeport te reconnaît dans toutes les applications BBFrance. Il garde ton
+              Ton compte FranceBB s’appelle le <strong>passeport Blood Bowl</strong>. Tu te connectes une seule fois, avec Discord,
+              Google ou un lien envoyé par email, et le passeport te reconnaît dans toutes les applications FranceBB. Il garde ton
               profil de coach commun : pseudo, avatar, numéro NAF (déclaré par toi, jamais vérifié), région, langue et fuseau horaire.
             </p>
           </PremiumCard>
@@ -101,7 +101,7 @@ export default function MentionsLegalesPage() {
             <ul>
               <li>
                 <strong>Email, pseudo, avatar, profil de coach, moyens de connexion</strong> : pour te connecter et t’identifier dans
-                les applications BBFrance. Base légale : le service que tu demandes en t’inscrivant. Gardés tant que ton compte existe.
+                les applications FranceBB. Base légale : le service que tu demandes en t’inscrivant. Gardés tant que ton compte existe.
               </li>
               <li>
                 <strong>Sessions de connexion</strong> (adresse IP, navigateur) : pour te garder connecté et te montrer tes appareils.
@@ -123,7 +123,7 @@ export default function MentionsLegalesPage() {
             </ul>
             <p>
               <strong>Quand tu supprimes ton compte</strong>, tes données personnelles sont effacées dans toutes les applications
-              BBFrance, 30 jours après ta demande (tu peux changer d’avis d’ici là). Tes contributions publiques restent visibles sous
+              FranceBB, 30 jours après ta demande (tu peux changer d’avis d’ici là). Tes contributions publiques restent visibles sous
               un nom anonyme (« Coach Inconnu », ou « Coach anonyme » dans les résultats de tournoi), pour ne pas casser les
               discussions et l’historique sportif de la communauté. Ton pseudo est réservé pour ne pas être repris : seule son
               empreinte est gardée, et elle ne permet pas de le retrouver.
@@ -133,7 +133,7 @@ export default function MentionsLegalesPage() {
           <PremiumCard>
             <h2>7. Qui reçoit tes données</h2>
             <ul>
-              <li>Les applications BBFrance auxquelles tu te connectes.</li>
+              <li>Les applications FranceBB auxquelles tu te connectes.</li>
               <li>
                 Une application d’un autre éditeur, seulement si tu l’as autorisée sur l’écran de consentement. Elle ne reçoit jamais
                 ton email, et tu peux lui retirer l’accès à tout moment depuis ton passeport.
@@ -196,7 +196,7 @@ export default function MentionsLegalesPage() {
           <PremiumCard>
             <h2>10. Limitation de responsabilité</h2>
             <p>
-              L’équipe BBFrance s’efforce de publier des informations exactes, mais ne peut être tenue pour responsable des erreurs
+              L’équipe FranceBB s’efforce de publier des informations exactes, mais ne peut être tenue pour responsable des erreurs
               ou omissions, ni des dommages résultant de l’utilisation du site.
             </p>
           </PremiumCard>

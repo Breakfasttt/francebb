@@ -70,7 +70,7 @@ export async function buildApiDoc(): Promise<OpenApiDocument> {
   return {
     ...generated,
     info: {
-      title: "Passeport Blood Bowl — API du hub BBFrance",
+      title: "Passeport Blood Bowl — API du hub FranceBB",
       description:
         "Service de connexion commun aux applications Blood Bowl (OIDC). Une application cliente enregistrée connecte un coach par `/api/auth/oauth2/authorize`, puis lit son profil par `/api/auth/oauth2/userinfo`. Découverte OIDC : `/api/auth/.well-known/openid-configuration`.",
       version: "1.0.0",

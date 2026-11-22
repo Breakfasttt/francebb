@@ -1,6 +1,6 @@
 # BBQuizz — application du quiz
 
-BBQuizz est le quiz de culture Blood Bowl de Blood Bowl France : 20 questions à choix multiple, un chronomètre, trois jokers, et des classements du jour, de la semaine et de tous les temps. Les coachs peuvent proposer des questions, que les modérateurs valident.
+BBQuizz est le quiz de culture Blood Bowl de France Blood Bowl : 20 questions à choix multiple, un chronomètre, trois jokers, et des classements du jour, de la semaine et de tous les temps. Les coachs peuvent proposer des questions, que les modérateurs valident.
 
 Depuis la carte 180 (décision ADR-0008), BBQuizz est une application à part dans le dépôt, avec sa propre base de données Postgres. Le site n'a plus de page, de menu ni de tuile vers le quiz : son ancienne adresse `/bbquizz` donne la page introuvable.
 

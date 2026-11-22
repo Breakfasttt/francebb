@@ -14,8 +14,8 @@ import { findUserByHubId } from "./hubAccount";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 import type { HubEvent } from "./verifyHubEvent";
 
-export const HUB_BAN_REASON = "Compte suspendu sur le passeport BBFrance.";
-export const HUB_DELETION_REASON = "Suppression du compte demandée sur le passeport BBFrance.";
+export const HUB_BAN_REASON = "Compte suspendu sur le passeport FranceBB.";
+export const HUB_DELETION_REASON = "Suppression du compte demandée sur le passeport FranceBB.";
 
 type HubProfile = { name?: string; image?: string | null; naf?: string | null; region?: string | null };
 

@@ -1,5 +1,5 @@
 /**
- * Instance Better Auth du hub d'identité BBFrance (fournisseur OIDC des apps du monorepo).
+ * Instance Better Auth du hub d'identité FranceBB (fournisseur OIDC des apps du monorepo).
  * - Connexion : Discord, Google, lien magique. Mot de passe uniquement en dev/test (HUB_DEV_PASSWORD_LOGIN=1).
  * - Liaison de comptes : uniquement si le fournisseur certifie l'email (pas de `trustedProviders`),
  *   pour qu'un compte Discord ne puisse pas s'approprier le compte d'un autre via un email non vérifié.
@@ -34,7 +34,7 @@ async function sendMagicLink({ email, url }: { email: string; url: string }) {
 }
 
 export const auth = betterAuth({
-  appName: "BBFrance",
+  appName: "FranceBB",
   baseURL: process.env.BETTER_AUTH_URL,
   secret: process.env.BETTER_AUTH_SECRET,
   database: prismaAdapter(prisma, { provider: "postgresql" }),

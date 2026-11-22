@@ -1,4 +1,4 @@
-# ADR-0001 — Plan de refacto BBFrance (P0 → P6)
+# ADR-0001 — Plan de refacto FranceBB (P0 → P6)
 
 - **Statut** : accepté
 - **Date** : 2026-10-28

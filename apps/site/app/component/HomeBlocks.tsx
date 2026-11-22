@@ -8,6 +8,7 @@ import Link from "next/link";
 import { cn } from "@bbfrance/ui";
 import { DateBlock, placeText, topicHref } from "@/app/tournois/component/TournamentListItems";
 import { takenPlaces } from "@/lib/tournamentPlaces";
+import LiguesMiniMap from "./LiguesMiniMap";
 import type { HomeTournament } from "./homeData";
 
 /** Contour de focus clavier commun aux liens de l'accueil. */
@@ -68,6 +69,17 @@ export function NextTournaments({
   registeredIds?: Set<string>;
   className?: string;
 }) {
+  // Petite carte sous la liste (ordinateur seulement), comme le bloc des ligues ; seulement si un tournoi est localisé
+  const points = tournaments.map((tournament) => ({
+    id: tournament.id,
+    name: tournament.name,
+    lat: tournament.lat,
+    lng: tournament.lng,
+    location: tournament.location,
+    date: tournament.date,
+    topic: tournament.topic,
+  }));
+  const hasMap = points.some((point) => point.lat !== null && point.lng !== null);
   return (
     <section aria-labelledby="home-next-tournaments" className={cn(blockSurface, className)}>
       {/* Titre et liens sur une seule ligne, même en 360 pixels de large (carte 205) */}
@@ -112,6 +124,15 @@ export function NextTournaments({
           )}
         </div>
       )}
+      {tournaments.length > 0 && (
+        <Link
+          href="/carte"
+          className={`flex min-h-11 items-center gap-2 border-t border-bb-border px-4 text-sm font-semibold text-bb-text-muted no-underline hover:text-bb-accent-text lg:px-5 ${focusRing}`}
+        >
+          Voir les tournois sur la carte
+        </Link>
+      )}
+      {hasMap && <LiguesMiniMap points={points} viewType="tournaments" className="h-[200px] border-t border-bb-border" />}
     </section>
   );
 }

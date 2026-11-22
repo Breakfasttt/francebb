@@ -9,7 +9,7 @@ import QuizEngine from "./component/QuizEngine";
 import QuizLeaderboard from "./component/QuizLeaderboard";
 
 export const metadata = {
-  title: "Quizz Blood Bowl - BBFrance",
+  title: "Quizz Blood Bowl - FranceBB",
   description: "Testez vos connaissances sur l'univers de Blood Bowl.",
 };
 

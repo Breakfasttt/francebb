@@ -177,7 +177,7 @@ export default function TwitchTab({ channels, status }: { channels: string[]; st
           Twitch, qui y dépose ses propres cookies (pour mesurer son audience et choisir ses publicités).
         </p>
         <p className="m-0 leading-relaxed text-bb-text-muted">
-          BBFrance n&apos;en dépose aucun et ne voit rien de ce que Twitch enregistre. Tant que tu n&apos;acceptes pas,
+          FranceBB n&apos;en dépose aucun et ne voit rien de ce que Twitch enregistre. Tant que tu n&apos;acceptes pas,
           rien n&apos;est envoyé à Twitch.
         </p>
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:gap-4">

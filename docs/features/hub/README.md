@@ -4,13 +4,13 @@
 
 ## À quoi ça sert
 
-Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le site, bbscheme, et les futures). Le coach se connecte une fois au hub (Discord, Google ou lien magique), puis chaque application lui demande « qui est connecté ? » grâce au standard OIDC, sans lui redemander de se connecter. La décision est consignée dans l'ADR-0003. Le hub n'est pas encore en production : le site continue d'utiliser sa propre connexion tant que `AUTH_MODE=hub` n'est pas activé.
+Le hub donne aux coachs un seul compte FranceBB pour toutes les applications (le site, bbscheme, et les futures). Le coach se connecte une fois au hub (Discord, Google ou lien magique), puis chaque application lui demande « qui est connecté ? » grâce au standard OIDC, sans lui redemander de se connecter. La décision est consignée dans l'ADR-0003. Le hub n'est pas encore en production : le site continue d'utiliser sa propre connexion tant que `AUTH_MODE=hub` n'est pas activé.
 
 ## Ce que voit le coach
 
 - **Le hub est invisible** (carte 073). Sur le site, en mode hub, `/auth/login` garde ses boutons habituels : Discord, Google et lien par email. Chacun passe par le hub, qui enchaîne directement sur Discord, Google ou l'envoi du lien : le coach ne voit du hub qu'un court « Redirection… », ou, pour l'email, « Vérifie ta boîte mail ». Le lien reçu ramène le coach connecté sur le site, à condition de l'ouvrir dans le même navigateur. Un coach déjà connecté au hub revient sur le site sans aucun écran.
 - `/sign-in` (sur le hub), formulaire complet : boutons « Continuer avec Discord » et « Continuer avec Google », puis un champ email et « Recevoir un lien de connexion ». En dev/test seulement, un formulaire de mot de passe et la section « Comptes de test » (carte 153) : un bouton par compte de test, qui connecte d'un clic, et « Créer un compte de test ». Le site, le passeport et la déconnexion se comportent alors comme en production, ce que la connexion de test du site (`dev-login`) ne permet pas en mode hub. Depuis le site, on y arrive par le bouton « Comptes de test du hub » de la page de connexion (développement et mode hub seulement). Il ne s'affiche que si l'application n'indique pas de moyen de connexion, ou si le moyen indiqué échoue (avec le message d'erreur), ou si le lien par email a expiré.
-- `/consent` : écran « Autoriser <application> ? », affiché seulement pour une application tierce (carte 127). Il liste les droits demandés en phrases simples (`lib/scopes.ts`), et « Refuser » a la même taille qu'« Autoriser ». Les applications BBFrance sont enregistrées sans écran de consentement.
+- `/consent` : écran « Autoriser <application> ? », affiché seulement pour une application tierce (carte 127). Il liste les droits demandés en phrases simples (`lib/scopes.ts`), et « Refuser » a la même taille qu'« Autoriser ». Les applications FranceBB sont enregistrées sans écran de consentement.
 - `/` (accueil du hub) = **le passeport Blood Bowl** (carte 120). Sans session : le formulaire de connexion, qui ramène ici. Avec session, en une colonne :
   - **Profil** : pseudo, NAF, région, avatar, langue, fuseau, enregistrés par `PATCH /api/v1/profile` ;
   - **Moyens de connexion** : Discord, Google, email ;
@@ -21,7 +21,7 @@ Le hub donne aux coachs un seul compte BBFrance pour toutes les applications (le
 
   Un bouton « Retour vers <application> » n'apparaît que si l'adresse contient `client_id` et `return_to`, et que `return_to` a la même origine qu'une adresse enregistrée de ce client. Le hub n'a aucun lien codé en dur vers une application.
 - Sur le site, en mode hub, le bouton « Déconnexion » ferme aussi la session du hub : à la connexion suivante, le hub redemande les identifiants. Le coach revient ensuite sur l'accueil du site.
-- Un compte banni au hub voit « Ce compte BBFrance a été suspendu. » sur `/sign-in` et ne peut plus se connecter à aucune application.
+- Un compte banni au hub voit « Ce compte FranceBB a été suspendu. » sur `/sign-in` et ne peut plus se connecter à aucune application.
 - Accès : tout visiteur. Le hub ne connaît aucun rôle métier (modérateur, admin) : ces rôles restent sur le site.
 - **Sur téléphone** : le hub n'a pas de fichier mobile, mais sa mise en page est simple et pensée pour : une seule colonne avec 16 px de marge de chaque côté, les boutons et les champs de `packages/ui` à la taille tactile (44 px de haut au moins), des champs en police de 16 px (pas de zoom automatique sur iPhone). Points à vérifier : Discord et Google s'affichent même s'ils ne sont pas configurés au hub (le site les propose toujours en mode hub ; sans réglages au hub, le coach tombe sur le formulaire du hub avec une erreur) ; un seul thème (les couleurs de « Vestiaire », le thème par défaut du site), pas les 5 thèmes ; la reconnexion silencieuse sur Safari iOS n'est possible qu'avec un domaine parent commun (carte 035, non testable en local).
 
@@ -105,10 +105,10 @@ Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi i
 | Application cliente | Application (le site, bbscheme…) enregistrée auprès du hub, avec un id et un secret, qui lui délègue la connexion. |
 | Issuer / découverte | L'adresse qui identifie le hub, et le document qui liste ses autres adresses (connexion, jetons, clés). |
 | Scope | Ce que l'application demande à connaître : identité (`openid`), profil, email, connexion durable (`offline_access`). |
-| Consentement | Écran où le coach accepte qu'une application lise son profil. Sauté pour les applications BBFrance (`skipConsent`). |
+| Consentement | Écran où le coach accepte qu'une application lise son profil. Sauté pour les applications FranceBB (`skipConsent`). |
 | `email_verified` | Information de l'id_token : le hub certifie que le coach possède bien cet email. |
 | Déconnexion globale (`end_session`) | Adresse du hub qui ferme sa session ; l'application y envoie le coach avec son id_token au moment de la déconnexion. |
-| `login_method` | Paramètre propre à BBFrance, ajouté par le site à la demande d'autorisation : le moyen de connexion choisi sur son écran. Le hub le reçoit recopié et signé par le plugin, qui transmet les paramètres qu'il ne connaît pas. |
+| `login_method` | Paramètre propre à FranceBB, ajouté par le site à la demande d'autorisation : le moyen de connexion choisi sur son écran. Le hub le reçoit recopié et signé par le plugin, qui transmet les paramètres qu'il ne connaît pas. |
 | `login_hint` | Paramètre standard d'OIDC : l'adresse email saisie sur le site, pour que le hub envoie le lien sans la redemander. |
 | Reconnexion silencieuse | Une application obtient la connexion du hub sans rien demander, parce que le coach y est déjà connecté. |
 

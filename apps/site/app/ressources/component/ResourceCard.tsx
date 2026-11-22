@@ -37,9 +37,9 @@ interface ResourceCardProps {
 const linkClass =
   "text-bb-text no-underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-bb-focus";
 
-/** Destination lisible du lien : le nom du site pour un lien externe, « Sur BBFrance » pour une page du site. */
+/** Destination lisible du lien : le nom du site pour un lien externe, « Sur FranceBB » pour une page du site. */
 function destination(link: string, external: boolean): string {
-  if (!external) return "Sur BBFrance";
+  if (!external) return "Sur FranceBB";
   try {
     return new URL(link).hostname.replace(/^www\./, "");
   } catch {

@@ -16,7 +16,7 @@ const THEME = process.env.THEME || "";
 const PAGES = process.env.PAGES
   ? process.env.PAGES.split(",").map((page) => page.trim())
   : ["", "profile", "messagerie", "membres", "notifications", "forum/unread", "administration", "moderation"];
-const PREFIX = USER === "visiteur" ? `theme-${THEME || "vestiaire"}` : "membre";
+const PREFIX = USER === "visiteur" ? `theme-${THEME || "saison3"}` : "membre";
 
 const browser = await chromium.launch();
 for (const [width, height] of [[390, 844], [1440, 900]]) {

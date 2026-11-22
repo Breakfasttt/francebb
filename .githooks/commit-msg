@@ -1,5 +1,5 @@
 #!/bin/sh
-# Verrou de commit BBFrance (activation une fois par clone : git config core.hooksPath .githooks)
+# Verrou de commit FranceBB (activation une fois par clone : git config core.hooksPath .githooks)
 # 1. Aucun trailer Co-Authored-By : les commits sont signés du seul compte perso breakyt.
 # 2. Auteur = breakyt <jeaneaut@gmail.com>.
 # Le préfixe [NNN] (numéro de carte) est facultatif : seuls les gros chantiers ont une carte.

@@ -1,9 +1,9 @@
 ---
 name: nextjs16
-description: Faits utiles de Next.js 16.2 pour BBFrance (APIs asynchrones, cache, proxy, Turbopack) et où lire la doc officielle livrée avec Next. À lire avant d'écrire une page, une action serveur, du cache ou de toucher à proxy.ts.
+description: Faits utiles de Next.js 16.2 pour FranceBB (APIs asynchrones, cache, proxy, Turbopack) et où lire la doc officielle livrée avec Next. À lire avant d'écrire une page, une action serveur, du cache ou de toucher à proxy.ts.
 ---
 
-# Next.js 16 dans BBFrance
+# Next.js 16 dans FranceBB
 
 **La source de vérité est la documentation livrée avec Next**, à la bonne version : `node_modules/next/dist/docs/` (`01-app/` pour l'App Router). La lire avant d'écrire du code Next qu'on ne connaît pas bien ; ne pas se fier à sa mémoire.
 
@@ -15,7 +15,7 @@ description: Faits utiles de Next.js 16.2 pour BBFrance (APIs asynchrones, cache
   - `updateTag(tag)` (actions serveur seulement) relit tout de suite ce qu'on vient d'écrire ;
   - `refresh()` (actions serveur seulement) recharge les données non mises en cache ;
   - `cacheLife` et `cacheTag` n'ont plus le préfixe `unstable_`.
-- **`proxy.ts`** remplace `middleware.ts` et ne tourne qu'en Node. Dans BBFrance (carte 017), le proxy utilise la configuration complète d'Auth.js (`auth.ts`). Seuls le proxy et `/api/auth/*` peuvent réécrire le cookie de session : `auth()` dans un composant serveur ou une action lit le cookie mais n'enregistre jamais un jeton rafraîchi. Le proxy pose aussi la CSP avec un nonce.
+- **`proxy.ts`** remplace `middleware.ts` et ne tourne qu'en Node. Dans FranceBB (carte 017), le proxy utilise la configuration complète d'Auth.js (`auth.ts`). Seuls le proxy et `/api/auth/*` peuvent réécrire le cookie de session : `auth()` dans un composant serveur ou une action lit le cookie mais n'enregistre jamais un jeton rafraîchi. Le proxy pose aussi la CSP avec un nonce.
 - **Turbopack** est le compilateur par défaut ; `next dev` écrit dans `.next/dev` et un verrou empêche deux serveurs en même temps.
 - **Routes parallèles** : chaque emplacement exige un `default.js`.
 - **`next/image`** : `images.remotePatterns` (et non `images.domains`) ; une image locale avec paramètres d'URL exige `images.localPatterns`.

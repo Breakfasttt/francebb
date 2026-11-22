@@ -150,9 +150,6 @@ export default function MorePanel({ isOpen, onClose, user, hubLogout, isAdmin, i
 
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-bb-border pt-2 text-sm text-bb-text-muted">
             <Link href="/mentions-legales" className="flex min-h-11 items-center">Mentions légales</Link>
-            <a href="https://github.com/Breakfasttt/francebb" target="_blank" rel="noopener noreferrer" className="flex min-h-11 items-center">
-              Code source
-            </a>
           </div>
         </div>
       </div>

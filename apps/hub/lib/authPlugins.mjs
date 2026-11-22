@@ -144,7 +144,7 @@ export function authPlugins({ sendMagicLink }) {
       }),
       customUserInfoClaims: ({ user, scopes }) => profileClaims(user, scopes),
     }),
-    admin({ bannedUserMessage: "Ce compte BBFrance a été suspendu." }),
+    admin({ bannedUserMessage: "Ce compte FranceBB a été suspendu." }),
     hubTables,
   ];
 }

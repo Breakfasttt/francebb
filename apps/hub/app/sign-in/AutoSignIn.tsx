@@ -74,7 +74,7 @@ export default function AutoSignIn({ method, email }: { method: LoginMethod; ema
       {status === "sent" ? (
         <>
           <p className="m-0">Un lien de connexion vient d&apos;être envoyé à {email}.</p>
-          <Muted>Ouvre-le sur cet appareil, dans ce navigateur : tu reviendras connecté sur BBFrance.</Muted>
+          <Muted>Ouvre-le sur cet appareil, dans ce navigateur : tu reviendras connecté sur FranceBB.</Muted>
         </>
       ) : (
         <p className="m-0">Redirection…</p>

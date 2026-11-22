@@ -78,7 +78,7 @@ async function cleanUp() {
     await prisma.referenceData.deleteMany({ where: { group: REF.group, key: REF.key } });
     await prisma.moderationLog.deleteMany({ where: { OR: [{ moderatorId: { in: USER_IDS } }, { targetId: { in: USER_IDS } }] } });
     await prisma.user.deleteMany({ where: { OR: [{ id: { in: USER_IDS } }, { id: { startsWith: RECIPIENT_PREFIX } }] } });
-    await prisma.mailLog.deleteMany({ where: { subject: `[BBFrance Info] ${ANNOUNCEMENT_SUBJECT}` } });
+    await prisma.mailLog.deleteMany({ where: { subject: `[FranceBB Info] ${ANNOUNCEMENT_SUBJECT}` } });
     await prisma.roleConfig.deleteMany({ where: { name: { in: [ROLE_A.name, ROLE_B.name] } } });
   });
 }
@@ -434,7 +434,7 @@ test("info-mails : l'annonce part par lots, avec l'avancement, jusqu'à « Diffu
 
   await expect(page.getByText("Diffusion terminée", { exact: true })).toBeVisible({ timeout: 60_000 });
   await expect(page.getByText(`${expected} coachs sur ${expected}`)).toBeVisible();
-  await expectPoll(() => db((prisma) => prisma.mailLog.count({ where: { subject: `[BBFrance Info] ${ANNOUNCEMENT_SUBJECT}` } }))).toBe(expected);
+  await expectPoll(() => db((prisma) => prisma.mailLog.count({ where: { subject: `[FranceBB Info] ${ANNOUNCEMENT_SUBJECT}` } }))).toBe(expected);
   await expectPoll(() =>
     db((prisma) => prisma.moderationLog.count({ where: { moderatorId: ADMIN.id, action: "MASS_MAIL_SENT", details: { contains: ANNOUNCEMENT_SUBJECT } } })),
   ).toBe(1);

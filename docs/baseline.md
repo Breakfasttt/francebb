@@ -2,14 +2,17 @@
 
 Référence chiffrée avant toute modification d'architecture. À remesurer à chaque phase avec les mêmes scripts pour comparer.
 
+> **Document historique.** Les premiers tableaux datent de l'époque SQLite (dev.db) et Turso. Depuis, la base est Postgres (en local avec `scripts/local-postgres.mjs`, en ligne sur Neon) : les chiffres restent utiles comme ordre de grandeur, pas comme comparaison directe.
+
 ## Comment remesurer
 
 ```bash
-npm run build
-node scripts/baseline.mjs     # perf : next start sur une copie de dev.db (logs/baseline.db)
-node scripts/debt-count.mjs   # compteurs de dette
-npm run lint:ratchet          # erreurs ESLint vs plafond lint-baseline.json
-npx prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --script
+# depuis apps/site
+corepack pnpm build
+node scripts/baseline.mjs           # perf : next start sur la base Postgres du .env.local (port 3200)
+node scripts/debt-count.mjs         # compteurs de dette
+corepack pnpm lint:ratchet          # erreurs ESLint vs plafond lint-baseline.json
+corepack pnpm exec prisma migrate diff --from-migrations prisma/migrations --to-schema prisma/schema.prisma --script
 ```
 
 ## Perf par route

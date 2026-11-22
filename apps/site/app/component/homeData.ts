@@ -6,7 +6,8 @@
  * Les requêtes des tournois, de l'invitation Discord et de l'article au hasard sont reprises telles quelles de
  * l'ancien `app/page.tsx` (cartes 148, 150, 165, 187, 189, 205).
  */
-import { TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY, parseTwitchChannels, parseYoutubeChannels } from "@/lib/mediaChannels";
+import { YOUTUBE_CHANNELS_KEY, parseYoutubeChannels, type YoutubeChannel } from "@/lib/mediaChannels";
+import { getLatestVideos } from "@/lib/youtubeChannels";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
@@ -242,18 +243,37 @@ export type HomeResource = Awaited<ReturnType<typeof getHomeResources>>[number];
  * dans lib/mediaChannels.ts), lues comme la page `/media`. L'accueil n'affiche que leurs noms : les lecteurs restent sur `/media`.
  */
 export const getHomeMedia = unstable_cache(
-  async () => {
-    const settings = await prisma.siteSetting.findMany({
-      where: { key: { in: [TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY] } },
-      select: { key: true, value: true },
-    });
-    const value = (key: string) => settings.find((setting) => setting.key === key)?.value;
-    // Noms affichés : le nom de chaque chaîne YouTube (format dans lib/mediaChannels.ts), le nom des chaînes Twitch
-    return {
-      twitch: parseTwitchChannels(value(TWITCH_CHANNELS_KEY)),
-      youtube: parseYoutubeChannels(value(YOUTUBE_CHANNELS_KEY)).map((channel) => channel.name),
-    };
+  async (): Promise<YoutubeChannel[]> => {
+    const setting = await prisma.siteSetting.findUnique({ where: { key: YOUTUBE_CHANNELS_KEY }, select: { value: true } });
+    return parseYoutubeChannels(setting?.value);
   },
-  ["home-media-v2"],
+  ["home-media-v3"],
   { revalidate: 300, tags: ["home-media"] }
 );
+
+/** Une vidéo du bloc Médias de l'accueil : la dernière vidéo d'une chaîne YouTube référencée. */
+export interface HomeVideo {
+  videoId: string;
+  title: string;
+  channelName: string;
+}
+
+/**
+ * Dernières vidéos de `count` chaînes YouTube tirées au hasard parmi celles dont le flux répond. Les dernières vidéos
+ * de toutes les chaînes viennent du même cache d'une heure que la page Médias (`getLatestVideos`, mêmes arguments) :
+ * le tirage change à chaque visite sans redemander quoi que ce soit à YouTube. Hors composant : React demande qu'un
+ * composant donne le même résultat à chaque rendu.
+ */
+export async function pickHomeVideos(channels: YoutubeChannel[], count = 3): Promise<HomeVideo[]> {
+  if (channels.length === 0) return [];
+  const latest = await getLatestVideos(channels.map((channel) => channel.id));
+  const videos = channels.flatMap((channel) => {
+    const video = latest[channel.id];
+    return video ? [{ videoId: video.videoId, title: video.title, channelName: channel.name }] : [];
+  });
+  for (let i = videos.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [videos[i], videos[j]] = [videos[j], videos[i]];
+  }
+  return videos.slice(0, count);
+}

@@ -7,7 +7,7 @@ import OnboardingSuccess from "./OnboardingSuccess";
 import LogoutButton from "@/common/components/LogoutButton/LogoutButton";
 
 export const metadata = {
-  title: "Bienvenue - BBFrance",
+  title: "Bienvenue - FranceBB",
 };
 
 /**

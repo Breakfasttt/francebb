@@ -1,4 +1,4 @@
-# BBFrance — consignes pour l'IA
+# FranceBB — consignes pour l'IA
 
 Le but : un forum et site de tournois **beau, simple, cohérent partout, impeccable sur téléphone et sur ordinateur, qui ne ressemble pas à un site fait par IA**. La sécurité des membres passe toujours avant la rapidité. Règles du projet : `README.md` ; règles de code : `ARCHITECTURE.md` ; apparence : `DESIGN.md` (il dirige, il ne décrit pas).
 
@@ -8,7 +8,7 @@ Le but : un forum et site de tournois **beau, simple, cohérent partout, impecca
 2. **Aucune fonctionnalité perdue** (sauf si elle n'a vraiment plus de sens ; le dire).
 3. **Interface** : suivre `DESIGN.md` (types d'écran, panneau gauche, largeur utilisée, un seul rouge, interdits). On peut casser pour refaire.
 4. **Peu de bibliothèques** : chaque ajout demande l'accord du user (le hook `block-deps` le demande).
-5. **Thèmes** : secondaires, mais à garder ; on conçoit pour « Sombre » puis on vérifie les autres.
+5. **Thèmes** : « Saison 3 » est le thème par défaut ; on conçoit pour lui, puis on vérifie les autres (« Sombre » d'abord).
 6. Jamais d'image de remplissage ni d'image générée.
 
 ## Boucle obligatoire pour toute modification d'interface

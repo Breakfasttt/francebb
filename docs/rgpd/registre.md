@@ -1,16 +1,16 @@
 # Registre des traitements de données personnelles
 
-> Ce document tient le registre demandé par le RGPD (règlement européen sur la protection des données) : quelles données BBFrance garde sur les coachs, pourquoi, combien de temps, et qui y a accès. Il est à relire par le responsable du projet et à tenir à jour à chaque nouvelle donnée collectée. Décision d'origine : ADR-0007 (passeport Blood Bowl). Brouillon de la carte 126.
+> Ce document tient le registre demandé par le RGPD (règlement européen sur la protection des données) : quelles données FranceBB garde sur les coachs, pourquoi, combien de temps, et qui y a accès. Il est à relire par le responsable du projet et à tenir à jour à chaque nouvelle donnée collectée. Décision d'origine : ADR-0007 (passeport Blood Bowl). Brouillon de la carte 126.
 
 ## Responsable du traitement
 
-BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel et bénévole par **breakyt**. Contact pour exercer ses droits : l'adresse de la variable d'environnement `CONTACT_EMAIL` du site, affichée dans les mentions légales (`apps/site/app/mentions-legales/page.tsx`).
+FranceBB, site communautaire de Blood Bowl, édité à titre non professionnel et bénévole par **breakyt**. Contact pour exercer ses droits : l'adresse de la variable d'environnement `CONTACT_EMAIL` du site, affichée dans les mentions légales (`apps/site/app/mentions-legales/page.tsx`).
 
 ## Les droits du coach et où les exercer
 
 | Droit | Où | Comment ça marche |
 |---|---|---|
-| Accès et portabilité (recevoir ses données) | Passeport Blood Bowl, « Télécharger mes données » | Un fichier JSON avec les données du hub et celles de chaque application BBFrance (carte 125). |
+| Accès et portabilité (recevoir ses données) | Passeport Blood Bowl, « Télécharger mes données » | Un fichier JSON avec les données du hub et celles de chaque application FranceBB (carte 125). |
 | Rectification | Passeport, section « Profil », ou profil du site | Le pseudo, l'avatar, le NAF et la région se modifient au passeport ; le site les reçoit. |
 | Effacement | Passeport, « Supprimer mon compte » | 30 jours pour changer d'avis, puis effacement dans toutes les applications (carte 123). |
 | Retrait d'un accès donné à une application | Passeport, « Applications liées » | L'application perd ses jetons et doit redemander la connexion. |
@@ -19,12 +19,12 @@ BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel e
 
 | Point | Contenu |
 |---|---|
-| But | Permettre au coach de se connecter une fois à toutes les applications BBFrance, et garder son profil commun. |
+| But | Permettre au coach de se connecter une fois à toutes les applications FranceBB, et garder son profil commun. |
 | Base légale | Exécution du service demandé par le coach (inscription). |
 | Données | Email, pseudo, avatar, numéro NAF (déclaré par le coach, jamais vérifié), région, langue, fuseau horaire, date d'inscription ; moyens de connexion (Discord, Google, email), avec leurs jetons chiffrés ; sessions (adresse IP, navigateur). |
 | Durée | Tant que le compte existe. Sessions et liens de connexion : effacés à leur expiration (purge chaque nuit). |
 | Après suppression | Rien, sauf l'empreinte du pseudo (pour qu'il ne soit pas repris) et, pour un compte banni, l'empreinte de son email (pour qu'il ne revienne pas). Une empreinte ne permet pas de retrouver le pseudo ni l'email. |
-| Destinataires | Les applications BBFrance auxquelles le coach se connecte ; une application tierce seulement après son accord, et jamais son email. |
+| Destinataires | Les applications FranceBB auxquelles le coach se connecte ; une application tierce seulement après son accord, et jamais son email. |
 
 ## Traitement 2 : sécurité du hub
 
@@ -35,7 +35,7 @@ BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel e
 | Données | Action, date, empreinte de l'identifiant et de l'adresse IP (jamais en clair). Compteurs de la limite de requêtes. |
 | Durée | Journal d'audit : 1 an. Compteurs : 1 jour sans activité. |
 
-## Traitement 3 : le site BBFrance
+## Traitement 3 : le site FranceBB
 
 | Point | Contenu |
 |---|---|

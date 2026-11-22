@@ -14,7 +14,8 @@ import CenteredCard from "../components/CenteredCard";
 import DevAccounts from "./DevAccounts";
 import { ErrorMessage, Muted } from "../components/Messages";
 
-const DEV_PASSWORD_LOGIN = process.env.NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN === "1";
+// Jamais en production, même si la variable a été recopiée par erreur : le serveur refuse déjà ces comptes (lib/devAccounts.ts)
+const DEV_PASSWORD_LOGIN = process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN === "1";
 
 /** Messages des erreurs renvoyées par Better Auth dans l'adresse (par exemple après un lien magique refusé). */
 const ERROR_MESSAGES: Record<string, string> = {

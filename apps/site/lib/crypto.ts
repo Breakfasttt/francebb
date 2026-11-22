@@ -3,7 +3,17 @@ import crypto from "crypto";
 const ALGORITHM = "aes-256-gcm";
 const KEY_LENGTH = 32;
 const IV_LENGTH = 12; // GCM recommended IV length
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || "";
+/**
+ * Clé des messages privés (variable ENCRYPTION_KEY, 64 caractères hexadécimaux). Lue à chaque usage, pour que la
+ * construction du site passe sans elle ; absente ou trop courte, on arrête avec un message clair au lieu de laisser
+ * Node répondre « Invalid key length ». Seuls ses 32 premiers caractères servent (format historique, à ne pas changer :
+ * les messages déjà chiffrés deviendraient illisibles).
+ */
+function encryptionKey(): Buffer {
+  const key = process.env.ENCRYPTION_KEY ?? "";
+  if (key.length < KEY_LENGTH) throw new Error("ENCRYPTION_KEY manquante ou trop courte : voir apps/site/.env.example.");
+  return Buffer.from(key.slice(0, KEY_LENGTH));
+}
 
 /**
  * Chiffre un texte en utilisant AES-256-GCM
@@ -15,7 +25,7 @@ export function encrypt(text: string): string {
   const iv = crypto.randomBytes(IV_LENGTH);
   const cipher = crypto.createCipheriv(
     ALGORITHM, 
-    Buffer.from(ENCRYPTION_KEY.slice(0, KEY_LENGTH)), 
+    encryptionKey(), 
     iv
   );
   
@@ -44,7 +54,7 @@ export function decrypt(data: string): string {
 
     const decipher = crypto.createDecipheriv(
       ALGORITHM, 
-      Buffer.from(ENCRYPTION_KEY.slice(0, KEY_LENGTH)), 
+      encryptionKey(), 
       iv
     );
     decipher.setAuthTag(tag);

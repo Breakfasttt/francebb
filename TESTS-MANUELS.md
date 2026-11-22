@@ -89,9 +89,9 @@ Depuis la carte 218, le site a cinq thèmes : Sombre (le thème par défaut, ide
 - [ ] **Ordinateur, nouveau compte.** L'inscription complète fonctionne et le thème choisi s'applique à la fin.
 - [ ] **Tous appareils, visiteur.** Les connexions Discord et Google ouvrent leur écran d'autorisation et reviennent sur le site (essai avec de vrais comptes).
 
-Les trois essais suivants se font avec le site branché sur le hub, le service de connexion commun aux applications BBFrance (réglage `AUTH_MODE="hub"` ; la préparation est décrite dans la carte 115). Le hub doit rester invisible : le coach ne voit jamais son écran.
+Les trois essais suivants se font avec le site branché sur le hub, le service de connexion commun aux applications FranceBB (réglage `AUTH_MODE="hub"` ; la préparation est décrite dans la carte 115). Le hub doit rester invisible : le coach ne voit jamais son écran.
 
-- [ ] **Ordinateur, visiteur, navigation privée.** L'écran de connexion montre Discord, Google et e-mail, sans bouton « Compte BBFrance ». Saisir une adresse, ouvrir le lien reçu dans la même fenêtre : on arrive sur le site connecté, sans voir d'écran du hub (au plus un court « Redirection… »). Rouvrir le même lien : un message d'erreur clair, sans boucle de redirection (cartes 073 et 115).
+- [ ] **Ordinateur, visiteur, navigation privée.** L'écran de connexion montre Discord, Google et e-mail, sans bouton « Compte FranceBB ». Saisir une adresse, ouvrir le lien reçu dans la même fenêtre : on arrive sur le site connecté, sans voir d'écran du hub (au plus un court « Redirection… »). Rouvrir le même lien : un message d'erreur clair, sans boucle de redirection (cartes 073 et 115).
 - [ ] **Ordinateur, visiteur, navigation privée.** Le bouton Discord mène directement à l'écran d'autorisation de Discord, puis on revient sur le site connecté, sans écran du hub entre les deux ; se déconnecter et refaire l'essai avec Google (cartes 073 et 115).
 - [ ] **Ordinateur, administrateur et compte d'essai.** Connecté avec un compte d'essai dans une fenêtre, le bannir depuis l'administration dans une autre fenêtre : à la page suivante, le compte banni arrive sur `/banned`, sans attendre (carte 115).
 

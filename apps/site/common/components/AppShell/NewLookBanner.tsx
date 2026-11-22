@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Bandeau « Nouveau look » (ADR 0006, carte 083) : tous les membres sont passés au thème Vestiaire. Celui qui avait
+ * Bandeau « Nouveau look » (ADR 0006, carte 083) : tous les membres sont passés au thème par défaut. Celui qui avait
  * un autre thème voit ce bandeau une fois, avec un bouton pour retrouver son ancien thème en un clic.
  * Le choix (garder ou revenir) est mémorisé dans le navigateur ; le thème reste modifiable à tout moment
  * depuis « Plus », le menu du compte ou Profil > Éditer.
@@ -12,9 +12,10 @@ import { Sparkles } from "lucide-react";
 import { Button, toast } from "@bbfrance/ui";
 import { getPreviousTheme, updateTheme } from "@/app/profile/actions";
 import { useTheme } from "@/common/components/ThemeProvider/ThemeProvider";
-import { SITE_THEMES } from "@/lib/themes";
+import { DEFAULT_SITE_THEME, SITE_THEMES } from "@/lib/themes";
 
 const STORAGE_KEY = "bb-nouveau-look-vu";
+const DEFAULT_LABEL = SITE_THEMES.find((theme) => theme.id === DEFAULT_SITE_THEME)?.label ?? DEFAULT_SITE_THEME;
 
 function alreadySeen(): boolean {
   try {
@@ -81,7 +82,7 @@ export default function NewLookBanner({ isLoggedIn }: { isLoggedIn: boolean }) {
     >
       <Sparkles size={22} className="shrink-0 text-bb-accent-text" aria-hidden="true" />
       <p className="m-0 min-w-0 flex-[1_1_240px] text-[0.95rem] leading-snug">
-        <strong>BBFrance fait peau neuve.</strong> Le site passe au thème « Vestiaire ». Tu préfères ton ancien thème, « {label} » ?
+        <strong>FranceBB fait peau neuve.</strong> Le site passe au thème « {DEFAULT_LABEL} ». Tu préfères ton ancien thème, « {label} » ?
       </p>
       <div className="flex flex-wrap gap-2">
         <Button type="button" variant="secondary" size="tap" onClick={goBack} disabled={isPending}>

@@ -13,7 +13,7 @@
 import { unstable_cache } from "next/cache";
 import { parseYoutubeChannelInput, parseYoutubeLivePage, type YoutubeChannel, type YoutubeLive } from "@/lib/mediaChannels";
 
-const FETCH_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; BBFrance)", "Accept-Language": "fr" };
+const FETCH_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; FranceBB)", "Accept-Language": "fr" };
 
 function decodeEntities(text: string): string {
   return text

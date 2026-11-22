@@ -47,7 +47,7 @@ test.beforeAll(async () => {
 test("[tous] le nom du site ramène à l'accueil, sans image de logo", async ({ page }) => {
   await acceptCookies(page);
   await page.goto("/forum", { waitUntil: "networkidle" });
-  const logo = page.getByRole("banner").getByRole("link", { name: "BBFrance, accueil" }).filter({ visible: true });
+  const logo = page.getByRole("banner").getByRole("link", { name: "FranceBB, accueil" }).filter({ visible: true });
   await expect(logo).toHaveCount(1);
   await expect(logo).toHaveAttribute("href", "/");
   // Zone de toucher d'au moins 44 pixels de haut
@@ -55,7 +55,7 @@ test("[tous] le nom du site ramène à l'accueil, sans image de logo", async ({ 
   await logo.click();
   await page.waitForURL((url) => url.pathname === "/");
   // Le nom reste affiché sur l'accueil ; aucune image d'écusson dans la barre ni dans la page (DESIGN.md)
-  await expect(page.getByRole("banner").getByRole("link", { name: "BBFrance, accueil" }).filter({ visible: true })).toHaveCount(1);
+  await expect(page.getByRole("banner").getByRole("link", { name: "FranceBB, accueil" }).filter({ visible: true })).toHaveCount(1);
   await expect(page.getByRole("banner").getByRole("img")).toHaveCount(0);
   await expect(page.getByRole("main").getByRole("heading", { level: 1 })).toBeVisible();
 });
@@ -154,7 +154,7 @@ test("[tous] /mentions-legales : titre, dix sections, lisible sans défilement d
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
   expect(overflow).toBeLessThanOrEqual(0);
   // Texte des sections en 16 pixels au moins (lisible sans zoom)
-  const size = await page.getByText(/BBFrance est un site communautaire/).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
+  const size = await page.getByText(/FranceBB est un site communautaire/).evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
   expect(size).toBeGreaterThanOrEqual(16);
 });
 

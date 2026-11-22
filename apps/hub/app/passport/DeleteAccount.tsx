@@ -23,7 +23,7 @@ export default function DeleteAccount({ scheduledAt: initial }: { scheduledAt: s
   };
 
   const request = async () => {
-    if (!window.confirm("Supprimer ton compte BBFrance ? Il sera effacé dans 30 jours, sauf si tu annules d'ici là.")) return;
+    if (!window.confirm("Supprimer ton compte FranceBB ? Il sera effacé dans 30 jours, sauf si tu annules d'ici là.")) return;
     const response = await call("/api/v1/account/delete");
     if (response.ok) setScheduledAt(((await response.json()) as { scheduledAt: string }).scheduledAt);
   };
@@ -35,7 +35,7 @@ export default function DeleteAccount({ scheduledAt: initial }: { scheduledAt: s
     return (
       <>
         <p role="status" className="m-0">
-          Ton compte sera effacé le <strong>{formatDate(scheduledAt)}</strong>. Les applications BBFrance n&apos;y ont
+          Ton compte sera effacé le <strong>{formatDate(scheduledAt)}</strong>. Les applications FranceBB n&apos;y ont
           plus accès d&apos;ici là. Tu peux encore changer d&apos;avis.
         </p>
         <Button variant="primary" size="tap" type="button" onClick={cancel}>Annuler la suppression</Button>
@@ -47,7 +47,7 @@ export default function DeleteAccount({ scheduledAt: initial }: { scheduledAt: s
     <>
       <ul className="m-0 flex list-disc flex-col gap-2 pl-5 text-sm text-bb-text-muted">
         <li>Ton passeport et tes connexions (Discord, Google, email) sont effacés.</li>
-        <li>Chaque application BBFrance efface tes données personnelles. Certaines gardent tes contributions publiques (messages, résultats de tournoi) sous un nom anonyme.</li>
+        <li>Chaque application FranceBB efface tes données personnelles. Certaines gardent tes contributions publiques (messages, résultats de tournoi) sous un nom anonyme.</li>
         <li>L&apos;effacement a lieu <strong>30 jours</strong> après ta demande. D&apos;ici là, tu peux annuler en te reconnectant ici. Tu reçois un email de confirmation, puis un rappel une semaine avant.</li>
         <li>Ton pseudo ne pourra pas être repris par quelqu&apos;un d&apos;autre.</li>
       </ul>

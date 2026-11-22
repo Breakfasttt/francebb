@@ -71,3 +71,8 @@ yarn-error.log*
 !**/.impeccable/surfaces/
 !.impeccable/config.json
 !.impeccable/design.json
+
+# Réglages personnels de Claude Code (permissions propres au poste), journaux et dossiers d'éditeurs
+.claude/settings.local.json
+*.log
+.idea/

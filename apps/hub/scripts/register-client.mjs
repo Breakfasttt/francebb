@@ -1,7 +1,7 @@
 /**
  * Enregistre (une fois) une application cliente OIDC du hub et affiche ses identifiants.
  * Usage : node --env-file=.env scripts/register-client.mjs <nom> <redirect_uri> [sortie.json] [--tiers]
- * - Sans --tiers : application BBFrance de confiance, sans écran de consentement, active tout de suite.
+ * - Sans --tiers : application FranceBB de confiance, sans écran de consentement, active tout de suite.
  * - Avec --tiers : application tierce (carte 127). Écran de consentement, jamais l'email, et créée DÉSACTIVÉE :
  *   l'activer avec scripts/validate-client.mjs après l'avoir examinée (procédure : docs/features/hub/README.md).
  * Écriture directe en base : l'API admin du plugin exige une session admin, inexistante au premier démarrage.
@@ -46,7 +46,7 @@ await prisma.oauthClient.create({
     scopes: thirdParty
       ? ["openid", "profile", "offline_access", "bbfrance:profile", "bbfrance:profile:write"]
       : ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"],
-    // Application BBFrance : pas d'écran de consentement ; application tierce : consentement du coach obligatoire
+    // Application FranceBB : pas d'écran de consentement ; application tierce : consentement du coach obligatoire
     skipConsent: !thirdParty,
     enableEndSession: true,
     requirePKCE: true,

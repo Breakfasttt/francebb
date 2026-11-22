@@ -15,6 +15,6 @@ export async function POST(request: Request) {
   markHubEventHandled(check.event.id);
 
   const userId = await findUserByHubId(check.event.data.userId);
-  if (!userId) return Response.json({ site: "BBFrance", message: "Aucune donnée : ce coach n'a pas de compte sur le site." });
+  if (!userId) return Response.json({ site: "FranceBB", message: "Aucune donnée : ce coach n'a pas de compte sur le site." });
   return Response.json(await exportMember(userId));
 }

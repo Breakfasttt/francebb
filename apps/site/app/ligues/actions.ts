@@ -16,7 +16,7 @@ async function geocode(ville: string, address: string) {
     if (!query) return { lat: null, lng: null };
 
     const res = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query)}&format=json&limit=1`, {
-      headers: { "User-Agent": "BBFrance-App" }
+      headers: { "User-Agent": "FranceBB-App" }
     });
     const data = await res.json();
     
@@ -43,7 +43,7 @@ export async function reverseGeocodeAction(lat: number, lng: number) {
   if (!Number.isFinite(Number(lat)) || !Number.isFinite(Number(lng))) return null;
   try {
     const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${Number(lat)}&lon=${Number(lng)}&zoom=18&addressdetails=1`, {
-      headers: { "User-Agent": "BBFrance-App" }
+      headers: { "User-Agent": "FranceBB-App" }
     });
     const data = await res.json();
     return data?.display_name || null;
@@ -62,7 +62,7 @@ export async function searchAddressAction(query: string) {
   if (!session?.user?.id) return null;
   try {
     const res = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=1`, {
-      headers: { "User-Agent": "BBFrance-App" }
+      headers: { "User-Agent": "FranceBB-App" }
     });
     const data = await res.json();
     if (data && data.length > 0) {

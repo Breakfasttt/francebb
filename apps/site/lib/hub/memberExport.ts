@@ -28,5 +28,5 @@ export async function exportMember(userId: string) {
     select: { createdAt: true, tournament: { select: { name: true } } },
   });
   const tournamentResults = await prisma.tournamentResult.findMany({ where: { userId } });
-  return { site: "BBFrance", profile, topics, posts, articles, privateMessagesSent, tournamentRegistrations, tournamentResults };
+  return { site: "FranceBB", profile, topics, posts, articles, privateMessagesSent, tournamentRegistrations, tournamentResults };
 }

@@ -5,7 +5,7 @@
  * ImgBB est lue côté serveur seulement, dans `app/imageUploadActions.ts` (carte 141).
  */
 export const siteConfig = {
-  name: "BBFrance",
+  name: "FranceBB",
   description: "Forum en ligne",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
 };

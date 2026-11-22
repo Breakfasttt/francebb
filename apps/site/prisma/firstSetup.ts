@@ -440,6 +440,10 @@ Ces challenges permettent d'avoir des objectifs à taille humaine et de créer d
     value: ["bloodbowlmalta", "bigadin", "bashtactics_pink_charlie", "lokragen", "breakytt", "silsei", "jol_tyra"].join("\n"),
   });
 
+  // Invitation au serveur Discord de la communauté (donnée par le responsable le 22/11/2026) : boutons Discord de
+  // l'accueil et de la page des bannis. Se modifie ensuite dans l'onglet Général de l'administration.
+  siteSettings.push({ key: "discord_invite", value: "https://discord.gg/BwFsEFu4YG" });
+
   for (const setting of siteSettings) {
     await prisma.siteSetting.upsert({
       where: { key: setting.key },

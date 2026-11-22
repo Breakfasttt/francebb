@@ -1,7 +1,8 @@
 "use client";
 
 /**
- * Petite carte des ligues de la région, dans le bloc « Ligues de ta région » de l'accueil du membre (carte 210).
+ * Petite carte de l'accueil : celle des ligues (bloc « Ligues de ta région », carte 210) ou celle des prochains tournois
+ * (`viewType="tournaments"`, bloc « Prochains tournois »).
  *
  * Elle n'existe que sur ordinateur : sur téléphone, le bloc garde seulement le lien « Voir les ligues sur la carte ».
  * La bibliothèque de carte (Leaflet) est lourde : elle n'est chargée que lorsque le bloc arrive à l'écran
@@ -20,7 +21,15 @@ const LeafletMap = dynamic(() => import("@/app/carte/component/LeafletMapContain
   loading: () => <Skeleton className="size-full rounded-none" />,
 });
 
-export default function LiguesMiniMap({ points, className }: { points: MapPoint[]; className?: string }) {
+export default function LiguesMiniMap({
+  points,
+  viewType = "ligues",
+  className,
+}: {
+  points: MapPoint[];
+  viewType?: "tournaments" | "ligues";
+  className?: string;
+}) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const frameRef = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -42,7 +51,7 @@ export default function LiguesMiniMap({ points, className }: { points: MapPoint[
   if (!isDesktop || located.length === 0) return null;
   return (
     <div ref={frameRef} className={cn("relative isolate min-h-[200px] overflow-hidden bg-bb-surface-2", leafletTheme, className)}>
-      {visible && <LeafletMap points={located} viewType="ligues" compact />}
+      {visible && <LeafletMap points={located} viewType={viewType} compact />}
     </div>
   );
 }

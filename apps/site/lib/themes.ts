@@ -14,7 +14,7 @@ export const SITE_THEMES = THEME_LIST;
 export type SiteThemeId = (typeof SITE_THEMES)[number]["id"];
 
 /** Thème donné à un nouveau membre (même valeur que la colonne `theme` du schéma Prisma). */
-export const DEFAULT_SITE_THEME: SiteThemeId = "vestiaire";
+export const DEFAULT_SITE_THEME: SiteThemeId = "saison3";
 
 /** Vrai si la valeur reçue est l'identifiant d'un des thèmes du site. */
 export function isSiteTheme(value: string): value is SiteThemeId {

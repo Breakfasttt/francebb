@@ -4,7 +4,7 @@
  */
 import type { Metadata, Viewport } from "next";
 
-export const metadata: Metadata = { title: "BBQuizz — Blood Bowl France", robots: { index: false } };
+export const metadata: Metadata = { title: "BBQuizz — France Blood Bowl", robots: { index: false } };
 export const viewport: Viewport = { width: "device-width", initialScale: 1 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

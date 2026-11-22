@@ -20,10 +20,10 @@ export const THEME_LIST = [
     "label": "Saison 3",
     "scheme": "light",
     "swatch": {
-      "bg": "#efebdd",
-      "surface": "#fbf8ef",
-      "accent": "#9e1d1d",
-      "text": "#1d1a15"
+      "bg": "#ead9bf",
+      "surface": "#f7ecdb",
+      "accent": "#8b1919",
+      "text": "#231a12"
     }
   },
   {

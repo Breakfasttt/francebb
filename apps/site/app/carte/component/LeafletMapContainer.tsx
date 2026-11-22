@@ -77,14 +77,14 @@ const markerIcon = (color: "red" | "gold") =>
     shadowSize: [41, 41],
   });
 
-/** Cadre la carte sur ses points (petite carte `compact`) ; un seul point garde un zoom de ville. */
+/** Cadre la carte sur ses points (petite carte `compact`) ; zoom de région au plus, pour situer même un seul point. */
 function FitToPoints({ points }: { points: MapPoint[] }) {
   const map = useMap();
   useEffect(() => {
     const located = points.filter((p) => p.lat !== null && p.lng !== null);
     if (located.length === 0) return;
     const bounds = L.latLngBounds(located.map((p) => [p.lat as number, p.lng as number] as [number, number]));
-    map.fitBounds(bounds, { padding: [28, 28], maxZoom: 10 });
+    map.fitBounds(bounds, { padding: [28, 28], maxZoom: 7 });
   }, [map, points]);
   return null;
 }

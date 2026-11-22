@@ -1,6 +1,6 @@
-# BBFrance — la communauté Blood Bowl française
+# France Blood Bowl (FranceBB)
 
-BBFrance est le site de la communauté française de **Blood Bowl** (jeu de plateau de football fantastique). On y trouve un forum, les tournois (annonce, inscriptions, résultats), les profils des coachs (les joueurs), une messagerie privée, un classement, des articles et des outils de jeu. L'éditeur de schémas de jeu BBScheme et le quiz BBQuizz sont des applications à part du dépôt, en attente de relance.
+France Blood Bowl, abrégé FranceBB, est le site de la communauté française de **Blood Bowl** (jeu de plateau de football fantastique). On y trouve un forum, les tournois (annonce, inscriptions, résultats), les profils des coachs (les joueurs), une messagerie privée, un classement, des articles et des outils de jeu. L'éditeur de schémas de jeu BBScheme et le quiz BBQuizz sont des applications à part du dépôt, en attente de relance.
 
 **Ce fichier est la porte d'entrée du projet.** Commence par lui : il explique les règles, le plan du dépôt et où trouver le reste. Un mot technique inconnu ? Il est expliqué dans le [glossaire](docs/GLOSSAIRE.md).
 
@@ -42,8 +42,8 @@ Chaque règle n'est écrite qu'à un seul endroit :
 
 | Dossier ou fichier | Ce qu'il contient |
 |---|---|
-| `apps/site/` | **Le site BBFrance** (forum, tournois, profils…), avec sa base de données et ses tests |
-| `apps/hub/` | **Le hub de connexion** : un compte unique pour le site et les futures applications. Prêt, mais pas encore en ligne |
+| `apps/site/` | **Le site FranceBB** (forum, tournois, profils…), avec sa base de données et ses tests |
+| `apps/hub/` | **Le hub de connexion** : un compte unique (le « passeport Blood Bowl ») pour le site et les futures applications. Prêt ; mise en ligne en préparation ([DEPLOY.md](DEPLOY.md)) |
 | `apps/bbscheme/` | **BBScheme**, l'application des schémas tactiques, avec sa propre base. En attente : elle ne fait que donner au site les schémas déjà publiés ; l'éditeur sera relancé plus tard |
 | `apps/bbquizz/` | **BBQuizz**, l'application du quiz, avec sa propre base (questions, parties, scores). En attente : elle n'affiche qu'une page « Le quiz revient bientôt » ; le quiz sera relancé plus tard |
 | `packages/ui/` | Composants d'interface partagés entre les applications (fenêtres, notifications…) |
@@ -53,9 +53,9 @@ Chaque règle n'est écrite qu'à un seul endroit :
 | `docs/GLOSSAIRE.md` | Les mots techniques expliqués |
 | `kanban/` | Les cartes des gros chantiers, rangées par état (à faire, en cours) |
 | `archive/` | Ce qui ne sert plus au travail courant : cartes terminées, épics, bilans de séance, audits, comptes rendus du conseil |
-| `scripts/` | Petits outils du dépôt (vérification du kanban, envoi vers `master`) |
+| `scripts/` | Petits outils du dépôt : lancement en local (`dev.mjs`, bases Postgres locales), vérifications (`check.mjs`), test local en mode production (`prod-local.mjs`), kanban |
 | `.claude/` | Consignes et outils de l'IA qui aide au développement |
-| `.github/` | Vérifications automatiques lancées par GitHub à chaque envoi de code (la « CI ») |
+| `.github/` | Vérifications automatiques par GitHub (la « CI »), désactivées pour l'instant : les vérifications se lancent en local |
 | `.githooks/` | Contrôle automatique des messages de commit |
 | `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `turbo.json` | Réglages communs : liste des applications, versions exactes des bibliothèques, commandes partagées |
 
@@ -68,13 +68,15 @@ Le dépôt est un **monorepo** : plusieurs applications dans un seul dépôt, qu
 Prérequis : [Node.js](https://nodejs.org) 22 ou plus.
 
 ```bash
-git clone https://github.com/Breakfasttt/francebb.git
-cd francebb
+git clone https://github.com/Breakfasttt/francebb.git bbfrance
+cd bbfrance
 corepack enable          # une seule fois : active pnpm, l'outil qui installe les bibliothèques
 pnpm install             # installe les bibliothèques de toutes les applications
 ```
 
-1. Copier `apps/site/.env.example` en `apps/site/.env` et le remplir. Chaque variable y est expliquée. La connexion Discord/Google et l'envoi de mails en local sont détaillés dans [DEPLOY.md](DEPLOY.md).
+Si `pnpm` n'est pas reconnu (cas de certains postes Windows), préfixer chaque commande par `corepack` : `corepack pnpm install`, `corepack pnpm dev`…
+
+1. Copier `apps/site/.env.example` en `apps/site/.env` et le remplir. Chaque variable y est expliquée, et le fichier dit lesquelles sont obligatoires. En local, `AUTH_SECRET` et `ENCRYPTION_KEY` suffisent pour démarrer ; laisser `AUTH_MODE` vide tant que le hub ne tourne pas.
 2. Lancer le site, depuis la racine (ou depuis `apps/site`) : `pnpm dev`, puis ouvrir [http://localhost:3000](http://localhost:3000). Cette seule commande démarre une base Postgres locale (sans Docker), crée ses tables, la remplit au premier lancement, puis lance le site. Elle marche aussi après un redémarrage de l'ordinateur.
 
    Trois **profils de base** au choix, chacun dans sa propre base (on passe de l'un à l'autre sans rien perdre) :
@@ -89,6 +91,21 @@ pnpm install             # installe les bibliothèques de toutes les application
 
 Pour modifier la structure de la base : changer `apps/site/prisma/schema.prisma`, puis `pnpm db:migrate` (crée une migration, c'est-à-dire le fichier qui décrit le changement). Elle sera appliquée automatiquement en production au prochain déploiement.
 
+### Lancer le hub en local (facultatif)
+
+Le hub n'est utile en local que pour essayer la connexion par le passeport Blood Bowl. Dans `apps/hub` :
+
+1. Copier `.env.example` en `.env` et remplir `BETTER_AUTH_SECRET` (`openssl rand -base64 32`).
+2. `pnpm db:start` (base Postgres locale du hub), `pnpm db:generate`, puis `pnpm exec prisma migrate deploy`.
+3. `pnpm dev`, puis ouvrir [http://localhost:4000](http://localhost:4000). En développement, le lien de connexion par email s'affiche dans le terminal du hub, et des comptes de test avec mot de passe sont proposés.
+4. Brancher le site dessus : enregistrer le site une fois (`node scripts/register-client.mjs "FranceBB site local" http://localhost:3000/api/auth/callback/hub`), puis dans `apps/site/.env` : `AUTH_MODE="hub"`, `HUB_ISSUER="http://localhost:4000/api/auth"` et les deux identifiants affichés.
+
+Dans VS Code, la tâche « Hub + site » lance les deux serveurs.
+
+### Tester en mode production
+
+Avant une mise en ligne : `pnpm prod-local prepare`, `build`, puis `start` construit et démarre le hub et le site comme en ligne, sur des bases neuves. Le détail est à l'étape 2 de [DEPLOY.md](DEPLOY.md).
+
 **Tester sur un vrai téléphone** (même réseau Wi-Fi) : lancer `pnpm dev -H 0.0.0.0` (le profil peut s'ajouter : `pnpm dev prod -H 0.0.0.0`), puis ouvrir `http://<adresse IP de l'ordinateur>:3000` sur le téléphone.
 
 
@@ -100,7 +117,7 @@ Les tests ont trois niveaux, du plus rapide au plus complet :
 
 1. **Après chaque modification de code** : `pnpm check`, environ une minute, sans serveur ni navigateur.
 2. **Sur demande, en fin de gros chantier ou avant un envoi qui touche l'interface** : `pnpm --filter @bbfrance/site test:parcours`, environ une minute et demie. Le serveur de développement du site doit être arrêté : Next.js refuse d'en démarrer un second dans le même dossier.
-3. **La suite complète** `pnpm test:e2e` (environ 20 minutes) : lancée par GitHub à chaque envoi de code ; en local, seulement à la demande du responsable.
+3. **La suite complète** `pnpm test:e2e` (environ 20 minutes) : seulement à la demande du responsable.
 
 | Commande | Ce qu'elle vérifie |
 |---|---|
@@ -116,7 +133,7 @@ Les tests ont trois niveaux, du plus rapide au plus complet :
 
 Première fois pour les tests navigateur : `pnpm --filter @bbfrance/site exec playwright install chromium`.
 
-GitHub relance automatiquement ces vérifications à chaque envoi de code (`.github/workflows/ci.yml`).
+Les vérifications automatiques de GitHub (`.github/workflows/ci.yml`) sont désactivées pour l'instant : un envoi de code ne lance rien, `pnpm check` se lance à la main.
 
 ---
 
@@ -127,7 +144,7 @@ GitHub relance automatiquement ces vérifications à chaque envoi de code (`.git
 | Site web | [Next.js 16](https://nextjs.org) et [React 19](https://react.dev), en TypeScript |
 | Base de données | [Postgres](https://www.postgresql.org), hébergé chez [Neon](https://neon.tech) en production ; en local, `prisma dev` (sans Docker) |
 | Accès à la base de données | [Prisma 7](https://www.prisma.io) |
-| Connexion des membres | [Auth.js v5](https://authjs.dev) aujourd'hui ; [Better Auth](https://www.better-auth.com) dans le hub |
+| Connexion des membres | [Better Auth](https://www.better-auth.com) dans le hub (le passeport) ; [Auth.js v5](https://authjs.dev) dans le site, qui se connecte au hub |
 | Apparence | [Tailwind CSS](https://tailwindcss.com) et 5 thèmes de couleurs, composants [shadcn/ui](https://ui.shadcn.com) dans `packages/ui`, icônes [Lucide](https://lucide.dev) |
 | Hébergement | [Vercel](https://vercel.com) |
 

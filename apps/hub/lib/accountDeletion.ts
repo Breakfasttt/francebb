@@ -43,8 +43,8 @@ export async function requestDeletion(userId: string, currentSessionToken?: stri
   await writeAudit({ action: "suppression demandée", userId });
   await sendAccountEmail(
     user.email,
-    "Suppression de ton compte BBFrance",
-    `Bonjour ${user.name},\n\nTu as demandé la suppression de ton compte BBFrance. Il sera effacé le ${formatDate(scheduledAt)}, ainsi que tes données dans toutes les applications BBFrance.\n\nD'ici là, tu peux annuler : connecte-toi à ton passeport Blood Bowl (${process.env.BETTER_AUTH_URL}) et clique sur « Annuler la suppression ».\n\nSi tu n'as rien demandé, connecte-toi tout de suite pour annuler.`,
+    "Suppression de ton compte FranceBB",
+    `Bonjour ${user.name},\n\nTu as demandé la suppression de ton compte FranceBB. Il sera effacé le ${formatDate(scheduledAt)}, ainsi que tes données dans toutes les applications FranceBB.\n\nD'ici là, tu peux annuler : connecte-toi à ton passeport Blood Bowl (${process.env.BETTER_AUTH_URL}) et clique sur « Annuler la suppression ».\n\nSi tu n'as rien demandé, connecte-toi tout de suite pour annuler.`,
   );
   return scheduledAt;
 }
@@ -97,8 +97,8 @@ export async function processDeletions(now = new Date()) {
   for (const user of toRemind) {
     await sendAccountEmail(
       user.email,
-      "Ton compte BBFrance sera effacé bientôt",
-      `Bonjour ${user.name},\n\nComme demandé, ton compte BBFrance sera effacé le ${formatDate(user.deletionScheduledAt!)}. Pour annuler, connecte-toi à ton passeport Blood Bowl (${process.env.BETTER_AUTH_URL}).`,
+      "Ton compte FranceBB sera effacé bientôt",
+      `Bonjour ${user.name},\n\nComme demandé, ton compte FranceBB sera effacé le ${formatDate(user.deletionScheduledAt!)}. Pour annuler, connecte-toi à ton passeport Blood Bowl (${process.env.BETTER_AUTH_URL}).`,
     );
     await prisma.user.update({ where: { id: user.id }, data: { deletionReminderSentAt: now } });
     result.reminders++;
