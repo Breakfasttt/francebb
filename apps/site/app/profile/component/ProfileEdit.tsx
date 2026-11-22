@@ -19,7 +19,7 @@ import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import UserAvatar, { RANK_REQUIREMENTS, type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import ThemePicker from "@/common/components/AppShell/ThemePicker";
-import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
+import { AvatarGeneratorSheet, randomDicebearUrl } from "@bbfrance/ui";
 import { uploadImageFile } from "@/common/utils/imageUpload";
 
 /** Contours d'avatar proposés ; ceux qui ont un seuil se débloquent avec le nombre de messages. */

@@ -21,6 +21,7 @@ import PassportSection from "./passport/PassportSection";
 import ItemList from "./passport/ItemList";
 import { Muted } from "./components/Messages";
 import { Avatar, buttonVariants, cn } from "@bbfrance/ui";
+import { avatarUploadEnabled } from "./passport/avatarUpload";
 
 /**
  * Lien présenté comme un bouton secondaire, à la taille tactile (44 pixels au moins). `cn` retire les classes de base
@@ -66,7 +67,7 @@ export default async function PassportPage(props: { searchParams: Promise<Record
       </header>
 
       <PassportSection id="profile" title="Profil">
-        <ProfileForm initial={profile} />
+        <ProfileForm initial={profile} canUploadAvatar={await avatarUploadEnabled()} />
       </PassportSection>
 
       <PassportSection id="accounts" title="Moyens de connexion">

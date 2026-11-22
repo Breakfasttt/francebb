@@ -19,7 +19,7 @@ import UserAvatar, { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import MultiLigueSearch from "@/common/components/MultiLigueSearch/MultiLigueSearch";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import ThemePicker from "@/common/components/AppShell/ThemePicker";
-import AvatarGeneratorSheet, { randomDicebearUrl } from "@/common/components/AvatarGenerator/AvatarGeneratorSheet";
+import { AvatarGeneratorSheet, randomDicebearUrl } from "@bbfrance/ui";
 import { uploadImageFile } from "@/common/utils/imageUpload";
 import { Dices, Loader2, Sparkles, Upload, ArrowRight } from "lucide-react";
 

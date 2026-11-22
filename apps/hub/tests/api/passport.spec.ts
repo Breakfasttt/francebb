@@ -32,7 +32,7 @@ test("le passeport tient sur un téléphone, sans défilement horizontal, avec d
 
   const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(overflow).toBeLessThanOrEqual(0);
-  for (const target of await page.locator("main button, main input, main select, main a").all()) {
+  for (const target of await page.locator("main button, main input:not([type=file]), main select, main a").all()) {
     const box = await target.boundingBox();
     expect(box?.height ?? 0, await target.evaluate((node) => node.outerHTML.slice(0, 80))).toBeGreaterThanOrEqual(44);
   }

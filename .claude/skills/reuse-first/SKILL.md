@@ -57,7 +57,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Fenêtre, confirmation, signalement | `ConfirmDialog` et `Sheet` de `@bbfrance/ui` (jamais `window.confirm`) ; `ReportModal` pour signaler un contenu ; `Modal` et `ConfirmModal` restent pour les écrans qui les utilisent déjà, pas pour un nouvel écran |
 | Avatar avec le cadre du rang du membre | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
-| Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil |
+| Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGeneratorSheet` de `@bbfrance/ui` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil du site et par le passeport du hub |
 | Bannir ou débannir un membre (raisons rapides, durée, précisions) | `BanUserDialog`, partagé par `/spy/[id]`, `/membres` et les signalements ; durées et date de fin : `lib/banDuration.ts` (carte 222) |
 | Rechercher et choisir un membre ou une ligue | `UserSearch`, `UserMapper`, `LigueSearch` (prop `inputId` pour le relier à un libellé), `MultiLigueSearch` (choix de plusieurs ligues) |
 | Saisie d'étiquettes (tags) avec suggestions | `TagSelector` (props `id` et `aria-label` pour le relier à un libellé) ; pour afficher un statut, `Badge` de `@bbfrance/ui` |

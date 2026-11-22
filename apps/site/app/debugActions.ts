@@ -4,6 +4,11 @@ import { prisma } from "@/lib/prisma";
 import { findDevAccounts } from "@/lib/devAccounts";
 import { auth } from "@/auth";
 
+/** Développement seulement : le site est-il branché sur le hub ? (bouton « compte du hub » de la fenêtre des comptes de test) */
+export async function isDevHubMode(): Promise<boolean> {
+  return process.env.NODE_ENV === "development" && process.env.AUTH_MODE === "hub" && !!process.env.HUB_ISSUER;
+}
+
 export async function getTestUsers() {
   if (process.env.NODE_ENV !== "development") return [];
   return findDevAccounts();

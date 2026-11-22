@@ -119,6 +119,7 @@ Pour essayer Discord et Google en local, créer une seconde application chez cha
 | `DISCORD_CLIENT_ID`, `DISCORD_CLIENT_SECRET` | Application Discord de l'étape 5 |
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Application Google de l'étape 5 |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Service d'envoi de mails de l'étape 5 |
+| `IMGBB_API_KEY` | Facultative : la même clé ImgBB que le site, pour le bouton « Envoyer une image » de l'avatar du passeport. Sans elle, le bouton n'est pas proposé |
 | `CRON_SECRET` | Un nouveau secret : `openssl rand -base64 32`. Vercel appelle chaque nuit à 3 h l'adresse `/api/cron/daily` (déclarée dans `apps/hub/vercel.json`) avec ce secret : elle efface les sessions et liens expirés, le journal d'audit de plus d'un an, et renvoie au site les événements qu'il n'a pas reçus |
 
    **Ne pas ajouter** `HUB_DEV_PASSWORD_LOGIN` ni `NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN` : elles servent seulement en local. `HUB_THIRD_PARTY_APPS` reste vide tant qu'aucune application tierce n'est acceptée.

@@ -2,8 +2,8 @@
 
 /**
  * Générateur d'avatar DiceBear (DiceBear est un service en ligne qui dessine un avatar à partir d'un mot, la
- * « graine », et d'un style). Partagé par l'inscription (`app/auth/onboarding/OnboardingForm.tsx`, carte 091) et
- * l'édition du profil (`app/profile/component/ProfileEdit.tsx`, carte 092), qui avaient chacune leur copie.
+ * « graine », et d'un style). Partagé par le site (inscription et édition du profil, cartes 091 et 092) et le
+ * passeport du hub (22/11/2026) : déplacé de apps/site dans packages/ui pour que les deux aient le même.
  *
  * - `AvatarGeneratorSheet` : panneau qui monte du bas sur téléphone, fenêtre centrée sur ordinateur. On choisit la
  *   graine et le style, l'aperçu se met à jour, puis « Confirmer » renvoie l'adresse de l'image au parent.
@@ -11,7 +11,10 @@
  *   « Aléatoire »).
  */
 import { useState } from "react";
-import { Button, DESKTOP_QUERY, Field, Input, Sheet, SheetContent, useMediaQuery } from "@bbfrance/ui";
+import { Button } from "./button";
+import { Field, Input } from "./field";
+import { Sheet, SheetContent } from "./sheet";
+import { DESKTOP_QUERY, useMediaQuery } from "./use-media-query";
 
 export const DICEBEAR_STYLES = [
   { id: "adventurer", label: "Aventurier" },
@@ -36,7 +39,7 @@ export function randomDicebearUrl(): string {
   return dicebearUrl(style, seed);
 }
 
-export default function AvatarGeneratorSheet({
+export function AvatarGeneratorSheet({
   open,
   onOpenChange,
   initialSeed,

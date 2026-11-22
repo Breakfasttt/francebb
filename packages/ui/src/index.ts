@@ -36,3 +36,6 @@ export { Popover, PopoverTrigger, PopoverClose, PopoverContent } from "./popover
 
 // Refonte des tournois (carte 089) : fenêtre de confirmation
 export { ConfirmDialog } from "./confirm-dialog";
+
+// Générateur d'avatar DiceBear, partagé par le site et le passeport du hub (22/11/2026)
+export { AvatarGeneratorSheet, DICEBEAR_STYLES, dicebearUrl, randomDicebearUrl } from "./avatar-generator";

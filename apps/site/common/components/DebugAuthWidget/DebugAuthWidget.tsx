@@ -5,10 +5,13 @@
  * Depuis la carte 204, c'est un bouton à icône de la barre haute (AppShell), sur téléphone comme sur ordinateur, et
  * non plus un bouton flottant qui recouvrait le bas des pages. Il ouvre une fenêtre (Sheet) pour changer de compte ou
  * créer un compte de test. Son nom accessible reste « Dev Auth » : les tests le retrouvent par ce nom.
+ * Site en mode hub (22/11/2026) : un bouton en tête lance la vraie connexion par le hub, sans moyen imposé ; le hub
+ * propose alors ses propres comptes de test (ceux du passeport, absents de la base du site tant qu'ils ne s'y sont
+ * pas connectés). Même chose que le bouton « Comptes de test du hub » de la page de connexion.
  */
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { getTestUsers, createQuickTestUser } from "@/app/debugActions";
+import { getTestUsers, createQuickTestUser, isDevHubMode } from "@/app/debugActions";
 import { Avatar, Button, Field, Input, Select, Sheet, SheetContent } from "@bbfrance/ui";
 import { Plus, UserCog } from "lucide-react";
 
@@ -20,11 +23,13 @@ export default function DebugAuthWidget({ className }: { className?: string }) {
   const [newName, setNewName] = useState("");
   const [newRole, setNewRole] = useState("COACH");
   const [loading, setLoading] = useState(false);
+  const [hubMode, setHubMode] = useState(false);
 
   if (process.env.NODE_ENV !== "development") return null;
 
   const loadUsers = async () => {
     setTestUsers(await getTestUsers());
+    setHubMode(await isDevHubMode());
   };
 
   const handleOpenChange = (open: boolean) => {
@@ -73,6 +78,17 @@ export default function DebugAuthWidget({ className }: { className?: string }) {
       <Sheet open={isOpen} onOpenChange={handleOpenChange}>
         <SheetContent side="center" title="Comptes de test" description="Développement seulement : se connecter avec un compte de test.">
           <div className="flex flex-col gap-4 overflow-y-auto pb-4">
+            {hubMode && (
+              <div className="flex flex-col gap-1.5 border-b border-bb-border pb-4">
+                <Button type="button" variant="primary" size="tap" className="w-full" onClick={() => signIn("hub", { callbackUrl: window.location.pathname })}>
+                  Se connecter avec un compte du hub
+                </Button>
+                <p className="m-0 text-sm text-bb-text-muted">
+                  Le hub affiche ses comptes de test. Déjà connecté au passeport ? Il te reconnecte directement avec ce
+                  compte : déconnecte-toi du passeport pour en choisir un autre.
+                </p>
+              </div>
+            )}
             <ul className="m-0 flex list-none flex-col gap-2 p-0">
               {testUsers.length === 0 && <li className="text-center text-sm text-bb-text-muted">Aucun compte de test.</li>}
               {testUsers.map((user) => (
