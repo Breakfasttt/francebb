@@ -554,6 +554,7 @@ const BBCODE_SHOWCASE = [
   "[img]/images/logo2.png[/img]",
   "[gallery=2]/images/logo2.png,/images/resource-placeholder.png[/gallery]",
   "[youtube]dQw4w9WgXcQ[/youtube]",
+  "[twitch]https://www.twitch.tv/twitch[/twitch]",
   "[code]const touchdown = true;[/code]",
   "[quote]Citation sans auteur.[/quote]",
   "[quote=exemple-rtc|exemple-topic-regles-post-1|Arbitre Sud-Ouest]Non : un blocage vise un joueur debout.[/quote]",

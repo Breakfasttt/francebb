@@ -4,6 +4,7 @@ import { parseBBCode, type QuoteStatusMap } from "@/lib/bbcode";
 import { BBSchemePlayer } from "@bbfrance/bbscheme-player";
 // Carte 179 : le schéma est lu auprès de l'application BBScheme (réglage BBSCHEME_URL), par le serveur du site
 import { getBoardState } from "@/app/bbschemeBoardActions";
+import TwitchEmbed from "@/common/components/TwitchEmbed/TwitchEmbed";
 
 interface BBCodeContentProps {
   content: string;
@@ -21,6 +22,33 @@ const BBCodeContent: React.FC<BBCodeContentProps> = ({
   className
 }) => {
   useEffect(() => {
+    // Balise [twitch] : cadre d'accord puis lecteur (TwitchEmbed), monté comme le lecteur BBScheme ci-dessous
+    if (typeof window !== 'undefined' && !customElements.get('bb-twitch')) {
+      customElements.define('bb-twitch', class extends HTMLElement {
+        private root: any = null;
+
+        connectedCallback() {
+          const kind = this.getAttribute('data-kind');
+          const id = this.getAttribute('data-id');
+          if (!id || (kind !== 'channel' && kind !== 'video' && kind !== 'clip')) return;
+          import('react-dom/client').then(({ createRoot }) => {
+            if (!this.root) {
+              this.root = createRoot(this);
+              this.root.render(<TwitchEmbed target={{ kind, id }} />);
+            }
+          });
+        }
+
+        disconnectedCallback() {
+          if (this.root) {
+            const r = this.root;
+            this.root = null;
+            setTimeout(() => r.unmount(), 0);
+          }
+        }
+      });
+    }
+
     // Définition de l'élément personnalisé une seule fois
     if (typeof window !== 'undefined' && !customElements.get('bb-scheme')) {
       customElements.define('bb-scheme', class extends HTMLElement {

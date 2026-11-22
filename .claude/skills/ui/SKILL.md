@@ -133,7 +133,7 @@ Taille `tap` (44 px de haut) ou `tap-icon` (carré de 44 px, avec `aria-label`).
 
 ### Panneaux, fenêtres, notifications
 
-- Panneau qui monte du bas, tiroir, fenêtre centrée : `Sheet` + `SheetContent` (`side` = `bottom`, `right` ou `center` ; `title` obligatoire).
+- Panneau qui monte du bas, tiroir, fenêtre centrée : `Sheet` + `SheetContent` (`side` = `bottom`, `left`, `right` ou `center` ; `title` obligatoire ; `left` est réservé au tiroir des rubriques, `SectionDrawer`).
 - Confirmer une action : `ConfirmDialog` (`danger` si destructrice). **Jamais `window.alert` ni `window.confirm`.** `Modal` et `ConfirmModal` (`common/components`) restent pour les écrans existants, pas pour un nouvel écran.
 - Menu « ⋯ » : `ActionMenu`. Petit panneau sous un bouton, sur ordinateur : `Popover` (sur téléphone : `Sheet`).
 - Fenêtre sur mesure : la base `Dialog`, `DialogOverlay`, `DialogContent`, `DialogTitle` (gère Échap, focus clavier, accessibilité).
@@ -143,7 +143,7 @@ Taille `tap` (44 px de haut) ou `tap-icon` (carré de 44 px, avec `aria-label`).
 ### Éléments courants
 
 - `Card` (`CardHeader`, `CardTitle`, `CardBody`, `ListRow`) ; prop `glass` pour le verre dépoli si le thème le permet.
-- Onglets : `Tabs` (dans la page) ou `LinkTabs` (liés à l'adresse, `?tab=`) ; pagination `PageNav` ; étiquette `Badge` ; compteur `CountBadge` ; liste vide ou chargement `EmptyState`, `Skeleton`.
+- Onglets : `Tabs` (dans la page) ou `LinkTabs` (liés à l'adresse, `?tab=`) ; rubriques d'un écran sur téléphone : `SectionDrawer` (voir « Onglets ») ; pagination `PageNav` ; étiquette `Badge` ; compteur `CountBadge` ; liste vide ou chargement `EmptyState`, `Skeleton`.
 - Avatar : `UserAvatar` (cadre du rang), `MemberAvatarImage` (petite image, avatar par défaut), `Avatar` de `@bbfrance/ui` (initiale).
 - Messages : `BBCodeEditor` (écrire), `BBCodeContent` (afficher).
 - Icônes : `lucide-react` uniquement, avec `aria-hidden="true"` quand un texte les accompagne.
@@ -206,7 +206,11 @@ Une autre largeur ne sert qu'à ajuster une grille (3 colonnes de cartes à 2, u
 
 ### Onglets
 
-En haut de la page, avec `LinkTabs` : une rangée qui défile de côté, estompée du côté où il reste des onglets, placée d'elle-même sur l'onglet ouvert. Beaucoup d'onglets : `StaffPageLayout` (colonne sur ordinateur, rangée sur téléphone).
+- **Sur téléphone, jamais de rangée d'onglets qui défile de côté** (`DESIGN.md`). Les rubriques d'un écran passent par `SectionDrawer` (`common/components/SectionDrawer/`) : une barre `lg:hidden` collée sous la barre du haut (`sticky top-14`) affiche la rubrique ouverte et le nombre de rubriques ; un appui ouvre un tiroir à gauche (`Sheet side="left"`, entre la barre du haut et la barre basse) avec toutes les rubriques, la rubrique ouverte marquée et un compteur facultatif (`count`). Une rubrique est un lien (`href`, avec `linkComponent` pour un `Link` sans retour en haut) ou une vue tenue par l'état (`onSelect`).
+- Intégration : placer `SectionDrawer` en tête de la `<section>` du contenu, qui porte un `id` et `scroll-mt-14`, et passer cet `id` en `scrollTargetId` (après un choix, le début de la rubrique revient sous la barre si la page était défilée). Modèles : `app/profile/page.tsx` (liens), `app/classement/page.tsx` (vues), `StaffPageLayout` (modération, administration, avec compteurs).
+- Sur ordinateur, les rubriques restent dans le panneau gauche (`PanelLink`) ou en `LinkTabs` au-dessus du contenu (fiche d'un membre).
+- Deux ou trois onglets courts qui tiennent à 360 px sans défiler (résultats d'un tournoi : « Classement », « Matchs ») restent des `Tabs`.
+- Test e2e sur téléphone : ouvrir la barre par son nom accessible (`/^Mon compte :/`, « <Titre> : <rubrique> »), puis choisir dans le dialogue du même titre.
 
 ### Filtres d'une liste
 

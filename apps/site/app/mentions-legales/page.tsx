@@ -2,6 +2,7 @@ import React from 'react';
 import { Metadata } from 'next';
 import PageHeader from '@/common/components/PageHeader/PageHeader';
 import PremiumCard from '@/common/components/PremiumCard/PremiumCard';
+import TwitchConsentReset from '@/common/components/TwitchEmbed/TwitchConsentReset';
 
 /**
  * Mentions légales et politique de confidentialité du site BBFrance (carte 126).
@@ -26,7 +27,7 @@ const sectionText =
   "[&_a]:font-semibold [&_a]:text-bb-accent-text [&_a]:underline [&_a]:underline-offset-2 [&_a]:[overflow-wrap:anywhere] [&_a:hover]:decoration-2";
 
 /** Date de la dernière modification du texte, à changer à chaque mise à jour. */
-const LAST_UPDATE = '31 octobre 2026';
+const LAST_UPDATE = '22 novembre 2026';
 
 export default function MentionsLegalesPage() {
   const contact = process.env.CONTACT_EMAIL;
@@ -167,14 +168,30 @@ export default function MentionsLegalesPage() {
             </p>
           </PremiumCard>
 
+          <div id="cookies" className="scroll-mt-20">
           <PremiumCard>
             <h2>9. Cookies</h2>
             <p>
-              Le site et le passeport n’utilisent que des cookies nécessaires à leur fonctionnement : garder ta session ouverte,
-              protéger les formulaires, retenir ton thème. Ces cookies sont dispensés de consentement. Aucun cookie de mesure
-              d’audience ni de publicité.
+              Le site et le passeport n’utilisent que des cookies nécessaires à leur fonctionnement. Ces cookies sont dispensés
+              de consentement : il n’y a donc pas de bandeau à accepter. Aucun cookie de mesure d’audience ni de publicité.
             </p>
+            <ul>
+              <li><strong>authjs.session-token</strong> : garde ta session ouverte (30 jours au plus, retiré à la déconnexion).</li>
+              <li><strong>authjs.csrf-token</strong> et <strong>authjs.callback-url</strong> : protègent la connexion et te ramènent sur la page que tu voulais ouvrir (le temps de la visite).</li>
+              <li><strong>bbfrance_theme</strong> : retient le thème choisi quand tu n’es pas connecté (1 an).</li>
+              <li><strong>onboarding_sync</strong> : termine ton inscription (60 secondes).</li>
+              <li><strong>bbf_articles_lus</strong> : compte une seule lecture par article pendant ta visite, sans rien enregistrer d’autre (effacé à la fermeture du navigateur).</li>
+            </ul>
+            <p>
+              <strong>Vidéos et directs intégrés.</strong> Les vidéos YouTube passent par le lecteur « confidentialité renforcée »
+              (youtube-nocookie.com) : YouTube ne dépose rien tant que tu ne lances pas la vidéo. Les images des vidéos sont
+              servies par le site. Les contenus Twitch (directs, vidéos, clips) ne se chargent qu’après ton accord, donné à
+              l’endroit du lecteur : Twitch dépose alors ses propres cookies. Si tu as choisi de toujours les afficher, ce
+              choix est gardé dans ton navigateur pendant 6 mois, et tu peux le retirer ici :
+            </p>
+            <TwitchConsentReset />
           </PremiumCard>
+          </div>
 
           <PremiumCard>
             <h2>10. Limitation de responsabilité</h2>

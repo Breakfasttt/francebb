@@ -152,7 +152,7 @@ export default function QuoteSelectionButton() {
           : {
               left: "50%",
               bottom:
-                "calc(var(--app-bottom-nav-space, 0px) + var(--app-page-bar-space, 0px) + var(--app-cookie-space, 0px) + 12px)",
+                "calc(var(--app-bottom-nav-space, 0px) + var(--app-page-bar-space, 0px) + 12px)",
             }
       }
     >

@@ -14,12 +14,17 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "4.5mb",
     },
   },
-  // Images (carte 019) : pas de section « images », les réglages par défaut suffisent.
+  // Images (carte 019) : réglages par défaut, plus une seule adresse extérieure (voir plus bas).
   // next/image n'optimise que les images du dossier public/ (converties en WebP, au format
   // affiché). Aucun site extérieur n'est autorisé (pas de « remotePatterns ») : les avatars
   // et les images des membres peuvent venir de n'importe quelle adresse, et tout autoriser
   // ferait de l'optimiseur du site un relais ouvert à tout Internet. Ces images extérieures
   // restent donc des balises <img> ordinaires.
+  // Seule exception : les images des vidéos YouTube de la page Médias (i.ytimg.com, dossier /vi/). Passées par
+  // l'optimiseur, elles sont servies par le site : le navigateur du visiteur ne contacte pas Google (RGPD).
+  images: {
+    remotePatterns: [{ protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" }],
+  },
   
   async headers() {
     return [

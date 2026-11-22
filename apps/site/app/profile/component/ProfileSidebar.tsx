@@ -11,7 +11,8 @@
  *   modérateur) et, pour un modérateur, « Bannir » ou « Débannir ». Chaque action demande une confirmation.
  *   « Message privé » est grisé, avec la raison dessous, si le membre est banni ou si un blocage existe entre vous
  *   (carte 221).
- * Les onglets ne sont plus ici : chaque page les affiche au-dessus de son contenu (composant LinkTabs).
+ * Les rubriques ne sont pas ici : chaque page les affiche à côté (panneau gauche ou onglets sur ordinateur, tiroir
+ * `SectionDrawer` sur téléphone).
  */
 import { useState, useTransition } from "react";
 import Link from "next/link";

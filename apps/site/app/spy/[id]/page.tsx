@@ -2,9 +2,9 @@
 
 /**
  * Profil d'un membre vu par un autre membre `/spy/[id]` (refonte, carte 092, ADR 0006) : même mise en page que
- * `/profile` (carte du membre à gauche sur ordinateur, en haut sur téléphone), avec deux onglets gardés dans
- * l'adresse (`?tab=activity|articles`) et les actions sur ce membre (message privé, signaler, bloquer, et bannir pour
- * un modérateur). Son propre identifiant renvoie vers `/profile`. Un visiteur non connecté est envoyé vers la page de
+ * `/profile` (carte du membre à gauche sur ordinateur, en haut sur téléphone), avec deux rubriques gardées dans
+ * l'adresse (`?tab=activity|articles`), en onglets sur ordinateur et dans le tiroir `SectionDrawer` sur téléphone,
+ * et les actions sur ce membre (message privé, signaler, bloquer, et bannir pour un modérateur). Son propre identifiant renvoie vers `/profile`. Un visiteur non connecté est envoyé vers la page de
  * connexion, qui le ramène ici ensuite.
  */
 import { useSession } from "next-auth/react";
@@ -20,6 +20,7 @@ import { canBanMember, isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
+import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
 import { PROFILE_LAYOUT_CLASS, PROFILE_PAGE_CLASS } from "@/app/profile/component/profileLayout";
 
 type ProfileTab = "activity" | "articles";
@@ -184,8 +185,10 @@ export default function SpyProfilePage() {
           onRefresh={refreshData}
         />
 
-        <section aria-label={activeTab === "articles" ? "Articles" : "Activité du forum"} className="flex min-w-0 flex-col gap-4">
-          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="-mx-3 px-3 lg:mx-0 lg:px-0" />
+        <section id="rubrique-du-membre" aria-label={activeTab === "articles" ? "Articles" : "Activité du forum"} className="flex min-w-0 scroll-mt-14 flex-col gap-4">
+          {/* Téléphone : barre collée et tiroir des rubriques, comme « Mon compte » ; ordinateur : onglets au-dessus du contenu */}
+          <SectionDrawer title={`Profil de ${user.name}`} items={tabs} linkComponent={TabLink} scrollTargetId="rubrique-du-membre" />
+          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="max-lg:hidden" />
           {activeTab === "activity" && <ProfileActivity activities={activities} userName={user.name} />}
           {activeTab === "articles" && <ProfileArticles userId={user.id} isOwnProfile={false} />}
         </section>

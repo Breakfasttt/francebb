@@ -412,6 +412,28 @@ Ces challenges permettent d'avoir des objectifs à taille humaine et de créer d
     }
   ];
 
+  // Chaînes YouTube de départ de la page Médias (validées par le responsable le 22/11/2026), une par ligne
+  // « identifiant|nom » (format dans lib/mediaChannels.ts). Comme les autres réglages, écrit seulement s'il n'existe
+  // pas encore : la liste se gère ensuite dans l'écran Médias de l'administration.
+  siteSettings.push({
+    key: "youtube_channels",
+    value: [
+      "UCJBrT8VzthslAZKNKooHHtg|Dré dans l'pentu [74] Blood Bowl",
+      "UCeIAjAKjxxUk2sPWPoxG2Ug|Breakyt Blood Bowl",
+      "UCdffigyGanGU8qqshCX_x2w|Olivierdulac bloodbowl",
+      "UCmqAjIm-i_23U51kQY4H0cQ|Bigadin Stratégie",
+      "UC0gL3fudFHIVCGEMwjA49_Q|Monitor Blood Bowl",
+      "UCqm6UJDcYza_PwZzjB8Sg5w|Bashtactics_Pink charlie",
+      "UCIZSMwf8rHV3obXJGij0Qzw|Lokragen",
+      "UCgYOgRexyS77FdTA4SghQnQ|- Netblitz -",
+      "UCYkKzxpCrXyo1NH8xo4q2lw|Nokypops",
+      "UCgX4Lw_dDyEeZP1XgxCwbtQ|Tyra'Kadémie",
+      "UC3OcOxECWlfg5Rbq3XJCF_A|AFTER LUTECE",
+      "UC3kZ_QcjJgAPen57Xwwcj4g|Cyanide Studio",
+      "UCwdh3MTrFq3sXlB4ct8B-Fg|Warhammer",
+    ].join("\n"),
+  });
+
   for (const setting of siteSettings) {
     await prisma.siteSetting.upsert({
       where: { key: setting.key },

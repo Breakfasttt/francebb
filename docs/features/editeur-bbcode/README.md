@@ -12,7 +12,7 @@ Le coach met en forme ses textes avec le BBCode : des balises entre crochets com
 - **Les balises** (`lib/bbcode.ts`) :
   - texte : `b`, `i`, `u`, `s`, `sub`, `sup`, `color=`, `size=` ;
   - mise en page : `center`, `right`, `justify`, `hr`, `list`, `list=1` avec `[*]`, `table`, `tr`, `th`, `td` ;
-  - liens et médias : `url`, `url=`, `img` (options `align`), `gallery` (`gallery=2` pour deux colonnes), `youtube` (un lien YouTube collé est aussi reconnu) ;
+  - liens et médias : `url`, `url=`, `img` (options `align`), `gallery` (`gallery=2` pour deux colonnes), `youtube` (un lien YouTube collé est aussi reconnu ; lecteur `youtube-nocookie.com`, sans cookie de Google tant que la vidéo n'est pas lancée), `twitch` (nom d'une chaîne, ou adresse d'une chaîne, d'une vidéo ou d'un clip ; mêmes options que `youtube` ; cadre d'accord avant le lecteur, `common/components/TwitchEmbed`, `lib/twitchEmbed.ts`) ;
   - blocs : `code`, `quote`, `quote=membre|message|pseudo`, `spoiler`, `spoiler=titre`, `accordion=titre` ;
   - propres au site : `mention=id`, `topic=id` (lien vers un sujet), `bbscheme` (schéma animé), et les smileys (`:)`, `;)`, `:D`, `:p`, `:(`…).
 - **Mentions** (carte 112) : le « @ » s'écrit toujours. Tapé en début de mot, il ouvre en plus la recherche d'un membre (`/api/users/search`, par pseudo seulement). On peut donc encore écrire une adresse électronique. 10 mentions au plus comptent par message (`lib/mentionRules.ts`).

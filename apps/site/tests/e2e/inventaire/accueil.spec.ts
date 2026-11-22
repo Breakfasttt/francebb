@@ -70,6 +70,8 @@ async function db<T>(run: Parameters<typeof withTestDb<T>>[0]): Promise<T> {
   }
 }
 
+/** Chaîne YouTube fictive (24 caractères, comme un vrai identifiant) : son flux est vide, la carte n'a pas d'image. */
+const INV_YOUTUBE_ID = "UCinvaccueil1234567890ab";
 const FORUM_ID = "e2e_acc_forum";
 const ADMIN_ID = "e2e_acc_admin";
 const ARTICLE_ID = "e2e_acc_article";
@@ -84,7 +86,7 @@ const SETTINGS: Record<string, string | null> = {
   how_to_play_naf_cdf_rtc: "Texte Inv de la section 5",
   how_to_play_challenges: null,
   twitch_channels: "inv_twitch_a, inv_twitch_b",
-  youtube_channels: "UCinvaccueil123",
+  youtube_channels: `${INV_YOUTUBE_ID}|Inv Chaîne Accueil`,
 };
 const previousSettings = new Map<string, string | null>();
 
@@ -371,18 +373,28 @@ test.describe("pages fixes", () => {
     await page.screenshot({ path: testInfo.outputPath("jouer.png"), fullPage: true });
   });
 
-  test("/media : lecteurs Twitch avec leur lien, listes de lecture YouTube", async ({ page }, testInfo) => {
+  test("/media : directs Twitch après accord, chaînes YouTube avec lecture au clic", async ({ page }, testInfo) => {
     // Les lecteurs chargent des pages extérieures : on n'attend pas la fin de toutes les requêtes
     await page.goto("/media", { waitUntil: "domcontentloaded" });
     const main = content(page);
-    for (const channel of ["inv_twitch_a", "inv_twitch_b"]) {
-      await expect(main.getByTitle(new RegExp(channel))).toHaveAttribute("src", new RegExp(`player\\.twitch\\.tv/\\?channel=${channel}`));
-    }
-    const twitchLinks = main.getByRole("link", { name: /Twitch/ });
+    // Twitch : aucun lecteur avant l'accord (cookies de Twitch), un lien vers chaque chaîne
+    await expect(main.locator("iframe[src*='twitch.tv']")).toHaveCount(0);
+    await expect(main.getByRole("button", { name: "Afficher le contenu Twitch" })).toHaveCount(2);
+    const twitchLinks = main.getByRole("link", { name: /Voir sur Twitch/ });
     const hrefs = await twitchLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href")));
     expect(hrefs).toEqual(expect.arrayContaining(["https://twitch.tv/inv_twitch_a", "https://twitch.tv/inv_twitch_b"]));
     await expect(twitchLinks.first()).toHaveAttribute("target", "_blank");
-    await expect(main.getByTitle(/YouTube/)).toHaveAttribute("src", /youtube\.com\/embed\/videoseries\?list=UUinvaccueil123/);
+    // Après l'accord, le lecteur de cette chaîne se charge, et seulement lui
+    await main.getByRole("button", { name: "Afficher le contenu Twitch" }).first().click();
+    await expect(main.getByTitle(/Direct de inv_twitch_a/)).toHaveAttribute("src", /player\.twitch\.tv\/\?channel=inv_twitch_a/);
+    await expect(main.locator("iframe[src*='twitch.tv']")).toHaveCount(1);
+
+    // YouTube : le nom de la chaîne et son lien ; le lecteur (youtube-nocookie) ne se charge qu'au clic
+    await expect(main.getByText("Inv Chaîne Accueil", { exact: true })).toBeVisible();
+    await expect(main.getByRole("link", { name: /Voir sur YouTube/ })).toHaveAttribute("href", `https://www.youtube.com/channel/${INV_YOUTUBE_ID}`);
+    await expect(main.locator("iframe[src*='youtube']")).toHaveCount(0);
+    await main.getByRole("button", { name: "Lire les vidéos de Inv Chaîne Accueil" }).click();
+    await expect(main.getByTitle("Vidéos de Inv Chaîne Accueil")).toHaveAttribute("src", new RegExp(String.raw`youtube-nocookie\.com/embed/videoseries\?list=` + INV_YOUTUBE_ID.replace(/^UC/, "UU")));
     await page.screenshot({ path: testInfo.outputPath("media.png"), fullPage: true });
   });
 

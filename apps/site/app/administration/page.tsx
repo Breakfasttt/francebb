@@ -3,13 +3,13 @@
 /**
  * Page d'administration `/administration` (refonte, carte 099, ADR 0006), réservée aux administrateurs (puissance 90
  * ou plus). L'onglet ouvert est lu dans l'adresse (`?tab=general|roles|coachs|structure|reference|howtoplay|
- * info-mails`) ; sans paramètre, ou avec une valeur inconnue, c'est la configuration générale. L'ancien onglet
+ * info-mails|media`) ; sans paramètre, ou avec une valeur inconnue, c'est la configuration générale. L'ancien onglet
  * « Zone de danger » (remise à zéro complète du site) a été retiré par la carte 158 : trop dangereux en ligne.
  * Mise en page commune avec la modération : `StaffPageLayout` (onglets en colonne sur ordinateur, en rangée en haut de
  * la page sur téléphone).
  */
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
-import { BookOpen, Database, Globe, LayoutList, Mail, ShieldCheck, Users } from "lucide-react";
+import { BookOpen, Clapperboard, Database, Globe, LayoutList, Mail, ShieldCheck, Users } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
@@ -21,6 +21,7 @@ import ReferenceDataTab from "./component/ReferenceDataTab";
 import GeneralTab from "./component/GeneralTab";
 import HowToPlayTab from "./component/HowToPlayTab";
 import InfoMailsTab from "./component/InfoMailsTab";
+import MediaTab from "./component/MediaTab";
 
 const TABS = [
   { id: "general", label: "Configuration", icon: Globe },
@@ -30,6 +31,7 @@ const TABS = [
   { id: "reference", label: "Données de référence", icon: Database },
   { id: "howtoplay", label: "Guide du débutant", icon: BookOpen },
   { id: "info-mails", label: "Annonces par e-mail", icon: Mail },
+  { id: "media", label: "Médias", icon: Clapperboard },
 ] as const;
 
 type AdminTab = (typeof TABS)[number]["id"];
@@ -88,6 +90,7 @@ export default function AdministrationPage() {
       {activeTab === "reference" && <ReferenceDataTab />}
       {activeTab === "howtoplay" && <HowToPlayTab />}
       {activeTab === "info-mails" && <InfoMailsTab />}
+      {activeTab === "media" && <MediaTab />}
     </StaffPageLayout>
   );
 }

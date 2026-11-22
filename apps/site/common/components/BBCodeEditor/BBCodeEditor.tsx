@@ -31,6 +31,7 @@ import { uploadImageFile } from "@/common/utils/imageUpload";
 import { IMAGE_UPLOAD_MAX_BYTES } from "@/common/utils/imageUploadLimits";
 import { galleryTag, photoFailureMessage, shrinkPhoto, uploadProgressLabel } from "@/common/utils/photoUpload";
 import { appendQuote } from "@/lib/forumQuote";
+import { parseTwitchInput } from "@/lib/twitchEmbed";
 import {
   Avatar,
   Button,
@@ -384,13 +385,25 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     setActiveTool(null);
   };
 
-  /** Balise [img] ou [youtube] avec les options choisies (alignement, habillage, taille réduite). */
-  const mediaTag = (tagName: "img" | "youtube", url: string) => {
+  /** Balise [img], [youtube] ou [twitch] avec les options choisies (alignement, habillage, taille réduite). */
+  const mediaTag = (tagName: "img" | "youtube" | "twitch", url: string) => {
     let tag = `[${tagName}`;
     if (toolInputAlign !== "center") tag += ` align=${toolInputAlign}`;
     if (toolInputAlign !== "center") tag += ` wrap=${toolInputWrap ? "yes" : "no"}`;
     if (!toolInputThumb) tag += ` thumb=no`;
     return `${tag}]${url}[/${tagName}]`;
+  };
+
+  // Twitch : chaîne, vidéo ou clip ; une adresse non reconnue est signalée sous le champ
+  const [twitchError, setTwitchError] = useState<string>();
+  const submitTwitch = () => {
+    if (!parseTwitchInput(toolInputUrl)) {
+      setTwitchError("Colle le nom d'une chaîne ou l'adresse d'une chaîne, d'une vidéo ou d'un clip Twitch.");
+      return;
+    }
+    setTwitchError(undefined);
+    insertTag(mediaTag("twitch", toolInputUrl.trim()), "");
+    resetMediaOptions();
   };
 
   const submitYoutube = () => {
@@ -724,6 +737,23 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
             {mediaOptions}
             <Button type="button" variant="primary" size="tap" onClick={submitYoutube}>
               Insérer la vidéo
+            </Button>
+          </div>
+        );
+      case "twitch":
+        return (
+          <div className="flex flex-col gap-4">
+            <Field
+              label="Chaîne, vidéo ou clip Twitch"
+              htmlFor={fieldId("twitch")}
+              hint="Le nom d'une chaîne, ou l'adresse d'une chaîne, d'une vidéo ou d'un clip. Le contenu ne s'affiche qu'après l'accord de chaque visiteur (cookies de Twitch)."
+              error={twitchError}
+            >
+              <Input id={fieldId("twitch")} type="text" inputMode="url" autoComplete="off" placeholder="https://www.twitch.tv/…" value={toolInputUrl} onChange={(e) => { setToolInputUrl(e.target.value); setTwitchError(undefined); }} data-autofocus />
+            </Field>
+            {mediaOptions}
+            <Button type="button" variant="primary" size="tap" onClick={submitTwitch}>
+              Insérer le contenu Twitch
             </Button>
           </div>
         );

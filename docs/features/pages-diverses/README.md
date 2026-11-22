@@ -39,7 +39,7 @@ Depuis la carte 220, c'est une page de lecture : sur ordinateur, le sommaire « 
 
 ### Profil public — `/spy/[id]` (`app/spy/[id]/page.tsx`)
 Le profil d'un autre coach, ouvert depuis un message du forum ou le classement : activité, articles, « Message privé » (grisé avec sa raison si le membre est banni ou si un blocage existe, carte 221), signalement et blocage. Réservé aux membres connectés. Détail : fiche `profil-membres`.
-**Sur téléphone** (jusqu'à 1024 pixels) : la carte du membre (`ProfileSidebar`) passe au-dessus du contenu, et les onglets forment une rangée qui défile de côté (`LinkTabs`) ; voir la fiche `profil-membres`.
+**Sur téléphone** (jusqu'à 1024 pixels) : la carte du membre (`ProfileSidebar`) passe au-dessus du contenu, et les rubriques passent par la barre collée qui ouvre le tiroir des rubriques (`SectionDrawer`) ; voir la fiche `profil-membres`.
 
 ### Mentions légales — `/mentions-legales`
 Éditeur, hébergeur, propriété intellectuelle, RGPD, cookies. Visible par tous, lien dans le panneau « Plus » sur téléphone et dans le pied de page sur ordinateur. **Sur téléphone** : une colonne, marges réduites. Sa mise en forme n'a pas été refaite par la carte 090 (le texte était réécrit en même temps par la carte 126) : elle est reportée à la carte 101.

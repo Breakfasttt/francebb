@@ -27,7 +27,7 @@ function contentSecurityPolicy(nonce: string): string {
     "img-src 'self' data: blob: https:",
     "font-src 'self' data:",
     // Vidéos YouTube des messages, chaînes Twitch de la page Médias.
-    "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.twitch.tv",
+    "frame-src https://www.youtube.com https://www.youtube-nocookie.com https://player.twitch.tv https://clips.twitch.tv",
     // En développement, le rechargement à chaud passe par une connexion websocket.
     `connect-src 'self'${isDev ? " ws: wss:" : ""}`,
     "worker-src 'self' blob:",

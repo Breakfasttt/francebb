@@ -1,20 +1,19 @@
 /*
  * Mise en page autour de la coquille du site (cartes 081 et 101).
  * --app-bottom-nav-space : place occupée en bas par la barre de navigation (0 sur ordinateur, pendant la saisie
- * et sur BBScheme). Les éléments fixés en bas (bandeau cookies, bouton de filtres, notifications) s'en servent.
- * --app-cookie-space : hauteur du bandeau des cookies tant qu'il est affiché (posée par CookieBanner.tsx), 0 sinon.
+ * et sur BBScheme). Les éléments fixés en bas (bouton de filtres, notifications) s'en servent.
  */
 body {
   --app-bottom-nav-space: 0px;
 }
 
-/* Zone du contenu de chaque page (app/layout.tsx). Sur ordinateur, la place du pied de page fixé en bas, et celle du
-   bandeau des cookies s'il est affiché : la fin de la page peut toujours défiler au-dessus. */
+/* Zone du contenu de chaque page (app/layout.tsx). Sur ordinateur, la place du pied de page fixé en bas : la fin de
+   la page peut toujours défiler au-dessus. */
 .main-layout-wrapper {
   position: relative;
   flex: 1;
   width: 100%;
-  padding-bottom: calc(3rem + var(--app-cookie-space, 0px));
+  padding-bottom: 3rem;
 }
 
 @media (max-width: 1024px) {
@@ -35,7 +34,7 @@ body {
     transform: translateY(100%);
   }
 
-  /* Sur téléphone : la place de la barre basse, du bandeau des cookies et des notifications affichées (une page qui
+  /* Sur téléphone : la place de la barre basse et des notifications affichées (une page qui
      colle sa propre barre d'actions en bas réserve elle-même sa place). Les notifications s'empilent juste au-dessus
      de la barre basse : tant qu'il y en a une, on peut faire défiler les derniers boutons de la page au-dessus d'elle. */
   body:has([data-sonner-toast]) {
@@ -43,7 +42,7 @@ body {
   }
 
   .main-layout-wrapper {
-    padding-bottom: calc(var(--app-bottom-nav-space) + var(--app-cookie-space, 0px) + var(--app-toast-space, 0px) + 1.5rem);
+    padding-bottom: calc(var(--app-bottom-nav-space) + var(--app-toast-space, 0px) + 1.5rem);
   }
 
   /* --app-page-bar-space : hauteur d'une barre d'actions collée en bas par la page elle-même (par exemple

@@ -5,7 +5,7 @@
  * avant et après la refonte de l'écran.
  *
  * Quelques petites fonctions cherchent un élément à deux endroits possibles, sans changer ce qui est attendu :
- * - `adminTab` : les onglets sont dans la page, ou (avant la refonte, sur téléphone) dans le panneau « Plus » ;
+ * - `adminTab` : les onglets sont dans le panneau gauche (ordinateur) ou dans le tiroir des rubriques (téléphone) ;
  * - `forumAction` : une action sur un forum est un bouton visible, ou une entrée du menu « ⋯ » de ce forum.
  *
  * Glisser-déposer : il est fait au clavier (Espace pour prendre la poignée, flèche vers le haut, Espace pour poser),
@@ -136,25 +136,24 @@ const TABS = {
 const RESET_TAB = /^Zone de danger/i;
 
 /**
- * Onglet de l'administration : un lien ou un bouton de la page ; avant la refonte, sur téléphone, un bouton du
- * panneau « Plus ». Renvoie l'onglet visible (le panneau est ouvert s'il le faut), ou un repère vide s'il n'existe pas.
+ * Onglet de l'administration : un lien du panneau gauche sur ordinateur ; sur téléphone, un lien du tiroir des
+ * rubriques, ouvert par la barre « Administration : <onglet ouvert> » s'il ne l'est pas déjà. Renvoie l'onglet, ou
+ * un repère vide s'il n'existe pas.
  */
 async function adminTab(page: Page, name: RegExp): Promise<Locator> {
-  const main = page.getByRole("main").first();
-  const inMain = main.getByRole("link", { name }).or(main.getByRole("button", { name })).filter({ visible: true });
-  if ((await inMain.count()) > 0) return inMain.first();
-  // Les onglets sont dans la page : celui-ci n'existe pas
-  if ((await main.getByRole("link", { name: TABS.general }).or(main.getByRole("button", { name: TABS.general })).filter({ visible: true }).count()) > 0) {
-    return inMain;
+  const drawer = page.getByRole("dialog", { name: "Administration" });
+  const bar = page.getByRole("button", { name: /^Administration :/ }).filter({ visible: true });
+  if (!(await drawer.isVisible()) && (await bar.count()) === 0) {
+    return page.getByRole("main").first().getByRole("link", { name }).filter({ visible: true });
   }
-  await page.getByRole("button", { name: "Plus", exact: true }).click();
-  const panel = page.getByRole("dialog", { name: "Plus" });
-  await expect(panel).toBeVisible();
-  return panel.getByRole("button", { name });
+  if (!(await drawer.isVisible())) await bar.click();
+  await expect(drawer).toBeVisible();
+  return drawer.getByRole("link", { name });
 }
 
-async function closePlusPanel(page: Page) {
-  if (await page.getByRole("dialog", { name: "Plus" }).isVisible()) await page.keyboard.press("Escape");
+/** Referme le tiroir des rubriques du téléphone s'il est resté ouvert. */
+async function closeDrawer(page: Page) {
+  if (await page.getByRole("dialog", { name: "Administration" }).isVisible()) await page.keyboard.press("Escape");
 }
 
 /** Glisser-déposer au clavier : la poignée vers le haut d'une place. */
@@ -206,10 +205,10 @@ test("onglets gardés dans l'adresse ; plus de « Zone de danger », même pour 
   for (const [id, name] of Object.entries(TABS)) {
     await (await adminTab(page, name)).click();
     await expect(page).toHaveURL(new RegExp(`[?&]tab=${id}(&|$)`));
-    await closePlusPanel(page);
+    await closeDrawer(page);
   }
   await expect(await adminTab(page, RESET_TAB)).toHaveCount(0);
-  await closePlusPanel(page);
+  await closeDrawer(page);
 
   await page.context().clearCookies();
   await loginAs(page, SA.id);

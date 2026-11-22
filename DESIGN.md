@@ -88,6 +88,7 @@ Toute couleur passe par une variable `--bb-*` (ou la classe `bb-*` qui la porte)
 ### Le téléphone d'abord, l'ordinateur en entier
 
 - **Téléphone (jusqu'à 1024 px)** : une colonne, barre du haut de 56 px, barre basse à cinq onglets. Le panneau de gauche devient une rangée de filtres qui défile ou un tiroir ; la colonne de contexte passe sous le contenu ou disparaît. Cibles d'au moins 44 px.
+- **Rubriques d'un écran sur téléphone** : plus de rangée d'onglets qui défile de côté (on n'y voit pas toutes les rubriques et il faut remonter pour en changer). Dès qu'un écran a plus de trois rubriques, ou que leurs noms ne tiennent pas à 360 px, elles passent par `SectionDrawer` : une barre collée sous la barre du haut (« ☰ Rubrique ouverte · N rubriques › ») qui ouvre un tiroir à gauche avec toutes les rubriques et leurs compteurs. Deux ou trois onglets courts qui tiennent sur la largeur restent des onglets.
 - **Ordinateur (à partir de 1025 px)** : **on utilise la largeur**. Pas de colonne centrée étroite avec de grands vides. La coquille (`SiteLayout`) a trois zones :
   - **panneau gauche** (240 px) : l'action principale de la rubrique en haut (« Nouveau sujet », « Annoncer un tournoi »), puis la navigation de la rubrique (catégories avec compteurs, filtres), collé au défilement ;
   - **contenu** : fluide, il prend toute la place restante ;

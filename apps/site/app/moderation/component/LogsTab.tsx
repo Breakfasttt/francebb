@@ -87,6 +87,7 @@ const ACTION_LABELS: Record<string, string> = {
   REFERENCE_DATA_UPDATED: "Donnée de référence modifiée",
   REFERENCE_DATA_DELETED: "Donnée de référence supprimée",
   SITE_SETTING_UPDATED: "Réglage du site modifié",
+  MEDIA_CHANNELS_UPDATED: "Chaînes de la page Médias modifiées",
   MASS_MAIL_SENT: "Annonce envoyée par e-mail",
   LOGS_PURGED: "Journal purgé",
 };

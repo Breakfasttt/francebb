@@ -2,12 +2,18 @@ import { prisma } from "@/lib/prisma";
 import { Button, Card } from "@bbfrance/ui";
 import { ExternalLink } from "lucide-react";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import TwitchEmbed from "@/common/components/TwitchEmbed/TwitchEmbed";
+import YoutubeChannelCard from "@/app/media/component/YoutubeChannelCard";
+import { TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY, parseTwitchChannels, parseYoutubeChannels } from "@/lib/mediaChannels";
+import { getLatestVideos } from "@/lib/youtubeChannels";
 
 /**
- * Page « Médias » (refonte, carte 090, ADR 0006) : les lecteurs des chaînes Twitch, chacun avec un lien vers la
- * chaîne sur Twitch, puis les listes de lecture YouTube. Les chaînes sont réglées dans l'administration (réglages
- * `twitch_channels` et `youtube_channels`, séparés par des virgules). Une colonne sur téléphone, deux sur ordinateur.
- * Les lecteurs ne se chargent qu'à l'approche de l'écran (`loading="lazy"`), pour ménager les téléphones.
+ * Page « Médias » (refonte, carte 090, ADR 0006) : les directs des chaînes Twitch, puis les chaînes YouTube. Les
+ * chaînes sont réglées dans l'écran Médias de l'administration (réglages `twitch_channels` et `youtube_channels`,
+ * format dans lib/mediaChannels.ts). Une colonne sur téléphone, deux sur ordinateur, trois à partir de 1440 pixels.
+ * - YouTube : une carte par chaîne avec l'image de sa dernière vidéo ; le lecteur ne se charge qu'au clic
+ *   (`YoutubeChannelCard`), pour ne pas charger une dizaine de lecteurs sur téléphone.
+ * - Twitch : le lecteur ne se charge qu'après l'accord du visiteur (`TwitchEmbed`, cookies de Twitch).
  */
 
 export const dynamic = "force-dynamic";
@@ -17,14 +23,17 @@ const sectionTitle = "font-bb-heading text-[0.95rem] text-bb-text";
 export default async function MediaPage() {
   const settings = await prisma.siteSetting.findMany({
     where: {
-      key: { in: ["twitch_channels", "youtube_channels"] }
+      key: { in: [TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY] }
     }
   });
 
   const config: Record<string, string | undefined> = Object.fromEntries(settings.map((s) => [s.key, s.value]));
 
-  const twitchList = config.twitch_channels?.split(",").map((s: string) => s.trim()).filter(Boolean) || [];
-  const youtubeList = config.youtube_channels?.split(",").map((s: string) => s.trim()).filter(Boolean) || [];
+  const twitchList = parseTwitchChannels(config[TWITCH_CHANNELS_KEY]);
+  const youtubeChannels = parseYoutubeChannels(config[YOUTUBE_CHANNELS_KEY]);
+  const youtubeList = youtubeChannels.map((channel) => channel.id);
+  // Dernière vidéo de chaque chaîne (flux public de YouTube, gardé une heure en cache)
+  const latestVideos = youtubeList.length > 0 ? await getLatestVideos(youtubeList) : {};
 
   return (
     <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
@@ -49,15 +58,8 @@ export default async function MediaPage() {
             <div className="grid gap-4 lg:grid-cols-2 min-[1440px]:grid-cols-3">
               {twitchList.map((channel: string) => (
                 <Card key={channel} className="overflow-hidden">
-                  <div className="aspect-video w-full bg-bb-surface-2">
-                    <iframe
-                      src={`https://player.twitch.tv/?channel=${channel}&parent=${process.env.NEXT_PUBLIC_DOMAIN || 'localhost'}&autoplay=false`}
-                      title={`Direct Twitch de ${channel}`}
-                      loading="lazy"
-                      className="block size-full border-0"
-                      allowFullScreen
-                    />
-                  </div>
+                  {/* Le lecteur Twitch ne se charge qu'après l'accord du visiteur (cookies de Twitch, RGPD) */}
+                  <TwitchEmbed target={{ kind: "channel", id: channel }} title={`Direct de ${channel}`} showPageLink={false} className="rounded-none border-0" />
                   <div className="flex flex-wrap items-center justify-between gap-2 p-3">
                     <span className="min-w-0 font-bold break-words">{channel}</span>
                     <Button asChild variant="secondary" size="tap">
@@ -75,27 +77,12 @@ export default async function MediaPage() {
         {youtubeList.length > 0 && (
         <section aria-labelledby="media-youtube" className="flex flex-col gap-3">
           <h2 id="media-youtube" className={sectionTitle}>
-            Dernières vidéos
+            Chaînes YouTube
           </h2>
             <div className="grid gap-4 lg:grid-cols-2 min-[1440px]:grid-cols-3">
-              {youtubeList.map((channelId: string) => {
-                // Liste de lecture « Uploads » de la chaîne : son identifiant est celui de la chaîne, avec UU au lieu de UC
-                const playlistId = channelId.replace(/^UC/, "UU");
-                return (
-                  <Card key={channelId} className="overflow-hidden">
-                    <div className="aspect-video w-full bg-bb-surface-2">
-                      <iframe
-                        src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
-                        title={`Vidéos YouTube de la chaîne ${channelId}`}
-                        loading="lazy"
-                        className="block size-full border-0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowFullScreen
-                      />
-                    </div>
-                  </Card>
-                );
-              })}
+              {youtubeChannels.map((channel) => (
+                <YoutubeChannelCard key={channel.id} channel={channel} latest={latestVideos[channel.id] ?? null} />
+              ))}
             </div>
         </section>
         )}

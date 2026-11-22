@@ -3,23 +3,22 @@
 /**
  * Page « Mon compte » `/profile` (refonte, carte 092, ADR 0006).
  * - Sur ordinateur : la carte du membre à gauche, les onglets et leur contenu à droite.
- * - Sur téléphone : une seule colonne ; la carte du membre, puis la rangée des onglets (qui défile de côté), puis le
- *   contenu. Avant la refonte, les onglets étaient rangés dans le panneau « Plus » de la barre du bas.
+ * - Sur téléphone : une seule colonne ; la carte du membre, puis la barre des rubriques collée en haut pendant le
+ *   défilement, qui ouvre le tiroir de toutes les rubriques (`SectionDrawer`), puis le contenu.
  * L'onglet ouvert est lu dans l'adresse (`?tab=followed|activity|articles|ressources|blocked|edit|settings`) : chaque
  * onglet est un lien, qu'on peut partager ou rouvrir. Sans paramètre (ou avec une valeur inconnue), ce sont les
  * sujets suivis.
- * Carte 221 : sur téléphone, « Modifier mon profil » et « Réglages du compte » sont aussi deux boutons juste sous la
- * carte du membre ; dans la rangée d'onglets, ils étaient les deux derniers, hors de l'écran.
  */
 import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ComponentProps } from "react";
 import Link from "next/link";
 import { UserX } from "lucide-react";
-import { Button, Card, EmptyState, LinkTabs, Skeleton, cn } from "@bbfrance/ui";
+import { Card, EmptyState, Skeleton } from "@bbfrance/ui";
 
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
+import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
@@ -137,19 +136,6 @@ export default function ProfilePage() {
         {/* Panneau gauche (DESIGN.md) : la fiche du membre, puis les rubriques du compte en navigation verticale */}
         <div className="flex flex-col gap-5 lg:sticky lg:top-20">
           <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
-          {/* Téléphone : accès direct au profil et aux réglages, sans faire défiler les onglets */}
-          <div className="grid grid-cols-2 gap-2 lg:hidden">
-            <Button asChild variant="secondary" size="tap" className={cn("px-2", activeTab === "edit" && "border-bb-accent-text")}>
-              <Link href="/profile?tab=edit" scroll={false} aria-current={activeTab === "edit" ? "page" : undefined}>
-                Modifier mon profil
-              </Link>
-            </Button>
-            <Button asChild variant="secondary" size="tap" className={cn("px-2", activeTab === "settings" && "border-bb-accent-text")}>
-              <Link href="/profile?tab=settings" scroll={false} aria-current={activeTab === "settings" ? "page" : undefined}>
-                Réglages du compte
-              </Link>
-            </Button>
-          </div>
           <nav aria-label="Rubriques du compte" className="hidden flex-col lg:flex">
             {tabs.map((tab) => (
               <PanelLink key={tab.href} href={tab.href} active={tab.active} linkComponent={TabLink}>
@@ -159,9 +145,9 @@ export default function ProfilePage() {
           </nav>
         </div>
 
-        <section aria-label={TABS.find((t) => t.id === activeTab)?.label} className="flex min-w-0 flex-col gap-4">
-          {/* Téléphone : rangée d'onglets qui défile */}
-          <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="-mx-3 px-3 lg:hidden" />
+        <section id="rubrique-du-compte" aria-label={TABS.find((t) => t.id === activeTab)?.label} className="flex min-w-0 scroll-mt-14 flex-col gap-4">
+          {/* Téléphone : barre collée et tiroir des rubriques (les rubriques sont dans le panneau gauche sur ordinateur) */}
+          <SectionDrawer title="Mon compte" items={tabs} linkComponent={TabLink} scrollTargetId="rubrique-du-compte" />
 
           {activeTab === "followed" && <ProfileFollowedTopics />}
           {activeTab === "activity" && <ProfileActivity activities={activities} userName={user.name} />}

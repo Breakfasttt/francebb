@@ -6,7 +6,7 @@
  * la refonte de ces écrans.
  *
  * Quelques petites fonctions cherchent un élément à deux endroits possibles, sans changer ce qui est attendu :
- * - `profileTab` : les onglets du profil sont dans la page, ou dans le panneau « Plus » du téléphone ;
+ * - `profileTab` : les onglets du profil sont dans le panneau gauche (ordinateur) ou dans le tiroir des rubriques (téléphone) ;
  * - `control` : un réglage de l'annuaire est dans la page, ou dans le panneau des filtres du téléphone ;
  * - `memberAction` : une action sur un membre est un bouton visible, ou une entrée du menu « ⋯ » de ce membre.
  * Quand un libellé a deux formes possibles (« Appliquer » ou « Confirmer »), l'expression régulière accepte les deux.
@@ -186,21 +186,21 @@ test.describe("Inventaire : profil et membres", () => {
     await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
   });
 
-  /** Ouvre un onglet du profil : dans la page, ou dans le panneau « Plus » du téléphone. */
+  /**
+   * Ouvre un onglet du profil : panneau gauche (ou onglets de la fiche d'un membre) sur ordinateur, tiroir des rubriques
+   * sur téléphone (« Mon compte » ou « Profil de <pseudo> »).
+   */
   async function profileTab(page: Page, name: string) {
-    const inMain = page.getByRole("main").first().getByRole("link", { name, exact: true })
-      .or(page.getByRole("main").first().getByRole("button", { name, exact: true }))
-      .filter({ visible: true });
+    const inMain = page.getByRole("main").first().getByRole("link", { name, exact: true }).filter({ visible: true });
     if ((await inMain.count()) > 0) {
       await inMain.first().click();
       return;
     }
-    await page.getByRole("button", { name: "Plus", exact: true }).click();
-    const panel = page.getByRole("dialog", { name: "Plus" });
-    await expect(panel).toBeVisible();
-    // Dans le panneau, les onglets sont des boutons (les liens du panneau sont les rubriques du site)
-    await panel.getByRole("button", { name, exact: true }).first().click();
-    if (await panel.isVisible()) await page.keyboard.press("Escape");
+    await page.getByRole("button", { name: /^(Mon compte|Profil de .+) :/ }).click();
+    const drawer = page.getByRole("dialog", { name: /^(Mon compte|Profil de .+)$/ });
+    await expect(drawer).toBeVisible();
+    await drawer.getByRole("link", { name, exact: true }).click();
+    await expect(drawer).toBeHidden();
   }
 
   const content = (page: Page) => page.getByRole("main").first();

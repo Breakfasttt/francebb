@@ -5,7 +5,7 @@
  * après la refonte de l'écran.
  *
  * Quelques petites fonctions cherchent un élément à deux endroits possibles, sans changer ce qui est attendu :
- * - `moderationTab` : les onglets sont dans la page, ou (avant la refonte, sur téléphone) dans le panneau « Plus » ;
+ * - `moderationTab` : les onglets sont dans le panneau gauche (ordinateur) ou dans le tiroir des rubriques (téléphone) ;
  * - `entry` : une fiche (signalement, banni, ressource) est une ligne de tableau, un élément de liste ou un article ;
  * - `nextPage` : la flèche « page suivante » s'appelle « next » (ancienne pagination) ou « Page suivante ».
  *
@@ -171,17 +171,23 @@ const TABS = {
 } as const;
 
 /**
- * Onglet de la modération : un lien ou un bouton de la page ; avant la refonte, sur téléphone, un bouton du panneau
- * « Plus ». Renvoie l'onglet visible (le panneau est ouvert s'il le faut).
+ * Onglet de la modération : un lien du panneau gauche sur ordinateur ; sur téléphone, un lien du tiroir des rubriques,
+ * ouvert par la barre « Modération : <onglet ouvert> » s'il ne l'est pas déjà. Renvoie l'onglet visible.
  */
 async function moderationTab(page: Page, name: RegExp): Promise<Locator> {
-  const inMain = page.getByRole("main").first().getByRole("link", { name }).or(page.getByRole("main").first().getByRole("button", { name }))
-    .filter({ visible: true });
-  if ((await inMain.count()) > 0) return inMain.first();
-  await page.getByRole("button", { name: "Plus", exact: true }).click();
-  const panel = page.getByRole("dialog", { name: "Plus" });
-  await expect(panel).toBeVisible();
-  return panel.getByRole("button", { name }).first();
+  const drawer = page.getByRole("dialog", { name: "Modération" });
+  const bar = page.getByRole("button", { name: /^Modération :/ }).filter({ visible: true });
+  if (!(await drawer.isVisible()) && (await bar.count()) === 0) {
+    return page.getByRole("main").first().getByRole("link", { name }).filter({ visible: true }).first();
+  }
+  if (!(await drawer.isVisible())) await bar.click();
+  await expect(drawer).toBeVisible();
+  return drawer.getByRole("link", { name }).first();
+}
+
+/** Referme le tiroir des rubriques du téléphone s'il est resté ouvert. */
+async function closeDrawer(page: Page) {
+  if (await page.getByRole("dialog", { name: "Modération" }).isVisible()) await page.keyboard.press("Escape");
 }
 
 /** Fiche d'un signalement, d'un banni ou d'une ressource : ligne de tableau, élément de liste ou article. */
@@ -222,20 +228,20 @@ test("onglets gardés dans l'adresse, avec leurs pastilles de compteur ; « Memb
   for (const name of Object.values(TABS)) {
     const tab = await moderationTab(page, name);
     await expect(tab).toBeVisible();
-    if (await page.getByRole("dialog", { name: "Plus" }).isVisible()) await page.keyboard.press("Escape");
+    await closeDrawer(page);
   }
 
   // Pastilles : nombre de signalements de sujets et de ressources en attente (au-delà de 9, « 9+ » est permis)
   const badge = (n: number) => new RegExp(n > 9 ? `(${n}|9\\+)\\s*$` : `${n}\\s*$`);
   await expect(await moderationTab(page, TABS.reports_topic)).toHaveText(badge(pendingTopics));
-  if (await page.getByRole("dialog", { name: "Plus" }).isVisible()) await page.keyboard.press("Escape");
+  await closeDrawer(page);
   await expect(await moderationTab(page, TABS.resources_validation)).toHaveText(badge(pendingResources));
-  if (await page.getByRole("dialog", { name: "Plus" }).isVisible()) await page.keyboard.press("Escape");
+  await closeDrawer(page);
 
   // L'onglet choisi est écrit dans l'adresse
   await (await moderationTab(page, TABS.reports_user_banned)).click();
   await expect(page).toHaveURL(/[?&]tab=reports_user_banned/);
-  if (await page.getByRole("dialog", { name: "Plus" }).isVisible()) await page.keyboard.press("Escape");
+  await closeDrawer(page);
 
   // L'adresse ouvre directement un onglet
   await page.goto("/moderation?tab=resources_validation", { waitUntil: "networkidle" });

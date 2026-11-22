@@ -1,7 +1,7 @@
 /**
  * Inventaire de la refonte, section 1 « Éléments présents sur toutes les pages » (docs/refonte/inventaire.md) : les
  * lignes que coquille.spec.ts ne vérifiait pas encore, ajoutées par la carte 101 (fin de la refonte). Logo, icône
- * Administration, bouton retour du téléphone, bandeau des cookies, notifications au-dessus de la barre basse, thème
+ * Administration, bouton retour du téléphone, notifications au-dessus de la barre basse, thème
  * sans éclair, redirections des bannis et de l'onboarding, widgets de développement, page des mentions légales,
  * barre de progression de la navigation (carte 188).
  * Rejoué en taille ordinateur (projet chromium) et en taille téléphone (projet telephone).
@@ -79,45 +79,13 @@ test("[tous] le bouton retour est dans l'en-tête de la page, 44 pixels sur tél
   await acceptCookies(page);
   await page.goto(`/forum/topic/${E2E.topicId}`, { waitUntil: "networkidle" });
   const back = page.getByRole("button", { name: "Retour au forum" }).filter({ visible: true });
-  await expect(back).toHaveCount(1);
+  // Le bouton retour n'existe que sur téléphone : sur ordinateur, la navigation et le fil d'Ariane suffisent (skill ui)
+  await expect(back).toHaveCount(isPhone(page) ? 1 : 0);
   if (isPhone(page)) {
     await expect(page.getByRole("main").getByRole("button", { name: "Retour au forum" })).toBeVisible();
     await expect(page.getByRole("banner").getByRole("button", { name: "Retour au forum" })).toHaveCount(0);
     expect((await back.boundingBox())!.height).toBeGreaterThanOrEqual(44);
   }
-});
-
-test("[tous] bandeau des cookies : apparition, croix pour la session, « Accepter » mémorisé, lien", async ({ page }) => {
-  await page.goto("/", { waitUntil: "domcontentloaded" });
-  const banner = page.getByRole("region", { name: "Respect de la vie privée" });
-  // Il apparaît après 1,5 seconde
-  await expect(banner).toHaveCount(0);
-  await expect(banner).toBeVisible({ timeout: 5000 });
-  const more = banner.getByRole("link", { name: "En savoir plus" });
-  await expect(more).toHaveAttribute("href", "/mentions-legales");
-  if (isPhone(page)) {
-    // Posé au-dessus de la barre basse, sans la couvrir
-    const box = (await banner.boundingBox())!;
-    expect(box.y + box.height).toBeLessThanOrEqual(await bottomNavTop(page));
-    // Carte 190 : le bandeau reste bas (deux lignes de texte au plus) et le lien a une zone d'appui de 44 pixels
-    expect(box.height).toBeLessThanOrEqual(72);
-    expect((await more.boundingBox())!.height).toBeGreaterThanOrEqual(44);
-  }
-
-  // La croix le ferme, sans rien mémoriser : il revient au prochain chargement
-  await banner.getByRole("button", { name: "Fermer pour cette session" }).click();
-  await expect(banner).toHaveCount(0);
-  expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBeNull();
-  await page.reload({ waitUntil: "domcontentloaded" });
-  await expect(banner).toBeVisible({ timeout: 5000 });
-
-  // « Accepter » est mémorisé dans le navigateur
-  await banner.getByRole("button", { name: "Accepter" }).filter({ visible: true }).click();
-  await expect(banner).toHaveCount(0);
-  expect(await page.evaluate(() => localStorage.getItem("bbfrance_cookie_consent"))).toBe("accepted");
-  await page.reload({ waitUntil: "domcontentloaded" });
-  await page.waitForTimeout(2500);
-  await expect(banner).toHaveCount(0);
 });
 
 test("[tous] une notification s'affiche sans être cachée par la navigation", async ({ page, context }) => {

@@ -4,6 +4,7 @@
  * Panneau qui monte du bas de l'écran (« bottom sheet », ADR 0006), construit sur la fenêtre Radix déjà présente :
  * fermeture par Échap, par la croix ou par un appui à côté, focus clavier gardé dans le panneau, défilement de la
  * page bloqué. Sur ordinateur, `side="right"` en fait un tiroir à droite ; `side="center"` une fenêtre centrée.
+ * `side="left"` : tiroir de gauche, celui des rubriques d'un écran sur téléphone (`SectionDrawer` du site).
  * Le bas du panneau respecte la zone protégée de l'iPhone (safe area).
  */
 import * as React from "react";
@@ -16,6 +17,7 @@ export const SheetClose = DialogPrimitive.Close;
 
 const sides = {
   bottom: "inset-x-0 bottom-0 max-h-[88dvh] rounded-t-[20px] border-t pb-[max(1rem,env(safe-area-inset-bottom))]",
+  left: "inset-y-0 left-0 h-dvh w-[min(320px,85vw)] border-r pb-[env(safe-area-inset-bottom)]",
   right: "inset-y-0 right-0 h-dvh w-[min(420px,100vw)] border-l pb-[env(safe-area-inset-bottom)]",
   center: "left-1/2 top-1/2 max-h-[85dvh] w-[min(560px,calc(100vw-2rem))] -translate-x-1/2 -translate-y-1/2 rounded-bb-lg border",
 };
@@ -27,12 +29,14 @@ export interface SheetContentProps extends React.ComponentProps<typeof DialogPri
   hideTitle?: boolean;
   description?: string;
   side?: keyof typeof sides;
+  /** Classes du fond assombri derrière le panneau (par exemple pour le borner entre les barres du site). */
+  overlayClassName?: string;
 }
 
-export function SheetContent({ title, hideTitle, description, side = "bottom", className, children, ...props }: SheetContentProps) {
+export function SheetContent({ title, hideTitle, description, side = "bottom", className, overlayClassName, children, ...props }: SheetContentProps) {
   return (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-[8000] bg-bb-overlay" />
+      <DialogPrimitive.Overlay className={cn("fixed inset-0 z-[8000] bg-bb-overlay", overlayClassName)} />
       <DialogPrimitive.Content
         className={cn(
           "fixed z-[8001] flex flex-col overflow-hidden border-bb-border bg-bb-surface font-bb-sans text-bb-text shadow-bb outline-none",

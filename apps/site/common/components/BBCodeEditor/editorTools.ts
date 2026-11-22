@@ -31,12 +31,14 @@ import {
   Underline,
   AtSign,
   Youtube,
+  Twitch,
 } from "lucide-react";
 
 /** Outils qui ouvrent un formulaire d'options. */
 export type PanelToolId =
   | "link"
   | "youtube"
+  | "twitch"
   | "image"
   | "gallery"
   | "smileys"
@@ -84,6 +86,7 @@ const TOOLS = {
   mention: { id: "mention", label: "Mentionner un membre", icon: AtSign, kind: "panel" },
   gallery: { id: "gallery", label: "Galerie d'images", icon: LayoutGrid, kind: "panel" },
   youtube: { id: "youtube", label: "Vidéo YouTube", icon: Youtube, kind: "panel" },
+  twitch: { id: "twitch", label: "Chaîne, vidéo ou clip Twitch", icon: Twitch, kind: "panel" },
   smileys: { id: "smileys", label: "Smileys", icon: Smile, kind: "panel" },
   ai: { id: "ai", label: "Assistant de mise en forme par IA", icon: Sparkles, kind: "ai" },
 } satisfies Record<string, EditorTool>;
@@ -105,7 +108,7 @@ export const PRIMARY_TOOLS: { tool: EditorTool; desktopOnly?: boolean }[] = [
 export const MORE_TOOL_GROUPS: { title: string; tools: EditorTool[] }[] = [
   { title: "Texte", tools: [TOOLS.underline, TOOLS.strike, TOOLS.size, TOOLS.color, TOOLS.typo, TOOLS.align] },
   { title: "Blocs", tools: [TOOLS.spoiler, TOOLS.list, TOOLS.table, TOOLS.hr, TOOLS.code, TOOLS.accordion] },
-  { title: "Liens et médias", tools: [TOOLS.topic, TOOLS.mention, TOOLS.gallery, TOOLS.youtube] },
+  { title: "Liens et médias", tools: [TOOLS.topic, TOOLS.mention, TOOLS.gallery, TOOLS.youtube, TOOLS.twitch] },
   { title: "Aide", tools: [TOOLS.ai] },
 ];
 

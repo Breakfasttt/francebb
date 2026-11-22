@@ -67,7 +67,8 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Date d'une liste | `RelativeTime` (`common/components/RelativeTime/`) : « il y a 2 heures », date complète au survol ; `fullFrenchDateTime` pour « 21/11/2026 à 14:32 » |
 | En-tête de page et bouton retour | `PageHeader` (titre en voix Display, bouton retour sur téléphone), `ForumListHeader` (`app/forum/component/`, même style pour les pages du forum et des tournois), `BackButton` |
 | Nom du site | `SiteLogo` : « BBFRANCE » composé en typographie, lien vers l'accueil (aucune image de logo) |
-| Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, rangée en haut sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |
+| Page réservée à l'équipe avec beaucoup d'onglets (`?tab=`) : colonne d'onglets sur ordinateur, tiroir des rubriques sur téléphone | `StaffPageLayout` (`/moderation`, `/administration`) |
+| Rubriques d'un écran sur téléphone (remplace la rangée d'onglets qui défile) : barre collée + tiroir à gauche, liens (`href`) ou vues (`onSelect`), compteurs | `SectionDrawer` (`common/components/SectionDrawer/`) : profil, fiche d'un membre, classement, modération, administration |
 | Envoyer un élément dans la coquille (téléphone) | **Interdit** : pas de portail React (`createPortal`) dans le code du projet. Afficher l'élément dans la page, ou dans un `Sheet` ouvert depuis la page |
 | Filtres d'une liste sur téléphone | Bouton « Filtres », `Sheet` et pastilles : copier `app/articles/component/ArticleFilters.tsx` ou `app/ressources/component/ResourceFilters.tsx` (skill `ui`) |
 | Rubriques de la navigation, écrans plein écran | `common/components/AppShell/navItems.ts` (`PRIMARY_NAV`, `MORE_NAV`, `DESKTOP_NAV`, `isComposePath`) |

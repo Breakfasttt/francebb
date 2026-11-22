@@ -71,6 +71,12 @@ BBFrance, site communautaire de Blood Bowl, édité à titre non professionnel e
 2. Le journal des envois d'emails est gardé 6 mois, la durée de référence de la CNIL pour les journaux techniques (il n'existe pas de durée légale minimale). Chaque envoi efface les entrées plus anciennes (`apps/site/lib/mail.ts`).
 3. Les mentions légales et la politique de confidentialité sont réunies sur la page `/mentions-legales` du site.
 
+## Décisions (22/11/2026) : cookies et contenus tiers
+
+1. Le site ne pose que des cookies nécessaires à son fonctionnement (session et protection de la connexion, thème d'un visiteur, fin d'inscription, lecture comptée une fois par article), dispensés de consentement. Le bandeau « Accepter » est supprimé : il laissait croire à un choix qui n'existait pas. La liste complète est dans la section « Cookies » des mentions légales (`/mentions-legales#cookies`).
+2. Vidéos YouTube (balise `[youtube]`, page `/media`) : lecteur `youtube-nocookie.com`, sans cookie de Google tant que la vidéo n'est pas lancée. Les images des vidéos de `/media` passent par l'optimiseur d'images du site : le navigateur du visiteur ne contacte pas Google.
+3. Contenus Twitch (balise `[twitch]`, directs de `/media`) : le lecteur ne se charge qu'après l'accord du visiteur, donné à l'endroit du lecteur. « Toujours afficher » est gardé 6 mois dans le navigateur (stockage local, pas de cookie) et se retire depuis la section « Cookies » des mentions légales.
+
 ## Reste à faire
 
 - L'annonce aux membres (forum, Discord) au moment de la mise en ligne du passeport.

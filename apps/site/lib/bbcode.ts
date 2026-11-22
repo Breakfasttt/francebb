@@ -1,8 +1,10 @@
 /**
  * Moteur de rendu BBCode pour BBFrance.
  * Gère la transformation du BBCode en HTML sécurisé.
- * Supporte : formatting, couleurs, spoilers, accordéons, citations, galeries et YouTube.
+ * Supporte : formatting, couleurs, spoilers, accordéons, citations, galeries, YouTube et Twitch.
  */
+import { parseTwitchInput } from "./twitchEmbed";
+
 export const smileysMap: Record<string, string> = {
   ":)": "🙂",
   ":-": "😐",
@@ -299,7 +301,9 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
   );
 
   // 8. Replace YouTube Videos
-  const youtubeWrapper = (id: string, align?: string, wrap?: string, thumb?: string) => {
+  // Lecteur en « mode de confidentialité renforcée » (youtube-nocookie.com) : aucun cookie de Google tant que le membre
+  // ne lance pas la vidéo ; avec youtube.com, l'ouverture du sujet suffisait à en déposer (RGPD, consentement).
+  const mediaFrame = (inner: string, align?: string, wrap?: string, thumb?: string) => {
     const isThumb = thumb !== "no";
     let style = "position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:8px;";
     let outerStyle = `margin: 1rem 0; clear: both; width: 100%; max-width: ${isThumb ? '480px' : '800px'};`;
@@ -314,12 +318,25 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
       else if (align === "right") outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem 0; margin-left: auto;`;
       else outerStyle = `max-width: ${isThumb ? '480px' : '800px'}; margin: 1rem auto;`;
     }
-    return `<div${floatClass} style="${outerStyle}"><div style="${style}"><iframe src="https://www.youtube.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe></div></div>`;
+    return inner.startsWith("<bb-twitch")
+      ? `<div${floatClass} style="${outerStyle}">${inner}</div>`
+      : `<div${floatClass} style="${outerStyle}"><div style="${style}">${inner}</div></div>`;
   };
+  const youtubeWrapper = (id: string, align?: string, wrap?: string, thumb?: string) =>
+    mediaFrame(`<iframe src="https://www.youtube-nocookie.com/embed/${id}" style="position:absolute; top:0; left:0; width:100%; height:100%;" frameborder="0" allowfullscreen></iframe>`, align, wrap, thumb);
 
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]([a-zA-Z0-9_-]{11})\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/(?:www\.)?youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
   html = html.replace(/\[youtube(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(&.*)?\[\/youtube\]/gi, (match, align, wrap, thumb, id) => youtubeWrapper(id, align, wrap, thumb));
+
+  // 8 bis. Twitch : chaîne, vidéo ou clip (carte 221). Le lecteur ne se charge qu'après l'accord du membre : l'élément
+  // `bb-twitch` est monté par BBCodeContent avec le cadre d'accord TwitchEmbed (lib/twitchEmbed.ts). Un contenu non
+  // reconnu reste affiché tel quel, comme une balise inconnue.
+  html = html.replace(/\[twitch(?: align=(left|right|center))?(?: wrap=(yes|no))?(?: thumb=(yes|no))?\]([^\[\]<>"]{3,200})\[\/twitch\]/gi, (match, align, wrap, thumb, raw) => {
+    const target = parseTwitchInput(raw.replace(/&amp;/g, "&"));
+    if (!target) return match;
+    return mediaFrame(`<bb-twitch data-kind="${target.kind}" data-id="${target.id}" style="display:block;"></bb-twitch>`, align, wrap, thumb);
+  });
 
   // (BBScheme est géré nativement par le composant BBCodeContent)
 
@@ -410,6 +427,7 @@ export function parseInlineBBCode(text: string): string {
   html = html.replace(/\[hr\]/gi, " --- ");
   html = html.replace(/\[img(?: align=(?:left|right|center))?\].*?\[\/img\]/gi, "📸 Image");
   html = html.replace(/\[youtube(?: align=(?:left|right|center))?\].*?\[\/youtube\]/gi, "🎥 Vidéo");
+  html = html.replace(/\[twitch(?:[^\]]*)\].*?\[\/twitch\]/gi, "🎥 Twitch");
   html = html.replace(/\[url=(.*?)\](.*?)\[\/url\]/gi, "$2");
   html = html.replace(/\[url\](.*?)\[\/url\]/gi, "$1");
   html = html.replace(/\[topic=([a-zA-Z0-9_-]+)\](.*?)\[\/topic\]/gi, "📌 $2");
@@ -439,7 +457,8 @@ export function stripBBCode(text: string): string {
   // Replace [img] and [youtube] with placeholders or empty
   let plain = text
     .replace(/\[img(?:.*?)\](.*?)\[\/img\]/gi, "")
-    .replace(/\[youtube(?:.*?)\](.*?)\[\/youtube\]/gi, "");
+    .replace(/\[youtube(?:.*?)\](.*?)\[\/youtube\]/gi, "")
+    .replace(/\[twitch(?:.*?)\](.*?)\[\/twitch\]/gi, "");
     
   // Replace tags with content
   plain = plain.replace(/\[(?:.*?)\]/gi, "");

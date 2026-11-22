@@ -3,8 +3,8 @@
 /**
  * Classement du Championnat de France (CDF) `/classement` (refonte, carte 097, ADR 0006).
  * En-tête compact « Championnat de France » avec le bouton d'aide « Comment sont calculés les points ? » et, pour la
- * modération, le menu « Gestion du classement ». Puis cinq onglets : l'année en cours (calcul direct), le classement
- * glissant sur 12 mois, le meilleur coach par roster, le Hall of Fame (podium de chaque année) et les archives
+ * modération, le menu « Gestion du classement ». Puis cinq vues (panneau gauche sur ordinateur, tiroir
+ * `SectionDrawer` sur téléphone) : l'année en cours (calcul direct), le classement glissant sur 12 mois, le meilleur coach par roster, le Hall of Fame (podium de chaque année) et les archives
  * (classements figés). Une liste déroulante permet de choisir une autre année calculée ou une autre archive.
  * Les lignes du classement se déplient (`RankingList`) pour montrer les meilleurs tournois retenus.
  *
@@ -36,15 +36,13 @@ import {
   Sheet,
   SheetContent,
   Skeleton,
-  Tabs,
-  TabsList,
-  TabsTrigger,
   toast,
   useMediaQuery,
   cn,
 } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { PanelTitle, panelItemClass } from "@/common/components/SiteLayout/SiteLayout";
+import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
 import { useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import { isAdmin, isModerator } from "@/lib/roles";
 import {
@@ -311,7 +309,7 @@ function Classement() {
         </div>
       </ForumListHeader>
 
-      {/* Ordinateur : les vues dans le panneau gauche (DESIGN.md) ; téléphone : rangée d'onglets */}
+      {/* Ordinateur : les vues dans le panneau gauche (DESIGN.md) ; téléphone : barre collée et tiroir des vues */}
       <div className="flex flex-col lg:grid lg:grid-cols-[240px_minmax(0,1fr)] lg:items-start lg:gap-6 xl:gap-8">
         <aside aria-label="Vues du classement" className="hidden lg:sticky lg:top-20 lg:flex lg:flex-col lg:gap-5">
           <nav aria-labelledby="ranking-views-title" className="flex flex-col">
@@ -333,26 +331,17 @@ function Classement() {
             Comment sont calculés les points ?
           </Button>
         </aside>
-        <div className="flex min-w-0 flex-col">
-      <Tabs value={activeTab} onValueChange={changeTab} className="lg:hidden">
-        <TabsList aria-label="Vues du classement" className="max-lg:-mx-3 max-lg:px-3">
-          <TabsTrigger value="year">
-            Année {latestLiveYear}
-          </TabsTrigger>
-          <TabsTrigger value="rolling">
-            Glissant
-          </TabsTrigger>
-          <TabsTrigger value="roster">
-            Par roster
-          </TabsTrigger>
-          <TabsTrigger value="hof">
-            Palmarès
-          </TabsTrigger>
-          <TabsTrigger value="archives">
-            Archives
-          </TabsTrigger>
-        </TabsList>
-      </Tabs>
+        <div id="vue-du-classement" className="flex min-w-0 scroll-mt-14 flex-col">
+      {/* Téléphone : barre collée et tiroir des vues (elles sont dans le panneau gauche sur ordinateur) */}
+      <SectionDrawer
+        title="Classement"
+        items={RANKING_TABS.map((tab) => ({
+          label: tab.value === "year" ? `Année ${latestLiveYear}` : tab.label,
+          active: activeTab === tab.value,
+          onSelect: () => changeTab(tab.value),
+        }))}
+        scrollTargetId="vue-du-classement"
+      />
 
       <div className="flex flex-col gap-3 py-4 lg:flex-row lg:items-end lg:justify-between">
         <p className="m-0 flex items-start gap-1.5 text-sm text-bb-text-muted">

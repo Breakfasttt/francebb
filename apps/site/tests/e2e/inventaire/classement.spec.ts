@@ -156,8 +156,23 @@ test.beforeEach(async ({ page }) => {
 
 const visible = (locator: Locator) => locator.filter({ visible: true }).first();
 
-/** Onglet du classement (un onglet ou, avant la refonte, un bouton). */
-const tab = (page: Page, name: RegExp) => visible(page.getByRole("tab", { name }).or(page.getByRole("button", { name })));
+/**
+ * Vue du classement : un bouton du panneau gauche sur ordinateur ; sur téléphone, un bouton du tiroir des vues, ouvert
+ * par la barre « Classement : <vue ouverte> » s'il ne l'est pas déjà.
+ */
+async function tab(page: Page, name: RegExp): Promise<Locator> {
+  const drawer = page.getByRole("dialog", { name: "Classement" });
+  const bar = page.getByRole("button", { name: /^Classement :/ }).filter({ visible: true });
+  if (!(await drawer.isVisible()) && (await bar.count()) === 0) return visible(page.getByRole("button", { name }));
+  if (!(await drawer.isVisible())) await bar.click();
+  await expect(drawer).toBeVisible();
+  return drawer.getByRole("button", { name }).first();
+}
+
+/** Referme le tiroir des vues du téléphone s'il est resté ouvert. */
+async function closeDrawer(page: Page) {
+  if (await page.getByRole("dialog", { name: "Classement" }).isVisible()) await page.keyboard.press("Escape");
+}
 
 const TABS = {
   year: /^(Classement|Année) \d{4}$/,
@@ -208,13 +223,14 @@ async function expandRow(page: Page, coach: string) {
 /** Ouvre `/classement` et attend que le classement soit chargé (le coach de l'année en cours est affiché). */
 async function openRanking(page: Page) {
   await page.goto("/classement", { waitUntil: "networkidle" });
-  await expect(tab(page, TABS.year)).toBeVisible();
+  await expect(await tab(page, TABS.year)).toBeVisible();
+  await closeDrawer(page);
   await expect(visible(page.getByText(COACH.name, { exact: true }))).toBeVisible();
 }
 
 /** Ouvre l'onglet « Archives » et choisit une archive dans la liste. */
 async function openArchive(page: Page, year: number) {
-  await tab(page, TABS.archives).click();
+  await (await tab(page, TABS.archives)).click();
   const select = visible(page.getByRole("combobox", { name: "Choisir une archive" }));
   await expect(select).toBeVisible();
   await select.selectOption(`CDF_${year}`);
@@ -263,7 +279,8 @@ async function rowIndex(page: Page, name: string): Promise<number> {
 test.describe("Inventaire 12 : classement du Championnat de France", () => {
   test("[tous] /classement : onglets, choix de l'année et de l'archive, lignes dépliables, aide", async ({ page }, testInfo) => {
     await openRanking(page);
-    for (const name of Object.values(TABS)) await expect(tab(page, name)).toBeVisible();
+    for (const name of Object.values(TABS)) await expect(await tab(page, name)).toBeVisible();
+    await closeDrawer(page);
 
     // Onglet de l'année en cours : 4 meilleurs tournois sur 5, soit 100 points
     await expect(visible(page.getByText(OTHER_COACH, { exact: true }))).toBeVisible();
@@ -288,12 +305,12 @@ test.describe("Inventaire 12 : classement du Championnat de France", () => {
     await expect(visible(page.getByText(OLD_TOURNAMENT.name, { exact: true }))).toBeVisible();
 
     // Classement glissant (12 derniers mois)
-    await tab(page, TABS.rolling).click();
+    await (await tab(page, TABS.rolling)).click();
     await expect(visible(page.getByText(COACH.name, { exact: true }))).toBeVisible();
 
     // Par roster : le meilleur coach de chaque roster. La vue reprend l'année choisie dans l'onglet « Année » (ici
     // l'année précédente, où seul le roster « InvOrc » a joué), puis sa propre liste permet de changer d'année (carte 142).
-    await tab(page, TABS.roster).click();
+    await (await tab(page, TABS.roster)).click();
     const rosterYearSelect = visible(page.getByRole("combobox", { name: "Choisir l'année du classement par roster" }));
     await expect(rosterYearSelect).toHaveValue(`ROSTER_${PREVIOUS_YEAR}`);
     await expect(visible(page.getByText(new RegExp(`roster en ${PREVIOUS_YEAR}`)))).toBeVisible();
@@ -306,7 +323,7 @@ test.describe("Inventaire 12 : classement du Championnat de France", () => {
     await expect(visible(page.getByText(OTHER_COACH, { exact: true }))).toBeVisible();
 
     // Hall of Fame : le podium de chaque année, archives comprises
-    await tab(page, TABS.hof).click();
+    await (await tab(page, TABS.hof)).click();
     await expect(visible(page.getByText(String(ARCHIVE.year), { exact: true }))).toBeVisible();
     await expect(visible(page.getByText(ARCHIVE_COACH, { exact: true }))).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("classement-hof.png"), fullPage: false });

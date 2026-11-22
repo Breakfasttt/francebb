@@ -6,10 +6,17 @@
 
 html,
 body {
-  overflow-x: hidden;
+  overflow-x: clip; /* clip et non hidden : hidden fait de <body> une zone de défilement à part et casse tout élément collé (sticky) */
   max-width: 100vw;
   width: 100%;
   position: relative;
+}
+
+/* Fenêtre ou tiroir ouvert : Radix bloque le défilement en posant `overflow: hidden` sur <body>, ce qui décrochait la
+   barre du haut quand la page était défilée. `clip` garde les éléments collés à leur place ; le défilement reste
+   bloqué par Radix, qui retient aussi les gestes. */
+html body[data-scroll-locked] {
+  overflow: clip !important;
 }
 
 :root {

@@ -7,6 +7,7 @@
  *   [{ "name": "forum-accueil-visiteur", "account": null, "url": "/forum",
  *      "viewports": ["390x844", "1440x900"], "full": true,
  *      "steps": [{ "click": "Outils" }, { "fill": ["Titre", "Mon titre"] }, { "wait": 500 }, { "press": "Escape" }] }]
+ * Étape `{ "scroll": 800 }` : fait défiler la page de 800 pixels vers le bas.
  * `account` : identifiant d'un compte (`exemple-modo`…), ou null pour un visiteur.
  * Chaque scénario produit <name>-<largeur>.png et <name>-<largeur>.txt (structure accessible de la page : titres,
  * boutons, liens, champs), plus les erreurs de la console. Les étapes cherchent un bouton, un lien, puis un texte.
@@ -64,6 +65,7 @@ for (const scenario of scenarios) {
         if (step.click) await (await target(page, step.click)).click();
         if (step.fill) await page.getByLabel(step.fill[0]).filter({ visible: true }).first().fill(step.fill[1]);
         if (step.press) await page.keyboard.press(step.press);
+        if (step.scroll) await page.mouse.wheel(0, step.scroll);
         if (step.goto) await page.goto(`${BASE}${step.goto}`, { waitUntil: "networkidle", timeout: 120000 });
         await page.waitForTimeout(step.wait ?? 400);
       }

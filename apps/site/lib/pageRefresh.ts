@@ -60,3 +60,13 @@ export function refreshForumStructure(parentForumId?: string | null) {
   if (parentForumId) revalidatePath(`/forum/${parentForumId}`);
   revalidatePath("/administration");
 }
+
+/** Cache des chaînes du bloc Médias de l'accueil (`getHomeMedia`, app/component/homeData.ts). */
+export const HOME_MEDIA_TAG = "home-media";
+
+/** Les chaînes YouTube ou Twitch ont changé (onglet Médias de l'administration) : page Médias et accueil. */
+export function refreshMediaChannels() {
+  revalidatePath("/media");
+  revalidatePath("/");
+  updateTag(HOME_MEDIA_TAG);
+}

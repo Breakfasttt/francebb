@@ -123,7 +123,7 @@ export default function ModerationPage() {
   if (!isModerator(userRole)) return null;
 
   const report = activeTab && activeTab in REPORT_TABS ? REPORT_TABS[activeTab as keyof typeof REPORT_TABS] : null;
-  // Téléphone : cas en attente des autres onglets, que la rangée d'onglets qui défile peut cacher
+  // Téléphone : cas en attente des autres onglets, visibles sans ouvrir le tiroir des onglets
   const otherPending = PENDING_TABS.filter((id) => id !== activeTab && (counts?.[id] ?? 0) > 0);
 
   return (

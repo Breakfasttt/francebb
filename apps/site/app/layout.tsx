@@ -12,7 +12,6 @@ import { ThemeProvider } from "@/common/components/ThemeProvider/ThemeProvider";
 import AppShell from "@/common/components/AppShell/AppShell";
 import NewLookBanner from "@/common/components/AppShell/NewLookBanner";
 import { getNavCounts } from "@/common/components/AppShell/navCounts";
-import CookieBanner from "@/common/components/CookieBanner/CookieBanner";
 import BBCodeInteractions from "@/common/components/BBCodeContent/BBCodeInteractions";
 import NavigationProgress from "@/common/components/NavigationProgress/NavigationProgress";
 import InAppHistoryTracker from "@/common/components/BackButton/InAppHistoryTracker";
@@ -120,7 +119,6 @@ export default async function RootLayout({
             </Link>
           </footer>
 
-          <CookieBanner />
         </AuthProvider>
       </ThemeProvider>
     </body>

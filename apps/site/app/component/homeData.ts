@@ -6,6 +6,7 @@
  * Les requêtes des tournois, de l'invitation Discord et de l'article au hasard sont reprises telles quelles de
  * l'ancien `app/page.tsx` (cartes 148, 150, 165, 187, 189, 205).
  */
+import { TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY, parseTwitchChannels, parseYoutubeChannels } from "@/lib/mediaChannels";
 import { unstable_cache } from "next/cache";
 import { prisma } from "@/lib/prisma";
 import { TOURNAMENT_TOPIC_NOT_DELETED } from "@/lib/forumDeletion";
@@ -237,19 +238,22 @@ export const getHomeResources = unstable_cache(
 export type HomeResource = Awaited<ReturnType<typeof getHomeResources>>[number];
 
 /**
- * Chaînes Twitch et YouTube réglées dans l'administration (réglages `twitch_channels` et `youtube_channels`, séparés
- * par des virgules), lues comme la page `/media`. L'accueil n'affiche que leurs noms : les lecteurs restent sur `/media`.
+ * Chaînes Twitch et YouTube réglées dans l'administration (réglages `twitch_channels` et `youtube_channels`, format
+ * dans lib/mediaChannels.ts), lues comme la page `/media`. L'accueil n'affiche que leurs noms : les lecteurs restent sur `/media`.
  */
 export const getHomeMedia = unstable_cache(
   async () => {
     const settings = await prisma.siteSetting.findMany({
-      where: { key: { in: ["twitch_channels", "youtube_channels"] } },
+      where: { key: { in: [TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY] } },
       select: { key: true, value: true },
     });
-    const list = (key: string) =>
-      settings.find((setting) => setting.key === key)?.value?.split(",").map((item) => item.trim()).filter(Boolean) ?? [];
-    return { twitch: list("twitch_channels"), youtube: list("youtube_channels") };
+    const value = (key: string) => settings.find((setting) => setting.key === key)?.value;
+    // Noms affichés : le nom de chaque chaîne YouTube (format dans lib/mediaChannels.ts), le nom des chaînes Twitch
+    return {
+      twitch: parseTwitchChannels(value(TWITCH_CHANNELS_KEY)),
+      youtube: parseYoutubeChannels(value(YOUTUBE_CHANNELS_KEY)).map((channel) => channel.name),
+    };
   },
-  ["home-media-v1"],
-  { revalidate: 300 }
+  ["home-media-v2"],
+  { revalidate: 300, tags: ["home-media"] }
 );

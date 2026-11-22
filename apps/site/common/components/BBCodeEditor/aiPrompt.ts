@@ -26,6 +26,7 @@ DICTIONNAIRE DES BALISES ET SYNTAXES :
 3. MÉDIAS ET RÉFÉRENCES :
    - [img align=left|right|center wrap=yes|no thumb=yes|no]LIEN_DIRECT_IMAGE[/img]
    - [youtube align=left|right|center wrap=yes|no thumb=yes|no]ID_VIDEO_OU_URL_BRUTE[/youtube]
+   - [twitch align=left|right|center wrap=yes|no thumb=yes|no]NOM_DE_CHAINE_OU_URL_BRUTE[/twitch] (chaîne, vidéo ou clip Twitch)
    - [gallery]URL1, URL2, URL3[/gallery]
    IMPORTANT : Le contenu entre les balises [img] et [youtube] doit être du texte brut uniquement.
    ERREUR À NE JAMAIS FAIRE : [img][http://site.com/img.jpg](http://site.com/img.jpg)[/img] <-- INTERDIT !
