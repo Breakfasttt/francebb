@@ -586,6 +586,13 @@ exports.Prisma.UserWarningScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ActionCounterScalarFieldEnum = {
+  userId: 'userId',
+  action: 'action',
+  windowStart: 'windowStart',
+  count: 'count'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -654,7 +661,8 @@ exports.Prisma.ModelName = {
   TournamentMatch: 'TournamentMatch',
   LegacyMember: 'LegacyMember',
   MailLog: 'MailLog',
-  UserWarning: 'UserWarning'
+  UserWarning: 'UserWarning',
+  ActionCounter: 'ActionCounter'
 };
 
 /**

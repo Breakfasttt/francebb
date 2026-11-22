@@ -1,6 +1,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { rateLimitRefusal } from "@/lib/rateLimit";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -234,6 +235,9 @@ export async function sendMessage(conversationId: string, content: string): Prom
 
   const contentError = messageContentError(content);
   if (contentError) return { success: false, error: contentError };
+  // Limite d'actions par minute (carte 224)
+  const tooFast = await rateLimitRefusal(userId, session.user.role, "PRIVATE_MESSAGE");
+  if (tooFast) return { success: false, error: tooFast };
 
   const participant = await prisma.conversationParticipant.findUnique({
     where: { userId_conversationId: { userId, conversationId } }
@@ -317,6 +321,9 @@ export async function startConversation(userIds: string[], name?: string): Promi
 
     const inputError = participantsError(userIds, new Set([myId, ...(Array.isArray(userIds) ? userIds : [])]).size) ?? groupNameError(name);
     if (inputError) return { success: false, error: inputError };
+    // Limite d'actions par minute (carte 224) : démarrer une conversation compte comme un message privé
+    const tooFast = await rateLimitRefusal(myId, session.user.role, "PRIVATE_MESSAGE");
+    if (tooFast) return { success: false, error: tooFast };
 
     const allParticipants = [...new Set([myId, ...userIds])];
     const isGroup = allParticipants.length > 2 || !!name;

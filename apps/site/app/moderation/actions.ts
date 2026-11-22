@@ -6,6 +6,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { rateLimitRefusal } from "@/lib/rateLimit";
 import { prisma } from "@/lib/prisma";
 import { isAdmin, isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
@@ -36,6 +37,9 @@ export async function createReportAction(data: {
 
   const refusal = reportInputRefusal({ reporterId, ...data });
   if (refusal) return { success: false, error: refusal };
+  // Limite d'actions par minute (carte 224)
+  const tooFast = await rateLimitRefusal(reporterId, session.user.role, "REPORT");
+  if (tooFast) return { success: false, error: tooFast };
   const targetType = data.targetType as ReportTargetType;
 
   const { roles } = await getForumAccess();

@@ -5,6 +5,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { rateLimitRefusal } from "@/lib/rateLimit";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -157,6 +158,9 @@ export async function toggleArticleReaction(articleId: string, emoji: string) {
     // Article masqué par la modération (ou inexistant) : aucune réaction (carte 221)
     const article = await prisma.article.findUnique({ where: { id: articleId }, select: { isModerated: true } });
     if (!article || article.isModerated) return { error: "Cet article n'accepte pas de réaction." };
+    // Limite d'actions par minute (carte 224)
+    const tooFast = await rateLimitRefusal(userId, session.user.role, "REACTION");
+    if (tooFast) return { error: tooFast };
 
     const existing = await prisma.articleReaction.findFirst({
       where: { articleId, userId },

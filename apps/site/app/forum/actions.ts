@@ -5,6 +5,7 @@
 "use server";
 
 import { getActiveSession } from "@/lib/authGuard";
+import { rateLimitRefusal } from "@/lib/rateLimit";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
@@ -395,6 +396,9 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
   // Titre de 3 à 150 caractères, message non vide et de 30 000 caractères au plus (carte 169)
   const textError = topicTitleError(title) ?? postContentError(content);
   if (textError) return { success: false, error: textError };
+  // Limite d'actions par minute (carte 224)
+  const tooFast = await rateLimitRefusal(session.user.id, session.user.role, "TOPIC");
+  if (tooFast) return { success: false, error: tooFast };
 
   // Vérifier l'accès (rôle), si le forum est locké ou un forum de tournoi
   const { roles } = await getForumAccess();
@@ -495,6 +499,9 @@ export async function createPost(topicId: string, content: string): Promise<Acti
   // Message non vide et de 30 000 caractères au plus (carte 169)
   const contentError = postContentError(content);
   if (contentError) return { success: false, error: contentError };
+  // Limite d'actions par minute (carte 224)
+  const tooFast = await rateLimitRefusal(session.user.id, session.user.role, "POST");
+  if (tooFast) return { success: false, error: tooFast };
 
   // Vérifier l'accès (rôle) et si le sujet est verrouillé ou archivé, ou son forum verrouillé
   const { roles } = await getForumAccess();
@@ -1078,6 +1085,9 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
   if (!target || target.isDeleted) return { success: false, error: "Message introuvable." };
   // Un message masqué par la modération ne reçoit plus de réaction (carte 221 : l'écran ne la propose plus)
   if (target.isModerated) return { success: false, error: "Ce message a été masqué : il ne reçoit plus de réaction." };
+  // Limite d'actions par minute (carte 224)
+  const tooFast = await rateLimitRefusal(userId, session.user.role, "REACTION");
+  if (tooFast) return { success: false, error: tooFast };
   if (isLockedFor(target, session.user.role)) {
     return { success: false, error: closedTopicMessage(writeState(target.topic)) };
   }

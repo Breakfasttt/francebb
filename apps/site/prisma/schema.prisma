@@ -110,6 +110,7 @@ model User {
   notificationsCaused     Notification[]           @relation("NotificationsCaused")
   warningsReceived        UserWarning[]            @relation("WarningsReceived")
   warningsGiven           UserWarning[]            @relation("WarningsGiven")
+  actionCounters          ActionCounter[]
 
   @@index([role])
 }
@@ -772,4 +773,19 @@ model UserWarning {
   moderator   User?    @relation("WarningsGiven", fields: [moderatorId], references: [id], onDelete: SetNull)
 
   @@index([userId, createdAt])
+}
+
+/// Compteur d'actions d'un membre sur une minute (carte 224) : limite le nombre de sujets, réponses, messages privés,
+/// signalements, réactions et recherches par minute. Les lignes de plus de dix minutes sont effacées au fil de l'eau.
+model ActionCounter {
+  userId      String
+  /// Type d'action : TOPIC, POST, PRIVATE_MESSAGE, REPORT, REACTION, SEARCH (lib/rateLimitRules.ts).
+  action      String
+  /// Début de la minute comptée.
+  windowStart DateTime
+  count       Int      @default(0)
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, action, windowStart])
+  @@index([windowStart])
 }

@@ -75,7 +75,8 @@ export default function ArticleReactions({ articleId, reactions, currentUserId }
       } catch (error) {
         console.error("Failed to toggle reaction:", error);
         setOptimisticReactions(reactions);
-        toast.error("Erreur lors de l'ajout de la réaction");
+        // Message du serveur quand il y en a un (limite d'actions par minute, carte 224)
+        toast.error(error instanceof Error && error.message ? error.message : "La réaction n'est pas passée. Réessaie.");
       }
     });
   };

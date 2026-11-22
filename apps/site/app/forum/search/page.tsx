@@ -20,6 +20,7 @@ import { Badge, Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { prisma } from "@/lib/prisma";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getActiveSession } from "@/lib/authGuard";
+import { rateLimitRefusal } from "@/lib/rateLimit";
 import { getForumAccess, forumAccessWhere, topicAccessWhere } from "@/lib/forumAccess";
 import { isModerator } from "@/lib/roles";
 import { forumPostHrefFor } from "@/lib/forumPostLink";
@@ -127,7 +128,9 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
   // Les messages sont ensuite regroupés par sujet ; seuls les sujets de la page sont lus en détail. Les requêtes
   // s'enchaînent l'une après l'autre (la base locale de développement refuse les requêtes simultanées).
   let hits: SearchHit[] = [];
-  if (hasPerformedSearch) {
+  // Limite d'actions par minute pour un membre connecté (carte 224) ; un visiteur n'est pas identifiable
+  const tooFast = hasPerformedSearch && session?.user?.id ? await rateLimitRefusal(session.user.id, session.user.role, "SEARCH") : null;
+  if (hasPerformedSearch && !tooFast) {
     hits = q ? await searchPostHits(q, sortBy, whereClause) : await filteredPostHits(sortBy, whereClause);
   }
   const groups = groupHitsByTopic(hits);
@@ -205,9 +208,13 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
           <section aria-label="Résultats de la recherche" className="flex flex-col gap-4">
             {results.length === 0 ? (
               <Card>
-                <EmptyState icon={<SearchX size={40} />} title="Aucun résultat">
-                  Rien ne correspond à tes filtres. Élargis ta recherche : moins de mots, une période plus longue
-                  ou tous les forums.
+                <EmptyState icon={<SearchX size={40} />} title={tooFast ? "Trop de recherches" : "Aucun résultat"}>
+                  {tooFast ?? (
+                    <>
+                      Rien ne correspond à tes filtres. Élargis ta recherche : moins de mots, une période plus longue
+                      ou tous les forums.
+                    </>
+                  )}
                 </EmptyState>
               </Card>
             ) : (

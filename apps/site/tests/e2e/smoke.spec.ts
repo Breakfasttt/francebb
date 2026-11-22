@@ -183,7 +183,7 @@ test("après la création d'un sujet, le membre arrive sur le nouveau sujet", as
   await page.locator('textarea[name="content"]').fill("Premier message du sujet créé par le test");
   await page.getByRole("button", { name: "Créer le sujet" }).click();
   await page.waitForURL(/\/forum\/topic\//);
-  await expect(page.getByText(title).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: title, level: 1 })).toBeVisible();
 });
 
 test("créer une ligue sans nom affiche une notification d'erreur", async ({ page }) => {

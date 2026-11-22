@@ -36,6 +36,8 @@ Chaque membre a un rôle, qui dit ce qu'il peut faire sur le site. Un membre ban
 
 ## Les pièges
 
+- **Limite d'actions par minute** (carte 224) : un membre fait au plus 3 nouveaux sujets, 10 réponses, 20 messages privés (démarrer une conversation compte), 5 signalements, 30 réactions (messages et articles) et 20 recherches du forum par minute. Au-delà : « Doucement : attends une minute avant de recommencer. ». Le compte est tenu dans la table `ActionCounter` (une ligne par membre, action et minute, incrémentée en une requête ; les minutes de plus de dix minutes sont effacées au passage), parce que le site tourne sans serveur permanent. La modération n'est pas limitée ; un visiteur non connecté n'est pas compté sur la recherche. Seuils : `lib/rateLimitRules.ts` ; compteur : `rateLimitRefusal` de `lib/rateLimit.ts`, appelé par chaque action après ses contrôles et avant toute écriture.
+
 - **Chaque action serveur vérifie elle-même la session et le droit.** Une action serveur est une porte publique : n'importe qui peut l'appeler avec n'importe quels arguments. Le contrôle des pages `/administration` et `/moderation` se fait dans le navigateur et ne protège rien.
 - **`proxy.ts` ne protège aucune adresse par rôle.** Il rafraîchit la session et pose la politique de sécurité du contenu. Il renvoie seulement les comptes neufs vers l'inscription.
 - Un rôle personnalisé compte comme un coach pour les droits (`getRolePower`), mais `lib/forumAccess.ts` lit sa vraie puissance pour l'accès aux forums. Les deux restent cohérents tant qu'un rôle personnalisé reste sous Modérateur.
@@ -77,4 +79,4 @@ Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 ## État
 
 - Carte 221 : une seule règle de changement de rôle, une seule règle de bannissement (`canBanMember`), suppression d'un compte réservée aux admins, journal complet, messagerie fermée aux bannis, tests `tests/e2e/permissions.spec.ts` (chaque faille appelée directement avec chaque rôle).
-- Manque, en cartes à créer : bannissement temporaire, avertissements, modérateurs par forum, limite du nombre d'actions par minute.
+- Fait depuis : bannissement temporaire et avertissements (carte 222), limite d'actions par minute (carte 224). Manque encore : modérateurs par forum (carte 225).

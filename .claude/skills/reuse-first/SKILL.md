@@ -21,6 +21,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Bouton | `Button` avec `variant` `primary`, `secondary`, `quiet` ou `danger`, et `size` `tap` ou `tap-icon` (44 px) |
 | Panneau qui monte du bas, tiroir, fenêtre centrée | `Sheet` + `SheetContent` (`side` vaut `bottom`, `right` ou `center`) |
 | Confirmer une action (jamais `confirm()`) | `ConfirmDialog` : panneau du bas sur téléphone, fenêtre centrée sur ordinateur ; `danger` pour une action destructrice ; `children` pour un champ entre la phrase et les boutons (commentaire du modérateur) |
+| Limiter le nombre d'une action par minute (envoi, signalement, réaction, recherche) | `rateLimitRefusal(userId, role, action)` de `lib/rateLimit.ts` (seuils dans `lib/rateLimitRules.ts`, carte 224) : renvoie le message à afficher ou `null` |
 | Menu « ⋯ » d'actions secondaires | `ActionMenu` : un panneau sur téléphone, une liste déroulante sur ordinateur |
 | Petit panneau sous un bouton, sur ordinateur (outils, options) | `Popover`, `PopoverTrigger`, `PopoverContent`, `PopoverClose` ; sur téléphone, utiliser `Sheet` |
 | Noms français des émojis de réaction pour les lecteurs d'écran (pastilles et choix d'émojis) | `reactionName`, `reactionPillLabel` de `common/utils/reactionLabels.ts` |

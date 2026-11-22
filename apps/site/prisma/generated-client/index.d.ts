@@ -216,6 +216,12 @@ export type MailLog = $Result.DefaultSelection<Prisma.$MailLogPayload>
  * Avertissement de la modération à un membre (carte 222) : le membre le voit sur son profil, la modération sur sa fiche.
  */
 export type UserWarning = $Result.DefaultSelection<Prisma.$UserWarningPayload>
+/**
+ * Model ActionCounter
+ * Compteur d'actions d'un membre sur une minute (carte 224) : limite le nombre de sujets, réponses, messages privés,
+ * signalements, réactions et recherches par minute. Les lignes de plus de dix minutes sont effacées au fil de l'eau.
+ */
+export type ActionCounter = $Result.DefaultSelection<Prisma.$ActionCounterPayload>
 
 /**
  * Enums
@@ -770,6 +776,16 @@ export class PrismaClient<
     * ```
     */
   get userWarning(): Prisma.UserWarningDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.actionCounter`: Exposes CRUD operations for the **ActionCounter** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ActionCounters
+    * const actionCounters = await prisma.actionCounter.findMany()
+    * ```
+    */
+  get actionCounter(): Prisma.ActionCounterDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1243,7 +1259,8 @@ export namespace Prisma {
     TournamentMatch: 'TournamentMatch',
     LegacyMember: 'LegacyMember',
     MailLog: 'MailLog',
-    UserWarning: 'UserWarning'
+    UserWarning: 'UserWarning',
+    ActionCounter: 'ActionCounter'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1259,7 +1276,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog" | "userWarning"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog" | "userWarning" | "actionCounter"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4223,6 +4240,80 @@ export namespace Prisma {
           }
         }
       }
+      ActionCounter: {
+        payload: Prisma.$ActionCounterPayload<ExtArgs>
+        fields: Prisma.ActionCounterFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ActionCounterFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ActionCounterFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          findFirst: {
+            args: Prisma.ActionCounterFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ActionCounterFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          findMany: {
+            args: Prisma.ActionCounterFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>[]
+          }
+          create: {
+            args: Prisma.ActionCounterCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          createMany: {
+            args: Prisma.ActionCounterCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ActionCounterCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>[]
+          }
+          delete: {
+            args: Prisma.ActionCounterDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          update: {
+            args: Prisma.ActionCounterUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          deleteMany: {
+            args: Prisma.ActionCounterDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ActionCounterUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ActionCounterUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>[]
+          }
+          upsert: {
+            args: Prisma.ActionCounterUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ActionCounterPayload>
+          }
+          aggregate: {
+            args: Prisma.ActionCounterAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateActionCounter>
+          }
+          groupBy: {
+            args: Prisma.ActionCounterGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ActionCounterGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ActionCounterCountArgs<ExtArgs>
+            result: $Utils.Optional<ActionCounterCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4371,6 +4462,7 @@ export namespace Prisma {
     legacyMember?: LegacyMemberOmit
     mailLog?: MailLogOmit
     userWarning?: UserWarningOmit
+    actionCounter?: ActionCounterOmit
   }
 
   /* Types for Logging */
@@ -4495,6 +4587,7 @@ export namespace Prisma {
     notificationsCaused: number
     warningsReceived: number
     warningsGiven: number
+    actionCounters: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4542,6 +4635,7 @@ export namespace Prisma {
     notificationsCaused?: boolean | UserCountOutputTypeCountNotificationsCausedArgs
     warningsReceived?: boolean | UserCountOutputTypeCountWarningsReceivedArgs
     warningsGiven?: boolean | UserCountOutputTypeCountWarningsGivenArgs
+    actionCounters?: boolean | UserCountOutputTypeCountActionCountersArgs
   }
 
   // Custom InputTypes
@@ -4861,6 +4955,13 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountWarningsGivenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWarningWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountActionCountersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActionCounterWhereInput
   }
 
 
@@ -8062,6 +8163,7 @@ export namespace Prisma {
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
     warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
+    actionCounters?: boolean | User$actionCountersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8198,6 +8300,7 @@ export namespace Prisma {
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
     warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
     warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
+    actionCounters?: boolean | User$actionCountersArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8255,6 +8358,7 @@ export namespace Prisma {
       notificationsCaused: Prisma.$NotificationPayload<ExtArgs>[]
       warningsReceived: Prisma.$UserWarningPayload<ExtArgs>[]
       warningsGiven: Prisma.$UserWarningPayload<ExtArgs>[]
+      actionCounters: Prisma.$ActionCounterPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8732,6 +8836,7 @@ export namespace Prisma {
     notificationsCaused<T extends User$notificationsCausedArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsCausedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     warningsReceived<T extends User$warningsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     warningsGiven<T extends User$warningsGivenArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    actionCounters<T extends User$actionCountersArgs<ExtArgs> = {}>(args?: Subset<T, User$actionCountersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10240,6 +10345,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
+  }
+
+  /**
+   * User.actionCounters
+   */
+  export type User$actionCountersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    where?: ActionCounterWhereInput
+    orderBy?: ActionCounterOrderByWithRelationInput | ActionCounterOrderByWithRelationInput[]
+    cursor?: ActionCounterWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ActionCounterScalarFieldEnum | ActionCounterScalarFieldEnum[]
   }
 
   /**
@@ -52932,6 +53061,1096 @@ export namespace Prisma {
 
 
   /**
+   * Model ActionCounter
+   */
+
+  export type AggregateActionCounter = {
+    _count: ActionCounterCountAggregateOutputType | null
+    _avg: ActionCounterAvgAggregateOutputType | null
+    _sum: ActionCounterSumAggregateOutputType | null
+    _min: ActionCounterMinAggregateOutputType | null
+    _max: ActionCounterMaxAggregateOutputType | null
+  }
+
+  export type ActionCounterAvgAggregateOutputType = {
+    count: number | null
+  }
+
+  export type ActionCounterSumAggregateOutputType = {
+    count: number | null
+  }
+
+  export type ActionCounterMinAggregateOutputType = {
+    userId: string | null
+    action: string | null
+    windowStart: Date | null
+    count: number | null
+  }
+
+  export type ActionCounterMaxAggregateOutputType = {
+    userId: string | null
+    action: string | null
+    windowStart: Date | null
+    count: number | null
+  }
+
+  export type ActionCounterCountAggregateOutputType = {
+    userId: number
+    action: number
+    windowStart: number
+    count: number
+    _all: number
+  }
+
+
+  export type ActionCounterAvgAggregateInputType = {
+    count?: true
+  }
+
+  export type ActionCounterSumAggregateInputType = {
+    count?: true
+  }
+
+  export type ActionCounterMinAggregateInputType = {
+    userId?: true
+    action?: true
+    windowStart?: true
+    count?: true
+  }
+
+  export type ActionCounterMaxAggregateInputType = {
+    userId?: true
+    action?: true
+    windowStart?: true
+    count?: true
+  }
+
+  export type ActionCounterCountAggregateInputType = {
+    userId?: true
+    action?: true
+    windowStart?: true
+    count?: true
+    _all?: true
+  }
+
+  export type ActionCounterAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActionCounter to aggregate.
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActionCounters to fetch.
+     */
+    orderBy?: ActionCounterOrderByWithRelationInput | ActionCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ActionCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActionCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActionCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ActionCounters
+    **/
+    _count?: true | ActionCounterCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ActionCounterAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ActionCounterSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ActionCounterMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ActionCounterMaxAggregateInputType
+  }
+
+  export type GetActionCounterAggregateType<T extends ActionCounterAggregateArgs> = {
+        [P in keyof T & keyof AggregateActionCounter]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateActionCounter[P]>
+      : GetScalarType<T[P], AggregateActionCounter[P]>
+  }
+
+
+
+
+  export type ActionCounterGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ActionCounterWhereInput
+    orderBy?: ActionCounterOrderByWithAggregationInput | ActionCounterOrderByWithAggregationInput[]
+    by: ActionCounterScalarFieldEnum[] | ActionCounterScalarFieldEnum
+    having?: ActionCounterScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ActionCounterCountAggregateInputType | true
+    _avg?: ActionCounterAvgAggregateInputType
+    _sum?: ActionCounterSumAggregateInputType
+    _min?: ActionCounterMinAggregateInputType
+    _max?: ActionCounterMaxAggregateInputType
+  }
+
+  export type ActionCounterGroupByOutputType = {
+    userId: string
+    action: string
+    windowStart: Date
+    count: number
+    _count: ActionCounterCountAggregateOutputType | null
+    _avg: ActionCounterAvgAggregateOutputType | null
+    _sum: ActionCounterSumAggregateOutputType | null
+    _min: ActionCounterMinAggregateOutputType | null
+    _max: ActionCounterMaxAggregateOutputType | null
+  }
+
+  type GetActionCounterGroupByPayload<T extends ActionCounterGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ActionCounterGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ActionCounterGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ActionCounterGroupByOutputType[P]>
+            : GetScalarType<T[P], ActionCounterGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ActionCounterSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    action?: boolean
+    windowStart?: boolean
+    count?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["actionCounter"]>
+
+  export type ActionCounterSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    action?: boolean
+    windowStart?: boolean
+    count?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["actionCounter"]>
+
+  export type ActionCounterSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    userId?: boolean
+    action?: boolean
+    windowStart?: boolean
+    count?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["actionCounter"]>
+
+  export type ActionCounterSelectScalar = {
+    userId?: boolean
+    action?: boolean
+    windowStart?: boolean
+    count?: boolean
+  }
+
+  export type ActionCounterOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"userId" | "action" | "windowStart" | "count", ExtArgs["result"]["actionCounter"]>
+  export type ActionCounterInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ActionCounterIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ActionCounterIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ActionCounterPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ActionCounter"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      userId: string
+      /**
+       * Type d'action : TOPIC, POST, PRIVATE_MESSAGE, REPORT, REACTION, SEARCH (lib/rateLimitRules.ts).
+       */
+      action: string
+      /**
+       * Début de la minute comptée.
+       */
+      windowStart: Date
+      count: number
+    }, ExtArgs["result"]["actionCounter"]>
+    composites: {}
+  }
+
+  type ActionCounterGetPayload<S extends boolean | null | undefined | ActionCounterDefaultArgs> = $Result.GetResult<Prisma.$ActionCounterPayload, S>
+
+  type ActionCounterCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ActionCounterFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ActionCounterCountAggregateInputType | true
+    }
+
+  export interface ActionCounterDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ActionCounter'], meta: { name: 'ActionCounter' } }
+    /**
+     * Find zero or one ActionCounter that matches the filter.
+     * @param {ActionCounterFindUniqueArgs} args - Arguments to find a ActionCounter
+     * @example
+     * // Get one ActionCounter
+     * const actionCounter = await prisma.actionCounter.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ActionCounterFindUniqueArgs>(args: SelectSubset<T, ActionCounterFindUniqueArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ActionCounter that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ActionCounterFindUniqueOrThrowArgs} args - Arguments to find a ActionCounter
+     * @example
+     * // Get one ActionCounter
+     * const actionCounter = await prisma.actionCounter.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ActionCounterFindUniqueOrThrowArgs>(args: SelectSubset<T, ActionCounterFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActionCounter that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterFindFirstArgs} args - Arguments to find a ActionCounter
+     * @example
+     * // Get one ActionCounter
+     * const actionCounter = await prisma.actionCounter.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ActionCounterFindFirstArgs>(args?: SelectSubset<T, ActionCounterFindFirstArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ActionCounter that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterFindFirstOrThrowArgs} args - Arguments to find a ActionCounter
+     * @example
+     * // Get one ActionCounter
+     * const actionCounter = await prisma.actionCounter.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ActionCounterFindFirstOrThrowArgs>(args?: SelectSubset<T, ActionCounterFindFirstOrThrowArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ActionCounters that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ActionCounters
+     * const actionCounters = await prisma.actionCounter.findMany()
+     * 
+     * // Get first 10 ActionCounters
+     * const actionCounters = await prisma.actionCounter.findMany({ take: 10 })
+     * 
+     * // Only select the `userId`
+     * const actionCounterWithUserIdOnly = await prisma.actionCounter.findMany({ select: { userId: true } })
+     * 
+     */
+    findMany<T extends ActionCounterFindManyArgs>(args?: SelectSubset<T, ActionCounterFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ActionCounter.
+     * @param {ActionCounterCreateArgs} args - Arguments to create a ActionCounter.
+     * @example
+     * // Create one ActionCounter
+     * const ActionCounter = await prisma.actionCounter.create({
+     *   data: {
+     *     // ... data to create a ActionCounter
+     *   }
+     * })
+     * 
+     */
+    create<T extends ActionCounterCreateArgs>(args: SelectSubset<T, ActionCounterCreateArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ActionCounters.
+     * @param {ActionCounterCreateManyArgs} args - Arguments to create many ActionCounters.
+     * @example
+     * // Create many ActionCounters
+     * const actionCounter = await prisma.actionCounter.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ActionCounterCreateManyArgs>(args?: SelectSubset<T, ActionCounterCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ActionCounters and returns the data saved in the database.
+     * @param {ActionCounterCreateManyAndReturnArgs} args - Arguments to create many ActionCounters.
+     * @example
+     * // Create many ActionCounters
+     * const actionCounter = await prisma.actionCounter.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ActionCounters and only return the `userId`
+     * const actionCounterWithUserIdOnly = await prisma.actionCounter.createManyAndReturn({
+     *   select: { userId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ActionCounterCreateManyAndReturnArgs>(args?: SelectSubset<T, ActionCounterCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ActionCounter.
+     * @param {ActionCounterDeleteArgs} args - Arguments to delete one ActionCounter.
+     * @example
+     * // Delete one ActionCounter
+     * const ActionCounter = await prisma.actionCounter.delete({
+     *   where: {
+     *     // ... filter to delete one ActionCounter
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ActionCounterDeleteArgs>(args: SelectSubset<T, ActionCounterDeleteArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ActionCounter.
+     * @param {ActionCounterUpdateArgs} args - Arguments to update one ActionCounter.
+     * @example
+     * // Update one ActionCounter
+     * const actionCounter = await prisma.actionCounter.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ActionCounterUpdateArgs>(args: SelectSubset<T, ActionCounterUpdateArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ActionCounters.
+     * @param {ActionCounterDeleteManyArgs} args - Arguments to filter ActionCounters to delete.
+     * @example
+     * // Delete a few ActionCounters
+     * const { count } = await prisma.actionCounter.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ActionCounterDeleteManyArgs>(args?: SelectSubset<T, ActionCounterDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActionCounters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ActionCounters
+     * const actionCounter = await prisma.actionCounter.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ActionCounterUpdateManyArgs>(args: SelectSubset<T, ActionCounterUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ActionCounters and returns the data updated in the database.
+     * @param {ActionCounterUpdateManyAndReturnArgs} args - Arguments to update many ActionCounters.
+     * @example
+     * // Update many ActionCounters
+     * const actionCounter = await prisma.actionCounter.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ActionCounters and only return the `userId`
+     * const actionCounterWithUserIdOnly = await prisma.actionCounter.updateManyAndReturn({
+     *   select: { userId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ActionCounterUpdateManyAndReturnArgs>(args: SelectSubset<T, ActionCounterUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ActionCounter.
+     * @param {ActionCounterUpsertArgs} args - Arguments to update or create a ActionCounter.
+     * @example
+     * // Update or create a ActionCounter
+     * const actionCounter = await prisma.actionCounter.upsert({
+     *   create: {
+     *     // ... data to create a ActionCounter
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ActionCounter we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ActionCounterUpsertArgs>(args: SelectSubset<T, ActionCounterUpsertArgs<ExtArgs>>): Prisma__ActionCounterClient<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ActionCounters.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterCountArgs} args - Arguments to filter ActionCounters to count.
+     * @example
+     * // Count the number of ActionCounters
+     * const count = await prisma.actionCounter.count({
+     *   where: {
+     *     // ... the filter for the ActionCounters we want to count
+     *   }
+     * })
+    **/
+    count<T extends ActionCounterCountArgs>(
+      args?: Subset<T, ActionCounterCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ActionCounterCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ActionCounter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ActionCounterAggregateArgs>(args: Subset<T, ActionCounterAggregateArgs>): Prisma.PrismaPromise<GetActionCounterAggregateType<T>>
+
+    /**
+     * Group by ActionCounter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ActionCounterGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ActionCounterGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ActionCounterGroupByArgs['orderBy'] }
+        : { orderBy?: ActionCounterGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ActionCounterGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetActionCounterGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ActionCounter model
+   */
+  readonly fields: ActionCounterFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ActionCounter.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ActionCounterClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ActionCounter model
+   */
+  interface ActionCounterFieldRefs {
+    readonly userId: FieldRef<"ActionCounter", 'String'>
+    readonly action: FieldRef<"ActionCounter", 'String'>
+    readonly windowStart: FieldRef<"ActionCounter", 'DateTime'>
+    readonly count: FieldRef<"ActionCounter", 'Int'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ActionCounter findUnique
+   */
+  export type ActionCounterFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter, which ActionCounter to fetch.
+     */
+    where: ActionCounterWhereUniqueInput
+  }
+
+  /**
+   * ActionCounter findUniqueOrThrow
+   */
+  export type ActionCounterFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter, which ActionCounter to fetch.
+     */
+    where: ActionCounterWhereUniqueInput
+  }
+
+  /**
+   * ActionCounter findFirst
+   */
+  export type ActionCounterFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter, which ActionCounter to fetch.
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActionCounters to fetch.
+     */
+    orderBy?: ActionCounterOrderByWithRelationInput | ActionCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActionCounters.
+     */
+    cursor?: ActionCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActionCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActionCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActionCounters.
+     */
+    distinct?: ActionCounterScalarFieldEnum | ActionCounterScalarFieldEnum[]
+  }
+
+  /**
+   * ActionCounter findFirstOrThrow
+   */
+  export type ActionCounterFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter, which ActionCounter to fetch.
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActionCounters to fetch.
+     */
+    orderBy?: ActionCounterOrderByWithRelationInput | ActionCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ActionCounters.
+     */
+    cursor?: ActionCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActionCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActionCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActionCounters.
+     */
+    distinct?: ActionCounterScalarFieldEnum | ActionCounterScalarFieldEnum[]
+  }
+
+  /**
+   * ActionCounter findMany
+   */
+  export type ActionCounterFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter, which ActionCounters to fetch.
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ActionCounters to fetch.
+     */
+    orderBy?: ActionCounterOrderByWithRelationInput | ActionCounterOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ActionCounters.
+     */
+    cursor?: ActionCounterWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ActionCounters from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ActionCounters.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ActionCounters.
+     */
+    distinct?: ActionCounterScalarFieldEnum | ActionCounterScalarFieldEnum[]
+  }
+
+  /**
+   * ActionCounter create
+   */
+  export type ActionCounterCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ActionCounter.
+     */
+    data: XOR<ActionCounterCreateInput, ActionCounterUncheckedCreateInput>
+  }
+
+  /**
+   * ActionCounter createMany
+   */
+  export type ActionCounterCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ActionCounters.
+     */
+    data: ActionCounterCreateManyInput | ActionCounterCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ActionCounter createManyAndReturn
+   */
+  export type ActionCounterCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * The data used to create many ActionCounters.
+     */
+    data: ActionCounterCreateManyInput | ActionCounterCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActionCounter update
+   */
+  export type ActionCounterUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ActionCounter.
+     */
+    data: XOR<ActionCounterUpdateInput, ActionCounterUncheckedUpdateInput>
+    /**
+     * Choose, which ActionCounter to update.
+     */
+    where: ActionCounterWhereUniqueInput
+  }
+
+  /**
+   * ActionCounter updateMany
+   */
+  export type ActionCounterUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ActionCounters.
+     */
+    data: XOR<ActionCounterUpdateManyMutationInput, ActionCounterUncheckedUpdateManyInput>
+    /**
+     * Filter which ActionCounters to update
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * Limit how many ActionCounters to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActionCounter updateManyAndReturn
+   */
+  export type ActionCounterUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * The data used to update ActionCounters.
+     */
+    data: XOR<ActionCounterUpdateManyMutationInput, ActionCounterUncheckedUpdateManyInput>
+    /**
+     * Filter which ActionCounters to update
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * Limit how many ActionCounters to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ActionCounter upsert
+   */
+  export type ActionCounterUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ActionCounter to update in case it exists.
+     */
+    where: ActionCounterWhereUniqueInput
+    /**
+     * In case the ActionCounter found by the `where` argument doesn't exist, create a new ActionCounter with this data.
+     */
+    create: XOR<ActionCounterCreateInput, ActionCounterUncheckedCreateInput>
+    /**
+     * In case the ActionCounter was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ActionCounterUpdateInput, ActionCounterUncheckedUpdateInput>
+  }
+
+  /**
+   * ActionCounter delete
+   */
+  export type ActionCounterDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+    /**
+     * Filter which ActionCounter to delete.
+     */
+    where: ActionCounterWhereUniqueInput
+  }
+
+  /**
+   * ActionCounter deleteMany
+   */
+  export type ActionCounterDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ActionCounters to delete
+     */
+    where?: ActionCounterWhereInput
+    /**
+     * Limit how many ActionCounters to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ActionCounter without action
+   */
+  export type ActionCounterDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ActionCounter
+     */
+    select?: ActionCounterSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ActionCounter
+     */
+    omit?: ActionCounterOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ActionCounterInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -53531,6 +54750,16 @@ export namespace Prisma {
   export type UserWarningScalarFieldEnum = (typeof UserWarningScalarFieldEnum)[keyof typeof UserWarningScalarFieldEnum]
 
 
+  export const ActionCounterScalarFieldEnum: {
+    userId: 'userId',
+    action: 'action',
+    windowStart: 'windowStart',
+    count: 'count'
+  };
+
+  export type ActionCounterScalarFieldEnum = (typeof ActionCounterScalarFieldEnum)[keyof typeof ActionCounterScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -53871,6 +55100,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationListRelationFilter
     warningsReceived?: UserWarningListRelationFilter
     warningsGiven?: UserWarningListRelationFilter
+    actionCounters?: ActionCounterListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -53944,6 +55174,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationOrderByRelationAggregateInput
     warningsReceived?: UserWarningOrderByRelationAggregateInput
     warningsGiven?: UserWarningOrderByRelationAggregateInput
+    actionCounters?: ActionCounterOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -54020,6 +55251,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationListRelationFilter
     warningsReceived?: UserWarningListRelationFilter
     warningsGiven?: UserWarningListRelationFilter
+    actionCounters?: ActionCounterListRelationFilter
   }, "id" | "email" | "legacyId">
 
   export type UserOrderByWithAggregationInput = {
@@ -56932,6 +58164,59 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"UserWarning"> | Date | string
   }
 
+  export type ActionCounterWhereInput = {
+    AND?: ActionCounterWhereInput | ActionCounterWhereInput[]
+    OR?: ActionCounterWhereInput[]
+    NOT?: ActionCounterWhereInput | ActionCounterWhereInput[]
+    userId?: StringFilter<"ActionCounter"> | string
+    action?: StringFilter<"ActionCounter"> | string
+    windowStart?: DateTimeFilter<"ActionCounter"> | Date | string
+    count?: IntFilter<"ActionCounter"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ActionCounterOrderByWithRelationInput = {
+    userId?: SortOrder
+    action?: SortOrder
+    windowStart?: SortOrder
+    count?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ActionCounterWhereUniqueInput = Prisma.AtLeast<{
+    userId_action_windowStart?: ActionCounterUserIdActionWindowStartCompoundUniqueInput
+    AND?: ActionCounterWhereInput | ActionCounterWhereInput[]
+    OR?: ActionCounterWhereInput[]
+    NOT?: ActionCounterWhereInput | ActionCounterWhereInput[]
+    userId?: StringFilter<"ActionCounter"> | string
+    action?: StringFilter<"ActionCounter"> | string
+    windowStart?: DateTimeFilter<"ActionCounter"> | Date | string
+    count?: IntFilter<"ActionCounter"> | number
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "userId_action_windowStart">
+
+  export type ActionCounterOrderByWithAggregationInput = {
+    userId?: SortOrder
+    action?: SortOrder
+    windowStart?: SortOrder
+    count?: SortOrder
+    _count?: ActionCounterCountOrderByAggregateInput
+    _avg?: ActionCounterAvgOrderByAggregateInput
+    _max?: ActionCounterMaxOrderByAggregateInput
+    _min?: ActionCounterMinOrderByAggregateInput
+    _sum?: ActionCounterSumOrderByAggregateInput
+  }
+
+  export type ActionCounterScalarWhereWithAggregatesInput = {
+    AND?: ActionCounterScalarWhereWithAggregatesInput | ActionCounterScalarWhereWithAggregatesInput[]
+    OR?: ActionCounterScalarWhereWithAggregatesInput[]
+    NOT?: ActionCounterScalarWhereWithAggregatesInput | ActionCounterScalarWhereWithAggregatesInput[]
+    userId?: StringWithAggregatesFilter<"ActionCounter"> | string
+    action?: StringWithAggregatesFilter<"ActionCounter"> | string
+    windowStart?: DateTimeWithAggregatesFilter<"ActionCounter"> | Date | string
+    count?: IntWithAggregatesFilter<"ActionCounter"> | number
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -57154,6 +58439,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -57226,6 +58512,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -57298,6 +58585,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -57370,6 +58658,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -60433,6 +61722,54 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActionCounterCreateInput = {
+    action: string
+    windowStart: Date | string
+    count?: number
+    user: UserCreateNestedOneWithoutActionCountersInput
+  }
+
+  export type ActionCounterUncheckedCreateInput = {
+    userId: string
+    action: string
+    windowStart: Date | string
+    count?: number
+  }
+
+  export type ActionCounterUpdateInput = {
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+    user?: UserUpdateOneRequiredWithoutActionCountersNestedInput
+  }
+
+  export type ActionCounterUncheckedUpdateInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActionCounterCreateManyInput = {
+    userId: string
+    action: string
+    windowStart: Date | string
+    count?: number
+  }
+
+  export type ActionCounterUpdateManyMutationInput = {
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActionCounterUncheckedUpdateManyInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -60829,6 +62166,12 @@ export namespace Prisma {
     none?: UserWarningWhereInput
   }
 
+  export type ActionCounterListRelationFilter = {
+    every?: ActionCounterWhereInput
+    some?: ActionCounterWhereInput
+    none?: ActionCounterWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -60938,6 +62281,10 @@ export namespace Prisma {
   }
 
   export type UserWarningOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ActionCounterOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -62751,6 +64098,41 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type ActionCounterUserIdActionWindowStartCompoundUniqueInput = {
+    userId: string
+    action: string
+    windowStart: Date | string
+  }
+
+  export type ActionCounterCountOrderByAggregateInput = {
+    userId?: SortOrder
+    action?: SortOrder
+    windowStart?: SortOrder
+    count?: SortOrder
+  }
+
+  export type ActionCounterAvgOrderByAggregateInput = {
+    count?: SortOrder
+  }
+
+  export type ActionCounterMaxOrderByAggregateInput = {
+    userId?: SortOrder
+    action?: SortOrder
+    windowStart?: SortOrder
+    count?: SortOrder
+  }
+
+  export type ActionCounterMinOrderByAggregateInput = {
+    userId?: SortOrder
+    action?: SortOrder
+    windowStart?: SortOrder
+    count?: SortOrder
+  }
+
+  export type ActionCounterSumOrderByAggregateInput = {
+    count?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -63110,6 +64492,13 @@ export namespace Prisma {
     connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
   }
 
+  export type ActionCounterCreateNestedManyWithoutUserInput = {
+    create?: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput> | ActionCounterCreateWithoutUserInput[] | ActionCounterUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActionCounterCreateOrConnectWithoutUserInput | ActionCounterCreateOrConnectWithoutUserInput[]
+    createMany?: ActionCounterCreateManyUserInputEnvelope
+    connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -63413,6 +64802,13 @@ export namespace Prisma {
     connectOrCreate?: UserWarningCreateOrConnectWithoutModeratorInput | UserWarningCreateOrConnectWithoutModeratorInput[]
     createMany?: UserWarningCreateManyModeratorInputEnvelope
     connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+  }
+
+  export type ActionCounterUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput> | ActionCounterCreateWithoutUserInput[] | ActionCounterUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActionCounterCreateOrConnectWithoutUserInput | ActionCounterCreateOrConnectWithoutUserInput[]
+    createMany?: ActionCounterCreateManyUserInputEnvelope
+    connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -64044,6 +65440,20 @@ export namespace Prisma {
     deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
   }
 
+  export type ActionCounterUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput> | ActionCounterCreateWithoutUserInput[] | ActionCounterUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActionCounterCreateOrConnectWithoutUserInput | ActionCounterCreateOrConnectWithoutUserInput[]
+    upsert?: ActionCounterUpsertWithWhereUniqueWithoutUserInput | ActionCounterUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ActionCounterCreateManyUserInputEnvelope
+    set?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    disconnect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    delete?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    update?: ActionCounterUpdateWithWhereUniqueWithoutUserInput | ActionCounterUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ActionCounterUpdateManyWithWhereWithoutUserInput | ActionCounterUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -64655,6 +66065,20 @@ export namespace Prisma {
     update?: UserWarningUpdateWithWhereUniqueWithoutModeratorInput | UserWarningUpdateWithWhereUniqueWithoutModeratorInput[]
     updateMany?: UserWarningUpdateManyWithWhereWithoutModeratorInput | UserWarningUpdateManyWithWhereWithoutModeratorInput[]
     deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+  }
+
+  export type ActionCounterUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput> | ActionCounterCreateWithoutUserInput[] | ActionCounterUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ActionCounterCreateOrConnectWithoutUserInput | ActionCounterCreateOrConnectWithoutUserInput[]
+    upsert?: ActionCounterUpsertWithWhereUniqueWithoutUserInput | ActionCounterUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ActionCounterCreateManyUserInputEnvelope
+    set?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    disconnect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    delete?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+    update?: ActionCounterUpdateWithWhereUniqueWithoutUserInput | ActionCounterUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ActionCounterUpdateManyWithWhereWithoutUserInput | ActionCounterUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBlockedByInput = {
@@ -66921,6 +68345,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWarningsGivenInput, UserUpdateWithoutWarningsGivenInput>, UserUncheckedUpdateWithoutWarningsGivenInput>
   }
 
+  export type UserCreateNestedOneWithoutActionCountersInput = {
+    create?: XOR<UserCreateWithoutActionCountersInput, UserUncheckedCreateWithoutActionCountersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActionCountersInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutActionCountersNestedInput = {
+    create?: XOR<UserCreateWithoutActionCountersInput, UserUncheckedCreateWithoutActionCountersInput>
+    connectOrCreate?: UserCreateOrConnectWithoutActionCountersInput
+    upsert?: UserUpsertWithoutActionCountersInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActionCountersInput, UserUpdateWithoutActionCountersInput>, UserUncheckedUpdateWithoutActionCountersInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -67257,6 +68695,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -67328,6 +68767,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -67415,6 +68855,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -67486,6 +68927,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -67557,6 +68999,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -67628,6 +69071,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -67715,6 +69159,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -67786,6 +69231,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -69598,6 +71044,28 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ActionCounterCreateWithoutUserInput = {
+    action: string
+    windowStart: Date | string
+    count?: number
+  }
+
+  export type ActionCounterUncheckedCreateWithoutUserInput = {
+    action: string
+    windowStart: Date | string
+    count?: number
+  }
+
+  export type ActionCounterCreateOrConnectWithoutUserInput = {
+    where: ActionCounterWhereUniqueInput
+    create: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput>
+  }
+
+  export type ActionCounterCreateManyUserInputEnvelope = {
+    data: ActionCounterCreateManyUserInput | ActionCounterCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -70768,6 +72236,32 @@ export namespace Prisma {
     data: XOR<UserWarningUpdateManyMutationInput, UserWarningUncheckedUpdateManyWithoutModeratorInput>
   }
 
+  export type ActionCounterUpsertWithWhereUniqueWithoutUserInput = {
+    where: ActionCounterWhereUniqueInput
+    update: XOR<ActionCounterUpdateWithoutUserInput, ActionCounterUncheckedUpdateWithoutUserInput>
+    create: XOR<ActionCounterCreateWithoutUserInput, ActionCounterUncheckedCreateWithoutUserInput>
+  }
+
+  export type ActionCounterUpdateWithWhereUniqueWithoutUserInput = {
+    where: ActionCounterWhereUniqueInput
+    data: XOR<ActionCounterUpdateWithoutUserInput, ActionCounterUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ActionCounterUpdateManyWithWhereWithoutUserInput = {
+    where: ActionCounterScalarWhereInput
+    data: XOR<ActionCounterUpdateManyMutationInput, ActionCounterUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ActionCounterScalarWhereInput = {
+    AND?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
+    OR?: ActionCounterScalarWhereInput[]
+    NOT?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
+    userId?: StringFilter<"ActionCounter"> | string
+    action?: StringFilter<"ActionCounter"> | string
+    windowStart?: DateTimeFilter<"ActionCounter"> | Date | string
+    count?: IntFilter<"ActionCounter"> | number
+  }
+
   export type UserCreateWithoutBlockedByInput = {
     id?: string
     name?: string | null
@@ -70837,6 +72331,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -70908,6 +72403,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -70984,6 +72480,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -71055,6 +72552,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -71142,6 +72640,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -71213,6 +72712,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutBlocksInput = {
@@ -71295,6 +72795,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -71366,6 +72867,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCdfValidatedTournamentsInput = {
@@ -71437,6 +72939,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCdfValidatedTournamentsInput = {
@@ -71508,6 +73011,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCdfValidatedTournamentsInput = {
@@ -71688,6 +73192,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -71759,6 +73264,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -71983,6 +73489,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -72054,6 +73561,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -72141,6 +73649,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCdfValidatedTournamentsInput = {
@@ -72212,6 +73721,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -72410,6 +73920,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -72481,6 +73992,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentMercenaryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -73012,6 +74524,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedTopicsInput = {
@@ -73083,6 +74596,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedTopicsInput = {
@@ -73159,6 +74673,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLastPostTopicsInput = {
@@ -73230,6 +74745,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLastPostTopicsInput = {
@@ -73469,6 +74985,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -73540,6 +75057,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -73734,6 +75252,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedTopicsInput = {
@@ -73805,6 +75324,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutLastPostTopicsInput = {
@@ -73887,6 +75407,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLastPostTopicsInput = {
@@ -73958,6 +75479,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -74177,6 +75699,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -74248,6 +75771,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -74406,6 +75930,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedPostsInput = {
@@ -74477,6 +76002,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedPostsInput = {
@@ -74579,6 +76105,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -74650,6 +76177,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -74726,6 +76254,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -74797,6 +76326,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -74995,6 +76525,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedPostsInput = {
@@ -75066,6 +76597,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -75164,6 +76696,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -75235,6 +76768,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -75317,6 +76851,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -75388,6 +76923,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -75552,6 +77088,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -75623,6 +77160,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -75699,6 +77237,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -75770,6 +77309,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -75941,6 +77481,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -76012,6 +77553,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUser1ConversationsInput = {
@@ -76094,6 +77636,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -76165,6 +77708,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -76284,6 +77828,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConversationParticipantsInput = {
@@ -76355,6 +77900,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConversationParticipantsInput = {
@@ -76475,6 +78021,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
@@ -76546,6 +78093,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationUpsertWithoutParticipantsInput = {
@@ -76656,6 +78204,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -76727,6 +78276,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -76847,6 +78397,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -76918,6 +78469,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationUpsertWithoutMessagesInput = {
@@ -77083,6 +78635,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -77154,6 +78707,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -77302,6 +78856,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -77373,6 +78928,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMentionsReceivedInput = {
@@ -77444,6 +79000,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -77515,6 +79072,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -77591,6 +79149,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -77662,6 +79221,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -77792,6 +79352,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -77863,6 +79424,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -77945,6 +79507,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -78016,6 +79579,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutMentionsInput = {
@@ -78136,6 +79700,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -78207,6 +79772,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -78283,6 +79849,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -78354,6 +79921,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -78572,6 +80140,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -78643,6 +80212,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutNotificationsCausedInput = {
@@ -78725,6 +80295,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -78796,6 +80367,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutNotificationsInput = {
@@ -79016,6 +80588,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -79087,6 +80660,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -79217,6 +80791,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -79288,6 +80863,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutReactionsInput = {
@@ -79408,6 +80984,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -79479,6 +81056,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -79631,6 +81209,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -79702,6 +81281,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -79850,6 +81430,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -79921,6 +81502,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRankingArchivesInput = {
@@ -79992,6 +81574,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRankingArchivesInput = {
@@ -80063,6 +81646,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRankingArchivesInput = {
@@ -80150,6 +81734,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRankingArchivesInput = {
@@ -80221,6 +81806,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTournamentRegistrationsInput = {
@@ -80292,6 +81878,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -80363,6 +81950,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -80565,6 +82153,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -80636,6 +82225,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutRegistrationsInput = {
@@ -80828,6 +82418,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -80899,6 +82490,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -81121,6 +82713,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -81192,6 +82785,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutTeamsInput = {
@@ -81400,6 +82994,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -81471,6 +83066,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -81585,6 +83181,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -81656,6 +83253,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentTeamUpsertWithoutMembersInput = {
@@ -81760,6 +83358,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -81831,6 +83430,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -82033,6 +83633,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -82104,6 +83705,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutMercenariesInput = {
@@ -82345,6 +83947,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -82416,6 +84019,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -82492,6 +84096,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -82563,6 +84168,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -82744,6 +84350,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -82815,6 +84422,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutArticlesInput = {
@@ -82897,6 +84505,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -82968,6 +84577,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
@@ -83132,6 +84742,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -83203,6 +84814,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -83327,6 +84939,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -83398,6 +85011,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutReactionsInput = {
@@ -83554,6 +85168,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -83625,6 +85240,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -83821,6 +85437,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -83892,6 +85509,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -83968,6 +85586,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -84039,6 +85658,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -84142,6 +85762,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -84213,6 +85834,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutLigueInput = {
@@ -84332,6 +85954,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -84403,6 +86026,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -84479,6 +86103,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -84550,6 +86175,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -84637,6 +86263,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -84708,6 +86335,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReportsMadeInput = {
@@ -84790,6 +86418,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -84861,6 +86490,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -84932,6 +86562,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -85003,6 +86634,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -85090,6 +86722,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -85161,6 +86794,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubmittedResourcesInput = {
@@ -85232,6 +86866,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
@@ -85303,6 +86938,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
@@ -85405,6 +87041,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
@@ -85476,6 +87113,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
@@ -85618,6 +87256,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentResultsInput = {
@@ -85689,6 +87328,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentResultsInput = {
@@ -85891,6 +87531,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentResultsInput = {
@@ -85962,6 +87603,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutResultsInput = {
@@ -86446,6 +88088,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach2Input = {
@@ -86517,6 +88160,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach2Input = {
@@ -86593,6 +88237,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach1Input = {
@@ -86664,6 +88309,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach1Input = {
@@ -86768,6 +88414,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach2Input = {
@@ -86839,6 +88486,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMatchesAsCoach1Input = {
@@ -86921,6 +88569,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach1Input = {
@@ -86992,6 +88641,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentRoundUpsertWithoutMatchesInput = {
@@ -87086,6 +88736,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWarningsReceivedInput = {
@@ -87157,6 +88808,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWarningsReceivedInput = {
@@ -87233,6 +88885,7 @@ export namespace Prisma {
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWarningsGivenInput = {
@@ -87304,6 +88957,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWarningsGivenInput = {
@@ -87391,6 +89045,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarningsReceivedInput = {
@@ -87462,6 +89117,7 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutWarningsGivenInput = {
@@ -87544,6 +89200,7 @@ export namespace Prisma {
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarningsGivenInput = {
@@ -87615,6 +89272,311 @@ export namespace Prisma {
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutActionCountersInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutActionCountersInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutActionCountersInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutActionCountersInput, UserUncheckedCreateWithoutActionCountersInput>
+  }
+
+  export type UserUpsertWithoutActionCountersInput = {
+    update: XOR<UserUpdateWithoutActionCountersInput, UserUncheckedUpdateWithoutActionCountersInput>
+    create: XOR<UserCreateWithoutActionCountersInput, UserUncheckedCreateWithoutActionCountersInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutActionCountersInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutActionCountersInput, UserUncheckedUpdateWithoutActionCountersInput>
+  }
+
+  export type UserUpdateWithoutActionCountersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutActionCountersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -88146,6 +90108,12 @@ export namespace Prisma {
     userId: string
     reason: string
     createdAt?: Date | string
+  }
+
+  export type ActionCounterCreateManyUserInput = {
+    action: string
+    windowStart: Date | string
+    count?: number
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -90128,6 +92096,24 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type ActionCounterUpdateWithoutUserInput = {
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActionCounterUncheckedUpdateWithoutUserInput = {
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ActionCounterUncheckedUpdateManyWithoutUserInput = {
+    action?: StringFieldUpdateOperationsInput | string
+    windowStart?: DateTimeFieldUpdateOperationsInput | Date | string
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
   export type TournamentMercenaryCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -90389,6 +92375,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -90460,6 +92447,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -91152,6 +93140,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -91223,6 +93212,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -91697,6 +93687,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -91768,6 +93759,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -91867,6 +93859,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -91938,6 +93931,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {
