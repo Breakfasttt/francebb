@@ -2,7 +2,8 @@
 
 /**
  * Page « Mon compte » `/profile` (refonte, carte 092, ADR 0006).
- * - Sur ordinateur : la carte du membre à gauche, les onglets et leur contenu à droite.
+ * - Sur ordinateur : la carte du membre à gauche, les onglets au-dessus du contenu à droite, comme le profil d'un autre
+ *   membre (`/spy/[id]`, même grammaire depuis le 22/11/2026 : plus de liste des rubriques sous la carte).
  * - Sur téléphone : une seule colonne ; la carte du membre, puis la barre des rubriques collée en haut pendant le
  *   défilement, qui ouvre le tiroir de toutes les rubriques (`SectionDrawer`), puis le contenu.
  * L'onglet ouvert est lu dans l'adresse (`?tab=followed|activity|articles|ressources|blocked|edit|settings`) : chaque
@@ -14,10 +15,9 @@ import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ComponentProps } from "react";
 import Link from "next/link";
 import { UserX } from "lucide-react";
-import { Card, EmptyState, Skeleton } from "@bbfrance/ui";
+import { Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
 
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
-import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
 import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
 import ProfileWarnings from "@/app/profile/component/ProfileWarnings";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
@@ -134,23 +134,15 @@ export default function ProfilePage() {
       {header}
 
       <div className={PROFILE_LAYOUT_CLASS}>
-        {/* Panneau gauche (DESIGN.md) : la fiche du membre, puis les rubriques du compte en navigation verticale */}
-        <div className="flex flex-col gap-5 lg:sticky lg:top-20">
-          <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
-          <nav aria-label="Rubriques du compte" className="hidden flex-col lg:flex">
-            {tabs.map((tab) => (
-              <PanelLink key={tab.href} href={tab.href} active={tab.active} linkComponent={TabLink}>
-                {tab.label}
-              </PanelLink>
-            ))}
-          </nav>
-        </div>
+        {/* Panneau gauche (DESIGN.md) : la fiche du membre, comme sur le profil d'un autre membre */}
+        <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
 
         <section id="rubrique-du-compte" aria-label={TABS.find((t) => t.id === activeTab)?.label} className="flex min-w-0 scroll-mt-14 flex-col gap-4">
           {/* Avertissements de la modération, visibles du seul membre (carte 222) ; la notification mène ici */}
           <ProfileWarnings userId={user.id} isOwnProfile />
-          {/* Téléphone : barre collée et tiroir des rubriques (les rubriques sont dans le panneau gauche sur ordinateur) */}
+          {/* Téléphone : barre collée et tiroir des rubriques ; ordinateur : onglets au-dessus du contenu (comme /spy) */}
           <SectionDrawer title="Mon compte" items={tabs} linkComponent={TabLink} scrollTargetId="rubrique-du-compte" />
+          <LinkTabs label="Rubriques du compte" tabs={tabs} linkComponent={TabLink} className="max-lg:hidden" />
 
           {activeTab === "followed" && <ProfileFollowedTopics />}
           {activeTab === "activity" && <ProfileActivity activities={activities} userName={user.name} />}

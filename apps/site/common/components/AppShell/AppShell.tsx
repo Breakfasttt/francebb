@@ -26,7 +26,7 @@ import { useNavCounts } from "./useNavCounts";
 import { signOutUser } from "@/common/utils/signOutUser";
 import MorePanel from "./MorePanel";
 import ThemePicker from "./ThemePicker";
-import { DESKTOP_NAV, MORE_ICON, PRIMARY_NAV, activeBottomTab, isActive, isComposePath, moreNavFor } from "./navItems";
+import { DESKTOP_NAV, DESKTOP_NAV_WIDE_ONLY, MORE_ICON, PRIMARY_NAV, activeBottomTab, isActive, isComposePath, moreNavFor } from "./navItems";
 import "./AppShell.css";
 
 interface AppShellProps {
@@ -122,6 +122,9 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   useTypingFlag();
 
   const desktopMoreItems = moreNavFor(!!user).filter((item) => !DESKTOP_NAV.includes(item)).map((item) => ({ label: item.label, href: item.href }));
+  // Entre 1025 et 1279 pixels, Articles et Ressources passent dans « Plus » (la barre tient sur une ligne)
+  const desktopMoreItemsNarrow = [...DESKTOP_NAV_WIDE_ONLY.map((item) => ({ label: item.label, href: item.href })), ...desktopMoreItems];
+  const moreTriggerClass = "px-3 gap-1 font-bb-heading text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active";
   const activeTab = activeBottomTab(pathname, moreOpen);
   // « Plus » porte aria-current seulement pour la page courante, pas pour un panneau simplement ouvert
   const morePageCurrent = activeBottomTab(pathname, false) === "more";
@@ -150,19 +153,25 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
         <div className="mx-auto hidden h-16 max-w-[1760px] items-center gap-6 px-6 lg:flex xl:px-8">
           <SiteLogo scale={0.85} />
           {!bare && (
-            <nav aria-label="Navigation principale" className="flex flex-1 flex-wrap items-center gap-1">
+            <nav aria-label="Navigation principale" className="flex min-w-0 flex-1 flex-nowrap items-center gap-1">
               {DESKTOP_NAV.map((item) => (
-                <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined} className={navLinkClass(isActive(pathname, item.href))}>
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  aria-current={isActive(pathname, item.href) ? "page" : undefined}
+                  className={cn(navLinkClass(isActive(pathname, item.href)), "shrink-0 whitespace-nowrap", DESKTOP_NAV_WIDE_ONLY.includes(item) && "max-xl:hidden")}
+                >
                   {item.label}
                 </Link>
               ))}
-              <ActionMenu
-                label="Plus de rubriques"
-                items={desktopMoreItems}
-                linkComponent={Link}
-                triggerClassName="px-3 gap-1 font-bb-heading text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
-                trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>}
-              />
+              {/* Un seul « Plus » visible à la fois : le premier jusqu'à 1279 pixels (avec Articles et Ressources), le
+                  second au-delà */}
+              <div className="xl:hidden">
+                <ActionMenu label="Plus de rubriques" items={desktopMoreItemsNarrow} linkComponent={Link} triggerClassName={moreTriggerClass} trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>} />
+              </div>
+              <div className="max-xl:hidden">
+                <ActionMenu label="Plus de rubriques" items={desktopMoreItems} linkComponent={Link} triggerClassName={moreTriggerClass} trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>} />
+              </div>
             </nav>
           )}
 
@@ -189,7 +198,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
               <ActionMenu
                 label="Menu du compte"
                 triggerClassName="gap-2 rounded-full pr-2 pl-1 text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
-                trigger={<><Avatar name={user.name} src={user.image} size={34} ring /><span className="max-w-40 truncate text-sm font-semibold">{user.name || "Joueur"}</span><ChevronDown size={16} aria-hidden="true" /></>}
+                trigger={<><Avatar name={user.name} src={user.image} size={34} ring /><span className="max-w-40 truncate text-sm font-semibold max-xl:hidden">{user.name || "Joueur"}</span><ChevronDown size={16} aria-hidden="true" /></>}
                 linkComponent={Link}
                 items={[
                   { label: "Mon profil", href: "/profile", icon: <User size={16} aria-hidden="true" /> },

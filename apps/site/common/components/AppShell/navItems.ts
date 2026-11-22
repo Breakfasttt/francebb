@@ -72,6 +72,12 @@ export const DESKTOP_NAV: NavItem[] = [
   moreItem("/ressources"),
 ];
 
+/**
+ * Liens de la barre haute rangés dans « Plus » entre 1025 et 1279 pixels (22/11/2026) : à cette largeur, la barre
+ * passait sur deux lignes et débordait. À partir de 1280 pixels, ils reviennent dans la barre.
+ */
+export const DESKTOP_NAV_WIDE_ONLY: NavItem[] = [moreItem("/articles"), moreItem("/ressources")];
+
 export const MORE_ICON = LayoutGrid;
 
 /** Vrai si l'adresse courante appartient à cette destination (« / » seulement pour l'accueil exact). */

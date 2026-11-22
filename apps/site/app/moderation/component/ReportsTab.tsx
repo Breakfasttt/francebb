@@ -16,7 +16,7 @@
  * - « Ignorer » : ferme les signalements sans agir sur le contenu (statut IGNORED, ligne « Signalement ignoré » au
  *   journal), avec un commentaire facultatif (carte 144) ;
  * - « Marquer comme traité » : ferme les signalements après une action faite ailleurs, avec un commentaire facultatif.
- *   Pour un message, il est rangé dans le menu « ⋯ », puisque « Masquer » le remplace le plus souvent ;
+ *   Toujours un bouton visible, message compris (22/11/2026 : plus de menu « ⋯ » pour une seule action) ;
  * - « Détails » : chaque signalement l'un après l'autre (auteur, date, raison, précision).
  * Un contenu supprimé depuis le signalement s'affiche « Contenu déjà supprimé », avec le bouton « Fermer le
  * signalement ». La suppression d'un message ou d'un sujet ferme d'ailleurs ses signalements d'elle-même : ce cas ne
@@ -30,7 +30,7 @@ import {
   AlertTriangle, ArrowRight, Ban, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, EyeOff,
   MessageSquare, ShieldAlert, Trash2, Trophy, Users, X,
 } from "lucide-react";
-import { ActionMenu, Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
+import { Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
@@ -317,12 +317,10 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                             <X size={16} aria-hidden="true" />
                             Ignorer
                           </Button>
-                          {type !== "POST" && (
-                            <Button type="button" variant="secondary" size="tap" onClick={() => openConfirm(group.targetId)}>
-                              <Check size={16} aria-hidden="true" />
-                              Marquer comme traité
-                            </Button>
-                          )}
+                          <Button type="button" variant="secondary" size="tap" onClick={() => openConfirm(group.targetId)}>
+                            <Check size={16} aria-hidden="true" />
+                            Marquer comme traité
+                          </Button>
                         </>
                       )}
                       <Button
@@ -336,19 +334,6 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                         {expanded ? <ChevronUp size={16} aria-hidden="true" /> : <ChevronDown size={16} aria-hidden="true" />}
                         Détails
                       </Button>
-                      {type === "POST" && !target.gone && (
-                        <ActionMenu
-                          label="Plus d'actions sur ce signalement"
-                          title="Actions sur le signalement"
-                          items={[
-                            {
-                              label: "Marquer comme traité",
-                              icon: <Check size={18} aria-hidden="true" />,
-                              onSelect: () => openConfirm(group.targetId),
-                            },
-                          ]}
-                        />
-                      )}
                     </div>
                   </div>
 

@@ -11,6 +11,7 @@ import { fr } from "date-fns/locale";
 import { MessageSquare } from "lucide-react";
 import { Card, CardHeader, CardTitle, EmptyState } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
+import { postExcerpt } from "@/lib/homeLatestPosts";
 
 interface ActivityPost {
   id: string;
@@ -53,7 +54,8 @@ export default function ProfileActivity({ activities, userName }: ProfileActivit
                   </span>
                 </span>
                 <span className="line-clamp-2 text-sm break-words text-bb-text-muted">
-                  {post.content.length > 200 ? post.content.substring(0, 200) + "…" : post.content}
+                  {/* Texte lisible : sans balises BBCode ni citations (même extrait que l'accueil) */}
+                  {postExcerpt(post.content)}
                 </span>
               </Link>
             </li>
