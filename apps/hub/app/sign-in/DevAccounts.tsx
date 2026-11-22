@@ -12,6 +12,7 @@ import { DEV_ACCOUNT_PASSWORD } from "@/lib/devAccountPassword";
 import type { DevAccount } from "@/lib/devAccounts";
 import { createDevAccountAction, listDevAccountsAction } from "./devActions";
 import { ErrorMessage, Muted } from "../components/Messages";
+import { authErrorMessage } from "@/lib/authErrors";
 
 export default function DevAccounts() {
   // null : liste pas encore reçue, ou fonction désactivée par le serveur
@@ -29,7 +30,7 @@ export default function DevAccounts() {
     setBusy(true);
     const { data, error: signInError } = await authClient.signIn.email({ email, password: DEV_ACCOUNT_PASSWORD });
     if (signInError) {
-      setError(signInError.message ?? "Connexion impossible");
+      setError(authErrorMessage(signInError, "Connexion au compte de test impossible : vérifie que HUB_DEV_PASSWORD_LOGIN vaut 1."));
       setBusy(false);
       return;
     }
@@ -42,7 +43,7 @@ export default function DevAccounts() {
     const account = await createDevAccountAction();
     setBusy(false);
     if (account) setAccounts((previous) => [account, ...(previous ?? [])]);
-    else setError("Création impossible");
+    else setError("Le compte de test n'a pas pu être créé : vérifie que HUB_DEV_PASSWORD_LOGIN vaut 1 et que la base du hub tourne.");
   };
 
   return (

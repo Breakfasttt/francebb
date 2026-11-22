@@ -139,7 +139,7 @@ Le hub ne connaît que les applications enregistrées dans sa base. Depuis l'ord
    ```
    Sous PowerShell : `$env:HUB_DATABASE_URL="postgresql://…"; node scripts/register-client.mjs "FranceBB site" https://www.<domaine>/api/auth/callback/hub`
 
-   La commande affiche `HUB_CLIENT_ID` et `HUB_CLIENT_SECRET`. **Le secret n'est affiché qu'une seule fois** : le copier tout de suite. Le hub renverra le coach vers `https://www.<domaine>/` après une déconnexion.
+   La commande affiche `HUB_CLIENT_ID` et `HUB_CLIENT_SECRET`. **Le secret n'est affiché qu'une seule fois** : le copier tout de suite. Relancée avec le même nom, elle ne recrée rien et ne change pas le secret : elle complète seulement les droits et adresses qui manqueraient. Le hub renverra le coach vers `https://www.<domaine>/` après une déconnexion.
 3. Déclarer où le hub prévient le site (bannissement, profil modifié, suppression de compte) et où il lui demande les données d'un coach (export RGPD). Il faut le **même** `BETTER_AUTH_SECRET` que sur Vercel (étape 6) :
    ```bash
    HUB_DATABASE_URL="postgresql://…(base hub)…" BETTER_AUTH_SECRET="…(celui du hub sur Vercel)…" node scripts/client-hooks.mjs "FranceBB site" https://www.<domaine>/api/hub/events https://www.<domaine>/api/hub/export

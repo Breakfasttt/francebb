@@ -1,4 +1,5 @@
 /* Thème « Saison 3 », thème par défaut : les couleurs du livre de règles officiel (2025) — parchemin chaud, bandeaux bleu marine (pages d'histoire), titres rouges, jaune des pieds de page. */
+:root,
 [data-theme="saison3"] {
   --bb-scheme: light;
   --bb-bg: #ead9bf;

@@ -17,8 +17,9 @@
  *   ou `base` : quelques couleurs de base, dont le script calcule les autres et corrige le contraste.
  * Les fichiers générés sont enregistrés dans le dépôt : rien n'est calculé pendant que le site tourne.
  *
- * Carte 218 : le responsable a gardé 5 thèmes sur les 35 de l'ADR-0009. « Sombre » est l'ancien Vestiaire (thème par
- * défaut, identifiant `vestiaire`) et « Violet » l'ancien thème des Elfes noirs (identifiant `elfes-noirs`).
+ * Carte 218 : le responsable a gardé 5 thèmes sur les 35 de l'ADR-0009. « Sombre » est l'ancien Vestiaire (identifiant
+ * `vestiaire`) et « Violet » l'ancien thème des Elfes noirs (identifiant `elfes-noirs`). Depuis le 22/11/2026, le thème
+ * par défaut est « Saison 3 » : posé sur :root, il habille aussi les applications sans attribut data-theme (le hub).
  */
 
 /** Les thèmes, dans l'ordre d'affichage du sélecteur. */
@@ -26,8 +27,8 @@ export const THEMES = [
   {
     id: "vestiaire",
     label: "Sombre",
-    comment: "/*\n * Thème « Vestiaire » (ADR 0006) : sombre et sobre, surfaces pleines, accent rouge Blood Bowl.\n * C'est le thème par défaut : il s'applique aussi sans attribut data-theme (:root).\n * Liste et rôle de chaque variable : packages/ui/src/tokens.css.\n */",
-    selector: ":root,\n[data-theme=\"vestiaire\"]",
+    comment: "/*\n * Thème « Vestiaire » (ADR 0006) : sombre et sobre, surfaces pleines, accent rouge Blood Bowl.\n *  * Liste et rôle de chaque variable : packages/ui/src/tokens.css.\n */",
+    selector: "[data-theme=\"vestiaire\"]",
     vars: {
       "scheme": "dark",
       "bg": "#111215",
@@ -62,7 +63,8 @@ export const THEMES = [
     id: "saison3",
     label: "Saison 3",
     comment: "/* Thème « Saison 3 », thème par défaut : les couleurs du livre de règles officiel (2025) — parchemin chaud, bandeaux bleu marine (pages d'histoire), titres rouges, jaune des pieds de page. */",
-    selector: "[data-theme=\"saison3\"]",
+    // Thème par défaut (22/11/2026) : il s'applique aussi sans attribut data-theme (:root), par exemple au hub
+    selector: ":root,\n[data-theme=\"saison3\"]",
     vars: {
       "scheme": "light",
       "bg": "#ead9bf",

@@ -40,7 +40,7 @@ Saison 3 (`saison3`, par défaut depuis le 22/11/2026), Sombre (`vestiaire`), NA
 
 - **Source unique : `packages/ui/src/themes/themeData.mjs`.** `corepack pnpm themes:build` (racine) génère les fichiers `themes/<id>.css`, `themes/index.css`, `themes/themeList.ts` et la liste lue par le site (`lib/themes.ts`). Ne jamais modifier ces fichiers générés à la main.
 - Ne jamais changer l'identifiant d'un thème existant : il est enregistré dans le profil des membres. Un identifiant inconnu retombe sur le thème par défaut.
-- `vestiaire` est aussi posé sur `:root` : il s'applique sans attribut `data-theme` (le hub, par exemple).
+- `saison3` est aussi posé sur `:root` : il s'applique sans attribut `data-theme` (le hub, par exemple).
 
 **Ajouter un thème** : une entrée dans `themeData.mjs` (`id` définitif en minuscules et tirets, `label`, `base` avec `scheme` `dark` ou `light`, `bg`, `surface`, `accent`, et au besoin `text`, `unread`, `rank`, `navBg`, `danger`, `bgImage`). Le script calcule le reste et corrige le contraste. Puis `themes:build`, le test `tests/e2e/contraste.spec.ts`, et une relecture à l'œil sur téléphone (le calcul garantit la lisibilité, pas la beauté). Le sélecteur `ThemePicker` lit la liste générée : rien d'autre à modifier.
 

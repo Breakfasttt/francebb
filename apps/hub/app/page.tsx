@@ -44,11 +44,11 @@ export default async function PassportPage(props: { searchParams: Promise<Record
   const profile = publicProfile(user) as { name: string; image: string | null; naf: string | null; region: string | null; locale: string | null; timezone: string | null };
 
   return (
-    <main className="mx-auto flex w-full max-w-xl flex-col gap-4 px-4 py-6">
+    <main className="mx-auto flex w-full max-w-3xl flex-col gap-4 px-4 py-6 lg:py-10">
       <header className="flex flex-col gap-3">
         <div className="flex items-center gap-3">
           <Avatar name={profile.name} src={profile.image} size={48} />
-          <h1 className="m-0 text-2xl font-bold uppercase text-bb-accent-text">Mon passeport Blood Bowl</h1>
+          <h1 className="m-0 font-bb-display text-[2rem] leading-tight text-bb-text lg:text-[2.5rem]">Mon passeport Blood Bowl</h1>
         </div>
         <Muted>
           Ton identité de coach, commune à toutes les applications. Les réglages propres à une application (thème,

@@ -13,14 +13,10 @@ import { Button, Input } from "@bbfrance/ui";
 import CenteredCard from "../components/CenteredCard";
 import DevAccounts from "./DevAccounts";
 import { ErrorMessage, Muted } from "../components/Messages";
+import { authErrorCodeMessage, authErrorMessage } from "@/lib/authErrors";
 
 // Jamais en production, même si la variable a été recopiée par erreur : le serveur refuse déjà ces comptes (lib/devAccounts.ts)
 const DEV_PASSWORD_LOGIN = process.env.NODE_ENV !== "production" && process.env.NEXT_PUBLIC_HUB_DEV_PASSWORD_LOGIN === "1";
-
-/** Messages des erreurs renvoyées par Better Auth dans l'adresse (par exemple après un lien magique refusé). */
-const ERROR_MESSAGES: Record<string, string> = {
-  INVALID_TOKEN: "Ce lien de connexion a expiré ou a déjà servi : demande-en un nouveau.",
-};
 
 function followRedirect(data: unknown) {
   const url = (data as { url?: string } | null)?.url;
@@ -36,26 +32,26 @@ export default function SignInForm({ errorCode, errorMessage, initialEmail }: { 
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(
-    errorMessage ?? (errorCode ? (ERROR_MESSAGES[errorCode] ?? "Connexion impossible, réessaie.") : null),
+    errorMessage ?? (errorCode ? authErrorCodeMessage(errorCode) : null),
   );
 
   const signInSocial = async (provider: "discord" | "google") => {
     const { error: socialError } = await authClient.signIn.social({ provider });
-    if (socialError) setError(socialError.message ?? "Connexion impossible");
+    if (socialError) setError(authErrorMessage(socialError, "La connexion n'a pas abouti. Réessaie, ou utilise ton adresse email."));
   };
 
   const sendMagicLink = async (event: React.FormEvent) => {
     event.preventDefault();
     // Le lien reçu doit ramener le membre dans l'application qui l'a envoyé ici (fin du flux OIDC)
     const { error: linkError } = await authClient.signIn.magicLink({ email, ...magicLinkCallbacks(window.location.search) });
-    if (linkError) setError(linkError.message ?? "Envoi impossible");
+    if (linkError) setError(authErrorMessage(linkError, "Le lien n'a pas pu être envoyé. Vérifie ton adresse et réessaie."));
     else setMessage("Lien de connexion envoyé : vérifie ta boîte mail.");
   };
 
   const signInWithPassword = async (event: React.FormEvent) => {
     event.preventDefault();
     const { data, error: passwordError } = await authClient.signIn.email({ email, password });
-    if (passwordError) setError(passwordError.message ?? "Identifiants invalides");
+    if (passwordError) setError(authErrorMessage(passwordError, "Email ou mot de passe incorrect."));
     else followRedirect(data);
   };
 
@@ -70,9 +66,9 @@ export default function SignInForm({ errorCode, errorMessage, initialEmail }: { 
       </form>
       {DEV_PASSWORD_LOGIN && (
         <form onSubmit={signInWithPassword} className="flex flex-col gap-2.5">
-          <Muted>Dev uniquement</Muted>
+          <Muted>Développement seulement</Muted>
           <Input type="password" placeholder="Mot de passe" value={password} onChange={(e) => setPassword(e.target.value)} aria-label="Mot de passe" />
-          <Button variant="secondary" size="tap" type="submit">Connexion mot de passe (dev)</Button>
+          <Button variant="secondary" size="tap" type="submit">Se connecter avec un mot de passe</Button>
         </form>
       )}
       {/* Comptes de test : le navigateur ne les demande jamais en production (carte 153) */}

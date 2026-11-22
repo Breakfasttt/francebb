@@ -82,7 +82,7 @@ test("un membre existant se connecte via le hub, sans re-onboarding", async ({ p
   await page.waitForURL(/localhost:4100\/sign-in/);
   await page.getByLabel("Email").fill("coach@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
-  await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
+  await page.getByRole("button", { name: "Se connecter avec un mot de passe" }).click();
   await page.waitForURL((url) => url.origin === SITE && !url.pathname.startsWith("/auth"));
   const user = await siteSessionName(page);
   expect(user?.name).toBe("Coach E2E");
@@ -101,7 +101,7 @@ test("un compte hub à l'email non vérifié est refusé par le site", async ({ 
   await page.waitForURL(/localhost:4100\/sign-in/);
   await page.getByLabel("Email").fill("unverified@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
-  await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
+  await page.getByRole("button", { name: "Se connecter avec un mot de passe" }).click();
   await page.waitForURL((url) => url.origin === SITE && url.pathname.startsWith("/auth"));
   expect(await siteSessionName(page)).toBeUndefined();
 });
@@ -162,7 +162,7 @@ test("la déconnexion du site ferme aussi la session du hub", async ({ page }) =
   await page.waitForURL(/localhost:4100\/sign-in/);
   await page.getByLabel("Email").fill("coach@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
-  await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
+  await page.getByRole("button", { name: "Se connecter avec un mot de passe" }).click();
   await page.waitForURL((url) => url.origin === SITE && !url.pathname.startsWith("/auth"));
 
   // Le jeton d'identité du hub reste côté serveur : la session lisible par le navigateur n'en contient aucun
@@ -189,7 +189,7 @@ async function signInCoach(page: Page) {
   await page.waitForURL(/localhost:4100\/sign-in/);
   await page.getByLabel("Email").fill("coach@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
-  await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
+  await page.getByRole("button", { name: "Se connecter avec un mot de passe" }).click();
   await page.waitForURL((url) => url.origin === SITE && !url.pathname.startsWith("/auth"));
 }
 
@@ -249,7 +249,7 @@ test("un compte banni au hub ne peut plus se connecter au site", async ({ page }
   await page.waitForURL(/localhost:4100\/sign-in/);
   await page.getByLabel("Email").fill("coach@e2e.test");
   await page.getByLabel("Mot de passe").fill(PASSWORD);
-  await page.getByRole("button", { name: "Connexion mot de passe (dev)" }).click();
+  await page.getByRole("button", { name: "Se connecter avec un mot de passe" }).click();
   await expect(page.getByText("Ce compte FranceBB a été suspendu.")).toBeVisible();
   expect(await siteSessionName(page)).toBeUndefined();
 });

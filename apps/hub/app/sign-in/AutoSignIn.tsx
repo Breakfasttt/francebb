@@ -11,6 +11,7 @@ import { magicLinkCallbacks, type LoginMethod } from "@/lib/oauthResume";
 import SignInForm from "./SignInForm";
 import CenteredCard from "../components/CenteredCard";
 import { Muted } from "../components/Messages";
+import { authErrorMessage } from "@/lib/authErrors";
 
 /** Mémorise, pour cet onglet, qu'un lien a déjà été envoyé pour cette demande : recharger la page ne renvoie pas d'email. */
 function sentKey() {
@@ -48,7 +49,7 @@ export default function AutoSignIn({ method, email }: { method: LoginMethod; ema
         if (alreadySent()) return setStatus("sent");
         const { error: linkError } = await authClient.signIn.magicLink({ email: email!, ...magicLinkCallbacks(window.location.search) });
         if (linkError) {
-          setError(linkError.message ?? "Envoi du lien impossible");
+          setError(authErrorMessage(linkError, "Le lien n'a pas pu être envoyé. Vérifie ton adresse et réessaie."));
           return setStatus("failed");
         }
         rememberSent();
@@ -57,7 +58,7 @@ export default function AutoSignIn({ method, email }: { method: LoginMethod; ema
       // Le client Better Auth suit lui-même la redirection vers Discord ou Google
       const { error: socialError } = await authClient.signIn.social({ provider: method });
       if (socialError) {
-        setError(socialError.message ?? "Connexion impossible");
+        setError(authErrorMessage(socialError, "La connexion n'a pas abouti. Réessaie, ou utilise ton adresse email."));
         setStatus("failed");
       }
     };

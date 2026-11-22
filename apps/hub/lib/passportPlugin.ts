@@ -126,7 +126,7 @@ export const passportPlugin = () =>
         return new Response(JSON.stringify(data, null, 2), {
           headers: {
             "content-type": "application/json; charset=utf-8",
-            "content-disposition": `attachment; filename="passeport-bbfrance-${new Date().toISOString().slice(0, 10)}.json"`,
+            "content-disposition": `attachment; filename="passeport-francebb-${new Date().toISOString().slice(0, 10)}.json"`,
             "cache-control": "no-store",
           },
         });

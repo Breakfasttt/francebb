@@ -6,10 +6,10 @@ import { Card, CardBody } from "@bbfrance/ui";
 
 export default function CenteredCard({ title, children, ...props }: { title?: string; children: React.ReactNode } & React.ComponentProps<"main">) {
   return (
-    <main className="mx-auto flex min-h-dvh w-full max-w-md flex-col justify-center px-4 py-8" {...props}>
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col justify-center px-4 py-8" {...props}>
       <Card>
         <CardBody className="flex flex-col gap-4 p-5 sm:p-8">
-          {title && <h1 className="m-0 text-xl font-bold uppercase text-bb-accent-text">{title}</h1>}
+          {title && <h1 className="m-0 font-bb-display text-[2rem] leading-tight text-bb-text">{title}</h1>}
           {children}
         </CardBody>
       </Card>

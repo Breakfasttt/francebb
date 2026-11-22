@@ -102,8 +102,9 @@ test("le coach retire l'accès d'une application", async ({ page }) => {
   const section = page.locator("section", { has: page.getByRole("heading", { name: "Applications liées" }) });
   await expect(section.getByText("Application de test API")).toBeVisible();
 
-  page.once("dialog", (dialog) => dialog.accept());
   await section.getByRole("button", { name: "Retirer l'accès" }).click();
+  // Confirmation dans la fenêtre de packages/ui (plus de confirmation native du navigateur)
+  await page.getByRole("dialog").getByRole("button", { name: "Retirer l'accès" }).click();
   await expect(section.getByText("Aucune application")).toBeVisible();
   await page.reload();
   await expect(section.getByText("Application de test API")).toHaveCount(0);

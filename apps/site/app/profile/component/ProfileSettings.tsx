@@ -140,9 +140,9 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           </CardHeader>
           <CardBody className="flex flex-col items-start gap-3">
             <p className="m-0 text-[0.95rem] leading-relaxed text-bb-text-muted">
-              Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications FranceBB. Les
-              appareils connectés, le téléchargement de tes données et la suppression de ton compte se gèrent sur ton
-              passeport.
+              Ton pseudo, ton avatar, ton numéro NAF et ta région sont communs à toutes les applications FranceBB. Tes
+              moyens de connexion (Discord, Google, email), les appareils connectés, le téléchargement de tes données
+              et la suppression de ton compte se gèrent sur ton passeport.
             </p>
             <Button asChild variant="secondary" size="tap" className="w-full sm:w-auto">
               <a href={passportUrl}>Ouvrir mon passeport</a>
@@ -151,7 +151,9 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
         </Card>
       )}
 
-      {/* Moyens de connexion */}
+      {/* Moyens de connexion : seulement sans hub. En mode hub, Discord et Google sont réglés sur le passeport ; les
+          boutons « Associer » du site appelaient des fournisseurs retirés et ne pouvaient pas marcher (22/11/2026) */}
+      {!passportUrl && (
       <Card className="overflow-hidden">
         <CardHeader>
           <CardTitle>Moyens de connexion</CardTitle>
@@ -203,6 +205,7 @@ export default function ProfileSettings({ user, onUpdate }: ProfileSettingsProps
           ))}
         </ul>
       </Card>
+      )}
 
       {/* Notifications : e-mails et abonnement automatique (carte 167) */}
       <Card className="overflow-hidden">

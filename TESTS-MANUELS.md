@@ -434,3 +434,10 @@ Base locale `pnpm dev exemple` ; changer de compte avec « Mode Développement �
 - [ ] **Téléphone, organisateur puis modérateur.** Annoncer un tournoi : les cases des championnats s'affichent avec leur description, sans débordement ; l'organisateur ne voit pas le CDF, le modérateur le voit et peut le cocher. La fiche du tournoi affiche les sigles cochés.
 - [ ] **Téléphone.** `/tournois` > Filtres > Circuits et labels : cocher deux championnats, la pastille de chacun s'affiche, seuls les tournois qui ont les deux restent.
 - [ ] **Après la mise en ligne.** Un tournoi CDF terminé, résultats saisis puis validés par la modération, apparaît au classement de l'année.
+
+## 28. Passeport Blood Bowl (hub) avant la mise en ligne
+
+- [ ] **Téléphone et ordinateur.** Page de connexion et passeport du hub : barre marine FRANCEBB, fond parchemin, titres comme le site ; rien ne dépasse à droite.
+- [ ] **Vrais comptes.** Discord, puis Google, via le hub (adresses de retour sur le hub) ; lien de connexion reçu par un vrai service d'email.
+- [ ] **Passeport.** « Retirer l'accès » d'une application et « Supprimer mon compte » ouvrent la fenêtre de confirmation du site ; « Annuler la suppression » remet le compte en état ; « Déconnecter » un autre appareil le déconnecte ; « Télécharger mes données » donne un fichier `passeport-francebb-….json` avec les données du site.
+- [ ] **Site en mode hub.** Profil > Réglages : seule la carte « Passeport Blood Bowl » parle des moyens de connexion (plus de boutons « Associer Discord / Google »).

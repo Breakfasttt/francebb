@@ -13,6 +13,9 @@
   body {
     min-height: 100dvh;
     background: var(--bb-bg);
+    /* Léger dégradé propre au thème (parchemin de Saison 3), comme sur le site */
+    background-image: var(--bb-bg-image, none);
+    background-attachment: fixed;
     color: var(--bb-text);
     font-family: var(--bb-font-sans);
     color-scheme: var(--bb-scheme);

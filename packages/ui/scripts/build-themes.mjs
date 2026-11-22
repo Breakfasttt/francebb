@@ -170,7 +170,7 @@ for (const file of fs.readdirSync(THEMES_DIR)) {
 const index = `/*
  * Les thèmes du site en variables v2 (ADR 0006, ADR 0009). Fichier généré par packages/ui/scripts/build-themes.mjs
  * à partir de themeData.mjs : ne pas le modifier à la main. Chaque fichier importé définit les mêmes variables
- * \`--bb-*\` sous \`[data-theme="<id>"]\` ; Vestiaire est aussi posé sur :root (thème par défaut).
+ * \`--bb-*\` sous \`[data-theme="<id>"]\` ; Saison 3 est aussi posé sur :root (thème par défaut).
  * Le test de contraste (apps/site/tests/e2e/contraste.spec.ts) vérifie chaque thème de la liste.
  */
 ${THEMES.map((theme) => `@import "./${theme.id}.css";`).join("\n")}

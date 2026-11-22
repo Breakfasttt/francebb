@@ -5,7 +5,7 @@
  * grâce de 30 jours, comment annuler. Quand une suppression est en cours, propose seulement de l'annuler.
  */
 import { useState } from "react";
-import { Button } from "@bbfrance/ui";
+import { Button, ConfirmDialog } from "@bbfrance/ui";
 import { ErrorMessage } from "../components/Messages";
 
 const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
@@ -13,17 +13,18 @@ const formatDate = (iso: string) => new Date(iso).toLocaleDateString("fr-FR", { 
 export default function DeleteAccount({ scheduledAt: initial }: { scheduledAt: string | null }) {
   const [scheduledAt, setScheduledAt] = useState(initial);
   const [error, setError] = useState<string | null>(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
 
   const call = async (url: string) => {
     setError(null);
     // Better Auth n'accepte un POST qu'avec un corps JSON, même vide
     const response = await fetch(url, { method: "POST", headers: { "content-type": "application/json" }, body: "{}" });
-    if (!response.ok) setError("L'opération n'a pas abouti, réessaie.");
+    if (!response.ok) setError("La demande n'a pas pu être enregistrée (connexion perdue ou session expirée) : recharge la page et réessaie.");
     return response;
   };
 
   const request = async () => {
-    if (!window.confirm("Supprimer ton compte FranceBB ? Il sera effacé dans 30 jours, sauf si tu annules d'ici là.")) return;
+    setConfirmOpen(false);
     const response = await call("/api/v1/account/delete");
     if (response.ok) setScheduledAt(((await response.json()) as { scheduledAt: string }).scheduledAt);
   };
@@ -51,8 +52,17 @@ export default function DeleteAccount({ scheduledAt: initial }: { scheduledAt: s
         <li>L&apos;effacement a lieu <strong>30 jours</strong> après ta demande. D&apos;ici là, tu peux annuler en te reconnectant ici. Tu reçois un email de confirmation, puis un rappel une semaine avant.</li>
         <li>Ton pseudo ne pourra pas être repris par quelqu&apos;un d&apos;autre.</li>
       </ul>
-      <Button variant="danger" size="tap" type="button" onClick={request}>Supprimer mon compte</Button>
+      <Button variant="danger" size="tap" type="button" onClick={() => setConfirmOpen(true)}>Supprimer mon compte</Button>
       {error && <ErrorMessage>{error}</ErrorMessage>}
+      <ConfirmDialog
+        open={confirmOpen}
+        onOpenChange={setConfirmOpen}
+        title="Supprimer ton compte FranceBB ?"
+        message="Il sera effacé dans 30 jours, sauf si tu annules d'ici là en te reconnectant ici."
+        confirmLabel="Supprimer mon compte"
+        danger
+        onConfirm={request}
+      />
     </>
   );
 }

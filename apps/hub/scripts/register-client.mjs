@@ -6,7 +6,9 @@
  *   l'activer avec scripts/validate-client.mjs après l'avoir examinée (procédure : docs/features/hub/README.md).
  * Écriture directe en base : l'API admin du plugin exige une session admin, inexistante au premier démarrage.
  * Le secret n'est affiché qu'à la création (stocké haché) : le copier dans le .env de l'app cliente
- * (HUB_CLIENT_ID / HUB_CLIENT_SECRET). Relancé avec un nom existant : ne recrée rien.
+ * (HUB_CLIENT_ID / HUB_CLIENT_SECRET). Relancé avec un nom existant : ne recrée rien et ne touche pas au secret, mais
+ * complète les droits (portées) et les adresses de retour qui manqueraient (22/11/2026 : un client enregistré avant la
+ * carte 119 n'avait pas les portées bbfrance:profile, et la connexion du site échouait en « invalid_scope »).
  */
 import { randomBytes, randomUUID } from "node:crypto";
 import { writeFileSync } from "node:fs";
@@ -20,9 +22,30 @@ if (!name || !redirectUri) {
   process.exit(1);
 }
 
+// Droits demandables par l'application : à lister explicitement (une liste vide n'en autorise aucun)
+// Une application tierce ne peut jamais demander l'email du coach
+const SCOPES = thirdParty
+  ? ["openid", "profile", "offline_access", "bbfrance:profile", "bbfrance:profile:write"]
+  : ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"];
+const postLogoutRedirectUri = `${new URL(redirectUri).origin}/`;
+
 const existing = await prisma.oauthClient.findFirst({ where: { name } });
 if (existing) {
-  console.log(`Client "${name}" déjà enregistré : ${existing.clientId} (secret non réaffichable)`);
+  // Mise à niveau sans toucher au secret : seulement les droits et adresses qui manquent (jamais l'email pour une tierce)
+  const allowed = existing.skipConsent ? SCOPES : SCOPES.filter((scope) => scope !== "email");
+  const scopes = [...new Set([...existing.scopes, ...allowed])];
+  const redirectUris = [...new Set([...existing.redirectUris, redirectUri])];
+  const postLogoutRedirectUris = [...new Set([...(existing.postLogoutRedirectUris ?? []), postLogoutRedirectUri])];
+  const changed =
+    scopes.length !== existing.scopes.length ||
+    redirectUris.length !== existing.redirectUris.length ||
+    postLogoutRedirectUris.length !== (existing.postLogoutRedirectUris ?? []).length;
+  if (changed) {
+    await prisma.oauthClient.update({ where: { id: existing.id }, data: { scopes, redirectUris, postLogoutRedirectUris, updatedAt: new Date() } });
+    console.log(`Client "${name}" déjà enregistré : ${existing.clientId}. Droits et adresses complétés (secret inchangé, non réaffichable).`);
+  } else {
+    console.log(`Client "${name}" déjà enregistré : ${existing.clientId}, déjà à jour (secret non réaffichable).`);
+  }
   process.exit(0);
 }
 
@@ -37,15 +60,11 @@ await prisma.oauthClient.create({
     name,
     redirectUris: [redirectUri],
     // Après déconnexion globale (/auth/logout du site), le hub renvoie vers la page d'accueil de l'application
-    postLogoutRedirectUris: [`${new URL(redirectUri).origin}/`],
+    postLogoutRedirectUris: [postLogoutRedirectUri],
     tokenEndpointAuthMethod: "client_secret_basic",
     grantTypes: ["authorization_code", "refresh_token"],
     responseTypes: ["code"],
-    // Droits demandables par l'application : à lister explicitement (une liste vide n'en autorise aucun)
-    // Une application tierce ne peut jamais demander l'email du coach
-    scopes: thirdParty
-      ? ["openid", "profile", "offline_access", "bbfrance:profile", "bbfrance:profile:write"]
-      : ["openid", "profile", "email", "offline_access", "bbfrance:profile", "bbfrance:profile:write"],
+    scopes: SCOPES,
     // Application FranceBB : pas d'écran de consentement ; application tierce : consentement du coach obligatoire
     skipConsent: !thirdParty,
     enableEndSession: true,

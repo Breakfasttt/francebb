@@ -6,7 +6,7 @@ export const SCOPE_LABELS: Record<string, string> = {
   openid: "savoir qui tu es",
   profile: "voir ton pseudo et ton avatar",
   email: "voir ton adresse email",
-  offline_access: "rester connectée sans te redemander",
+  offline_access: "garder ta connexion active sans te redemander",
   "bbfrance:profile": "voir ton profil de coach (NAF, région…)",
   "bbfrance:profile:write": "modifier ton profil de coach",
 };

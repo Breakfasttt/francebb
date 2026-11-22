@@ -16,6 +16,19 @@ const LOCALES = [
 ];
 
 // Fuseaux des coachs francophones les plus courants ; un fuseau déjà enregistré mais absent de la liste reste proposé
+/** Nom lisible d'un fuseau : « Paris (UTC+1) » plutôt que « Europe/Paris » (décalage d'aujourd'hui, heure d'été comprise). */
+function timezoneLabel(timezone: string): string {
+  const city = timezone.split("/").pop()?.replace(/_/g, " ") ?? timezone;
+  try {
+    const offset = new Intl.DateTimeFormat("fr-FR", { timeZone: timezone, timeZoneName: "shortOffset" })
+      .formatToParts(new Date())
+      .find((part) => part.type === "timeZoneName")?.value;
+    return timezone === "UTC" ? "Temps universel (UTC)" : `${city} (${offset?.replace("GMT", "UTC") ?? timezone})`;
+  } catch {
+    return city;
+  }
+}
+
 const TIMEZONES = [
   "Europe/Paris",
   "Europe/Brussels",
@@ -92,7 +105,7 @@ export default function ProfileForm({ initial }: { initial: Profile }) {
         "Fuseau horaire",
         <Select id="profile-timezone" value={form.timezone} onChange={update("timezone")}>
           {timezones.map((timezone) => (
-            <option key={timezone} value={timezone}>{timezone.replace("_", " ")}</option>
+            <option key={timezone} value={timezone}>{timezoneLabel(timezone)}</option>
           ))}
         </Select>,
       )}

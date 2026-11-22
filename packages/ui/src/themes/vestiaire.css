@@ -1,9 +1,7 @@
 /*
  * Thème « Vestiaire » (ADR 0006) : sombre et sobre, surfaces pleines, accent rouge Blood Bowl.
- * C'est le thème par défaut : il s'applique aussi sans attribut data-theme (:root).
- * Liste et rôle de chaque variable : packages/ui/src/tokens.css.
+ *  * Liste et rôle de chaque variable : packages/ui/src/tokens.css.
  */
-:root,
 [data-theme="vestiaire"] {
   --bb-scheme: dark;
   --bb-bg: #111215;
