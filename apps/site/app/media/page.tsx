@@ -5,7 +5,7 @@ import MediaCarousel, { type CarouselItem } from "@/app/media/component/MediaCar
 import TwitchTab from "@/app/media/component/TwitchTab";
 import YoutubeChannelCard from "@/app/media/component/YoutubeChannelCard";
 import { TWITCH_CHANNELS_KEY, YOUTUBE_CHANNELS_KEY, parseTwitchChannels, parseYoutubeChannels } from "@/lib/mediaChannels";
-import { getLatestVideos, getYoutubeLives } from "@/lib/youtubeChannels";
+import { getLatestVideos, getYoutubeLives, type LatestVideo } from "@/lib/youtubeChannels";
 import { getTwitchStatus } from "@/lib/twitchApi";
 
 /**
@@ -46,6 +46,11 @@ export default async function MediaPage({ searchParams }: { searchParams: Promis
   );
 }
 
+/** Date de publication d'une dernière vidéo, en millisecondes (0 si inconnue : la chaîne passe à la fin du tri). */
+function publishedTime(video: LatestVideo | null | undefined): number {
+  return video?.publishedAt ? Date.parse(video.publishedAt) : 0;
+}
+
 async function YoutubeTab({ channels, ids }: { channels: ReturnType<typeof parseYoutubeChannels>; ids: string[] }) {
   if (channels.length === 0) {
     return <p className="m-0 text-bb-text-muted">Pas encore de chaîne YouTube référencée. L&apos;équipe du site peut en ajouter depuis l&apos;administration.</p>;
@@ -70,9 +75,12 @@ async function YoutubeTab({ channels, ids }: { channels: ReturnType<typeof parse
       <section aria-labelledby="media-youtube" className="flex flex-col gap-3">
         <h2 id="media-youtube" className={sectionTitle}>Dernières vidéos</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 min-[1600px]:grid-cols-4">
-          {channels.map((channel) => (
-            <YoutubeChannelCard key={channel.id} channel={channel} latest={latestVideos[channel.id] ?? null} />
-          ))}
+          {/* De la vidéo la plus récente à la plus ancienne ; une chaîne sans vidéo connue passe à la fin */}
+          {[...channels]
+            .sort((a, b) => publishedTime(latestVideos[b.id]) - publishedTime(latestVideos[a.id]))
+            .map((channel) => (
+              <YoutubeChannelCard key={channel.id} channel={channel} latest={latestVideos[channel.id] ?? null} />
+            ))}
         </div>
       </section>
     </div>

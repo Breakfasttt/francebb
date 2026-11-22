@@ -6,16 +6,21 @@ import { PrismaPg } from "@prisma/adapter-pg";
 // l'auth (adapter Auth.js) et à l'envoi de mails ; ailleurs, surcharger localement avec `omit: { email: false }`.
 const USER_PRIVATE_FIELDS = { user: { email: true } } as const;
 
+// DATABASE_POOL_MAX (facultatif) : nombre maximal de connexions ouvertes en même temps vers la base. Inutile en ligne
+// (Neon) ; `pnpm prod-local` le met à 1, car la base locale `prisma dev` coupe la connexion quand une page lance
+// plusieurs requêtes en parallèle (page d'un sujet, par exemple).
+const POOL_MAX = Number(process.env.DATABASE_POOL_MAX) || undefined;
+
 const createClient = () =>
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL, max: POOL_MAX }),
     // PRISMA_QUERY_LOG=1 : trace chaque requête (mesure des requêtes par rendu, scripts/baseline.mjs)
     log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
   });
 
 const createPublicClient = () =>
   new PrismaClient({
-    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL }),
+    adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL, max: POOL_MAX }),
     log: process.env.PRISMA_QUERY_LOG === "1" ? ["query"] : [],
     omit: USER_PRIVATE_FIELDS,
   });

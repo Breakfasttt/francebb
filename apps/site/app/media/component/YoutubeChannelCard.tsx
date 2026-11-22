@@ -54,6 +54,14 @@ export default function YoutubeChannelCard({ channel, latest }: { channel: Youtu
       <div className="flex flex-1 flex-col gap-2 p-3">
         <p className="m-0 font-bold break-words">{channel.name}</p>
         {latest?.title && <p className="m-0 line-clamp-2 text-sm text-bb-text-muted">Dernière vidéo : {latest.title}</p>}
+        {latest?.publishedAt && (
+          <p className="m-0 text-sm text-bb-text-muted">
+            Publiée le{" "}
+            <time dateTime={latest.publishedAt}>
+              {new Date(latest.publishedAt).toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric", timeZone: "Europe/Paris" })}
+            </time>
+          </p>
+        )}
         <Button asChild variant="secondary" size="tap" className="mt-auto self-start">
           <a href={`https://www.youtube.com/channel/${channel.id}`} target="_blank" rel="noopener noreferrer" className="no-underline">
             Voir sur YouTube <ExternalLink size={15} aria-hidden="true" />

@@ -103,15 +103,13 @@
   padding: 1rem 1.2rem 3.5rem;
   color: var(--bb-text);
   background: var(--bb-surface-2);
-  /* Le texte est présent mais invisible et flou tant que le spoiler n'est pas révélé */
-  opacity: 0;
-  filter: blur(40px);
+  /* Tant que le spoiler n'est pas révélé, le texte se devine sous un flou épais, illisible (le masque floute en plus) */
+  filter: blur(7px);
   pointer-events: none;
-  transition: opacity 0.6s ease, filter 0.6s ease;
+  transition: filter 0.6s ease;
 }
 
 .bb-spoiler-box.revealed > .bb-spoiler-body {
-  opacity: 1;
   filter: none;
   pointer-events: auto;
 }
@@ -126,10 +124,10 @@
   margin: 1px;
   border: 1px dashed var(--bb-accent-text);
   border-radius: calc(var(--bb-radius-md) - 1px);
-  background-color: var(--bb-surface);
-  /* Grain léger, de la couleur des bordures du thème */
-  background-image: radial-gradient(var(--bb-border) 1px, transparent 1px);
-  background-size: 8px 8px;
+  /* Voile translucide et flou : le contenu se devine dessous sans se lire (comme avant la refonte, sans le grain) */
+  background-color: color-mix(in srgb, var(--bb-surface) 40%, transparent);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
   user-select: none;
   transition: opacity 0.4s ease, visibility 0.4s;
   /* Le masque est un bouton (lecteurs d'écran, clavier) : il couvre tout le bloc, marge d'un pixel comprise */
@@ -179,6 +177,11 @@
 
 .bb-spoiler-rehide:hover {
   border-color: var(--bb-accent-text);
+}
+
+/* Spoiler caché : le bouton « œil » ne sert à rien et se devinerait sous le flou */
+.bb-spoiler-box:not(.revealed) .bb-spoiler-rehide {
+  visibility: hidden;
 }
 
 .bb-spoiler-rehide:focus-visible {

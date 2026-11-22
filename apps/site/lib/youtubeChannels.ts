@@ -46,6 +46,8 @@ export async function resolveYoutubeChannel(raw: string): Promise<YoutubeChannel
 export interface LatestVideo {
   videoId: string;
   title: string;
+  /** Date de publication (ISO 8601, lue dans le flux YouTube), null si le flux ne la donne pas */
+  publishedAt: string | null;
 }
 
 async function fetchLatestVideo(channelId: string): Promise<LatestVideo | null> {
@@ -60,7 +62,9 @@ async function fetchLatestVideo(channelId: string): Promise<LatestVideo | null> 
     if (!entry) return null;
     const videoId = entry.match(/<yt:videoId>([a-zA-Z0-9_-]{11})<\/yt:videoId>/)?.[1];
     const title = entry.match(/<title>([^<]*)<\/title>/)?.[1];
-    return videoId ? { videoId, title: title ? decodeEntities(title) : "" } : null;
+    const published = entry.match(/<published>([^<]+)<\/published>/)?.[1];
+    const publishedAt = published && !Number.isNaN(Date.parse(published)) ? new Date(published).toISOString() : null;
+    return videoId ? { videoId, title: title ? decodeEntities(title) : "", publishedAt } : null;
   } catch {
     return null;
   }
@@ -72,7 +76,8 @@ export const getLatestVideos = unstable_cache(
     const results = await Promise.all(channelIds.map(async (id) => [id, await fetchLatestVideo(id)] as const));
     return Object.fromEntries(results);
   },
-  ["youtube-latest-videos-v1"],
+  // v2 : date de publication ajoutée (tri par date sur la page Médias)
+  ["youtube-latest-videos-v2"],
   { revalidate: 3600 }
 );
 

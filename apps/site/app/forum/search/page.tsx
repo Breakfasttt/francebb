@@ -16,7 +16,7 @@ import Link from "next/link";
 import { Eye, SearchX, Trophy } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
-import { Badge, Button, Card, EmptyState, PageNav } from "@bbfrance/ui";
+import { Badge, Card, EmptyState, PageNav } from "@bbfrance/ui";
 import { prisma } from "@/lib/prisma";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { getActiveSession } from "@/lib/authGuard";
@@ -232,17 +232,20 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                       const lastPostAt = new Date(post.topic.lastPostAt);
                       const hitsLabel = topicHitsLabel(count);
                       return (
-                        <li key={post.id} className="flex items-start gap-3 border-b border-bb-border p-3 last:border-b-0 lg:px-4">
+                        // Tout le bloc mène au message : le lien du titre s'étend sur le bloc (pseudo-élément after),
+                        // sans autre élément cliquable dedans ; survol et focus clavier se voient sur tout le bloc
+                        <li
+                          key={post.id}
+                          className="relative flex items-start gap-3 border-b border-bb-border p-3 transition-colors last:border-b-0 hover:bg-bb-surface-2 has-[a:focus-visible]:outline-2 has-[a:focus-visible]:-outline-offset-2 has-[a:focus-visible]:outline-bb-focus lg:px-4"
+                        >
                           <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                             <h3 className="flex min-w-0 flex-wrap items-start gap-1.5 text-bb-lead leading-snug font-bold text-bb-text">
                               {post.topic.tournamentId && (
                                 <Trophy size={16} role="img" aria-label="Tournoi" className="mt-1 shrink-0 text-bb-accent-text" />
                               )}
-                              {/* Titre et « Voir » mènent au même message. Sur téléphone, la marge intérieure porte la zone
-                                  d'appui du titre à 44 pixels sans changer la mise en page */}
                               <Link
                                 href={href}
-                                className="inline-block min-w-0 break-words text-bb-text no-underline max-lg:-my-3 max-lg:py-3 hover:text-bb-accent-text hover:underline focus-visible:outline-2 focus-visible:outline-bb-focus"
+                                className="inline-block min-w-0 break-words text-bb-text no-underline outline-none after:absolute after:inset-0 after:content-[''] hover:text-bb-accent-text"
                                 dangerouslySetInnerHTML={{ __html: parseInlineBBCode(post.topic.title) }}
                               />
                               {post.topic.isArchived && <Badge variant="neutral" className="mt-0.5">Archivé</Badge>}
@@ -277,9 +280,6 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
                               </span>
                             </p>
                           </div>
-                          <Button asChild variant="secondary" size="tap" className="shrink-0 no-underline">
-                            <Link href={href}>Voir</Link>
-                          </Button>
                         </li>
                       );
                     })}

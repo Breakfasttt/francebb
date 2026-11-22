@@ -116,7 +116,9 @@ function build() {
 
 function start() {
   if (!existsSync(`${SITE}/.next/BUILD_ID`) || !existsSync(`${HUB}/.next/BUILD_ID`)) throw new Error("Lancer d'abord : pnpm prod-local build");
-  const env = { ...process.env, ...databases() };
+  // Une seule connexion à la fois vers chaque base : la base locale `prisma dev` coupe la connexion quand une page
+  // lance plusieurs requêtes en parallèle (lib/prisma.ts, DATABASE_POOL_MAX). En ligne, Neon n'a pas ce défaut.
+  const env = { ...process.env, ...databases(), DATABASE_POOL_MAX: "1" };
   const children = [
     spawn("corepack pnpm start", { cwd: HUB, env, stdio: "inherit", shell: true }),
     spawn("corepack pnpm start", { cwd: SITE, env, stdio: "inherit", shell: true }),
