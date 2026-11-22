@@ -5,13 +5,13 @@ description: Procédure sûre pour toute opération sur les bases de données Po
 
 # Opérations sur la base de données
 
-Le site, le hub, BBQuizz et BBScheme ont chacun leur base **Postgres** (ADR-0008) : hébergée chez **Neon** en production, lancée en local par `prisma dev` (sans Docker). Décision et raisons : `docs/adr/0004-reorganisation-et-postgres.md`.
+Le site, le hub et BBScheme ont chacun leur base **Postgres** (ADR-0008) : hébergée chez **Neon** en production, lancée en local par `prisma dev` (sans Docker). Décision et raisons : `docs/adr/0004-reorganisation-et-postgres.md`.
 
 ## Règles absolues
 
 - **Jamais** `prisma migrate reset` ni `db push --force-reset` sur une base réelle : ils effacent tout.
 - Aucune suppression de données de membres sans accord exprès.
-- Les adresses des bases ne sont jamais écrites dans un fichier du dépôt : variables d'environnement uniquement (`DATABASE_URL` pour le site, `HUB_DATABASE_URL` pour le hub, `BBQUIZZ_DATABASE_URL` et `BBSCHEME_DATABASE_URL` pour les deux applications en attente).
+- Les adresses des bases ne sont jamais écrites dans un fichier du dépôt : variables d'environnement uniquement (`DATABASE_URL` pour le site, `HUB_DATABASE_URL` pour le hub et `BBSCHEME_DATABASE_URL` pour l'application en attente).
 - `apps/site/prisma/firstSetup.ts` (données de base) : ne pas modifier sans accord ; toujours `upsert` (crée ou met à jour, ne duplique jamais).
 
 ## Changer la structure de la base

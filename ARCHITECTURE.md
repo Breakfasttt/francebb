@@ -9,7 +9,6 @@ Ce document dit **comment le code est organisé et quelles règles respecter** q
 | `apps/site` | Le site FranceBB (Next.js) | En ligne |
 | `apps/hub` | Le hub de connexion unique (Better Auth, OIDC), [ADR-0003](docs/adr/0003-hub-better-auth-oidc.md) | Prêt, pas encore en ligne |
 | `apps/bbscheme` | Les schémas tactiques BBScheme, avec leur propre base ; donne un schéma au site par `GET /api/boards/:id` ([ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : l'éditeur est rangé dans `editeur-en-attente/`, à relancer |
-| `apps/bbquizz` | Le quiz BBQuizz, avec sa propre base (questions, parties, scores des joueurs) ; le site n'a plus de lien vers lui ([ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)) | En attente : le code du quiz est rangé dans `quiz-en-attente/`, à relancer plus tard |
 | `packages/ui` | Composants d'interface partagés (shadcn/ui) et variables de couleur des 5 thèmes | Utilisé par le site et le hub |
 | `packages/bbscheme-player` | Lecteur des plateaux BBScheme, avec le terrain, les pions et leurs types | Utilisé par le site (messages du forum) et par l'éditeur en attente |
 
@@ -92,6 +91,6 @@ Le cliquet contrôle aussi les paquets partagés : `packages/ui` et `packages/bb
 
 ## Données
 
-- Base **Postgres** : Neon en production, `prisma dev` en local (`scripts/local-postgres.mjs`, sans Docker). Le site, le hub, BBQuizz et BBScheme ont chacun leur base ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md), [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)).
+- Base **Postgres** : Neon en production, `prisma dev` en local (`scripts/local-postgres.mjs`, sans Docker). Le site, le hub et BBScheme ont chacun leur base ([ADR-0004](docs/adr/0004-reorganisation-et-postgres.md), [ADR-0008](docs/adr/0008-quiz-et-bbscheme-hors-du-site.md)).
 - Changement de structure de la base : uniquement par une migration Prisma (`pnpm db:migrate`), jamais à la main. Les migrations sont appliquées automatiquement à chaque déploiement (`vercel-build`).
 - Aucune donnée de membre ne doit être supprimée sans accord exprès.

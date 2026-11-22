@@ -1,7 +1,7 @@
 /**
  * Tests des failles corrigées par la carte 050 (sécurité de la modération et de la connexion)
  * et par la carte 141 (ressources : accès des visiteurs, liens dangereux, clé ImgBB gardée par le serveur).
- * Les tests du quiz (cartes 051 et 143) sont partis avec lui dans apps/bbquizz (carte 180).
+ * Les tests du quiz (cartes 051 et 143) ont disparu avec lui (carte 180, puis abandon du quiz le 22/11/2026).
  *
  * Pour vérifier qu'une action serveur refuse des données que le formulaire n'enverrait jamais, les tests de la carte
  * 141 remplissent le formulaire normalement, puis modifient la requête au moment où elle part vers le serveur

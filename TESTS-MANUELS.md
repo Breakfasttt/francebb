@@ -232,7 +232,7 @@ Les trois essais suivants se font avec le site branché sur le hub, le service d
 
 ## 17. BBQuizz
 
-*Sans objet depuis la carte 180 : le quiz a quitté le site et attend sa relance dans l'application `apps/bbquizz`.*
+*Sans objet : le quiz a quitté le site (carte 180), puis l'application BBQuizz, simple essai, a été retirée du dépôt (22/11/2026).*
 
 - [ ] **Téléphone, membre.** `/bbquizz` : jouer une partie entière ; la question, le chronomètre, le score et les quatre réponses tiennent dans l'écran.
 - [ ] **Téléphone, membre.** Essayer les trois jokers, laisser filer le temps sur une question, attendre le passage automatique après une réponse, puis « Rejouer ».

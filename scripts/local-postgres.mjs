@@ -11,7 +11,7 @@
  *   commandes : start (démarre si besoin), fresh (repart d'une base vide), stop, url (affiche l'adresse)
  *   bases     : site-vide, site-exemple, site-prod (profils de base du site lancés par `pnpm dev`, carte 219),
  *               site-e2e (tests du site), hub, hub-e2e (tests du hub), bbscheme (application BBScheme, carte 179),
- *               bbquizz (application BBQuizz, carte 180), shadow (vérification des migrations),
+ *               shadow (vérification des migrations),
  *               import-test (essai de la reprise des données de la bêta, carte 178),
  *               site-prodtest, hub-prodtest (test local en mode production, scripts/prod-local.mjs)
  */
@@ -30,9 +30,8 @@ const DEV_ENV = {
   "site-prod": { file: `${ROOT}apps/site/.env.local`, variable: "DATABASE_URL" },
   hub: { file: `${ROOT}apps/hub/.env.local`, variable: "HUB_DATABASE_URL" },
   bbscheme: { file: `${ROOT}apps/bbscheme/.env.local`, variable: "BBSCHEME_DATABASE_URL" },
-  bbquizz: { file: `${ROOT}apps/bbquizz/.env.local`, variable: "BBQUIZZ_DATABASE_URL" },
 };
-export const LOCAL_DATABASES = ["site-vide", "site-exemple", "site-prod", "site-e2e", "hub", "hub-e2e", "bbscheme", "bbquizz", "shadow", "import-test", "site-prodtest", "hub-prodtest"];
+export const LOCAL_DATABASES = ["site-vide", "site-exemple", "site-prod", "site-e2e", "hub", "hub-e2e", "bbscheme", "shadow", "import-test", "site-prodtest", "hub-prodtest"];
 
 // `npx prisma` doit être lancé depuis une application qui a Prisma dans ses dépendances
 const PRISMA_CWD = `${ROOT}apps/site`;

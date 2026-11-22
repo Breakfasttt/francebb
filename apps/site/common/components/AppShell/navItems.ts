@@ -112,7 +112,7 @@ export function activeBottomTab(pathname: string, moreOpen: boolean): string | n
  * Depuis la carte 094, les écrans de création (`/ligues/create`) et de modification (`/ligue/edit/[id]`) d'une ligue ;
  * depuis la carte 095, ceux d'un article (`/articles/create`, `/articles/edit/[id]`) ; depuis la carte 096, ceux d'une
  * ressource (`/ressources/submit`, `/ressources/edit/[id]`) ; depuis la carte 097, l'éditeur d'archives du classement
- * (`/classement/edit-archive`) ; depuis la carte 196, la création d'un forum (`/forum/new-forum`). Les écrans du quiz (carte 098) sont partis avec lui dans apps/bbquizz (carte 180).
+ * (`/classement/edit-archive`) ; depuis la carte 196, la création d'un forum (`/forum/new-forum`). Les écrans du quiz (carte 098) ont disparu avec lui (cartes 180 puis abandon).
  * Un écran plein écran qui n'a pas sa propre adresse (une conversation de la messagerie, ouverte par `?id=`, carte 093)
  * pose plutôt l'attribut `data-fullscreen`, qui retire la barre basse par le CSS (AppShell.css).
  */

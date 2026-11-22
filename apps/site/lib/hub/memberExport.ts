@@ -1,8 +1,7 @@
 /**
  * Données d'un membre que le site fournit au passeport pour l'export RGPD (carte 125) : profil, contributions
  * (sujets, messages du forum, articles), messages privés envoyés, inscriptions aux tournois et résultats.
- * Les données du quiz sont dans la base de l'application BBQuizz depuis la carte 180 : elle les fournira elle-même au
- * passeport à sa relance.
+ * Le quiz a quitté le site (carte 180), puis a été abandonné (22/11/2026) : il n'a plus de données à exporter.
  * Les données des autres membres (messages reçus, réponses) ne sont pas incluses.
  * Fichier volontairement PAS « use server » : appelé seulement par app/api/hub/export/route.ts, après vérification.
  */

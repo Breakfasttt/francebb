@@ -45,3 +45,7 @@ Cette décision remplace, pour le quiz, la ligne de l'ADR-0001 qui refusait son 
 ## Cartes
 
 179 (sortie de BBScheme), 180 (sortie du quiz), 178 (reprise des données de la bêta). Remplace en partie la carte 071.
+
+## Suite (22/11/2026)
+
+Le quiz n'était qu'un essai : l'application `apps/bbquizz` a été retirée du dépôt avant la mise en ligne. Sa fiche est archivée dans `archive/docs/features/bbquizz/` ; son code reste dans l'historique git. Les données du quiz de la bêta restent dans la sauvegarde `docs/backup-db/` (hors git). BBScheme reste une application à part, comme décidé ici.

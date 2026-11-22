@@ -21,8 +21,8 @@
  * - Les schémas BBScheme (table BBSchemeState) ne sont plus repris ici depuis la carte 179 : ils vont dans la base de
  *   l'application BBScheme, par le script apps/bbscheme/scripts/import-beta-backup.ts.
  * - Les données du quiz (questions, parties, et les scores rangés sur la fiche des membres : colonnes quizTotalScore,
- *   quizBestScore, quizStreak, quizAttemptsCount) ne sont plus reprises ici depuis la carte 180 : elles vont dans la
- *   base de l'application BBQuizz, par le script apps/bbquizz/scripts/import-beta-backup.ts.
+ *   quizBestScore, quizStreak, quizAttemptsCount) ne sont plus reprises ici depuis la carte 180 : le quiz,
+ *   simple essai, a été abandonné (22/11/2026) ; ses données restent dans la sauvegarde de la bêta.
  */
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../prisma/generated-client";

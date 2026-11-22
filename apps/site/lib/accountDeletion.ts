@@ -163,8 +163,7 @@ export async function anonymizeAndDeleteUser(userId: string, keepUserRecord: boo
 
       // Schémas BBScheme : ils sont rangés dans la base de l'application BBScheme depuis la carte 179. Le site ne peut
       // plus effacer leur créateur ; ce sera fait par l'application BBScheme elle-même, prévenue par le hub, à sa relance.
-      // Quiz : ses parties, propositions et scores sont dans la base de l'application BBQuizz depuis la carte 180, et
-      // seront effacés de la même façon à sa relance.
+      // Quiz : retiré du site (carte 180) puis abandonné (22/11/2026) : plus aucune donnée de quiz à effacer.
       // Traces de l'email : journal des mails envoyés et fiche de l'ancien forum
       if (identity?.email) {
         await tx.mailLog.deleteMany({ where: { to: identity.email } });

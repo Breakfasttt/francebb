@@ -24,6 +24,22 @@ Depuis `apps/bbscheme` :
 
 Pour que le site affiche les schémas, mettre `BBSCHEME_URL=http://localhost:4100` dans `apps/site/.env`.
 
+## Tester
+
+- `corepack pnpm check` (à la racine) vérifie les types de l'application.
+- À la main : avec l'application lancée, `http://localhost:4100/api/boards/<identifiant d'un schéma>` doit répondre `{ "data": … }`, et un message du site qui contient `[bbscheme]` doit afficher le schéma (avec `BBSCHEME_URL` réglé dans `apps/site/.env`).
+- Le port 4100 sert aussi au hub pendant `test:sso` : arrêter BBScheme avant ce test.
+- Les tests de l'éditeur reviendront avec sa relance (`editeur-en-attente/README.md`).
+
+## Déployer (plus tard)
+
+BBScheme n'est pas mis en ligne avec le hub et le site : sans lui, les schémas des messages affichent « Schéma indisponible », sans gêner le reste du site. Le moment venu ([DEPLOY.md](../../DEPLOY.md), annexe B) :
+
+1. une base Neon de plus, réservée à BBScheme ;
+2. un projet Vercel de plus, *Root Directory* `apps/bbscheme`, avec la seule variable `BBSCHEME_DATABASE_URL` (l'adresse de cette base) ; le déploiement crée les tables (`vercel-build`) ;
+3. facultatif : reprendre les schémas de la bêta (étape 4 ci-dessus, avec l'adresse Neon) ;
+4. sur le projet Vercel du site, ajouter `BBSCHEME_URL` = l'adresse publique de BBScheme, sans `/` final, puis redéployer le site.
+
 ## Relancer l'éditeur
 
 Voir `editeur-en-attente/README.md` : déplacer les fichiers dans `app/`, remplacer les imports du site, ajouter les dépendances de l'interface, servir les rosters, brancher le hub, puis rebrancher les tests.

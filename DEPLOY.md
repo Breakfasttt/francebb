@@ -17,7 +17,7 @@ Ce guide explique pas à pas comment publier **le hub de connexion** et **le sit
 
 À chaque mise en ligne, la structure de chaque base est mise à jour automatiquement : le script `vercel-build` de chaque application lance `prisma migrate deploy` avant de construire. Aucune commande à taper pour ça.
 
-BBScheme et BBQuizz ne sont pas mis en ligne pour l'instant (voir l'annexe B) : le site fonctionne sans eux.
+BBScheme n'est pas mis en ligne pour l'instant (voir l'annexe B) : le site fonctionne sans lui.
 
 **Ordre des étapes** : 1. outils → 2. test local → 3. domaine → 4. bases Neon → 5. mails, Discord, Google → 6. hub sur Vercel → 7. site enregistré auprès du hub → 8. site sur Vercel → 9. données de base → 10. vérifications.
 
@@ -250,8 +250,8 @@ L'ancienne bêta (base SQLite chez Turso) a été arrêtée le 4 novembre 2026. 
 
 Les membres repris retrouvent leur compte en se connectant au hub avec le même email (Discord, Google ou lien par email).
 
-## Annexe B : BBScheme et BBQuizz, plus tard
+## Annexe B : BBScheme, plus tard
 
-Les deux applications sont en attente (leur code complet est rangé dans `editeur-en-attente/` et `quiz-en-attente/`). Pour les mettre en ligne le moment venu : une base Neon de plus et un projet Vercel de plus chacune (*Root Directory* `apps/bbscheme` ou `apps/bbquizz`, seule variable `BBSCHEME_DATABASE_URL` ou `BBQUIZZ_DATABASE_URL`), puis, pour BBScheme, `BBSCHEME_URL` sur le projet du site. Sans BBScheme, les schémas cités dans les messages affichent « Schéma indisponible », sans gêner le reste du site.
+BBScheme est en attente (le code complet de l'éditeur est rangé dans `apps/bbscheme/editeur-en-attente/`). Pour le mettre en ligne le moment venu : une base Neon de plus et un projet Vercel de plus (*Root Directory* `apps/bbscheme`, seule variable `BBSCHEME_DATABASE_URL`), puis `BBSCHEME_URL` sur le projet du site. Sans BBScheme, les schémas cités dans les messages affichent « Schéma indisponible », sans gêner le reste du site. Le quiz BBQuizz, qui n'était qu'un essai, a été retiré du dépôt (22/11/2026).
 
 Les notes de l'ancienne production (reprise des schémas et du quiz, clé ImgBB, thème Vestiaire…) sont archivées dans [archive/docs/deploy-notes-2026.md](archive/docs/deploy-notes-2026.md).

@@ -67,7 +67,7 @@ test("l'ancienne adresse de l'éditeur /bbscheme donne la page introuvable", asy
   expect(response?.status()).toBe(404);
 });
 
-// Carte 180 : le quiz est parti dans l'application apps/bbquizz, son ancienne adresse n'existe plus dans le site
+// Carte 180 : le quiz a quitté le site (puis a été abandonné), son ancienne adresse n'existe plus
 test("l'ancienne adresse du quiz /bbquizz donne la page introuvable", async ({ page }) => {
   const response = await page.goto("/bbquizz");
   expect(response?.status()).toBe(404);

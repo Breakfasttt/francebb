@@ -42,12 +42,11 @@ Chaque règle n'est écrite qu'à un seul endroit :
 
 | Dossier ou fichier | Ce qu'il contient |
 |---|---|
-| `apps/site/` | **Le site FranceBB** (forum, tournois, profils…), avec sa base de données et ses tests |
-| `apps/hub/` | **Le hub de connexion** : un compte unique (le « passeport Blood Bowl ») pour le site et les futures applications. Prêt ; mise en ligne en préparation ([DEPLOY.md](DEPLOY.md)) |
-| `apps/bbscheme/` | **BBScheme**, l'application des schémas tactiques, avec sa propre base. En attente : elle ne fait que donner au site les schémas déjà publiés ; l'éditeur sera relancé plus tard |
-| `apps/bbquizz/` | **BBQuizz**, l'application du quiz, avec sa propre base (questions, parties, scores). En attente : elle n'affiche qu'une page « Le quiz revient bientôt » ; le quiz sera relancé plus tard |
-| `packages/ui/` | Composants d'interface partagés entre les applications (fenêtres, notifications…) |
-| `packages/bbscheme-player/` | Le lecteur des schémas BBScheme, partagé entre le site et l'application BBScheme |
+| `apps/site/` | **Le site FranceBB** (forum, tournois, profils…), avec sa base de données et ses tests. [Lancer, tester, déployer](apps/site/README.md) |
+| `apps/hub/` | **Le hub de connexion** : un compte unique (le « passeport Blood Bowl ») pour le site et les futures applications. Prêt pour la mise en ligne. [Lancer, tester, déployer](apps/hub/README.md) |
+| `apps/bbscheme/` | **BBScheme**, l'application des schémas tactiques, avec sa propre base. En attente : elle ne fait que donner au site les schémas déjà publiés ; l'éditeur sera relancé plus tard. [README](apps/bbscheme/README.md) |
+| `packages/ui/` | Composants d'interface et thèmes partagés entre les applications. [README](packages/ui/README.md) |
+| `packages/bbscheme-player/` | Le lecteur des schémas BBScheme, partagé entre le site et l'application BBScheme. [README](packages/bbscheme-player/README.md) |
 | `docs/features/` | **Une fiche par fonctionnalité** : à quoi elle sert, ce que voit le coach, où est le code |
 | `docs/adr/` | Les décisions importantes et leurs raisons (voir « ADR » dans le glossaire) |
 | `docs/GLOSSAIRE.md` | Les mots techniques expliqués |
@@ -60,6 +59,8 @@ Chaque règle n'est écrite qu'à un seul endroit :
 | `package.json`, `pnpm-workspace.yaml`, `pnpm-lock.yaml`, `turbo.json` | Réglages communs : liste des applications, versions exactes des bibliothèques, commandes partagées |
 
 Le dépôt est un **monorepo** : plusieurs applications dans un seul dépôt, qui partagent des composants via `packages/`.
+
+**Chaque application et chaque paquet a son README**, avec la même structure : à quoi il sert, le lancer en local étape par étape, le tester, le déployer. Ce fichier-ci donne la vue d'ensemble ; la mise en ligne complète est dans [DEPLOY.md](DEPLOY.md).
 
 ---
 

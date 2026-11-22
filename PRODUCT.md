@@ -31,7 +31,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 
 - **Le lieu unique francophone** : forum, tournois, classement et profils réunis et reliés entre eux, en français.
 - **Le classement français officiel** : le classement de la Coupe de France (CDF) est calculé sur le site à partir des résultats des tournois CDF, selon le règlement officiel, avec les archives des années passées (y compris celles reprises de l'ancien site teamfrancebb.fr).
-- **Des outils de jeu maison** : BBScheme (schémas tactiques) et BBQuizz (quiz sur les règles), aujourd'hui en attente de relance.
+- **Un outil de jeu maison** : BBScheme (schémas tactiques), aujourd'hui en attente de relance.
 - **Associatif et non commercial** : un site bénévole de la communauté, sans publicité ni abonnement.
 
 ## Operating Context
@@ -39,7 +39,7 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 - **Plusieurs applications dans un même dépôt** :
   - `apps/site`, le site communautaire, en ligne ;
   - `apps/hub`, le hub de connexion : un compte unique (le « passeport Blood Bowl ») pour toutes les applications. Prêt, pas encore en ligne. Il est indépendant et ne connaît aucune application en particulier (ADR-0007) ;
-  - `apps/bbscheme` et `apps/bbquizz`, en attente : elles n'affichent qu'une page « revient bientôt » (ADR-0008).
+  - `apps/bbscheme`, en attente : il n'affiche qu'une page « revient bientôt » et sert au site les schémas publiés (ADR-0008).
 - **Le tournoi rythme la vie du site** : annonce sur le forum, inscriptions, paiement géré par l'organisateur et ses commissaires, saisie des résultats, puis mise à jour du classement.
 - **Le téléphone est l'appareil principal.** Sur téléphone, la navigation passe par une barre basse à cinq onglets (Accueil, Forum, Tournois, Messages, Plus). Le seuil entre téléphone et ordinateur est unique : 1024 pixels (skill `ui`).
 - Le projet est maintenu par un développeur bénévole, aidé par l'IA. Toute la documentation est écrite en français clair, pour quelqu'un qui découvre le projet.
@@ -52,11 +52,11 @@ Ce que les autres outils des coachs (Discord, Facebook, sites internationaux de 
 - Les composants d'interface partagés vivent dans `packages/ui` (composants Radix pour le comportement, mis en forme selon `DESIGN.md`) et sont réutilisés avant d'en créer de nouveaux (skill `reuse-first`).
 - Pas de nouvelle bibliothèque sans accord du responsable du projet. Une seule police (Archivo, variable en graisse et en largeur), servie par le site lui-même : aucune donnée de visiteur n'est envoyée à Google.
 - Les données des membres sont protégées (RGPD) : les emails ne sortent jamais par défaut, et un compte supprimé est anonymisé.
-- Pas encore décidé : la date de mise en ligne du hub, et la relance de BBScheme et de BBQuizz.
+- Pas encore décidé : la date de mise en ligne du hub, et la relance de BBScheme. Le quiz BBQuizz, simple essai, a été retiré (22/11/2026).
 
 ## Brand Commitments
 
-- Le nom est **France Blood Bowl**, abrégé **FranceBB** (jamais « Blood Bowl France » ni « BBFrance »). Les outils gardent leurs noms : **BBScheme**, **BBQuizz**.
+- Le nom est **France Blood Bowl**, abrégé **FranceBB** (jamais « Blood Bowl France » ni « BBFrance »). L'outil de schémas garde son nom : **BBScheme**.
 - Le vocabulaire du jeu et de la communauté est conservé : coach, roster, ligue, commissaire, CDF, NAF.
 - Les identifiants des thèmes sont un engagement envers les membres : ils ne changent jamais, même quand un nom affiché change (ADR-0009). Saison 3 est le thème officiel, avec une pelouse. La source unique des thèmes est `packages/ui/src/themes/themeData.mjs`.
 - Le hub reprend une fois pour toutes les couleurs et la police du thème par défaut, sans choix de thème.

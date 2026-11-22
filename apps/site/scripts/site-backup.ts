@@ -20,7 +20,7 @@
  * Une base locale temporaire (`import-test`) reçoit `0_init`, les lignes de la bêta (colonnes communes, valeurs
  * converties selon le type Postgres), puis les migrations suivantes ; elle est ensuite exportée à côté de
  * l'ancienne sauvegarde, qui n'est ni modifiée ni supprimée. Les tables du quiz et de BBScheme, supprimées du site
- * par leurs migrations, ne sont pas dans le résultat (elles ont leurs propres scripts dans apps/bbquizz et apps/bbscheme).
+ * par leurs migrations, ne sont pas dans le résultat (BBScheme a son propre script dans apps/bbscheme ; le quiz a été abandonné).
  */
 import { execSync } from "node:child_process";
 import { readdirSync, readFileSync, writeFileSync } from "node:fs";
