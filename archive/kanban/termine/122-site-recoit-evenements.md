@@ -44,3 +44,9 @@ Le site garde une copie locale du profil et sa session dans un jeton. Il doit su
 ## Essai du 22/11
 
 `test:sso` lancé pendant la carte 116 : le bannissement puis la levée passent, le pseudo du site part bien au passeport, mais le pseudo changé au passeport ne revient pas sur le site (`Expected: "Coach Hub …"`, `Received: "Coach Site …"`). L'événement `user.updated` n'arrive pas, ou n'est pas appliqué à la session du site.
+
+## Résultat
+- Cause de l'échec du 22/11 : le site recevait bien `user.updated`, mais son traitement tombait sur une erreur passagère de la base (« bind message supplies 4 parameters » : la base locale `prisma dev` ne supporte pas deux requêtes à la fois, et le test interrogeait le site au même moment). Le hub ne renvoie un événement refusé qu'à sa tâche quotidienne : la mise à jour aurait pu attendre un jour, en production aussi.
+- Correction : `app/api/hub/events/route.ts` rejoue le traitement jusqu'à 3 fois sur une erreur passagère de la base (le traitement est idempotent).
+- `test:sso` : 12 tests sur 12 (22/11/2026), dont le pseudo du site vers le passeport et retour, le bannissement au hub puis sa levée, le compte banni refusé.
+- À essayer à la main : la section « Passeport Blood Bowl » des réglages du profil en taille téléphone, avec le site en mode hub (`TESTS-MANUELS.md`).

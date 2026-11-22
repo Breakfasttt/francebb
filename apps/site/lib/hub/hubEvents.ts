@@ -29,6 +29,8 @@ async function applyHubBlock(userId: string, reason: string) {
   await prisma.user.updateMany({ where: { id: userId, isBanned: false }, data: { isBanned: true, banReason: reason } });
 }
 
+export type HubEventInput = HubEvent;
+
 export async function handleHubEvent(event: HubEvent) {
   const userId = await findUserByHubId(event.data.userId);
   if (!userId) return;

@@ -29,7 +29,8 @@ Le RGPD demande de tenir un registre de ce qu'on fait des données, et d'informe
 - Journal des emails : 6 mois, durée de référence de la CNIL pour les journaux techniques. `apps/site/lib/mail.ts` efface les entrées plus anciennes à chaque envoi.
 - Page `/mentions-legales` réécrite : éditeur, hébergement, contenus des membres, puis la politique de confidentialité (responsable, données, finalités, bases légales, durées, destinataires, transferts hors de l'Union européenne, droits, recours auprès de la CNIL, cookies). Seul le texte change : la page garde ses composants et son CSS, que la refonte du site reprendra.
 - **Reste à faire** :
-  - vérifier la page en taille téléphone, quand le serveur du site est libre (l'autre session l'utilise pour la refonte) ;
+  - ~~vérifier la page en taille téléphone~~ : fait le 22/11/2026 (aucun débordement, téléphone et ordinateur ; capture `logs/captures-126/`) ;
+  - **relecture du registre (`docs/rgpd/registre.md`) et de `/mentions-legales` par le user** : c'est la condition de fin de la carte ;
   - renseigner `CONTACT_EMAIL` sur Vercel ;
   - publier l'annonce sur le forum et Discord (texte ci-dessous) à la mise en ligne du passeport.
 

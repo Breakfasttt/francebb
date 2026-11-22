@@ -34,3 +34,7 @@ La suppression actuelle (`apps/site/lib/accountDeletion.ts`) laisse des traces :
   - en mode hub, la suppression depuis le site renvoie vers le passeport (bouton et action serveur).
 - **Vérifié** : les types passent.
 - **Pas encore vérifié** : le test de bout en bout (« à l'échéance d'une suppression, le site efface le membre puis le hub efface le passeport », `sso.spec.ts`), pour la même raison que la carte 122.
+
+## Résultat
+- `test:sso` vert (22/11/2026) : « à l'échéance d'une suppression, le site efface le membre puis le hub efface le passeport ». Le test vérifie maintenant aussi, dans la base de test du site, qu'aucune ligne de `User` ni de `MailLog` ne garde l'email du membre.
+- Même correction que la carte 122 : le traitement de `user.deleted` est rejoué sur une erreur passagère de la base, au lieu d'attendre la tâche quotidienne du hub.

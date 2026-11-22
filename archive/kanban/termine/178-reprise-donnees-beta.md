@@ -54,3 +54,6 @@ Mise à jour par la carte 179 : la partie BBScheme a été retirée du script (l
 Mise à jour par la carte 180 : la partie quiz a été retirée du script (questions, et colonnes `quizTotalScore`, `quizBestScore`, `quizStreak`, `quizAttemptsCount` des membres). Les 340 questions, les 7 parties terminées et les scores de 4 joueurs sont repris par le script de l'application BBQuizz. Les chiffres ci-dessus sur les questions datent d'avant ce retrait.
 
 Reste à faire : la reprise en production sur la nouvelle base Neon (carte 047), par le responsable ou avec son accord, selon la procédure « Étape 5 bis » de `DEPLOY.md`, puis la suppression du script.
+
+## Rangement (22/11/2026)
+Le script est écrit et vérifié sur une base à part. La reprise en production et la suppression du script passent dans la carte 047 (mise en production), qui les fait dans l'ordre : base Neon, migrations, `firstSetup`, puis reprise (« Étape 5 bis » de `DEPLOY.md`).

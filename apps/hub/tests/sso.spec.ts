@@ -223,6 +223,17 @@ test("le fichier exporté depuis le passeport contient les données du site", as
   expect(data.applications["BBFrance site e2e"]?.profile?.email).toBe("coach@e2e.test");
 });
 
+test("l'adresse d'export du site refuse une demande non signée (carte 125)", async ({ request }) => {
+  const body = { id: "export-sans-signature", type: "user.export", version: 1, data: { userId: "n-importe-qui" } };
+  const unsigned = await request.post(`${SITE}/api/hub/export`, { data: body });
+  expect(unsigned.status()).toBe(401);
+  const forged = await request.post(`${SITE}/api/hub/export`, {
+    data: body,
+    headers: { "x-bbfrance-signature": "v1=" + "0".repeat(64), "x-bbfrance-timestamp": Math.floor(Date.now() / 1000).toString() },
+  });
+  expect(forged.status()).toBe(401);
+});
+
 test("un coach banni au hub perd l'accès au site à la requête suivante, puis le retrouve", async ({ page }) => {
   await signInCoach(page);
   await banScript("Test e2e");
@@ -255,4 +266,18 @@ test("à l'échéance d'une suppression, le site efface le membre puis le hub ef
   // « erased » ne vaut 1 que si le site a accusé réception de user.deleted, donc effacé le membre
   expect(((await daily.json()) as { deletions: { erased: number } }).deletions.erased).toBe(1);
   expect(await prisma.user.findUnique({ where: { id: coach.id } })).toBeNull();
+  // Carte 124 : plus aucune ligne du site ne garde l'email du membre (requêtes SQL brutes sur la base de test du site)
+  const { PrismaClient } = await import("../prisma/generated-client/index.js");
+  const { PrismaPg } = await import("@prisma/adapter-pg");
+  const siteUrl: string = JSON.parse(readFileSync("../../.local-postgres.json", "utf-8"))["site-e2e"];
+  const site = new PrismaClient({ adapter: new PrismaPg({ connectionString: siteUrl }) });
+  try {
+    for (const table of ["User", "MailLog"]) {
+      const column = table === "MailLog" ? "to" : "email";
+      const rows = await site.$queryRawUnsafe<{ n: bigint }[]>(`SELECT COUNT(*) AS n FROM "${table}" WHERE "${column}" = $1`, "coach@e2e.test");
+      expect(Number(rows[0].n), `${table} garde l'email du membre supprimé`).toBe(0);
+    }
+  } finally {
+    await site.$disconnect();
+  }
 });
