@@ -157,6 +157,15 @@ function Classement() {
     fetchData();
   }, [filter]);
 
+  // Onglet « Archives » ouvert avant l'arrivée de la liste des années : dès qu'elle arrive, la plus récente archive
+  // est affichée, au lieu de rester sur « Aucune archive pour l'instant » (carte 221)
+  useEffect(() => {
+    if (filter !== "ARCHIVES") return;
+    const firstArchive = availableYears.find((y) => y.isArchived);
+    if (firstArchive) setFilter(`CDF_${firstArchive.year}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filter, availableYears]);
+
   const activeTab: TabValue = isYearView ? "year" : isArchiveView ? "archives" : isRosterView ? "roster" : filter === "HOF" ? "hof" : "rolling";
 
   const changeTab = (value: string) => {

@@ -362,7 +362,7 @@ test.describe("Inventaire 12 : classement du Championnat de France", () => {
     await expect.poll(async () => (await readArchive(PREVIOUS_YEAR))?.data.length ?? 0).toBeGreaterThan(0);
 
     // Sur une archive : pas de suppression pour un modérateur ; import et création possibles
-    await page.goto("/classement", { waitUntil: "networkidle" });
+    await openRanking(page);
     await openArchive(page, ARCHIVE.year);
     await expect(visible(page.getByText(ARCHIVE_COACH, { exact: true }))).toBeVisible();
     expect(await modAction(page, /^Supprimer/)).toBeNull();

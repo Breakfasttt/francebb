@@ -30,7 +30,8 @@ test.describe("rendu des thèmes", () => {
         await page.goto(path, { waitUntil: "networkidle" });
         // Carte 148 : la liste des prochains tournois de l'accueil dépend des tournois laissés par les autres tests et
         // du cache de l'accueil (60 secondes) ; elle est masquée (rectangle uni) pour que la capture n'en dépende pas.
-        const mask = name === "accueil" ? [page.getByRole("region", { name: "Prochains tournois" })] : [];
+        // Carte 221 : les dates relatives (« il y a 5 minutes ») changent à chaque lancement ; elles sont masquées aussi.
+        const mask = [page.getByText(/^(.*· )?il y a /), ...(name === "accueil" ? [page.getByRole("region", { name: "Prochains tournois" })] : [])];
         await expect(page).toHaveScreenshot(`${name}-${theme}.png`, { animations: "disabled", maxDiffPixelRatio: 0.001, mask });
       }
     });

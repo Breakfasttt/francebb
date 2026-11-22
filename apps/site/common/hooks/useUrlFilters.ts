@@ -33,11 +33,17 @@ export function filtersToSearch(values: Record<string, UrlFilterValue>, defaults
 export function useSyncUrlFilters(values: Record<string, UrlFilterValue>, defaults: Record<string, UrlFilterValue> = {}) {
   const search = filtersToSearch(values, defaults);
   useEffect(() => {
-    const url = new URL(window.location.href);
-    if (url.search.replace(/^\?/, "") === search) return;
-    url.search = search;
-    // Premier argument nul, comme dans la documentation de Next.js : il y ajoute lui-même ses informations de navigation
-    window.history.replaceState(null, "", url);
+    // Un tour plus tard : au premier affichage, les effets de la page passent avant ceux du routeur de Next.js, qui
+    // n'a pas encore pris l'historique en main. Réécrire l'adresse à ce moment-là bloquait ensuite tous les appels au
+    // serveur de la page (classement vide à la deuxième visite, quand les fichiers viennent du cache, carte 221).
+    const timer = window.setTimeout(() => {
+      const url = new URL(window.location.href);
+      if (url.search.replace(/^\?/, "") === search) return;
+      url.search = search;
+      // Premier argument nul, comme dans la documentation de Next.js : il y ajoute lui-même ses informations de navigation
+      window.history.replaceState(null, "", url);
+    }, 0);
+    return () => window.clearTimeout(timer);
   }, [search]);
 }
 

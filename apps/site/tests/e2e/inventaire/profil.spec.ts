@@ -351,7 +351,7 @@ test.describe("Inventaire : profil et membres", () => {
     await main.getByRole("button", { name: /Saison 3/ }).or(main.getByRole("radio", { name: /Saison 3/ })).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "saison3");
     await expect.poll(() => db(async (prisma) => (await prisma.user.findUnique({ where: { id: ME.id } }))?.theme)).toBe("saison3");
-    await main.getByRole("button", { name: /Vestiaire/ }).or(main.getByRole("radio", { name: /Vestiaire/ })).click();
+    await main.getByRole("button", { name: /Sombre/ }).or(main.getByRole("radio", { name: /Sombre/ })).click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "vestiaire");
 
     // Enregistrement : en mode hub, le passeport (absent pendant les tests) refuse ; sinon le profil est enregistré
