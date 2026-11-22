@@ -83,3 +83,21 @@ export function parseYoutubeChannelInput(raw: string): { id: string } | { handle
 export function uploadsPlaylistId(channelId: string): string {
   return channelId.replace(/^UC/, "UU");
 }
+
+export interface YoutubeLive {
+  videoId: string;
+  title: string;
+}
+
+/**
+ * Lit la page `/live` d'une chaîne YouTube : en direct, YouTube renvoie la page de la vidéo (adresse canonique
+ * `watch?v=…`) marquée `"isLive":true` ; sinon, la page de la chaîne. Un direct seulement programmé
+ * (`"isUpcoming":true`) ne compte pas. Renvoie la vidéo et son titre (entités HTML encore codées), ou null.
+ */
+export function parseYoutubeLivePage(html: string): YoutubeLive | null {
+  const videoId = html.match(/<link rel="canonical" href="https:\/\/www\.youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})"/)?.[1];
+  if (!videoId || !html.includes('"isLive":true') || html.includes('"isUpcoming":true')) return null;
+  const title = html.match(/<meta name="title" content="([^"]*)"/)?.[1] ?? "";
+  return { videoId, title };
+}
+

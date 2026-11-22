@@ -76,3 +76,40 @@ export function isTwitchConsentValid(stored: string | null, now: Date = new Date
   if (Number.isNaN(given.getTime())) return false;
   return now.getTime() - given.getTime() < TWITCH_CONSENT_DAYS * 24 * 60 * 60 * 1000;
 }
+
+/** Un direct Twitch en cours (API de Twitch, ou détecté par le lecteur dans le navigateur). */
+export interface TwitchLive {
+  login: string;
+  name: string;
+  title?: string;
+  viewers?: number;
+  game?: string;
+  thumbnail: string;
+}
+
+/** Une chaîne hors ligne et son contenu le plus récent (dernière vidéo, ou clip le plus vu du mois). */
+export interface TwitchOffline {
+  login: string;
+  name: string;
+  latest: { kind: "video" | "clip"; id: string; title: string; thumbnail: string } | null;
+}
+
+export interface TwitchStatus {
+  live: TwitchLive[];
+  offline: TwitchOffline[];
+}
+
+/** Image d'un direct ou d'une vidéo Twitch en 640 × 360 : Twitch donne une adresse à compléter (`{width}x{height}`). */
+export function twitchThumbnail(url: string): string {
+  return url.replace(/%?\{width\}/g, "640").replace(/%?\{height\}/g, "360");
+}
+
+/** Aperçu public d'un direct, sans API (image mise à jour par Twitch pendant le direct). */
+export function twitchLivePreview(login: string): string {
+  return `https://static-cdn.jtvnw.net/previews-ttv/live_user_${encodeURIComponent(login)}-640x360.jpg`;
+}
+
+/** Lecteur d'un direct dans le tourniquet : lancé seul, sans le son. */
+export function twitchCarouselPlayerUrl(login: string, parent: string): string {
+  return `https://player.twitch.tv/?channel=${encodeURIComponent(login)}&parent=${encodeURIComponent(parent)}&autoplay=true&muted=true`;
+}

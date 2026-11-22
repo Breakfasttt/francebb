@@ -44,3 +44,11 @@ test("la balise [twitch] produit un cadre bb-twitch, jamais un lecteur chargé d
   // Contenu non reconnu : la balise reste en texte
   assert.match(parseBBCode("[twitch]https://evil.example/x[/twitch]"), /\[twitch\]/);
 });
+
+test("images de Twitch : taille complétée, aperçu public d'un direct", async () => {
+  const { twitchThumbnail, twitchLivePreview, twitchCarouselPlayerUrl } = await import("../../lib/twitchEmbed.ts");
+  assert.equal(twitchThumbnail("https://x/live_user_a-{width}x{height}.jpg"), "https://x/live_user_a-640x360.jpg");
+  assert.equal(twitchThumbnail("https://x/thumb-%{width}x%{height}.jpg"), "https://x/thumb-640x360.jpg");
+  assert.equal(twitchLivePreview("breakytt"), "https://static-cdn.jtvnw.net/previews-ttv/live_user_breakytt-640x360.jpg");
+  assert.match(twitchCarouselPlayerUrl("breakytt", "bbfrance.fr"), /autoplay=true&muted=true$/);
+});

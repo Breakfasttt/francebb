@@ -5,10 +5,13 @@
  * - `getLatestVideos` : lit le flux public des vidéos de chaque chaîne (`feeds/videos.xml`), gardé une heure en
  *   cache. Sert aux cartes de la page `/media`, qui montrent l'image de la dernière vidéo au lieu de charger un
  *   lecteur YouTube par chaîne.
+ * - `getYoutubeLives` : lit la page publique `/live` de chaque chaîne (gardée 5 minutes en cache) pour savoir qui est
+ *   en direct (tourniquet de l'onglet YouTube de `/media`). Sans clé d'API : si YouTube change sa page, la détection
+ *   ne trouve simplement plus de direct, et la page garde ses dernières vidéos.
  * Aucune donnée de membre n'est envoyée à YouTube : seulement l'identifiant ou l'adresse publique de la chaîne.
  */
 import { unstable_cache } from "next/cache";
-import { parseYoutubeChannelInput, type YoutubeChannel } from "@/lib/mediaChannels";
+import { parseYoutubeChannelInput, parseYoutubeLivePage, type YoutubeChannel, type YoutubeLive } from "@/lib/mediaChannels";
 
 const FETCH_HEADERS = { "User-Agent": "Mozilla/5.0 (compatible; BBFrance)", "Accept-Language": "fr" };
 
@@ -72,3 +75,25 @@ export const getLatestVideos = unstable_cache(
   ["youtube-latest-videos-v1"],
   { revalidate: 3600 }
 );
+
+async function fetchLive(channelId: string): Promise<YoutubeLive | null> {
+  try {
+    const res = await fetch(`https://www.youtube.com/channel/${channelId}/live`, { headers: FETCH_HEADERS, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) return null;
+    const live = parseYoutubeLivePage(await res.text());
+    return live ? { ...live, title: decodeEntities(live.title) } : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Direct en cours de chaque chaîne (null si elle n'est pas en direct), gardé 5 minutes en cache. */
+export const getYoutubeLives = unstable_cache(
+  async (channelIds: string[]): Promise<Record<string, YoutubeLive | null>> => {
+    const results = await Promise.all(channelIds.map(async (id) => [id, await fetchLive(id)] as const));
+    return Object.fromEntries(results);
+  },
+  ["youtube-lives-v1"],
+  { revalidate: 300 }
+);
+

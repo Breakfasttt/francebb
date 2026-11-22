@@ -44,3 +44,11 @@ test("chaînes Twitch : nom ou adresse, en minuscules et sans doublon", () => {
 test("la liste « Uploads » remplace UC par UU", () => {
   assert.equal(uploadsPlaylistId(ID), "UUJBrT8VzthslAZKNKooHHtg");
 });
+
+test("page /live de YouTube : direct en cours reconnu, chaîne hors ligne ou direct programmé ignorés", async () => {
+  const { parseYoutubeLivePage } = await import("../../lib/mediaChannels.ts");
+  const live = '<link rel="canonical" href="https://www.youtube.com/watch?v=4t4AQ15yj1M"><meta name="title" content="Finale &amp; co">"isLive":true';
+  assert.deepEqual(parseYoutubeLivePage(live), { videoId: "4t4AQ15yj1M", title: "Finale &amp; co" });
+  assert.equal(parseYoutubeLivePage('<link rel="canonical" href="https://www.youtube.com/channel/UCeIAjAKjxxUk2sPWPoxG2Ug">'), null);
+  assert.equal(parseYoutubeLivePage(live + '"isUpcoming":true'), null);
+});

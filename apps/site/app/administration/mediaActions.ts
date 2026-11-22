@@ -15,6 +15,7 @@ import {
   serializeYoutubeChannels, type YoutubeChannel,
 } from "@/lib/mediaChannels";
 import { resolveYoutubeChannel } from "@/lib/youtubeChannels";
+import { isTwitchApiConfigured } from "@/lib/twitchApi";
 import type { ActionResult } from "@/lib/actionResult";
 
 async function adminSession() {
@@ -23,11 +24,11 @@ async function adminSession() {
 }
 
 /** Chaînes enregistrées, pour l'écran Médias. */
-export async function getMediaChannels(): Promise<{ youtube: YoutubeChannel[]; twitch: string[] } | null> {
+export async function getMediaChannels(): Promise<{ youtube: YoutubeChannel[]; twitch: string[]; twitchApi: boolean } | null> {
   if (!(await adminSession())) return null;
   const settings = await prisma.siteSetting.findMany({ where: { key: { in: [YOUTUBE_CHANNELS_KEY, TWITCH_CHANNELS_KEY] } } });
   const value = (key: string) => settings.find((s) => s.key === key)?.value;
-  return { youtube: parseYoutubeChannels(value(YOUTUBE_CHANNELS_KEY)), twitch: parseTwitchChannels(value(TWITCH_CHANNELS_KEY)) };
+  return { youtube: parseYoutubeChannels(value(YOUTUBE_CHANNELS_KEY)), twitch: parseTwitchChannels(value(TWITCH_CHANNELS_KEY)), twitchApi: isTwitchApiConfigured() };
 }
 
 /** Retrouve une chaîne YouTube (identifiant et nom) à partir de ce qui a été collé : `@nom`, adresse ou identifiant. */

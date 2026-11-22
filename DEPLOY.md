@@ -87,6 +87,7 @@ Vercel récupère le code sur GitHub. Le dépôt du projet est `github.com/Break
 | `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | Idem chez Google, avec `…/api/auth/callback/google` |
 | `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD`, `EMAIL_FROM` | Service d'envoi de mails |
 | `CONTACT_EMAIL` | Adresse de contact affichée dans les mentions légales : demandes sur les données personnelles (RGPD) et signalements. Une modification demande un nouveau déploiement. |
+| `TWITCH_CLIENT_ID`, `TWITCH_CLIENT_SECRET` | Facultatives (carte 226). Application créée sur https://dev.twitch.tv/console, catégorie « Website Integration ». Avec elles, l'onglet Twitch de `/media` montre les vrais directs et les dernières vidéos ou clips des chaînes hors ligne ; sans elles, les directs sont détectés dans le navigateur du visiteur. Secrètes : jamais de préfixe `NEXT_PUBLIC_`. |
 | `ENCRYPTION_KEY` | 64 caractères hexadécimaux : `openssl rand -hex 32` |
 | `IMGBB_API_KEY` | Clé gratuite sur [imgbb.com](https://imgbb.com), pour l'envoi d'images (avatars, blasons, images des messages, des articles et des ressources). Elle est secrète : seul le serveur la lit (`app/imageUploadActions.ts`, carte 141). Ne jamais l'écrire avec le préfixe `NEXT_PUBLIC_`, qui la recopierait dans le code envoyé au navigateur, lisible par tous. L'ancienne variable `NEXT_PUBLIC_IMGBB_API_KEY` est à supprimer. |
 

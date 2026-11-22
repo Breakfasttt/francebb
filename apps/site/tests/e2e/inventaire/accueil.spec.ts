@@ -373,21 +373,12 @@ test.describe("pages fixes", () => {
     await page.screenshot({ path: testInfo.outputPath("jouer.png"), fullPage: true });
   });
 
-  test("/media : directs Twitch après accord, chaînes YouTube avec lecture au clic", async ({ page }, testInfo) => {
+  test("/media : onglet YouTube (lecture au clic), onglet Twitch caché jusqu'à l'accord", async ({ page }, testInfo) => {
     // Les lecteurs chargent des pages extérieures : on n'attend pas la fin de toutes les requêtes
     await page.goto("/media", { waitUntil: "domcontentloaded" });
     const main = content(page);
-    // Twitch : aucun lecteur avant l'accord (cookies de Twitch), un lien vers chaque chaîne
-    await expect(main.locator("iframe[src*='twitch.tv']")).toHaveCount(0);
-    await expect(main.getByRole("button", { name: "Afficher le contenu Twitch" })).toHaveCount(2);
-    const twitchLinks = main.getByRole("link", { name: /Voir sur Twitch/ });
-    const hrefs = await twitchLinks.evaluateAll((links) => links.map((link) => link.getAttribute("href")));
-    expect(hrefs).toEqual(expect.arrayContaining(["https://twitch.tv/inv_twitch_a", "https://twitch.tv/inv_twitch_b"]));
-    await expect(twitchLinks.first()).toHaveAttribute("target", "_blank");
-    // Après l'accord, le lecteur de cette chaîne se charge, et seulement lui
-    await main.getByRole("button", { name: "Afficher le contenu Twitch" }).first().click();
-    await expect(main.getByTitle(/Direct de inv_twitch_a/)).toHaveAttribute("src", /player\.twitch\.tv\/\?channel=inv_twitch_a/);
-    await expect(main.locator("iframe[src*='twitch.tv']")).toHaveCount(1);
+    const tabs = main.getByRole("navigation", { name: "Plateformes" });
+    await expect(tabs.getByRole("link", { name: "YouTube" })).toHaveAttribute("aria-current", "page");
 
     // YouTube : le nom de la chaîne et son lien ; le lecteur (youtube-nocookie) ne se charge qu'au clic
     await expect(main.getByText("Inv Chaîne Accueil", { exact: true })).toBeVisible();
@@ -395,6 +386,22 @@ test.describe("pages fixes", () => {
     await expect(main.locator("iframe[src*='youtube']")).toHaveCount(0);
     await main.getByRole("button", { name: "Lire les vidéos de Inv Chaîne Accueil" }).click();
     await expect(main.getByTitle("Vidéos de Inv Chaîne Accueil")).toHaveAttribute("src", new RegExp(String.raw`youtube-nocookie\.com/embed/videoseries\?list=` + INV_YOUTUBE_ID.replace(/^UC/, "UU")));
+
+    // Twitch : rien de Twitch avant l'accord, un seul cadre qui explique, les chaînes en liens
+    await tabs.getByRole("link", { name: "Twitch" }).click();
+    await expect(page).toHaveURL(/onglet=twitch/);
+    await expect(main.getByRole("heading", { name: "Afficher les directs Twitch" })).toBeVisible();
+    await expect(page.locator("iframe[src*='twitch'], script[src*='twitch']")).toHaveCount(0);
+    await main.getByText("Regarder directement sur twitch.tv").click();
+    const hrefs = await main.getByRole("link", { name: /inv_twitch_/ }).evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+    expect(hrefs).toEqual(expect.arrayContaining(["https://www.twitch.tv/inv_twitch_a", "https://www.twitch.tv/inv_twitch_b"]));
+
+    // Après l'accord (sans clés de l'API) : recherche des directs, puis les chaînes hors ligne
+    await main.getByRole("button", { name: "Accepter et afficher Twitch" }).click();
+    await expect(main.getByRole("heading", { name: "Chaînes hors ligne" })).toBeVisible({ timeout: 20_000 });
+    await expect(main.getByRole("link", { name: /inv_twitch_a/ })).toHaveAttribute("href", "https://www.twitch.tv/inv_twitch_a");
+    await main.getByRole("button", { name: "Retirer mon accord" }).click();
+    await expect(main.getByRole("heading", { name: "Afficher les directs Twitch" })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("media.png"), fullPage: true });
   });
 

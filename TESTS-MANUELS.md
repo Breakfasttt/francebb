@@ -415,4 +415,6 @@ Base locale `pnpm dev exemple` ; changer de compte avec « Mode Développement �
 - [ ] « Toujours afficher les contenus Twitch », puis le retirer depuis `/mentions-legales#cookies` : le cadre d'accord revient.
 - [ ] Administration > Médias : ajouter une chaîne YouTube par son adresse `@nom` (le serveur de Vercel doit pouvoir lire la page YouTube), l'ordonner, enregistrer ; elle apparaît sur `/media` et dans le bloc Médias de l'accueil.
 - [ ] Plus aucun bandeau des cookies, sur aucune page.
+- [ ] `/media`, onglet YouTube, quand une chaîne de la liste est en direct : le tourniquet apparaît et le direct joue sans le son (sur un vrai téléphone, glisser d'un direct à l'autre).
+- [ ] `/media`, onglet Twitch : rien de Twitch avant l'accord (aucune image, aucun lecteur) ; après l'accord, les chaînes en direct sont dans le tourniquet. Refaire l'essai une fois `TWITCH_CLIENT_ID` et `TWITCH_CLIENT_SECRET` réglés sur Vercel : dernières vidéos et clips des chaînes hors ligne, page plus rapide.
 

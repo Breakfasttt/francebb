@@ -53,6 +53,7 @@ export default function MediaTab() {
   const [loading, setLoading] = useState(true);
   const [youtube, setYoutube] = useState<YoutubeChannel[]>([]);
   const [twitch, setTwitch] = useState<string[]>([]);
+  const [twitchApi, setTwitchApi] = useState(false);
   const [dirty, setDirty] = useState(false);
   const [youtubeInput, setYoutubeInput] = useState("");
   const [youtubeError, setYoutubeError] = useState<string>();
@@ -66,6 +67,7 @@ export default function MediaTab() {
       if (data) {
         setYoutube(data.youtube);
         setTwitch(data.twitch);
+        setTwitchApi(data.twitchApi);
       }
       setLoading(false);
     });
@@ -141,6 +143,11 @@ export default function MediaTab() {
           <CardTitle>Chaînes Twitch ({twitch.length})</CardTitle>
         </CardHeader>
         <CardBody className="flex flex-col gap-4">
+          <p className="m-0 text-sm text-bb-text-muted" role="note">
+            {twitchApi
+              ? "Connexion à l'API de Twitch active : la page Médias montre les vrais directs et les dernières vidéos ou clips."
+              : "API de Twitch non configurée (TWITCH_CLIENT_ID et TWITCH_CLIENT_SECRET, voir DEPLOY.md) : les directs sont détectés dans le navigateur du visiteur, sans les dernières vidéos ni les clips."}
+          </p>
           <form onSubmit={addTwitch} noValidate className="flex flex-col gap-2 lg:flex-row lg:items-start">
             <Field label="Ajouter une chaîne" htmlFor="media-twitch" hint="Nom de la chaîne ou adresse : twitch.tv/nom" error={twitchError} className="flex-1">
               <Input id="media-twitch" type="text" autoComplete="off" placeholder="https://www.twitch.tv/…" value={twitchInput} onChange={(e) => { setTwitchInput(e.target.value); setTwitchError(undefined); }} />
