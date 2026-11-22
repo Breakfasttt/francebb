@@ -39,9 +39,20 @@ test("deux jours de tournoi, équipe de 3, prix et places vides", () => {
 });
 
 test("les commissaires et la case CDF sont rendus à part, pour les règles de chaque action", () => {
-  const result = readTournamentForm(form({ tDate: "2027-03-06", commissaireIds: "a, b,,", isCDF: "on", typeCDF: "EQUIPE" }));
+  const result = readTournamentForm(form({ tDate: "2027-03-06", commissaireIds: "a, b,,", championships: "CDF", typeCDF: "EQUIPE" }));
   assert.ok("requests" in result);
   assert.deepEqual(result.requests, { wantsCdf: true, typeCDF: "EQUIPE", commissaireIds: ["a", "b"] });
+  // Le CDF n'est pas dans la liste des autres championnats : chaque action le traite selon ses règles (carte 227)
+  assert.deepEqual(result.fields.championships, []);
+});
+
+test("les championnats cochés sont nettoyés : capitales, sans doublon ni valeur bizarre (carte 227)", () => {
+  const data = form({ tDate: "2027-03-06" });
+  for (const key of ["naf", "CGO", "NAF", "<script>", "CDF"]) data.append("championships", key);
+  const result = readTournamentForm(data);
+  assert.ok("fields" in result);
+  assert.deepEqual(result.fields.championships, ["NAF", "CGO"]);
+  assert.equal(result.requests.wantsCdf, true);
 });
 
 test("le géocodage remplit les coordonnées absentes, et seulement elles", async () => {

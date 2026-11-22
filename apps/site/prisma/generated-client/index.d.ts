@@ -12615,11 +12615,6 @@ export namespace Prisma {
     fridayArrival: boolean | null
     gameEdition: string | null
     platform: string | null
-    isNAF: boolean | null
-    isCDF: boolean | null
-    isCGO: boolean | null
-    isTGE: boolean | null
-    isTSC: boolean | null
     isFinished: boolean | null
     isCancelled: boolean | null
     organizerId: string | null
@@ -12664,11 +12659,6 @@ export namespace Prisma {
     fridayArrival: boolean | null
     gameEdition: string | null
     platform: string | null
-    isNAF: boolean | null
-    isCDF: boolean | null
-    isCGO: boolean | null
-    isTGE: boolean | null
-    isTSC: boolean | null
     isFinished: boolean | null
     isCancelled: boolean | null
     organizerId: string | null
@@ -12713,11 +12703,7 @@ export namespace Prisma {
     fridayArrival: number
     gameEdition: number
     platform: number
-    isNAF: number
-    isCDF: number
-    isCGO: number
-    isTGE: number
-    isTSC: number
+    championships: number
     isFinished: number
     isCancelled: number
     organizerId: number
@@ -12790,11 +12776,6 @@ export namespace Prisma {
     fridayArrival?: true
     gameEdition?: true
     platform?: true
-    isNAF?: true
-    isCDF?: true
-    isCGO?: true
-    isTGE?: true
-    isTSC?: true
     isFinished?: true
     isCancelled?: true
     organizerId?: true
@@ -12839,11 +12820,6 @@ export namespace Prisma {
     fridayArrival?: true
     gameEdition?: true
     platform?: true
-    isNAF?: true
-    isCDF?: true
-    isCGO?: true
-    isTGE?: true
-    isTSC?: true
     isFinished?: true
     isCancelled?: true
     organizerId?: true
@@ -12888,11 +12864,7 @@ export namespace Prisma {
     fridayArrival?: true
     gameEdition?: true
     platform?: true
-    isNAF?: true
-    isCDF?: true
-    isCGO?: true
-    isTGE?: true
-    isTSC?: true
+    championships?: true
     isFinished?: true
     isCancelled?: true
     organizerId?: true
@@ -13024,11 +12996,7 @@ export namespace Prisma {
     fridayArrival: boolean
     gameEdition: string | null
     platform: string | null
-    isNAF: boolean
-    isCDF: boolean
-    isCGO: boolean
-    isTGE: boolean
-    isTSC: boolean
+    championships: string[]
     isFinished: boolean
     isCancelled: boolean
     organizerId: string
@@ -13092,11 +13060,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: boolean
     platform?: boolean
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: boolean
     isFinished?: boolean
     isCancelled?: boolean
     organizerId?: boolean
@@ -13152,11 +13116,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: boolean
     platform?: boolean
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: boolean
     isFinished?: boolean
     isCancelled?: boolean
     organizerId?: boolean
@@ -13204,11 +13164,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: boolean
     platform?: boolean
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: boolean
     isFinished?: boolean
     isCancelled?: boolean
     organizerId?: boolean
@@ -13256,11 +13212,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: boolean
     platform?: boolean
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: boolean
     isFinished?: boolean
     isCancelled?: boolean
     organizerId?: boolean
@@ -13275,7 +13227,7 @@ export namespace Prisma {
     cdfValidatedById?: boolean
   }
 
-  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "isNAF" | "isCDF" | "isCGO" | "isTGE" | "isTSC" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked" | "typeCDF" | "tournamentType" | "cdfValidatedAt" | "cdfValidatedById", ExtArgs["result"]["tournament"]>
+  export type TournamentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "date" | "endDate" | "location" | "address" | "gmapsUrl" | "ville" | "departement" | "region" | "regionNAF" | "description" | "maxParticipants" | "currentParticipants" | "preRegistered" | "isTeam" | "coachsPerTeam" | "days" | "totalMatches" | "price" | "priceMeals" | "priceLodging" | "structure" | "lodgingAtVenue" | "ruleset" | "mealsIncluded" | "fridayArrival" | "gameEdition" | "platform" | "championships" | "isFinished" | "isCancelled" | "organizerId" | "ligueId" | "ligueCustom" | "lat" | "lng" | "registrationsLocked" | "typeCDF" | "tournamentType" | "cdfValidatedAt" | "cdfValidatedById", ExtArgs["result"]["tournament"]>
   export type TournamentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     cdfValidatedBy?: boolean | Tournament$cdfValidatedByArgs<ExtArgs>
     topic?: boolean | Tournament$topicArgs<ExtArgs>
@@ -13344,11 +13296,11 @@ export namespace Prisma {
       fridayArrival: boolean
       gameEdition: string | null
       platform: string | null
-      isNAF: boolean
-      isCDF: boolean
-      isCGO: boolean
-      isTGE: boolean
-      isTSC: boolean
+      /**
+       * Championnats pour lesquels le tournoi compte : clés du groupe CHAMPIONSHIP des données de référence (carte 227),
+       * par exemple ["CDF", "NAF"]. La clé CDF (lib/championships.ts) porte le classement du Championnat de France.
+       */
+      championships: string[]
       isFinished: boolean
       isCancelled: boolean
       organizerId: string
@@ -13830,11 +13782,7 @@ export namespace Prisma {
     readonly fridayArrival: FieldRef<"Tournament", 'Boolean'>
     readonly gameEdition: FieldRef<"Tournament", 'String'>
     readonly platform: FieldRef<"Tournament", 'String'>
-    readonly isNAF: FieldRef<"Tournament", 'Boolean'>
-    readonly isCDF: FieldRef<"Tournament", 'Boolean'>
-    readonly isCGO: FieldRef<"Tournament", 'Boolean'>
-    readonly isTGE: FieldRef<"Tournament", 'Boolean'>
-    readonly isTSC: FieldRef<"Tournament", 'Boolean'>
+    readonly championships: FieldRef<"Tournament", 'String[]'>
     readonly isFinished: FieldRef<"Tournament", 'Boolean'>
     readonly isCancelled: FieldRef<"Tournament", 'Boolean'>
     readonly organizerId: FieldRef<"Tournament", 'String'>
@@ -30922,6 +30870,7 @@ export namespace Prisma {
     group: string | null
     key: string | null
     label: string | null
+    description: string | null
     order: number | null
     isActive: boolean | null
   }
@@ -30931,6 +30880,7 @@ export namespace Prisma {
     group: string | null
     key: string | null
     label: string | null
+    description: string | null
     order: number | null
     isActive: boolean | null
   }
@@ -30940,6 +30890,7 @@ export namespace Prisma {
     group: number
     key: number
     label: number
+    description: number
     order: number
     isActive: number
     _all: number
@@ -30959,6 +30910,7 @@ export namespace Prisma {
     group?: true
     key?: true
     label?: true
+    description?: true
     order?: true
     isActive?: true
   }
@@ -30968,6 +30920,7 @@ export namespace Prisma {
     group?: true
     key?: true
     label?: true
+    description?: true
     order?: true
     isActive?: true
   }
@@ -30977,6 +30930,7 @@ export namespace Prisma {
     group?: true
     key?: true
     label?: true
+    description?: true
     order?: true
     isActive?: true
     _all?: true
@@ -31073,6 +31027,7 @@ export namespace Prisma {
     group: string
     key: string
     label: string
+    description: string | null
     order: number
     isActive: boolean
     _count: ReferenceDataCountAggregateOutputType | null
@@ -31101,6 +31056,7 @@ export namespace Prisma {
     group?: boolean
     key?: boolean
     label?: boolean
+    description?: boolean
     order?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["referenceData"]>
@@ -31110,6 +31066,7 @@ export namespace Prisma {
     group?: boolean
     key?: boolean
     label?: boolean
+    description?: boolean
     order?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["referenceData"]>
@@ -31119,6 +31076,7 @@ export namespace Prisma {
     group?: boolean
     key?: boolean
     label?: boolean
+    description?: boolean
     order?: boolean
     isActive?: boolean
   }, ExtArgs["result"]["referenceData"]>
@@ -31128,11 +31086,12 @@ export namespace Prisma {
     group?: boolean
     key?: boolean
     label?: boolean
+    description?: boolean
     order?: boolean
     isActive?: boolean
   }
 
-  export type ReferenceDataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "group" | "key" | "label" | "order" | "isActive", ExtArgs["result"]["referenceData"]>
+  export type ReferenceDataOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "group" | "key" | "label" | "description" | "order" | "isActive", ExtArgs["result"]["referenceData"]>
 
   export type $ReferenceDataPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "ReferenceData"
@@ -31142,6 +31101,10 @@ export namespace Prisma {
       group: string
       key: string
       label: string
+      /**
+       * Explication facultative, affichée en aide dans les formulaires (carte 227)
+       */
+      description: string | null
       order: number
       isActive: boolean
     }, ExtArgs["result"]["referenceData"]>
@@ -31571,6 +31534,7 @@ export namespace Prisma {
     readonly group: FieldRef<"ReferenceData", 'String'>
     readonly key: FieldRef<"ReferenceData", 'String'>
     readonly label: FieldRef<"ReferenceData", 'String'>
+    readonly description: FieldRef<"ReferenceData", 'String'>
     readonly order: FieldRef<"ReferenceData", 'Int'>
     readonly isActive: FieldRef<"ReferenceData", 'Boolean'>
   }
@@ -55482,11 +55446,7 @@ export namespace Prisma {
     fridayArrival: 'fridayArrival',
     gameEdition: 'gameEdition',
     platform: 'platform',
-    isNAF: 'isNAF',
-    isCDF: 'isCDF',
-    isCGO: 'isCGO',
-    isTGE: 'isTGE',
-    isTSC: 'isTSC',
+    championships: 'championships',
     isFinished: 'isFinished',
     isCancelled: 'isCancelled',
     organizerId: 'organizerId',
@@ -55703,6 +55663,7 @@ export namespace Prisma {
     group: 'group',
     key: 'key',
     label: 'label',
+    description: 'description',
     order: 'order',
     isActive: 'isActive'
   };
@@ -56664,11 +56625,7 @@ export namespace Prisma {
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
     platform?: StringNullableFilter<"Tournament"> | string | null
-    isNAF?: BoolFilter<"Tournament"> | boolean
-    isCDF?: BoolFilter<"Tournament"> | boolean
-    isCGO?: BoolFilter<"Tournament"> | boolean
-    isTGE?: BoolFilter<"Tournament"> | boolean
-    isTSC?: BoolFilter<"Tournament"> | boolean
+    championships?: StringNullableListFilter<"Tournament">
     isFinished?: BoolFilter<"Tournament"> | boolean
     isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
@@ -56723,11 +56680,7 @@ export namespace Prisma {
     fridayArrival?: SortOrder
     gameEdition?: SortOrderInput | SortOrder
     platform?: SortOrderInput | SortOrder
-    isNAF?: SortOrder
-    isCDF?: SortOrder
-    isCGO?: SortOrder
-    isTGE?: SortOrder
-    isTSC?: SortOrder
+    championships?: SortOrder
     isFinished?: SortOrder
     isCancelled?: SortOrder
     organizerId?: SortOrder
@@ -56785,11 +56738,7 @@ export namespace Prisma {
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
     platform?: StringNullableFilter<"Tournament"> | string | null
-    isNAF?: BoolFilter<"Tournament"> | boolean
-    isCDF?: BoolFilter<"Tournament"> | boolean
-    isCGO?: BoolFilter<"Tournament"> | boolean
-    isTGE?: BoolFilter<"Tournament"> | boolean
-    isTSC?: BoolFilter<"Tournament"> | boolean
+    championships?: StringNullableListFilter<"Tournament">
     isFinished?: BoolFilter<"Tournament"> | boolean
     isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
@@ -56844,11 +56793,7 @@ export namespace Prisma {
     fridayArrival?: SortOrder
     gameEdition?: SortOrderInput | SortOrder
     platform?: SortOrderInput | SortOrder
-    isNAF?: SortOrder
-    isCDF?: SortOrder
-    isCGO?: SortOrder
-    isTGE?: SortOrder
-    isTSC?: SortOrder
+    championships?: SortOrder
     isFinished?: SortOrder
     isCancelled?: SortOrder
     organizerId?: SortOrder
@@ -56901,11 +56846,7 @@ export namespace Prisma {
     fridayArrival?: BoolWithAggregatesFilter<"Tournament"> | boolean
     gameEdition?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
     platform?: StringNullableWithAggregatesFilter<"Tournament"> | string | null
-    isNAF?: BoolWithAggregatesFilter<"Tournament"> | boolean
-    isCDF?: BoolWithAggregatesFilter<"Tournament"> | boolean
-    isCGO?: BoolWithAggregatesFilter<"Tournament"> | boolean
-    isTGE?: BoolWithAggregatesFilter<"Tournament"> | boolean
-    isTSC?: BoolWithAggregatesFilter<"Tournament"> | boolean
+    championships?: StringNullableListFilter<"Tournament">
     isFinished?: BoolWithAggregatesFilter<"Tournament"> | boolean
     isCancelled?: BoolWithAggregatesFilter<"Tournament"> | boolean
     organizerId?: StringWithAggregatesFilter<"Tournament"> | string
@@ -58012,6 +57953,7 @@ export namespace Prisma {
     group?: StringFilter<"ReferenceData"> | string
     key?: StringFilter<"ReferenceData"> | string
     label?: StringFilter<"ReferenceData"> | string
+    description?: StringNullableFilter<"ReferenceData"> | string | null
     order?: IntFilter<"ReferenceData"> | number
     isActive?: BoolFilter<"ReferenceData"> | boolean
   }
@@ -58021,6 +57963,7 @@ export namespace Prisma {
     group?: SortOrder
     key?: SortOrder
     label?: SortOrder
+    description?: SortOrderInput | SortOrder
     order?: SortOrder
     isActive?: SortOrder
   }
@@ -58034,6 +57977,7 @@ export namespace Prisma {
     group?: StringFilter<"ReferenceData"> | string
     key?: StringFilter<"ReferenceData"> | string
     label?: StringFilter<"ReferenceData"> | string
+    description?: StringNullableFilter<"ReferenceData"> | string | null
     order?: IntFilter<"ReferenceData"> | number
     isActive?: BoolFilter<"ReferenceData"> | boolean
   }, "id" | "group_key">
@@ -58043,6 +57987,7 @@ export namespace Prisma {
     group?: SortOrder
     key?: SortOrder
     label?: SortOrder
+    description?: SortOrderInput | SortOrder
     order?: SortOrder
     isActive?: SortOrder
     _count?: ReferenceDataCountOrderByAggregateInput
@@ -58060,6 +58005,7 @@ export namespace Prisma {
     group?: StringWithAggregatesFilter<"ReferenceData"> | string
     key?: StringWithAggregatesFilter<"ReferenceData"> | string
     label?: StringWithAggregatesFilter<"ReferenceData"> | string
+    description?: StringNullableWithAggregatesFilter<"ReferenceData"> | string | null
     order?: IntWithAggregatesFilter<"ReferenceData"> | number
     isActive?: BoolWithAggregatesFilter<"ReferenceData"> | boolean
   }
@@ -60135,11 +60081,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -60191,11 +60133,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -60247,11 +60185,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60303,11 +60237,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -60359,11 +60289,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -60408,11 +60334,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -60454,11 +60376,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -61571,6 +61489,7 @@ export namespace Prisma {
     group: string
     key: string
     label: string
+    description?: string | null
     order?: number
     isActive?: boolean
   }
@@ -61580,6 +61499,7 @@ export namespace Prisma {
     group: string
     key: string
     label: string
+    description?: string | null
     order?: number
     isActive?: boolean
   }
@@ -61589,6 +61509,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -61598,6 +61519,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -61607,6 +61529,7 @@ export namespace Prisma {
     group: string
     key: string
     label: string
+    description?: string | null
     order?: number
     isActive?: boolean
   }
@@ -61616,6 +61539,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -61625,6 +61549,7 @@ export namespace Prisma {
     group?: StringFieldUpdateOperationsInput | string
     key?: StringFieldUpdateOperationsInput | string
     label?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     order?: IntFieldUpdateOperationsInput | number
     isActive?: BoolFieldUpdateOperationsInput | boolean
   }
@@ -63795,6 +63720,14 @@ export namespace Prisma {
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
   }
 
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
   export type UserNullableScalarRelationFilter = {
     is?: UserWhereInput | null
     isNot?: UserWhereInput | null
@@ -63860,11 +63793,7 @@ export namespace Prisma {
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
     platform?: SortOrder
-    isNAF?: SortOrder
-    isCDF?: SortOrder
-    isCGO?: SortOrder
-    isTGE?: SortOrder
-    isTSC?: SortOrder
+    championships?: SortOrder
     isFinished?: SortOrder
     isCancelled?: SortOrder
     organizerId?: SortOrder
@@ -63922,11 +63851,6 @@ export namespace Prisma {
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
     platform?: SortOrder
-    isNAF?: SortOrder
-    isCDF?: SortOrder
-    isCGO?: SortOrder
-    isTGE?: SortOrder
-    isTSC?: SortOrder
     isFinished?: SortOrder
     isCancelled?: SortOrder
     organizerId?: SortOrder
@@ -63971,11 +63895,6 @@ export namespace Prisma {
     fridayArrival?: SortOrder
     gameEdition?: SortOrder
     platform?: SortOrder
-    isNAF?: SortOrder
-    isCDF?: SortOrder
-    isCGO?: SortOrder
-    isTGE?: SortOrder
-    isTSC?: SortOrder
     isFinished?: SortOrder
     isCancelled?: SortOrder
     organizerId?: SortOrder
@@ -64622,6 +64541,7 @@ export namespace Prisma {
     group?: SortOrder
     key?: SortOrder
     label?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isActive?: SortOrder
   }
@@ -64635,6 +64555,7 @@ export namespace Prisma {
     group?: SortOrder
     key?: SortOrder
     label?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isActive?: SortOrder
   }
@@ -64644,6 +64565,7 @@ export namespace Prisma {
     group?: SortOrder
     key?: SortOrder
     label?: SortOrder
+    description?: SortOrder
     order?: SortOrder
     isActive?: SortOrder
   }
@@ -67507,6 +67429,10 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutBlocksInput, UserUpdateWithoutBlocksInput>, UserUncheckedUpdateWithoutBlocksInput>
   }
 
+  export type TournamentCreatechampionshipsInput = {
+    set: string[]
+  }
+
   export type UserCreateNestedOneWithoutCdfValidatedTournamentsInput = {
     create?: XOR<UserCreateWithoutCdfValidatedTournamentsInput, UserUncheckedCreateWithoutCdfValidatedTournamentsInput>
     connectOrCreate?: UserCreateOrConnectWithoutCdfValidatedTournamentsInput
@@ -67633,6 +67559,11 @@ export namespace Prisma {
     decrement?: number
     multiply?: number
     divide?: number
+  }
+
+  export type TournamentUpdatechampionshipsInput = {
+    set?: string[]
+    push?: string | string[]
   }
 
   export type UserUpdateOneWithoutCdfValidatedTournamentsNestedInput = {
@@ -71568,11 +71499,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -71623,11 +71550,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueId?: string | null
@@ -72035,11 +71958,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -72090,11 +72009,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -72150,11 +72065,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -72205,11 +72116,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -73284,11 +73191,7 @@ export namespace Prisma {
     fridayArrival?: BoolFilter<"Tournament"> | boolean
     gameEdition?: StringNullableFilter<"Tournament"> | string | null
     platform?: StringNullableFilter<"Tournament"> | string | null
-    isNAF?: BoolFilter<"Tournament"> | boolean
-    isCDF?: BoolFilter<"Tournament"> | boolean
-    isCGO?: BoolFilter<"Tournament"> | boolean
-    isTGE?: BoolFilter<"Tournament"> | boolean
-    isTSC?: BoolFilter<"Tournament"> | boolean
+    championships?: StringNullableListFilter<"Tournament">
     isFinished?: BoolFilter<"Tournament"> | boolean
     isCancelled?: BoolFilter<"Tournament"> | boolean
     organizerId?: StringFilter<"Tournament"> | string
@@ -76418,11 +76321,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -76473,11 +76372,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -77134,11 +77029,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77189,11 +77080,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -83651,11 +83538,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -83706,11 +83589,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -83934,11 +83813,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83989,11 +83864,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -84195,11 +84066,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -84250,11 +84117,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -84498,11 +84361,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84553,11 +84412,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -85143,11 +84998,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -85198,11 +85049,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -85426,11 +85273,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -85481,11 +85324,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -86969,11 +86808,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -87024,11 +86859,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -89081,11 +88912,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -89136,11 +88963,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -89364,11 +89187,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89419,11 +89238,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -89514,11 +89329,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueCustom?: string | null
@@ -89569,11 +89380,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -89656,11 +89463,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89711,11 +89514,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -91994,11 +91793,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     ligueId?: string | null
@@ -92119,11 +91914,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -93114,11 +92905,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93169,11 +92956,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93224,11 +93007,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueId?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93631,11 +93410,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93686,11 +93461,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -93741,11 +93512,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -93790,11 +93557,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -93845,11 +93608,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -93900,11 +93659,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -95565,11 +95320,7 @@ export namespace Prisma {
     fridayArrival?: boolean
     gameEdition?: string | null
     platform?: string | null
-    isNAF?: boolean
-    isCDF?: boolean
-    isCGO?: boolean
-    isTGE?: boolean
-    isTSC?: boolean
+    championships?: TournamentCreatechampionshipsInput | string[]
     isFinished?: boolean
     isCancelled?: boolean
     organizerId: string
@@ -95659,11 +95410,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
@@ -95714,11 +95461,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string
@@ -95769,11 +95512,7 @@ export namespace Prisma {
     fridayArrival?: BoolFieldUpdateOperationsInput | boolean
     gameEdition?: NullableStringFieldUpdateOperationsInput | string | null
     platform?: NullableStringFieldUpdateOperationsInput | string | null
-    isNAF?: BoolFieldUpdateOperationsInput | boolean
-    isCDF?: BoolFieldUpdateOperationsInput | boolean
-    isCGO?: BoolFieldUpdateOperationsInput | boolean
-    isTGE?: BoolFieldUpdateOperationsInput | boolean
-    isTSC?: BoolFieldUpdateOperationsInput | boolean
+    championships?: TournamentUpdatechampionshipsInput | string[]
     isFinished?: BoolFieldUpdateOperationsInput | boolean
     isCancelled?: BoolFieldUpdateOperationsInput | boolean
     organizerId?: StringFieldUpdateOperationsInput | string

@@ -50,6 +50,7 @@ import { CSS } from '@dnd-kit/utilities';
 import UserMapper from '@/common/components/UserMapper/UserMapper';
 import { calculateCdfPoints, cdfRoundsCount, isValidRank, CdfTournamentType } from '@/common/utils/cdf';
 import { ComposeActionBar } from '@/app/forum/component/ComposeScreen';
+import { isCdf } from '@/lib/championships';
 
 interface TournamentResultsEditorProps {
   tournament: any;
@@ -221,6 +222,8 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
 
 export default function TournamentResultsEditor({ tournament, allUsers }: TournamentResultsEditorProps) {
   const router = useRouter();
+  // Tournoi du Championnat de France : points calculés et rang obligatoire (carte 162, clé CDF depuis la carte 227)
+  const tournamentIsCdf = isCdf(tournament);
   const [activeTab, setActiveTab] = useState<'ranking' | 'matches'>('ranking');
   const [isSaving, setIsSaving] = useState(false);
   const [isParsing, setIsParsing] = useState(false);
@@ -271,7 +274,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
   // Recalculer les points CDF quand la liste ou les rangs changent
   useEffect(() => {
-    if (tournament.isCDF && results.length > 0) {
+    if (tournamentIsCdf && results.length > 0) {
       const numParticipants = results.length;
       const numRounds = cdfRoundsCount(tournament.totalMatches, rounds.length, tournament.days);
       const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
@@ -298,7 +301,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     // Correction : inclure le coachName dans la dépendance pour détecter les changements d'ordre
   }, [
     results.length, 
-    tournament.isCDF, 
+    tournamentIsCdf, 
     tournament.typeCDF, 
     tournament.totalMatches, 
     tournament.days, 
@@ -354,7 +357,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         newResults = autoSortResults(newResults);
         
         // Force recalculation of points for newResults to ensure they are visible immediately
-        if (tournament.isCDF) {
+        if (tournamentIsCdf) {
           const numParticipants = newResults.length;
           const numRounds = cdfRoundsCount(tournament.totalMatches, data.rounds.length, tournament.days);
           const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
@@ -477,7 +480,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
     // Si on change le rang manuellement, on peut vouloir re-trier automatiquement
     // mais pour ne pas perturber la saisie, on le fera seulement si le champ perd le focus 
     // ou on recalcule simplement les points CDF immédiatement ici
-    if (field === 'rank' && tournament.isCDF) {
+    if (field === 'rank' && tournamentIsCdf) {
        const numParticipants = updatedResults.length;
        const numRounds = cdfRoundsCount(tournament.totalMatches, rounds.length, tournament.days);
        const typeCDF = (tournament.typeCDF || "INDIVIDUEL") as CdfTournamentType;
@@ -536,7 +539,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         </p>
       </Card>
 
-      {tournament.isCDF && (
+      {tournamentIsCdf && (
         // Carte 162 : les résultats d'un tournoi du Championnat de France passent par la modération avant de compter
         <Card className="flex items-start gap-3 p-3 text-sm">
           <ShieldCheck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-bb-accent-text" />
@@ -580,7 +583,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
               <span className="text-center">N</span>
               <span className="text-center">D</span>
               <span className="text-center">CAS</span>
-              <span className="text-center">{tournament.isCDF ? 'Points CDF' : 'Points'}</span>
+              <span className="text-center">{tournamentIsCdf ? 'Points CDF' : 'Points'}</span>
               <span />
             </div>
             {/* Identifiant fixe : les attributs d'accessibilité du glisser-déposer sont alors les mêmes côté serveur et
@@ -604,7 +607,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                       updateResultField={updateResultField}
                       removeResult={removeResult}
                       OFFICIAL_ROSTERS={OFFICIAL_ROSTERS}
-                      isCDF={tournament.isCDF}
+                      isCDF={tournamentIsCdf}
                     />
                   ))}
                 </SortableContext>

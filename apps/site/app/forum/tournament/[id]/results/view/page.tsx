@@ -17,6 +17,7 @@ import { ResultsRanking } from "@/app/forum/component/TournamentResultWidget";
 import CdfValidationPanel from "@/app/forum/component/CdfValidationPanel";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
+import { isCdf } from "@/lib/championships";
 
 export default async function TournamentResultsViewPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -38,7 +39,7 @@ export default async function TournamentResultsViewPage({ params }: { params: Pr
 
   const topicHref = `/forum/topic/${tournament.topic?.id}`;
   // Tournoi CDF : état de la validation des résultats et bouton pour la modération (carte 162)
-  const session = tournament.isCDF ? await getActiveSession() : null;
+  const session = isCdf(tournament) ? await getActiveSession() : null;
 
   return (
     <SiteLayout
@@ -52,7 +53,7 @@ export default async function TournamentResultsViewPage({ params }: { params: Pr
       asideOnMobile="bottom"
     >
       <Card className="flex flex-col gap-3 p-3 lg:p-4">
-        {tournament.isCDF && (
+        {isCdf(tournament) && (
           <CdfValidationPanel tournamentId={tournament.id} validatedAt={tournament.cdfValidatedAt} canValidate={isModerator(session?.user?.role)} />
         )}
         <ResultsRanking results={tournament.results} />

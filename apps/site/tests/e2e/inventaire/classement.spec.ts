@@ -116,7 +116,7 @@ test.beforeAll(async () => {
       await prisma.user.create({ data: { ...user, email: `classement-${index}@e2e.test`, hasFinishedOnboarding: true } });
     }
     // Tournois CDF déjà validés par la modération : seuls ceux-là comptent au classement (carte 162)
-    const base = { location: "Paris", isCDF: true, isFinished: true, organizerId: MODO.id, typeCDF: "INDIVIDUEL", cdfValidatedAt: new Date() };
+    const base = { location: "Paris", championships: ["CDF"], isFinished: true, organizerId: MODO.id, typeCDF: "INDIVIDUEL", cdfValidatedAt: new Date() };
     for (const [index, tournament] of TOURNAMENTS.entries()) {
       await prisma.tournament.create({ data: { ...base, id: tournament.id, name: tournament.name, date: tournament.date, endDate: tournament.date } });
       await prisma.topic.create({ data: { id: tournament.topicId, title: tournament.name, forumId: E2E.forumId, authorId: MODO.id, tournamentId: tournament.id } });

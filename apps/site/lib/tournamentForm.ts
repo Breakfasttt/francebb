@@ -12,6 +12,7 @@
  * remplacer dans un test.
  */
 import { tournamentDatesError } from "@/lib/tournamentDates";
+import { CDF_KEY, cleanChampionshipKeys, withCdf } from "@/lib/championships";
 
 /** Champs du tournoi lus dans le formulaire, identiques à la création et à la modification. */
 export interface TournamentFormFields {
@@ -42,10 +43,8 @@ export interface TournamentFormFields {
   mealsIncluded: boolean;
   lodgingAtVenue: boolean;
   fridayArrival: boolean;
-  isNAF: boolean;
-  isCGO: boolean;
-  isTGE: boolean;
-  isTSC: boolean;
+  /** Championnats cochés, hors CDF (carte 227) : clés nettoyées, que l'action compare aux données de référence. */
+  championships: string[];
   ligueId: string | null;
   ligueCustom: string | null;
 }
@@ -122,7 +121,9 @@ export function readTournamentForm(formData: FormData): { error: string } | { fi
 
   const isTeam = formData.get("isTeam") === "on";
   const address = text(formData, "tAddress");
-  const wantsCdf = formData.get("isCDF") === "on";
+  // Cases « championships » du formulaire (une par championnat, valeur = sa clé) ; le CDF suit ses propres règles
+  const championshipKeys = cleanChampionshipKeys(formData.getAll("championships"));
+  const wantsCdf = championshipKeys.includes(CDF_KEY);
 
   return {
     fields: {
@@ -153,10 +154,7 @@ export function readTournamentForm(formData: FormData): { error: string } | { fi
       mealsIncluded: formData.get("tMeals") === "on",
       lodgingAtVenue: formData.get("tLodging") === "on",
       fridayArrival: formData.get("tFriday") === "on",
-      isNAF: formData.get("isNAF") === "on",
-      isCGO: formData.get("isCGO") === "on",
-      isTGE: formData.get("isTGE") === "on",
-      isTSC: formData.get("isTSC") === "on",
+      championships: withCdf(championshipKeys, false),
       ligueId: text(formData, "ligueId"),
       ligueCustom: text(formData, "ligueCustom"),
     },

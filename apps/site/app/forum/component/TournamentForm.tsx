@@ -27,6 +27,7 @@ import UserSearch from "@/common/components/UserSearch/UserSearch";
 import LigueSearch from "@/common/components/LigueSearch/LigueSearch";
 import { REGION_BY_DEPARTMENT } from "@/lib/france";
 import SubmitButton from "@/common/components/Form/SubmitButton";
+import { CDF_KEY } from "@/lib/championships";
 
 const MapPicker = dynamic(() => import("./MapPicker"), {
   ssr: false,
@@ -46,6 +47,8 @@ interface TournamentFormProps {
     platforms: any[];
     coachRegions: any[];
     tournamentFormats: any[];
+    /** Championnats actifs (données de référence, carte 227) : clé, nom et description facultative. */
+    championships: { key: string; label: string; description: string | null }[];
   };
   initialData?: {
     id: string;
@@ -72,11 +75,8 @@ interface TournamentFormProps {
     mealsIncluded: boolean;
     lodgingAtVenue: boolean;
     fridayArrival: boolean;
-    isNAF: boolean;
-    isCDF: boolean;
-    isCGO: boolean;
-    isTGE: boolean;
-    isTSC: boolean;
+    /** Clés des championnats du tournoi (carte 227). */
+    championships: string[];
     typeCDF: string | null;
     ligueId: string | null;
     ligueCustom: string | null;
@@ -135,7 +135,15 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
   const isEdit = !!initialData;
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isTeam, setIsTeam] = useState(initialData?.isTeam ?? false);
-  const [isCDF, setIsCDF] = useState(initialData?.isCDF ?? false);
+  const [isCDF, setIsCDF] = useState(initialData?.championships.includes(CDF_KEY) ?? false);
+  // Championnats proposés : les actifs, plus ceux du tournoi désactivés depuis (sinon ils seraient perdus à
+  // l'enregistrement) ; le CDF seulement pour la modération (carte 162)
+  const championshipOptions = [
+    ...referenceData.championships,
+    ...(initialData?.championships ?? [])
+      .filter((key) => !referenceData.championships.some((c) => c.key === key))
+      .map((key) => ({ key, label: key, description: null })),
+  ].filter((c) => canSetCdf || c.key !== CDF_KEY);
   const [commissaires, setCommissaires] = useState<any[]>(initialData?.commissaires ?? []);
   const [startDate, setStartDate] = useState(initialData?.date ? new Date(initialData.date).toISOString().split('T')[0] : "");
   const [endDate, setEndDate] = useState(initialData?.endDate ? new Date(initialData.endDate).toISOString().split('T')[0] : "");
@@ -403,22 +411,27 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
           <Block title="Championnats et points">
             <fieldset className="m-0 border-0 p-0">
               <legend className="mb-2 p-0 text-sm font-semibold text-bb-text">Le tournoi compte pour</legend>
-              <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
-                {(canSetCdf ? ['NAF', 'CDF', 'CGO', 'TGE', 'TSC'] : ['NAF', 'CGO', 'TGE', 'TSC']).map(c => (
+              {/* Une case par championnat (données de référence, carte 227) : son nom, et sa description en dessous */}
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {championshipOptions.map((c) => (
                   <label
-                    key={c}
-                    className="flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-bb-md border border-bb-border bg-bb-surface-2 px-2 font-bold text-bb-text has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft has-[:checked]:text-bb-accent-text"
+                    key={c.key}
+                    className="flex min-h-11 cursor-pointer items-start gap-2.5 rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2.5 text-bb-text has-[:checked]:border-bb-accent-text has-[:checked]:bg-bb-accent-soft"
                   >
                     <input
                       type="checkbox"
-                      name={`is${c}`}
-                      className="size-5 shrink-0 cursor-pointer accent-[var(--bb-accent)]"
-                      defaultChecked={(initialData as any)?.[`is${c}`] ?? (c === 'CDF' ? isCDF : false)}
+                      name="championships"
+                      value={c.key}
+                      className="mt-0.5 size-5 shrink-0 cursor-pointer accent-[var(--bb-accent)]"
+                      defaultChecked={initialData?.championships.includes(c.key) ?? false}
                       onChange={(e) => {
-                        if (c === 'CDF') setIsCDF(e.target.checked);
+                        if (c.key === CDF_KEY) setIsCDF(e.target.checked);
                       }}
                     />
-                    <span>{c}</span>
+                    <span className="flex min-w-0 flex-col gap-0.5">
+                      <span className="font-bold">{c.label}</span>
+                      {c.description && <span className="text-sm text-bb-text-muted">{c.description}</span>}
+                    </span>
                   </label>
                 ))}
               </div>

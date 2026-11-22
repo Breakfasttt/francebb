@@ -97,6 +97,12 @@ const REFERENCE_DATA = [
   { group: "GAME_EDITION", key: "BB20", label: "Blood Bowl 2020" },
   { group: "TOURNAMENT_FORMAT", key: "Resurrection", label: "Résurrection" },
   { group: "TOURNAMENT_TYPE", key: "SWISS", label: "Tournoi - ronde suisse" },
+  // Championnats (carte 227) : une case par championnat dans le formulaire et dans les filtres
+  { group: "CHAMPIONSHIP", key: "NAF", label: "NAF" },
+  { group: "CHAMPIONSHIP", key: "CDF", label: "CDF" },
+  { group: "CHAMPIONSHIP", key: "CGO", label: "CGO" },
+  { group: "CHAMPIONSHIP", key: "TGE", label: "TGE" },
+  { group: "CHAMPIONSHIP", key: "TSC", label: "TSC" },
 ];
 
 /** Supprime tout ce que ce test a créé (y compris un reste d'un lancement interrompu). */
@@ -160,12 +166,12 @@ test.beforeAll(async () => {
 
     await tournamentWithTopic(ALPHA, {
       date: inDays(30), ville: "Rennes", region: "Bretagne", departement: "35", isTeam: false, platform: "Tabletop",
-      gameEdition: "BB20", structure: "Resurrection", ruleset: "Eurobowl", isNAF: true, isCDF: true, lodgingAtVenue: true,
+      gameEdition: "BB20", structure: "Resurrection", ruleset: "Eurobowl", championships: ["CDF", "NAF"], lodgingAtVenue: true,
       mealsIncluded: true, fridayArrival: true, price: 10, maxParticipants: 40, ligueId: LIGUE.id,
     });
     await tournamentWithTopic(BETA, {
       date: inDays(60), ville: "Toulouse", region: "Occitanie", departement: "31", isTeam: true, coachsPerTeam: 3,
-      platform: "Fumbbl", gameEdition: "BB25", structure: "Evolutif", isCGO: true, isTGE: true, isTSC: true, price: 25,
+      platform: "Fumbbl", gameEdition: "BB25", structure: "Evolutif", championships: ["CGO", "TGE", "TSC"], price: 25,
       maxParticipants: 16,
     });
     await tournamentWithTopic(OLD, { date: inDays(-30), ville: "Brest", region: "Bretagne", departement: "29", price: 5 });
@@ -311,11 +317,11 @@ test.describe("4 tournois : la liste /tournois", () => {
       { role: "combobox", name: /^Plateforme/, value: "Fumbbl", param: "platform", expected: "Fumbbl" },
       { role: "combobox", name: /^Version/, value: "BB20", param: "edition", expected: "BB20" },
       { role: "combobox", name: /^Structure/, value: "Evolutif", param: "structure", expected: "Evolutif" },
-      { role: "checkbox", name: /NAF/, param: "isNAF", expected: "true" },
-      { role: "checkbox", name: /CDF|Coupe de France/, param: "isCDF", expected: "true" },
-      { role: "checkbox", name: /CGO|Grand Ouest/, param: "isCGO", expected: "true" },
-      { role: "checkbox", name: /TGE|Grand Est/, param: "isTGE", expected: "true" },
-      { role: "checkbox", name: /TSC|Sud-Centre/, param: "isTSC", expected: "true" },
+      { role: "checkbox", name: /^NAF/, param: "ch_NAF", expected: "true" },
+      { role: "checkbox", name: /^CDF/, param: "ch_CDF", expected: "true" },
+      { role: "checkbox", name: /^CGO/, param: "ch_CGO", expected: "true" },
+      { role: "checkbox", name: /^TGE/, param: "ch_TGE", expected: "true" },
+      { role: "checkbox", name: /^TSC/, param: "ch_TSC", expected: "true" },
       { role: "checkbox", name: /Logement/, param: "lodging", expected: "true" },
       { role: "checkbox", name: /Repas/, param: "meals", expected: "true" },
       { role: "checkbox", name: /vendredi/i, param: "friday", expected: "true" },
@@ -356,11 +362,14 @@ test.describe("4 tournois : la liste /tournois", () => {
       { params: { platform: "Fumbbl" }, shown: [BETA.name], hidden: [ALPHA.name] },
       { params: { edition: "BB20" }, shown: [ALPHA.name], hidden: [BETA.name] },
       { params: { structure: "Evolutif" }, shown: [BETA.name], hidden: [ALPHA.name] },
-      { params: { isNAF: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
-      { params: { isCDF: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
-      { params: { isCGO: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
-      { params: { isTGE: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
-      { params: { isTSC: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
+      { params: { ch_NAF: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
+      { params: { ch_CDF: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
+      { params: { ch_CGO: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
+      { params: { ch_TGE: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
+      { params: { ch_TSC: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
+      // Plusieurs championnats cochés : le tournoi doit les avoir tous
+      { params: { ch_CGO: "true", ch_TSC: "true" }, shown: [BETA.name], hidden: [ALPHA.name] },
+      { params: { ch_NAF: "true", ch_CGO: "true" }, shown: [], hidden: [ALPHA.name, BETA.name] },
       { params: { lodging: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
       { params: { meals: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
       { params: { friday: "true" }, shown: [ALPHA.name], hidden: [BETA.name] },
@@ -380,12 +389,12 @@ test.describe("4 tournois : la liste /tournois", () => {
   });
 
   test("[tous] pastilles des filtres actifs, tri, badges Passé, Terminé, Annulé ; une carte ouvre son sujet", async ({ page }, testInfo) => {
-    await page.goto(listUrl({ region: "Bretagne", isNAF: "true" }), { waitUntil: "networkidle" });
+    await page.goto(listUrl({ region: "Bretagne", ch_NAF: "true" }), { waitUntil: "networkidle" });
     await page.screenshot({ path: testInfo.outputPath("pastilles.png"), fullPage: false });
     // Une pastille par filtre actif ; sa croix retire ce filtre seulement
     await removeChip(page, /Retirer le filtre.*Région/).click();
     await expect.poll(() => new URL(page.url()).searchParams.get("region"), { timeout: 30_000 }).toBeNull();
-    expect(new URL(page.url()).searchParams.get("isNAF")).toBe("true");
+    expect(new URL(page.url()).searchParams.get("ch_NAF")).toBe("true");
     await page.waitForLoadState("networkidle");
     await expect(removeChip(page, /Retirer le filtre.*NAF/)).toBeVisible();
 
@@ -440,10 +449,10 @@ test.describe("4 tournois : création et modification", () => {
       ["checkbox", /En équipe/],
       ["spinbutton", /Nombre de coachs max/],
       ["spinbutton", /Nombre de rondes/],
-      ["checkbox", /^NAF$/],
-      ["checkbox", /^CGO$/],
-      ["checkbox", /^TGE$/],
-      ["checkbox", /^TSC$/],
+      ["checkbox", /^NAF/],
+      ["checkbox", /^CGO/],
+      ["checkbox", /^TGE/],
+      ["checkbox", /^TSC/],
       ["combobox", /^Plateforme/],
       ["combobox", /^Édition/],
       ["combobox", /^Format/],
@@ -489,13 +498,13 @@ test.describe("4 tournois : création et modification", () => {
     await page.getByRole("textbox", { name: /^Titre/ }).first().fill(CREATED_NAME);
     await page.getByLabel(/^Date de début/).first().fill(inDays(45).toISOString().slice(0, 10));
     await page.getByRole("textbox", { name: /^Ville/ }).first().fill("Vannes");
-    await page.getByRole("checkbox", { name: /^NAF$/ }).first().check({ force: true });
+    await page.getByRole("checkbox", { name: /^NAF/ }).first().check({ force: true });
     await page.getByRole("spinbutton", { name: /^Prix (d'|de l')?inscription/i }).first().fill("18");
     await page.getByRole("textbox", { name: /Présentation/ }).first().fill("Règlement du tournoi créé par le test.");
     await page.getByRole("button", { name: "Publier le tournoi" }).filter({ visible: true }).first().click();
     await page.waitForURL(/\/forum\/topic\//, { timeout: 30_000 });
     const created = await db((prisma) => prisma.tournament.findFirst({ where: { name: CREATED_NAME } }));
-    expect(created).toMatchObject({ ville: "Vannes", isNAF: true, price: 18, organizerId: E2E.coachId });
+    expect(created).toMatchObject({ ville: "Vannes", championships: ["NAF"], price: 18, organizerId: E2E.coachId });
     await expect(page.getByRole("heading", { name: CREATED_NAME }).first()).toBeVisible();
   });
 

@@ -9,6 +9,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { isAdmin, isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
 import { GHOST_USER_ID, isAnonymizedResult, rankingCoachKey } from "@/lib/rankingCoach";
+import { CDF_KEY } from "@/lib/championships";
 
 export type RankingFilter = 
   | string // CDF_2026, CDF_2025, ROLLING, ROSTER (année en cours), ROSTER_2025, HOF, ARCHIVES
@@ -25,7 +26,7 @@ export async function getRankingYears() {
     prisma.tournament.findMany({
       where: {
         // Mêmes tournois que ceux comptés par getRanking : CDF, terminés, non annulés et validés par la modération
-        isCDF: true,
+        championships: { has: CDF_KEY },
         isFinished: true,
         isCancelled: false,
         cdfValidatedAt: { not: null },
@@ -104,7 +105,7 @@ export async function getRanking(filter: RankingFilter) {
     where: {
       // Un tournoi compte s'il est CDF, terminé, non annulé et validé par un modérateur ou un administrateur (carte 162)
       tournament: {
-        isCDF: true,
+        championships: { has: CDF_KEY },
         isFinished: true,
         isCancelled: false,
         cdfValidatedAt: { not: null },

@@ -1,6 +1,7 @@
 "use server";
 
 import { listAllReferenceData } from "@/lib/referenceData";
+import { CHAMPIONSHIP_GROUP, PROTECTED_REFERENCE_KEYS } from "@/lib/championships";
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
@@ -220,19 +221,46 @@ export async function reorderRoles(orderedNames: string[]) {
 
 // La lecture de l'arbre des forums est dans actionsStructure.ts (getForumStructure, carte 199).
 
-export async function createReferenceData(data: { group: string, key: string, label: string, order: number }) {
+/** Groupe normalisé d'une donnée de référence (capitales, espaces en soulignés). */
+const referenceGroup = (group: string) => group.toUpperCase().replace(/\s+/g, '_');
+
+/** Description facultative, 300 caractères au plus (carte 227). */
+const referenceDescription = (description: string | null | undefined) => description?.trim().slice(0, 300) || null;
+
+/**
+ * Clé d'une donnée de référence. Un championnat (carte 227) a une clé courte en capitales (NAF, CDF…) : c'est elle que
+ * les tournois enregistrent et que le formulaire de tournoi relit (lib/championships.ts, cleanChampionshipKeys).
+ */
+function referenceKey(group: string, key: string): { key: string } | { error: string } {
+  if (group !== CHAMPIONSHIP_GROUP) return { key };
+  const clean = key.trim().toUpperCase();
+  if (!/^[A-Z0-9_-]{1,20}$/.test(clean)) {
+    return { error: "La clé d'un championnat : 20 caractères au plus, lettres, chiffres, tiret ou soulignement (ex. : NAF)." };
+  }
+  return { key: clean };
+}
+
+/** Donnée protégée (le CDF, dont dépend le classement) : ni suppression, ni désactivation, ni changement de clé. */
+const isProtectedReference = (group: string, key: string) => (PROTECTED_REFERENCE_KEYS[group] ?? []).includes(key);
+
+export async function createReferenceData(data: { group: string, key: string, label: string, description?: string | null, order: number }) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
   }
 
+  const group = referenceGroup(data.group);
+  const key = referenceKey(group, data.key);
+  if ("error" in key) return { success: false, error: key.error };
+
   try {
     await prisma.referenceData.create({
       data: {
-        group: data.group.toUpperCase().replace(/\s+/g, '_'),
-        key: data.key,
+        group,
+        key: key.key,
         label: data.label,
+        description: referenceDescription(data.description),
         order: data.order,
         isActive: true
       }
@@ -244,20 +272,30 @@ export async function createReferenceData(data: { group: string, key: string, la
   }
 }
 
-export async function updateReferenceData(id: string, data: { group: string, key: string, label: string, order: number, isActive: boolean }) {
+export async function updateReferenceData(id: string, data: { group: string, key: string, label: string, description?: string | null, order: number, isActive: boolean }) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return { success: false, error: "Non autorisé." };
   }
 
+  const existing = await prisma.referenceData.findUnique({ where: { id }, select: { group: true, key: true } });
+  if (!existing) return { success: false, error: "Donnée introuvable." };
+  const group = referenceGroup(data.group);
+  const key = referenceKey(group, data.key);
+  if ("error" in key) return { success: false, error: key.error };
+  if (isProtectedReference(existing.group, existing.key) && (group !== existing.group || key.key !== existing.key || !data.isActive)) {
+    return { success: false, error: "Le Championnat de France (CDF) porte le classement : son nom et sa description se modifient, mais il reste actif et garde sa clé." };
+  }
+
   try {
     await prisma.referenceData.update({
       where: { id },
       data: {
-        group: data.group.toUpperCase().replace(/\s+/g, '_'),
-        key: data.key,
+        group,
+        key: key.key,
         label: data.label,
+        description: referenceDescription(data.description),
         order: data.order,
         isActive: data.isActive
       }
@@ -276,6 +314,11 @@ export async function deleteReferenceData(id: string) {
     return { success: false, error: "Non autorisé." };
   }
 
+  const existing = await prisma.referenceData.findUnique({ where: { id }, select: { group: true, key: true } });
+  if (!existing) return { success: false, error: "Donnée introuvable." };
+  if (isProtectedReference(existing.group, existing.key)) {
+    return { success: false, error: "Le Championnat de France (CDF) porte le classement : il ne peut pas être supprimé." };
+  }
   const deleted = await prisma.referenceData.delete({ where: { id } }).catch(() => null);
   if (!deleted) return { success: false, error: "Donnée introuvable." };
   await logModerationAction(session!.user.id, "REFERENCE_DATA_DELETED", id, "REFERENCE_DATA", `${deleted.group} / ${deleted.key} : ${deleted.label}`);

@@ -427,3 +427,10 @@ Base locale `pnpm dev exemple` ; changer de compte avec « Mode Développement �
 - [ ] **Téléphone, deux comptes de test et un modérateur.** Dans une conversation à deux : « Signaler la conversation », puis la fenêtre « Inviter un modérateur » s'ouvre ; la fermer. Côté modérateur : la fiche ne montre que les participants, et la conversation reste fermée. « Marquer comme traité » : le membre reçoit « La modération a traité ton signalement ». Puis inviter le modérateur (avec confirmation) : il reçoit la notification et lit tout l'historique ; l'autre membre le voit arriver (carte 223).
 - [ ] **Téléphone, site en mode hub.** Profil > réglages : la section « Passeport Blood Bowl » s'affiche sans débordement ; changer le pseudo depuis le site puis depuis le passeport, il suit dans les deux sens (cartes 122, 124, 125).
 - [ ] **Téléphone, admin puis coach.** Administration > Structure du forum > Modifier un forum : ajouter un coach dans « Modérateurs de ce forum ». Ce coach masque un message de ce forum et d'un de ses sous-forums ; dans un autre forum, le menu du message ne propose ni « Masquer » ni « Supprimer » (carte 225).
+
+## 27. Championnats en données de référence (carte 227)
+
+- [ ] **Ordinateur, admin.** Administration > Données de référence > Championnats : modifier la description de TSC, ajouter un championnat (clé `TEST`), puis le désactiver. Le CDF n'a ni bouton Supprimer ni interrupteur actif utilisable.
+- [ ] **Téléphone, organisateur puis modérateur.** Annoncer un tournoi : les cases des championnats s'affichent avec leur description, sans débordement ; l'organisateur ne voit pas le CDF, le modérateur le voit et peut le cocher. La fiche du tournoi affiche les sigles cochés.
+- [ ] **Téléphone.** `/tournois` > Filtres > Circuits et labels : cocher deux championnats, la pastille de chacun s'affiche, seuls les tournois qui ont les deux restent.
+- [ ] **Après la mise en ligne.** Un tournoi CDF terminé, résultats saisis puis validés par la modération, apparaît au classement de l'année.

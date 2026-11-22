@@ -121,6 +121,19 @@ async function firstSetup() {
       ]
     },
     {
+      // Championnats des tournois (carte 227, accord du responsable) : modifiables ensuite dans l'administration, d'où
+      // `keepAdminEdits` (relancer ce script ne réécrit ni leur nom ni leur ordre). La clé CDF est protégée.
+      group: "CHAMPIONSHIP",
+      keepAdminEdits: true,
+      data: [
+        { key: "NAF", label: "NAF", description: "Tournoi homologué par la NAF (classement international).", order: 1 },
+        { key: "CDF", label: "CDF", description: "Championnat de France : le tournoi compte pour le classement du site.", order: 2 },
+        { key: "CGO", label: "CGO", description: "Challenge du Grand Ouest.", order: 3 },
+        { key: "TGE", label: "TGE", description: "Tournoi du Grand Est.", order: 4 },
+        { key: "TSC", label: "TSC", description: "Tournoi de la Sainte Chatte.", order: 5 },
+      ]
+    },
+    {
       group: "TOURNAMENT_FORMAT",
       data: [
         { key: "Evolutif", label: "Évolutif", order: 1 },
@@ -188,10 +201,11 @@ async function firstSetup() {
 
   for (const group of refDataGroups) {
     for (const item of group.data) {
+      const description = "description" in item ? (item.description as string) : null;
       await prisma.referenceData.upsert({
         where: { group_key: { group: group.group, key: item.key } },
-        update: { label: item.label, order: item.order },
-        create: { group: group.group, key: item.key, label: item.label, order: item.order, isActive: true }
+        update: "keepAdminEdits" in group && group.keepAdminEdits ? {} : { label: item.label, order: item.order },
+        create: { group: group.group, key: item.key, label: item.label, description, order: item.order, isActive: true }
       });
     }
   }

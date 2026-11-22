@@ -8,7 +8,7 @@
  * - `TournamentListControls` : la barre au-dessus des résultats (recherche par nom, bouton « Filtres » du téléphone,
  *   tri, affichage en grille ou en liste) et les pastilles des filtres actifs, chacune avec une croix qui retire ce
  *   filtre.
- * Chaque réglage change l'adresse de la page (`?region=…&isNAF=true…`), que la page serveur relit : les paramètres
+ * Chaque réglage change l'adresse de la page (`?region=…&ch_NAF=true…`), que la page serveur relit : les paramètres
  * de l'adresse sont les mêmes qu'avant la refonte. Changer un filtre ramène à la première page des résultats.
  */
 import { useEffect, useState } from "react";
@@ -18,6 +18,7 @@ import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button, CountBadge, Field, Input, Select, Sheet, SheetContent } from "@bbfrance/ui";
 import { useDebounce } from "@/common/hooks/useDebounce";
 import { REGION_BY_DEPARTMENT } from "@/lib/france";
+import { CHAMPIONSHIP_PARAM_PREFIX } from "@/lib/championships";
 
 /**
  * Régions et départements proposés par les filtres. La page les lit dans la liste de référence (`REGION_FRANCE`,
@@ -27,6 +28,8 @@ import { REGION_BY_DEPARTMENT } from "@/lib/france";
 export type PlaceOptions = {
   regions: { key: string; label: string }[];
   departments: { key: string; label: string }[];
+  /** Championnats des données de référence (carte 227) : une case par championnat, paramètre `ch_<clé>=true`. */
+  championships: { key: string; label: string }[];
 };
 
 type FilterDef =
@@ -50,11 +53,6 @@ const CHIP_LABELS: Record<string, string> = {
   maxPrice: "Prix max",
   isTeam: "Mode",
   platform: "Plateforme",
-  isNAF: "Circuit NAF",
-  isCDF: "Circuit CDF",
-  isCGO: "Circuit CGO",
-  isTGE: "Circuit TGE",
-  isTSC: "Circuit TSC",
   history: "Avec les tournois passés",
 };
 
@@ -74,6 +72,10 @@ const NOT_FILTERS = new Set(["sort", "query", "view", "page"]);
 
 /** Texte de la pastille d'un filtre actif. */
 function chipText(key: string, value: string, places: PlaceOptions): string {
+  if (key.startsWith(CHAMPIONSHIP_PARAM_PREFIX)) {
+    const championshipKey = key.slice(CHAMPIONSHIP_PARAM_PREFIX.length);
+    return places.championships.find((item) => item.key === championshipKey)?.label ?? championshipKey;
+  }
   const label = CHIP_LABELS[key] ?? key;
   if (value === "true") return key === "isTeam" ? "Mode : par équipe" : label;
   if (value === "false") return key === "isTeam" ? "Mode : individuel" : `${label} : non`;
@@ -152,13 +154,12 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
     },
     {
       title: "Circuits et labels",
-      filters: [
-        { name: "isNAF", label: "Homologué NAF", type: "checkbox" },
-        { name: "isCDF", label: "Championnat de France (CDF)", type: "checkbox" },
-        { name: "isCGO", label: "Circuit du Grand Ouest", type: "checkbox" },
-        { name: "isTGE", label: "Tournoi du Grand Est", type: "checkbox" },
-        { name: "isTSC", label: "Tournoi du Sud-Centre", type: "checkbox" },
-      ],
+      // Une case par championnat des données de référence (carte 227)
+      filters: places.championships.map((championship) => ({
+        name: `${CHAMPIONSHIP_PARAM_PREFIX}${championship.key}`,
+        label: championship.label,
+        type: "checkbox" as const,
+      })),
     },
     {
       title: "Logistique",
@@ -268,7 +269,8 @@ export function TournamentFilterAside({ places, createHref, showFilters = true }
   const hasActive = Array.from(searchParams.entries()).some(([key, value]) => !NOT_FILTERS.has(key) && !!value);
   return (
     <aside aria-label="Filtres des tournois" className="hidden lg:block">
-      <div className="sticky top-20 flex max-h-[calc(100dvh-6rem)] flex-col gap-5 overflow-y-auto overscroll-contain">
+      {/* Pas de barre de défilement dans le panneau gauche (22/11/2026) : il suit la page */}
+      <div className="flex flex-col gap-5">
         {createHref && (
           <Button asChild variant="primary" size="tap" className="w-full">
             <Link href={createHref}>Annoncer un tournoi</Link>

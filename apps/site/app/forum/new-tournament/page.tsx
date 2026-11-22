@@ -53,7 +53,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
   const userCanStick = isModerator(session.user.role);
 
   // Charger toutes les données de référence nécessaires
-  // Les sept listes du formulaire, en une seule requête (lib/referenceData.ts, carte 203)
+  // Les huit listes du formulaire, en une seule requête (lib/referenceData.ts, cartes 203 et 227)
   const lists = await getTournamentFormLists();
   const franceRegions = lists.REGION_FRANCE;
   const gameEditions = lists.GAME_EDITION;
@@ -62,6 +62,7 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
   const tournamentTypes = lists.TOURNAMENT_TYPE;
   const platforms = lists.PLATFORM;
   const coachRegions = lists.COACH_REGION;
+  const championships = lists.CHAMPIONSHIP;
 
   const breadcrumbs = [];
   if (forum.parentForum) {
@@ -92,7 +93,8 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
           tournamentFormats,
           tournamentTypes,
           platforms,
-          coachRegions
+          coachRegions,
+          championships
         }}
       />
     </ComposeScreen>

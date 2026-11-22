@@ -164,11 +164,9 @@ model Tournament {
   fridayArrival       Boolean                  @default(false)
   gameEdition         String?
   platform            String?                  @default("Tabletop")
-  isNAF               Boolean                  @default(false)
-  isCDF               Boolean                  @default(false)
-  isCGO               Boolean                  @default(false)
-  isTGE               Boolean                  @default(false)
-  isTSC               Boolean                  @default(false)
+  /// Championnats pour lesquels le tournoi compte : clés du groupe CHAMPIONSHIP des données de référence (carte 227),
+  /// par exemple ["CDF", "NAF"]. La clé CDF (lib/championships.ts) porte le classement du Championnat de France.
+  championships       String[]                 @default([])
   isFinished          Boolean                  @default(false)
   isCancelled         Boolean                  @default(false)
   organizerId         String
@@ -480,12 +478,14 @@ model RankingArchive {
 }
 
 model ReferenceData {
-  id       String  @id @default(cuid())
-  group    String
-  key      String
-  label    String
-  order    Int     @default(0)
-  isActive Boolean @default(true)
+  id          String  @id @default(cuid())
+  group       String
+  key         String
+  label       String
+  /// Explication facultative, affichée en aide dans les formulaires (carte 227)
+  description String?
+  order       Int     @default(0)
+  isActive    Boolean @default(true)
 
   @@unique([group, key])
 }

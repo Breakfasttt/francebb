@@ -241,7 +241,7 @@ test.describe("audit mobile", () => {
         await prisma.tournament.create({
           data: {
             id: "e2e_audit_tournoi", name: "Tournoi de l'audit mobile", date: new Date("2026-03-14T09:00:00Z"), location: "Salle des fêtes",
-            ville: "Rennes", region: "Bretagne", departement: "35", price: 12, maxParticipants: 24, isNAF: true, isFinished: true,
+            ville: "Rennes", region: "Bretagne", departement: "35", price: 12, maxParticipants: 24, championships: ["NAF"], isFinished: true,
             organizerId: E2E.modoId,
             results: { create: [
               { coachName: "Modo E2E", userId: E2E.modoId, roster: "Orc", wins: 3, draws: 1, losses: 1, casualties: 6, points: 10, rank: 1 },

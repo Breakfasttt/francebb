@@ -63,7 +63,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
   if (!firstPost) notFound();
 
   // Charger toutes les données de référence
-  // Les sept listes du formulaire, en une seule requête (lib/referenceData.ts, carte 203)
+  // Les huit listes du formulaire, en une seule requête (lib/referenceData.ts, cartes 203 et 227)
   const lists = await getTournamentFormLists();
   const franceRegions = lists.REGION_FRANCE;
   const gameEditions = lists.GAME_EDITION;
@@ -72,6 +72,7 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
   const tournamentTypes = lists.TOURNAMENT_TYPE;
   const platforms = lists.PLATFORM;
   const coachRegions = lists.COACH_REGION;
+  const championships = lists.CHAMPIONSHIP;
 
   const forum = tournament.topic.forum;
   const breadcrumbs = [];
@@ -104,7 +105,8 @@ export default async function EditTournamentPage({ params }: { params: Promise<{
           tournamentFormats,
           tournamentTypes,
           platforms,
-          coachRegions
+          coachRegions,
+          championships
         }}
         initialData={{
           ...tournament,

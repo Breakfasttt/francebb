@@ -13,6 +13,7 @@ import type { ActionResult } from "@/lib/actionResult";
 import { canManageTournament } from "@/lib/tournamentRights";
 import { calculateCdfPoints, cdfRoundsCount, isValidRank, CdfTournamentType } from "@/common/utils/cdf";
 import { logModerationAction } from "@/lib/moderationLog";
+import { isCdf } from "@/lib/championships";
 
 /**
  * Marque un tournoi comme terminé.
@@ -149,7 +150,7 @@ export async function saveTournamentResults(tournamentId: string, data: { result
   const cdfParticipants = data.results.length;
 
   // Tournoi CDF : chaque coach doit avoir un rang (carte 162). Un rang vide donnait auparavant les points du vainqueur.
-  if (tournament.isCDF) {
+  if (isCdf(tournament)) {
     const withoutRank = data.results.find((res) => !isValidRank(res.rank));
     if (withoutRank) {
       return { success: false, error: `Le rang de ${withoutRank.coachName || "un coach"} est vide ou invalide : chaque coach d'un tournoi CDF doit avoir un rang (1, 2, 3…).` };
@@ -175,7 +176,7 @@ export async function saveTournamentResults(tournamentId: string, data: { result
             draws: Number(res.draws) || 0,
             losses: Number(res.losses) || 0,
             casualties: Number(res.casualties) || 0,
-            points: tournament.isCDF
+            points: isCdf(tournament)
               ? calculateCdfPoints(cdfType, cdfRounds, cdfParticipants, Number(res.rank))
               : Number(res.points) || 0,
             rank: res.rank ? Number(res.rank) : null,
@@ -412,10 +413,10 @@ export async function setCdfValidation(tournamentId: string, validate: boolean):
 
   const tournament = await prisma.tournament.findUnique({
     where: { id: tournamentId },
-    select: { id: true, name: true, isCDF: true, isFinished: true, isCancelled: true, topic: { select: { id: true } }, _count: { select: { results: true } } }
+    select: { id: true, name: true, championships: true, isFinished: true, isCancelled: true, topic: { select: { id: true } }, _count: { select: { results: true } } }
   });
   if (!tournament) return { success: false, error: "Tournoi introuvable." };
-  if (!tournament.isCDF) return { success: false, error: "Ce tournoi ne compte pas pour le Championnat de France." };
+  if (!isCdf(tournament)) return { success: false, error: "Ce tournoi ne compte pas pour le Championnat de France." };
   if (validate) {
     if (tournament.isCancelled) return { success: false, error: "Ce tournoi est annulé : ses résultats ne peuvent pas compter au classement." };
     if (!tournament.isFinished || tournament._count.results === 0) {

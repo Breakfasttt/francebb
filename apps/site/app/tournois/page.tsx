@@ -19,6 +19,7 @@ import { TAKEN_PLACES_COUNT, takenPlaces } from "@/lib/tournamentPlaces";
 import { upcomingTournamentWhere } from "@/lib/tournamentDates";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { TournamentFilterAside, TournamentListControls } from "@/app/tournois/component/TournamentFilters";
+import { CHAMPIONSHIP_PARAM_PREFIX } from "@/lib/championships";
 import { TournamentCard, TournamentRow } from "@/app/tournois/component/TournamentListItems";
 
 export const dynamic = "force-dynamic";
@@ -60,11 +61,10 @@ export default async function TournamentsPage({
   const structure = params.structure as string | undefined;
   const isTeam = params.isTeam === "true" ? true : params.isTeam === "false" ? false : undefined;
   const platform = params.platform as string | undefined;
-  const isNAF = params.isNAF === "true";
-  const isCDF = params.isCDF === "true";
-  const isCGO = params.isCGO === "true";
-  const isTGE = params.isTGE === "true";
-  const isTSC = params.isTSC === "true";
+  // Championnats cochés (`ch_<clé>=true`, carte 227) : le tournoi doit les avoir tous
+  const championshipKeys = Object.keys(params)
+    .filter((key) => key.startsWith(CHAMPIONSHIP_PARAM_PREFIX) && params[key] === "true")
+    .map((key) => key.slice(CHAMPIONSHIP_PARAM_PREFIX.length));
 
   // Identifiant de la ligue, envoyé par le bouton « Voir tout » de la fiche d'une ligue
   const ligueId = params.ligueId as string | undefined;
@@ -109,11 +109,7 @@ export default async function TournamentsPage({
   if (friday) where.fridayArrival = true;
   if (isTeam !== undefined) where.isTeam = isTeam;
   if (platform) where.platform = platform;
-  if (isNAF) where.isNAF = true;
-  if (isCDF) where.isCDF = true;
-  if (isCGO) where.isCGO = true;
-  if (isTGE) where.isTGE = true;
-  if (isTSC) where.isTSC = true;
+  if (championshipKeys.length > 0) where.championships = { hasEvery: championshipKeys };
   if (maxPrice !== undefined) where.price = { lte: maxPrice };
 
   // Handle Sort
@@ -149,13 +145,14 @@ export default async function TournamentsPage({
   }
 
   // Régions et départements de la liste de référence, la même que celle du formulaire de tournoi (carte 129)
-  const { REGION_FRANCE: regionRows, DEPARTEMENT_FRANCE: departmentRows } = await getReferenceLists(["REGION_FRANCE", "DEPARTEMENT_FRANCE"] as const);
+  const { REGION_FRANCE: regionRows, DEPARTEMENT_FRANCE: departmentRows, CHAMPIONSHIP: championshipRows } = await getReferenceLists(["REGION_FRANCE", "DEPARTEMENT_FRANCE", "CHAMPIONSHIP"] as const);
   // Liste de référence vide (base neuve) : on se rabat sur la liste des régions de lib/france.ts
   const places = {
     regions: regionRows.length > 0 ? regionRows : Object.keys(DEPARTMENTS_BY_REGION).map((key) => ({ key, label: key })),
     departments: departmentRows.length > 0
       ? departmentRows
       : Object.values(DEPARTMENTS_BY_REGION).flat().sort().map((key) => ({ key, label: key })),
+    championships: championshipRows.map((row) => ({ key: row.key, label: row.label })),
   };
 
   const [total, tournamentForum] = await Promise.all([

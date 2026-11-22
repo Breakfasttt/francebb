@@ -36,6 +36,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import BackButton from "@/common/components/BackButton/BackButton";
 import { notFound, redirect } from "next/navigation";
+import { isCdf } from "@/lib/championships";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) et animation du nouveau message, partagés par le forum
 
 export const dynamic = "force-dynamic";
@@ -356,7 +357,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                     results={topic.tournament.results}
                     rounds={topic.tournament.rounds}
                     canEdit={!!canEditTournament}
-                    cdf={topic.tournament.isCDF ? { validatedAt: topic.tournament.cdfValidatedAt, canValidate: isUserModerator } : undefined}
+                    cdf={isCdf(topic.tournament) ? { validatedAt: topic.tournament.cdfValidatedAt, canValidate: isUserModerator } : undefined}
                   />
                 )}
 

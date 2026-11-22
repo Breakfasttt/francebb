@@ -36,11 +36,8 @@ interface TournamentSummaryProps {
     fridayArrival: boolean;
     isTeam: boolean;
     coachsPerTeam: number | null;
-    isNAF: boolean;
-    isCDF: boolean;
-    isCGO: boolean;
-    isTGE: boolean;
-    isTSC: boolean;
+    /** Clés des championnats du tournoi (données de référence, carte 227). */
+    championships: string[];
     isFinished: boolean;
     isCancelled: boolean;
     ligueId?: string | null;
@@ -73,13 +70,8 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
     }).format(new Date(date));
   };
 
-  const championships = [
-    { label: 'NAF', active: tournament.isNAF },
-    { label: 'CDF', active: tournament.isCDF },
-    { label: 'CGO', active: tournament.isCGO },
-    { label: 'TGE', active: tournament.isTGE },
-    { label: 'TSC', active: tournament.isTSC },
-  ].filter(c => c.active);
+  // Sigles des championnats (NAF, CDF…), tels qu'enregistrés : leur nom complet est dans les données de référence
+  const championships = tournament.championships.map((key) => ({ label: key }));
 
   // Construction de l'adresse pour Google Maps
   const displayAddress = tournament.address || tournament.location;

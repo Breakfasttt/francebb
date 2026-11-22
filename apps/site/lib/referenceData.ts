@@ -1,6 +1,6 @@
 /**
  * Données de référence (table `referenceData`) : les listes fixes du site (régions, départements, éditions du jeu,
- * plateformes, formats et types de tournoi, régions des coachs), modifiables par les administrateurs.
+ * plateformes, formats et types de tournoi, championnats, régions des coachs), modifiables par les administrateurs.
  *
  * Depuis la carte 203, ce fichier est le seul à lire la table. Avant, 28 lectures étaient écrites en ligne dans 9
  * fichiers, et les pages de création et de modification d'un tournoi répétaient le même bloc de 7 requêtes ; ce
@@ -20,7 +20,8 @@ export type ReferenceGroup =
   | "GAME_EDITION"
   | "PLATFORM"
   | "TOURNAMENT_FORMAT"
-  | "TOURNAMENT_TYPE";
+  | "TOURNAMENT_TYPE"
+  | "CHAMPIONSHIP";
 
 /** Éléments actifs d'un groupe, dans l'ordre d'affichage. */
 export async function getReferenceData(group: ReferenceGroup): Promise<ReferenceData[]> {
@@ -38,7 +39,7 @@ export async function getReferenceLists<G extends ReferenceGroup>(groups: readon
   return lists;
 }
 
-/** Les sept listes du formulaire de tournoi (création et modification), en une seule requête. */
+/** Les huit listes du formulaire de tournoi (création et modification), en une seule requête. */
 export function getTournamentFormLists() {
   return getReferenceLists([
     "REGION_FRANCE",
@@ -48,7 +49,19 @@ export function getTournamentFormLists() {
     "TOURNAMENT_TYPE",
     "PLATFORM",
     "COACH_REGION",
+    "CHAMPIONSHIP",
   ] as const);
+}
+
+/**
+ * Garde, parmi les clés de championnats envoyées par un formulaire, celles qui existent dans les données de référence
+ * (actives ou non : un tournoi garde un championnat désactivé depuis), sans le CDF, que chaque action traite à part.
+ */
+export async function knownChampionshipKeys(keys: string[]): Promise<string[]> {
+  if (keys.length === 0) return [];
+  const rows = await prisma.referenceData.findMany({ where: { group: "CHAMPIONSHIP", key: { in: keys } }, select: { key: true } });
+  const known = new Set(rows.map((row) => row.key));
+  return keys.filter((key) => known.has(key) && key !== "CDF");
 }
 
 /** Les trois listes du formulaire de ligue (création et modification). */

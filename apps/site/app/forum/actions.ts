@@ -39,6 +39,8 @@ import type { ActionResult } from "@/lib/actionResult";
 import type { Prisma } from "@/prisma/generated-client";
 import { isTournamentOver } from "@/lib/tournamentDates";
 import { readTournamentForm, withCoordinates } from "@/lib/tournamentForm";
+import { knownChampionshipKeys } from "@/lib/referenceData";
+import { isCdf, withCdf } from "@/lib/championships";
 import {
   cleanTeamMemberIds,
   formatChangeLossCount,
@@ -430,10 +432,12 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
 
     // Sans coordonnées venues du formulaire, l'adresse est cherchée par le serveur
     const fields = await withCoordinates(form.fields);
+    // Seuls les championnats des données de référence sont gardés (carte 227), puis le CDF selon la règle ci-dessus
+    const championships = withCdf(await knownChampionshipKeys(fields.championships), wantsCdf);
     tournamentData = {
       ...fields,
+      championships,
       name: title,
-      isCDF: wantsCdf,
       typeCDF: wantsCdf ? typeCDF || "INDIVIDUEL" : "INDIVIDUEL",
       organizerId: session.user.id,
       commissaires: { connect: commissaireIds.map((id) => ({ id })) },
@@ -1423,14 +1427,16 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   // garde son statut CDF ; seul le type de classement CDF suit le format (individuel ou par équipes) choisi dans le
   // formulaire. Retirer ou remettre la case annule une éventuelle validation des résultats par la modération.
   const { wantsCdf } = form.requests;
-  if (wantsCdf && !tournament.isCDF && !isMod) {
+  const wasCdf = isCdf(tournament);
+  if (wantsCdf && !wasCdf && !isMod) {
     return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi du Championnat de France (CDF)." };
   }
-  const isCdfNew = isMod ? wantsCdf : tournament.isCDF;
+  const isCdfNew = isMod ? wantsCdf : wasCdf;
   const cdfUpdate = {
-    isCDF: isCdfNew,
+    // Championnats des données de référence seulement (carte 227), puis le CDF selon la règle ci-dessus
+    championships: withCdf(await knownChampionshipKeys(fields.championships), isCdfNew),
     typeCDF: isCdfNew ? (form.requests.typeCDF || tournament.typeCDF || "INDIVIDUEL") : "INDIVIDUEL",
-    ...(isCdfNew !== tournament.isCDF ? { cdfValidatedAt: null, cdfValidatedById: null } : {})
+    ...(isCdfNew !== wasCdf ? { cdfValidatedAt: null, cdfValidatedById: null } : {})
   };
 
   // Mise à jour du tournoi

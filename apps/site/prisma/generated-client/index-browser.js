@@ -212,11 +212,7 @@ exports.Prisma.TournamentScalarFieldEnum = {
   fridayArrival: 'fridayArrival',
   gameEdition: 'gameEdition',
   platform: 'platform',
-  isNAF: 'isNAF',
-  isCDF: 'isCDF',
-  isCGO: 'isCGO',
-  isTGE: 'isTGE',
-  isTSC: 'isTSC',
+  championships: 'championships',
   isFinished: 'isFinished',
   isCancelled: 'isCancelled',
   organizerId: 'organizerId',
@@ -388,6 +384,7 @@ exports.Prisma.ReferenceDataScalarFieldEnum = {
   group: 'group',
   key: 'key',
   label: 'label',
+  description: 'description',
   order: 'order',
   isActive: 'isActive'
 };
