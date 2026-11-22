@@ -75,6 +75,41 @@ export function getAllowedRolesToAssign(userRole: UserRole | string): UserRole[]
   );
 }
 
+/**
+ * Raison du refus d'un changement de rôle, ou null s'il est permis (carte 221). Règle unique des deux écrans qui
+ * changent un rôle (liste des membres et onglet Coachs de l'administration) :
+ * - il faut être modérateur ou plus ;
+ * - le nouveau rôle doit exister (`newRoleExists`, lu dans la table RoleConfig) ;
+ * - on ne change pas son propre rôle (un Super Admin qui se rétrograde par erreur perdrait l'accès) ;
+ * - sauf pour un Super Admin : la cible et le nouveau rôle doivent être strictement sous son propre rang.
+ */
+export function roleChangeRefusal(input: {
+  actorId: string;
+  actorRole: string;
+  targetId: string;
+  targetRole: string;
+  newRole: string;
+  newRoleExists: boolean;
+}): string | null {
+  if (!canManageRoles(input.actorRole)) return "Tu n'as pas le droit de changer les rôles.";
+  if (!input.newRoleExists) return "Ce rôle n'existe pas.";
+  if (input.actorId === input.targetId) return "Tu ne peux pas changer ton propre rôle.";
+  if (input.actorRole === "SUPERADMIN") return null;
+  const actorPower = getRolePower(input.actorRole);
+  if (getRolePower(input.targetRole) >= actorPower) return "Impossible de modifier un membre de rang supérieur ou égal au tien.";
+  if (getRolePower(input.newRole) >= actorPower) return "Tu ne peux pas donner un rôle supérieur ou égal au tien.";
+  return null;
+}
+
+/**
+ * Suppression d'un compte par l'équipe (carte 221) : admin ou plus, sur un membre de rang strictement inférieur
+ * (le Super Admin peut supprimer tout autre compte). Un modérateur bannit, il ne supprime pas.
+ */
+export function canDeleteMember(actorRole: string, targetRole: string, isSelf = false): boolean {
+  if (isSelf || !isAdmin(actorRole)) return false;
+  return actorRole === "SUPERADMIN" || getRolePower(actorRole) > getRolePower(targetRole);
+}
+
 export function isModerator(role: string | null | undefined): boolean {
   if (!role) return false;
   return getRolePower(role) >= ROLE_POWER.MODERATOR;

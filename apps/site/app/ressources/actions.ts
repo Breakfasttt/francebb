@@ -440,6 +440,9 @@ export async function moderateResource(
       });
       await logModerationAction(session.user.id, "RESOURCE_APPROVED", id, "RESOURCE", "Ressource approuvée");
     } else if (action === "REJECT") {
+      // Un outil système ne se rejette pas : il disparaîtrait de la page des ressources (carte 221).
+      const resource = await prisma.resource.findUnique({ where: { id }, select: { isSystem: true } });
+      if (resource?.isSystem) return { error: "Impossible de rejeter un outil système" };
       await prisma.resource.update({
         where: { id },
         data: { status: "REJECTED" },
@@ -449,6 +452,10 @@ export async function moderateResource(
       // Mêmes contrôles d'adresse que pour un membre ; une adresse interne n'est permise que pour un outil officiel
       const current = await prisma.resource.findUnique({ where: { id }, select: { isSystem: true } });
       if (!current) return { error: "Ressource introuvable" };
+      // Même règle que updateResourceAction (carte 221) : un outil système ne se modifie que par un admin, et
+      // seulement depuis son formulaire (description et image). Avant, cette voie laissait un modérateur changer son
+      // titre et son lien.
+      if (current.isSystem) return { error: "Seuls les administrateurs modifient un outil système, depuis sa fiche" };
       const newLink = data.link?.trim();
       const newImageUrl = data.imageUrl?.trim();
       const urlError = checkResourceUrls(newLink ?? null, newImageUrl || null, current.isSystem);

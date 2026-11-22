@@ -227,6 +227,10 @@ export async function updateLigue(id: string, formData: FormData): Promise<Actio
     where: { id },
     data
   });
+  // Trace au journal quand ce n'est pas le créateur qui modifie (commissaire ou modération, carte 221).
+  if (!isCreator) {
+    await logModerationAction(session.user.id, "LIGUE_UPDATED", id, "LIGUE", name || ligue.name);
+  }
 
   revalidatePath("/ligues");
   revalidatePath(`/ligue/${id}`);

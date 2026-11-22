@@ -122,3 +122,47 @@ export async function withTestDb<T>(run: (prisma: PrismaClient) => Promise<T>): 
     }
   }
 }
+
+/** Ce que renvoient les actions serveur du site : `{ success, error }`, ou `{ error }` pour quelques anciennes. */
+export type ActionReply = { success?: boolean; error?: string; [key: string]: unknown };
+
+/**
+ * Carte 221 : appelle une action serveur directement, avec la session de la page, comme pourrait le faire un visiteur
+ * malveillant (une action serveur est appelable avec n'importe quels arguments, même si l'écran ne les propose pas).
+ *
+ * Next.js identifie une action par un numéro que l'on trouve dans le JavaScript envoyé au navigateur
+ * (`createServerReference("<numéro>", …, "<nom>")`). On ouvre donc `pagePath`, une page dont un composant importe
+ * l'action, on y relève le numéro de `actionName`, puis on envoie les arguments à la page avec l'en-tête
+ * `Next-Action`. Renvoie ce que l'action a renvoyé (la ligne de résultat du flux RSC), ou `undefined`.
+ */
+export async function callServerAction(page: Page, pagePath: string, actionName: string, args: unknown[]): Promise<ActionReply | undefined> {
+  const html = await (await page.request.get(pagePath)).text();
+  const scripts = [...html.matchAll(/<script src="([^"]+)"/g)].map((match) => match[1].replace(/&amp;/g, "&"));
+  let actionId: string | undefined;
+  for (const src of scripts) {
+    const code = await (await page.request.get(src)).text();
+    const pattern = new RegExp(String.raw`createServerReference"\]\)\("([0-9a-f]+)",[^)]*"${actionName}"\)`);
+    actionId = code.match(pattern)?.[1];
+    if (actionId) break;
+  }
+  if (!actionId) throw new Error(`Action ${actionName} introuvable dans le JavaScript de ${pagePath}`);
+
+  // Next.js refuse une action dont l'origine n'est pas le site lui-même : on envoie celle du serveur des tests.
+  const origin = new URL((await page.request.get("/api/auth/csrf")).url()).origin;
+  const res = await page.request.post(pagePath, {
+    headers: {
+      "Next-Action": actionId,
+      "Content-Type": "text/plain;charset=UTF-8",
+      Accept: "text/x-component",
+      Origin: origin,
+    },
+    data: JSON.stringify(args),
+  });
+  // Flux RSC : la ligne 0 donne le numéro de la ligne du résultat (« "a":"$@1" »). Quand l'action rafraîchit la page,
+  // le flux contient aussi l'arbre de la page, avant ou après : on lit donc chaque ligne par son numéro.
+  const lines = (await res.text()).split("\n");
+  const resultRef = lines.find((line) => line.startsWith("0:{"))?.match(/"a":"\$@([0-9a-f]+)"/)?.[1];
+  if (!resultRef) return undefined;
+  const resultLine = lines.filter((line) => line.startsWith(`${resultRef}:{`) || line.startsWith(`${resultRef}:[`)).pop();
+  return resultLine ? JSON.parse(resultLine.slice(resultRef.length + 1)) : undefined;
+}

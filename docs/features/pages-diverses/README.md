@@ -116,6 +116,24 @@ Un membre banni y est renvoyé par `BannedRedirect` (monté dans `app/layout.tsx
 | Spy | Nom interne de la page de profil d'un autre coach (« espionner » son profil). |
 | `BannedRedirect` | Composant invisible présent sur toutes les pages, qui envoie un membre banni vers `/banned`. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Tout le site | Thème (`lib/themes.ts`, cookie `bbfrance_theme`) | Couleurs de toutes les pages ; le thème d'un membre connecté est celui de son profil. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Administration | Réglages `discord_invite`, `how_to_play_*` | Lien Discord de l'accueil, textes de `/jouer`. |
+| Tournois, forum, articles, ligues, classement, ressources, média | `app/component/homeData.ts` | Contenu de l'accueil. |
+| Bannissement | `/banned` | Page montrée à un membre banni. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Marche : toutes ces pages s'affichent et le changement de thème fonctionne.

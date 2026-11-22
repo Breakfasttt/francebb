@@ -59,6 +59,25 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 | Archive | Classement d'une année figé et enregistré, qui ne bouge plus. |
 | Palmarès | Le podium de chaque année (vue « Palmarès », nommée « Hall of Fame » avant la carte 220 ; le code garde le nom `hof` et `getHallOfFame`). |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Accueil | `homeData.ts` | Le haut du classement. |
+| Profil | `lib/rankingCoach.ts` | Place d'un coach au classement. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Tournois | Résultats, `setCdfValidation` | Seuls les tournois CDF terminés et validés par un modérateur comptent. |
+| Rôles | `isModerator`, `isAdmin` | Les modérateurs figent et modifient les archives ; un admin les supprime ; la console de `/statistiques` est réservée aux admins. |
+| Suppression de compte | `lib/accountDeletion.ts` | Les résultats d'un compte supprimé passent au compte fantôme. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Marche : classement annuel, glissant, par roster, palmarès, archives et import de l'ancien site, statistiques publiques.

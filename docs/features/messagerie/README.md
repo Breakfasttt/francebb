@@ -49,6 +49,7 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 - **Non-lus par participant** (carte 170) : chaque participant a sa propre date de lecture (`ConversationParticipant.lastReadAt`). Ouvrir une conversation avance seulement la sienne. Ses non-lus sont les messages des autres écrits après cette date. Prisma ne sait pas comparer une date d'une table à une date d'une autre table : les compteurs passent par une requête SQL écrite à la main (`lib/unreadMessages.ts`). Le créateur d'une conversation et un coach invité dans un groupe partent de la date de création ou d'invitation : l'historique déjà échangé ne leur est pas signalé comme non lu.
 - L'ancien champ `PrivateMessage.readAt` (une seule date de lecture par message, commune à tous : dans un groupe, le premier lecteur marquait le message lu pour tous) a été retiré de la base par la carte 171, avec l'accord du responsable du projet.
 - Un coach ne peut pas avoir plus de 50 conversations (`CONVERSATION_LIMIT`).
+- **Règles vérifiées par le serveur (carte 221)**, dans `lib/messageRules.ts` (testé par `tests/unit/messageRules.test.mjs`) : un message n'est pas vide et compte 500 caractères au plus (`MESSAGE_MAX_LENGTH`, la même limite que l'écran) ; un groupe compte 20 membres au plus, créateur compris (`GROUP_MAX_PARTICIPANTS`) ; un nom de groupe compte 80 caractères au plus. `startConversation` et `inviteToGroup` refusent un compte inexistant ou banni ; `sendMessage` refuse d'écrire à deux avec un banni. `renameConversation` refuse un membre qui a quitté le groupe. Avant, seul l'écran limitait la longueur, et un membre parti pouvait encore renommer le groupe.
 - L'email de notification n'est envoyé qu'au premier message non lu du destinataire (d'après sa propre date de lecture), et seulement s'il l'a activé (`notifPm`). Il part avec `after()` de Next.js, qui laisse le serveur finir l'envoi après avoir répondu (carte 167 ; avant, il était lancé sans attendre et pouvait se perdre).
 - La notification sous la cloche est créée pour chaque autre participant encore présent, une seule par conversation tant qu'elle n'est pas lue. Ouvrir la conversation la marque lue.
 - Le rafraîchissement toutes les 10 secondes refait une requête complète (et avance la date de lecture du coach) : à surveiller pour la charge.
@@ -70,6 +71,27 @@ Actions serveur (`app/messagerie/actions.ts`) : `getConversations`, `getConversa
 | Chiffrement (AES-256-GCM) | Le texte est rendu illisible dans la base ; seul le serveur, avec la clé, peut le relire. |
 | Rafraîchissement automatique (*polling*) | La page redemande les messages au serveur à intervalle régulier, faute de notification en temps réel. |
 | Blocage | Un coach peut en bloquer un autre depuis son profil (voir `docs/features/profil-membres/`). |
+
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Notifications | `notifyPrivateMessage` | Une notification par conversation non lue, et un e-mail si le membre l'accepte (`notifPm`). |
+| Barre du site | `getNavCounts` | Nombre de conversations non lues. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Profil (blocage) | `hasBlockBetween` | Pas de conversation à deux ni d'invitation entre deux membres qui se sont bloqués. |
+| Bannissement | `getActiveSession`, `unreachableMembers` | Un banni n'écrit plus ; on ne démarre plus de conversation avec lui (carte 221). |
+| Membres | `/membres`, fiche d'un coach | Bouton « Écrire » qui ouvre une conversation. |
+| Suppression de compte | `lib/accountDeletion.ts` | Les messages du compte passent au compte fantôme. |
+| Chiffrement | `lib/crypto.ts` (`ENCRYPTION_KEY`) | Sans la clé, les messages sont illisibles. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 
 ## État
 

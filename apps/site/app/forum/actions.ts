@@ -30,7 +30,7 @@ import { refreshTopicLastPost } from "@/lib/forumTopicLastPost";
 import { refreshForumStructure, refreshTopic, refreshTournament } from "@/lib/pageRefresh";
 import { forumPostPage } from "@/lib/forumPostLink";
 import { closedTopicMessage, isAllowedReaction, isTopicClosedFor, postContentError, topicTitleError } from "@/lib/forumWriteRules";
-import { canEditPost, canReplyToTopic } from "@/lib/forumRights";
+import { canReplyToTopic, canSavePostEdit } from "@/lib/forumRights";
 import { canManagePayments, canManageTournament } from "@/lib/tournamentRights";
 import type { QuoteStatusMap } from "@/lib/bbcode";
 import type { ActionResult } from "@/lib/actionResult";
@@ -76,6 +76,7 @@ async function findAccessiblePost(postId: string) {
       topicId: true,
       createdAt: true,
       isDeleted: true,
+      isModerated: true,
       deletedById: true,
       topic: { select: { forumId: true, title: true, tournamentId: true, isLocked: true, isArchived: true, forum: { select: { isLocked: true } } } },
     },
@@ -252,8 +253,10 @@ export async function getUnreadTopics(page: number = 1, limit: number = 20) {
 }
 
 export async function getSubForumCount(parentForumId: string) {
+  // Filtré par rôle (carte 221) : ne révèle pas les sous-forums d'un forum réservé.
+  const { roles } = await getForumAccess();
   return await prisma.forum.count({
-    where: { parentForumId }
+    where: { parentForumId, parentForum: forumAccessWhere(roles), ...forumAccessWhere(roles) }
   });
 }
 
@@ -303,8 +306,11 @@ export async function getQuoteStatusMap(contents: string[]) {
 
   if (postIds.size === 0) return {};
 
+  // Seulement les messages des forums accessibles (carte 221) : sinon n'importe qui pouvait demander l'auteur et
+  // l'état d'un message d'un forum réservé. Une citation d'un message inaccessible reste affichée telle qu'écrite.
+  const { roles } = await getForumAccess();
   const posts = await prisma.post.findMany({
-    where: { id: { in: Array.from(postIds) } },
+    where: { id: { in: Array.from(postIds).slice(0, 200) }, topic: { forum: forumAccessWhere(roles) } },
     select: { id: true, isDeleted: true, isModerated: true, authorId: true, author: { select: { name: true } } }
   });
 
@@ -558,12 +564,14 @@ export async function updatePost(postId: string, content: string): Promise<Actio
   if (!existingPost) return { success: false, error: "Message introuvable." };
   // Même règle que le menu « ⋯ » du message (lib/forumRights.ts, carte 200)
   const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
-  if (!canEditPost(viewer, isTopicClosedFor(writeState(existingPost.topic), false), existingPost.authorId)) {
+  if (!canSavePostEdit(viewer, isTopicClosedFor(writeState(existingPost.topic), false), existingPost)) {
     return {
       success: false,
       error: existingPost.authorId !== session.user.id && !viewer.isModerator
         ? "Tu n'as pas l'autorisation de modifier ce message."
-        : "Ce sujet est verrouillé ou archivé. Tu ne peux plus modifier ce message.",
+        : existingPost.isDeleted || existingPost.isModerated
+          ? "Ce message a été supprimé ou masqué : tu ne peux plus le modifier."
+          : "Ce sujet est verrouillé ou archivé. Tu ne peux plus modifier ce message.",
     };
   }
 
@@ -571,6 +579,10 @@ export async function updatePost(postId: string, content: string): Promise<Actio
     where: { id: postId },
     data: { content, updatedAt: new Date() }
   });
+  // Un modérateur qui modifie le message d'un autre membre laisse une trace (carte 221).
+  if (existingPost.authorId !== session.user.id) {
+    await logModerationAction(session.user.id, "POST_EDITED_BY_MOD", postId, "POST", `Sujet « ${existingPost.topic.title} »`);
+  }
 
   // Une mention ajoutée en modifiant le message prévient le membre mentionné (carte 167) ; les membres déjà mentionnés
   // dans ce message ne sont pas prévenus une deuxième fois. La mention est attribuée à l'auteur du message.
@@ -1013,7 +1025,7 @@ export async function updateTopicTitle(topicId: string, title: string): Promise<
   const { roles } = await getForumAccess();
   const topic = await prisma.topic.findFirst({
     where: { id: topicId, ...topicAccessWhere(roles) },
-    select: { authorId: true, isLocked: true, isArchived: true, forum: { select: { isLocked: true } } }
+    select: { authorId: true, title: true, isLocked: true, isArchived: true, forum: { select: { isLocked: true } } }
   });
 
   if (!topic) return { success: false, error: "Sujet introuvable." };
@@ -1027,10 +1039,14 @@ export async function updateTopicTitle(topicId: string, title: string): Promise<
     return { success: false, error: "Ce sujet est verrouillé ou archivé : seul un modérateur peut encore le renommer." };
   }
 
-  await prisma.topic.update({
+  const previous = await prisma.topic.update({
     where: { id: topicId },
-    data: { title: title.trim() }
+    data: { title: title.trim() },
+    select: { id: true },
   });
+  if (topic.authorId !== sessionUser.id) {
+    await logModerationAction(sessionUser.id, "TOPIC_RENAMED", previous.id, "TOPIC", `« ${topic.title} » → « ${title.trim()} »`);
+  }
 
   revalidatePath(`/forum/topic/${topicId}`);
   return { success: true };
@@ -1501,7 +1517,7 @@ async function loadTournamentForRegistration(tournamentId: string) {
       registrationsLocked: true,
       date: true,
       endDate: true,
-      topic: { select: { id: true } }
+      topic: { select: { id: true, isDeleted: true } }
     }
   });
 }
@@ -1513,8 +1529,9 @@ function newRegistrationRefusal(tournament: {
   registrationsLocked: boolean;
   date: Date;
   endDate: Date | null;
+  topic?: { isDeleted: boolean } | null;
 }) {
-  return registrationRefusal({ ...tournament, isOver: isTournamentOver(tournament) });
+  return registrationRefusal({ ...tournament, isOver: isTournamentOver(tournament), topicDeleted: !!tournament.topic?.isDeleted });
 }
 
 /**

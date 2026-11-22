@@ -41,6 +41,7 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 - Les actions renvoient `{ success, error }`. Le formulaire passe par `ActionForm`, qui affiche le refus dans une notification sans vider les champs ; `createLigue` redirige vers la nouvelle ligue en cas de succès, et la modification affiche « Ligue mise à jour avec succès ! ».
 - Le formulaire garde la classe `ligue-form` : le test `smoke.spec.ts` s'en sert pour retrouver le formulaire.
 - Le département d'une ligue est enregistré par son numéro (« 35 »), comme celui d'un tournoi (carte 137). Les ligues enregistrées avant portent encore le libellé (« 35 - Ille-et-Vilaine ») : le formulaire le ramène au numéro (`departmentNumber` de `lib/france.ts`), et la ligue passe au nouveau format à sa prochaine modification. Les données existantes n'ont pas été reprises en base (une reprise demande l'accord du responsable).
+- Depuis la carte 221, une modification par un commissaire ou par la modération (pas par le créateur) est inscrite au journal de modération (« Ligue modifiée », `LIGUE_UPDATED`).
 - Le formulaire n'a pas de champ « lien Google Maps » : `updateLigue` ne change ce lien que s'il est envoyé, et garde sinon celui qui est enregistré. Avant la carte 137, chaque modification l'effaçait.
 - `searchAddressAction` et `reverseGeocodeAction` sont réservées aux membres connectés (carte 050) : sinon n'importe qui pouvait faire passer des requêtes Nominatim par notre serveur, dont la règle d'usage limite à une requête par seconde.
 - Le blason est envoyé à ImgBB par le serveur (`uploadImageFile`, puis l'action `uploadImage` de `app/imageUploadActions.ts`), qui garde la clé secrète et refuse un fichier de plus de 4 Mo ou qui n'est pas une image (carte 141).
@@ -59,6 +60,28 @@ Actions serveur (`app/ligues/actions.ts`) : `createLigue`, `updateLigue`, `delet
 | Leaflet | Bibliothèque d'affichage de cartes ; elle ne fonctionne que dans le navigateur, d'où son chargement différé (`ssr: false`). |
 | `100dvh` | Hauteur de l'écran réellement visible. `100vh` compte aussi la place de la barre d'adresse des navigateurs de téléphone, et le bas de la page passe alors dessous. |
 | Blason | Logo de la ligue, hébergé sur ImgBB. |
+
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Tournois | `Tournament.ligueId`, `/tournois?ligueId=` | Un tournoi peut être rattaché à une ligue ; la page de la ligue mène à ses tournois. |
+| Articles | `Article.ligueId` | Un article peut être rattaché à une ligue. |
+| Profil | Fiche d'un coach, auteur d'un message | Les ligues du membre sont affichées. |
+| Carte, accueil | `/carte`, `homeData.ts` | Les ligues avec une adresse sont placées sur la carte. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Rôles | `isModerator` | Un modérateur modifie, transfère ou supprime n'importe quelle ligue. |
+| Bannissement | `transferLigueOwnership` | On ne transfère pas une ligue à un banni ; une ligue dont le créateur est banni reste en ligne. |
+| Modération | Signalements `LIGUE`, journal | Une ligue se signale ; création, transfert, suppression et modification sont tracés. |
+| Données de référence | Administration | Régions et départements du formulaire. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 
 ## État
 

@@ -54,8 +54,21 @@ export interface ForumInput {
   afterId?: string | null;
 }
 
+/**
+ * Accès demandé pour un forum ou une catégorie : « ALL » (public) ou le nom d'un rôle existant (carte 221). Un nom
+ * inconnu rendrait le forum invisible pour tout le monde, sauf ceux qui lisent tous les rôles.
+ */
+export async function isKnownAccessRole(allowedRoles: unknown): Promise<boolean> {
+  if (allowedRoles === PUBLIC_ACCESS) return true;
+  if (typeof allowedRoles !== "string" || allowedRoles.length === 0) return false;
+  return !!(await prisma.roleConfig.findUnique({ where: { name: allowedRoles }, select: { name: true } }));
+}
+
 /** Crée un forum. Renvoie l'identifiant du nouveau forum, ou la raison du refus. */
 export async function createForumRecord(actorId: string, input: ForumInput): Promise<ActionResult & { forumId?: string }> {
+  if (input.allowedRoles !== undefined && !(await isKnownAccessRole(input.allowedRoles))) {
+    return { success: false, error: "Accès inconnu." };
+  }
   const name = input.name.trim();
   const categoryId = input.parentForumId ? null : input.categoryId || null;
   const parentForumId = input.parentForumId || null;
@@ -110,6 +123,7 @@ export async function updateForumRecord(
 ): Promise<ActionResult> {
   const forum = await prisma.forum.findUnique({ where: { id: forumId }, select: { name: true, allowedRoles: true, parentForumId: true } });
   if (!forum) return { success: false, error: "Forum introuvable." };
+  if (!(await isKnownAccessRole(input.allowedRoles))) return { success: false, error: "Accès inconnu." };
 
   const name = input.name.trim();
   const [sameName, otherPublicForums] = await Promise.all([

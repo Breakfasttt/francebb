@@ -387,3 +387,19 @@ Les tests automatiques ont été adaptés au nouveau rendu mais n'ont pas pu êt
 - [ ] **Les 5 thèmes.** Changer de thème depuis la barre du haut : dans chacun, le nom du site, les titres en capitales et les lignes de tableau restent lisibles (Saison 3 et NAF ont une barre rouge).
 - [ ] **Administrateur.** Dans l'annuaire des membres, « Changer le rôle » s'ouvre depuis le menu « … » de la ligne et la confirmation change bien le rôle ; administration et modération se parcourent par le panneau de gauche.
 - [ ] **Administration, page « Jouer ».** Reprendre le texte saisi dans « Guide du débutant » : tutoiement et sous-titre en casse normale (le site tutoie partout).
+
+## 24. Rôles : un passage par compte de test (carte 221)
+
+Base locale `pnpm dev exemple` ; changer de compte avec « Mode Développement » (page de connexion) ou le widget de la barre. Le tableau des droits attendus est dans `docs/features/INTERACTIONS.md`. Les refus du serveur sont vérifiés par `tests/e2e/permissions.spec.ts` ; ici, on vérifie ce que **voit** chaque rôle.
+
+- [ ] **Visiteur (déconnecté).** Les forums « Salle des modérateurs » et « Bureau des admins » n'apparaissent pas ; le sujet supprimé « Achetez mes dés truqués ! » non plus ; « Répondre », « Signaler » et l'inscription aux tournois envoient vers la connexion.
+- [ ] **`exemple-nouveau`.** La connexion envoie d'abord sur l'inscription (`/auth/onboarding`).
+- [ ] **`exemple-coach-1`.** Sujet « Vitrine BBCode » : chaque balise s'affiche (tableau, galerie, vidéo, spoiler, accordéon, mention, lien vers un sujet). Sujet « Quel roster… » : deux pages, non-lus à partir de la bonne position. Tournoi par équipes : il est capitaine des « Bourrins du Poitou ». Messagerie : le groupe « Covoiturage Printemps » montre que Lézard est parti. Notifications : une lue, des non lues.
+- [ ] **`exemple-coach-2`.** Il ne peut pas écrire à Lézard Patient (blocage). « Tournoi aux inscriptions fermées » : plus de bouton d'inscription. « Tournoi au sujet supprimé » : s'il apparaît dans `/tournois`, l'inscription est refusée (« retiré par la modération »).
+- [ ] **`exemple-coach-3`.** Le message qu'il a supprimé dans « Débat : faut-il toujours bliter… » ne se modifie plus. Il ne peut plus écrire à « Fraudeur Inscrit » (banni).
+- [ ] **`exemple-coach-role-perso` (Arbitre).** Son message masqué ne se modifie plus ; son article masqué reste visible pour lui seul.
+- [ ] **`exemple-chef-ligue`.** « Gestion des inscriptions » du « Tournoi du Printemps » : « Fraudeur Inscrit » porte le badge « Banni » ; les états de paiement se changent.
+- [ ] **`exemple-banni-inscrit`.** Toute page l'envoie sur `/banned`.
+- [ ] **`exemple-modo`.** Voit la « Salle des modérateurs », pas le « Bureau des admins ». Restaure le sujet supprimé ; fusionne les deux « Cherche une ligue vers Lyon » ; scinde le message 14 du sujet long. Modération : un signalement de chaque type ; le journal est rempli. Annuaire des membres : pas de « Supprimer » ; « Changer le rôle » n'est proposé que sur les rangs inférieurs. « Tournoi à Valider » : validation CDF possible.
+- [ ] **`exemple-admin`.** Annuaire : « Supprimer » apparaît sur un coach, pas sur `exemple-admin-2`. Administration : créer puis supprimer un rôle personnalisé, modifier le lien Discord, réordonner une catégorie ; chaque action apparaît dans le journal de modération avec un libellé en français.
+- [ ] **`exemple-superadmin`.** Peut changer le rôle d'un admin ; ne peut changer ni son propre rôle ni supprimer son propre compte.

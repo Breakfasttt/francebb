@@ -534,7 +534,10 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
     <li className="flex flex-col gap-2 border-b border-bb-border px-3 py-2 last:border-b-0 sm:flex-row sm:items-center">
       <div className="min-w-0 flex-1">
         {type === "PLAYER" ? (
-          <MemberLine user={item.user} size={32} />
+          <span className="flex min-w-0 flex-wrap items-center gap-2">
+            <MemberLine user={item.user} size={32} />
+            {canManage && item.user?.isBanned && <Badge variant="danger">Banni</Badge>}
+          </span>
         ) : (
           <Button
             type="button"

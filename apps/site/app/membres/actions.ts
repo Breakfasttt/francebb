@@ -2,43 +2,21 @@
 
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
-import { canEditTargetRole, ROLE_POWER, UserRole, isModerator } from "@/lib/roles";
+import { canDeleteMember, canEditTargetRole, UserRole, isAdmin, isModerator } from "@/lib/roles";
+import { changeMemberRole } from "@/lib/memberRole";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
 import type { ActionResult } from "@/lib/actionResult";
 
+/** Change le rôle d'un membre depuis la liste des membres. Règles et journal : lib/memberRole.ts (carte 221). */
 export async function updateUserRole(userId: string, newRole: UserRole): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user) return { success: false, error: "Non authentifié" };
 
-  const me = await prisma.user.findUnique({
-    where: { id: session.user.id }
-  });
-
-  if (!me) return { success: false, error: "Utilisateur non trouvé" };
-
-  const target = await prisma.user.findUnique({
-    where: { id: userId }
-  });
-
-  if (!target) return { success: false, error: "Cible non trouvée" };
-
-  if (!canEditTargetRole(me.role as UserRole, target.role as UserRole)) {
-    return { success: false, error: "Permissions insuffisantes pour modifier cet utilisateur" };
-  }
-
-  if (ROLE_POWER[newRole] >= ROLE_POWER[me.role as UserRole] && me.role !== "SUPERADMIN") {
-    return { success: false, error: "Tu ne peux pas attribuer un rôle supérieur ou égal au tien" };
-  }
-
-  await prisma.user.update({
-    where: { id: userId },
-    data: { role: newRole }
-  });
-
-  revalidatePath("/membres");
-  return { success: true };
+  const result = await changeMemberRole(session.user.id, userId, newRole);
+  if (result.success) revalidatePath("/membres");
+  return result;
 }
 
 /**
@@ -100,8 +78,8 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
     select: { role: true }
   });
 
-  if (!me || !isModerator(me.role)) {
-    return { success: false, error: "Permissions insuffisantes pour supprimer un utilisateur" };
+  if (!me || !isAdmin(me.role)) {
+    return { success: false, error: "Seuls les admins peuvent supprimer un compte." };
   }
 
   const target = await prisma.user.findUnique({
@@ -111,7 +89,8 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
 
   if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
-  if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
+  // Admin ou plus, sur un rang strictement inférieur ; jamais son propre compte (carte 221).
+  if (!canDeleteMember(me.role, target.role, userId === session.user.id)) {
     return { success: false, error: "Tu ne peux pas supprimer ce membre (hiérarchie insuffisante)" };
   }
 

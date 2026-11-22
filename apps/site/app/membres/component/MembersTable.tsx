@@ -21,7 +21,8 @@ import {
   Sheet, SheetContent, toast, useMediaQuery,
 } from "@bbfrance/ui";
 import {
-  ROLE_LABELS, UserRole, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isModerator, getRoleLabel, getRolePower,
+  ROLE_LABELS, UserRole, canDeleteMember, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isAdmin, isModerator, getRoleLabel,
+  getRolePower,
 } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
@@ -198,7 +199,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   const showRoles = canManageRoles(currentUserRole);
   const showMod = isModerator(currentUserRole);
-  const showDelete = currentUserRole === "SUPERADMIN";
+  const showDelete = isAdmin(currentUserRole);
   const selectableRoles = getAllowedRolesToAssign(currentUserRole);
 
   const filteredUsers = users.filter((u) => {
@@ -304,7 +305,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             label: "Supprimer",
             icon: <Trash2 size={18} aria-hidden="true" />,
             danger: true,
-            hidden: !showDelete,
+            hidden: !canDeleteMember(currentUserRole, user.role, user.id === currentUserId),
             onSelect: () => setDeleteModal({ userId: user.id, userName: user.name }),
           },
         ]}

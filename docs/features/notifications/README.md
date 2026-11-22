@@ -49,6 +49,28 @@ Depuis la carte 186, deux notifications de tournoi s'ajoutent, sans e-mail, cré
 | Abonnement automatique | Le membre suit tout seul un sujet qu'il crée ou auquel il répond (`User.autoFollowTopics`). |
 | `after()` | Outil de Next.js qui exécute un travail après la réponse envoyée au navigateur, en gardant le serveur en vie jusqu'à la fin. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Barre du site | `getNavCounts`, cloche | Nombre de notifications non lues. |
+| E-mails | `lib/mail.ts` | Réponse dans un sujet suivi et message privé, si le membre l'accepte. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Forum | `notifyMentions`, `notifyFollowers` | Mentions et réponses dans les sujets suivis. |
+| Messagerie | `notifyPrivateMessage` | Messages privés. |
+| Tournois | `notifyTournamentMembers` | Sortie de la liste d'attente, changement de format. |
+| Rôles | `visibleNotificationsWhere` | Personne n'est prévenu d'un sujet qu'il ne peut pas lire. |
+| Profil (blocage, préférences) | `lib/notifications.ts`, `notifPm`, `notifFollow` | Rien venant d'un membre bloqué ; e-mails selon les choix du membre. |
+| Recherche et non-lus | `markTopicNotificationsRead` | Lire un sujet marque ses notifications lues. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Carte 167 : cloche, page `/notifications`, mentions lues à la création d'un sujet, d'une réponse et à la modification d'un message, abonnement automatique, e-mails fiables et neutralisés, annonces filtrées sur la préférence « Newsletter et annonces ». Test `tests/e2e/inventaire/notifications.spec.ts` ; la page est aussi visitée par le parcours (niveau 2 des tests).

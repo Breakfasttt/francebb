@@ -49,6 +49,7 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 - Toute action qui modifie un tournoi vérifie que le coach est organisateur, commissaire ou modérateur (`isModerator`, qui inclut les admins). Depuis la carte 051, la même règle vaut partout : page `/results`, `updateTournament`, `saveTournamentResults`, `finishTournament`, `cancelTournament`, `restoreTournament`, `unfinishTournament`, `clearTournamentResults`.
 - **Dates (carte 187)** : toute liste de tournois « à venir » utilise `upcomingTournamentWhere` (dans un `AND`, pour ne pas écraser un autre `OR` de la requête), et tout badge « Passé » utilise `isTournamentOver`. Ne jamais recomparer la date à la main : avant, l'accueil et la carte retiraient un tournoi dès l'heure de son premier jour, la liste dès son deuxième jour, et la fiche d'une ligue affichait pour toujours un tournoi passé sans résultats. Une date de fin avant la date de début est refusée à la création comme à la modification.
 - **Annulation (carte 187)** : annuler marque aussi le tournoi terminé ; le rétablir remet « terminé » seulement s'il a des résultats. Les résultats d'un tournoi annulé ne comptent pas au classement (`getRanking` de `app/classement/actions.ts` écarte `isCancelled`), et comptent de nouveau une fois le tournoi rétabli.
+- **Sujet supprimé, inscrit banni (carte 221)** : quand la modération supprime le sujet d'un tournoi, `registrationRefusal` refuse toute nouvelle inscription (`topicDeleted`). Bannir un inscrit ne supprime rien : l'organisateur voit un badge « Banni » à côté de son nom dans « Gestion des inscriptions » (`isBanned` lu par `TOURNAMENT_REGISTRATION_PUBLIC_SELECT`).
 - **Inscriptions (carte 186)** : le serveur refuse une nouvelle inscription (coach, équipe ou mercenaire) pour un tournoi annulé, terminé, passé ou dont les inscriptions sont fermées ; une inscription individuelle dans un tournoi par équipes, ou une équipe dans un tournoi individuel ; une équipe trop grande ; un coach déjà dans une autre équipe du même tournoi (donc une seule équipe par capitaine) ; un coéquipier qui ne s'est pas proposé comme mercenaire. Le capitaine peut modifier son équipe quand les inscriptions sont fermées, pas après le tournoi. Se désinscrire reste toujours possible.
 - **Places (carte 186)** : le statut d'une nouvelle inscription (pré-inscrit ou liste d'attente) est calculé par `freePlaces`, le même calcul que l'affichage « x / y places », sous un verrou de la base propre au tournoi (voir « Verrou » dans `docs/GLOSSAIRE.md`). Avant, l'inscription comptait aussi la liste d'attente et ignorait le nombre importé de l'ancien site : un tournoi affiché « 30 / 30 » acceptait encore des pré-inscriptions. Quand l'organisateur change lui-même un statut, rien ne monte de la liste d'attente : c'est lui qui décide.
 - **Changement de format (carte 186)** : `updateTournament` refuse de changer le format d'un tournoi qui a des inscrits sans le champ `confirmFormatChange`, envoyé par le formulaire après la confirmation. Les inscriptions, équipes et mercenaires sont alors supprimés et les coachs prévenus (notification `TOURNAMENT_FORMAT_CHANGED`, sans e-mail).
@@ -78,6 +79,28 @@ Actions serveur : dans `app/forum/actions.ts`, `createTopic` (crée le tournoi q
 | NAF | Fédération internationale des coachs de Blood Bowl ; un tournoi « homologué NAF » compte pour son classement. Son rapport XML peut être importé. |
 | CDF | Coupe de France, circuit national ; un tournoi CDF rapporte des points au classement, une fois ses résultats validés par la modération. CGO, TGE, TSC sont des circuits régionaux. |
 | Ronde | Un tour de matchs du tournoi. |
+
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Classement | `app/classement/actions.ts` | Les résultats d'un tournoi CDF validé (`cdfValidatedAt`) comptent au classement. |
+| Notifications | `notifyTournamentMembers` | Passage de la liste d'attente aux pré-inscrits, changement de format. |
+| Carte, accueil, profil | `/carte`, `homeData.ts`, gazette du profil | Les prochains tournois y apparaissent. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Forum | Sujet du tournoi | Un tournoi est un sujet ; supprimer le sujet le retire des listes et bloque les inscriptions (carte 221). |
+| Rôles | `lib/tournamentRights.ts` | Organisateur, commissaires et modérateurs gèrent ; seuls les modérateurs valident la CDF. |
+| Bannissement | `getActiveSession`, liste des inscrits | Un banni ne s'inscrit plus ; ses inscriptions restent avec un badge « Banni ». |
+| Ligues | `ligueId` | Rattachement à une ligue. |
+| Données de référence | Administration | Éditions, plateformes, types de tournoi, régions. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 
 ## État
 

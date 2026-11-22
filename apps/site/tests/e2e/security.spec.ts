@@ -37,11 +37,13 @@ test("les actions du forum vérifient l'accès au sujet et le verrouillage (cart
     expect(body(name), name).toMatch(/findAccessiblePost\(/);
   }
   // Le sujet fermé : règle partagée avec l'écran (lib/forumRights.ts, carte 200) ou garde historique
-  expect(body("updatePost")).toMatch(/canEditPost\(/);
+  // Carte 221 : canSavePostEdit reprend canEditPost et refuse en plus un message supprimé ou masqué
+  expect(body("updatePost")).toMatch(/canSavePostEdit\(/);
   expect(body("createPost")).toMatch(/canReplyToTopic\(/);
   for (const name of ["deletePost", "togglePostReaction"]) expect(body(name), name).toMatch(/isLockedFor\(/);
   expect(body("markTopicAsRead")).toMatch(/topicAccessWhere\(roles\)/);
-  expect(body("markAllTopicsAsRead")).toMatch(/isArchived: false, \.\.\.topicAccessWhere\(roles\)/);
+  // Depuis la carte 166, « Tout marquer comme lu » n'écrit qu'une date sur le membre lui-même : aucun sujet n'est lu
+  expect(body("markAllTopicsAsRead")).toMatch(/user\.update\(\{ where: \{ id: session\.user\.id \}/);
   expect(body("moveTopic")).toMatch(/forumAccessWhere\(roles\)/);
   expect(actions).toMatch(/async function findAccessiblePost[\s\S]*?topic: topicAccessWhere\(roles\)/);
 
@@ -279,12 +281,12 @@ test.describe("Carte 141 : ressources et envoi d'images", () => {
 
     await page.goto("/ressources", { waitUntil: "networkidle" });
     await expect(page.getByRole("heading", { name: "Ressources" }).first()).toBeVisible();
-    await expect(page.getByRole("link", { name: /Soumettre/ })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /Soumettre|Proposer une ressource/ })).toHaveCount(0);
 
     // Un membre connecté voit le bouton
     await loginAs(page, E2E.coachId);
     await page.goto("/ressources", { waitUntil: "networkidle" });
-    await expect(page.getByRole("link", { name: /Soumettre/ }).filter({ visible: true }).first()).toBeVisible();
+    await expect(page.getByRole("link", { name: /Soumettre|Proposer une ressource/ }).filter({ visible: true }).first()).toBeVisible();
   });
 
   test("la clé ImgBB n'est lue que par le serveur", async ({ page }) => {
@@ -360,7 +362,7 @@ test.describe("Carte 141 : ressources et envoi d'images", () => {
 
     // Le formulaire envoie un lien correct, remplacé en route par un lien qui exécuterait du code au clic
     await rewriteServerActions(page, (body) => body.replace(safeLink, "javascript:alert(document.cookie)"));
-    await page.getByRole("button", { name: /Soumettre/ }).filter({ visible: true }).first().click();
+    await page.getByRole("button", { name: /Soumettre|Proposer une ressource/ }).filter({ visible: true }).first().click();
     await expect(page.getByText(/Le lien doit être une adresse web complète/)).toBeVisible();
     await expect(page).toHaveURL(/\/ressources\/submit$/);
 

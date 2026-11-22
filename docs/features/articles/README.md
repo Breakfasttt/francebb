@@ -33,14 +33,14 @@ Ces écrans ont été refaits par la carte 095 (refonte visuelle, ADR 0006) avec
 | `apps/site/app/api/articles/tags/route.ts` | API : tous les tags, pour les suggestions du formulaire |
 | `apps/site/tests/e2e/inventaire/articles.spec.ts` | Test d'inventaire de la section 10 (carte 095), en taille ordinateur et téléphone |
 
-Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, `deleteArticle`, `toggleArticleReaction`, `moderateArticle`, `unmoderateArticle`, `incrementArticleViews`. Toutes passent par `getActiveSession()` sauf `incrementArticleViews`.
+Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, `deleteArticle`, `toggleArticleReaction`, `moderateArticle`, `unmoderateArticle`. Toutes passent par `getActiveSession()`. Le comptage des lectures est une route d'API : `app/api/articles/[id]/view/route.ts`.
 
 ## Les pièges
 
 - `/api/articles` ne renvoie de l'auteur que ce que la carte affiche (nom, avatar, cadre, rôle), cache les articles masqués sauf à leur auteur et aux modérateurs, et limite la page à 24 articles (carte 050, testé).
 - La page `/articles` ne liste un article masqué que pour un modérateur, avec la mention « Modéré » ; les visiteurs et les membres ne le voient pas (carte 139). L'article au hasard de l'accueil n'est jamais un article masqué.
 - La page de modification transmet la ligue rattachée au formulaire (`initialLigue` de `LigueSearch`) : sans cela, `updateArticle` enregistrait une ligue vide (carte 140). La page d'un article affiche la ligue rattachée sous l'auteur : un lien vers sa fiche, ou le nom saisi librement.
-- `incrementArticleViews` n'a aucun contrôle : n'importe qui peut gonfler le compteur. Le composant `ViewCounter` limite à une vue par onglet (`sessionStorage`).
+- La route `POST /api/articles/[id]/view` compte une lecture par article et par visite, contrôlée par le serveur depuis la carte 221 (ce n'est plus une action serveur : une action qui pose un cookie fait recharger la page) : un cookie de session `bbf_articles_lus` garde les 50 derniers articles lus. Un article masqué n'est pas compté. Le composant `ViewCounter` garde en plus sa limite par onglet (`sessionStorage`).
 - Un membre n'a qu'une réaction par article : choisir un autre émoji remplace le précédent.
 - Le texte est transformé en HTML par `parseBBCode` puis injecté tel quel (`dangerouslySetInnerHTML`) : toute la sécurité repose sur `lib/bbcode`. Les blocs BBCode (spoiler, accordéon, galerie) sont mis en forme par `common/components/BBCodeContent/bbcode.css`, chargé pour tout le site (carte 101). La page d'un article affiche le texte avec `BBCodeContent`, comme le forum : un schéma BBScheme inséré dans l'article est animé par le lecteur (carte 140).
 - La recherche par texte (`contains`) parcourt tout le contenu : lente si les articles deviennent nombreux.
@@ -55,6 +55,26 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 | Modérer un article | Le masquer aux autres membres en gardant une raison et le nom du modérateur, sans le supprimer. |
 | Réaction | Émoji laissé sous un article ; la liste proposée est fixe (`COMMON_EMOJIS`). |
 | Pastille de filtre actif | Rappel d'un filtre au-dessus des résultats ; sa croix retire ce filtre (voir `docs/GLOSSAIRE.md`). |
+
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Accueil | `homeData.ts` | Un article tiré au hasard. |
+| Ligues | Page d'une ligue | Un article peut être rattaché à une ligue (`ligueId`). |
+| Profil | Onglet des articles (`/api/articles`) | Les articles du membre, sans les articles masqués sauf pour l'auteur et la modération. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Modération | `moderateArticle`, signalements `ARTICLE` | Un article masqué n'est visible que de son auteur et des modérateurs. |
+| Éditeur | `../editeur-bbcode/` | Rédaction et rendu. |
+| Bannissement | `getActiveSession` | Un banni n'écrit plus ; ses articles restent en ligne tant que la modération ne les masque pas. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 
 ## État
 

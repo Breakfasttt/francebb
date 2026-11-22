@@ -5,7 +5,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { canEditPost, canReplyToTopic } from "../../lib/forumRights.ts";
+import { canEditPost, canReplyToTopic, canSavePostEdit } from "../../lib/forumRights.ts";
 
 const open = { isLocked: false, isArchived: false, forumIsLocked: false, isDeleted: false };
 const member = { id: "coach", isModerator: false };
@@ -34,4 +34,12 @@ test("l'auteur modifie son message tant que le sujet est ouvert ; un modérateur
   assert.equal(canEditPost(member, false, "autre"), false);
   assert.equal(canEditPost(moderator, true, "autre"), true);
   assert.equal(canEditPost(visitor, false, "coach"), false);
+});
+
+test("l'auteur ne modifie plus un message supprimé ou masqué ; un modérateur le peut (carte 221)", () => {
+  const post = { authorId: "coach", isDeleted: false, isModerated: false };
+  assert.equal(canSavePostEdit(member, false, post), true);
+  assert.equal(canSavePostEdit(member, false, { ...post, isDeleted: true }), false);
+  assert.equal(canSavePostEdit(member, false, { ...post, isModerated: true }), false);
+  assert.equal(canSavePostEdit(moderator, false, { ...post, isModerated: true }), true);
 });

@@ -64,6 +64,27 @@ Utilisation dans une action serveur : `const session = await getActiveSession();
 | `LegacyMember` | Membre de l'ancien forum ; son pseudo et son numéro NAF sont repris à la création du compte. |
 | Omit global | Réglage du client Prisma qui retire un champ (ici l'email) de tous les résultats, sauf demande explicite. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Tout le site | `getActiveSession` (`lib/authGuard.ts`) | Sans session active (visiteur ou banni), aucune action serveur n'écrit. |
+| Rôles | `auth.ts` (rappel `jwt`) | Le rôle et le bannissement sont relus dans la base à chaque lecture de la session. |
+| Inscription | `/auth/onboarding` | Un compte neuf y est renvoyé tant qu'il n'a pas fini. |
+| Mise en page | `BannedRedirect` | Un banni est envoyé sur `/banned`. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Hub | `AUTH_MODE=hub` | Connexion par le hub quand il est activé. |
+| Administration | `SUPERADMIN_EMAILS` | Ces adresses deviennent Super Admin à la connexion. |
+| Développement | Fournisseur `dev-login` | Connexion sans mot de passe à n'importe quel compte, en développement seulement ; la liste montre tous les comptes `exemple-*` (carte 221, `lib/devAccounts.ts`). |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Fait : ban appliqué côté serveur dans toutes les actions (carte 002) ; email masqué par défaut ; test smoke de la redirection des bannis.

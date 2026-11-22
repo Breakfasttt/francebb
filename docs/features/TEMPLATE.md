@@ -32,6 +32,22 @@ Règles qui ne doivent jamais casser (sécurité, données, performance) et erre
 
 Les termes généraux du projet sont dans `docs/GLOSSAIRE.md` ; ici, seulement ceux propres à cette fonctionnalité.
 
+## Interactions
+
+Ce que cette fonctionnalité change ailleurs sur le site, et ce dont elle dépend (carte 221). Une ligne par lien, vérifiée dans le code. La vue d'ensemble et le tableau des droits par rôle sont dans `docs/features/INTERACTIONS.md`.
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| … | … | … |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| … | … | … |
+
 ## État
 
 Ce qui marche, ce qui manque, gros chantiers en cours (kanban).

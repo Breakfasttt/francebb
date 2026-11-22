@@ -112,6 +112,24 @@ Adresses publiques : documentation de l'API `<BETTER_AUTH_URL>/api/doc`, aussi i
 | `login_hint` | Paramètre standard d'OIDC : l'adresse email saisie sur le site, pour que le hub envoie le lien sans la redemander. |
 | Reconnexion silencieuse | Une application obtient la connexion du hub sans rien demander, parce que le coach y est déjà connecté. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Connexion du site | `AUTH_MODE=hub` | Le site délègue la connexion au hub. |
+| Membres du site | `api/hub/events` (`lib/hub/hubEvents.ts`) | Événements signés : profil modifié, bannissement et débannissement, suppression programmée, annulée ou faite. |
+| Données personnelles | `api/hub/export` | Export des données du membre côté site. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Aucune du site | `apps/hub` | Le hub ne connaît aucune application en particulier. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Fait : spike (carte 022), test SSO hub ↔ site en CI, lien magique (038), bannissement global et déconnexion propagée (037, testés dans `tests/sso.spec.ts`), hub invisible derrière les boutons du site (073 : parcours email testé sans aucun écran du hub, départ vers Discord et Google vérifié sans le suivre).

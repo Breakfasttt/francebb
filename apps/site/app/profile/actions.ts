@@ -163,17 +163,6 @@ export async function getUserActivity(userId: string, limit: number = 5) {
   return posts;
 }
 
-export async function reportUser(userId: string, reason: string): Promise<ActionResult> {
-  const session = await getActiveSession();
-  if (!session?.user?.id) return { success: false, error: "Non connecté" };
-
-  // For now, we just log it or simulate a report
-  // For now, we just log it or simulate a report
-  
-  // Future: create a Report model or send a PM to moderators
-  return { success: true };
-}
-
 // Les actions de messagerie ont été migrées vers /app/messagerie/actions.ts
 export async function deleteAccount(): Promise<ActionResult> {
   const session = await getActiveSession();

@@ -22,9 +22,9 @@ La page d'administration permet aux administrateurs de régler le site sans touc
 | `apps/site/common/components/StaffPageLayout/StaffPageLayout.tsx` | Mise en page commune de l'administration et de la modération (titre, onglets, contenu). |
 | `apps/site/app/administration/actions.ts` | Actions serveur : `searchCoaches`, `updateCoachRole`, `getAllRoles`, `createCustomRole`, `deleteCustomRole`, `reorderRoles`, `getForumStructure`, `createReferenceData`, `updateReferenceData`, `deleteReferenceData`, `getAllReferenceDataAdmin`, `getSiteSetting`, `updateSiteSetting`, `getHowToPlaySettings`, `updateHowToPlaySettings`, `sendGlobalInfoMail`. |
 | `apps/site/app/administration/actionsStructure.ts` | Actions de la structure du forum : `getForumStructure`, `createCategory`, `updateCategory`, `deleteCategory`, `reorderCategories`, `createForum`, `updateForum`, `deleteForum`, `reorderForums`. |
-| `apps/site/app/administration/component/*Tab.tsx` | Un fichier par onglet : `GeneralTab`, `RolesTab`, `CoachsTab`, `StructureTab`, `ReferenceDataTab`, `HowToPlayTab`, `InfoMailsTab`, `ResetTab`. Composants de `packages/ui`, plus de fichier CSS depuis la carte 099. |
+| `apps/site/app/administration/component/*Tab.tsx` | Un fichier par onglet : `GeneralTab`, `RolesTab`, `CoachsTab`, `StructureTab`, `ReferenceDataTab`, `HowToPlayTab`, `InfoMailsTab`. Composants de `packages/ui`, plus de fichier CSS depuis la carte 099. |
 
-Les changements de rôle sont tracés dans le journal de modération par `logModerationAction` (`lib/moderationLog.ts`).
+Les changements de rôle passent par `changeMemberRole` (`lib/memberRole.ts`, carte 221), partagé avec la liste des membres. Depuis la carte 221, toutes les actions de cette page sont inscrites au journal de modération par `logModerationAction` (`lib/moderationLog.ts`).
 
 ## Les pièges
 
@@ -32,9 +32,11 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 - Chaque action serveur vérifie elle-même la session (`getActiveSession()`) et le rôle (`getRolePower` ≥ `ROLE_POWER.ADMIN`). Ne jamais compter sur le contrôle de la page, qui se fait dans le navigateur.
 - Il n'y a plus d'onglet « Sauvegardes » : il téléchargeait l'ancien fichier SQLite `dev.db`, qui n'existe plus avec Postgres. Les sauvegardes se font sur Neon (branches et restauration à un instant passé, voir `DEPLOY.md`).
 - Les puissances des rôles personnalisés sont en base (`RoleConfig`), mais `lib/roles.ts` ne connaît que les rôles de base : `getRolePower` donne les droits d'un coach à un rôle personnalisé, tandis que `lib/forumAccess.ts` lit sa vraie puissance pour l'accès au forum. Les deux restent cohérents parce qu'un rôle personnalisé est toujours sous Modérateur : `createCustomRole` le refuse au-dessus depuis la carte 051 (comme `reorderRoles` le faisait déjà). Il n'a donc jamais de droit de modération. Ne pas lever cette limite sans faire lire la base à `lib/roles.ts`.
-- `updateCoachRole` n'exige que le rang modérateur (alors que la page exige admin) et n'empêche pas d'attribuer un nom de rôle inexistant ; le Super Admin passe outre les contrôles de rang.
+- `updateCoachRole` et `updateUserRole` (liste des membres) appliquent la même règle depuis la carte 221 : `roleChangeRefusal` (`lib/roles.ts`, testé par `tests/unit/roles.test.mjs`). Il faut être modérateur ou plus, le rôle doit exister dans `RoleConfig`, personne ne change son propre rôle, et sauf Super Admin la cible et le nouveau rôle sont sous son rang. L'onglet reste réservé aux admins, mais l'action accepte un modérateur, comme `/membres`.
+- **Réglages limités (carte 221).** `getSiteSetting` et `updateSiteSetting` n'acceptent que la clé `discord_invite`, et `updateHowToPlaySettings` que les six clés `how_to_play_*` ; chaque texte compte 20 000 caractères au plus. Avant, une clé quelconque pouvait écraser un autre réglage (textes de `/jouer`, repère `devProfile` de la base).
+- Les actions sur les catégories passent par `adminSession()` et vérifient que l'accès choisi est `ALL` ou un rôle existant (carte 221).
 - `sendGlobalInfoMail` envoie les mails un par un avec 500 ms d'attente : avec beaucoup de membres, l'appel peut dépasser la durée maximale d'une fonction sur Vercel (à vérifier). Il lit l'email par un `select` explicite, comme le veut l'omit global.
-- `getForumStructure` existe en double (`actions.ts` et `actionsStructure.ts`). `sendGlobalInfoMail` renvoie `{ success: false, error }` quand l'accès est refusé (carte 052).
+- `sendGlobalInfoMail` renvoie `{ success: false, error }` quand l'accès est refusé (carte 052).
 
 ## Les mots expliqués
 
@@ -46,8 +48,31 @@ Les changements de rôle sont tracés dans le journal de modération par `logMod
 | Réglage du site (`SiteSetting`) | Valeur stockée en base sous une clé (`discord_invite`, textes `how_to_play_*`). |
 | Glisser-déposer | Réordonner des éléments en les faisant glisser (bibliothèque `@dnd-kit`). |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Rôles et droits | « Gestion des rôles », « Membres & accès » | Un rôle change ce que le membre voit et peut faire partout. Supprimer un rôle personnalisé repasse ses membres en Coach. |
+| Forum | « Structure du forum » | Catégories, forums, accès (`allowedRoles`) ; `/forum` est rafraîchi tout de suite. |
+| Formulaires du site | « Données de référence » | Régions, départements, éditions, plateformes, types de tournoi proposés dans les formulaires (tournois, ligues, profil). |
+| Accueil | Réglage `discord_invite` | Lien d'invitation Discord de l'accueil. |
+| Page « Jouer » | « Guide du débutant » | Textes des six sections de `/jouer`. |
+| Membres | « Annonces par e-mail » | E-mail aux membres non bannis qui acceptent « Newsletter et annonces ». |
+| Journal de modération | Toutes les actions | Chaque changement y est inscrit (carte 221). |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Rôles | `lib/roles.ts` | Admin et au-dessus (changement de rôle : modérateur et au-dessus). |
+| Profil | Préférence `notifNewsletter` | Choisit qui reçoit les annonces. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
-- Fonctionne : tous les onglets, avec contrôle du rôle côté serveur dans chaque action.
+- Fonctionne : tous les onglets, avec contrôle du rôle côté serveur dans chaque action. Carte 221 : une seule règle de changement de rôle, réglages limités aux clés prévues, journal de toutes les actions, testés par `tests/e2e/permissions.spec.ts`.
 - Manque : une sauvegarde qui marche en production depuis la page ; la prise en compte des rôles personnalisés dans `lib/roles.ts`. Aucune carte ouverte ne porte sur ces points.
 - Téléphone : refaite par la carte 099 ; tous les onglets sont vérifiés par `tests/e2e/inventaire/administration.spec.ts` (ordinateur et téléphone, glisser-déposer au clavier compris) et mesurés par l'audit mobile. Le glisser-déposer au doigt reste à essayer sur un vrai téléphone.

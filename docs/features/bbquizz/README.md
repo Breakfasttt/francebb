@@ -49,6 +49,22 @@ Depuis la carte 180 (décision ADR-0008), le quiz n'est plus dans le site : c'es
 | Proposition (*suggestion*) | Question envoyée par un membre, en attente (`PENDING`) jusqu'à acceptation ou refus par un modérateur. |
 | Questions de départ | Environ 300 questions écrites dans `quiz-en-attente/data/questions.ts`, utilisées par le jeu quand la base n'a aucune question. Elles ne sont plus chargées par `firstSetup.ts` du site. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Aucune dans le site | `apps/bbquizz` | Le quiz est une application à part, avec sa propre base ; le site n'affiche plus ses écrans ni ses scores. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Hub | Connexion OIDC | Prévu : un seul compte BBFrance pour le quiz et le site. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Carte 180 : le quiz est sorti du site. Base de l'application remplie par la reprise de l'ancienne production : 339 questions (340 lues, un texte en double ignoré), 7 parties terminées, les scores de 4 joueurs. Les tables et les colonnes du quiz ont été retirées de la base du site par la migration `20261105120000_quiz_hors_du_site`.

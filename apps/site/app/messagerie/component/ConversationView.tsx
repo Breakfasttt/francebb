@@ -27,11 +27,12 @@ import ChatBubble from "./ChatBubble";
 import InviteParticipantModal from "./InviteParticipantModal";
 import RenameConversationModal from "./RenameConversationModal";
 import { conversationTitle } from "./conversationText";
+import { MESSAGE_MAX_LENGTH } from "@/lib/messageRules";
 
 type ConversationData = NonNullable<Awaited<ReturnType<typeof getConversationMessages>>>;
 
 const REFRESH_DELAY = 10_000;
-const MAX_LENGTH = 500;
+const MAX_LENGTH = MESSAGE_MAX_LENGTH;
 
 interface ConversationViewProps {
   conversationId: string;

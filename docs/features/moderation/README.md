@@ -26,7 +26,8 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 |---|---|
 | `apps/site/app/moderation/page.tsx` | Page (composant navigateur) : contrôle `isModerator`, onglet actif, compteurs. |
 | `apps/site/common/components/StaffPageLayout/StaffPageLayout.tsx` | Mise en page commune de la modération et de l'administration (titre, onglets, contenu). |
-| `apps/site/lib/moderationReports.ts` | `closePendingReports` : ferme les signalements en attente d'un contenu quand la modération a déjà agi (message masqué, message ou sujet supprimé). **Interne au serveur**, appelée par `moderatePost`, `deletePost` et `deleteTopic` (`app/forum/actions.ts`). |
+| `apps/site/lib/reportRules.ts` | Règles d'un signalement sans base (carte 221) : types permis, longueurs, `reportInputRefusal`. |
+| `apps/site/lib/moderationReports.ts` | `canSeeReportTarget` (carte 221) : le membre voit-il ce qu'il signale ? `closePendingReports` : ferme les signalements en attente d'un contenu quand la modération a déjà agi (message masqué, message ou sujet supprimé). **Interne au serveur**, appelée par `moderatePost`, `deletePost` et `deleteTopic` (`app/forum/actions.ts`). |
 | `apps/site/lib/moderationLog.ts` | `logModerationAction` et le type `ModerationAction` : écriture au journal, **interne au serveur** (volontairement hors d'un fichier « use server »). |
 | `apps/site/app/moderation/actions.ts` | Actions serveur : `createReportAction`, `getModerationLogs`, `getPendingReportsByType`, `resolveReportsAction`, `cleanupModerationLogs`, `getBannedUsers`, `unbanUserAction`, `getModerationSummaryCounts`.  |
 | `apps/site/app/moderation/component/` | `LogsTab`, `ReportsTab`, `BannedUsersTab`, `ResourceModerationTab` (composants de `packages/ui` ; plus de fichier CSS depuis la carte 099). Dans le journal, « Voir l'élément » d'un message passe par son lien permanent `/forum/post/<message>` (carte 169). |
@@ -42,9 +43,11 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 - Chaque action serveur passe par `getActiveSession()` puis `isModerator()` ; ne jamais s'appuyer sur le contrôle de la page.
 - **Toute fonction exportée d'un fichier « use server » est appelable depuis le navigateur par n'importe qui.** `logModerationAction` l'était, ce qui permettait d'écrire de fausses entrées au journal : elle est désormais dans `lib/moderationLog.ts` (carte 050). Ne jamais remettre une fonction interne dans un fichier d'actions.
 - Un seul `toggleBanUser` (`app/membres/actions.ts`) : contrôle de rang (un modérateur ne peut ni bannir ni débannir un membre de rang égal ou supérieur, sauf s'il est Super Admin) et entrée au journal (carte 050, testé). `unbanUserAction` (onglet « Coachs bannis ») se contente de l'appeler et de renvoyer son message d'erreur : ne jamais lui redonner sa propre écriture en base, sinon le contrôle de rang disparaîtrait (carte 060, testé).
-- `cleanupModerationLogs` (purge automatique, lancée à chaque ouverture de la page 1 du journal) supprime les entrées de plus de 3 mois. Depuis la carte 144, elle n'écrit sa ligne « Nettoyage automatique… » au journal que si elle a réellement supprimé des entrées (avant, chaque ouverture du journal par un administrateur ajoutait une ligne « 0 entrées supprimées »). Jusqu'à la carte 051, elle calculait une date invalide et ne supprimait rien : au premier passage après la mise en ligne de la correction, toutes les entrées de plus de 3 mois disparaîtront d'un coup.
-- `deleteUser` (un modérateur supprime un membre) passe par `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`), comme la suppression de compte par le membre : ses contenus publics sont rattachés au compte fantôme, rien n'est effacé du forum (carte 051). L'action est tracée au journal (`USER_DELETED`).
-- `createReportAction` ne contrôle ni le type visé, ni les doublons, ni la fréquence : un membre peut envoyer de nombreux signalements.
+- `cleanupModerationLogs` (purge automatique, lancée à chaque ouverture de la page 1 du journal) supprime les entrées de plus de 3 mois. Depuis la carte 221, elle ne prend plus d'argument : la durée est la constante `LOG_RETENTION_MONTHS` (3) de `lib/moderationLog.ts`. Avant, un admin qui l'appelait avec `0` vidait tout le journal. Elle écrit sa ligne sous l'action « Journal purgé » (`LOGS_PURGED`), et non plus « Signalement traité ». Depuis la carte 144, elle n'écrit sa ligne « Nettoyage automatique… » au journal que si elle a réellement supprimé des entrées (avant, chaque ouverture du journal par un administrateur ajoutait une ligne « 0 entrées supprimées »). Jusqu'à la carte 051, elle calculait une date invalide et ne supprimait rien : au premier passage après la mise en ligne de la correction, toutes les entrées de plus de 3 mois disparaîtront d'un coup.
+- `deleteUser` (depuis la carte 221 : un **admin** ou plus supprime un membre de rang inférieur, jamais son propre compte, règle `canDeleteMember` de `lib/roles.ts` ; le bouton « Supprimer » de `/membres` suit la même règle ; un modérateur bannit) passe par `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`), comme la suppression de compte par le membre : ses contenus publics sont rattachés au compte fantôme, rien n'est effacé du forum (carte 051). L'action est tracée au journal (`USER_DELETED`).
+- `createReportAction` (carte 221) vérifie le type visé (`POST`, `TOPIC`, `USER`, `ARTICLE`, `LIGUE`), la raison (100 caractères au plus) et les précisions (2000), dans `lib/reportRules.ts` (testé par `tests/unit/reportRules.test.mjs`). Le membre doit voir ce qu'il signale (`canSeeReportTarget`, `lib/moderationReports.ts`) : pas de signalement d'un message d'un forum réservé, d'un sujet supprimé ou d'un article masqué. Il ne peut pas signaler deux fois le même contenu tant que le premier est en attente, ni se signaler lui-même. Il n'y a toujours pas de limite de fréquence. L'ancienne action `reportUser` du profil, qui ne faisait rien, a été retirée.
+- **Journal complet (carte 221).** S'ajoutent au journal : changement de rôle depuis les deux écrans (`lib/memberRole.ts`), rôles personnalisés (créé, supprimé, réordonnés), données de référence, réglages du site, annonce par e-mail, catégories et ordre des forums, message modifié par la modération, sujet renommé par un autre que son auteur, ligue modifiée par un autre que son créateur, purge du journal. Les noms sont dans le type `ModerationAction`, leurs libellés dans `LogsTab.tsx`.
+- `moderateResource` (carte 221) ne modifie ni ne rejette un outil système : un modérateur passait par là pour changer son titre et son lien. Seul un admin le modifie, depuis sa fiche (`updateResourceAction`).
 - `getBannedUsers` (corrigée par la carte 144) charge tous les bannis et leurs lignes « USER_BANNED » du journal en deux requêtes fixes, puis trie par date du bannissement (la plus récente d'abord) et par identifiant à date égale avant de découper la page : un banni apparaît sur une seule page. La date du bannissement n'étant pas une colonne du membre, la pagination se fait en mémoire, ce qui reste léger tant que les bannis se comptent en centaines. Elle renvoie toujours l'email des bannis aux modérateurs.
 - `getPendingReportsByType` charge tous les signalements en attente puis pagine en mémoire. Elle charge ensuite le contenu visé des seules fiches de la page (au plus 10) ; pour un message, la page du sujet se calcule en comptant les messages placés avant lui, dans l'ordre de la page du sujet (date de création, puis identifiant), à 20 messages par page. Depuis la carte 169, ce calcul passe par `forumPostHrefFor` (`lib/forumPostLink.ts`), partagé avec la page du sujet, la recherche et les notifications : le nombre de messages par page (`TOPIC_POSTS_PER_PAGE`) n'est plus écrit qu'à cet endroit.
 - La fermeture automatique n'écrit rien de plus au journal : l'action sur le contenu (« Message modéré », « Message supprimé », « Sujet supprimé ») y est déjà inscrite.
@@ -61,11 +64,35 @@ N'importe quel membre peut signaler un message, un sujet, un coach, un article o
 | Scinder un sujet | Déplacer des messages choisis d'un sujet vers un nouveau sujet. |
 | Fusionner deux sujets | Déplacer tous les messages d'un sujet dans un autre, puis supprimer le sujet vidé. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Forum | Message masqué ou supprimé, sujet supprimé | Le contenu disparaît pour les membres ; ses signalements se ferment. |
+| Membres | `toggleBanUser`, `deleteUser` | Un banni ne peut plus agir ; un compte supprimé passe au compte fantôme. |
+| Messagerie, tournois, ligues | Bannissement | Plus de conversation avec un banni ; badge « Banni » chez l'organisateur ; inscriptions et ligues gardées (carte 221). |
+| Ressources | `moderateResource` | Une ressource validée apparaît sur `/ressources` et sur l'accueil. |
+| Classement | `setCdfValidation` | Seuls les tournois validés comptent au classement CDF. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Rôles | `lib/roles.ts` | Modérateur et au-dessus ; purge du journal pour les admins. |
+| Forum, articles, ligues, profil | Bouton « Signaler » | Source des signalements. |
+| Toutes les actions de l'équipe | `logModerationAction` | Remplissent le journal. |
+| Hub | `api/hub/events` | Bannissement venu du hub. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Fonctionne : signalements sur cinq types de contenu, tableau de bord avec compteurs, ban et débannissement, journal, validation des ressources.
 - Fonctionne aussi depuis la carte 051 : purge des journaux de plus de 3 mois. Depuis la carte 060, le débannissement depuis l'onglet « Coachs bannis » respecte le rang et reste tracé au journal.
-- Manque : limite sur les signalements. Aucune carte ouverte ne la couvre. L'onglet « Coachs bannis » affiche le bouton « Débannir » même quand le rang l'interdit : le serveur refuse alors et un message l'explique.
+- Carte 221 : signalements vérifiés (type, visibilité, doublon), purge du journal à durée fixe, suppression d'un compte réservée aux admins, journal complet, outils système protégés. Chaque faille est testée par `tests/e2e/permissions.spec.ts`, qui appelle l'action directement avec chaque rôle.
+- Manque : limite de fréquence des signalements, signalement d'un message privé, bannissement temporaire, avertissements, modérateurs par forum. Aucune carte ouverte ne les couvre. L'onglet « Coachs bannis » affiche le bouton « Débannir » même quand le rang l'interdit : le serveur refuse alors et un message l'explique.
 - Hub : le ban global propagé à toutes les applications est prévu par la carte 037.
 - Carte 169 : scinder et fusionner des sujets, vérifié par le test `tests/e2e/inventaire/forum-sujet.spec.ts` (ordinateur et téléphone).
 - Téléphone : refait par la carte 099 ; vérifié par `tests/e2e/inventaire/moderation.spec.ts` (ordinateur et téléphone) et par l'audit mobile (journal, signalements, bannis, ressources).

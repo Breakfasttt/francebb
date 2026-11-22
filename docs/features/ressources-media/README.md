@@ -51,6 +51,24 @@ Actions serveur (`app/ressources/actions.ts`) : `submitResource`, `getResources`
 | Réglage du site (`SiteSetting`) | Paire clé/valeur en base, modifiable sans toucher au code (ex. la liste des chaînes Twitch). |
 | Playlist « Uploads » | Liste automatique des vidéos d'une chaîne YouTube : son identifiant est celui de la chaîne avec `UU` à la place de `UC`. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Accueil | `homeData.ts` | Ressources validées et média. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Modération | Onglet « Ressources à valider », `moderateResource` | Une ressource n'apparaît qu'une fois validée. Depuis la carte 221, la modération ne modifie ni ne rejette un outil système. |
+| Rôles | `isAdmin` | Seuls les admins modifient un outil système (description et image). |
+| Envoi d'images | `app/imageUploadActions.ts` | Image d'une ressource envoyée par le serveur. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Marche : proposition, validation, modification, suppression, recherche, pages vidéo.

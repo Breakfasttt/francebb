@@ -11,9 +11,10 @@ import { prisma } from "@/lib/prisma";
 import { getActiveSession } from "@/lib/authGuard";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
 import {
-  createForumRecord, deleteForumRecord, readForumStructure, updateForumRecord, type StructureCategory,
+  createForumRecord, deleteForumRecord, isKnownAccessRole, readForumStructure, updateForumRecord, type StructureCategory,
 } from "@/lib/forumStructure";
 import { refreshForumStructure } from "@/lib/pageRefresh";
+import { logModerationAction } from "@/lib/moderationLog";
 
 /** Membre administrateur connecté, ou rien. */
 async function adminSession() {
@@ -30,8 +31,9 @@ export async function getForumStructure(): Promise<StructureCategory[]> {
 // ---------------- CATEGORY ACTIONS ----------------
 
 export async function createCategory(data: { name: string, description: string, allowedRoles: string }) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  if (!(await isKnownAccessRole(data.allowedRoles))) return { success: false, error: "Accès inconnu." };
 
   const lastOrder = await prisma.category.findFirst({ orderBy: { order: 'desc' }, select: { order: true } });
   const newOrder = lastOrder ? lastOrder.order + 1 : 0;
@@ -44,13 +46,15 @@ export async function createCategory(data: { name: string, description: string, 
       order: newOrder
     }
   });
+  await logModerationAction(session.user.id, "CATEGORY_CREATED", undefined, "CATEGORY", `${data.name} (accès ${data.allowedRoles})`);
   refreshForumStructure();
   return { success: true };
 }
 
 export async function updateCategory(id: string, data: { name: string, description: string, allowedRoles: string }) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  if (!(await isKnownAccessRole(data.allowedRoles))) return { success: false, error: "Accès inconnu." };
 
   // Rule: au moins une catégorie "ALL"
   if (data.allowedRoles !== "ALL") {
@@ -66,13 +70,14 @@ export async function updateCategory(id: string, data: { name: string, descripti
       allowedRoles: data.allowedRoles
     }
   });
+  await logModerationAction(session.user.id, "CATEGORY_UPDATED", id, "CATEGORY", `${data.name} (accès ${data.allowedRoles})`);
   refreshForumStructure();
   return { success: true };
 }
 
 export async function deleteCategory(id: string) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
 
   const cat = await prisma.category.findUnique({ where: { id }, include: { _count: { select: { forums: true } } } });
   if (!cat) return { success: false, error: "Catégorie introuvable." };
@@ -85,13 +90,14 @@ export async function deleteCategory(id: string) {
   if (cat._count.forums > 0) return { success: false, error: "La catégorie n'est pas vide (déplace d'abord ses forums)." };
 
   await prisma.category.delete({ where: { id } });
+  await logModerationAction(session.user.id, "CATEGORY_DELETED", id, "CATEGORY", cat.name);
   refreshForumStructure();
   return { success: true };
 }
 
 export async function reorderCategories(orderedIds: string[]) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
 
   await prisma.$transaction(
     orderedIds.map((id, index) => prisma.category.update({
@@ -99,6 +105,7 @@ export async function reorderCategories(orderedIds: string[]) {
       data: { order: index }
     }))
   );
+  await logModerationAction(session.user.id, "CATEGORIES_REORDERED", undefined, "CATEGORY");
   refreshForumStructure();
   return { success: true };
 }
@@ -124,8 +131,8 @@ export async function deleteForum(id: string) {
 }
 
 export async function reorderForums(containerId: string, isCategory: boolean, orderedIds: string[]) {
-  const session = await getActiveSession();
-  if (getRolePower((session?.user as any)?.role) < ROLE_POWER.ADMIN) return { success: false, error: "Non autorisé." };
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
 
   await prisma.$transaction(
     orderedIds.map((id, index) => prisma.forum.update({
@@ -136,6 +143,7 @@ export async function reorderForums(containerId: string, isCategory: boolean, or
       }
     }))
   );
+  await logModerationAction(session.user.id, "FORUMS_REORDERED", containerId, isCategory ? "CATEGORY" : "FORUM");
   refreshForumStructure();
   return { success: true };
 }

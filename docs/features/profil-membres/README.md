@@ -18,7 +18,7 @@ Depuis la refonte (carte 092, ADR 0006), les trois écrans utilisent les composa
 - **Rangée d'onglets sur téléphone (carte 190)** : quand les onglets ne tiennent pas sur la largeur, le bord du côté où il en reste à voir s'estompe, et la rangée se place d'elle-même sur l'onglet ouvert. Ce comportement est dans `LinkTabs` et `TabsList` de `packages/ui` (`src/tabs.tsx`) : il vaut aussi pour le classement, la modération et l'administration.
 - **Cadre de rang de l'avatar (carte 192)** : `UserAvatar` entoure l'avatar d'un cadre qui dépend du nombre de messages (bronze à grand maître). Les cadres or, diamant, maître et grand maître sont animés (pulsation, scintillement, rotation), sauf si le système du coach demande de réduire les animations (réglage d'accessibilité du téléphone ou de l'ordinateur, lu par `prefers-reduced-motion`) : le cadre reste alors immobile. Le bandeau « banni » posé sur l'avatar est écrit en 12 pixels, aux couleurs de danger du thème. Le liseré des membres sans rang prend la couleur de bordure du thème, pour rester visible dans le thème clair. L'image de l'avatar n'est téléchargée qu'à l'approche de l'écran (`loading="lazy"`), ce qui allège les longs sujets du forum.
 - `/spy/[id]` : le profil d'un autre coach : fiche du membre à gauche sur ordinateur, onglets « Activité du forum » et « Articles » (`?tab=`) au-dessus du contenu, à toutes les tailles. Boutons « Message privé », « Signaler », « Bloquer » ou « Débloquer » (pas sur un modérateur) et, pour un modérateur, « Bannir » ou « Débannir ». Chaque action passe par une fenêtre de confirmation (panneau qui monte du bas sur téléphone). Son propre identifiant renvoie vers `/profile`.
-- `/membres` : l'annuaire, réservé aux membres connectés. Recherche par nom toujours visible. Sur ordinateur, les filtres (rôle, région, ligue) sont dans un panneau à gauche (carte 220), avec « Réinitialiser » seulement quand un filtre est actif ; à droite, un tableau dont les en-têtes trient la liste (utilisateur, rôle, numéro NAF, région, ligues, puis « Message » et le menu des actions). Sur téléphone, un membre par ligne, et les filtres avec le tri dans le panneau « Filtrer les membres » ouvert par le bouton « Filtres ». « Message privé » est un simple lien texte. Les filtres actifs sont rappelés en pastilles. 25 membres par page. Pour un modérateur : les bannis sont visibles, et le menu « ⋯ » de chaque membre regroupe « Changer le rôle » (depuis la carte 220 : il ouvre un panneau de choix du rôle, au lieu d'une liste déroulante dans la ligne), « Bannir » ou « Débannir », et « Supprimer » (super administrateur). « Changer le rôle » n'apparaît que pour un membre de rang inférieur.
+- `/membres` : l'annuaire, réservé aux membres connectés. Recherche par nom toujours visible. Sur ordinateur, les filtres (rôle, région, ligue) sont dans un panneau à gauche (carte 220), avec « Réinitialiser » seulement quand un filtre est actif ; à droite, un tableau dont les en-têtes trient la liste (utilisateur, rôle, numéro NAF, région, ligues, puis « Message » et le menu des actions). Sur téléphone, un membre par ligne, et les filtres avec le tri dans le panneau « Filtrer les membres » ouvert par le bouton « Filtres ». « Message privé » est un simple lien texte. Les filtres actifs sont rappelés en pastilles. 25 membres par page. Pour un modérateur : les bannis sont visibles, et le menu « ⋯ » de chaque membre regroupe « Changer le rôle » (depuis la carte 220 : il ouvre un panneau de choix du rôle, au lieu d'une liste déroulante dans la ligne), « Bannir » ou « Débannir », et « Supprimer » (admin et plus, sur un membre de rang inférieur, jamais son propre compte : carte 221, règle `canDeleteMember`). « Changer le rôle » n'apparaît que pour un membre de rang inférieur.
 
 ## Les fichiers
 
@@ -40,13 +40,13 @@ Depuis la refonte (carte 092, ADR 0006), les trois écrans utilisent les composa
 | `apps/site/app/api/users/[id]/route.ts` | Données d'un membre (l'email seulement pour lui-même ou un modérateur). |
 | `apps/site/tests/e2e/inventaire/profil.spec.ts` | Test d'inventaire des trois écrans, en taille ordinateur et téléphone (carte 092). |
 
-Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `updateNotificationSettings`, `unlinkAccount`, `deleteAccount`, `toggleBlockUser`, `getBlockedUsers`, `getBlockedUsersIds` (utilisée par le forum pour masquer les messages des bloqués), `reportUser`, `getUserStats`, `getUserActivity`, `getReferenceDataAction` (aussi utilisée par l'onboarding), `getRoleLabels` (carte 092). `app/membres/actions.ts` : `updateUserRole`, `toggleBanUser`, `deleteUser`.
+Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `updateNotificationSettings`, `unlinkAccount`, `deleteAccount`, `toggleBlockUser`, `getBlockedUsers`, `getBlockedUsersIds` (utilisée par le forum pour masquer les messages des bloqués), `getUserStats`, `getUserActivity`, `getReferenceDataAction` (aussi utilisée par l'onboarding), `getRoleLabels` (carte 092). `app/membres/actions.ts` : `updateUserRole`, `toggleBanUser`, `deleteUser`.
 
 ## Les pièges
 
 - **Données de référence (carte 203).** Les listes fixes (régions, départements, éditions du jeu, plateformes, formats et types de tournoi, régions des coachs) se lisent seulement par `lib/referenceData.ts` : `getReferenceData`, `getReferenceLists` (plusieurs groupes en une requête), `getTournamentFormLists`, `getLigueFormLists`, `getReferenceLabel`. Ne pas écrire `prisma.referenceData.findMany` dans une page. L'action publique `getReferenceDataAction` (profil, inscription) n'accepte plus que le groupe `COACH_REGION`.
 - Le bannissement depuis `/spy/[id]` utilise le `toggleBanUser` de `app/membres/actions.ts` (seule version) : il vérifie la hiérarchie des rôles (`canEditTargetRole`) et trace l'action au journal (carte 050). La raison envoyée garde le format « [raison rapide] précisions ».
-- `deleteAccount` (le coach supprime son compte) et `deleteUser` (un modérateur supprime un membre) passent par la même fonction, `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`, carte 051) : ses sujets, messages, articles, ligues, tournois organisés et résultats passent au compte fantôme `ghost_coach` ; ses données privées (messages privés, réactions, inscriptions) sont supprimées. Les parties et les scores du quiz sont dans la base de l'application BBQuizz depuis la carte 180 : le site ne peut plus les effacer, ce sera fait par l'application à sa relance, prévenue par le hub. Toute nouvelle table liée à un membre doit être ajoutée à cette fonction, sinon la base refusera de supprimer le membre.
+- `deleteAccount` (le coach supprime son compte) et `deleteUser` (un admin supprime un membre, depuis la carte 221) passent par la même fonction, `anonymizeAndDeleteUser` (`lib/accountDeletion.ts`, carte 051) : ses sujets, messages, articles, ligues, tournois organisés et résultats passent au compte fantôme `ghost_coach` ; ses données privées (messages privés, réactions, inscriptions) sont supprimées. Les parties et les scores du quiz sont dans la base de l'application BBQuizz depuis la carte 180 : le site ne peut plus les effacer, ce sera fait par l'application à sa relance, prévenue par le hub. Toute nouvelle table liée à un membre doit être ajoutée à cette fonction, sinon la base refusera de supprimer le membre.
 - `/membres` charge tous les membres d'un coup, mais seulement les champs que l'annuaire affiche ou dont ses actions ont besoin (identifiant, pseudo, avatar, rôle, bannissement, NAF, région, ligues), grâce à un `select` (carte 135). Tout ce qui est lu part dans la page envoyée au navigateur : un champ ajouté à ce `select` devient visible par tout membre connecté. Le test `tests/e2e/bugs/articles-membres.spec.ts` vérifie qu'aucun champ non affiché n'y arrive. Charger tous les membres ralentira avec leur nombre.
 - Le filtre « Rôle » de l'annuaire propose les rôles de base et les rôles personnalisés de la table `RoleConfig` (carte 135), du plus puissant au moins puissant.
 - L'annuaire existe en deux versions dans `MembersTable.tsx` : le tableau (ordinateur) et la liste en lignes (téléphone), choisies par les classes `hidden lg:block` et `lg:hidden`. Une colonne ou un bouton ajouté au tableau doit aussi être ajouté aux lignes du téléphone.
@@ -66,6 +66,28 @@ Actions serveur : `app/profile/actions.ts` : `updateProfile`, `updateTheme`, `up
 | Compte lié | Moyen de connexion rattaché au compte (Discord, Google) ; on peut le délier dans les réglages. |
 | Numéro NAF | Identifiant du coach à la fédération internationale ; il donne un lien vers sa page NAF. |
 | Hiérarchie des rôles | On ne peut agir que sur un membre de rôle inférieur au sien (`lib/roles.ts`). |
+
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Messagerie, forum, notifications | Blocage (`toggleBlockUser`) | Pas de conversation entre deux membres qui se sont bloqués ; messages repliés ; aucune notification venant du membre bloqué. On ne bloque pas un membre de l'équipe. |
+| Tout le site | Thème du profil | Couleurs affichées au membre connecté. |
+| Notifications, e-mails | Préférences `notifPm`, `notifFollow`, `notifNewsletter`, suivi automatique | Ce que le membre reçoit. |
+| Rôles | `/membres` (`updateUserRole`, `toggleBanUser`, `deleteUser`) | Changement de rôle (modérateur et plus), bannissement (modérateur et plus), suppression (admin et plus, carte 221). |
+| Tout le contenu | `deleteAccount`, `lib/accountDeletion.ts` | Sujets, messages, articles et résultats passent au compte fantôme. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Rôles | `canEditTargetRole`, `canDeleteMember` | Menu « ⋯ » de `/membres` selon le rang. |
+| Hub | `api/hub/events` | Profil modifié, bannissement, suppression venus du hub. |
+| Forum, articles, ligues, classement | Fiche d'un coach | Activité, articles, ligues et place au classement. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
 
 ## État
 

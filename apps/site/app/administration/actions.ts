@@ -5,6 +5,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { getRolePower, ROLE_POWER } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
+import { changeMemberRole } from "@/lib/memberRole";
 
 export async function searchCoaches(query: string = "", page: number = 1, pageSize: number = 20) {
   const session = await getActiveSession();
@@ -35,42 +36,11 @@ export async function searchCoaches(query: string = "", page: number = 1, pageSi
   };
 }
 
+/** Change le rôle d'un coach depuis l'administration. Règles et journal : lib/memberRole.ts (carte 221). */
 export async function updateCoachRole(targetUserId: string, newRole: string) {
   const session = await getActiveSession();
-  const userRole = (session?.user as any)?.role;
-  if (!session || !userRole || getRolePower(userRole) < ROLE_POWER.MODERATOR) {
-    return { success: false, error: "Non autorisé." };
-  }
-
-  const targetUser = await prisma.user.findUnique({ where: { id: targetUserId }});
-  if (!targetUser) return { success: false, error: "Utilisateur inconnu." };
-
-  const targetRolePower = getRolePower(targetUser.role);
-  const myPower = getRolePower(userRole);
-  const newRolePower = getRolePower(newRole);
-
-  // Vérifications
-  if (myPower <= targetRolePower && userRole !== "SUPERADMIN") {
-    return { success: false, error: "Impossible de modifier un utilisateur de rang supérieur ou égal." };
-  }
-  if (myPower <= newRolePower && userRole !== "SUPERADMIN") {
-    return { success: false, error: "Tu ne peux pas donner un rôle supérieur ou égal au tien." };
-  }
-
-  await prisma.user.update({
-    where: { id: targetUserId },
-    data: { role: newRole }
-  });
-
-  await logModerationAction(
-    session.user.id,
-    "USER_ROLE_CHANGED",
-    targetUserId,
-    "USER",
-    `Changement de rôle : ${targetUser.role} -> ${newRole}`
-  );
-
-  return { success: true };
+  if (!session?.user) return { success: false, error: "Non autorisé." };
+  return changeMemberRole(session.user.id, targetUserId, newRole);
 }
 
 // ---- CUSTOM ROLES MANAGEMENT ----
@@ -126,6 +96,7 @@ export async function createCustomRole(data: { name: string, label: string, colo
       isBaseRole: false
     }
   });
+  await logModerationAction(session!.user.id, "ROLE_CREATED", safeName, "ROLE", `${data.label} (rang ${data.power})`);
 
   return { success: true };
 }
@@ -159,6 +130,10 @@ export async function deleteCustomRole(roleName: string) {
   }
 
   await prisma.roleConfig.delete({ where: { name: roleName } });
+  await logModerationAction(
+    session!.user.id, "ROLE_DELETED", roleName, "ROLE",
+    `${roleConfig.label} (${roleConfig._count.users} membre(s) repassé(s) Coach)`
+  );
 
   return { success: true };
 }
@@ -237,6 +212,7 @@ export async function reorderRoles(orderedNames: string[]) {
         data: { power: u.power }
       }))
     );
+    await logModerationAction(session!.user.id, "ROLES_REORDERED", undefined, "ROLE", updates.map(u => `${u.name} ${u.power}`).join(", "));
   }
 
   return { success: true };
@@ -261,6 +237,7 @@ export async function createReferenceData(data: { group: string, key: string, la
         isActive: true
       }
     });
+    await logModerationAction(session!.user.id, "REFERENCE_DATA_CREATED", undefined, "REFERENCE_DATA", `${data.group} / ${data.key} : ${data.label}`);
     return { success: true };
   } catch (error: any) {
     return { success: false, error: "Erreur lors de la création (couple groupe/clé déjà existant)." };
@@ -285,6 +262,7 @@ export async function updateReferenceData(id: string, data: { group: string, key
         isActive: data.isActive
       }
     });
+    await logModerationAction(session!.user.id, "REFERENCE_DATA_UPDATED", id, "REFERENCE_DATA", `${data.group} / ${data.key} : ${data.label}${data.isActive ? "" : " (désactivée)"}`);
     return { success: true };
   } catch (error: any) {
     return { success: false, error: "Erreur lors de la mise à jour." };
@@ -298,7 +276,9 @@ export async function deleteReferenceData(id: string) {
     return { success: false, error: "Non autorisé." };
   }
 
-  await prisma.referenceData.delete({ where: { id } });
+  const deleted = await prisma.referenceData.delete({ where: { id } }).catch(() => null);
+  if (!deleted) return { success: false, error: "Donnée introuvable." };
+  await logModerationAction(session!.user.id, "REFERENCE_DATA_DELETED", id, "REFERENCE_DATA", `${deleted.group} / ${deleted.key} : ${deleted.label}`);
 
   return { success: true };
 }
@@ -315,12 +295,27 @@ export async function getAllReferenceDataAdmin() {
 
 // ---- SITE SETTINGS MANAGEMENT ----
 
+/** Réglages que l'onglet « Général » de l'administration peut lire et modifier. */
+const EDITABLE_SITE_SETTINGS = ["discord_invite"];
+/** Textes de la page « Jouer », modifiables dans l'onglet du même nom. */
+const HOW_TO_PLAY_KEYS = [
+  "how_to_play_what_is_bb",
+  "how_to_play_platforms",
+  "how_to_play_community",
+  "how_to_play_tournaments",
+  "how_to_play_naf_cdf_rtc",
+  "how_to_play_challenges",
+];
+const SITE_SETTING_MAX = 20000;
+
 export async function getSiteSetting(key: string) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
   if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
     return null;
   }
+
+  if (!EDITABLE_SITE_SETTINGS.includes(key)) return null;
 
   const setting = await prisma.siteSetting.findUnique({
     where: { key }
@@ -335,25 +330,24 @@ export async function updateSiteSetting(key: string, value: string) {
     return { success: false, error: "Non autorisé." };
   }
 
+  // Carte 221 : seules les clés prévues par l'écran sont modifiables (une clé quelconque pouvait écraser un autre
+  // réglage, comme les textes de la page « Jouer » ou le repère de profil de la base).
+  if (!EDITABLE_SITE_SETTINGS.includes(key)) return { success: false, error: "Réglage inconnu." };
+  if (typeof value !== "string" || value.length > SITE_SETTING_MAX) return { success: false, error: "Valeur trop longue." };
+
   await prisma.siteSetting.upsert({
     where: { key },
     update: { value },
     create: { key, value }
   });
+  await logModerationAction(session!.user.id, "SITE_SETTING_UPDATED", key, "SETTING", value.slice(0, 200));
 
   return { success: true };
 }
 
 export async function getHowToPlaySettings() {
-  const keys = [
-    "how_to_play_what_is_bb",
-    "how_to_play_platforms",
-    "how_to_play_community",
-    "how_to_play_tournaments",
-    "how_to_play_naf_cdf_rtc",
-    "how_to_play_challenges"
-  ];
-  
+  const keys = HOW_TO_PLAY_KEYS;
+
   const settings = await prisma.siteSetting.findMany({
     where: { key: { in: keys } }
   });
@@ -372,8 +366,12 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
     return { success: false, error: "Non autorisé." };
   }
 
-  const entries = Object.entries(settings);
-  
+  // Carte 221 : seules les six clés de la page « Jouer » sont acceptées, et chaque texte est borné.
+  const entries = Object.entries(settings ?? {});
+  if (entries.some(([key, value]) => !HOW_TO_PLAY_KEYS.includes(key) || typeof value !== "string" || value.length > SITE_SETTING_MAX)) {
+    return { success: false, error: "Réglage inconnu ou texte trop long." };
+  }
+
   await prisma.$transaction(
     entries.map(([key, value]) => prisma.siteSetting.upsert({
       where: { key },
@@ -381,6 +379,7 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
       create: { key, value }
     }))
   );
+  await logModerationAction(session!.user.id, "SITE_SETTING_UPDATED", undefined, "SETTING", `Page « Jouer » : ${entries.map(([key]) => key).join(", ")}`);
 
   return { success: true };
 }
@@ -423,6 +422,8 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
     // Attendre 500ms entre chaque envoi pour le débit SMTP
     await sleep(500);
   }
+
+  await logModerationAction(session!.user.id, "MASS_MAIL_SENT", undefined, "SYSTEM", `« ${subject} » : ${successCount}/${users.length} envoyés`);
 
   return { success: true, count: successCount, total: users.length };
 }

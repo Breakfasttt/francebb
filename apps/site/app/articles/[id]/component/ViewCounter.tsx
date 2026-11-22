@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect } from "react";
-import { incrementArticleViews } from "../../actions";
 
 interface ViewCounterProps {
   articleId: string;
@@ -18,11 +17,12 @@ export default function ViewCounter({ articleId }: ViewCounterProps) {
 
     if (!hasViewed) {
       // Si l'utilisateur n'a pas encore vu l'article durant cette session
-      incrementArticleViews(articleId).then((res) => {
-        if (res.success) {
-          sessionStorage.setItem(storageKey, "true");
-        }
-      });
+      // Le serveur ne compte qu'une lecture par visite (cookie, carte 221) ; le navigateur évite seulement l'appel.
+      fetch(`/api/articles/${encodeURIComponent(articleId)}/view`, { method: "POST" })
+        .then((res) => {
+          if (res.ok) sessionStorage.setItem(storageKey, "true");
+        })
+        .catch(() => {});
     }
   }, [articleId]);
 

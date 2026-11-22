@@ -1,27 +1,12 @@
 "use server";
 
 import { prisma } from "@/lib/prisma";
+import { findDevAccounts } from "@/lib/devAccounts";
 import { auth } from "@/auth";
 
 export async function getTestUsers() {
   if (process.env.NODE_ENV !== "development") return [];
-  
-  return await prisma.user.findMany({
-    where: {
-      OR: [
-        { email: { contains: "@test.com" } },
-        { id: { startsWith: "test_" } },
-        { id: { startsWith: "user_test_" } }
-      ]
-    },
-    select: {
-      id: true,
-      name: true,
-      role: true,
-      image: true
-    },
-    orderBy: { name: "asc" }
-  });
+  return findDevAccounts();
 }
 
 export async function createQuickTestUser(name: string, role: string = "COACH") {

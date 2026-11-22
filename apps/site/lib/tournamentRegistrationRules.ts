@@ -19,10 +19,13 @@ export interface RegistrationState {
   registrationsLocked: boolean;
   /** Vrai quand le dernier jour du tournoi est passé (`isTournamentOver` de lib/tournamentDates.ts). */
   isOver: boolean;
+  /** Vrai quand le sujet du forum du tournoi a été supprimé par la modération (carte 221). */
+  topicDeleted?: boolean;
 }
 
 /** Raison du refus d'une nouvelle inscription (coach, équipe ou mercenaire), ou `null` si elle est acceptée. */
 export function registrationRefusal(state: RegistrationState): string | null {
+  if (state.topicDeleted) return "Ce tournoi a été retiré par la modération : il n'accepte plus d'inscription.";
   if (state.isCancelled) return "Ce tournoi est annulé : il n'accepte plus d'inscription.";
   if (state.isFinished) return "Ce tournoi est terminé : il n'accepte plus d'inscription.";
   if (state.isOver) return "Ce tournoi est passé : il n'accepte plus d'inscription.";

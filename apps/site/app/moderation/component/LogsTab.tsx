@@ -69,6 +69,24 @@ const ACTION_LABELS: Record<string, string> = {
   // Tournois de la Coupe de France (carte 162)
   TOURNAMENT_CDF_VALIDATED: "Résultats CDF validés",
   TOURNAMENT_CDF_UNVALIDATED: "Validation CDF retirée",
+  // Carte 221
+  POST_EDITED_BY_MOD: "Message modifié par la modération",
+  TOPIC_RENAMED: "Sujet renommé",
+  LIGUE_UPDATED: "Ligue modifiée",
+  CATEGORY_CREATED: "Catégorie créée",
+  CATEGORY_UPDATED: "Catégorie modifiée",
+  CATEGORY_DELETED: "Catégorie supprimée",
+  CATEGORIES_REORDERED: "Catégories réordonnées",
+  FORUMS_REORDERED: "Forums réordonnés",
+  ROLE_CREATED: "Rôle créé",
+  ROLE_DELETED: "Rôle supprimé",
+  ROLES_REORDERED: "Rôles réordonnés",
+  REFERENCE_DATA_CREATED: "Donnée de référence ajoutée",
+  REFERENCE_DATA_UPDATED: "Donnée de référence modifiée",
+  REFERENCE_DATA_DELETED: "Donnée de référence supprimée",
+  SITE_SETTING_UPDATED: "Réglage du site modifié",
+  MASS_MAIL_SENT: "Courriel envoyé à tous",
+  LOGS_PURGED: "Journal purgé",
 };
 
 /** Nom lisible du type d'élément visé. */
@@ -80,6 +98,12 @@ const TARGET_LABELS: Record<string, string> = {
   LIGUE: "Ligue",
   POST: "Message",
   RESOURCE: "Ressource",
+  TOURNAMENT: "Tournoi",
+  CATEGORY: "Catégorie",
+  ROLE: "Rôle",
+  REFERENCE_DATA: "Donnée de référence",
+  SETTING: "Réglage",
+  SYSTEM: "Site",
 };
 
 const formatAction = (action: string) => ACTION_LABELS[action] || action.replace(/_/g, " ");
@@ -132,7 +156,7 @@ export default function LogsTab({ userRole }: LogsTabProps) {
   const onConfirmCleanup = async () => {
     setIsConfirmOpen(false);
     setIsCleaning(true);
-    const res = await cleanupModerationLogs(3);
+    const res = await cleanupModerationLogs();
     setIsCleaning(false);
 
     if (res.success) {

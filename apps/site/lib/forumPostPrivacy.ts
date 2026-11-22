@@ -58,7 +58,9 @@ export const TOURNAMENT_REGISTRATION_PUBLIC_SELECT = {
   id: true,
   userId: true,
   status: true,
-  user: { select: PUBLIC_MEMBER_SELECT },
+  // `isBanned` (carte 221) : l'organisateur voit qu'un inscrit a été banni depuis son inscription. L'information est
+  // déjà publique (badge « Banni » sur la fiche d'un auteur du forum) ; le motif, lui, n'est pas envoyé.
+  user: { select: { ...PUBLIC_MEMBER_SELECT, isBanned: true } },
 } as const satisfies Prisma.TournamentRegistrationSelect;
 
 /** Équipes d'un tournoi par équipes : même règle que les inscriptions, sans l'état de paiement. */

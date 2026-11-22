@@ -4,7 +4,7 @@ import { redirect } from "next/navigation";
 import { safeCallbackUrl } from "@/lib/safeRedirect";
 import { LogIn } from "lucide-react";
 import Link from "next/link";
-import { prisma } from "@/lib/prisma";
+import { findDevAccounts } from "@/lib/devAccounts";
 import DevLoginSection from "./DevLoginSection";
 import { Card, Field, Input } from "@bbfrance/ui";
 import SubmitButton from "@/common/components/Form/SubmitButton";
@@ -54,25 +54,8 @@ export default async function LoginPage(props: {
   const hasAnyMethod = isDiscordEnabled || isGoogleEnabled || isEmailEnabled;
   
   // Récupération des comptes de test en mode dev (aligné avec DebugAuthWidget)
-  const devUsers = process.env.NODE_ENV === "development" 
-    ? await prisma.user.findMany({
-        where: {
-          AND: [
-            { id: { not: "system" } },
-            {
-              OR: [
-                { email: { contains: "@test.com" } },
-                { id: { startsWith: "test_" } },
-                { id: { startsWith: "user_test_" } },
-                { role: { in: ["SUPERADMIN", "ADMIN", "MODERATOR"] } }
-              ]
-            }
-          ]
-        },
-        select: { id: true, name: true, email: true, role: true, image: true },
-        take: 10,
-        orderBy: { name: "asc" }
-      })
+  const devUsers = process.env.NODE_ENV === "development"
+    ? (await findDevAccounts()).map((user) => ({ ...user, email: null }))
     : [];
 
   return (

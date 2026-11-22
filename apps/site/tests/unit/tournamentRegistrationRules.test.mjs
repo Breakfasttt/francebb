@@ -70,3 +70,7 @@ test("le texte d'un changement de format annonce les inscriptions supprimées", 
   assert.equal(formatChangeLossText({ registrations: 0, teams: 0, mercenaries: 0 }), "aucune inscription");
   assert.equal(formatChangeLossCount({ registrations: 1, teams: 2, mercenaries: 3 }), 6);
 });
+
+test("un tournoi dont le sujet a été supprimé n'accepte plus d'inscription (carte 221)", () => {
+  assert.match(registrationRefusal({ ...open, topicDeleted: true }), /retiré par la modération/);
+});

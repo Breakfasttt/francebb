@@ -7,15 +7,20 @@
 
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
-import { isModerator } from "@/lib/roles";
+import { isAdmin, isModerator } from "@/lib/roles";
 import { revalidatePath } from "next/cache";
-import { logModerationAction } from "@/lib/moderationLog";
+import { LOG_RETENTION_MONTHS, logModerationAction } from "@/lib/moderationLog";
 import { toggleBanUser } from "@/app/membres/actions";
 import { stripBBCode } from "@/lib/bbcode";
 import { forumPostHrefFor } from "@/lib/forumPostLink";
+import { getForumAccess } from "@/lib/forumAccess";
+import { canSeeReportTarget } from "@/lib/moderationReports";
+import { reportInputRefusal, type ReportTargetType } from "@/lib/reportRules";
 
 /**
- * Créer un nouveau signalement.
+ * Créer un nouveau signalement (bouton « Signaler » d'un message, d'un sujet, d'un membre, d'un article, d'une ligue).
+ * Carte 221 : le type, la raison et les précisions sont vérifiés, le membre doit voir ce qu'il signale, et un même
+ * membre ne peut pas signaler deux fois le même contenu tant que le premier signalement est en attente.
  */
 export async function createReportAction(data: {
   reason: string;
@@ -25,15 +30,31 @@ export async function createReportAction(data: {
 }) {
   const session = await getActiveSession();
   if (!session?.user?.id) return { success: false, error: "Non authentifié" };
+  const reporterId = session.user.id;
+
+  const refusal = reportInputRefusal({ reporterId, ...data });
+  if (refusal) return { success: false, error: refusal };
+  const targetType = data.targetType as ReportTargetType;
+
+  const { roles } = await getForumAccess();
+  if (!(await canSeeReportTarget({ reporterId, targetType, targetId: data.targetId, roles }))) {
+    return { success: false, error: "Contenu introuvable." };
+  }
+
+  const alreadyPending = await prisma.moderationReport.findFirst({
+    where: { reporterId, targetId: data.targetId, targetType, status: "PENDING" },
+    select: { id: true },
+  });
+  if (alreadyPending) return { success: false, error: "Tu as déjà signalé ce contenu : la modération va le regarder." };
 
   try {
     await prisma.moderationReport.create({
       data: {
-        reason: data.reason,
-        details: data.details,
+        reason: data.reason.trim(),
+        details: data.details?.trim() || null,
         targetId: data.targetId,
-        targetType: data.targetType,
-        reporterId: session.user.id,
+        targetType,
+        reporterId,
       }
     });
     return { success: true };
@@ -52,7 +73,7 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
 
   // Purge silencieuse automatique (uniquement sur la page 1 pour limiter les appels)
   if (page === 1) {
-    cleanupModerationLogs(3).catch(() => {});
+    cleanupModerationLogs().catch(() => {});
   }
 
   const skip = (page - 1) * pageSize;
@@ -289,15 +310,17 @@ export async function resolveReportsAction(targetId: string, targetType: string,
 }
 
 /**
- * Supprime les logs plus vieux que X mois.
- * Uniquement pour SUPERADMIN et ADMIN.
+ * Supprime les entrées du journal plus vieilles que LOG_RETENTION_MONTHS mois. Réservé aux admins.
+ * Carte 221 : la durée est fixée par le serveur. Elle venait de l'appelant, et `cleanupModerationLogs(0)` effaçait
+ * tout le journal, y compris la trace de ce que l'admin venait de faire.
  */
-export async function cleanupModerationLogs(months = 3) {
+export async function cleanupModerationLogs() {
   const session = await getActiveSession();
-  if (session?.user?.role !== "SUPERADMIN" && session?.user?.role !== "ADMIN") {
+  if (!session?.user || !isAdmin(session.user.role)) {
     return { success: false, error: "Non autorisé" };
   }
 
+  const months = LOG_RETENTION_MONTHS;
   const dateLimit = new Date();
   // Recule de `months` mois (setMonth gère le passage d'une année à l'autre)
   dateLimit.setMonth(dateLimit.getMonth() - months);
@@ -316,7 +339,7 @@ export async function cleanupModerationLogs(months = 3) {
     if (deleted.count > 0) {
       await logModerationAction(
         session.user.id,
-        "REPORT_RESOLVED", // On utilise une action existante ou on en crée une, ici RESOLVED car c'est une maintenance
+        "LOGS_PURGED",
         undefined,
         "SYSTEM",
         `Nettoyage automatique des logs supérieurs à ${months} mois (${deleted.count} entrées supprimées)`

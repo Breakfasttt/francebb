@@ -8,8 +8,19 @@ import { markConversationNotificationsRead, notifyPrivateMessage } from "@/lib/n
 import { encrypt, decrypt } from "@/lib/crypto";
 import { countUnreadByConversation } from "@/lib/unreadMessages";
 import type { ActionResult } from "@/lib/actionResult";
+import { groupNameError, messageContentError, participantsError } from "@/lib/messageRules";
 
 const CONVERSATION_LIMIT = 50;
+
+/**
+ * Membres qu'on ne peut pas ajouter à une conversation (carte 221) : compte inexistant ou banni. Un banni ne lit plus
+ * sa messagerie ; lui écrire ou l'inviter ne servirait qu'à remplir une conversation qu'il ne verra pas.
+ */
+async function unreachableMembers(userIds: string[]) {
+  if (userIds.length === 0) return false;
+  const reachable = await prisma.user.count({ where: { id: { in: userIds }, isBanned: false } });
+  return reachable !== new Set(userIds).size;
+}
 
 /**
  * Vrai si un blocage existe, dans un sens ou dans l'autre, entre `userId` et l'un des membres de `otherIds`.
@@ -184,6 +195,9 @@ export async function sendMessage(conversationId: string, content: string): Prom
   const userId = session?.user?.id;
   if (!userId) return { success: false, error: "Non autorisé" };
 
+  const contentError = messageContentError(content);
+  if (contentError) return { success: false, error: contentError };
+
   const participant = await prisma.conversationParticipant.findUnique({
     where: { userId_conversationId: { userId, conversationId } }
   });
@@ -199,6 +213,10 @@ export async function sendMessage(conversationId: string, content: string): Prom
   if (conversation?.isGroup && participant.deletedAt) return { success: false, error: "Accès refusé" };
   if (!conversation?.isGroup && await hasBlockBetween(userId, conversation?.participants.map(p => p.userId) ?? [])) {
     return { success: false, error: "Impossible d'envoyer un message à ce membre." };
+  }
+  // Conversation à deux avec un membre banni : le message ne serait jamais lu (carte 221).
+  if (!conversation?.isGroup && await unreachableMembers(conversation?.participants.map(p => p.userId) ?? [])) {
+    return { success: false, error: "Ce membre ne peut plus recevoir de messages." };
   }
 
   const encryptedContent = encrypt(content);
@@ -260,8 +278,15 @@ export async function startConversation(userIds: string[], name?: string): Promi
     const myId = session?.user?.id;
     if (!myId) return { success: false, error: "Non autorisé" };
 
+    const inputError = participantsError(userIds, new Set([myId, ...(Array.isArray(userIds) ? userIds : [])]).size) ?? groupNameError(name);
+    if (inputError) return { success: false, error: inputError };
+
     const allParticipants = [...new Set([myId, ...userIds])];
     const isGroup = allParticipants.length > 2 || !!name;
+    if (allParticipants.length < 2) return { success: false, error: "Choisis au moins un destinataire." };
+    if (await unreachableMembers(allParticipants.filter(uid => uid !== myId))) {
+        return { success: false, error: "Un des membres choisis n'existe pas ou ne peut plus recevoir de messages." };
+    }
 
     if (await hasBlockBetween(myId, allParticipants.filter(uid => uid !== myId))) {
         return { success: false, error: "Impossible de démarrer une conversation avec un membre qui t'a bloqué ou que tu as bloqué." };
@@ -409,6 +434,13 @@ export async function inviteToGroup(conversationId: string, userIds: string[]): 
     if (await hasBlockBetween(myId, userIds.filter(uid => uid !== myId))) {
         return { success: false, error: "Impossible d'inviter un membre qui t'a bloqué ou que tu as bloqué." };
     }
+    const presentCount = await prisma.conversationParticipant.count({ where: { conversationId, deletedAt: null } });
+    const newcomers = new Set(Array.isArray(userIds) ? userIds : []);
+    const inviteError = participantsError(userIds, presentCount + newcomers.size);
+    if (inviteError) return { success: false, error: inviteError };
+    if (await unreachableMembers([...newcomers])) {
+        return { success: false, error: "Un des membres choisis n'existe pas ou ne peut plus recevoir de messages." };
+    }
 
     // Filtrer pour ne pas ajouter des personnes déjà présentes
     const existing = await prisma.conversationParticipant.findMany({
@@ -454,10 +486,13 @@ export async function renameConversation(conversationId: string, name: string): 
     const myId = session?.user?.id;
     if (!myId) return { success: false, error: "Non autorisé" };
 
-    // Vérifier si la conversation est un groupe et si l'utilisateur participe
+    const nameError = groupNameError(name);
+    if (nameError) return { success: false, error: nameError };
+
+    // Vérifier si la conversation est un groupe et si l'utilisateur y est encore (un membre parti ne renomme plus)
     const conv = await prisma.conversation.findUnique({
         where: { id: conversationId },
-        include: { participants: { where: { userId: myId } } }
+        include: { participants: { where: { userId: myId, deletedAt: null } } }
     });
 
     if (!conv) return { success: false, error: "Conversation introuvable" };

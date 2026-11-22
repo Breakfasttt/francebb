@@ -51,6 +51,23 @@ Depuis la carte 179 (décision ADR-0008), BBScheme n'est plus dans le site : c'e
 | Empreinte (*hash*) | Résumé MD5 du contenu, qui sert à reconnaître un plateau déjà enregistré. |
 | Élément personnalisé (`<bb-scheme>`) | Balise HTML inventée par le site, que le navigateur remplace par le lecteur React quand elle apparaît dans un message. |
 
+## Interactions
+
+**Elle agit sur**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Forum, articles | Balise `[bbscheme]` (`lib/bbcode.ts`) | Le schéma s'affiche, animé, dans le texte. |
+
+**Elle dépend de**
+
+| Fonctionnalité | Endroit | Effet |
+|---|---|---|
+| Application BBScheme | `BBSCHEME_URL`, `lib/bbschemeBoard.ts` | Sans réponse, le message affiche « Schéma indisponible ». |
+| Éditeur | `../editeur-bbcode/` | L'outil « Schéma » est retiré tant que l'éditeur de schémas est en attente. |
+
+Vue d'ensemble : [../INTERACTIONS.md](../INTERACTIONS.md).
+
 ## État
 
 - Marche : lecture des schémas publiés dans les messages et les articles, quand l'application BBScheme tourne.

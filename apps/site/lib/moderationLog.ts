@@ -20,7 +20,16 @@ export type ModerationAction =
   | "RESOURCE_APPROVED" | "RESOURCE_REJECTED" | "RESOURCE_UPDATED" | "RESOURCE_DELETED"
   | "REPORT_IGNORED" | "REPORT_RESOLVED"
   | "ARCHIVE_RANKING" | "DELETE_ARCHIVE" | "CREATE_ARCHIVE_MANUAL" | "UPDATE_ARCHIVE"
-  | "TOURNAMENT_CDF_VALIDATED" | "TOURNAMENT_CDF_UNVALIDATED";
+  | "TOURNAMENT_CDF_VALIDATED" | "TOURNAMENT_CDF_UNVALIDATED"
+  // Carte 221 : actions d'administration et de modération qui n'étaient pas tracées
+  | "POST_EDITED_BY_MOD" | "TOPIC_RENAMED" | "LIGUE_UPDATED"
+  | "CATEGORY_CREATED" | "CATEGORY_UPDATED" | "CATEGORY_DELETED" | "CATEGORIES_REORDERED" | "FORUMS_REORDERED"
+  | "ROLE_CREATED" | "ROLE_DELETED" | "ROLES_REORDERED"
+  | "REFERENCE_DATA_CREATED" | "REFERENCE_DATA_UPDATED" | "REFERENCE_DATA_DELETED"
+  | "SITE_SETTING_UPDATED" | "MASS_MAIL_SENT" | "LOGS_PURGED";
+
+/** Durée de conservation du journal, en mois (carte 221 : fixée par le serveur, jamais par l'appelant). */
+export const LOG_RETENTION_MONTHS = 3;
 
 /**
  * Enregistre une action de modération dans le journal, au nom du membre `moderatorId`.

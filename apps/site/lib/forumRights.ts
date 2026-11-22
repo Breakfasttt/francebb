@@ -37,3 +37,18 @@ export function canEditPost(viewer: ForumViewer, topicClosed: boolean, authorId:
   if (viewer.isModerator) return true;
   return viewer.id === authorId && !topicClosed;
 }
+
+/**
+ * Peut enregistrer un nouveau texte pour ce message (action `updatePost`, carte 221) : la règle de `canEditPost`, et
+ * en plus, pour un membre ordinaire, un message supprimé ou masqué par la modération n'est plus modifiable. Sinon
+ * l'auteur pourrait réécrire le texte en douce, et une restauration ultérieure montrerait ce nouveau texte. Le menu
+ * du message cache déjà « Modifier » dans ce cas (PostItem.tsx, `showContentActions`).
+ */
+export function canSavePostEdit(
+  viewer: ForumViewer,
+  topicClosed: boolean,
+  post: { authorId: string; isDeleted: boolean; isModerated: boolean },
+): boolean {
+  if (!canEditPost(viewer, topicClosed, post.authorId)) return false;
+  return viewer.isModerator || (!post.isDeleted && !post.isModerated);
+}
