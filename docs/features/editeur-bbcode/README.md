@@ -8,7 +8,7 @@ Le coach met en forme ses textes avec le BBCode : des balises entre crochets com
 
 ## Ce que voit le coach
 
-- **La barre d'outils** (carte 087) : seuls les outils les plus utilisés sont visibles (gras, italique, lien, image, spoiler sur ordinateur, smileys). Le bouton « + » (« Plus d'outils de mise en forme ») range les autres par rubrique (Texte, Blocs, Liens et médias, Aide). « Aperçu » montre le rendu. Sur ordinateur, « + » ouvre un petit panneau sous le bouton ; sur téléphone, un panneau qui monte du bas. Échap ferme l'outil ouvert.
+- **La barre d'outils** (carte 087, revue le 22/11/2026) : tous les outils sont visibles d'un coup, rangés en quatre groupes séparés par un filet (Texte, Blocs, Liens et médias, Aide) ; sur téléphone, la barre passe sur plusieurs lignes. Il n'y a plus de bouton « + » qui cachait la plupart des outils. « Aperçu » montre le rendu. Un outil à options ouvre son formulaire sous la barre sur ordinateur, dans un panneau qui monte du bas sur téléphone. Échap ferme l'outil ouvert.
 - **Les balises** (`lib/bbcode.ts`) :
   - texte : `b`, `i`, `u`, `s`, `sub`, `sup`, `color=`, `size=` ;
   - mise en page : `center`, `right`, `justify`, `hr`, `list`, `list=1` avec `[*]`, `table`, `tr`, `th`, `td` ;

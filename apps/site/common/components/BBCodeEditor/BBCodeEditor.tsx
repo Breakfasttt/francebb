@@ -5,9 +5,8 @@
  * l'administration. Le BBCode est une syntaxe de mise en forme par balises entre crochets, par exemple `[b]gras[/b]`.
  *
  * Refonte de la carte 087 (ADR 0006) :
- * - la barre n'affiche que les outils les plus utilisés (gras, italique, lien, image, spoiler, smileys) ; tous les
- *   autres sont rangés par rubrique dans le panneau « Plus d'outils de mise en forme » : un petit panneau sous le
- *   bouton « + » sur ordinateur, un panneau qui monte du bas sur téléphone. Aucun outil n'a disparu ;
+ * - la barre affiche tous les outils, rangés en groupes (texte, blocs, liens et médias, aide) ; sur téléphone elle passe
+ *   sur plusieurs lignes. Le bouton « + » qui en cachait la plupart a été retiré le 22/11/2026 ;
  * - un outil à options (lien, image, couleur…) ouvre son formulaire sous la barre sur ordinateur, et dans le panneau
  *   du bas sur téléphone, où il reste visible quel que soit l'endroit de la page ;
  * - « @ » tapé en début de mot (au début du texte, après une espace ou un retour à la ligne) ouvre la recherche d'un
@@ -37,9 +36,6 @@ import {
   Button,
   Field,
   Input,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
   Sheet,
   SheetContent,
   Textarea,
@@ -49,15 +45,13 @@ import {
   useMediaQuery,
   DESKTOP_QUERY,
 } from "@bbfrance/ui";
-import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Eye, ImagePlus, List, ListOrdered, Loader2, Plus, Subscript, Superscript, X } from "lucide-react";
+import { AlignCenter, AlignJustify, AlignLeft, AlignRight, Eye, ImagePlus, List, ListOrdered, Loader2, Subscript, Superscript, X } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState, type ChangeEvent, type ReactNode } from "react";
 import AIAssistantSheet from "./AIAssistantSheet";
 import { buildAIPrompt } from "./aiPrompt";
 import {
-  MORE_TOOL_GROUPS,
   PANEL_TOOL_LABELS,
-  PHONE_ONLY_MORE_TOOLS,
-  PRIMARY_TOOLS,
+  TOOLBAR_GROUPS,
   TEXT_COLORS,
   TEXT_SIZES,
   type EditorTool,
@@ -79,7 +73,6 @@ interface BBCodeEditorProps {
   screen?: boolean;
 }
 
-const MORE_TOOLS_LABEL = "Plus d'outils de mise en forme";
 
 type Align = "center" | "left" | "right";
 type FoundTopic = { id: string; title: string; forumName: string };
@@ -115,7 +108,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   const [uploadProgress, setUploadProgress] = useState<{ current: number; total: number } | null>(null);
   const isUploading = uploadProgress !== null;
   const [activeTool, setActiveTool] = useState<PanelToolId | null>(null);
-  const [moreOpen, setMoreOpen] = useState(false);
   const [toolInputThumb, setToolInputThumb] = useState(true);
   const [toolInputUrl, setToolInputUrl] = useState("");
   const [toolInputText, setToolInputText] = useState("");
@@ -245,7 +237,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     if (!typedOneChar || isPreview || activeTool === "mention") return;
     const atWordStart = pos === 1 || (pos > 1 && /\s/.test(value[pos - 2]));
     if (value[pos - 1] === "@" && atWordStart) {
-      setMoreOpen(false);
       setActiveTool("mention");
       setMentionQuery("");
       setMentionResults([]);
@@ -484,9 +475,8 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  /** Action d'un outil, qu'il soit dans la barre ou dans le panneau « Plus d'outils ». */
+  /** Action d'un outil de la barre. */
   const runTool = (tool: EditorTool) => {
-    setMoreOpen(false);
     if (tool.kind === "insert") {
       insertTag(tool.open, tool.close);
       return;
@@ -500,7 +490,6 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
   };
 
   const closeTools = () => {
-    setMoreOpen(false);
     setActiveTool(null);
     setTimeout(() => textareaRef.current?.focus(), 0);
   };
@@ -894,57 +883,10 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
     }
   };
 
-  /** Rubriques du panneau « Plus d'outils » (l'outil rangé là sur téléphone seulement n'y est pas sur ordinateur). */
-  const moreToolsList = (
-    <div className="flex flex-col gap-4">
-      {MORE_TOOL_GROUPS.map((group) => {
-        const tools = group.tools.filter((tool) => !(isDesktop && PHONE_ONLY_MORE_TOOLS.has(tool.id)));
-        return (
-          <section key={group.title} aria-label={group.title} className="flex flex-col gap-1.5">
-            <h3 className="text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">{group.title}</h3>
-            <div className="grid grid-cols-2 gap-1.5">
-              {tools.map((tool) => (
-                <Button
-                  key={tool.id}
-                  type="button"
-                  variant="secondary"
-                  size="tap"
-                  onClick={() => runTool(tool)}
-                  className="justify-start gap-2 px-3 text-left text-sm font-semibold whitespace-normal"
-                >
-                  <tool.icon size={18} aria-hidden="true" className="shrink-0 text-bb-accent-text" />
-                  {tool.label}
-                </Button>
-              ))}
-            </div>
-          </section>
-        );
-      })}
-    </div>
-  );
-
   const toolbarButtonClass = "size-11 shrink-0 lg:size-9";
 
-  const plusButton = (
-    <Button
-      type="button"
-      variant="quiet"
-      size="tap-icon"
-      aria-label={MORE_TOOLS_LABEL}
-      aria-haspopup="dialog"
-      aria-expanded={moreOpen}
-      onClick={() => {
-        setActiveTool(null);
-        setMoreOpen(!moreOpen);
-      }}
-      className={cn(toolbarButtonClass, moreOpen && "bg-bb-accent-soft text-bb-accent-text")}
-    >
-      <Plus size={20} aria-hidden="true" />
-    </Button>
-  );
-
-  // Panneau du bas (téléphone) : la liste « Plus d'outils », ou le formulaire de l'outil ouvert
-  const sheetOpen = !isDesktop && (moreOpen || activeTool !== null);
+  // Panneau du bas (téléphone) : le formulaire de l'outil ouvert
+  const sheetOpen = !isDesktop && activeTool !== null;
 
   return (
     <div className="bbcode-editor relative flex flex-col rounded-bb-md border border-bb-border bg-bb-surface-2 font-bb-sans text-bb-text transition-colors focus-within:border-bb-focus has-[textarea[aria-invalid=true]]:border-bb-danger">
@@ -955,39 +897,39 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         role="toolbar"
         aria-label="Mise en forme du message"
         className={cn(
-          "flex items-center gap-0.5 rounded-t-bb-md border-b border-bb-border bg-bb-surface px-1 py-1",
+          "flex flex-wrap items-center gap-0.5 rounded-t-bb-md border-b border-bb-border bg-bb-surface px-1 py-1",
           screen && "max-lg:sticky max-lg:top-14 max-lg:z-[var(--z-index-dropdown)]"
         )}
       >
-        {PRIMARY_TOOLS.map(({ tool, desktopOnly }) => {
-          const pressed = tool.kind === "panel" ? activeTool === tool.id : undefined;
-          return (
-            <Tooltip key={tool.id} content={tool.label}>
-              <Button
-                type="button"
-                variant="quiet"
-                size="tap-icon"
-                aria-label={tool.label}
-                aria-pressed={pressed}
-                onClick={() => runTool(tool)}
-                className={cn(toolbarButtonClass, desktopOnly && "max-lg:hidden", pressed && "bg-bb-accent-soft text-bb-accent-text")}
-              >
-                <tool.icon size={18} aria-hidden="true" />
-              </Button>
-            </Tooltip>
-          );
-        })}
-
-        {isDesktop ? (
-          <Popover open={moreOpen} onOpenChange={setMoreOpen}>
-            <PopoverTrigger asChild>{plusButton}</PopoverTrigger>
-            <PopoverContent aria-label="Plus d'outils" className="w-[400px]" onCloseAutoFocus={(e) => e.preventDefault()}>
-              {moreToolsList}
-            </PopoverContent>
-          </Popover>
-        ) : (
-          plusButton
-        )}
+        {TOOLBAR_GROUPS.map((group, index) => (
+          // Un groupe par rubrique, séparé du précédent par un filet vertical sur ordinateur ; sur téléphone, les boutons
+          // coulent à la suite sur plusieurs lignes (le groupe ne fait plus de bloc), sans bouton isolé en bout de ligne
+          <div
+            key={group.title}
+            role="group"
+            aria-label={group.title}
+            className={cn("flex items-center gap-0.5 max-lg:contents", index > 0 && "lg:border-l lg:border-bb-border lg:pl-1")}
+          >
+            {group.tools.map((tool) => {
+              const pressed = tool.kind === "panel" ? activeTool === tool.id : undefined;
+              return (
+                <Tooltip key={tool.id} content={tool.label}>
+                  <Button
+                    type="button"
+                    variant="quiet"
+                    size="tap-icon"
+                    aria-label={tool.label}
+                    aria-pressed={pressed}
+                    onClick={() => runTool(tool)}
+                    className={cn(toolbarButtonClass, pressed && "bg-bb-accent-soft text-bb-accent-text")}
+                  >
+                    <tool.icon size={18} aria-hidden="true" />
+                  </Button>
+                </Tooltip>
+              );
+            })}
+          </div>
+        ))}
 
         <div className="flex-1" />
 
@@ -1052,11 +994,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
         </div>
       )}
 
-      {/* Téléphone : panneau qui monte du bas, pour « Plus d'outils » et pour le formulaire de l'outil ouvert */}
+      {/* Téléphone : panneau qui monte du bas, pour le formulaire de l'outil ouvert */}
       <Sheet open={sheetOpen} onOpenChange={(open) => !open && closeTools()}>
         <SheetContent
           ref={sheetRef}
-          title={activeTool ? PANEL_TOOL_LABELS[activeTool] : "Plus d'outils"}
+          title={activeTool ? PANEL_TOOL_LABELS[activeTool] : ""}
           onOpenAutoFocus={(e) => {
             // Pas de focus sur la croix de fermeture : le panneau lui-même le reçoit, puis le premier champ du
             // formulaire de l'outil (effet plus haut)
@@ -1065,14 +1007,11 @@ export default function BBCodeEditor({ name, id, defaultValue = "", placeholder,
           }}
           onCloseAutoFocus={(e) => e.preventDefault()}
         >
-          {sheetOpen &&
-            (activeTool ? (
-              <div ref={optionsRef} className="pb-2">
-                {renderToolOptions(activeTool)}
-              </div>
-            ) : (
-              moreToolsList
-            ))}
+          {sheetOpen && activeTool && (
+            <div ref={optionsRef} className="pb-2">
+              {renderToolOptions(activeTool)}
+            </div>
+          )}
         </SheetContent>
       </Sheet>
 

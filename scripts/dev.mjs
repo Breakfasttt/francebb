@@ -107,5 +107,12 @@ if (profile === "prod" && marker !== expectedMarker) {
 }
 
 console.log(`▶ Site sur http://localhost:3000 (profil ${profile}). Connexion : bouton de développement de la page de connexion.\n`);
-const child = spawn(["npx", "next", "dev", ...nextArgs].join(" "), { cwd: SITE, stdio: "inherit", shell: true });
+// Une seule connexion à la fois vers la base : la base locale `prisma dev` coupe la connexion quand une page lance
+// plusieurs requêtes en parallèle (« Server has closed the connection », lib/prisma.ts, DATABASE_POOL_MAX)
+const child = spawn(["npx", "next", "dev", ...nextArgs].join(" "), {
+  cwd: SITE,
+  stdio: "inherit",
+  shell: true,
+  env: { ...process.env, DATABASE_POOL_MAX: process.env.DATABASE_POOL_MAX ?? "1" },
+});
 child.on("exit", (code) => process.exit(code ?? 0));

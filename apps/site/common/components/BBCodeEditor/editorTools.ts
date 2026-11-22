@@ -1,6 +1,6 @@
 /**
- * Liste des outils de l'éditeur BBCode (carte 087) : leur nom, leur icône, leur rubrique dans le panneau « Plus
- * d'outils » et leur façon d'agir. Le nom sert à la fois d'info-bulle et de nom lu par les lecteurs d'écran ; les
+ * Liste des outils de l'éditeur BBCode (carte 087) : leur nom, leur icône, leur groupe dans la barre d'outils et
+ * leur façon d'agir. Le nom sert à la fois d'info-bulle et de nom lu par les lecteurs d'écran ; les
  * tests d'inventaire (tests/e2e/inventaire/forum-editeur.spec.ts) cherchent les outils par ce nom.
  *
  * Deux sortes d'outils :
@@ -92,28 +92,18 @@ const TOOLS = {
 } satisfies Record<string, EditorTool>;
 
 /**
- * Outils toujours visibles dans la barre, les plus utilisés. `desktopOnly` : sur téléphone, la barre n'a pas la
- * place pour celui-ci (moins de 375 pixels utiles) ; il est alors rangé dans le panneau « Plus d'outils ».
+ * Tous les outils, visibles d'un coup dans la barre (choix du responsable, 22/11/2026 : plus de bouton « + » qui en
+ * cachait la plupart), rangés en groupes séparés par un filet. Sur téléphone, la barre passe sur plusieurs lignes.
  */
-export const PRIMARY_TOOLS: { tool: EditorTool; desktopOnly?: boolean }[] = [
-  { tool: TOOLS.bold },
-  { tool: TOOLS.italic },
-  { tool: TOOLS.link },
-  { tool: TOOLS.image },
-  { tool: TOOLS.spoiler, desktopOnly: true },
-  { tool: TOOLS.smileys },
-];
-
-/** Les autres outils, rangés par rubrique dans le panneau « Plus d'outils ». */
-export const MORE_TOOL_GROUPS: { title: string; tools: EditorTool[] }[] = [
-  { title: "Texte", tools: [TOOLS.underline, TOOLS.strike, TOOLS.size, TOOLS.color, TOOLS.typo, TOOLS.align] },
-  { title: "Blocs", tools: [TOOLS.spoiler, TOOLS.list, TOOLS.table, TOOLS.hr, TOOLS.code, TOOLS.accordion] },
-  { title: "Liens et médias", tools: [TOOLS.topic, TOOLS.mention, TOOLS.gallery, TOOLS.youtube, TOOLS.twitch] },
+export const TOOLBAR_GROUPS: { title: string; tools: EditorTool[] }[] = [
+  { title: "Texte", tools: [TOOLS.bold, TOOLS.italic, TOOLS.underline, TOOLS.strike, TOOLS.size, TOOLS.color, TOOLS.typo, TOOLS.align] },
+  { title: "Blocs", tools: [TOOLS.list, TOOLS.table, TOOLS.hr, TOOLS.code, TOOLS.spoiler, TOOLS.accordion] },
+  {
+    title: "Liens et médias",
+    tools: [TOOLS.link, TOOLS.image, TOOLS.gallery, TOOLS.youtube, TOOLS.twitch, TOOLS.topic, TOOLS.mention, TOOLS.smileys],
+  },
   { title: "Aide", tools: [TOOLS.ai] },
 ];
-
-/** Identifiant de l'outil rangé dans « Plus d'outils » sur téléphone seulement (voir PRIMARY_TOOLS). */
-export const PHONE_ONLY_MORE_TOOLS = new Set(PRIMARY_TOOLS.filter((item) => item.desktopOnly).map((item) => item.tool.id));
 
 /** Nom de chaque outil à formulaire, pour le titre de son panneau. */
 export const PANEL_TOOL_LABELS = Object.fromEntries(

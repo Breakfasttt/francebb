@@ -848,11 +848,12 @@ function SplitBar() {
   );
 }
 
-/** Ordinateur : la colonne des outils, à droite, collée en haut de l'écran pendant le défilement. */
+/** Ordinateur : la colonne des outils du sujet, qui défile avec la page. */
 export function TopicToolsAside() {
   return (
-    // Plus haute que l'écran (modérateur et organisateur), la colonne défile pour elle-même
-    <aside className="hidden lg:sticky lg:top-20 lg:block lg:max-h-[calc(100dvh-6rem)] lg:overflow-y-auto lg:overscroll-contain" aria-label="Outils du sujet">
+    // Jamais de barre de défilement dans la colonne (choix du responsable, 22/11/2026) : elle suit la page. Collée en
+    // haut de l'écran, elle cachait sa fin quand elle dépassait la hauteur de l'écran (modérateur, organisateur)
+    <aside className="hidden lg:block" aria-label="Outils du sujet">
       <ToolsSections asCards />
     </aside>
   );

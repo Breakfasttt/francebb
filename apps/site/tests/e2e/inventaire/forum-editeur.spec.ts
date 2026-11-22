@@ -32,7 +32,6 @@ const LINKED = { id: "e2e_edi_lie", title: "Inv éditeur sujet à lier" };
 const QUICK_TOPIC = "e2e_edi_rapide";
 const LOCKED_FORUM = { id: "e2e_edi_forum_verrou", name: "Inv Éditeur Forum Verrouillé" };
 
-const MORE_TOOLS = "Plus d'outils de mise en forme";
 const REPLY_PLACEHOLDER = "Écris ta réponse…";
 
 /** Supprime tout ce que ce test a créé (y compris un reste d'un lancement interrompu). */
@@ -96,16 +95,10 @@ async function openReply(page: Page): Promise<Locator> {
   return textarea;
 }
 
-/**
- * Déclenche un outil de l'éditeur : directement dans la barre d'outils s'il y est visible, sinon par le panneau
- * « Plus d'outils de mise en forme » (panneau qui monte du bas sur téléphone, menu sur ordinateur).
- */
+/** Déclenche un outil de l'éditeur : tous sont visibles dans la barre d'outils (plus de bouton « + », 22/11/2026). */
 async function applyTool(page: Page, name: string) {
   const direct = page.getByRole("button", { name, exact: true }).filter({ visible: true });
-  if ((await direct.count()) === 0) {
-    await page.getByRole("button", { name: MORE_TOOLS }).filter({ visible: true }).first().click();
-    await expect(direct.first()).toBeVisible();
-  }
+  await expect(direct.first()).toBeVisible();
   await direct.first().click();
 }
 
@@ -313,7 +306,6 @@ test.describe("2 éditeur BBCode : outils", () => {
 
     // Plus d'outil « Schéma BBScheme » depuis que l'éditeur de schémas a quitté le site (carte 179). Les schémas déjà
     // publiés restent affichés (smoke.spec.ts).
-    await page.getByRole("button", { name: MORE_TOOLS }).filter({ visible: true }).first().click();
     await expect(visibleButton(page, "Vidéo YouTube")).toBeVisible();
     await expect(page.getByRole("button", { name: "Schéma BBScheme" })).toHaveCount(0);
   });
