@@ -51,7 +51,9 @@ const ROLE_B = { name: "INV_ADM_B", label: "Inv Adm Rôle B" };
 const CATEGORY = "Inv Adm Catégorie";
 const FORUM_A = "Inv Adm Forum A";
 const FORUM_B = "Inv Adm Forum B";
-const REF = { group: "INV_ADM", key: "INV_ADM_KEY", label: "Inv Adm Donnée" };
+// Depuis la carte 221, la liste se choisit parmi celles du site (plus de saisie libre) : la donnée de test va dans
+// « Types de tournoi » et se reconnaît à sa clé
+const REF = { group: "TOURNAMENT_TYPE", groupLabel: "Types de tournoi", key: "INV_ADM_KEY", label: "Inv Adm Donnée" };
 
 const SETTING_KEYS = [
   "discord_invite",
@@ -70,7 +72,7 @@ async function cleanUp() {
     await prisma.forum.deleteMany({ where: { name: { in: [FORUM_A, FORUM_B] }, parentForumId: { not: null } } });
     await prisma.forum.deleteMany({ where: { name: { in: [FORUM_A, FORUM_B] } } });
     await prisma.category.deleteMany({ where: { name: CATEGORY } });
-    await prisma.referenceData.deleteMany({ where: { group: REF.group } });
+    await prisma.referenceData.deleteMany({ where: { group: REF.group, key: REF.key } });
     await prisma.moderationLog.deleteMany({ where: { OR: [{ moderatorId: { in: USER_IDS } }, { targetId: { in: USER_IDS } }] } });
     await prisma.user.deleteMany({ where: { id: { in: USER_IDS } } });
     await prisma.roleConfig.deleteMany({ where: { name: { in: [ROLE_A.name, ROLE_B.name] } } });
@@ -348,27 +350,30 @@ test("reference : créer, modifier et supprimer une donnée de référence", asy
   await page.goto("/administration?tab=reference", { waitUntil: "networkidle" });
 
   await page.getByRole("button", { name: /^Ajouter/ }).click();
-  await page.getByRole("textbox", { name: "Groupe" }).fill(REF.group);
+  await page.getByRole("combobox", { name: "Liste" }).selectOption(REF.group);
   await page.getByRole("textbox", { name: "Clé" }).fill(REF.key);
   await page.getByRole("textbox", { name: "Libellé" }).fill(REF.label);
   await page.getByRole("spinbutton", { name: "Ordre" }).fill("3");
   await stopTyping(page);
   await page.getByRole("button", { name: /^Créer/ }).click();
-  await expect(toast(page, "Créé avec succès")).toBeVisible();
+  await expect(toast(page, "Donnée ajoutée.")).toBeVisible();
+  const where = { group: REF.group, key: REF.key };
+  await expectPoll(() => db(async (prisma) => (await prisma.referenceData.findFirst({ where }))?.order)).toBe(3);
+  // Les listes sont repliées par défaut (carte 221) : on ouvre celle de la donnée
+  await page.locator("summary").filter({ hasText: REF.groupLabel }).click();
   await expect(page.getByText(REF.label, { exact: true })).toBeVisible();
-  await expectPoll(() => db(async (prisma) => (await prisma.referenceData.findFirst({ where: { group: REF.group } }))?.order)).toBe(3);
 
   await page.getByRole("button", { name: `Modifier ${REF.label}` }).click();
   await page.getByRole("textbox", { name: "Libellé" }).fill(`${REF.label} bis`);
   await stopTyping(page);
   await page.getByRole("button", { name: "Enregistrer", exact: true }).click();
-  await expect(toast(page, "Mis à jour")).toBeVisible();
+  await expect(toast(page, "Donnée enregistrée.")).toBeVisible();
   await expect(page.getByText(`${REF.label} bis`, { exact: true })).toBeVisible();
 
   await page.getByRole("button", { name: `Supprimer ${REF.label} bis` }).click();
   await page.getByRole("dialog").getByRole("button", { name: "Supprimer", exact: true }).click();
-  await expect(toast(page, "Supprimé")).toBeVisible();
-  await expectPoll(() => db((prisma) => prisma.referenceData.count({ where: { group: REF.group } }))).toBe(0);
+  await expect(toast(page, "Donnée supprimée.")).toBeVisible();
+  await expectPoll(() => db((prisma) => prisma.referenceData.count({ where }))).toBe(0);
 });
 
 test("howtoplay : les six textes de /jouer, modifiés et enregistrés", async ({ page }) => {
@@ -391,11 +396,12 @@ test("info-mails : objet et message, puis confirmation « Oui, diffuser » (annu
   const send = page.getByRole("button", { name: /^Diffuser/ });
   await expect(send).toBeDisabled();
   await page.getByRole("textbox", { name: "Objet du mail" }).fill("Inv Adm objet");
-  await page.getByRole("textbox", { name: /^Message/i }).fill("Inv Adm [b]message[/b]");
+  await page.getByRole("textbox", { name: "Texte du mail" }).fill("Inv Adm [b]message[/b]");
   await stopTyping(page);
   await send.click();
   const dialog = page.getByRole("dialog");
-  await expect(dialog.getByRole("button", { name: "Oui, diffuser" }).filter({ visible: true }).first()).toBeVisible();
+  // Le bouton annonce le vrai nombre de destinataires une fois compté (carte 221)
+  await expect(dialog.getByRole("button", { name: /^(Envoyer à \d[\d\s]* coachs?|Oui, diffuser)$/ }).filter({ visible: true }).first()).toBeVisible();
   await dialog.getByRole("button", { name: "Annuler" }).filter({ visible: true }).first().click();
   await expect(dialog).toBeHidden();
 });

@@ -280,7 +280,7 @@ test.describe("3.8 recherche avancée", () => {
 
   test("[tous] un résultat : trophée, titre, forum, auteur, ancienneté, vues, dernier message, « Voir », extrait surligné", async ({ page }, testInfo) => {
     await page.goto(searchUrl({ q: KEYWORD, date: "7d" }), { waitUntil: "networkidle" });
-    await expect(page.getByText(/\b1\b.*(résultat|trouvé)/)).toBeVisible();
+    await expect(page.getByRole("heading", { name: /^1 message trouvé/ })).toBeVisible();
     await expect(resultLinks(page)).toHaveCount(1);
     await expect(page.getByRole("link", { name: new RegExp(ROOT_TOPIC.title) })).toHaveAttribute("href", postHref(ROOT_TOPIC.id, POST.recent));
     await expect(resultLinks(page).first()).toHaveAttribute("href", postHref(ROOT_TOPIC.id, POST.recent));

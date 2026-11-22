@@ -68,7 +68,7 @@ const ACTION_LABELS: Record<string, string> = {
   // Signalements
   REPORT_IGNORED: "Signalement ignoré",
   REPORT_RESOLVED: "Signalement traité",
-  // Tournois de la Championnat de France (carte 162)
+  // Tournois du Championnat de France (carte 162)
   TOURNAMENT_CDF_VALIDATED: "Résultats CDF validés",
   TOURNAMENT_CDF_UNVALIDATED: "Validation CDF retirée",
   // Carte 221

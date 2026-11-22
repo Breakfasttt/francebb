@@ -9,15 +9,18 @@ import { encrypt, decrypt } from "@/lib/crypto";
 import { countUnreadByConversation } from "@/lib/unreadMessages";
 import type { ActionResult } from "@/lib/actionResult";
 import { groupNameError, messageContentError, participantsError } from "@/lib/messageRules";
+import { SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
 
 const CONVERSATION_LIMIT = 50;
 
 /**
- * Membres qu'on ne peut pas ajouter à une conversation (carte 221) : compte inexistant ou banni. Un banni ne lit plus
- * sa messagerie ; lui écrire ou l'inviter ne servirait qu'à remplir une conversation qu'il ne verra pas.
+ * Membres qu'on ne peut pas ajouter à une conversation (carte 221) : compte inexistant ou banni, ou compte technique
+ * du site (« Système », « Coach Inconnu »). Un banni ne lit plus sa messagerie ; lui écrire ou l'inviter ne servirait
+ * qu'à remplir une conversation qu'il ne verra pas.
  */
 async function unreachableMembers(userIds: string[]) {
   if (userIds.length === 0) return false;
+  if (userIds.some(id => SYSTEM_ACCOUNT_IDS.includes(id))) return true;
   const reachable = await prisma.user.count({ where: { id: { in: userIds }, isBanned: false } });
   return reachable !== new Set(userIds).size;
 }
@@ -321,7 +324,9 @@ export async function startConversation(userIds: string[], name?: string): Promi
     if (await unreachableMembers(allParticipants.filter(uid => uid !== myId))) {
         // Un seul destinataire : on dit précisément pourquoi (carte 221)
         if (allParticipants.length === 2) {
-            const recipient = await prisma.user.findUnique({ where: { id: allParticipants.find(uid => uid !== myId) }, select: { isBanned: true } });
+            const recipientId = allParticipants.find(uid => uid !== myId) ?? "";
+            if (SYSTEM_ACCOUNT_IDS.includes(recipientId)) return { success: false, error: "Ce compte technique du site ne lit pas de messages." };
+            const recipient = await prisma.user.findUnique({ where: { id: recipientId }, select: { isBanned: true } });
             return { success: false, error: recipient?.isBanned ? "Ce membre a été banni : il ne peut plus recevoir de messages." : "Ce membre n'existe pas ou a supprimé son compte." };
         }
         return { success: false, error: "Un des membres choisis n'existe pas ou ne peut plus recevoir de messages." };

@@ -393,9 +393,9 @@ test.describe("2 éditeur BBCode : outils", () => {
 });
 
 test.describe("3.4 page de réponse", () => {
-  test("[visiteur] est renvoyé vers le sujet", async ({ page }) => {
+  test("[visiteur] est envoyé à la connexion, avec retour sur la page de réponse", async ({ page }) => {
     await page.goto(`/forum/topic/${TOPIC.id}/reply`);
-    await expect(page).toHaveURL(new RegExp(`/forum/topic/${TOPIC.id}(\\?|$)`));
+    await expect(page).toHaveURL(new RegExp(`/auth/login\\?callbackUrl=${encodeURIComponent(`/forum/topic/${TOPIC.id}/reply`)}$`));
   });
 
   test("[membre] éditeur, rappel des 3 derniers messages, « Annuler » et « Publier ma réponse »", async ({ page }, testInfo) => {

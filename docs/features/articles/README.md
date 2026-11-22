@@ -12,8 +12,8 @@ Ces écrans ont été refaits par la carte 095 (refonte visuelle, ADR 0006) avec
 
 - `/articles` : titre « Articles » avec le nombre d'articles trouvés. Sur ordinateur, un panneau à gauche porte d'abord l'action principale « Écrire un article » (membre connecté), puis les filtres : les tags (avec les suggestions des tags existants) et l'auteur. Sur téléphone, « Écrire un article » est dans l'en-tête et les filtres sont dans le panneau « Filtrer les articles » ouvert par le bouton « Filtres ». Au-dessus des résultats : la recherche dans le titre et le texte (appliquée 400 millisecondes après la dernière touche) et le tri (récents, anciens, titre A-Z, populaires). Les articles s'affichent en lignes, 20 par page (la bascule grille ou liste a été retirée par la carte 220). Quand la liste est vide sans aucun filtre, la recherche et les filtres sont masqués. Chaque filtre actif est rappelé en pastille, avec une croix pour le retirer ; « Réinitialiser » n'apparaît dans le panneau gauche que si un filtre est posé, et retire les tags, l'auteur et le tri en gardant la recherche. Chaque ligne d'article est entièrement cliquable et montre la date relative (« il y a 3 jours »).
 - `/articles/[id]` : une seule colonne de lecture, centrée : les tags, le titre, l'auteur (avatar et lien vers son profil), la date de publication et le nombre de vues, la ligue rattachée s'il y en a une, puis « Modifier » (auteur et modération) et le menu « ⋯ » (« Actions de l'article ») : « Supprimer l'article » (auteur et modération), « Modérer l'article » ou « Annuler la modération » (modération), « Signaler l'article » (membre connecté qui n'est pas l'auteur). Le texte est limité à environ 70 caractères par ligne, avec un interligne de 1,6. En bas, les réactions : une pastille par émoji avec son nombre, et « Réagir » qui ouvre le choix des dix émojis (petit panneau sur ordinateur, panneau du bas sur téléphone).
-- `/articles/create` et `/articles/edit/[id]` : un même formulaire en blocs : l'article (titre), le classement (tags, ligue rattachée), puis le contenu en BBCode. Sur ordinateur, la colonne « Publication » porte les boutons ; sur téléphone, l'écran est plein écran (sans la barre du bas, comme la rédaction d'un message) et « Annuler » et « Publier » ou « Mettre à jour » sont collés en bas.
-- Accès : tout le monde lit. Un membre connecté écrit, réagit et signale. L'auteur ou un modérateur modifie et supprime. Seul un modérateur masque (« modère ») ou rétablit un article. Un article masqué reste lisible par son auteur et les modérateurs, avec l'avis de modération ; les autres lecteurs ne voient que l'avis.
+- `/articles/create` et `/articles/edit/[id]` : un même formulaire en blocs : l'article (titre), le classement (tags, ligue rattachée), puis le texte (champ « Texte de l'article », en BBCode). Sur ordinateur, la colonne « Publication » porte les boutons ; sur téléphone, l'écran est plein écran (sans la barre du bas, comme la rédaction d'un message) et « Annuler » et « Publier » ou « Mettre à jour » sont collés en bas.
+- Accès : tout le monde lit. Un membre connecté écrit, réagit et signale. L'auteur ou un modérateur modifie et supprime. Seul un modérateur masque (« modère ») ou rétablit un article. Un article masqué reste lisible par son auteur et les modérateurs, avec l'avis de modération. Pour tout autre lecteur, la page répond « introuvable » (404, carte 221) : ni le texte, ni la raison, ni le nom du modérateur. Un article masqué n'affiche plus de réactions et n'en accepte plus (refusé aussi par `toggleArticleReaction`).
 
 ## Les fichiers
 
@@ -22,7 +22,7 @@ Ces écrans ont été refaits par la carte 095 (refonte visuelle, ADR 0006) avec
 | `apps/site/app/articles/page.tsx` | Liste, filtres lus dans l'adresse, pagination |
 | `apps/site/app/articles/component/ArticleFilters.tsx` | Panneau gauche de l'ordinateur (`ArticleFilterAside` : « Écrire un article » puis filtres), barre de recherche et de tri, pastilles, panneau des filtres (téléphone) |
 | `apps/site/app/articles/component/ArticleCard.tsx` | Ligne d'un article dans `/articles` (`view="list"`) ; la carte (présentation par défaut du composant) ne sert plus qu'à l'onglet « Articles » du profil |
-| `apps/site/app/articles/[id]/page.tsx` | Lecture d'un article, droits d'affichage, avis de modération |
+| `apps/site/app/articles/[id]/page.tsx` | Lecture d'un article, droits d'affichage (`notFound()` pour un article masqué que le lecteur ne peut pas lire), avis de modération |
 | `apps/site/app/articles/[id]/component/ArticleActions.tsx` | « Modifier », menu « ⋯ » : supprimer, modérer, annuler la modération, signaler |
 | `apps/site/app/articles/[id]/component/ArticleReactions.tsx`, `ViewCounter.tsx` | Réactions émoji ; compteur de vues |
 | `apps/site/app/articles/create/page.tsx`, `edit/[id]/page.tsx` | Pages du formulaire (droits, redirection vers la connexion) |
@@ -44,7 +44,8 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 - Un membre n'a qu'une réaction par article : choisir un autre émoji remplace le précédent.
 - Le texte est transformé en HTML par `parseBBCode` puis injecté tel quel (`dangerouslySetInnerHTML`) : toute la sécurité repose sur `lib/bbcode`. Les blocs BBCode (spoiler, accordéon, galerie) sont mis en forme par `common/components/BBCodeContent/bbcode.css`, chargé pour tout le site (carte 101). La page d'un article affiche le texte avec `BBCodeContent`, comme le forum : un schéma BBScheme inséré dans l'article est animé par le lecteur (carte 140).
 - La recherche par texte (`contains`) parcourt tout le contenu : lente si les articles deviennent nombreux.
-- La fenêtre de modération (`ModerationModal`, commune au forum) reçoit le type de contenu (`contentType="article"`) : son titre est « Modérer l'article de … » (carte 140).
+- La fenêtre de modération (`ModerationModal`, commune au forum) reçoit le type de contenu (`contentType="article"`) : son titre est « Masquer l'article de … » depuis la carte 221 (le menu « ⋯ » dit encore « Modérer l'article »).
+- `moderateArticle` ferme les signalements en attente de l'article (`closePendingReports`, carte 221).
 - L'ancienne mention « Membre depuis 2024 », écrite en dur sous le nom de l'auteur, a disparu avec la refonte.
 
 ## Les mots expliqués
@@ -70,7 +71,7 @@ Actions serveur (`app/articles/actions.ts`) : `createArticle`, `updateArticle`, 
 
 | Fonctionnalité | Endroit | Effet |
 |---|---|---|
-| Modération | `moderateArticle`, signalements `ARTICLE` | Un article masqué n'est visible que de son auteur et des modérateurs. |
+| Modération | `moderateArticle`, signalements `ARTICLE` | Un article masqué n'est visible que de son auteur et des modérateurs (404 pour les autres) ; le masquer ferme ses signalements. |
 | Éditeur | `../editeur-bbcode/` | Rédaction et rendu. |
 | Bannissement | `getActiveSession` | Un banni n'écrit plus ; ses articles restent en ligne tant que la modération ne les masque pas. |
 

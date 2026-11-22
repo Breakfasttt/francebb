@@ -4,7 +4,7 @@
 
 ## À quoi ça sert
 
-Le classement national de la Coupe de France (CDF) est calculé à partir des résultats des tournois CDF saisis sur le site, selon le règlement officiel. Les années passées sont figées dans des archives, y compris celles récupérées de l'ancien site. La page de statistiques montre des compteurs de la communauté, et une console réservée aux administrateurs.
+Le classement national du Championnat de France (CDF) est calculé à partir des résultats des tournois CDF saisis sur le site, selon le règlement officiel. Les années passées sont figées dans des archives, y compris celles récupérées de l'ancien site. La page de statistiques montre des compteurs de la communauté, et une console réservée aux administrateurs.
 
 ## Ce que voit le coach
 
@@ -49,7 +49,7 @@ Actions serveur : `app/classement/actions.ts` : `getRankingYears`, `getRanking(f
 
 | Mot | Sens |
 |---|---|
-| CDF | Coupe de France, le championnat national de Blood Bowl. Un tournoi CDF rapporte des points. |
+| CDF | Championnat de France, le circuit national de Blood Bowl. Un tournoi CDF rapporte des points. |
 | Points CDF | `R × (Nc − Pl) / (Nc + Pl − 2)`, où Nc est le nombre de participants, Pl la place, et R une valeur de référence ajustée selon le nombre de rondes et de participants. Le vainqueur reçoit exactement R. |
 | Type de tournoi CDF | Individuel, équipe partielle ou équipe totale ; il change la valeur de référence R. |
 | Compte fantôme | Le compte « Coach Inconnu » (identifiant `ghost_coach`), qui reçoit les sujets, messages et résultats des comptes supprimés pour que l'historique reste lisible. |

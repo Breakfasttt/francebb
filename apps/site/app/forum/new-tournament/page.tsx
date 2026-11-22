@@ -16,7 +16,19 @@ import ComposeScreen from "@/app/forum/component/ComposeScreen";
 
 export default async function NewTournamentPage({ searchParams }: { searchParams: Promise<{ forumId?: string }> }) {
   const { forumId } = await searchParams;
-  if (!forumId) notFound();
+  // Sans forum dans l'adresse (lien tapé à la main, ancien favori) : le premier forum de tournois visible par le
+  // membre, plutôt qu'une page introuvable (carte 221)
+  if (!forumId) {
+    const { roles } = await getForumAccess();
+    const candidates = await prisma.forum.findMany({
+      where: { isTournamentForum: true },
+      orderBy: { order: "asc" },
+      include: { category: true, parentForum: { include: { category: true } } },
+    });
+    const first = candidates.find((candidate) => canAccessForum(candidate, roles));
+    if (!first) notFound();
+    redirect(`/forum/new-tournament?forumId=${first.id}`);
+  }
 
   const forum = await prisma.forum.findUnique({
     where: { id: forumId },

@@ -23,7 +23,7 @@ import { toggleBanUser } from "@/app/membres/actions";
 import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
-import { getRoleLabel, isModerator as checkIsModerator } from "@/lib/roles";
+import { getRoleLabel, isModerator as checkIsModerator, SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
 
 const REGION_LABELS: Record<string, string> = {
   "IDF": "R1 - Île-de-France",
@@ -88,7 +88,9 @@ export default function ProfileSidebar({
 
   const targetIsModerator = checkIsModerator(user.role);
   // Raison pour laquelle on ne peut pas écrire à ce membre (même ordre que la messagerie)
-  const messageBlockedReason = user.isBanned
+  const messageBlockedReason = SYSTEM_ACCOUNT_IDS.includes(user.id)
+    ? "Ce compte technique du site ne lit pas de messages."
+    : user.isBanned
     ? "Ce membre a été banni : il ne peut plus recevoir de messages."
     : isBlocked
       ? "Tu as bloqué ce membre. Débloque-le pour lui écrire."

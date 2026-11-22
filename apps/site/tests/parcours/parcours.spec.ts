@@ -129,6 +129,13 @@ test.beforeAll(async () => {
       update: {},
       create: { name: "SUPERADMIN", label: "Super Admin", power: 100, isBaseRole: true },
     });
+    // Forum de tournois, absent du jeu de données de base : sans lui, /forum/new-tournament n'a rien à ouvrir
+    const forum = await prisma.forum.findUniqueOrThrow({ where: { id: E2E.forumId }, select: { categoryId: true } });
+    await prisma.forum.upsert({
+      where: { id: "e2e_parcours_tournois" },
+      update: {},
+      create: { id: "e2e_parcours_tournois", name: "Parcours Tournois", categoryId: forum.categoryId, isTournamentForum: true },
+    });
     await prisma.user.upsert({
       where: { id: SUPERADMIN_ID },
       update: { role: "SUPERADMIN" },

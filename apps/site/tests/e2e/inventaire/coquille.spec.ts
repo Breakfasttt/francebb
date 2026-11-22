@@ -21,7 +21,8 @@ test.describe("coquille : visiteur", () => {
   test("navigation, connexion, thème et pied de page", async ({ page }, testInfo) => {
     await page.goto("/forum", { waitUntil: "networkidle" });
     const nav = page.getByRole("navigation", { name: "Navigation principale" }).filter({ visible: true }).first();
-    for (const label of ["Accueil", "Forum", "Tournois"]) {
+    // Pas d'« Accueil » dans la barre haute de l'ordinateur : le nom du site y mène (carte 220)
+    for (const label of isPhone(page) ? ["Accueil", "Forum", "Tournois"] : ["Forum", "Tournois"]) {
       await expect(nav.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
     // Le visiteur voit « Connexion » dans la barre (bouton secondaire : le rouge reste à l'action de la page)
@@ -29,12 +30,13 @@ test.describe("coquille : visiteur", () => {
 
     if (isPhone(page)) {
       await expect(nav.getByRole("link", { name: "Messages" })).toBeVisible();
-      // Bouton retour et outils du forum affichés sur place, sans portail (carte 156)
-      await expect(page.getByRole("main").getByRole("link", { name: "Retour" })).toBeVisible();
-      await expect(page.getByRole("region", { name: "Outils du forum" }).getByRole("link", { name: "Recherche avancée" })).toBeVisible();
+      // Outils du forum affichés sur place, sans portail (carte 156) ; pas de bouton retour sur l'accueil du forum, qui
+      // ne ramènerait qu'à l'accueil du site, déjà dans la barre basse (carte 220)
+      await expect(page.getByRole("main").getByRole("link", { name: "Retour" })).toHaveCount(0);
+      await expect(page.getByRole("complementary", { name: "Outils du forum" }).getByRole("link", { name: "Recherche avancée" })).toBeVisible();
       await openMore(page);
       const panel = page.getByRole("dialog", { name: "Plus" });
-      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "GitHub"]) {
+      for (const label of ["Ligues", "Carte", "Articles", "Ressources", "Classement", "Jouer", "Statistiques", "Médias", "Mentions légales", "Code source"]) {
         await expect(panel.getByRole("link", { name: label })).toBeVisible();
       }
       // Rubriques rangées dans les mêmes groupes que l'accueil (carte 189) ; l'annuaire des membres, réservé aux
@@ -44,23 +46,25 @@ test.describe("coquille : visiteur", () => {
       }
       await expect(panel.getByRole("link", { name: "Membres" })).toHaveCount(0);
       await expect(panel.getByRole("link", { name: "Se connecter / S'inscrire" })).toHaveAttribute("href", "/auth/login");
-      await expect(panel.getByRole("radiogroup", { name: "Thème du site" }).getByRole("radio")).toHaveCount(8);
+      await expect(panel.getByRole("radiogroup", { name: "Thème du site" }).getByRole("radio")).toHaveCount(5);
       // Plus de rubrique « Cette page » (carte 156) : les outils du forum sont dans la page elle-même
       await expect(panel.getByRole("region", { name: "Cette page" })).toHaveCount(0);
       await page.screenshot({ path: testInfo.outputPath("visiteur-plus.png") });
       await page.keyboard.press("Escape");
       await expect(panel).toBeHidden();
     } else {
-      for (const label of ["Mentions légales", "GitHub", "Statistiques", "Médias"]) {
+      // Pied de page de la carte 220 : « Code source » mène au dépôt GitHub, Médias n'y est plus
+      for (const label of ["Mentions légales", "Code source", "Statistiques"]) {
         await expect(page.getByRole("contentinfo").getByRole("link", { name: label })).toBeVisible();
       }
       await page.getByRole("button", { name: "Plus de rubriques" }).click();
-      for (const label of ["Carte", "Classement", "Jouer", "Statistiques", "Médias"]) {
+      // « Classement » est un lien direct de la barre haute (carte 220)
+      for (const label of ["Carte", "Jouer", "Statistiques", "Médias"]) {
         await expect(page.getByRole("menuitem", { name: label })).toBeVisible();
       }
       await page.keyboard.press("Escape");
       await page.getByRole("button", { name: "Changer de thème" }).click();
-      await expect(page.getByRole("dialog", { name: "Thème du site" }).getByRole("radio")).toHaveCount(8);
+      await expect(page.getByRole("dialog", { name: "Thème du site" }).getByRole("radio")).toHaveCount(5);
       await page.keyboard.press("Escape");
     }
     await page.screenshot({ path: testInfo.outputPath("visiteur-forum.png"), fullPage: false });

@@ -241,7 +241,9 @@ test.describe("Inventaire 9 : ligues et carte", () => {
 
     // Filtre par zone : écrit `region` dans l'adresse
     await page.goto("/ligues?query=Inv+Lig", { waitUntil: "networkidle" });
-    await (await control(page, "combobox", /Zone/)).selectOption("R4-SE");
+    if (isPhone(page)) await (await control(page, "combobox", /Zone/)).selectOption("R4-SE");
+    // Ordinateur : les zones sont des liens du panneau gauche (carte 220)
+    else await page.getByRole("navigation", { name: "Zones" }).locator('a[href*="region=R4-SE"]').click();
     await page.waitForURL(/region=R4-SE/);
     await page.waitForLoadState("networkidle");
     if (isPhone(page)) await page.keyboard.press("Escape");

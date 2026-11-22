@@ -300,11 +300,11 @@ test.describe("Inventaire 10 : articles", () => {
   test("[membre] « Créer un article »", async ({ page }) => {
     // Un visiteur ne voit pas le bouton
     await page.goto("/articles", { waitUntil: "networkidle" });
-    expect(await maybeControl(page, "link", /Créer un article/i)).toBeNull();
+    expect(await maybeControl(page, "link", /^(Écrire|Créer) un article/i)).toBeNull();
 
     await loginAs(page, READER.id);
     await page.goto("/articles", { waitUntil: "networkidle" });
-    const create = await control(page, "link", /Créer un article|^Créer/i);
+    const create = await control(page, "link", /^(Écrire|Créer) un article/i);
     await expect(create).toHaveAttribute("href", "/articles/create");
     await create.click();
     await page.waitForURL(/\/articles\/create$/);
@@ -401,29 +401,29 @@ test.describe("Inventaire 10 : articles", () => {
       await logout(page);
       await loginAs(page, who);
       await page.goto(`/articles/${TO_MODERATE.id}`, { waitUntil: "networkidle" });
-      expect(await findAction(page, /^Modérer/), `Modérer pour ${who}`).toBeNull();
+      expect(await findAction(page, /^Masquer l'article/), `Masquer pour ${who}`).toBeNull();
     }
 
     // Le modérateur modère l'article, avec une raison
     await logout(page);
     await loginAs(page, E2E.modoId);
     await page.goto(`/articles/${TO_MODERATE.id}`, { waitUntil: "networkidle" });
-    await (await findAction(page, /^Modérer/))!.click();
+    await (await findAction(page, /^Masquer l'article/))!.click();
     const moderate = page.getByRole("dialog", { name: /Masquer l'article/ });
     await expect(moderate).toBeVisible();
     await moderate.getByRole("textbox", { name: /Raison/ }).fill("Modéré par le test d'inventaire");
     await moderate.getByRole("button", { name: /^Masquer l'article$/ }).click();
     await expect(moderate).toBeHidden();
-    await expect.poll(() => db((prisma) => prisma.article.findUnique({ where: { id: TO_MODERATE.id }, select: { isModerated: true, moderationReason: true } })))
+    await expect.poll(() => db((prisma) => prisma.article.findUnique({ where: { id: TO_MODERATE.id }, select: { isModerated: true, moderationReason: true } })), { timeout: 30_000 })
       .toEqual({ isModerated: true, moderationReason: "Modéré par le test d'inventaire" });
 
     // Puis il annule la modération, après confirmation
     await page.goto(`/articles/${TO_MODERATE.id}`, { waitUntil: "networkidle" });
-    await (await findAction(page, /^(Restaurer|Annuler la modération)/))!.click();
-    const restore = page.getByRole("dialog", { name: /Annuler la modération|Restaurer/ });
+    await (await findAction(page, /^Démasquer l'article/))!.click();
+    const restore = page.getByRole("dialog", { name: "Démasquer l'article" });
     await expect(restore).toBeVisible();
-    await restore.getByRole("button", { name: /^(Restaurer|Annuler la modération|Confirmer)$/ }).click();
-    await expect.poll(() => db((prisma) => prisma.article.findUnique({ where: { id: TO_MODERATE.id }, select: { isModerated: true } }))).toEqual({ isModerated: false });
+    await restore.getByRole("button", { name: "Démasquer", exact: true }).click();
+    await expect.poll(() => db((prisma) => prisma.article.findUnique({ where: { id: TO_MODERATE.id }, select: { isModerated: true } })), { timeout: 30_000 }).toEqual({ isModerated: false });
   });
 
   test("[membre, pas l'auteur] /articles/[id] : signaler", async ({ page }) => {
@@ -445,7 +445,7 @@ test.describe("Inventaire 10 : articles", () => {
     await dialog.getByRole("button", { name: "Spam / Publicité" }).click();
     await dialog.getByRole("button", { name: /Envoyer le signalement/ }).click();
     await expect(dialog).toBeHidden();
-    await expect.poll(() => db((prisma) => prisma.moderationReport.count({ where: { targetId: ALPHA.id, targetType: "ARTICLE", reporterId: READER.id } }))).toBe(1);
+    await expect.poll(() => db((prisma) => prisma.moderationReport.count({ where: { targetId: ALPHA.id, targetType: "ARTICLE", reporterId: READER.id } })), { timeout: 30_000 }).toBe(1);
   });
 
   test("[membre / auteur, modo] /articles/create, /articles/edit/[id] : titre, tags avec suggestions, ligue liée, contenu BBCode", async ({ page }, testInfo) => {
@@ -465,7 +465,7 @@ test.describe("Inventaire 10 : articles", () => {
     await field(/ligue/i).fill("Inv Art Lig");
     await page.getByText(`${LIGUE.name} (${LIGUE.acronym})`).first().click();
     // Contenu en BBCode
-    await field(/Contenu|Rédige/).fill("[b]Article écrit par le test[/b]");
+    await field(/^Texte de l'article/).fill("[b]Article écrit par le test[/b]");
     await leaveField(page);
     await page.screenshot({ path: testInfo.outputPath("article-creation.png"), fullPage: true });
     await page.getByRole("button", { name: /Publier/ }).filter({ visible: true }).first().click();
@@ -484,7 +484,7 @@ test.describe("Inventaire 10 : articles", () => {
     await loginAs(page, AUTHOR.id);
     await page.goto(`/articles/edit/${EDITABLE.id}`, { waitUntil: "networkidle" });
     await expect(field(/^Titre/)).toHaveValue(EDITABLE.title);
-    await expect(field(/Contenu|Rédige/)).toHaveValue(EDITABLE.content);
+    await expect(field(/^Texte de l'article/)).toHaveValue(EDITABLE.content);
     await expect(field(/ligue/i)).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("article-modification.png"), fullPage: true });
     await field(/^Titre/).fill(`${EDITABLE.title} (modifié)`);

@@ -45,7 +45,14 @@ export async function measure(page: Page) {
     // l'étiquette : la cible réelle est donc l'étiquette, mesurée à sa place (carte 061)
     const touchZone = (element: Element) =>
       element.matches("input[type=checkbox], input[type=radio]") ? element.closest("label") ?? element : element;
+    // Un lien au milieu d'une phrase (« … sur cnil.fr/plaintes. ») suit la hauteur du texte : la règle des cibles
+    // tactiles (WCAG 2.5.8) l'exempte, puisque l'agrandir casserait la lecture (carte 221)
+    const inlineLink = (element: Element) => {
+      const paragraph = element.matches("a") ? element.closest("p") : null;
+      return !!paragraph && (paragraph.textContent ?? "").trim().length > (element.textContent ?? "").trim().length + 20;
+    };
     const small = targets.filter((element) => {
+      if (inlineLink(element)) return false;
       const rect = touchZone(element).getBoundingClientRect();
       return rect.height < 44 || rect.width < 44;
     });

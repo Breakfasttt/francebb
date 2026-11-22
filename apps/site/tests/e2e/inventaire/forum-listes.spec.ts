@@ -174,10 +174,11 @@ test.describe("3.1 accueil du forum", () => {
 
     if (!isPhone(page)) {
       // Nombre de sujets, et dernier sujet avec son auteur et sa date (avant la refonte, absents sur téléphone)
-      await expect(forumLink.getByText(/\d+\s*sujets?/)).toBeVisible();
+      await expect(forumLink.getByText(/\d+\s*sujets?/).filter({ visible: true })).toBeVisible();
       // Auteur du dernier message du dernier sujet (carte 166) : d'autres tests peuvent écrire dans ce forum en même temps
-      await expect(forumLink).toContainText(/Dernier\s*:\s*\S+/);
-      await expect(forumLink).toContainText(DATE);
+      await expect(forumLink).toContainText(/\S+ · /); // « Auteur · date » (carte 220 : plus de « Dernier : »)
+      // Date relative du dernier message (« il y a 4 minutes ») depuis la carte 220
+      await expect(forumLink).toContainText(/il y a|\d{2}\/\d{2}\/\d{4}/);
     }
     await page.screenshot({ path: testInfo.outputPath("accueil-visiteur.png"), fullPage: true });
 
@@ -307,11 +308,11 @@ test.describe("3.2 un forum", () => {
     await expect(emptySub).toBeVisible();
     if (!isPhone(page)) {
       // Nombre de sujets, dernier sujet et badge (avant la refonte, absents sur téléphone)
-      await expect(tournamentSub.getByText(/\d+\s*sujets?/)).toBeVisible();
+      await expect(tournamentSub.getByText(/\d+\s*sujets?/).filter({ visible: true })).toBeVisible();
       await expect(tournamentSub.getByText(/Inv tournoi annulé/)).toBeVisible();
       await expect(tournamentSub.getByText("Annulé", { exact: true })).toBeVisible();
       // Auteur du dernier message du dernier sujet (carte 166)
-      await expect(tournamentSub).toContainText(/Dernier\s*:\s*Coach E2E/);
+      await expect(tournamentSub).toContainText(/Coach E2E · /);
       await expect(emptySub.getByText("Aucun sujet")).toBeVisible();
     }
 
@@ -322,7 +323,7 @@ test.describe("3.2 un forum", () => {
 
     // Liste vide
     await page.goto(`/forum/${EMPTY_FORUM.id}`, { waitUntil: "networkidle" });
-    await expect(page.getByText("Aucun sujet dans ce forum pour le moment.")).toBeVisible();
+    await expect(page.getByText("Pas encore de sujet ici. Lance la première discussion.")).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("forum-vide.png"), fullPage: true });
   });
 
@@ -340,7 +341,7 @@ test.describe("3.2 un forum", () => {
     await page.goto(forumUrl, { waitUntil: "networkidle" });
     await page.screenshot({ path: testInfo.outputPath("forum-membre.png"), fullPage: false });
     await expect(await findAction(page, "link", /nouveau sujet/i)).toHaveAttribute("href", `/forum/new-topic?forumId=${TOURNAMENT_FORUM.id}`);
-    await expect(await findAction(page, "link", /nouveau tournoi/i)).toHaveAttribute("href", `/forum/new-tournament?forumId=${TOURNAMENT_FORUM.id}`);
+    await expect(await findAction(page, "link", /^Annoncer un tournoi$/)).toHaveAttribute("href", `/forum/new-tournament?forumId=${TOURNAMENT_FORUM.id}`);
     await expect(await findAction(page, "link", "Recherche avancée")).toHaveAttribute("href", `/forum/search?forumId=${TOURNAMENT_FORUM.id}`);
     await expect(await findAction(page, "link", "Les membres")).toHaveAttribute("href", "/membres");
     await closeMore(page);
@@ -351,7 +352,7 @@ test.describe("3.2 un forum", () => {
     // Forum ordinaire : pas de « Nouveau tournoi »
     await page.goto(`/forum/${E2E.forumId}`, { waitUntil: "networkidle" });
     await expect(await findAction(page, "link", /nouveau sujet/i)).toHaveAttribute("href", `/forum/new-topic?forumId=${E2E.forumId}`);
-    await expectNoAction(page, "link", /nouveau tournoi/i);
+    await expectNoAction(page, "link", /^Annoncer un tournoi$/);
   });
 
   test("[membre] forum verrouillé : bouton désactivé « Forum verrouillé » ; [modo] peut toujours créer", async ({ page }) => {
@@ -398,17 +399,27 @@ test.describe("3.2 un forum", () => {
     await closeMore(page);
     await expectForumLock(throwaway.id, false);
 
-    // Carte 169 : un forum qui contient encore un sujet n'est pas supprimé (avant, ses sujets étaient effacés)
+    // Carte 199 : un forum qui a encore un sous-forum n'est pas supprimé (plus de suppression en cascade) ; ce refus
+    // passe avant celui des sujets
     await page.reload({ waitUntil: "networkidle" });
     await (await findAction(page, "button", /Supprimer/)).click();
     let dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Confirmer" }).click();
+    await expect(page.getByText(/contient 1 sous-forum/).filter({ visible: true }).first()).toBeVisible();
+    expect(await withTestDb((prisma) => prisma.forum.count({ where: { id: throwaway.id } }))).toBe(1);
+
+    // Carte 169 : le sous-forum parti (ici, effacé par le test), un forum qui contient encore un sujet n'est pas
+    // supprimé (avant, ses sujets étaient effacés)
+    await withTestDb((prisma) => prisma.forum.delete({ where: { id: "e2e_inv_jetable_sous" } }));
+    await page.reload({ waitUntil: "networkidle" });
+    await (await findAction(page, "button", /Supprimer/)).click();
+    dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
+    await dialog.getByRole("button", { name: "Confirmer" }).click();
     await expect(page.getByText(/contient encore 1 sujet/).filter({ visible: true }).first()).toBeVisible();
     expect(await withTestDb((prisma) => prisma.topic.count({ where: { id: "e2e_inv_topic_jetable" } }))).toBe(1);
 
-    // Une fois le sujet parti ailleurs (ici, effacé par le test), le forum est encore refusé tant qu'il a un
-    // sous-forum (carte 199 : plus de suppression en cascade)
+    // Le sujet parti ailleurs (ici, effacé par le test), le forum vide est supprimé
     await withTestDb(async (prisma) => {
       await prisma.topicView.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
       await prisma.topicFollow.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
@@ -416,14 +427,6 @@ test.describe("3.2 un forum", () => {
       await prisma.post.deleteMany({ where: { topicId: "e2e_inv_topic_jetable" } });
       await prisma.topic.delete({ where: { id: "e2e_inv_topic_jetable" } });
     });
-    await page.reload({ waitUntil: "networkidle" });
-    await (await findAction(page, "button", /Supprimer/)).click();
-    dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
-    await dialog.getByRole("button", { name: "Confirmer" }).click();
-    await expect(page.getByText(/contient 1 sous-forum/).filter({ visible: true }).first()).toBeVisible();
-
-    // Le sous-forum supprimé (ici par le test), le forum vide est supprimé
-    await withTestDb((prisma) => prisma.forum.delete({ where: { id: "e2e_inv_jetable_sous" } }));
     await page.reload({ waitUntil: "networkidle" });
     await (await findAction(page, "button", /Supprimer/)).click();
     dialog = page.getByRole("dialog", { name: new RegExp(`Supprimer le forum.*${throwaway.name}`) });
@@ -480,8 +483,8 @@ test.describe("3.9 sujets non lus", () => {
     await expect(dialog).toBeHidden();
     await page.goto("/forum/unread", { waitUntil: "networkidle" });
     await expect(page.getByText(/Tu as tout lu/)).toBeVisible();
-    const back = page.getByRole("link", { name: /forum/i }).filter({ visible: true }).filter({ hasText: /Retour/ });
-    await expect(back.first()).toHaveAttribute("href", "/forum");
+    // Liste vide : « Aller au forum » (carte 221)
+    await expect(page.getByRole("link", { name: "Aller au forum" }).filter({ visible: true })).toHaveAttribute("href", "/forum");
     await page.screenshot({ path: testInfo.outputPath("non-lus-vide.png"), fullPage: false });
   });
 });

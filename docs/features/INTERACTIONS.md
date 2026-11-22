@@ -11,12 +11,13 @@
 | Coach | 10 | Écrire, s'inscrire aux tournois, organiser un tournoi, créer une ligue, écrire un article, proposer une ressource, messagerie, signaler. |
 | Rôle personnalisé (ex. « Arbitre ») | choisie, toujours < 70 | Droits d'un coach ; sa puissance ne compte que pour l'accès aux forums réservés (`lib/forumAccess.ts`). |
 | Chef de ligue, RTC | 40, 50 | Droits d'un coach (aucun droit propre dans le code) ; accès aux forums réservés à leur rôle ou en dessous. |
-| Modérateur | 70 | Modération du forum, des articles, des ligues, des ressources ; signalements ; bannir ; changer le rôle d'un membre de rang inférieur ; valider la CDF. |
+| Modérateur | 70 | Modération du forum, des articles, des ligues, des ressources ; signalements ; bannir un membre de rang inférieur ; changer le rôle d'un membre de rang inférieur ; valider la CDF. |
 | Admin | 90 | Administration (`/administration`) ; supprimer un compte de rang inférieur ; purger le journal ; supprimer une archive du classement. |
-| Super Admin | 100 | Tout, y compris sur les autres admins ; personne ne change son propre rôle ni ne supprime son propre compte. |
+| Super Admin | 100 | Tout, y compris sur les autres admins ; personne ne change son propre rôle, ne se bannit ni ne supprime son propre compte. |
+| Comptes techniques | — | « Système » (`system`) et « Coach Inconnu » (`ghost_coach`) : personne ne les bannit ni ne les supprime (`SYSTEM_ACCOUNT_IDS`, carte 221). |
 | Banni | — | Rien : `getActiveSession()` renvoie « pas de session », il est envoyé sur `/banned`. Ses contenus restent en ligne. |
 
-Où c'est écrit : `lib/roles.ts` (puissances, `isModerator`, `isAdmin`, `roleChangeRefusal`, `canDeleteMember`), `lib/authGuard.ts` (`getActiveSession`), `lib/forumAccess.ts`, `lib/forumRights.ts`, `lib/tournamentRights.ts`. La page ne protège rien : **chaque action serveur vérifie elle-même la session et le rôle** (voir `docs/features/permissions/README.md`).
+Où c'est écrit : `lib/roles.ts` (puissances, `isModerator`, `isAdmin`, `roleChangeRefusal`, `canBanMember`, `canDeleteMember`, `SYSTEM_ACCOUNT_IDS`), `lib/authGuard.ts` (`getActiveSession`), `lib/forumAccess.ts`, `lib/forumRights.ts`, `lib/tournamentRights.ts`. La page ne protège rien : **chaque action serveur vérifie elle-même la session et le rôle** (voir `docs/features/permissions/README.md`).
 
 ## 2. Qui peut faire quoi (actions serveur)
 
@@ -27,8 +28,8 @@ Abréviations : **V** visiteur, **C** coach (et nouveau, rôle personnalisé, RT
 | Action | V | C | B | M | A / S | Vérification serveur |
 |---|---|---|---|---|---|---|
 | Lire un forum réservé | non | selon rôle | non | selon rôle | oui | `forumAccessWhere`, `topicAccessWhere` |
-| Créer un sujet, répondre, réagir | non | oui (sujet ouvert) | non | oui (même fermé) | oui | `canReplyToTopic` |
-| Modifier un message | non | auteur, sujet ouvert, message ni supprimé ni masqué | non | oui, tracé `POST_EDITED_BY_MOD` | oui | `canSavePostEdit` (carte 221) |
+| Créer un sujet, répondre, réagir | non | oui (sujet ouvert ; pas de réaction sur un message masqué) | non | oui (même fermé) | oui | `canReplyToTopic` ; `togglePostReaction` refuse un message masqué (carte 221) |
+| Modifier un message | non | auteur, sujet ouvert, message ni supprimé ni masqué | non | oui, tracé `POST_EDITED_BY_MOD` | oui | `canSavePostEdit` (carte 221), appliqué aussi à l'ouverture de la page « Modifier » |
 | Supprimer un message | non | auteur | non | oui, raison obligatoire | oui | `decidePostDeletion` |
 | Renommer un sujet | non | auteur, sujet ouvert | non | oui, tracé `TOPIC_RENAMED` | oui | `updateTopicTitle` |
 | Épingler, verrouiller, archiver, déplacer, supprimer, restaurer un sujet | non | non (sauf supprimer son sujet sans réponse) | non | oui, tracé | oui | `isModerator` + `topicAccessWhere` |
@@ -61,10 +62,11 @@ Personne, pas même la modération, ne lit les messages privés des autres. Ils 
 |---|---|---|---|---|---|---|
 | Écrire un article, proposer une ressource, créer une ligue | non | oui | non | oui | oui | session |
 | Modifier / supprimer un article | non | auteur | non | oui | oui | `isModerator` ou auteur |
-| Masquer un article | non | non | non | oui, tracé | oui | `isModerator` |
+| Masquer un article | non | non | non | oui, tracé ; ferme ses signalements | oui | `isModerator` |
+| Réagir à un article | non | oui, sauf article masqué | non | idem | idem | `toggleArticleReaction` (carte 221) |
 | Valider, refuser, modifier une ressource | non | auteur (modifier) | non | oui, sauf outil système | oui | `isModerator` ; outil système : `isAdmin` |
 | Modifier une ligue | non | créateur, commissaire | non | oui, tracé `LIGUE_UPDATED` | oui | créateur / commissaire / `isModerator` |
-| Supprimer, transférer une ligue | non | créateur | non | oui, tracé | oui | créateur / `isModerator` |
+| Supprimer, transférer une ligue | non | créateur | non | oui, tracé ; supprimer ferme ses signalements | oui | créateur / `isModerator` |
 | Archiver une année du classement | non | non | non | oui | oui | `isModerator` |
 | Supprimer une archive | non | non | non | non | oui | `isAdmin` |
 
@@ -74,23 +76,26 @@ Personne, pas même la modération, ne lit les messages privés des autres. Ils 
 |---|---|---|---|---|---|---|
 | Signaler | non | oui, contenu visible, pas deux fois | non | oui | oui | `reportInputRefusal`, `canSeeReportTarget` |
 | Voir et traiter les signalements, le journal | non | non | non | oui | oui | `isModerator` |
-| Bannir / débannir | non | non | non | < soi, tracé | < soi (S : tous) | `toggleBanUser` |
+| Bannir / débannir | non | non | non | < soi, jamais soi-même ni un compte technique, tracé ; bannir ferme ses signalements | idem (S : tous sauf soi et comptes techniques) | `canBanMember` dans `toggleBanUser` (carte 221) |
 | Changer un rôle | non | non | non | < soi, vers un rôle < soi, tracé | idem (S : tous sauf soi) | `roleChangeRefusal` |
-| Supprimer un compte | non | non | non | **non** | < soi, tracé (S : tous sauf soi) | `canDeleteMember` |
+| Supprimer un compte | non | non | non | **non** | < soi, tracé (S : tous sauf soi et comptes techniques) | `canDeleteMember` |
 | Purger le journal | non | non | non | non | oui, plus de 3 mois seulement | `LOG_RETENTION_MONTHS` |
 
 ### Administration (`app/administration/actions.ts`, `actionsStructure.ts`)
 
-Admin et Super Admin seulement, tout est tracé au journal depuis la carte 221 : rôles personnalisés (`ROLE_*`), données de référence (`REFERENCE_DATA_*`), réglages (`SITE_SETTING_UPDATED`, clés prévues seulement), annonce par e-mail (`MASS_MAIL_SENT`), catégories et ordre des forums (`CATEGORY_*`, `*_REORDERED`).
+Admin et Super Admin seulement, tout est tracé au journal depuis la carte 221 : rôles personnalisés (`ROLE_*`), données de référence (`REFERENCE_DATA_*`), réglages (`SITE_SETTING_UPDATED`, clés prévues seulement), annonce par e-mail (`MASS_MAIL_SENT` ; l'essai envoyé à soi-même par `sendTestAnnouncement` n'est pas tracé), catégories et ordre des forums (`CATEGORY_*`, `*_REORDERED`).
 
 ## 3. Carte des liens entre fonctionnalités
 
 | Quand… | …cela change |
 |---|---|
-| Un membre est **banni** | Il ne peut plus rien faire ni se faire écrire en messagerie ; ses messages et articles restent ; ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur ; le hub peut aussi bannir (`lib/hub/hubEvents.ts`). |
+| Un membre est **banni** | Il ne voit plus que `/banned` (sans navigation, avec « Me déconnecter ») ; il ne peut plus rien faire ni se faire écrire en messagerie (sa fiche grise « Message privé ») ; ses signalements en attente se ferment ; ses messages et articles restent ; ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur ; le hub peut aussi bannir (`lib/hub/hubEvents.ts`). |
 | Un **rôle** change | Accès aux forums réservés (immédiat, relu à chaque page), droits de modération, entrée au journal. |
 | Un **sujet est supprimé** | Il disparaît des listes, de la recherche, des non-lus ; ses signalements se ferment ; si c'est un sujet de tournoi, plus aucune inscription n'est acceptée. |
-| Un **message est masqué ou supprimé** | Les citations affichent un encart à la place du texte ; son auteur ne peut plus le modifier ; ses signalements se ferment. |
+| Un **message est masqué ou supprimé** | Les citations affichent un encart à la place du texte (« supprimé par son auteur », « supprimé par la modération » ou « masqué ») ; son auteur ne peut plus le modifier ; un message masqué ne reçoit plus de réaction ; ses signalements se ferment. |
+| Un **article est masqué** | Il répond « introuvable » à tout autre que son auteur et la modération ; plus de réaction ; ses signalements se ferment. |
+| Une **ligue est supprimée** | Ses tournois et articles restent sans lien vers elle ; ses signalements se ferment. |
+| Un **sujet est archivé** | Il est fermé, sort des non-lus et se range dans le groupe replié « Sujets archivés » en bas de son forum ; la recherche le trouve encore (badge « Archivé »). |
 | Un message contient une **mention** ou répond à un **sujet suivi** | Notification sous la cloche, e-mail si le membre l'accepte (`lib/notifications.ts`). |
 | Un **message privé** arrive | Compteur de la messagerie, notification, e-mail si accepté. |
 | Un **tournoi** est créé | Un sujet dans « Les tournois », une ligne dans `/tournois` et sur la carte ; terminé et validé CDF, il compte au classement. |

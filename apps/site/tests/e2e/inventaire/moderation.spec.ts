@@ -160,7 +160,7 @@ test.beforeEach(async ({ page }) => {
 
 const TABS = {
   logs: /^Journal d'audit/,
-  users: /^Utilisateurs/,
+  users: /^Membres \(page à part\)/,
   reports_post: /^Messages signalés/,
   reports_topic: /^Sujets signalés/,
   reports_user: /^Coachs signalés/,
@@ -212,7 +212,7 @@ test("accès : un visiteur est envoyé vers la connexion, un coach est renvoyé"
   await expect(page).not.toHaveURL(/\/moderation/);
 });
 
-test("onglets gardés dans l'adresse, avec leurs pastilles de compteur ; « Utilisateurs » mène à /membres", async ({ page }) => {
+test("onglets gardés dans l'adresse, avec leurs pastilles de compteur ; « Membres (page à part) » mène à /membres", async ({ page }) => {
   const pendingTopics = await db((prisma) => prisma.moderationReport.count({ where: { status: "PENDING", targetType: "TOPIC" } }));
   const pendingResources = await db((prisma) => prisma.resource.count({ where: { status: "PENDING" } }));
   await loginAs(page, MODO.id);
@@ -241,7 +241,7 @@ test("onglets gardés dans l'adresse, avec leurs pastilles de compteur ; « Util
   await page.goto("/moderation?tab=resources_validation", { waitUntil: "networkidle" });
   await expect(entry(page, RESOURCE_A.title)).toBeVisible();
 
-  // « Utilisateurs » renvoie vers l'annuaire des membres
+  // « Membres (page à part) » renvoie vers l'annuaire des membres
   await (await moderationTab(page, TABS.users)).click();
   await page.waitForURL(/\/membres/);
 });

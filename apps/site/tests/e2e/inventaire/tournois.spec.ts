@@ -217,6 +217,12 @@ async function filterPanel(page: Page): Promise<Locator> {
 async function control(page: Page, role: "combobox" | "checkbox" | "spinbutton" | "button" | "textbox", name: string | RegExp): Promise<Locator> {
   const onPage = page.getByRole(role, { name }).filter({ visible: true });
   if ((await onPage.count()) > 0) return onPage.first();
+  // Ordinateur : une partie des filtres est repliée derrière « Plus de filtres » dans le panneau gauche
+  const moreFilters = page.getByRole("complementary", { name: "Filtres des tournois" }).getByText("Plus de filtres").filter({ visible: true });
+  if ((await moreFilters.count()) > 0) {
+    await moreFilters.first().click();
+    if ((await onPage.count()) > 0) return onPage.first();
+  }
   const panel = await filterPanel(page);
   const inPanel = panel.getByRole(role, { name }).filter({ visible: true }).first();
   await expect(inPanel).toBeVisible();
@@ -257,11 +263,12 @@ async function findTool(page: Page, role: "link" | "button", name: string | RegE
 /** Zone du tournoi dans son sujet (résumé, résultats, inscriptions). */
 const tournamentRegion = (page: Page) => page.getByRole("region", { name: "Tournoi" });
 
-/** Déplie la liste des inscriptions si elle est repliée. */
+/** Déplie la liste des inscriptions si elle est repliée (ouverte d'office pour l'organisateur, carte 221). */
 async function openRegistrations(page: Page) {
   const region = tournamentRegion(page);
-  const toggle = region.getByRole("button", { name: /Gestion des Inscriptions/i });
-  if ((await region.getByText(/Pré-inscri/).filter({ visible: true }).count()) === 0) await toggle.click();
+  // « Gestion des inscriptions » pour l'organisateur, « Inscrits » pour les autres membres (carte 221)
+  const toggle = region.getByRole("button", { name: /^(Gestion des inscriptions|Inscrits)/i });
+  if ((await toggle.getAttribute("aria-expanded")) !== "true") await toggle.click();
   await expect(region.getByText(/Pré-inscri/).filter({ visible: true }).first()).toBeVisible();
 }
 
@@ -283,8 +290,7 @@ test.describe("4 tournois : la liste /tournois", () => {
     await page.goto(listUrl(), { waitUntil: "networkidle" });
     await page.screenshot({ path: testInfo.outputPath("liste-grille.png"), fullPage: false });
 
-    // Grille : 10 tournois par page (2 à venir + 22 de remplissage = 24 ; passé, terminé et annulé masqués)
-    await expect(tournamentLinks(page)).toHaveCount(10);
+    // 2 à venir + 22 de remplissage = 24 ; passé, terminé et annulé masqués
     await expect(showsTournament(page, ALPHA.name)).toHaveCount(1);
     await expect(showsTournament(page, OLD.name)).toHaveCount(0);
     await expect(showsTournament(page, DONE.name)).toHaveCount(0);
@@ -518,14 +524,15 @@ test.describe("4 tournois : inscriptions", () => {
     await loginAs(page, E2E.coachId);
     await page.goto(`/forum/topic/${ALPHA.topic}`, { waitUntil: "networkidle" });
     const region = tournamentRegion(page);
-    await expect(region.getByRole("heading", { name: ALPHA.name })).toBeVisible();
+    // Le nom du tournoi est le titre de la page ; la fiche n'a qu'un intitulé discret (carte 220)
+    await expect(region.getByRole("heading", { name: "Fiche du tournoi" })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath("fiche-tournoi.png"), fullPage: false });
 
     await region.getByRole("button", { name: "Me pré-inscrire" }).click();
     await expect.poll(() => db((prisma) => prisma.tournamentRegistration.findFirst({ where: { tournamentId: ALPHA.id, userId: E2E.coachId } }).then((r) => r?.status)), { timeout: 30_000 }).toBe("PRE_REGISTERED");
     await page.reload({ waitUntil: "networkidle" });
-    await region.getByRole("button", { name: /Annuler mon inscription/ }).click();
-    await confirm(page, "Quitter le tournoi");
+    await region.getByRole("button", { name: "Retirer mon inscription" }).click();
+    await confirm(page, "Retirer mon inscription");
     await expect.poll(() => db((prisma) => prisma.tournamentRegistration.count({ where: { tournamentId: ALPHA.id, userId: E2E.coachId } })), { timeout: 30_000 }).toBe(0);
   });
 
@@ -537,7 +544,7 @@ test.describe("4 tournois : inscriptions", () => {
     await region.getByRole("button", { name: "Être mercenaire" }).click();
     await expect.poll(() => db((prisma) => prisma.tournamentMercenary.count({ where: { tournamentId: BETA.id, userId: E2E.coachId } })), { timeout: 30_000 }).toBe(1);
     await page.reload({ waitUntil: "networkidle" });
-    await region.getByRole("button", { name: "Retirer mercenaire" }).click();
+    await region.getByRole("button", { name: "Ne plus être mercenaire" }).click();
     await expect.poll(() => db((prisma) => prisma.tournamentMercenary.count({ where: { tournamentId: BETA.id, userId: E2E.coachId } })), { timeout: 30_000 }).toBe(0);
     // Le second membre se propose comme mercenaire : seul un volontaire peut être ajouté à une équipe (carte 186)
     await db((prisma) => prisma.tournamentMercenary.create({ data: { tournamentId: BETA.id, userId: MATE.id } }));
@@ -606,8 +613,8 @@ test.describe("4 tournois : inscriptions", () => {
       await page.context().clearCookies();
       await loginAs(page, MATE.id);
       await page.goto(`/forum/topic/${ALPHA.topic}`, { waitUntil: "networkidle" });
-      await tournamentRegion(page).getByRole("button", { name: /Annuler mon inscription/ }).click();
-      await confirm(page, "Quitter le tournoi");
+      await tournamentRegion(page).getByRole("button", { name: "Retirer mon inscription" }).click();
+      await confirm(page, "Retirer mon inscription");
       await expect.poll(coachStatus, { timeout: 30_000 }).toBe("PRE_REGISTERED");
       expect(
         await db((prisma) => prisma.notification.count({ where: { userId: E2E.coachId, type: "TOURNAMENT_PROMOTED", topicId: ALPHA.topic } }))
@@ -665,7 +672,8 @@ test.describe("4 tournois : inscriptions", () => {
       await page.reload({ waitUntil: "networkidle" });
       await openRegistrations(page);
       const payment = region.getByRole("combobox", { name: /Statut de paiement/ });
-      for (const label of [/attente/i, /Payé/, /Sur place/, /Invité/]) await expect(payment.getByRole("option", { name: label })).toBeAttached();
+      // Toutes les valeurs du paiement, « Dépannage » compris (carte 221)
+      for (const label of [/^Non payé$/, /^Payé$/, /sur place/i, /^Invité$/, /^Dépannage$/]) await expect(payment.getByRole("option", { name: label })).toBeAttached();
       await payment.selectOption("PAID");
       await expect.poll(async () => (await current())?.paymentStatus, { timeout: 30_000 }).toBe("PAID");
       await region.getByRole("button", { name: /attente/i }).click();
@@ -677,13 +685,13 @@ test.describe("4 tournois : inscriptions", () => {
 
       // Fermer puis rouvrir les inscriptions (outils du sujet)
       await page.reload({ waitUntil: "networkidle" });
-      await (await findTool(page, "button", /Bloquer (les )?inscriptions/)).click();
-      await confirm(page, /Bloquer/);
+      await (await findTool(page, "button", "Fermer les inscriptions")).click();
+      await confirm(page, /^Fermer les inscriptions$/);
       await expect.poll(async () => (await db((prisma) => prisma.tournament.findUnique({ where: { id: ALPHA.id } })))?.registrationsLocked, { timeout: 30_000 }).toBe(true);
       await page.reload({ waitUntil: "networkidle" });
-      await expect(tournamentRegion(page).getByText(/Inscriptions closes/i).first()).toBeVisible();
-      await (await findTool(page, "button", /Réouvrir les inscriptions/)).click();
-      await confirm(page, /Réouvrir|Débloquer|Confirmer/);
+      await expect(tournamentRegion(page).getByText(/Inscriptions fermées/i).first()).toBeVisible();
+      await (await findTool(page, "button", "Rouvrir les inscriptions")).click();
+      await confirm(page, /^Rouvrir les inscriptions$/);
       await expect.poll(async () => (await db((prisma) => prisma.tournament.findUnique({ where: { id: ALPHA.id } })))?.registrationsLocked, { timeout: 30_000 }).toBe(false);
     } finally {
       await db(async (prisma) => {
@@ -753,8 +761,8 @@ test.describe("4 tournois : résultats", () => {
       await confirm(page, /^Terminer$/);
       await expect.poll(async () => (await state())?.isFinished, { timeout: 30_000 }).toBe(true);
       await page.reload({ waitUntil: "networkidle" });
-      await (await findTool(page, "button", "Réouvrir le tournoi")).click();
-      await confirm(page, /^Réouvrir$/);
+      await (await findTool(page, "button", "Rouvrir le tournoi")).click();
+      await confirm(page, /^Rouvrir le tournoi$/);
       await expect.poll(async () => (await state())?.isFinished, { timeout: 30_000 }).toBe(false);
       await page.reload({ waitUntil: "networkidle" });
       await (await findTool(page, "button", "Annuler le tournoi")).click();

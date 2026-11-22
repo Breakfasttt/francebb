@@ -292,12 +292,9 @@ test.describe("Inventaire 11 : ressources", () => {
     await popup.waitForURL(ALPHA.link);
     await popup.close();
 
-    // Liste : mêmes ressources, et un clic ouvre aussi le lien
+    // Une seule présentation, en liste, depuis la carte 220 : un clic ouvre aussi le lien
     await page.goto("/ressources", { waitUntil: "networkidle" });
     await search(page, "Inv Res Remplissage");
-    await expect.poll(async () => (await shownTitles(page)).length).toBe(20);
-    await (await control(page, "button", /liste/i)).click();
-    await closeFilterPanel(page);
     await expect.poll(async () => (await shownTitles(page)).length).toBe(20);
     await page.screenshot({ path: testInfo.outputPath("ressources-liste.png"), fullPage: false });
     const listPopupPromise = page.waitForEvent("popup");
@@ -305,8 +302,6 @@ test.describe("Inventaire 11 : ressources", () => {
     const listPopup = await listPopupPromise;
     await listPopup.waitForURL(`https://example.com/inv-res-fill-${FILLERS}`);
     await listPopup.close();
-    await (await control(page, "button", /grille/i)).click();
-    await closeFilterPanel(page);
 
     // Une ressource interne au site s'ouvre dans le même onglet
     await search(page, "Inv Res Officiel");
@@ -429,7 +424,7 @@ test.describe("Inventaire 11 : ressources", () => {
     await page.screenshot({ path: testInfo.outputPath("ressource-modifier.png"), fullPage: true });
     await form.title.fill(EDITED_TITLE);
     await leaveField(page);
-    await submitButton(page, /Mettre à jour/).click();
+    await submitButton(page, /^Enregistrer$/).click();
     await page.waitForURL(/\/ressources$/);
     await expect.poll(() => db((prisma) => prisma.resource.findUnique({ where: { id: EDITABLE.id } }).then((resource) => resource && [resource.title, resource.status]))).toEqual([EDITED_TITLE, "PENDING"]);
 
@@ -438,14 +433,14 @@ test.describe("Inventaire 11 : ressources", () => {
     await loginAs(page, OTHER.id);
     await page.goto(`/ressources/edit/${ALPHA.id}`, { waitUntil: "networkidle" });
     await expect(page.getByText(/non autorisée/).first()).toBeVisible();
-    await expect(page.getByRole("button", { name: /Mettre à jour/ })).toHaveCount(0);
+    await expect(page.getByRole("button", { name: /^Enregistrer$/ })).toHaveCount(0);
 
     // Le modérateur peut modifier la ressource d'un autre, mais pas un outil officiel
     await logout(page);
     await loginAs(page, E2E.modoId);
     await page.goto(`/ressources/edit/${BETA.id}`, { waitUntil: "networkidle" });
     await expect(fields(page).title).toHaveValue(BETA.title);
-    await expect(submitButton(page, /Mettre à jour/)).toBeVisible();
+    await expect(submitButton(page, /^Enregistrer$/)).toBeVisible();
     await page.goto(`/ressources/edit/${OFFICIAL.id}`, { waitUntil: "networkidle" });
     await expect(page.getByText(/non autorisée/).first()).toBeVisible();
 
@@ -459,7 +454,7 @@ test.describe("Inventaire 11 : ressources", () => {
     await expect(official.link).not.toBeEditable();
     await official.description.fill("Description changée par l'administrateur.");
     await leaveField(page);
-    await submitButton(page, /Mettre à jour/).click();
+    await submitButton(page, /^Enregistrer$/).click();
     await page.waitForURL(/\/ressources$/);
     await expect.poll(() => db((prisma) => prisma.resource.findUnique({ where: { id: OFFICIAL.id } }).then((resource) => resource && [resource.description, resource.status]))).toEqual(["Description changée par l'administrateur.", "APPROVED"]);
   });

@@ -152,7 +152,7 @@ test("un modérateur bannit un membre depuis sa fiche, et c'est tracé au journa
   await page.getByRole("button", { name: "Bannir" }).first().click();
   await page.getByRole("button", { name: "Spam / Publicité" }).click();
   await page.getByRole("button", { name: "Confirmer le bannissement" }).click();
-  await expect(page.getByText("Utilisateur banni")).toBeVisible();
+  await expect(page.getByText("Membre banni", { exact: true })).toBeVisible();
 
   const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: E2E_DATABASE_URL }) });
   try {
@@ -202,7 +202,7 @@ test("un modérateur ne peut pas débannir un membre de rang égal, mais débann
     // Refus : le serveur bloque le débannissement d'un membre de rang égal
     await (await bannedRow(E2E.bannedModoName)).getByRole("button", { name: "Débannir" }).click();
     await page.getByRole("dialog").getByRole("button", { name: "Débannir" }).click();
-    await expect(page.getByText("Tu ne peux pas débannir ce membre (hiérarchie insuffisante)")).toBeVisible();
+    await expect(page.getByText("Tu ne peux pas débannir ce membre.")).toBeVisible();
 
     // Autorisé : le coach, de rang inférieur, est débanni
     await (await bannedRow("Cible E2E")).getByRole("button", { name: "Débannir" }).click();
@@ -362,7 +362,7 @@ test.describe("Carte 141 : ressources et envoi d'images", () => {
 
     // Le formulaire envoie un lien correct, remplacé en route par un lien qui exécuterait du code au clic
     await rewriteServerActions(page, (body) => body.replace(safeLink, "javascript:alert(document.cookie)"));
-    await page.getByRole("button", { name: /Soumettre|Proposer une ressource/ }).filter({ visible: true }).first().click();
+    await page.getByRole("button", { name: /^Proposer( la ressource)?$/ }).filter({ visible: true }).first().click();
     await expect(page.getByText(/Le lien doit être une adresse web complète/)).toBeVisible();
     await expect(page).toHaveURL(/\/ressources\/submit$/);
 

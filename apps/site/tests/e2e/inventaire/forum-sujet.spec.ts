@@ -168,9 +168,18 @@ test.beforeAll(async () => {
 
 test.afterAll(cleanUp);
 
-// Bandeau des cookies masqué : sur téléphone, il couvre le bas de l'écran et intercepterait les appuis
+// Bandeau des cookies masqué : sur téléphone, il couvre le bas de l'écran et intercepterait les appuis. La pastille
+// des outils de développement de Next.js (`nextjs-portal`) est masquée comme dans les autres fichiers d'inventaire :
+// elle n'existe pas sur le site en ligne, et sur téléphone elle interceptait l'appui sur la première colonne des émojis.
 test.beforeEach(async ({ page }) => {
-  await page.addInitScript(() => localStorage.setItem("bbfrance_cookie_consent", "accepted"));
+  await page.addInitScript(() => {
+    localStorage.setItem("bbfrance_cookie_consent", "accepted");
+    document.addEventListener("DOMContentLoaded", () => {
+      const style = document.createElement("style");
+      style.textContent = "nextjs-portal { display: none !important; }";
+      document.head.appendChild(style);
+    });
+  });
 });
 
 const topicUrl = (id = TOPIC.id, query = "?page=1") => `/forum/topic/${id}${query}`;
@@ -284,7 +293,8 @@ const resetReader = () => withTestDb((prisma) => prisma.topicView.deleteMany({ w
 /** Fixe un champ du sujet principal (archivé, épinglé…) directement dans la base. */
 const setTopic = (id: string, data: Record<string, unknown>) => withTestDb((prisma) => prisma.topic.update({ where: { id }, data }));
 
-const DATE = /\d{1,2} \S+ \d{4}/;
+// Date exacte du message : « 19/11/2026 à 03:00 » (carte 220)
+const DATE = /\d{2}\/\d{2}\/\d{4} à \d{2}:\d{2}/;
 
 test.describe("3.3 lecture et navigation", () => {
   test("[membre] sans ?page=, saut au premier non-lu ; le sujet est marqué comme lu et les vues augmentent", async ({ page }) => {
@@ -376,9 +386,9 @@ test.describe("3.3 lecture et navigation", () => {
     }
   });
 
-  test("[visiteur] « Envie de participer ? » en bas du sujet, avec retour au sujet après la connexion (carte 185)", async ({ page }) => {
+  test("[visiteur] « Envie de répondre ? » en bas du sujet, avec retour au sujet après la connexion (carte 185)", async ({ page }) => {
     await page.goto(topicUrl(TOPIC.id, "?page=2"), { waitUntil: "networkidle" });
-    const invite = page.getByRole("region", { name: "Envie de participer ?" });
+    const invite = page.getByRole("region", { name: "Envie de répondre ?" });
     await expect(invite).toBeVisible();
     await expect(invite.getByRole("link", { name: "Se connecter ou créer un compte" })).toHaveAttribute(
       "href",
@@ -387,7 +397,7 @@ test.describe("3.3 lecture et navigation", () => {
     // Un membre connecté ne voit pas l'encart
     await loginAs(page, READER.id);
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
-    await expect(page.getByRole("region", { name: "Envie de participer ?" })).toHaveCount(0);
+    await expect(page.getByRole("region", { name: "Envie de répondre ?" })).toHaveCount(0);
   });
 
   test("[tous] titre, badge « ARCHIVÉ », nom du forum, retour au forum et fil d'Ariane", async ({ page }) => {
@@ -397,9 +407,13 @@ test.describe("3.3 lecture et navigation", () => {
       await expect(page.getByRole("heading", { level: 1, name: new RegExp(TOPIC.title) })).toBeVisible();
       await expect(page.getByText("ARCHIVÉ", { exact: true }).filter({ visible: true })).toBeVisible();
       await expect(page.getByText(E2E.forumName, { exact: true }).filter({ visible: true }).first()).toBeVisible();
-      await expect(
-        page.getByRole("button", { name: "Retour au forum" }).or(page.getByRole("link", { name: "Retour au forum" })).filter({ visible: true }).first()
-      ).toBeVisible();
+      // Carte 220 : bouton retour sur téléphone, fil d'Ariane sur ordinateur
+      if (isPhone(page)) {
+        await expect(
+          page.getByRole("button", { name: "Retour au forum" }).or(page.getByRole("link", { name: "Retour au forum" })).filter({ visible: true }).first()
+        ).toBeVisible();
+        return;
+      }
 
       const breadcrumb = page.getByRole("navigation", { name: "Breadcrumb" });
       await expect(breadcrumb.getByRole("link", { name: "Accueil Forum" })).toHaveAttribute("href", "/forum");
@@ -448,8 +462,10 @@ test.describe("3.3 lecture et navigation", () => {
 test.describe("3.3 sujet de tournoi", () => {
   test("[tous] résumé, résultats quand il est terminé, inscriptions, premier message gardé en page 2", async ({ page }, testInfo) => {
     await page.goto(topicUrl(TOURNAMENT_TOPIC), { waitUntil: "networkidle" });
-    await expect(page.getByRole("heading", { name: TOURNAMENT.name })).toBeVisible();
-    await expect(page.getByRole("button", { name: /Gestion des Inscriptions/i })).toBeVisible();
+    // Le titre de la page est celui du sujet ; la fiche n'a qu'un intitulé discret (carte 220)
+    await expect(page.getByRole("region", { name: "Tournoi" }).getByRole("heading", { name: "Fiche du tournoi" })).toBeVisible();
+    // « Inscrits » pour un visiteur ; « Gestion des inscriptions » est réservé à l'organisateur (carte 221)
+    await expect(page.getByRole("button", { name: /^Inscrits/ })).toBeVisible();
     await expect(page.getByText("Résultats du Tournoi")).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("tournoi.png"), fullPage: false });
 
@@ -501,7 +517,7 @@ test.describe("3.3 un message", () => {
 
     // Un visiteur n'a ni « Profil » ni « MP »
     await expect(page.getByRole("link", { name: /^profil$/i })).toHaveCount(0);
-    await expect(page.getByRole("link", { name: /^MP$/ })).toHaveCount(0);
+    await expect(page.getByRole("link", { name: /^Message privé$/ })).toHaveCount(0);
   });
 
   test("[membre] « Profil » et « MP », sauf « MP » sur ses propres messages", async ({ page }, testInfo) => {
@@ -509,7 +525,7 @@ test.describe("3.3 un message", () => {
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
     let card = await authorCard(page, postCard(page, postId(1)));
     await expect(card.getByRole("link", { name: /^profil$/i }).filter({ visible: true })).toHaveAttribute("href", `/spy/${AUTHOR.id}`);
-    await expect(card.getByRole("link", { name: /^MP$/ }).filter({ visible: true })).toHaveAttribute("href", `/messagerie?userId=${AUTHOR.id}`);
+    await expect(card.getByRole("link", { name: /^Message privé$/ }).filter({ visible: true })).toHaveAttribute("href", `/messagerie?userId=${AUTHOR.id}`);
     await page.screenshot({ path: testInfo.outputPath("fiche-auteur-membre.png"), fullPage: false });
     await closePanels(page);
 
@@ -517,7 +533,7 @@ test.describe("3.3 un message", () => {
     await page.goto(topicUrl(), { waitUntil: "networkidle" });
     card = await authorCard(page, postCard(page, postId(1)));
     await expect(card.getByRole("link", { name: /^profil$/i }).filter({ visible: true })).toHaveAttribute("href", `/spy/${AUTHOR.id}`);
-    await expect(card.getByRole("link", { name: /^MP$/ })).toHaveCount(0);
+    await expect(card.getByRole("link", { name: /^Message privé$/ })).toHaveCount(0);
   });
 
   test("[tous] partager : copie du lien du message avec « Lien copié ! »", async ({ page, context }) => {
@@ -578,8 +594,8 @@ test.describe("3.3 un message", () => {
     await expect(deleted.getByText("Contenu supprimé e2e")).toHaveCount(0);
 
     const moderated = postCard(page, postId(5));
-    await expect(moderated.getByText(/modéré par Modo E2E, raison : Hors sujet e2e/)).toBeVisible();
-    await expect(moderated.getByText(/masqué par la modération/)).toBeVisible();
+    await expect(moderated.getByText(/masqué par la modération \(Modo E2E\), raison : Hors sujet e2e/)).toBeVisible();
+    await expect(moderated.getByText("Le contenu de ce message a été masqué par la modération.")).toBeVisible();
     await expect(moderated.getByText("Contenu modéré e2e")).toHaveCount(0);
 
     await loginAs(page, READER.id);
@@ -591,7 +607,7 @@ test.describe("3.3 un message", () => {
       await loginAs(page, viewer);
       await page.goto(topicUrl(), { waitUntil: "networkidle" });
       const post = postCard(page, postId(5));
-      await expect(post.getByText(/modéré par Modo E2E/)).toBeVisible();
+      await expect(post.getByText(/masqué par la modération \(Modo E2E\)/)).toBeVisible();
       await expect(post.getByText("Contenu modéré e2e")).toBeVisible();
       await expect(post.getByText(/visible par toi seul et les modérateurs/)).toBeVisible();
     }
@@ -608,14 +624,14 @@ test.describe("3.3 un message", () => {
     await expect(confirm).toBeDisabled();
     await page.getByLabel("Raison du masquage").fill("Raison du test");
     await confirm.click();
-    await expect(post.getByText(/modéré par Modo E2E, raison : Raison du test/)).toBeVisible({ timeout: 20_000 });
+    await expect(post.getByText(/masqué par la modération \(Modo E2E\), raison : Raison du test/)).toBeVisible({ timeout: 20_000 });
 
     post = postCard(page, "e2e_suj_s01");
     await (await postAction(page, post, "Démasquer")).click();
     const dialog = page.getByRole("dialog", { name: "Démasquer le message" });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Démasquer" }).click();
-    await expect(postCard(page, "e2e_suj_s01").getByText(/modéré par/)).toHaveCount(0, { timeout: 20_000 });
+    await expect(postCard(page, "e2e_suj_s01").getByText(/masqué par la modération/)).toHaveCount(0, { timeout: 20_000 });
   });
 
   test("[tous] réactions ; [membre] 10 émojis, une seule réaction, remplacée ou retirée", async ({ page }, testInfo) => {
@@ -807,7 +823,7 @@ test.describe("2 rendu des messages", () => {
 });
 
 test.describe("3.3 réponse rapide", () => {
-  test("[membre] éditeur et « Envoyer ma réponse » ; l'éditeur est vidé et le nouveau message affiché", async ({ page }, testInfo) => {
+  test("[membre] éditeur et « Publier ma réponse » ; l'éditeur est vidé et le nouveau message affiché", async ({ page }, testInfo) => {
     await page.goto(topicUrl(SMALL_TOPIC), { waitUntil: "networkidle" });
     await expect(page.locator("#quick-reply-area")).toHaveCount(0);
 
@@ -816,7 +832,7 @@ test.describe("3.3 réponse rapide", () => {
     const editor = page.getByPlaceholder("Écris ta réponse…");
     await editor.fill("Réponse rapide de l'inventaire");
     await page.screenshot({ path: testInfo.outputPath("reponse-rapide.png"), fullPage: false });
-    await page.getByRole("button", { name: "Envoyer ma réponse" }).click();
+    await page.getByRole("button", { name: "Publier ma réponse" }).click();
     const reply = page.getByText("Réponse rapide de l'inventaire", { exact: true });
     await expect(reply).toBeVisible({ timeout: 20_000 });
     await expect(reply).toBeInViewport();
@@ -834,7 +850,8 @@ test.describe("3.3 réponse rapide", () => {
     await closePanels(page);
 
     await page.goto(topicUrl(LOCKED_FORUM_TOPIC), { waitUntil: "networkidle" });
-    await expect(page.getByText(/Tu ne peux plus répondre à ce sujet/)).toBeVisible();
+    // Forum verrouillé : l'encart le dit (carte 221)
+    await expect(page.getByText("Ce forum est verrouillé : seule la modération peut encore y répondre.")).toBeVisible();
     tools = await topicTools(page);
     await expect(tools.getByText("Forum verrouillé", { exact: true }).filter({ visible: true }).first()).toBeVisible();
     await closePanels(page);
@@ -842,7 +859,7 @@ test.describe("3.3 réponse rapide", () => {
     await loginAs(page, E2E.modoId);
     await page.goto(topicUrl(LOCKED_TOPIC), { waitUntil: "networkidle" });
     await expect(page.getByPlaceholder("Écris ta réponse…")).toBeVisible();
-    await expect(page.getByRole("button", { name: "Envoyer ma réponse" })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Publier ma réponse" })).toBeVisible();
   });
 });
 
@@ -923,7 +940,7 @@ test.describe("3.3 outils du sujet", () => {
       await closePanels(page);
     };
     await confirmThenCancel("Terminer le tournoi", "Terminer le tournoi");
-    await confirmThenCancel(/Bloquer (les )?inscriptions/, "Bloquer les inscriptions");
+    await confirmThenCancel("Fermer les inscriptions", "Fermer les inscriptions");
     await confirmThenCancel("Annuler le tournoi", "Annuler le tournoi");
     await expectNoTool(page, "link", "Publier les résultats");
 
@@ -932,7 +949,7 @@ test.describe("3.3 outils du sujet", () => {
       await page.goto(topicUrl(TOURNAMENT_TOPIC), { waitUntil: "networkidle" });
       await expect(await findTool(page, "link", "Publier les résultats")).toHaveAttribute("href", `/forum/tournament/${TOURNAMENT.id}/results`);
       await closePanels(page);
-      await confirmThenCancel("Réouvrir le tournoi", "Réouvrir le tournoi");
+      await confirmThenCancel("Rouvrir le tournoi", "Rouvrir le tournoi");
       await expectNoTool(page, "button", "Terminer le tournoi");
     } finally {
       await withTestDb((prisma) => prisma.tournament.update({ where: { id: TOURNAMENT.id }, data: { isFinished: false } }));

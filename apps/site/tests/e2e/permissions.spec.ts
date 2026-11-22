@@ -214,6 +214,9 @@ test("messagerie : pas de message vide ou trop long, pas de conversation avec un
   await loginAs(page, ID.coach);
   expect((await callServerAction(page, "/messagerie", "startConversation", [[ID.banned]]))?.success).toBe(false);
   expect((await callServerAction(page, "/messagerie", "startConversation", [["compte-inexistant"]]))?.success).toBe(false);
+  // Comptes techniques du site : personne ne leur écrit
+  expect((await callServerAction(page, "/messagerie", "startConversation", [["system"]]))?.success).toBe(false);
+  expect((await callServerAction(page, "/messagerie", "startConversation", [["ghost_coach"]]))?.success).toBe(false);
   expect((await callServerAction(page, "/messagerie", "renameConversation", [ID.group, "Renommé après départ"]))?.success).toBe(false);
 
   await loginAs(page, ID.victim);
@@ -271,7 +274,8 @@ test("le compteur de lectures d'un article ne monte qu'une fois par visite", asy
 test("l'organisateur voit qu'un inscrit a été banni", async ({ page }) => {
   await loginAs(page, ID.coach);
   await page.goto(`/forum/topic/${ID.tournamentTopic}`, { waitUntil: "networkidle" });
-  await page.getByRole("button", { name: /Gestion des inscriptions/ }).click();
+  // La liste des inscriptions est ouverte d'office pour l'organisateur (carte 221)
+  await expect(page.getByRole("button", { name: /Gestion des inscriptions/ })).toHaveAttribute("aria-expanded", "true");
   const row = page.getByRole("listitem").filter({ hasText: `Membre ${ID.banned}` });
   await expect(row.getByText("Banni", { exact: true })).toBeVisible();
 });

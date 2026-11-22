@@ -54,14 +54,14 @@ test("un administrateur rétrogradé pendant sa session perd l'accès à /admini
   try {
     await loginAs(page, LIVE_ADMIN_ID);
     await page.goto("/administration");
-    await expect(page.getByText("Gestion avancée de la plateforme")).toBeVisible();
+    await expect(page.getByText("Réglages du site, rôles et structure du forum")).toBeVisible();
 
     // Rétrogradation faite en base pendant que l'administrateur est connecté
     await withTestDb((prisma) => prisma.user.update({ where: { id: LIVE_ADMIN_ID }, data: { role: "COACH" } }));
 
     await page.goto("/administration");
     await expect(page).not.toHaveURL(/\/administration/);
-    await expect(page.getByText("Gestion avancée de la plateforme")).toBeHidden();
+    await expect(page.getByText("Réglages du site, rôles et structure du forum")).toBeHidden();
   } finally {
     await withTestDb((prisma) => prisma.user.delete({ where: { id: LIVE_ADMIN_ID } }));
   }

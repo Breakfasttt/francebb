@@ -3,8 +3,8 @@
 /**
  * Actions de la page d'un article (refonte, carte 095, ADR 0006), sur le modèle de la fiche d'une ligue (carte 094) :
  * - « Modifier », visible, pour l'auteur et la modération ;
- * - le menu « ⋯ » (« Actions de l'article ») : « Supprimer l'article » pour l'auteur et la modération, « Modérer
- *   l'article » ou « Annuler la modération » pour la modération, « Signaler l'article » pour un membre connecté qui
+ * - le menu « ⋯ » (« Actions de l'article ») : « Supprimer l'article » pour l'auteur et la modération, « Masquer
+ *   l'article » ou « Démasquer l'article » pour la modération, « Signaler l'article » pour un membre connecté qui
  *   n'en est pas l'auteur. Sur téléphone, ce menu est un panneau qui monte du bas ; sur ordinateur, une liste
  *   déroulante.
  * La suppression et l'annulation de la modération demandent une confirmation (`ConfirmDialog`) ; la modération
@@ -54,7 +54,7 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
       toast.error(result.error);
       return;
     }
-    toast.success("Article supprimé avec succès.");
+    toast.success("Article supprimé.");
     setDeleteOpen(false);
     router.push("/articles");
   };
@@ -62,11 +62,11 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
   const handleModerate = async (reason: string) => {
     const result = await moderateArticle(articleId, reason);
     if (result.success) {
-      toast.success("Article modéré avec succès");
+      toast.success("Article masqué.");
       setModerateOpen(false);
       router.refresh();
     } else {
-      toast.error(result.error || "Erreur lors de la modération");
+      toast.error(result.error || "Impossible de masquer l'article.");
     }
   };
 
@@ -75,11 +75,11 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
     const result = await unmoderateArticle(articleId);
     setPending(false);
     if (result.success) {
-      toast.success("Modération annulée");
+      toast.success("Article de nouveau visible.");
       setRestoreOpen(false);
       router.refresh();
     } else {
-      toast.error(result.error || "Erreur lors de l'annulation");
+      toast.error(result.error || "Impossible de démasquer l'article.");
     }
   };
 
@@ -98,8 +98,8 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
         label="Actions de l'article"
         triggerClassName="border border-bb-border bg-bb-surface"
         items={[
-          { label: "Modérer l'article", icon: <ShieldAlert size={18} aria-hidden="true" />, onSelect: () => setModerateOpen(true), hidden: !canModerate || isModerated },
-          { label: "Annuler la modération", icon: <ShieldCheck size={18} aria-hidden="true" />, onSelect: () => setRestoreOpen(true), hidden: !canModerate || !isModerated },
+          { label: "Masquer l'article", icon: <ShieldAlert size={18} aria-hidden="true" />, onSelect: () => setModerateOpen(true), hidden: !canModerate || isModerated },
+          { label: "Démasquer l'article", icon: <ShieldCheck size={18} aria-hidden="true" />, onSelect: () => setRestoreOpen(true), hidden: !canModerate || !isModerated },
           { label: "Supprimer l'article", icon: <Trash2 size={18} aria-hidden="true" />, onSelect: () => setDeleteOpen(true), danger: true, hidden: !canEdit },
           { label: "Signaler l'article", icon: <Flag size={18} aria-hidden="true" />, onSelect: () => setReportOpen(true), hidden: !canReport },
         ]}
@@ -124,10 +124,10 @@ export default function ArticleActions({ articleId, articleTitle, authorName, is
           <ConfirmDialog
             open={restoreOpen}
             onOpenChange={setRestoreOpen}
-            title="Annuler la modération"
+            title="Démasquer l'article"
             message="Le contenu original de l'article sera à nouveau visible par tous."
-            confirmLabel="Annuler la modération"
-            cancelLabel="Garder la modération"
+            confirmLabel="Démasquer"
+            cancelLabel="Garder masqué"
             pending={pending}
             onConfirm={handleRestore}
           />

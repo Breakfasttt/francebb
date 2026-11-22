@@ -145,7 +145,7 @@ test("150 : la liste des tournois compte les places d'après les inscriptions r�
 
   // Affichage en liste : même compte
   await page.goto(`/tournois?${new URLSearchParams({ query: "Bug V2", view: "list" }).toString()}`, { waitUntil: "networkidle" });
-  await expect(tournamentLink(page, RECENT.name)).toContainText("3/20");
+  await expect(tournamentLink(page, RECENT.name)).toContainText(/3 ?\/ ?20/);
 });
 
 test("150 : le repère du choix de lieu sur une carte est servi par le site", async ({ page }) => {

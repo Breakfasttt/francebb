@@ -179,7 +179,7 @@ test.describe("Carte 112 : « @ » dans l'éditeur", () => {
   test("[membre] « @ » au milieu d'un mot s'écrit ; en début de mot, il ouvre aussi la mention", async ({ page }) => {
     await loginAs(page, READER.id);
     await page.goto(`/forum/topic/${EDITOR_TOPIC}/reply`, { waitUntil: "networkidle" });
-    const textarea = page.getByRole("textbox", { name: REPLY_PLACEHOLDER });
+    const textarea = page.getByPlaceholder(REPLY_PLACEHOLDER);
     await expect(textarea).toBeVisible();
     const search = page.getByRole("textbox", { name: "Rechercher un membre", exact: true }).filter({ visible: true });
 
@@ -234,7 +234,9 @@ test.describe("Carte 113 : appui juste après une saisie, sur téléphone", () =
 test.describe("Carte 134 : lien vers un coach dans les résultats d'un tournoi", () => {
   test("[tous] le nom du coach mène à /spy/<id>", async ({ page }) => {
     await page.goto(`/forum/topic/${TOURNAMENT.topic}?page=1`, { waitUntil: "networkidle" });
-    await page.getByRole("button", { name: /Résultats du tournoi/ }).click();
+    // Bloc des résultats déplié par défaut (carte 221) : on ne l'ouvre que s'il est replié
+    const toggle = page.getByRole("button", { name: /Résultats du tournoi/ });
+    if ((await toggle.getAttribute("aria-expanded")) !== "true") await toggle.click();
     await expect(page.getByRole("link", { name: COACH.name })).toHaveAttribute("href", `/spy/${COACH.id}`);
   });
 });

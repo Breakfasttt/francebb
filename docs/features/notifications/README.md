@@ -8,10 +8,10 @@ Une cloche dans la barre du site prévient le coach de ce qui le concerne : un m
 
 ## Ce que voit le coach
 
-- **La cloche**, dans la barre du haut, sur ordinateur (à gauche de l'enveloppe de la messagerie) comme sur téléphone (à droite du logo, pour ne pas ajouter un sixième onglet à la barre basse). Sa pastille compte les notifications non lues. Réservée au membre connecté.
-- **`/notifications`** : la liste, de la plus récente à la plus ancienne, 30 par page. Une notification non lue a un fond coloré et un point. « Tout marquer comme lu » est en tête de page. Chaque ligne mène au bon endroit : la bonne page du sujet, directement sur le message concerné, ou la conversation de la messagerie.
+- **La cloche**, dans la barre du haut, sur ordinateur (à gauche de l'enveloppe de la messagerie) comme sur téléphone (à droite du logo, pour ne pas ajouter un sixième onglet à la barre basse). Sa pastille compte les notifications non lues. Réservée au membre connecté. Elle n'apparaît pas sur les pages sans navigation (`/banned`, inscription).
+- **`/notifications`** : la liste, de la plus récente à la plus ancienne, 30 par page. Une notification non lue a un fond coloré et un point bleu, lu « Non lue » par les lecteurs d'écran et au survol (carte 221). La date est relative (« il y a 2 heures », composant `RelativeTime`), la date complète au survol. « Tout marquer comme lu » est en tête de page. Chaque ligne mène au bon endroit : la bonne page du sujet, directement sur le message concerné, ou la conversation de la messagerie.
 - Une notification devient lue quand on l'ouvre depuis la liste, quand on lit le sujet jusqu'au message concerné, ou quand on ouvre la conversation.
-- **Préférences** (profil, onglet « Gérer mon compte », bloc « Notifications ») : e-mail pour les messages privés, e-mail pour les sujets suivis, e-mails d'annonces, et « Suivre automatiquement mes sujets ». Les notifications du site elles-mêmes ne se désactivent pas.
+- **Préférences** (profil, onglet « Réglages du compte », bloc « Notifications ») : e-mail pour les messages privés, e-mail pour les sujets suivis, e-mails d'annonces, et « Suivre automatiquement mes sujets ». Les notifications du site elles-mêmes ne se désactivent pas.
 - **Sur téléphone** : cloche de 44 pixels dans la barre du haut ; la page est une seule colonne, chaque ligne fait au moins 64 pixels de haut.
 
 ## Les fichiers

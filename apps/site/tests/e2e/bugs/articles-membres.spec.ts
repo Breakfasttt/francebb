@@ -292,8 +292,8 @@ test.describe("carte 140 : page et modification d'un article", () => {
   test("la fenêtre de modération d'un article parle d'« article »", async ({ page }) => {
     await loginAs(page, E2E.modoId);
     await page.goto(`/articles/${VISIBLE_ARTICLE.id}`, { waitUntil: "networkidle" });
-    await chooseArticleAction(page, "Modérer l'article");
-    const dialog = page.getByRole("dialog", { name: `Modérer l'article de ${SECRETIVE.name}` });
+    await chooseArticleAction(page, "Masquer l'article");
+    const dialog = page.getByRole("dialog", { name: `Masquer l'article de ${SECRETIVE.name}` });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText(/Le contenu de l'article sera masqué/)).toBeVisible();
     await expect(page.getByText(/Masquer le message|Modérer le message/)).toHaveCount(0);
