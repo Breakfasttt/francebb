@@ -116,7 +116,7 @@ test("connexion par email depuis le bouton du site, sans aucun écran du hub", a
   await expect(page.getByRole("button", { name: /compte BBFrance/i })).toHaveCount(0);
 
   await page.getByPlaceholder("nom@exemple.fr").fill("coach@e2e.test");
-  await page.getByRole("button", { name: "Recevoir un lien magique" }).click();
+  await page.getByRole("button", { name: "Recevoir un lien de connexion par e-mail" }).click();
   await page.waitForURL((url) => url.origin === HUB);
   await expect(page.getByText("Vérifie ta boîte mail")).toBeVisible();
 

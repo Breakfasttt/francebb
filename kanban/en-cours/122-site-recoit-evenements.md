@@ -40,3 +40,7 @@ Le site garde une copie locale du profil et sa session dans un jeton. Il doit su
 - **Vérifié** : les types du site et du hub passent (`tsc`).
 - **Pas encore vérifié** : les tests de bout en bout ajoutés à `apps/hub/tests/sso.spec.ts` (pseudo du site vers le passeport et retour, bannissement puis levée). Ils n'ont pas pu tourner : l'autre session utilisait la base de test du site au même moment, et `test:sso` la recrée à vide.
 - **Reste** : lancer `pnpm --filter @bbfrance/hub test:sso` quand aucune autre session n'utilise les tests du site, puis la vérification en taille téléphone des réglages du profil.
+
+## Essai du 22/11
+
+`test:sso` lancé pendant la carte 116 : le bannissement puis la levée passent, le pseudo du site part bien au passeport, mais le pseudo changé au passeport ne revient pas sur le site (`Expected: "Coach Hub …"`, `Received: "Coach Site …"`). L'événement `user.updated` n'arrive pas, ou n'est pas appliqué à la session du site.
