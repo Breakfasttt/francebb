@@ -211,6 +211,11 @@ export type LegacyMember = $Result.DefaultSelection<Prisma.$LegacyMemberPayload>
  * 
  */
 export type MailLog = $Result.DefaultSelection<Prisma.$MailLogPayload>
+/**
+ * Model UserWarning
+ * Avertissement de la modération à un membre (carte 222) : le membre le voit sur son profil, la modération sur sa fiche.
+ */
+export type UserWarning = $Result.DefaultSelection<Prisma.$UserWarningPayload>
 
 /**
  * Enums
@@ -755,6 +760,16 @@ export class PrismaClient<
     * ```
     */
   get mailLog(): Prisma.MailLogDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.userWarning`: Exposes CRUD operations for the **UserWarning** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more UserWarnings
+    * const userWarnings = await prisma.userWarning.findMany()
+    * ```
+    */
+  get userWarning(): Prisma.UserWarningDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1227,7 +1242,8 @@ export namespace Prisma {
     TournamentRound: 'TournamentRound',
     TournamentMatch: 'TournamentMatch',
     LegacyMember: 'LegacyMember',
-    MailLog: 'MailLog'
+    MailLog: 'MailLog',
+    UserWarning: 'UserWarning'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1243,7 +1259,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog" | "userWarning"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4133,6 +4149,80 @@ export namespace Prisma {
           }
         }
       }
+      UserWarning: {
+        payload: Prisma.$UserWarningPayload<ExtArgs>
+        fields: Prisma.UserWarningFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.UserWarningFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.UserWarningFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          findFirst: {
+            args: Prisma.UserWarningFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.UserWarningFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          findMany: {
+            args: Prisma.UserWarningFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>[]
+          }
+          create: {
+            args: Prisma.UserWarningCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          createMany: {
+            args: Prisma.UserWarningCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.UserWarningCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>[]
+          }
+          delete: {
+            args: Prisma.UserWarningDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          update: {
+            args: Prisma.UserWarningUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          deleteMany: {
+            args: Prisma.UserWarningDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.UserWarningUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.UserWarningUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>[]
+          }
+          upsert: {
+            args: Prisma.UserWarningUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$UserWarningPayload>
+          }
+          aggregate: {
+            args: Prisma.UserWarningAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateUserWarning>
+          }
+          groupBy: {
+            args: Prisma.UserWarningGroupByArgs<ExtArgs>
+            result: $Utils.Optional<UserWarningGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.UserWarningCountArgs<ExtArgs>
+            result: $Utils.Optional<UserWarningCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4280,6 +4370,7 @@ export namespace Prisma {
     tournamentMatch?: TournamentMatchOmit
     legacyMember?: LegacyMemberOmit
     mailLog?: MailLogOmit
+    userWarning?: UserWarningOmit
   }
 
   /* Types for Logging */
@@ -4402,6 +4493,8 @@ export namespace Prisma {
     lastPostTopics: number
     notifications: number
     notificationsCaused: number
+    warningsReceived: number
+    warningsGiven: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4447,6 +4540,8 @@ export namespace Prisma {
     lastPostTopics?: boolean | UserCountOutputTypeCountLastPostTopicsArgs
     notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     notificationsCaused?: boolean | UserCountOutputTypeCountNotificationsCausedArgs
+    warningsReceived?: boolean | UserCountOutputTypeCountWarningsReceivedArgs
+    warningsGiven?: boolean | UserCountOutputTypeCountWarningsGivenArgs
   }
 
   // Custom InputTypes
@@ -4752,6 +4847,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountNotificationsCausedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: NotificationWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWarningsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWarningWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountWarningsGivenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWarningWhereInput
   }
 
 
@@ -7606,6 +7715,7 @@ export namespace Prisma {
     signature: string | null
     isBanned: boolean | null
     banReason: string | null
+    bannedUntil: Date | null
     avatarFrame: string | null
     theme: string | null
     previousTheme: string | null
@@ -7633,6 +7743,7 @@ export namespace Prisma {
     signature: string | null
     isBanned: boolean | null
     banReason: string | null
+    bannedUntil: Date | null
     avatarFrame: string | null
     theme: string | null
     previousTheme: string | null
@@ -7660,6 +7771,7 @@ export namespace Prisma {
     signature: number
     isBanned: number
     banReason: number
+    bannedUntil: number
     avatarFrame: number
     theme: number
     previousTheme: number
@@ -7689,6 +7801,7 @@ export namespace Prisma {
     signature?: true
     isBanned?: true
     banReason?: true
+    bannedUntil?: true
     avatarFrame?: true
     theme?: true
     previousTheme?: true
@@ -7716,6 +7829,7 @@ export namespace Prisma {
     signature?: true
     isBanned?: true
     banReason?: true
+    bannedUntil?: true
     avatarFrame?: true
     theme?: true
     previousTheme?: true
@@ -7743,6 +7857,7 @@ export namespace Prisma {
     signature?: true
     isBanned?: true
     banReason?: true
+    bannedUntil?: true
     avatarFrame?: true
     theme?: true
     previousTheme?: true
@@ -7843,6 +7958,7 @@ export namespace Prisma {
     signature: string | null
     isBanned: boolean
     banReason: string | null
+    bannedUntil: Date | null
     avatarFrame: string | null
     theme: string
     previousTheme: string | null
@@ -7887,6 +8003,7 @@ export namespace Prisma {
     signature?: boolean
     isBanned?: boolean
     banReason?: boolean
+    bannedUntil?: boolean
     avatarFrame?: boolean
     theme?: boolean
     previousTheme?: boolean
@@ -7943,6 +8060,8 @@ export namespace Prisma {
     lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
+    warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
+    warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -7958,6 +8077,7 @@ export namespace Prisma {
     signature?: boolean
     isBanned?: boolean
     banReason?: boolean
+    bannedUntil?: boolean
     avatarFrame?: boolean
     theme?: boolean
     previousTheme?: boolean
@@ -7986,6 +8106,7 @@ export namespace Prisma {
     signature?: boolean
     isBanned?: boolean
     banReason?: boolean
+    bannedUntil?: boolean
     avatarFrame?: boolean
     theme?: boolean
     previousTheme?: boolean
@@ -8014,6 +8135,7 @@ export namespace Prisma {
     signature?: boolean
     isBanned?: boolean
     banReason?: boolean
+    bannedUntil?: boolean
     avatarFrame?: boolean
     theme?: boolean
     previousTheme?: boolean
@@ -8029,7 +8151,7 @@ export namespace Prisma {
     forumReadAllAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "emailVerified" | "image" | "role" | "nafNumber" | "region" | "signature" | "isBanned" | "banReason" | "bannedUntil" | "avatarFrame" | "theme" | "previousTheme" | "equipe" | "ligueCustom" | "legacyId" | "forumactifName" | "hasFinishedOnboarding" | "notifPm" | "notifFollowedTopic" | "notifNewsletter" | "autoFollowTopics" | "forumReadAllAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     accounts?: boolean | User$accountsArgs<ExtArgs>
     moderatedArticles?: boolean | User$moderatedArticlesArgs<ExtArgs>
@@ -8074,6 +8196,8 @@ export namespace Prisma {
     lastPostTopics?: boolean | User$lastPostTopicsArgs<ExtArgs>
     notifications?: boolean | User$notificationsArgs<ExtArgs>
     notificationsCaused?: boolean | User$notificationsCausedArgs<ExtArgs>
+    warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
+    warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8129,6 +8253,8 @@ export namespace Prisma {
       lastPostTopics: Prisma.$TopicPayload<ExtArgs>[]
       notifications: Prisma.$NotificationPayload<ExtArgs>[]
       notificationsCaused: Prisma.$NotificationPayload<ExtArgs>[]
+      warningsReceived: Prisma.$UserWarningPayload<ExtArgs>[]
+      warningsGiven: Prisma.$UserWarningPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8142,6 +8268,10 @@ export namespace Prisma {
       signature: string | null
       isBanned: boolean
       banReason: string | null
+      /**
+       * Fin d'un bannissement temporaire (carte 222) ; vide pour un bannissement définitif. Levé à la première visite après cette date.
+       */
+      bannedUntil: Date | null
       avatarFrame: string | null
       theme: string
       previousTheme: string | null
@@ -8600,6 +8730,8 @@ export namespace Prisma {
     lastPostTopics<T extends User$lastPostTopicsArgs<ExtArgs> = {}>(args?: Subset<T, User$lastPostTopicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notifications<T extends User$notificationsArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     notificationsCaused<T extends User$notificationsCausedArgs<ExtArgs> = {}>(args?: Subset<T, User$notificationsCausedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    warningsReceived<T extends User$warningsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    warningsGiven<T extends User$warningsGivenArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8640,6 +8772,7 @@ export namespace Prisma {
     readonly signature: FieldRef<"User", 'String'>
     readonly isBanned: FieldRef<"User", 'Boolean'>
     readonly banReason: FieldRef<"User", 'String'>
+    readonly bannedUntil: FieldRef<"User", 'DateTime'>
     readonly avatarFrame: FieldRef<"User", 'String'>
     readonly theme: FieldRef<"User", 'String'>
     readonly previousTheme: FieldRef<"User", 'String'>
@@ -10059,6 +10192,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: NotificationScalarFieldEnum | NotificationScalarFieldEnum[]
+  }
+
+  /**
+   * User.warningsReceived
+   */
+  export type User$warningsReceivedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    where?: UserWarningWhereInput
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    cursor?: UserWarningWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
+  }
+
+  /**
+   * User.warningsGiven
+   */
+  export type User$warningsGivenArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    where?: UserWarningWhereInput
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    cursor?: UserWarningWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
   }
 
   /**
@@ -51658,6 +51839,1099 @@ export namespace Prisma {
 
 
   /**
+   * Model UserWarning
+   */
+
+  export type AggregateUserWarning = {
+    _count: UserWarningCountAggregateOutputType | null
+    _min: UserWarningMinAggregateOutputType | null
+    _max: UserWarningMaxAggregateOutputType | null
+  }
+
+  export type UserWarningMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    moderatorId: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type UserWarningMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    moderatorId: string | null
+    reason: string | null
+    createdAt: Date | null
+  }
+
+  export type UserWarningCountAggregateOutputType = {
+    id: number
+    userId: number
+    moderatorId: number
+    reason: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type UserWarningMinAggregateInputType = {
+    id?: true
+    userId?: true
+    moderatorId?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type UserWarningMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    moderatorId?: true
+    reason?: true
+    createdAt?: true
+  }
+
+  export type UserWarningCountAggregateInputType = {
+    id?: true
+    userId?: true
+    moderatorId?: true
+    reason?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type UserWarningAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserWarning to aggregate.
+     */
+    where?: UserWarningWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserWarnings to fetch.
+     */
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserWarningWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserWarnings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserWarnings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned UserWarnings
+    **/
+    _count?: true | UserWarningCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserWarningMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserWarningMaxAggregateInputType
+  }
+
+  export type GetUserWarningAggregateType<T extends UserWarningAggregateArgs> = {
+        [P in keyof T & keyof AggregateUserWarning]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUserWarning[P]>
+      : GetScalarType<T[P], AggregateUserWarning[P]>
+  }
+
+
+
+
+  export type UserWarningGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: UserWarningWhereInput
+    orderBy?: UserWarningOrderByWithAggregationInput | UserWarningOrderByWithAggregationInput[]
+    by: UserWarningScalarFieldEnum[] | UserWarningScalarFieldEnum
+    having?: UserWarningScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserWarningCountAggregateInputType | true
+    _min?: UserWarningMinAggregateInputType
+    _max?: UserWarningMaxAggregateInputType
+  }
+
+  export type UserWarningGroupByOutputType = {
+    id: string
+    userId: string
+    moderatorId: string | null
+    reason: string
+    createdAt: Date
+    _count: UserWarningCountAggregateOutputType | null
+    _min: UserWarningMinAggregateOutputType | null
+    _max: UserWarningMaxAggregateOutputType | null
+  }
+
+  type GetUserWarningGroupByPayload<T extends UserWarningGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<UserWarningGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserWarningGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserWarningGroupByOutputType[P]>
+            : GetScalarType<T[P], UserWarningGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserWarningSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    moderatorId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }, ExtArgs["result"]["userWarning"]>
+
+  export type UserWarningSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    moderatorId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }, ExtArgs["result"]["userWarning"]>
+
+  export type UserWarningSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    moderatorId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }, ExtArgs["result"]["userWarning"]>
+
+  export type UserWarningSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    moderatorId?: boolean
+    reason?: boolean
+    createdAt?: boolean
+  }
+
+  export type UserWarningOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "moderatorId" | "reason" | "createdAt", ExtArgs["result"]["userWarning"]>
+  export type UserWarningInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }
+  export type UserWarningIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }
+  export type UserWarningIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    moderator?: boolean | UserWarning$moderatorArgs<ExtArgs>
+  }
+
+  export type $UserWarningPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "UserWarning"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      moderator: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      /**
+       * Modérateur qui a écrit l'avertissement ; vide si son compte a été supprimé.
+       */
+      moderatorId: string | null
+      reason: string
+      createdAt: Date
+    }, ExtArgs["result"]["userWarning"]>
+    composites: {}
+  }
+
+  type UserWarningGetPayload<S extends boolean | null | undefined | UserWarningDefaultArgs> = $Result.GetResult<Prisma.$UserWarningPayload, S>
+
+  type UserWarningCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<UserWarningFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: UserWarningCountAggregateInputType | true
+    }
+
+  export interface UserWarningDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['UserWarning'], meta: { name: 'UserWarning' } }
+    /**
+     * Find zero or one UserWarning that matches the filter.
+     * @param {UserWarningFindUniqueArgs} args - Arguments to find a UserWarning
+     * @example
+     * // Get one UserWarning
+     * const userWarning = await prisma.userWarning.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends UserWarningFindUniqueArgs>(args: SelectSubset<T, UserWarningFindUniqueArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one UserWarning that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {UserWarningFindUniqueOrThrowArgs} args - Arguments to find a UserWarning
+     * @example
+     * // Get one UserWarning
+     * const userWarning = await prisma.userWarning.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends UserWarningFindUniqueOrThrowArgs>(args: SelectSubset<T, UserWarningFindUniqueOrThrowArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserWarning that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningFindFirstArgs} args - Arguments to find a UserWarning
+     * @example
+     * // Get one UserWarning
+     * const userWarning = await prisma.userWarning.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends UserWarningFindFirstArgs>(args?: SelectSubset<T, UserWarningFindFirstArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first UserWarning that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningFindFirstOrThrowArgs} args - Arguments to find a UserWarning
+     * @example
+     * // Get one UserWarning
+     * const userWarning = await prisma.userWarning.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends UserWarningFindFirstOrThrowArgs>(args?: SelectSubset<T, UserWarningFindFirstOrThrowArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more UserWarnings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all UserWarnings
+     * const userWarnings = await prisma.userWarning.findMany()
+     * 
+     * // Get first 10 UserWarnings
+     * const userWarnings = await prisma.userWarning.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userWarningWithIdOnly = await prisma.userWarning.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends UserWarningFindManyArgs>(args?: SelectSubset<T, UserWarningFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a UserWarning.
+     * @param {UserWarningCreateArgs} args - Arguments to create a UserWarning.
+     * @example
+     * // Create one UserWarning
+     * const UserWarning = await prisma.userWarning.create({
+     *   data: {
+     *     // ... data to create a UserWarning
+     *   }
+     * })
+     * 
+     */
+    create<T extends UserWarningCreateArgs>(args: SelectSubset<T, UserWarningCreateArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many UserWarnings.
+     * @param {UserWarningCreateManyArgs} args - Arguments to create many UserWarnings.
+     * @example
+     * // Create many UserWarnings
+     * const userWarning = await prisma.userWarning.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends UserWarningCreateManyArgs>(args?: SelectSubset<T, UserWarningCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many UserWarnings and returns the data saved in the database.
+     * @param {UserWarningCreateManyAndReturnArgs} args - Arguments to create many UserWarnings.
+     * @example
+     * // Create many UserWarnings
+     * const userWarning = await prisma.userWarning.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many UserWarnings and only return the `id`
+     * const userWarningWithIdOnly = await prisma.userWarning.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends UserWarningCreateManyAndReturnArgs>(args?: SelectSubset<T, UserWarningCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a UserWarning.
+     * @param {UserWarningDeleteArgs} args - Arguments to delete one UserWarning.
+     * @example
+     * // Delete one UserWarning
+     * const UserWarning = await prisma.userWarning.delete({
+     *   where: {
+     *     // ... filter to delete one UserWarning
+     *   }
+     * })
+     * 
+     */
+    delete<T extends UserWarningDeleteArgs>(args: SelectSubset<T, UserWarningDeleteArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one UserWarning.
+     * @param {UserWarningUpdateArgs} args - Arguments to update one UserWarning.
+     * @example
+     * // Update one UserWarning
+     * const userWarning = await prisma.userWarning.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends UserWarningUpdateArgs>(args: SelectSubset<T, UserWarningUpdateArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more UserWarnings.
+     * @param {UserWarningDeleteManyArgs} args - Arguments to filter UserWarnings to delete.
+     * @example
+     * // Delete a few UserWarnings
+     * const { count } = await prisma.userWarning.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends UserWarningDeleteManyArgs>(args?: SelectSubset<T, UserWarningDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserWarnings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many UserWarnings
+     * const userWarning = await prisma.userWarning.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends UserWarningUpdateManyArgs>(args: SelectSubset<T, UserWarningUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more UserWarnings and returns the data updated in the database.
+     * @param {UserWarningUpdateManyAndReturnArgs} args - Arguments to update many UserWarnings.
+     * @example
+     * // Update many UserWarnings
+     * const userWarning = await prisma.userWarning.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more UserWarnings and only return the `id`
+     * const userWarningWithIdOnly = await prisma.userWarning.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends UserWarningUpdateManyAndReturnArgs>(args: SelectSubset<T, UserWarningUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one UserWarning.
+     * @param {UserWarningUpsertArgs} args - Arguments to update or create a UserWarning.
+     * @example
+     * // Update or create a UserWarning
+     * const userWarning = await prisma.userWarning.upsert({
+     *   create: {
+     *     // ... data to create a UserWarning
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the UserWarning we want to update
+     *   }
+     * })
+     */
+    upsert<T extends UserWarningUpsertArgs>(args: SelectSubset<T, UserWarningUpsertArgs<ExtArgs>>): Prisma__UserWarningClient<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of UserWarnings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningCountArgs} args - Arguments to filter UserWarnings to count.
+     * @example
+     * // Count the number of UserWarnings
+     * const count = await prisma.userWarning.count({
+     *   where: {
+     *     // ... the filter for the UserWarnings we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserWarningCountArgs>(
+      args?: Subset<T, UserWarningCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserWarningCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a UserWarning.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserWarningAggregateArgs>(args: Subset<T, UserWarningAggregateArgs>): Prisma.PrismaPromise<GetUserWarningAggregateType<T>>
+
+    /**
+     * Group by UserWarning.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserWarningGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserWarningGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserWarningGroupByArgs['orderBy'] }
+        : { orderBy?: UserWarningGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserWarningGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserWarningGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the UserWarning model
+   */
+  readonly fields: UserWarningFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for UserWarning.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__UserWarningClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    moderator<T extends UserWarning$moderatorArgs<ExtArgs> = {}>(args?: Subset<T, UserWarning$moderatorArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the UserWarning model
+   */
+  interface UserWarningFieldRefs {
+    readonly id: FieldRef<"UserWarning", 'String'>
+    readonly userId: FieldRef<"UserWarning", 'String'>
+    readonly moderatorId: FieldRef<"UserWarning", 'String'>
+    readonly reason: FieldRef<"UserWarning", 'String'>
+    readonly createdAt: FieldRef<"UserWarning", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * UserWarning findUnique
+   */
+  export type UserWarningFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter, which UserWarning to fetch.
+     */
+    where: UserWarningWhereUniqueInput
+  }
+
+  /**
+   * UserWarning findUniqueOrThrow
+   */
+  export type UserWarningFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter, which UserWarning to fetch.
+     */
+    where: UserWarningWhereUniqueInput
+  }
+
+  /**
+   * UserWarning findFirst
+   */
+  export type UserWarningFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter, which UserWarning to fetch.
+     */
+    where?: UserWarningWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserWarnings to fetch.
+     */
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserWarnings.
+     */
+    cursor?: UserWarningWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserWarnings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserWarnings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserWarnings.
+     */
+    distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
+  }
+
+  /**
+   * UserWarning findFirstOrThrow
+   */
+  export type UserWarningFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter, which UserWarning to fetch.
+     */
+    where?: UserWarningWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserWarnings to fetch.
+     */
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for UserWarnings.
+     */
+    cursor?: UserWarningWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserWarnings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserWarnings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserWarnings.
+     */
+    distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
+  }
+
+  /**
+   * UserWarning findMany
+   */
+  export type UserWarningFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter, which UserWarnings to fetch.
+     */
+    where?: UserWarningWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of UserWarnings to fetch.
+     */
+    orderBy?: UserWarningOrderByWithRelationInput | UserWarningOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing UserWarnings.
+     */
+    cursor?: UserWarningWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` UserWarnings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` UserWarnings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of UserWarnings.
+     */
+    distinct?: UserWarningScalarFieldEnum | UserWarningScalarFieldEnum[]
+  }
+
+  /**
+   * UserWarning create
+   */
+  export type UserWarningCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * The data needed to create a UserWarning.
+     */
+    data: XOR<UserWarningCreateInput, UserWarningUncheckedCreateInput>
+  }
+
+  /**
+   * UserWarning createMany
+   */
+  export type UserWarningCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many UserWarnings.
+     */
+    data: UserWarningCreateManyInput | UserWarningCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * UserWarning createManyAndReturn
+   */
+  export type UserWarningCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * The data used to create many UserWarnings.
+     */
+    data: UserWarningCreateManyInput | UserWarningCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserWarning update
+   */
+  export type UserWarningUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * The data needed to update a UserWarning.
+     */
+    data: XOR<UserWarningUpdateInput, UserWarningUncheckedUpdateInput>
+    /**
+     * Choose, which UserWarning to update.
+     */
+    where: UserWarningWhereUniqueInput
+  }
+
+  /**
+   * UserWarning updateMany
+   */
+  export type UserWarningUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update UserWarnings.
+     */
+    data: XOR<UserWarningUpdateManyMutationInput, UserWarningUncheckedUpdateManyInput>
+    /**
+     * Filter which UserWarnings to update
+     */
+    where?: UserWarningWhereInput
+    /**
+     * Limit how many UserWarnings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserWarning updateManyAndReturn
+   */
+  export type UserWarningUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * The data used to update UserWarnings.
+     */
+    data: XOR<UserWarningUpdateManyMutationInput, UserWarningUncheckedUpdateManyInput>
+    /**
+     * Filter which UserWarnings to update
+     */
+    where?: UserWarningWhereInput
+    /**
+     * Limit how many UserWarnings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * UserWarning upsert
+   */
+  export type UserWarningUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * The filter to search for the UserWarning to update in case it exists.
+     */
+    where: UserWarningWhereUniqueInput
+    /**
+     * In case the UserWarning found by the `where` argument doesn't exist, create a new UserWarning with this data.
+     */
+    create: XOR<UserWarningCreateInput, UserWarningUncheckedCreateInput>
+    /**
+     * In case the UserWarning was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserWarningUpdateInput, UserWarningUncheckedUpdateInput>
+  }
+
+  /**
+   * UserWarning delete
+   */
+  export type UserWarningDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+    /**
+     * Filter which UserWarning to delete.
+     */
+    where: UserWarningWhereUniqueInput
+  }
+
+  /**
+   * UserWarning deleteMany
+   */
+  export type UserWarningDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which UserWarnings to delete
+     */
+    where?: UserWarningWhereInput
+    /**
+     * Limit how many UserWarnings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * UserWarning.moderator
+   */
+  export type UserWarning$moderatorArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * UserWarning without action
+   */
+  export type UserWarningDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the UserWarning
+     */
+    select?: UserWarningSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the UserWarning
+     */
+    omit?: UserWarningOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserWarningInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -51711,6 +52985,7 @@ export namespace Prisma {
     signature: 'signature',
     isBanned: 'isBanned',
     banReason: 'banReason',
+    bannedUntil: 'bannedUntil',
     avatarFrame: 'avatarFrame',
     theme: 'theme',
     previousTheme: 'previousTheme',
@@ -52245,6 +53520,17 @@ export namespace Prisma {
   export type MailLogScalarFieldEnum = (typeof MailLogScalarFieldEnum)[keyof typeof MailLogScalarFieldEnum]
 
 
+  export const UserWarningScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    moderatorId: 'moderatorId',
+    reason: 'reason',
+    createdAt: 'createdAt'
+  };
+
+  export type UserWarningScalarFieldEnum = (typeof UserWarningScalarFieldEnum)[keyof typeof UserWarningScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -52526,6 +53812,7 @@ export namespace Prisma {
     signature?: StringNullableFilter<"User"> | string | null
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
+    bannedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
     previousTheme?: StringNullableFilter<"User"> | string | null
@@ -52582,6 +53869,8 @@ export namespace Prisma {
     lastPostTopics?: TopicListRelationFilter
     notifications?: NotificationListRelationFilter
     notificationsCaused?: NotificationListRelationFilter
+    warningsReceived?: UserWarningListRelationFilter
+    warningsGiven?: UserWarningListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -52596,6 +53885,7 @@ export namespace Prisma {
     signature?: SortOrderInput | SortOrder
     isBanned?: SortOrder
     banReason?: SortOrderInput | SortOrder
+    bannedUntil?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
     previousTheme?: SortOrderInput | SortOrder
@@ -52652,6 +53942,8 @@ export namespace Prisma {
     lastPostTopics?: TopicOrderByRelationAggregateInput
     notifications?: NotificationOrderByRelationAggregateInput
     notificationsCaused?: NotificationOrderByRelationAggregateInput
+    warningsReceived?: UserWarningOrderByRelationAggregateInput
+    warningsGiven?: UserWarningOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -52670,6 +53962,7 @@ export namespace Prisma {
     signature?: StringNullableFilter<"User"> | string | null
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
+    bannedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
     previousTheme?: StringNullableFilter<"User"> | string | null
@@ -52725,6 +54018,8 @@ export namespace Prisma {
     lastPostTopics?: TopicListRelationFilter
     notifications?: NotificationListRelationFilter
     notificationsCaused?: NotificationListRelationFilter
+    warningsReceived?: UserWarningListRelationFilter
+    warningsGiven?: UserWarningListRelationFilter
   }, "id" | "email" | "legacyId">
 
   export type UserOrderByWithAggregationInput = {
@@ -52739,6 +54034,7 @@ export namespace Prisma {
     signature?: SortOrderInput | SortOrder
     isBanned?: SortOrder
     banReason?: SortOrderInput | SortOrder
+    bannedUntil?: SortOrderInput | SortOrder
     avatarFrame?: SortOrderInput | SortOrder
     theme?: SortOrder
     previousTheme?: SortOrderInput | SortOrder
@@ -52772,6 +54068,7 @@ export namespace Prisma {
     signature?: StringNullableWithAggregatesFilter<"User"> | string | null
     isBanned?: BoolWithAggregatesFilter<"User"> | boolean
     banReason?: StringNullableWithAggregatesFilter<"User"> | string | null
+    bannedUntil?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     avatarFrame?: StringNullableWithAggregatesFilter<"User"> | string | null
     theme?: StringWithAggregatesFilter<"User"> | string
     previousTheme?: StringNullableWithAggregatesFilter<"User"> | string | null
@@ -55577,6 +56874,64 @@ export namespace Prisma {
     type?: StringNullableWithAggregatesFilter<"MailLog"> | string | null
   }
 
+  export type UserWarningWhereInput = {
+    AND?: UserWarningWhereInput | UserWarningWhereInput[]
+    OR?: UserWarningWhereInput[]
+    NOT?: UserWarningWhereInput | UserWarningWhereInput[]
+    id?: StringFilter<"UserWarning"> | string
+    userId?: StringFilter<"UserWarning"> | string
+    moderatorId?: StringNullableFilter<"UserWarning"> | string | null
+    reason?: StringFilter<"UserWarning"> | string
+    createdAt?: DateTimeFilter<"UserWarning"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type UserWarningOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    moderatorId?: SortOrderInput | SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    moderator?: UserOrderByWithRelationInput
+  }
+
+  export type UserWarningWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: UserWarningWhereInput | UserWarningWhereInput[]
+    OR?: UserWarningWhereInput[]
+    NOT?: UserWarningWhereInput | UserWarningWhereInput[]
+    userId?: StringFilter<"UserWarning"> | string
+    moderatorId?: StringNullableFilter<"UserWarning"> | string | null
+    reason?: StringFilter<"UserWarning"> | string
+    createdAt?: DateTimeFilter<"UserWarning"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    moderator?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type UserWarningOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    moderatorId?: SortOrderInput | SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+    _count?: UserWarningCountOrderByAggregateInput
+    _max?: UserWarningMaxOrderByAggregateInput
+    _min?: UserWarningMinOrderByAggregateInput
+  }
+
+  export type UserWarningScalarWhereWithAggregatesInput = {
+    AND?: UserWarningScalarWhereWithAggregatesInput | UserWarningScalarWhereWithAggregatesInput[]
+    OR?: UserWarningScalarWhereWithAggregatesInput[]
+    NOT?: UserWarningScalarWhereWithAggregatesInput | UserWarningScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"UserWarning"> | string
+    userId?: StringWithAggregatesFilter<"UserWarning"> | string
+    moderatorId?: StringNullableWithAggregatesFilter<"UserWarning"> | string | null
+    reason?: StringWithAggregatesFilter<"UserWarning"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"UserWarning"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -55740,6 +57095,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -55796,6 +57152,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -55810,6 +57168,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -55865,6 +57224,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUpdateInput = {
@@ -55878,6 +57239,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -55934,6 +57296,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -55948,6 +57312,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56003,6 +57368,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -56017,6 +57384,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -56043,6 +57411,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -56070,6 +57439,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -59009,6 +60379,60 @@ export namespace Prisma {
     type?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
+  export type UserWarningCreateInput = {
+    id?: string
+    reason: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutWarningsReceivedInput
+    moderator?: UserCreateNestedOneWithoutWarningsGivenInput
+  }
+
+  export type UserWarningUncheckedCreateInput = {
+    id?: string
+    userId: string
+    moderatorId?: string | null
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type UserWarningUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWarningsReceivedNestedInput
+    moderator?: UserUpdateOneWithoutWarningsGivenNestedInput
+  }
+
+  export type UserWarningUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserWarningCreateManyInput = {
+    id?: string
+    userId: string
+    moderatorId?: string | null
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type UserWarningUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserWarningUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -59399,6 +60823,12 @@ export namespace Prisma {
     none?: NotificationWhereInput
   }
 
+  export type UserWarningListRelationFilter = {
+    every?: UserWarningWhereInput
+    some?: UserWarningWhereInput
+    none?: UserWarningWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -59507,6 +60937,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type UserWarningOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserCountOrderByAggregateInput = {
     id?: SortOrder
     name?: SortOrder
@@ -59519,6 +60953,7 @@ export namespace Prisma {
     signature?: SortOrder
     isBanned?: SortOrder
     banReason?: SortOrder
+    bannedUntil?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
     previousTheme?: SortOrder
@@ -59546,6 +60981,7 @@ export namespace Prisma {
     signature?: SortOrder
     isBanned?: SortOrder
     banReason?: SortOrder
+    bannedUntil?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
     previousTheme?: SortOrder
@@ -59573,6 +61009,7 @@ export namespace Prisma {
     signature?: SortOrder
     isBanned?: SortOrder
     banReason?: SortOrder
+    bannedUntil?: SortOrder
     avatarFrame?: SortOrder
     theme?: SortOrder
     previousTheme?: SortOrder
@@ -61290,6 +62727,30 @@ export namespace Prisma {
     type?: SortOrder
   }
 
+  export type UserWarningCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    moderatorId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserWarningMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    moderatorId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type UserWarningMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    moderatorId?: SortOrder
+    reason?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -61635,6 +63096,20 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
+  export type UserWarningCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput> | UserWarningCreateWithoutUserInput[] | UserWarningUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutUserInput | UserWarningCreateOrConnectWithoutUserInput[]
+    createMany?: UserWarningCreateManyUserInputEnvelope
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+  }
+
+  export type UserWarningCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput> | UserWarningCreateWithoutModeratorInput[] | UserWarningUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutModeratorInput | UserWarningCreateOrConnectWithoutModeratorInput[]
+    createMany?: UserWarningCreateManyModeratorInputEnvelope
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -61924,6 +63399,20 @@ export namespace Prisma {
     connectOrCreate?: NotificationCreateOrConnectWithoutActorInput | NotificationCreateOrConnectWithoutActorInput[]
     createMany?: NotificationCreateManyActorInputEnvelope
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
+  }
+
+  export type UserWarningUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput> | UserWarningCreateWithoutUserInput[] | UserWarningUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutUserInput | UserWarningCreateOrConnectWithoutUserInput[]
+    createMany?: UserWarningCreateManyUserInputEnvelope
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+  }
+
+  export type UserWarningUncheckedCreateNestedManyWithoutModeratorInput = {
+    create?: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput> | UserWarningCreateWithoutModeratorInput[] | UserWarningUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutModeratorInput | UserWarningCreateOrConnectWithoutModeratorInput[]
+    createMany?: UserWarningCreateManyModeratorInputEnvelope
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -62527,6 +64016,34 @@ export namespace Prisma {
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
   }
 
+  export type UserWarningUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput> | UserWarningCreateWithoutUserInput[] | UserWarningUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutUserInput | UserWarningCreateOrConnectWithoutUserInput[]
+    upsert?: UserWarningUpsertWithWhereUniqueWithoutUserInput | UserWarningUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserWarningCreateManyUserInputEnvelope
+    set?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    disconnect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    delete?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    update?: UserWarningUpdateWithWhereUniqueWithoutUserInput | UserWarningUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserWarningUpdateManyWithWhereWithoutUserInput | UserWarningUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+  }
+
+  export type UserWarningUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput> | UserWarningCreateWithoutModeratorInput[] | UserWarningUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutModeratorInput | UserWarningCreateOrConnectWithoutModeratorInput[]
+    upsert?: UserWarningUpsertWithWhereUniqueWithoutModeratorInput | UserWarningUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: UserWarningCreateManyModeratorInputEnvelope
+    set?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    disconnect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    delete?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    update?: UserWarningUpdateWithWhereUniqueWithoutModeratorInput | UserWarningUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: UserWarningUpdateManyWithWhereWithoutModeratorInput | UserWarningUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -63110,6 +64627,34 @@ export namespace Prisma {
     update?: NotificationUpdateWithWhereUniqueWithoutActorInput | NotificationUpdateWithWhereUniqueWithoutActorInput[]
     updateMany?: NotificationUpdateManyWithWhereWithoutActorInput | NotificationUpdateManyWithWhereWithoutActorInput[]
     deleteMany?: NotificationScalarWhereInput | NotificationScalarWhereInput[]
+  }
+
+  export type UserWarningUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput> | UserWarningCreateWithoutUserInput[] | UserWarningUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutUserInput | UserWarningCreateOrConnectWithoutUserInput[]
+    upsert?: UserWarningUpsertWithWhereUniqueWithoutUserInput | UserWarningUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: UserWarningCreateManyUserInputEnvelope
+    set?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    disconnect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    delete?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    update?: UserWarningUpdateWithWhereUniqueWithoutUserInput | UserWarningUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: UserWarningUpdateManyWithWhereWithoutUserInput | UserWarningUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+  }
+
+  export type UserWarningUncheckedUpdateManyWithoutModeratorNestedInput = {
+    create?: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput> | UserWarningCreateWithoutModeratorInput[] | UserWarningUncheckedCreateWithoutModeratorInput[]
+    connectOrCreate?: UserWarningCreateOrConnectWithoutModeratorInput | UserWarningCreateOrConnectWithoutModeratorInput[]
+    upsert?: UserWarningUpsertWithWhereUniqueWithoutModeratorInput | UserWarningUpsertWithWhereUniqueWithoutModeratorInput[]
+    createMany?: UserWarningCreateManyModeratorInputEnvelope
+    set?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    disconnect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    delete?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    connect?: UserWarningWhereUniqueInput | UserWarningWhereUniqueInput[]
+    update?: UserWarningUpdateWithWhereUniqueWithoutModeratorInput | UserWarningUpdateWithWhereUniqueWithoutModeratorInput[]
+    updateMany?: UserWarningUpdateManyWithWhereWithoutModeratorInput | UserWarningUpdateManyWithWhereWithoutModeratorInput[]
+    deleteMany?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutBlockedByInput = {
@@ -65346,6 +66891,36 @@ export namespace Prisma {
     update?: XOR<XOR<TournamentRoundUpdateToOneWithWhereWithoutMatchesInput, TournamentRoundUpdateWithoutMatchesInput>, TournamentRoundUncheckedUpdateWithoutMatchesInput>
   }
 
+  export type UserCreateNestedOneWithoutWarningsReceivedInput = {
+    create?: XOR<UserCreateWithoutWarningsReceivedInput, UserUncheckedCreateWithoutWarningsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWarningsReceivedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutWarningsGivenInput = {
+    create?: XOR<UserCreateWithoutWarningsGivenInput, UserUncheckedCreateWithoutWarningsGivenInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWarningsGivenInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutWarningsReceivedNestedInput = {
+    create?: XOR<UserCreateWithoutWarningsReceivedInput, UserUncheckedCreateWithoutWarningsReceivedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWarningsReceivedInput
+    upsert?: UserUpsertWithoutWarningsReceivedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWarningsReceivedInput, UserUpdateWithoutWarningsReceivedInput>, UserUncheckedUpdateWithoutWarningsReceivedInput>
+  }
+
+  export type UserUpdateOneWithoutWarningsGivenNestedInput = {
+    create?: XOR<UserCreateWithoutWarningsGivenInput, UserUncheckedCreateWithoutWarningsGivenInput>
+    connectOrCreate?: UserCreateOrConnectWithoutWarningsGivenInput
+    upsert?: UserUpsertWithoutWarningsGivenInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutWarningsGivenInput, UserUpdateWithoutWarningsGivenInput>, UserUncheckedUpdateWithoutWarningsGivenInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -65624,6 +67199,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -65679,6 +67255,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -65693,6 +67271,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -65747,6 +67326,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -65776,6 +67357,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65831,6 +67413,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -65845,6 +67429,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -65899,6 +67484,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -65912,6 +67499,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -65967,6 +67555,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -65981,6 +67571,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -66035,6 +67626,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -66064,6 +67657,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66119,6 +67713,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -66133,6 +67729,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -66187,6 +67784,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -67951,6 +69550,54 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type UserWarningCreateWithoutUserInput = {
+    id?: string
+    reason: string
+    createdAt?: Date | string
+    moderator?: UserCreateNestedOneWithoutWarningsGivenInput
+  }
+
+  export type UserWarningUncheckedCreateWithoutUserInput = {
+    id?: string
+    moderatorId?: string | null
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type UserWarningCreateOrConnectWithoutUserInput = {
+    where: UserWarningWhereUniqueInput
+    create: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserWarningCreateManyUserInputEnvelope = {
+    data: UserWarningCreateManyUserInput | UserWarningCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserWarningCreateWithoutModeratorInput = {
+    id?: string
+    reason: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutWarningsReceivedInput
+  }
+
+  export type UserWarningUncheckedCreateWithoutModeratorInput = {
+    id?: string
+    userId: string
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type UserWarningCreateOrConnectWithoutModeratorInput = {
+    where: UserWarningWhereUniqueInput
+    create: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type UserWarningCreateManyModeratorInputEnvelope = {
+    data: UserWarningCreateManyModeratorInput | UserWarningCreateManyModeratorInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -69078,6 +70725,49 @@ export namespace Prisma {
     data: XOR<NotificationUpdateManyMutationInput, NotificationUncheckedUpdateManyWithoutActorInput>
   }
 
+  export type UserWarningUpsertWithWhereUniqueWithoutUserInput = {
+    where: UserWarningWhereUniqueInput
+    update: XOR<UserWarningUpdateWithoutUserInput, UserWarningUncheckedUpdateWithoutUserInput>
+    create: XOR<UserWarningCreateWithoutUserInput, UserWarningUncheckedCreateWithoutUserInput>
+  }
+
+  export type UserWarningUpdateWithWhereUniqueWithoutUserInput = {
+    where: UserWarningWhereUniqueInput
+    data: XOR<UserWarningUpdateWithoutUserInput, UserWarningUncheckedUpdateWithoutUserInput>
+  }
+
+  export type UserWarningUpdateManyWithWhereWithoutUserInput = {
+    where: UserWarningScalarWhereInput
+    data: XOR<UserWarningUpdateManyMutationInput, UserWarningUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type UserWarningScalarWhereInput = {
+    AND?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+    OR?: UserWarningScalarWhereInput[]
+    NOT?: UserWarningScalarWhereInput | UserWarningScalarWhereInput[]
+    id?: StringFilter<"UserWarning"> | string
+    userId?: StringFilter<"UserWarning"> | string
+    moderatorId?: StringNullableFilter<"UserWarning"> | string | null
+    reason?: StringFilter<"UserWarning"> | string
+    createdAt?: DateTimeFilter<"UserWarning"> | Date | string
+  }
+
+  export type UserWarningUpsertWithWhereUniqueWithoutModeratorInput = {
+    where: UserWarningWhereUniqueInput
+    update: XOR<UserWarningUpdateWithoutModeratorInput, UserWarningUncheckedUpdateWithoutModeratorInput>
+    create: XOR<UserWarningCreateWithoutModeratorInput, UserWarningUncheckedCreateWithoutModeratorInput>
+  }
+
+  export type UserWarningUpdateWithWhereUniqueWithoutModeratorInput = {
+    where: UserWarningWhereUniqueInput
+    data: XOR<UserWarningUpdateWithoutModeratorInput, UserWarningUncheckedUpdateWithoutModeratorInput>
+  }
+
+  export type UserWarningUpdateManyWithWhereWithoutModeratorInput = {
+    where: UserWarningScalarWhereInput
+    data: XOR<UserWarningUpdateManyMutationInput, UserWarningUncheckedUpdateManyWithoutModeratorInput>
+  }
+
   export type UserCreateWithoutBlockedByInput = {
     id?: string
     name?: string | null
@@ -69089,6 +70779,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69144,6 +70835,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -69158,6 +70851,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69212,6 +70906,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -69230,6 +70926,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69285,6 +70982,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -69299,6 +70998,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69353,6 +71053,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -69382,6 +71084,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69437,6 +71140,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -69451,6 +71156,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69505,6 +71211,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutBlocksInput = {
@@ -69529,6 +71237,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69584,6 +71293,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -69598,6 +71309,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -69652,6 +71364,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutCdfValidatedTournamentsInput = {
@@ -69665,6 +71379,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69720,6 +71435,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCdfValidatedTournamentsInput = {
@@ -69734,6 +71451,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69788,6 +71506,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCdfValidatedTournamentsInput = {
@@ -69910,6 +71630,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -69965,6 +71686,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -69979,6 +71702,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -70033,6 +71757,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -70199,6 +71925,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -70254,6 +71981,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -70268,6 +71997,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -70322,6 +72052,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -70351,6 +72083,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70406,6 +72139,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCdfValidatedTournamentsInput = {
@@ -70420,6 +72155,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70474,6 +72210,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -70614,6 +72352,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70669,6 +72408,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -70683,6 +72424,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -70737,6 +72479,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentMercenaryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -70859,6 +72603,7 @@ export namespace Prisma {
     signature?: StringNullableFilter<"User"> | string | null
     isBanned?: BoolFilter<"User"> | boolean
     banReason?: StringNullableFilter<"User"> | string | null
+    bannedUntil?: DateTimeNullableFilter<"User"> | Date | string | null
     avatarFrame?: StringNullableFilter<"User"> | string | null
     theme?: StringFilter<"User"> | string
     previousTheme?: StringNullableFilter<"User"> | string | null
@@ -71209,6 +72954,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71264,6 +73010,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutDeletedTopicsInput = {
@@ -71278,6 +73026,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71332,6 +73081,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutDeletedTopicsInput = {
@@ -71350,6 +73101,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71405,6 +73157,8 @@ export namespace Prisma {
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutLastPostTopicsInput = {
@@ -71419,6 +73173,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71473,6 +73228,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutLastPostTopicsInput = {
@@ -71654,6 +73411,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71709,6 +73467,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -71723,6 +73483,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -71777,6 +73538,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -71913,6 +73676,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -71968,6 +73732,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedTopicsInput = {
@@ -71982,6 +73748,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72036,6 +73803,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutLastPostTopicsInput = {
@@ -72060,6 +73829,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72115,6 +73885,8 @@ export namespace Prisma {
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLastPostTopicsInput = {
@@ -72129,6 +73901,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72183,6 +73956,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -72344,6 +74119,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72399,6 +74175,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -72413,6 +74191,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -72467,6 +74246,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -72567,6 +74348,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72622,6 +74404,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutDeletedPostsInput = {
@@ -72636,6 +74420,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72690,6 +74475,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutDeletedPostsInput = {
@@ -72734,6 +74521,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72789,6 +74577,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -72803,6 +74593,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72857,6 +74648,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -72875,6 +74668,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72930,6 +74724,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -72944,6 +74740,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -72998,6 +74795,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -73138,6 +74937,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73193,6 +74993,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedPostsInput = {
@@ -73207,6 +75009,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73261,6 +75064,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -73301,6 +75106,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73356,6 +75162,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -73370,6 +75178,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73424,6 +75233,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -73448,6 +75259,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73503,6 +75315,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -73517,6 +75331,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -73571,6 +75386,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -73677,6 +75494,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -73732,6 +75550,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -73746,6 +75566,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -73800,6 +75621,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -73818,6 +75641,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -73873,6 +75697,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -73887,6 +75713,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -73941,6 +75768,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -74054,6 +75883,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74109,6 +75939,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -74123,6 +75955,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74177,6 +76010,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutUser1ConversationsInput = {
@@ -74201,6 +76036,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74256,6 +76092,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -74270,6 +76108,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74324,6 +76163,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -74385,6 +76226,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -74440,6 +76282,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutConversationParticipantsInput = {
@@ -74454,6 +76298,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -74508,6 +76353,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutConversationParticipantsInput = {
@@ -74570,6 +76417,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74625,6 +76473,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
@@ -74639,6 +76489,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74693,6 +76544,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ConversationUpsertWithoutParticipantsInput = {
@@ -74745,6 +76598,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -74800,6 +76654,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -74814,6 +76670,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -74868,6 +76725,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -74930,6 +76789,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -74985,6 +76845,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -74999,6 +76861,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75053,6 +76916,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ConversationUpsertWithoutMessagesInput = {
@@ -75160,6 +77025,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75215,6 +77081,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -75229,6 +77097,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75283,6 +77152,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -75373,6 +77244,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75428,6 +77300,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -75442,6 +77316,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75496,6 +77371,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutMentionsReceivedInput = {
@@ -75509,6 +77386,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75564,6 +77442,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -75578,6 +77458,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75632,6 +77513,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -75650,6 +77533,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75705,6 +77589,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -75719,6 +77605,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -75773,6 +77660,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -75845,6 +77734,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75900,6 +77790,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -75914,6 +77806,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -75968,6 +77861,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -75992,6 +77887,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76047,6 +77943,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -76061,6 +77959,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76115,6 +78014,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostUpsertWithoutMentionsInput = {
@@ -76177,6 +78078,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -76232,6 +78134,8 @@ export namespace Prisma {
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -76246,6 +78150,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -76300,6 +78205,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -76318,6 +78225,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -76373,6 +78281,8 @@ export namespace Prisma {
     deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -76387,6 +78297,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -76441,6 +78352,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -76601,6 +78514,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76656,6 +78570,8 @@ export namespace Prisma {
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -76670,6 +78586,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76724,6 +78641,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutNotificationsCausedInput = {
@@ -76748,6 +78667,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76803,6 +78723,8 @@ export namespace Prisma {
     deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -76817,6 +78739,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -76871,6 +78794,8 @@ export namespace Prisma {
     deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TopicUpsertWithoutNotificationsInput = {
@@ -77033,6 +78958,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77088,6 +79014,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -77102,6 +79030,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77156,6 +79085,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -77228,6 +79159,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77283,6 +79215,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -77297,6 +79231,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77351,6 +79286,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type PostUpsertWithoutReactionsInput = {
@@ -77413,6 +79350,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77468,6 +79406,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -77481,6 +79421,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77536,6 +79477,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -77630,6 +79573,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77685,6 +79629,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -77699,6 +79645,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -77753,6 +79700,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -77843,6 +79792,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77898,6 +79848,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -77912,6 +79864,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -77966,6 +79919,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutRankingArchivesInput = {
@@ -77979,6 +79934,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78034,6 +79990,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutRankingArchivesInput = {
@@ -78048,6 +80006,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78102,6 +80061,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutRankingArchivesInput = {
@@ -78131,6 +80092,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78186,6 +80148,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRankingArchivesInput = {
@@ -78200,6 +80164,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78254,6 +80219,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutTournamentRegistrationsInput = {
@@ -78267,6 +80234,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78322,6 +80290,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -78336,6 +80306,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78390,6 +80361,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -78534,6 +80507,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78589,6 +80563,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -78603,6 +80579,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -78657,6 +80634,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentUpsertWithoutRegistrationsInput = {
@@ -78791,6 +80770,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78846,6 +80826,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -78860,6 +80842,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -78914,6 +80897,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -79078,6 +81063,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79133,6 +81119,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -79147,6 +81135,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79201,6 +81190,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentUpsertWithoutTeamsInput = {
@@ -79351,6 +81342,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -79406,6 +81398,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -79420,6 +81414,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -79474,6 +81469,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -79530,6 +81527,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79585,6 +81583,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -79599,6 +81599,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -79653,6 +81654,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentTeamUpsertWithoutMembersInput = {
@@ -79699,6 +81702,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -79754,6 +81758,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -79768,6 +81774,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -79822,6 +81829,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -79966,6 +81975,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80021,6 +82031,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -80035,6 +82047,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80089,6 +82102,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentUpsertWithoutMercenariesInput = {
@@ -80272,6 +82287,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -80327,6 +82343,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -80341,6 +82359,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -80395,6 +82414,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -80413,6 +82434,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -80468,6 +82490,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -80482,6 +82506,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -80536,6 +82561,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -80659,6 +82686,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80714,6 +82742,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -80728,6 +82758,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80782,6 +82813,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutArticlesInput = {
@@ -80806,6 +82839,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80861,6 +82895,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -80875,6 +82911,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -80929,6 +82966,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
@@ -81035,6 +83074,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81090,6 +83130,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -81104,6 +83146,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81158,6 +83201,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -81224,6 +83269,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81279,6 +83325,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -81293,6 +83341,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -81347,6 +83396,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ArticleUpsertWithoutReactionsInput = {
@@ -81445,6 +83496,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81500,6 +83552,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -81514,6 +83568,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81568,6 +83623,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -81706,6 +83763,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81761,6 +83819,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -81775,6 +83835,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81829,6 +83890,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -81847,6 +83910,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81902,6 +83966,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -81916,6 +83982,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -81970,6 +84037,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -82015,6 +84084,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82070,6 +84140,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -82084,6 +84156,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82138,6 +84211,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutLigueInput = {
@@ -82199,6 +84274,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82254,6 +84330,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -82268,6 +84346,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82322,6 +84401,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -82340,6 +84421,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82395,6 +84477,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -82409,6 +84493,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82463,6 +84548,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -82492,6 +84579,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82547,6 +84635,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -82561,6 +84651,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82615,6 +84706,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutReportsMadeInput = {
@@ -82639,6 +84732,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82694,6 +84788,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -82708,6 +84804,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82762,6 +84859,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -82775,6 +84874,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82830,6 +84930,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -82844,6 +84946,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -82898,6 +85001,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -82927,6 +85032,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -82982,6 +85088,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -82996,6 +85104,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83050,6 +85159,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserCreateWithoutSubmittedResourcesInput = {
@@ -83063,6 +85174,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -83118,6 +85230,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
@@ -83132,6 +85246,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -83186,6 +85301,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
@@ -83230,6 +85347,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83285,6 +85403,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
@@ -83299,6 +85419,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83353,6 +85474,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
@@ -83437,6 +85560,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -83492,6 +85616,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutTournamentResultsInput = {
@@ -83506,6 +85632,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -83560,6 +85687,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutTournamentResultsInput = {
@@ -83704,6 +85833,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83759,6 +85889,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentResultsInput = {
@@ -83773,6 +85905,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -83827,6 +85960,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentUpsertWithoutResultsInput = {
@@ -84253,6 +86388,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -84308,6 +86444,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach2Input = {
@@ -84322,6 +86460,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -84376,6 +86515,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach2Input = {
@@ -84394,6 +86535,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -84449,6 +86591,8 @@ export namespace Prisma {
     lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach1Input = {
@@ -84463,6 +86607,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -84517,6 +86662,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
     notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach1Input = {
@@ -84563,6 +86710,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84618,6 +86766,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach2Input = {
@@ -84632,6 +86782,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84686,6 +86837,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUpsertWithoutMatchesAsCoach1Input = {
@@ -84710,6 +86863,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84765,6 +86919,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach1Input = {
@@ -84779,6 +86935,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -84833,6 +86990,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type TournamentRoundUpsertWithoutMatchesInput = {
@@ -84856,6 +87015,606 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     tournamentId?: StringFieldUpdateOperationsInput | string
     roundNumber?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type UserCreateWithoutWarningsReceivedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserUncheckedCreateWithoutWarningsReceivedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+  }
+
+  export type UserCreateOrConnectWithoutWarningsReceivedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWarningsReceivedInput, UserUncheckedCreateWithoutWarningsReceivedInput>
+  }
+
+  export type UserCreateWithoutWarningsGivenInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutWarningsGivenInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutWarningsGivenInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutWarningsGivenInput, UserUncheckedCreateWithoutWarningsGivenInput>
+  }
+
+  export type UserUpsertWithoutWarningsReceivedInput = {
+    update: XOR<UserUpdateWithoutWarningsReceivedInput, UserUncheckedUpdateWithoutWarningsReceivedInput>
+    create: XOR<UserCreateWithoutWarningsReceivedInput, UserUncheckedCreateWithoutWarningsReceivedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWarningsReceivedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWarningsReceivedInput, UserUncheckedUpdateWithoutWarningsReceivedInput>
+  }
+
+  export type UserUpdateWithoutWarningsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWarningsReceivedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+  }
+
+  export type UserUpsertWithoutWarningsGivenInput = {
+    update: XOR<UserUpdateWithoutWarningsGivenInput, UserUncheckedUpdateWithoutWarningsGivenInput>
+    create: XOR<UserCreateWithoutWarningsGivenInput, UserUncheckedCreateWithoutWarningsGivenInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutWarningsGivenInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutWarningsGivenInput, UserUncheckedUpdateWithoutWarningsGivenInput>
+  }
+
+  export type UserUpdateWithoutWarningsGivenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutWarningsGivenInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -85372,6 +88131,20 @@ export namespace Prisma {
     postId?: string | null
     conversationId?: string | null
     readAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type UserWarningCreateManyUserInput = {
+    id?: string
+    moderatorId?: string | null
+    reason: string
+    createdAt?: Date | string
+  }
+
+  export type UserWarningCreateManyModeratorInput = {
+    id?: string
+    userId: string
+    reason: string
     createdAt?: Date | string
   }
 
@@ -87313,6 +90086,48 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserWarningUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    moderator?: UserUpdateOneWithoutWarningsGivenNestedInput
+  }
+
+  export type UserWarningUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserWarningUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    moderatorId?: NullableStringFieldUpdateOperationsInput | string | null
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserWarningUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutWarningsReceivedNestedInput
+  }
+
+  export type UserWarningUncheckedUpdateWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserWarningUncheckedUpdateManyWithoutModeratorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    reason?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TournamentMercenaryCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -87516,6 +90331,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87571,6 +90387,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -87585,6 +90403,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -87639,6 +90458,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -87653,6 +90474,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88245,6 +91067,7 @@ export namespace Prisma {
     signature?: string | null
     isBanned?: boolean
     banReason?: string | null
+    bannedUntil?: Date | string | null
     avatarFrame?: string | null
     theme?: string
     previousTheme?: string | null
@@ -88271,6 +91094,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88326,6 +91150,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -88339,6 +91165,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88394,6 +91221,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -88407,6 +91236,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88809,6 +91639,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88864,6 +91695,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -88878,6 +91711,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88932,6 +91766,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -88946,6 +91782,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -88972,6 +91809,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89027,6 +91865,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -89041,6 +91881,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
@@ -89095,6 +91936,8 @@ export namespace Prisma {
     lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
     notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {
@@ -89109,6 +91952,7 @@ export namespace Prisma {
     signature?: NullableStringFieldUpdateOperationsInput | string | null
     isBanned?: BoolFieldUpdateOperationsInput | boolean
     banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
     theme?: StringFieldUpdateOperationsInput | string
     previousTheme?: NullableStringFieldUpdateOperationsInput | string | null

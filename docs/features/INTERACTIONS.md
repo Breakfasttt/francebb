@@ -76,7 +76,9 @@ Personne, pas même la modération, ne lit les messages privés des autres. Ils 
 |---|---|---|---|---|---|---|
 | Signaler | non | oui, contenu visible, pas deux fois | non | oui | oui | `reportInputRefusal`, `canSeeReportTarget` |
 | Voir et traiter les signalements, le journal | non | non | non | oui | oui | `isModerator` |
-| Bannir / débannir | non | non | non | < soi, jamais soi-même ni un compte technique, tracé ; bannir ferme ses signalements | idem (S : tous sauf soi et comptes techniques) | `canBanMember` dans `toggleBanUser` (carte 221) |
+| Bannir / débannir | non | non | non | < soi, jamais soi-même ni un compte technique, tracé ; durée obligatoire (1, 7, 30 jours ou définitif) ; bannir ferme ses signalements | idem (S : tous sauf soi et comptes techniques) | `canBanMember` dans `toggleBanUser` (cartes 221, 222) |
+| Avertir un membre | non | non | non | < soi, jamais soi-même ni un compte technique, tracé, motif obligatoire | idem | `canBanMember` dans `warnUser` (carte 222) |
+| Lire les avertissements d'un membre | non | les siens, sans le nom du modérateur | non | tous, avec leur auteur | idem | `getMemberWarnings` (carte 222) |
 | Changer un rôle | non | non | non | < soi, vers un rôle < soi, tracé | idem (S : tous sauf soi) | `roleChangeRefusal` |
 | Supprimer un compte | non | non | non | **non** | < soi, tracé (S : tous sauf soi et comptes techniques) | `canDeleteMember` |
 | Purger le journal | non | non | non | non | oui, plus de 3 mois seulement | `LOG_RETENTION_MONTHS` |
@@ -89,7 +91,8 @@ Admin et Super Admin seulement, tout est tracé au journal depuis la carte 221 :
 
 | Quand… | …cela change |
 |---|---|
-| Un membre est **banni** | Il ne voit plus que `/banned` (sans navigation, avec « Me déconnecter ») ; il ne peut plus rien faire ni se faire écrire en messagerie (sa fiche grise « Message privé ») ; ses signalements en attente se ferment ; ses messages et articles restent ; ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur ; le hub peut aussi bannir (`lib/hub/hubEvents.ts`). |
+| Un membre est **averti** | Notification « La modération t'a adressé un avertissement », sans nom de modérateur ; le motif s'affiche sur son profil (carte 222). |
+| Un membre est **banni** | Il ne voit plus que `/banned` (avec la date de fin si le bannissement est temporaire, levé tout seul ensuite, carte 222) (sans navigation, avec « Me déconnecter ») ; il ne peut plus rien faire ni se faire écrire en messagerie (sa fiche grise « Message privé ») ; ses signalements en attente se ferment ; ses messages et articles restent ; ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur ; le hub peut aussi bannir (`lib/hub/hubEvents.ts`). |
 | Un **rôle** change | Accès aux forums réservés (immédiat, relu à chaque page), droits de modération, entrée au journal. |
 | Un **sujet est supprimé** | Il disparaît des listes, de la recherche, des non-lus ; ses signalements se ferment ; si c'est un sujet de tournoi, plus aucune inscription n'est acceptée. |
 | Un **message est masqué ou supprimé** | Les citations affichent un encart à la place du texte (« supprimé par son auteur », « supprimé par la modération » ou « masqué ») ; son auteur ne peut plus le modifier ; un message masqué ne reçoit plus de réaction ; ses signalements se ferment. |

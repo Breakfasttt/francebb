@@ -151,8 +151,9 @@ test("un modérateur bannit un membre depuis sa fiche, et c'est tracé au journa
   await page.goto(`/spy/${E2E.targetId}`, { waitUntil: "networkidle" });
   await page.getByRole("button", { name: "Bannir" }).first().click();
   await page.getByRole("button", { name: "Spam / Publicité" }).click();
+  await page.getByRole("button", { name: "Définitif" }).click();
   await page.getByRole("button", { name: "Confirmer le bannissement" }).click();
-  await expect(page.getByText("Membre banni", { exact: true })).toBeVisible();
+  await expect(page.getByText("Membre banni définitivement", { exact: true })).toBeVisible();
 
   const prisma = new PrismaClient({ adapter: new PrismaPg({ connectionString: E2E_DATABASE_URL }) });
   try {

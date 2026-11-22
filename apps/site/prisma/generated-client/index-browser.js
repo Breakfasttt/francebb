@@ -154,6 +154,7 @@ exports.Prisma.UserScalarFieldEnum = {
   signature: 'signature',
   isBanned: 'isBanned',
   banReason: 'banReason',
+  bannedUntil: 'bannedUntil',
   avatarFrame: 'avatarFrame',
   theme: 'theme',
   previousTheme: 'previousTheme',
@@ -577,6 +578,14 @@ exports.Prisma.MailLogScalarFieldEnum = {
   type: 'type'
 };
 
+exports.Prisma.UserWarningScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  moderatorId: 'moderatorId',
+  reason: 'reason',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -644,7 +653,8 @@ exports.Prisma.ModelName = {
   TournamentRound: 'TournamentRound',
   TournamentMatch: 'TournamentMatch',
   LegacyMember: 'LegacyMember',
-  MailLog: 'MailLog'
+  MailLog: 'MailLog',
+  UserWarning: 'UserWarning'
 };
 
 /**

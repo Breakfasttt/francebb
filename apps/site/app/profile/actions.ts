@@ -138,11 +138,11 @@ export async function hasBlockedMe(userId: string): Promise<boolean> {
  * Motif du bannissement d'un membre, pour la fiche `/spy/[id]` (carte 221) : réservé aux modérateurs, null pour
  * tout autre visiteur ou si le membre n'est pas banni.
  */
-export async function getBanReason(userId: string): Promise<string | null> {
+export async function getBanReason(userId: string): Promise<{ reason: string; bannedUntil: Date | null } | null> {
   const session = await getActiveSession();
   if (!session?.user?.id || !isModerator(session.user.role) || typeof userId !== "string") return null;
-  const user = await prisma.user.findUnique({ where: { id: userId }, select: { isBanned: true, banReason: true } });
-  return user?.isBanned ? user.banReason || "Motif non renseigné." : null;
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { isBanned: true, banReason: true, bannedUntil: true } });
+  return user?.isBanned ? { reason: user.banReason || "Motif non renseigné.", bannedUntil: user.bannedUntil } : null;
 }
 
 export async function getBlockedUsers() {

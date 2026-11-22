@@ -422,6 +422,7 @@ export async function getBannedUsers(page = 1, pageSize = 10) {
       email: true,
       image: true,
       banReason: true,
+      bannedUntil: true,
       role: true
     }
   });
@@ -429,7 +430,8 @@ export async function getBannedUsers(page = 1, pageSize = 10) {
   // Lignes de bannissement de ces membres, les plus récentes d'abord : la première rencontrée par membre est la bonne
   const banLogs = bannedUsers.length === 0 ? [] : await prisma.moderationLog.findMany({
     where: {
-      action: "USER_BANNED",
+      // Bannissement définitif ou temporaire (carte 222)
+      action: { in: ["USER_BANNED", "USER_TEMP_BANNED"] },
       targetId: { in: bannedUsers.map((user) => user.id) }
     },
     orderBy: { createdAt: "desc" },

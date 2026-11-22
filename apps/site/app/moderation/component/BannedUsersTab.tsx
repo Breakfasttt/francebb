@@ -14,6 +14,7 @@ import Link from "next/link";
 import { Badge, Button, Card, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { getBannedUsers, unbanUserAction } from "../actions";
+import { formatBanEnd } from "@/lib/banDuration";
 
 const PAGE_SIZE = 10;
 
@@ -94,6 +95,9 @@ export default function BannedUsersTab() {
                   <p className="m-0 text-[0.95rem] break-words text-bb-text">
                     <span className="text-sm font-semibold text-bb-text-muted">Motif : </span>
                     {user.banReason || "Non spécifié"}
+                  </p>
+                  <p className="m-0 text-sm text-bb-text-muted">
+                    {user.bannedUntil ? `Jusqu'au ${formatBanEnd(new Date(user.bannedUntil))}, puis levé tout seul` : "Bannissement définitif"}
                   </p>
                 </div>
                 <Button type="button" variant="secondary" size="tap" className="w-full lg:w-auto" onClick={() => setSelectedUserId(user.id)}>

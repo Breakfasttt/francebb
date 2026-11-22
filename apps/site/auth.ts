@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma, prismaWithEmail } from "@/lib/prisma";
 import { authConfig } from "./auth.config";
 import { DEFAULT_SITE_THEME } from "@/lib/themes";
+import { liftExpiredBan } from "@/lib/banLift";
 import Discord from "next-auth/providers/discord";
 import Google from "next-auth/providers/google";
 import Credentials from "next-auth/providers/credentials";
@@ -179,7 +180,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               hasFinishedOnboarding: true, 
               theme: true, 
               name: true,
-              isBanned: true
+              isBanned: true,
+              bannedUntil: true
             }
           });
           
@@ -190,7 +192,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           updatedToken.hasFinishedOnboarding = dbUser.hasFinishedOnboarding;
           updatedToken.theme = dbUser.theme || DEFAULT_SITE_THEME;
           updatedToken.name = dbUser.name;
-          updatedToken.isBanned = dbUser.isBanned;
+          // Bannissement temporaire échu : levé ici, à la première visite après sa date de fin (carte 222)
+          updatedToken.isBanned = await liftExpiredBan(updatedToken.id as string, dbUser.isBanned, dbUser.bannedUntil);
         } catch (error) {
           // Base injoignable : dans le doute, pas de droits supérieurs à ceux d'un coach (carte 160). Le cookie peut
           // garder ce rôle réduit un instant ; dès que la base répond, le vrai rôle est relu à la lecture suivante.

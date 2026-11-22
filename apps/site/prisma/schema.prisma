@@ -45,6 +45,8 @@ model User {
   signature               String?
   isBanned                Boolean                  @default(false)
   banReason               String?
+  /// Fin d'un bannissement temporaire (carte 222) ; vide pour un bannissement définitif. Levé à la première visite après cette date.
+  bannedUntil             DateTime?
   avatarFrame             String?                  @default("auto")
   theme                   String                   @default("vestiaire")
   // Thème du membre avant la refonte (carte 078), pour lui proposer d'y revenir (carte 083)
@@ -106,6 +108,8 @@ model User {
   lastPostTopics           Topic[]                   @relation("LastPostTopics")
   notifications           Notification[]           @relation("NotificationsReceived")
   notificationsCaused     Notification[]           @relation("NotificationsCaused")
+  warningsReceived        UserWarning[]            @relation("WarningsReceived")
+  warningsGiven           UserWarning[]            @relation("WarningsGiven")
 
   @@index([role])
 }
@@ -754,4 +758,18 @@ enum PaymentStatus {
   AT_TOURNAMENT
   GUEST
   DEPANNAGE
+}
+
+/// Avertissement de la modération à un membre (carte 222) : le membre le voit sur son profil, la modération sur sa fiche.
+model UserWarning {
+  id          String   @id @default(cuid())
+  userId      String
+  /// Modérateur qui a écrit l'avertissement ; vide si son compte a été supprimé.
+  moderatorId String?
+  reason      String
+  createdAt   DateTime @default(now())
+  user        User     @relation("WarningsReceived", fields: [userId], references: [id], onDelete: Cascade)
+  moderator   User?    @relation("WarningsGiven", fields: [moderatorId], references: [id], onDelete: SetNull)
+
+  @@index([userId, createdAt])
 }

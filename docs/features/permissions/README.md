@@ -17,7 +17,8 @@ Chaque membre a un rôle, qui dit ce qu'il peut faire sur le site. Un membre ban
 - **Admin** : en plus, l'administration (rôles personnalisés, structure du forum, données de référence, réglages, annonces par e-mail), la purge du journal et la suppression d'un compte (carte 221).
 - **Super Admin** : passe outre les contrôles de rang (il peut agir sur un autre Super Admin), sauf pour changer son propre rôle, se bannir ou se supprimer (carte 221).
 - **Comptes techniques** (`SYSTEM_ACCOUNT_IDS` : `system`, auteur des ressources officielles, et `ghost_coach`, « Coach Inconnu » des comptes supprimés) : personne ne les bannit ni ne les supprime. L'annuaire `/membres` ne propose pas de leur écrire en privé (la fiche `/spy` et le serveur de la messagerie ne le bloquent pas encore).
-- **Banni** : il est envoyé sur `/banned` (sans navigation, avec « Me déconnecter »). Toute action serveur le refuse. Ses messages du forum sont masqués derrière un bouton qui permet de les afficher (`PostItem.tsx`). Ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur (carte 221). Personne ne peut plus démarrer une conversation avec lui ni lui écrire à deux (carte 221).
+- **Averti** (carte 222) : un avertissement de la modération ne retire aucun droit. Le membre le voit sur son profil, seul avec la modération.
+- **Banni** : il est envoyé sur `/banned` (sans navigation, avec « Me déconnecter »). Un bannissement temporaire (1, 7 ou 30 jours, carte 222) est levé tout seul à sa première visite après la date de fin. Toute action serveur le refuse. Ses messages du forum sont masqués derrière un bouton qui permet de les afficher (`PostItem.tsx`). Ses inscriptions aux tournois restent, avec un badge « Banni » chez l'organisateur (carte 221). Personne ne peut plus démarrer une conversation avec lui ni lui écrire à deux (carte 221).
 - **Sur téléphone** : rien de propre à cette fiche ; chaque écran suit sa propre fiche.
 
 ## Les fichiers
@@ -27,7 +28,7 @@ Chaque membre a un rôle, qui dit ce qu'il peut faire sur le site. Un membre ban
 | `apps/site/lib/roles.ts` | Puissances (`ROLE_POWER`), `getRolePower`, `isModerator`, `isAdmin`, `canEditTargetRole`, `roleChangeRefusal`, `canDeleteMember`, `canBanMember` et `SYSTEM_ACCOUNT_IDS` (carte 221). Testé par `tests/unit/roles.test.mjs`. |
 | `apps/site/lib/memberRole.ts` | `changeMemberRole` : seul chemin pour changer un rôle (liste des membres et administration), avec le journal (carte 221). |
 | `apps/site/lib/authGuard.ts` | `getActiveSession()` : renvoie rien pour un visiteur ou un banni. `getSession()` : session brute, bannis compris (seulement mise en page, `/banned`, connexion). |
-| `apps/site/auth.ts` | Relit le rôle et le bannissement dans la base à chaque lecture de la session. |
+| `apps/site/auth.ts` | Relit le rôle et le bannissement dans la base à chaque lecture de la session ; lève un bannissement temporaire échu (`liftExpiredBan`, carte 222). |
 | `apps/site/lib/forumAccess.ts` | Qui voit quel forum (`allowedRoles` : « ce rôle et au-dessus », ou `ALL`). |
 | `apps/site/lib/forumRights.ts` | `canReplyToTopic`, `canEditPost`, `canSavePostEdit` (carte 221). |
 | `apps/site/lib/tournamentRights.ts` | `canManageTournament` (organisateur, commissaire ou modérateur), `canManagePayments` (équipe d'organisation). |

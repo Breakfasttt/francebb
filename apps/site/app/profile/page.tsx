@@ -19,6 +19,7 @@ import { Card, EmptyState, Skeleton } from "@bbfrance/ui";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
 import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
+import ProfileWarnings from "@/app/profile/component/ProfileWarnings";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileEdit from "@/app/profile/component/ProfileEdit";
@@ -146,6 +147,8 @@ export default function ProfilePage() {
         </div>
 
         <section id="rubrique-du-compte" aria-label={TABS.find((t) => t.id === activeTab)?.label} className="flex min-w-0 scroll-mt-14 flex-col gap-4">
+          {/* Avertissements de la modération, visibles du seul membre (carte 222) ; la notification mène ici */}
+          <ProfileWarnings userId={user.id} isOwnProfile />
           {/* Téléphone : barre collée et tiroir des rubriques (les rubriques sont dans le panneau gauche sur ordinateur) */}
           <SectionDrawer title="Mon compte" items={tabs} linkComponent={TabLink} scrollTargetId="rubrique-du-compte" />
 

@@ -20,6 +20,7 @@ import { canBanMember, isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
+import ProfileWarnings from "@/app/profile/component/ProfileWarnings";
 import SectionDrawer from "@/common/components/SectionDrawer/SectionDrawer";
 import { PROFILE_LAYOUT_CLASS, PROFILE_PAGE_CLASS } from "@/app/profile/component/profileLayout";
 
@@ -49,10 +50,12 @@ export default function SpyProfilePage() {
   const [isBlocked, setIsBlocked] = useState(false);
   const [blockedMe, setBlockedMe] = useState(false);
   // Motif du bannissement, lu seulement pour un modérateur (l'action le refuse aux autres)
-  const [banReason, setBanReason] = useState<string | null>(null);
+  const [ban, setBan] = useState<Awaited<ReturnType<typeof getBanReason>>>(null);
   // Fiche absente (404) ou lecture en échec : deux messages différents (carte 221)
   const [loadState, setLoadState] = useState<"ok" | "notFound" | "error">("ok");
   const [roleLabels, setRoleLabels] = useState<Record<string, string>>({});
+  // Change après un avertissement (carte 222), pour relire la liste des avertissements
+  const [warningsVersion, setWarningsVersion] = useState(0);
 
   /** Charge la fiche du membre, ses chiffres, son activité et l'état du blocage. */
   async function loadProfile() {
@@ -65,7 +68,7 @@ export default function SpyProfilePage() {
     const profile = await response.json();
     setUser(profile);
     setLoadState("ok");
-    setBanReason(profile.isBanned && checkIsModerator(session?.user?.role) ? await getBanReason(id) : null);
+    setBan(profile.isBanned && checkIsModerator(session?.user?.role) ? await getBanReason(id) : null);
     setStats(await getUserStats(id));
     setActivities(await getUserActivity(id));
     if (session?.user?.id) {
@@ -178,7 +181,9 @@ export default function SpyProfilePage() {
           isOwnProfile={false}
           isModerator={isModerator}
           canBan={canBan}
-          banReason={banReason}
+          banReason={ban?.reason ?? null}
+          bannedUntil={ban?.bannedUntil ?? null}
+          onWarned={() => setWarningsVersion((version) => version + 1)}
           roleLabels={roleLabels}
           isBlockedInitial={isBlocked}
           blockedMe={blockedMe}
@@ -186,6 +191,8 @@ export default function SpyProfilePage() {
         />
 
         <section id="rubrique-du-membre" aria-label={activeTab === "articles" ? "Articles" : "Activité du forum"} className="flex min-w-0 scroll-mt-14 flex-col gap-4">
+          {/* Avertissements reçus, pour la modération seulement (carte 222) */}
+          {isModerator && <ProfileWarnings userId={user.id} isOwnProfile={false} refreshKey={warningsVersion} />}
           {/* Téléphone : barre collée et tiroir des rubriques, comme « Mon compte » ; ordinateur : onglets au-dessus du contenu */}
           <SectionDrawer title={`Profil de ${user.name}`} items={tabs} linkComponent={TabLink} scrollTargetId="rubrique-du-membre" />
           <LinkTabs label="Onglets du profil" tabs={tabs} linkComponent={TabLink} className="max-lg:hidden" />

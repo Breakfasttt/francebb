@@ -418,3 +418,9 @@ Base locale `pnpm dev exemple` ; changer de compte avec « Mode Développement �
 - [ ] `/media`, onglet YouTube, quand une chaîne de la liste est en direct : le tourniquet apparaît et le direct joue sans le son (sur un vrai téléphone, glisser d'un direct à l'autre).
 - [ ] `/media`, onglet Twitch : rien de Twitch avant l'accord (aucune image, aucun lecteur) ; après l'accord, les chaînes en direct sont dans le tourniquet. Refaire l'essai une fois `TWITCH_CLIENT_ID` et `TWITCH_CLIENT_SECRET` réglés sur Vercel : dernières vidéos et clips des chaînes hors ligne, page plus rapide.
 
+
+## 26. Cartes de fin novembre (145, 222 à 225)
+
+- [ ] **Ordinateur, admin, serveur de mail réel.** Administration > Annonces par e-mail : une annonce à quelques comptes de test. Lavancement
+- [ ] **Téléphone, modérateur.** Fiche d'un coach : « Avertir » avec un motif ; le coach reçoit la notification sur son téléphone et lit le motif en tête de son profil, sans le pseudo du modérateur (carte 222).
+- [ ] **Téléphone, modérateur.** Bannir un compte de test pour 1 jour : la fenêtre garde « Confirmer le bannissement » en bas de l'écran ; le coach voit « Compte suspendu » et la date ; le lendemain, il retrouve l'accès en revenant sur le site, et le journal note « Fin du bannissement temporaire » (carte 222).

@@ -17,13 +17,15 @@
 import { useState, useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { AlertTriangle, Ban, MapPin, MessageSquare, Shield, Trophy, UserCheck, UserX } from "lucide-react";
+import { AlertTriangle, Ban, MapPin, MessageSquare, MessageSquareWarning, Shield, Trophy, UserCheck, UserX } from "lucide-react";
 import { Badge, Button, Card, ConfirmDialog, toast } from "@bbfrance/ui";
 import { toggleBlockUser } from "@/app/profile/actions";
 import { toggleBanUser } from "@/app/membres/actions";
 import UserAvatar, { type Rank } from "@/common/components/UserAvatar/UserAvatar";
 import ReportModal from "@/common/components/ReportModal/ReportModal";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import { banDurationLabel, formatBanEnd, type BanDurationDays } from "@/lib/banDuration";
+import WarnUserDialog from "./WarnUserDialog";
 import { getRoleLabel, isModerator as checkIsModerator, SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
 
 const REGION_LABELS: Record<string, string> = {
@@ -58,6 +60,10 @@ interface ProfileSidebarProps {
   canBan?: boolean;
   /** Motif du bannissement, fourni seulement à un modérateur. */
   banReason?: string | null;
+  /** Fin d'un bannissement temporaire (carte 222), fournie seulement à un modérateur. */
+  bannedUntil?: Date | null;
+  /** Appelée après un avertissement (carte 222) : la page relit la liste des avertissements. */
+  onWarned?: () => void;
   /** Libellés des rôles lus dans la table RoleConfig (action getRoleLabels). */
   roleLabels?: Record<string, string>;
   isBlockedInitial?: boolean;
@@ -73,6 +79,8 @@ export default function ProfileSidebar({
   isModerator = false,
   canBan = false,
   banReason = null,
+  bannedUntil = null,
+  onWarned,
   roleLabels,
   isBlockedInitial = false,
   blockedMe = false,
@@ -81,6 +89,7 @@ export default function ProfileSidebar({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [showBanModal, setShowBanModal] = useState(false);
+  const [showWarnModal, setShowWarnModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showBlockModal, setShowBlockModal] = useState(false);
   // État de blocage choisi ici ; tant que le membre n'a rien changé, on suit celui fourni par la page
@@ -101,16 +110,16 @@ export default function ProfileSidebar({
   const customLigues = (user.ligueCustom ?? "").split(",").map((s) => s.trim()).filter(Boolean);
   const hasLigues = (user.ligues?.length ?? 0) > 0 || customLigues.length > 0;
 
-  const handleToggleBan = (reason: string) => {
+  const handleToggleBan = (reason: string, durationDays: BanDurationDays | null) => {
     if (!user.isBanned && !reason.trim()) {
       toast.error("Une raison est obligatoire pour bannir un utilisateur.");
       return;
     }
     startTransition(async () => {
       try {
-        const res = await toggleBanUser(user.id, !user.isBanned, reason);
+        const res = await toggleBanUser(user.id, !user.isBanned, reason, durationDays);
         if (res.success) {
-          toast.success(!user.isBanned ? "Membre banni" : "Membre débanni");
+          toast.success(user.isBanned ? "Membre débanni" : durationDays ? `Membre banni ${banDurationLabel(durationDays)}` : "Membre banni définitivement");
           setShowBanModal(false);
           router.refresh();
           onRefresh?.();
@@ -179,6 +188,9 @@ export default function ProfileSidebar({
           <div className="rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2.5">
             <p className="m-0 text-sm font-semibold text-bb-text-muted">Motif du bannissement</p>
             <p className="m-0 mt-0.5 break-words text-bb-text">{banReason}</p>
+            <p className="m-0 mt-1.5 text-sm text-bb-text-muted">
+              {bannedUntil ? `Levé automatiquement le ${formatBanEnd(bannedUntil)}.` : "Définitif."}
+            </p>
           </div>
         )}
 
@@ -208,12 +220,17 @@ export default function ProfileSidebar({
                 {isBlocked ? "Débloquer" : "Bloquer"}
               </Button>
             )}
+            {canBan && !user.isBanned && (
+              <Button type="button" variant="secondary" size="tap" disabled={isPending} onClick={() => setShowWarnModal(true)}>
+                <MessageSquareWarning size={18} aria-hidden="true" /> Avertir
+              </Button>
+            )}
             {canBan && (
               <Button
                 type="button"
                 variant={user.isBanned ? "secondary" : "danger"}
                 size="tap"
-                className="col-span-2"
+                className={user.isBanned ? "col-span-2" : ""}
                 disabled={isPending}
                 onClick={() => setShowBanModal(true)}
               >
@@ -304,6 +321,19 @@ export default function ProfileSidebar({
 
       {!isOwnProfile && (
         <>
+          {canBan && (
+            <WarnUserDialog
+              open={showWarnModal}
+              onOpenChange={setShowWarnModal}
+              userId={user.id}
+              userName={user.name}
+              onWarned={() => {
+                setShowWarnModal(false);
+                onWarned?.();
+              }}
+            />
+          )}
+
           <BanUserDialog
             open={showBanModal}
             onOpenChange={setShowBanModal}

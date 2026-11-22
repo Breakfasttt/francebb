@@ -21,7 +21,7 @@ export function isLogGroup(value: unknown): value is LogGroup {
 
 /** Actions de chaque groupe, pour filtrer le journal côté serveur. */
 export const LOG_GROUP_ACTIONS: Record<LogGroup, string[]> = {
-  members: ["USER_ROLE_CHANGED", "USER_BANNED", "USER_UNBANNED", "USER_DELETED"],
+  members: ["USER_ROLE_CHANGED", "USER_WARNED", "USER_BANNED", "USER_TEMP_BANNED", "USER_UNBANNED", "USER_DELETED"],
   forum: [
     "FORUM_CREATED", "FORUM_UPDATED", "FORUM_LOCKED", "FORUM_UNLOCKED", "FORUM_DELETED",
     "TOPIC_DELETED", "TOPIC_RESTORED", "TOPIC_PINNED", "TOPIC_UNPINNED", "TOPIC_MOVED", "TOPIC_ARCHIVED",

@@ -1,12 +1,13 @@
 /**
  * Page des notifications du membre (carte 167), ouverte par la cloche de la barre du site : les mentions, les réponses
- * dans les sujets suivis, les messages privés et les nouvelles de ses tournois (carte 186), de la plus récente à la plus ancienne, 30 par page. Une notification
+ * dans les sujets suivis, les messages privés, les nouvelles de ses tournois (carte 186) et les avertissements de la
+ * modération (carte 222), de la plus récente à la plus ancienne, 30 par page. Une notification
  * non lue est en gras avec un point de couleur. Chaque ligne est un lien vers `/notifications/<identifiant>`, qui la
  * marque lue et mène au bon message ; « Tout marquer comme lu » est en tête de page.
  */
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AtSign, Bell, Mail, MessageSquareReply, Trophy } from "lucide-react";
+import { AlertTriangle, AtSign, Bell, Mail, MessageSquareReply, Trophy } from "lucide-react";
 import { Avatar, Card, PageNav, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
@@ -24,6 +25,7 @@ const TYPE_ICON = {
   PRIVATE_MESSAGE: Mail,
   TOURNAMENT_PROMOTED: Trophy,
   TOURNAMENT_FORMAT_CHANGED: Trophy,
+  USER_WARNED: AlertTriangle,
 } as const;
 
 /** Phrase d'une notification : qui a fait quoi, et où. Le titre du sujet est du BBCode en ligne, rendu en HTML sûr. */
@@ -46,6 +48,8 @@ function NotificationText({ notification }: { notification: NotificationRow }) {
           inscris-toi de nouveau si tu le souhaites
         </>
       );
+    case "USER_WARNED":
+      return <>La modération t&apos;a adressé un avertissement : lis-le sur ton profil</>;
     default: {
       const group = notification.conversation?.isGroup ? notification.conversation.name : null;
       return group ? <>{actor} t&apos;a écrit dans la conversation « {group} »</> : <>{actor} t&apos;a envoyé un message privé</>;
@@ -89,7 +93,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
                       )}
                     >
                       <span className="relative mt-0.5 shrink-0">
-                        <Avatar name={notification.actor?.name} src={notification.actor?.image} size={40} aria-hidden="true" />
+                        <Avatar name={notification.actor?.name ?? (notification.type === "USER_WARNED" ? "Modération" : undefined)} src={notification.actor?.image} size={40} aria-hidden="true" />
                         <span className="absolute -right-1 -bottom-1 flex size-5 items-center justify-center rounded-full border border-bb-border bg-bb-surface text-bb-accent-text">
                           <Icon size={12} aria-hidden="true" />
                         </span>

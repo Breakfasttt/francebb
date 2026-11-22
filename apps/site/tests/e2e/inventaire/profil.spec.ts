@@ -454,15 +454,68 @@ test.describe("Inventaire : profil et membres", () => {
     }
     await dialog.getByRole("button", { name: "Bot" }).click();
     await dialog.getByRole("textbox").fill("Inv Prf détails");
+    // Durée obligatoire (carte 222) : le bouton reste grisé tant qu'aucune n'est choisie
+    await expect(dialog.getByRole("button", { name: "Confirmer le bannissement" })).toBeDisabled();
+    await dialog.getByRole("button", { name: "7 jours" }).click();
     await dialog.getByRole("button", { name: "Confirmer le bannissement" }).click();
     await expect(main.getByRole("button", { name: "Débannir", exact: true })).toBeVisible();
-    const banned = await db((prisma) => prisma.user.findUnique({ where: { id: TARGET.id }, select: { isBanned: true, banReason: true } }));
-    expect(banned).toEqual({ isBanned: true, banReason: "[Bot] Inv Prf détails" });
+    await expect(main.getByText(/^Levé automatiquement le \d{2}\/\d{2}\/\d{4} à \d{2}:\d{2}\.$/)).toBeVisible();
+    const banned = await db((prisma) => prisma.user.findUnique({ where: { id: TARGET.id }, select: { isBanned: true, banReason: true, bannedUntil: true } }));
+    expect(banned).toMatchObject({ isBanned: true, banReason: "[Bot] Inv Prf détails" });
+    const days = ((banned?.bannedUntil?.getTime() ?? 0) - Date.now()) / 86_400_000;
+    expect(days).toBeGreaterThan(6.9);
+    expect(days).toBeLessThan(7.1);
+    const log = await db((prisma) => prisma.moderationLog.findFirst({ where: { action: "USER_TEMP_BANNED", targetId: TARGET.id }, select: { details: true } }));
+    expect(log?.details).toMatch(/^7 jours, jusqu'au .+ : \[Bot\] Inv Prf détails$/);
 
     await main.getByRole("button", { name: "Débannir", exact: true }).click();
     await page.getByRole("dialog", { name: /Débannir/ }).getByRole("button", { name: /Débannir/ }).click();
     await expect(main.getByRole("button", { name: "Bannir", exact: true })).toBeVisible();
     expect((await db((prisma) => prisma.user.findUnique({ where: { id: TARGET.id }, select: { isBanned: true } })))?.isBanned).toBe(false);
+  });
+
+  test("spy : un modérateur avertit ; le membre est notifié et lit l'avertissement sur son profil (carte 222)", async ({ page }) => {
+    await loginAs(page, E2E.modoId);
+    await page.goto(`/spy/${TARGET.id}`, { waitUntil: "networkidle" });
+    const main = content(page);
+    await main.getByRole("button", { name: "Avertir", exact: true }).click();
+    const dialog = page.getByRole("dialog", { name: /Avertir/ });
+    await dialog.getByRole("button", { name: "Envoyer l'avertissement" }).click();
+    await expect(dialog.getByText("Écris le motif de l'avertissement.")).toBeVisible();
+    await dialog.getByRole("textbox", { name: "Motif de l'avertissement" }).fill("Inv Prf ton trop agressif");
+    await dialog.getByRole("button", { name: "Envoyer l'avertissement" }).click();
+    await expect(dialog).toBeHidden();
+    // La modération voit l'avertissement et son auteur sur la fiche
+    await expect(page.getByText("Inv Prf ton trop agressif")).toBeVisible();
+    await expect(page.locator("#avertissements").getByText(/ · par Modo E2E$/)).toBeVisible();
+    expect(await db((prisma) => prisma.moderationLog.count({ where: { action: "USER_WARNED", targetId: TARGET.id } }))).toBe(1);
+
+    // Le membre : notification sans nom de modérateur, puis le motif sur son profil
+    await page.context().clearCookies();
+    await loginAs(page, TARGET.id);
+    await page.goto("/notifications", { waitUntil: "networkidle" });
+    await page.getByRole("link", { name: /La modération t'a adressé un avertissement/ }).click();
+    await page.waitForURL(/\/profile#avertissements$/);
+    const warnings = page.locator("#avertissements");
+    await expect(warnings.getByText("Inv Prf ton trop agressif")).toBeVisible();
+    await expect(warnings.getByText(/ · par /)).toHaveCount(0);
+  });
+
+  test("bannissement temporaire : date de fin sur /banned, puis levé tout seul après cette date (carte 222)", async ({ page }) => {
+    const later = new Date(Date.now() + 2 * 86_400_000);
+    await db((prisma) => prisma.user.update({ where: { id: TARGET.id }, data: { isBanned: true, banReason: "Inv Prf pause", bannedUntil: later } }));
+    await loginAs(page, TARGET.id);
+    await page.goto("/forum", { waitUntil: "networkidle" });
+    await page.waitForURL(/\/banned/);
+    await expect(page.getByRole("heading", { name: "Compte suspendu" })).toBeVisible();
+    await expect(page.getByText(/suspendu ton compte jusqu’au \d{2}\/\d{2}\/\d{4} à \d{2}:\d{2}/)).toBeVisible();
+
+    // Date de fin passée : la visite suivante lève le bannissement
+    await db((prisma) => prisma.user.update({ where: { id: TARGET.id }, data: { bannedUntil: new Date(Date.now() - 60_000) } }));
+    await page.goto("/forum", { waitUntil: "networkidle" });
+    await expect(page).not.toHaveURL(/\/banned/);
+    const user = await db((prisma) => prisma.user.findUnique({ where: { id: TARGET.id }, select: { isBanned: true, banReason: true, bannedUntil: true } }));
+    expect(user).toEqual({ isBanned: false, banReason: null, bannedUntil: null });
   });
 
   /** Panneau des filtres du téléphone, ouvert au besoin. */
@@ -585,6 +638,7 @@ test.describe("Inventaire : profil et membres", () => {
     await memberAction(page, memberName(3), /^Bannir/);
     const ban = page.getByRole("dialog", { name: /Bannir/ });
     await ban.getByRole("button", { name: "Spam / Publicité" }).click();
+    await ban.getByRole("button", { name: "Définitif" }).click();
     await ban.getByRole("button", { name: /^(Bannir|Confirmer le bannissement)$/ }).click();
     await expect.poll(() => db(async (prisma) => (await prisma.user.findUnique({ where: { id: memberId(3) } }))?.isBanned)).toBe(true);
     await expect(memberRow(page, memberName(3)).getByText("Banni", { exact: true }).first()).toBeVisible();
@@ -609,6 +663,8 @@ test.describe("Inventaire : profil et membres", () => {
     const dialog = page.getByRole("dialog", { name: /Suppression définitive|Supprimer/ });
     await expect(dialog).toBeVisible();
     await dialog.getByRole("button", { name: "Confirmer la suppression" }).click();
-    await expect.poll(() => db((prisma) => prisma.user.count({ where: { id: VICTIM.id } }))).toBe(0);
+    await expect(page.getByText("Utilisateur supprimé (contenus rattachés au compte fantôme)")).toBeVisible();
+    // La petite base locale coupe parfois une connexion : relecture patiente (db() réessaie)
+    await expect.poll(() => db((prisma) => prisma.user.count({ where: { id: VICTIM.id } })), { timeout: 30_000 }).toBe(0);
   });
 });

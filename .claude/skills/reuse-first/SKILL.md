@@ -57,7 +57,7 @@ Une nouvelle bibliothèque (dépendance npm) n'est jamais ajoutée sans l'accord
 | Avatar avec le cadre du rang du membre | `UserAvatar` |
 | Petite image d'avatar sans cadre, avec avatar par défaut si le membre n'en a pas | `MemberAvatarImage` (ne jamais écrire de chemin `default-avatar.png`) |
 | Générateur d'avatar DiceBear (graine, style) et avatar aléatoire | `AvatarGenerator/AvatarGeneratorSheet` (`dicebearUrl`, `randomDicebearUrl`), partagé par l'inscription et le profil |
-| Bannir ou débannir un membre (raisons rapides et précisions) | `BanUserDialog`, partagé par `/spy/[id]` et `/membres` |
+| Bannir ou débannir un membre (raisons rapides, durée, précisions) | `BanUserDialog`, partagé par `/spy/[id]`, `/membres` et les signalements ; durées et date de fin : `lib/banDuration.ts` (carte 222) |
 | Rechercher et choisir un membre ou une ligue | `UserSearch`, `UserMapper`, `LigueSearch` (prop `inputId` pour le relier à un libellé), `MultiLigueSearch` (choix de plusieurs ligues) |
 | Saisie d'étiquettes (tags) avec suggestions | `TagSelector` (props `id` et `aria-label` pour le relier à un libellé) ; pour afficher un statut, `Badge` de `@bbfrance/ui` |
 | Écrire et afficher un message BBCode | `BBCodeEditor` (édition), `BBCodeContent` (rendu, styles dans `BBCodeContent/bbcode.css`) |

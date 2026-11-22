@@ -2,13 +2,14 @@
  * Page affichée à un membre banni (refonte, carte 090, ADR 0006 ; carte 221) : raison du bannissement, comment le
  * contester, et « Me déconnecter », la seule sortie (toute autre rubrique le renvoie ici, et la coquille n'affiche pas
  * de navigation sur cette page). Le lien Discord vient du réglage `discord_invite` de l'administration ; sans lui, une
- * phrase générique.
+ * phrase générique. Un bannissement temporaire (carte 222) affiche sa date de fin.
  */
 import { getSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
 import { Card } from "@bbfrance/ui";
 import { redirect } from "next/navigation";
 import LogoutButton from "@/common/components/LogoutButton/LogoutButton";
+import { formatBanEnd } from "@/lib/banDuration";
 
 export const dynamic = "force-dynamic";
 
@@ -23,7 +24,7 @@ export default async function BannedPage() {
   const [user, discord] = await Promise.all([
     prisma.user.findUnique({
       where: { id: session.user.id },
-      select: { isBanned: true, banReason: true }
+      select: { isBanned: true, banReason: true, bannedUntil: true }
     }),
     prisma.siteSetting.findUnique({ where: { key: "discord_invite" }, select: { value: true } })
   ]);
@@ -39,14 +40,21 @@ export default async function BannedPage() {
       <section aria-labelledby="banned-title" className="w-full max-w-xl">
         <Card className="flex flex-col gap-4 p-5 lg:p-8">
           <h1 id="banned-title" className="font-bb-display text-[1.75rem] text-bb-text lg:text-[2.25rem]">
-            Compte banni
+            {user.bannedUntil ? "Compte suspendu" : "Compte banni"}
           </h1>
-          <p className="m-0 text-bb-text">
-            L’équipe de modération a suspendu ton compte. Tu ne peux plus lire ni écrire sur le site avec ce compte.
-          </p>
+          {user.bannedUntil ? (
+            <p className="m-0 text-bb-text">
+              La modération a suspendu ton compte jusqu’au <strong>{formatBanEnd(user.bannedUntil)}</strong>.
+              D’ici là, tu ne peux ni lire ni écrire sur le site. À cette date, reviens : ton accès revient tout seul.
+            </p>
+          ) : (
+            <p className="m-0 text-bb-text">
+              L’équipe de modération a suspendu ton compte. Tu ne peux plus lire ni écrire sur le site avec ce compte.
+            </p>
+          )}
 
           <div className="rounded-bb-md border border-bb-border bg-bb-surface-2 p-4">
-            <h2 className="text-sm font-semibold text-bb-text-muted">Raison du bannissement</h2>
+            <h2 className="text-sm font-semibold text-bb-text-muted">{user.bannedUntil ? "Raison de la suspension" : "Raison du bannissement"}</h2>
             <p className="m-0 mt-1 break-words text-bb-text">
               {user.banReason ? `« ${user.banReason} »` : "L’équipe n’a pas donné de raison."}
             </p>

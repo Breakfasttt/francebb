@@ -10,7 +10,7 @@ import { NextResponse } from "next/server";
 import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
-import { visibleNotificationsWhere } from "@/lib/notifications";
+import { NOTIFICATION_TYPE, visibleNotificationsWhere } from "@/lib/notifications";
 import { forumPostHref } from "@/lib/forumPostLink";
 
 export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -24,7 +24,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const { roles } = await getForumAccess();
   const notification = await prisma.notification.findFirst({
     where: { id, ...visibleNotificationsWhere(userId, roles) },
-    select: { id: true, readAt: true, topicId: true, postId: true, conversationId: true },
+    select: { id: true, type: true, readAt: true, topicId: true, postId: true, conversationId: true },
   });
   if (!notification) return to("/notifications");
 
@@ -32,6 +32,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     await prisma.notification.update({ where: { id: notification.id }, data: { readAt: new Date() } });
   }
 
+  // Avertissement de la modération (carte 222) : le motif se lit sur le profil du membre
+  if (notification.type === NOTIFICATION_TYPE.USER_WARNED) return to("/profile#avertissements");
   if (notification.conversationId) return to(`/messagerie?id=${encodeURIComponent(notification.conversationId)}`);
   if (notification.topicId && notification.postId) return to(await forumPostHref(notification.topicId, notification.postId));
   if (notification.topicId) return to(`/forum/topic/${notification.topicId}`);

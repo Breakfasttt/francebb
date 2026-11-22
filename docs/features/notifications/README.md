@@ -32,6 +32,8 @@ Les actions du forum (`createTopic`, `createPost`, `updatePost`) et de la messag
 
 Depuis la carte 186, deux notifications de tournoi s'ajoutent, sans e-mail, créées par `notifyTournamentMembers` : « une place s'est libérée, vous passez de la liste d'attente aux pré-inscrits » (`TOURNAMENT_PROMOTED`) et « l'organisateur a changé le format du tournoi, votre inscription a été supprimée » (`TOURNAMENT_FORMAT_CHANGED`). Elles mènent au sujet du tournoi et ne deviennent lues qu'à leur ouverture depuis la liste, faute de message rattaché. La colonne `type` étant un simple texte, la base n'a pas changé.
 
+Depuis la carte 222, un avertissement de la modération crée une notification `USER_WARNED`, sans auteur (le modérateur n'est pas nommé) : « La modération t'a adressé un avertissement : lis-le sur ton profil ». Elle mène à `/profile#avertissements`.
+
 ## Les pièges
 
 - **Qui est prévenu** : jamais l'auteur lui-même, ni un membre banni, ni un membre qui n'a pas accès au forum du sujet (rôles calculés par `accessibleRolesFor` de `lib/forumAccess.ts`), ni un membre qui a bloqué l'auteur ou que l'auteur a bloqué. Au plus 10 mentions par message : un message avec 500 mentions ne prévient que les 10 premiers.

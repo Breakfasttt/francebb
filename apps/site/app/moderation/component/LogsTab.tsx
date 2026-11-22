@@ -49,7 +49,9 @@ const ACTION_LABELS: Record<string, string> = {
   POST_RESTORED: "Message restauré",
   // Membres
   USER_ROLE_CHANGED: "Rôle modifié",
+  USER_WARNED: "Membre averti",
   USER_BANNED: "Utilisateur banni",
+  USER_TEMP_BANNED: "Utilisateur banni temporairement",
   USER_UNBANNED: "Utilisateur débanni",
   USER_DELETED: "Utilisateur supprimé",
   // Articles

@@ -36,6 +36,8 @@ export const NOTIFICATION_TYPE = {
   PRIVATE_MESSAGE: "PRIVATE_MESSAGE",
   TOURNAMENT_PROMOTED: "TOURNAMENT_PROMOTED",
   TOURNAMENT_FORMAT_CHANGED: "TOURNAMENT_FORMAT_CHANGED",
+  /** Avertissement de la modération (carte 222) : sans auteur affiché, le motif se lit sur le profil. */
+  USER_WARNED: "USER_WARNED",
 } as const;
 
 /** Forum d'un sujet, avec ce qu'il faut pour savoir qui y a accès (voir FORUM_ACCESS_SELECT de lib/forumAccess.ts). */

@@ -34,6 +34,7 @@ import { ActionMenu, Badge, Button, Card, ConfirmDialog, EmptyState, Label, Page
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import ModerationModal from "@/app/forum/component/ModerationModal";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import type { BanDurationDays } from "@/lib/banDuration";
 import { toggleBanUser } from "@/app/membres/actions";
 import { moderatePost } from "@/app/forum/actions";
 import { getPendingReportsByType, resolveReportsAction } from "../actions";
@@ -161,10 +162,10 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
   };
 
   // « Bannir » : le serveur vérifie le rang et ferme les signalements du coach
-  const onBanConfirm = async (reason: string) => {
+  const onBanConfirm = async (reason: string, durationDays: BanDurationDays | null) => {
     if (!banTarget) return;
     setBanning(true);
-    const res = await toggleBanUser(banTarget.userId, true, reason);
+    const res = await toggleBanUser(banTarget.userId, true, reason, durationDays);
     setBanning(false);
     if (!res.success) {
       toast.error(res.error || "Le coach n'a pas pu être banni.");

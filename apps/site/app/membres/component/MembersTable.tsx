@@ -30,6 +30,7 @@ import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { readPositiveInt, useSyncUrlFilters } from "@/common/hooks/useUrlFilters";
 import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import type { BanDurationDays } from "@/lib/banDuration";
 import { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
 
 const USERS_PER_PAGE = 25;
@@ -164,7 +165,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     });
   };
 
-  const confirmBanToggle = (reason: string) => {
+  const confirmBanToggle = (reason: string, durationDays: BanDurationDays | null) => {
     if (!banModal) return;
     const isBanning = !banModal.isBanned;
     if (isBanning && !reason.trim()) {
@@ -173,7 +174,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     }
     startTransition(async () => {
       try {
-        const res = await toggleBanUser(banModal.userId, isBanning, reason);
+        const res = await toggleBanUser(banModal.userId, isBanning, reason, durationDays);
         if (res.success) {
           toast.success(isBanning ? "Utilisateur banni" : "Utilisateur débanni");
           setBanModal(null);
