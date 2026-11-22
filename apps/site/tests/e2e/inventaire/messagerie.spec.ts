@@ -27,6 +27,9 @@ import { loginAs, withTestDb } from "../fixtures";
  * mélange deux requêtes (« bind message supplies … parameters ») : on réessaie alors, 10 fois au plus (withTestDb ne
  * réessaie que l'erreur « Server has closed the connection »).
  */
+/** Attente d'une valeur lue dans la base : la petite base locale peut mettre plusieurs secondes à répondre. */
+const expectPoll = <T>(read: () => Promise<T>) => expect.poll(read, { timeout: 30_000 });
+
 async function db<T>(run: Parameters<typeof withTestDb<T>>[0]): Promise<T> {
   for (let attempt = 1; ; attempt++) {
     try {
@@ -49,6 +52,10 @@ const STRANGER = { id: "e2e_msg_stranger", name: "Inv Msg Inconnu" };
 const DUO = { id: "e2e_msg_duo" };
 const GROUP = { id: "e2e_msg_group", name: "Inv Msg Groupe" };
 const LEAVE = { id: "e2e_msg_leave", name: "Inv Msg À quitter" };
+/** Conversation signalée puis ouverte à un modérateur (carte 223) : à part, car elle devient un groupe. */
+const REPORTED = { id: "e2e_msg_reported", text: "Inv Msg propos à signaler" };
+/** Modérateur au nom unique, pour le choisir dans la liste des modérateurs à inviter (carte 223). */
+const MODO = { id: "e2e_msg_modo", name: "Inv Msg Modo" };
 
 const MESSAGES = 31;
 const messageText = (n: number) => `Inv Msg n°${String(n).padStart(2, "0")}`;
@@ -58,13 +65,16 @@ const fillerId = (n: number) => `e2e_msg_m${String(n).padStart(2, "0")}`;
 const fillerName = (n: number) => `Inv Msg Membre ${String(n).padStart(2, "0")}`;
 
 const ALL_USER_IDS = [
-  ME.id, OTHER.id, THIRD.id, NEWBIE.id, STARTER.id, STRANGER.id,
+  ME.id, OTHER.id, THIRD.id, NEWBIE.id, STARTER.id, STRANGER.id, MODO.id,
   ...Array.from({ length: FILLERS }, (_, i) => fillerId(i + 1)),
 ];
 
 async function cleanUp() {
   await db(async (prisma) => {
     // Les messages et les participants sont supprimés avec leur conversation (suppression en cascade)
+    // Signalements des membres du test, sinon leur suppression est refusée (carte 223)
+    await prisma.moderationReport.deleteMany({ where: { reporterId: { in: ALL_USER_IDS } } });
+    await prisma.moderationLog.deleteMany({ where: { moderatorId: { in: ALL_USER_IDS } } });
     await prisma.conversation.deleteMany({ where: { participants: { some: { userId: { in: ALL_USER_IDS } } } } });
     await prisma.privateMessage.deleteMany({ where: { authorId: { in: ALL_USER_IDS } } });
     await prisma.user.deleteMany({ where: { id: { in: ALL_USER_IDS } } });
@@ -359,5 +369,79 @@ test.describe("Inventaire : messagerie", () => {
     await expect(page).toHaveURL(/\/messagerie\?id=/);
     await expect(content(page).getByRole("heading", { name: "Inv Msg Sujet neuf" })).toBeVisible();
     await expect.poll(() => db((prisma) => prisma.conversation.count({ where: { name: "Inv Msg Sujet neuf", isGroup: true, participants: { some: { userId: THIRD.id } } } }))).toBe(1);
+  });
+
+  test("signaler une conversation : la modération ne la lit pas, sauf si un participant l'invite (carte 223)", async ({ page }) => {
+    await db(async (prisma) => {
+      await prisma.moderationReport.deleteMany({ where: { targetId: REPORTED.id } });
+      await prisma.conversation.deleteMany({ where: { id: REPORTED.id } });
+      await prisma.conversation.create({
+        data: { id: REPORTED.id, isGroup: false, participants: { create: [{ userId: ME.id }, { userId: THIRD.id }] } },
+      });
+      await prisma.privateMessage.create({ data: { conversationId: REPORTED.id, authorId: THIRD.id, content: REPORTED.text } });
+      await prisma.user.upsert({ where: { id: MODO.id }, update: {}, create: { id: MODO.id, name: MODO.name, email: "invmsg-modo@e2e.test", role: "MODERATOR", hasFinishedOnboarding: true } });
+      await prisma.notification.deleteMany({ where: { userId: { in: [ME.id, MODO.id] }, type: { in: ["REPORT_HANDLED", "MODERATOR_INVITED"] } } });
+    });
+
+    // Le membre signale la conversation : le signalement ne contient aucun message
+    await loginAs(page, ME.id);
+    await page.goto(`/messagerie?id=${REPORTED.id}`, { waitUntil: "networkidle" });
+    await conversationAction(page, /^Signaler la conversation$/);
+    const report = page.getByRole("dialog", { name: "Signaler la conversation" });
+    await expect(report.getByText(/ne lira pas les messages/)).toBeVisible();
+    await report.getByRole("button", { name: "Harcèlement / Insultes" }).click();
+    await report.getByRole("button", { name: "Envoyer le signalement" }).click();
+    await expect(report).toBeHidden();
+    // La fenêtre d'invitation s'ouvre aussitôt ; le membre la ferme sans inviter personne
+    const afterReport = page.getByRole("dialog", { name: "Inviter un modérateur" });
+    await expect(afterReport.getByText(/^Signalement envoyé\./)).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(afterReport).toBeHidden();
+    await expectPoll(() => db((prisma) => prisma.moderationReport.count({ where: { targetId: REPORTED.id, targetType: "CONVERSATION", reporterId: ME.id } }))).toBe(1);
+
+    // Le modérateur voit qui est dans la conversation, jamais ce qui s'y dit, et ne peut pas l'ouvrir
+    await page.context().clearCookies();
+    await loginAs(page, MODO.id);
+    await page.goto("/moderation?tab=reports_conversation", { waitUntil: "networkidle" });
+    const main = content(page);
+    await expect(main.getByText(/Participants :/).first()).toBeVisible();
+    await expect(main.getByText(/ne lit pas les conversations privées/)).toBeVisible();
+    await expect(page.getByText(REPORTED.text)).toHaveCount(0);
+    await page.goto(`/messagerie?id=${REPORTED.id}`, { waitUntil: "networkidle" });
+    await expect(page.getByText(REPORTED.text)).toHaveCount(0);
+
+    // Fermer le signalement prévient celui qui l'a envoyé, sans dire la décision
+    await page.goto("/moderation?tab=reports_conversation", { waitUntil: "networkidle" });
+    await content(page).getByRole("button", { name: "Marquer comme traité" }).first().click();
+    await page.getByRole("dialog").getByRole("button", { name: "Confirmer" }).click();
+    await expectPoll(() => db((prisma) => prisma.notification.count({ where: { userId: ME.id, type: "REPORT_HANDLED" } }))).toBe(1);
+
+    // Le membre invite un modérateur : celui-ci lit alors toute la conversation
+    await page.context().clearCookies();
+    await loginAs(page, ME.id);
+    await page.goto("/notifications", { waitUntil: "networkidle" });
+    await expect(page.getByText(/La modération a traité ton signalement d'une conversation privée/)).toBeVisible();
+    await page.goto(`/messagerie?id=${REPORTED.id}`, { waitUntil: "networkidle" });
+    await conversationAction(page, /^Inviter un modérateur$/);
+    const invite = page.getByRole("dialog", { name: "Inviter un modérateur" });
+    await invite.getByRole("button", { name: `Inviter ${MODO.name}`, exact: true }).click();
+    // L'invitation ne se reprend pas : elle demande une confirmation
+    await expect(invite.getByText(/lira toute la conversation, messages passés compris\. Tu ne pourras pas/)).toBeVisible();
+    await invite.getByRole("button", { name: "Confirmer l'invitation" }).click();
+    await expect(invite).toBeHidden();
+    await expectPoll(() => db(async (prisma) => (await prisma.conversation.findUnique({ where: { id: REPORTED.id }, select: { isGroup: true } }))?.isGroup)).toBe(true);
+
+    await page.context().clearCookies();
+    await loginAs(page, MODO.id);
+    await page.goto("/notifications", { waitUntil: "networkidle" });
+    // La petite base locale peut répondre en retard : on recharge la liste jusqu'à voir l'invitation
+    const invitation = page.getByRole("link", { name: /t'a invité à lire sa conversation privée/ });
+    await expect(async () => {
+      await page.reload({ waitUntil: "networkidle" });
+      await expect(invitation).toBeVisible({ timeout: 5_000 });
+    }).toPass({ timeout: 30_000 });
+    await invitation.click();
+    await page.waitForURL(new RegExp(`/messagerie\\?id=${REPORTED.id}$`));
+    await expect(page.getByRole("log", { name: "Messages" }).getByText(REPORTED.text)).toBeVisible();
   });
 });

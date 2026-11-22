@@ -7,7 +7,7 @@
  */
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { AlertTriangle, AtSign, Bell, Mail, MessageSquareReply, Trophy } from "lucide-react";
+import { AlertTriangle, AtSign, Bell, CheckCircle2, Mail, MessageSquareReply, ShieldCheck, Trophy } from "lucide-react";
 import { Avatar, Card, PageNav, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
@@ -26,6 +26,8 @@ const TYPE_ICON = {
   TOURNAMENT_PROMOTED: Trophy,
   TOURNAMENT_FORMAT_CHANGED: Trophy,
   USER_WARNED: AlertTriangle,
+  REPORT_HANDLED: CheckCircle2,
+  MODERATOR_INVITED: ShieldCheck,
 } as const;
 
 /** Phrase d'une notification : qui a fait quoi, et où. Le titre du sujet est du BBCode en ligne, rendu en HTML sûr. */
@@ -48,6 +50,15 @@ function NotificationText({ notification }: { notification: NotificationRow }) {
           inscris-toi de nouveau si tu le souhaites
         </>
       );
+    case "REPORT_HANDLED":
+      return (
+        <>
+          La modération a traité ton signalement
+          {topicTitle ? <> sur « {topicTitle} »</> : notification.conversation ? " d'une conversation privée" : ""}
+        </>
+      );
+    case "MODERATOR_INVITED":
+      return <>{actor} t&apos;a invité à lire sa conversation privée</>;
     case "USER_WARNED":
       return <>La modération t&apos;a adressé un avertissement : lis-le sur ton profil</>;
     default: {
@@ -93,7 +104,7 @@ export default async function NotificationsPage({ searchParams }: { searchParams
                       )}
                     >
                       <span className="relative mt-0.5 shrink-0">
-                        <Avatar name={notification.actor?.name ?? (notification.type === "USER_WARNED" ? "Modération" : undefined)} src={notification.actor?.image} size={40} aria-hidden="true" />
+                        <Avatar name={notification.actor?.name ?? (notification.type === "USER_WARNED" || notification.type === "REPORT_HANDLED" ? "Modération" : undefined)} src={notification.actor?.image} size={40} aria-hidden="true" />
                         <span className="absolute -right-1 -bottom-1 flex size-5 items-center justify-center rounded-full border border-bb-border bg-bb-surface text-bb-accent-text">
                           <Icon size={12} aria-hidden="true" />
                         </span>

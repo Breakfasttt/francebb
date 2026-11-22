@@ -14,7 +14,7 @@ import { toggleBanUser } from "@/app/membres/actions";
 import { stripBBCode } from "@/lib/bbcode";
 import { forumPostHrefFor } from "@/lib/forumPostLink";
 import { getForumAccess } from "@/lib/forumAccess";
-import { canSeeReportTarget } from "@/lib/moderationReports";
+import { canSeeReportTarget, closeReports } from "@/lib/moderationReports";
 import { reportInputRefusal, type ReportTargetType } from "@/lib/reportRules";
 import { formatRoleChangeDetails, isLogGroup, LOG_GROUP_ACTIONS } from "@/lib/moderationLogFormat";
 import { getRoleLabelMap } from "@/lib/roleLabels";
@@ -177,7 +177,7 @@ function excerptOf(content: string | null | undefined): string | null {
  * Charge les contenus visés par les signalements d'une page de la liste (au plus 10), selon leur type.
  * Un contenu introuvable est renvoyé comme `gone` : il a été effacé depuis le signalement.
  */
-async function loadReportTargets(targetType: string, ids: string[]): Promise<Map<string, ReportTarget>> {
+async function loadReportTargets(targetType: string, ids: string[], viewerId: string): Promise<Map<string, ReportTarget>> {
   const targets = new Map<string, ReportTarget>();
   if (ids.length === 0) return targets;
 
@@ -240,6 +240,26 @@ async function loadReportTargets(targetType: string, ids: string[]): Promise<Map
         url: `/articles/${article.id}`,
         gone: false,
         hidden: article.isModerated,
+      });
+    }
+  } else if (targetType === "CONVERSATION") {
+    // Carte 223 : la modération ne lit jamais une conversation privée. La fiche ne montre que ses participants ; pour
+    // lire les messages, un participant doit inviter un modérateur dans la conversation.
+    const conversations = await prisma.conversation.findMany({
+      where: { id: { in: ids } },
+      select: { id: true, name: true, participants: { select: { userId: true, deletedAt: true, user: { select: { name: true } } } } },
+    });
+    for (const conversation of conversations) {
+      const names = conversation.participants.map((participant) => participant.user.name).filter(Boolean);
+      // Lien seulement pour un modérateur qu'un participant a invité dans la conversation
+      const invited = conversation.participants.some((participant) => participant.userId === viewerId && !participant.deletedAt);
+      targets.set(conversation.id, {
+        title: conversation.name ? `« ${conversation.name} »` : null,
+        excerpt: null,
+        authorName: names.join(", ") || null,
+        url: invited ? `/messagerie?id=${conversation.id}` : null,
+        gone: false,
+        hidden: false,
       });
     }
   } else if (targetType === "LIGUE") {
@@ -310,7 +330,7 @@ export async function getPendingReportsByType(targetType: string, page = 1, page
   const allGroups = Object.values(grouped).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   const total = allGroups.length;
   const pageGroups = allGroups.slice((page - 1) * pageSize, page * pageSize);
-  const targets = await loadReportTargets(targetType, pageGroups.map((group) => group.targetId));
+  const targets = await loadReportTargets(targetType, pageGroups.map((group) => group.targetId), session!.user.id);
   const groups = pageGroups.map((group) => ({ ...group, target: targets.get(group.targetId) ?? GONE_TARGET }));
 
   return { groups, total };
@@ -327,18 +347,8 @@ export async function resolveReportsAction(targetId: string, targetType: string,
     if (!session?.user?.id) return { success: false, error: "Non authentifié" };
     const status = action === "RESOLVE" ? "RESOLVED" : "IGNORED";
 
-    await prisma.moderationReport.updateMany({
-      where: { 
-        targetId, 
-        targetType,
-        status: "PENDING"
-      },
-      data: {
-        status,
-        resolvedById: session.user.id,
-        resolvedAt: new Date()
-      }
-    });
+    // Les membres qui avaient signalé sont prévenus (carte 223)
+    await closeReports({ targetId, targetType }, status, session.user.id);
 
     await logModerationAction(
       session.user.id,
@@ -491,7 +501,8 @@ export async function getModerationSummaryCounts() {
       users,
       articles,
       ligues,
-      resources
+      resources,
+      conversations
     ] = await Promise.all([
       prisma.moderationReport.count({ where: { status: "PENDING", targetType: "POST" } }),
       prisma.moderationReport.count({ where: { status: "PENDING", targetType: "TOPIC" } }),
@@ -499,6 +510,7 @@ export async function getModerationSummaryCounts() {
       prisma.moderationReport.count({ where: { status: "PENDING", targetType: "ARTICLE" } }),
       prisma.moderationReport.count({ where: { status: "PENDING", targetType: "LIGUE" } }),
       prisma.resource.count({ where: { status: "PENDING" } }),
+      prisma.moderationReport.count({ where: { status: "PENDING", targetType: "CONVERSATION" } }),
     ]);
 
     return {
@@ -507,6 +519,7 @@ export async function getModerationSummaryCounts() {
       reports_user: users,
       reports_article: articles,
       reports_ligue: ligues,
+      reports_conversation: conversations,
       resources_validation: resources
     };
   } catch (error) {

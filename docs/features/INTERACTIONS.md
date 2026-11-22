@@ -78,6 +78,9 @@ Personne, pas même la modération, ne lit les messages privés des autres. Ils 
 | Voir et traiter les signalements, le journal | non | non | non | oui | oui | `isModerator` |
 | Bannir / débannir | non | non | non | < soi, jamais soi-même ni un compte technique, tracé ; durée obligatoire (1, 7, 30 jours ou définitif) ; bannir ferme ses signalements | idem (S : tous sauf soi et comptes techniques) | `canBanMember` dans `toggleBanUser` (cartes 221, 222) |
 | Avertir un membre | non | non | non | < soi, jamais soi-même ni un compte technique, tracé, motif obligatoire | idem | `canBanMember` dans `warnUser` (carte 222) |
+| Signaler une conversation privée | non | participant présent ; la modération n'en voit que les participants | non | idem | idem | `canSeeReportTarget` (carte 223) |
+| Inviter un modérateur dans une conversation | non | participant présent | non | idem | idem | `inviteModerator` (carte 223) |
+| Lire une conversation privée | non | participant | non | seulement s'il y est invité, jamais par l'écran de modération | idem | `getConversationMessages` (carte 223) |
 | Lire les avertissements d'un membre | non | les siens, sans le nom du modérateur | non | tous, avec leur auteur | idem | `getMemberWarnings` (carte 222) |
 | Changer un rôle | non | non | non | < soi, vers un rôle < soi, tracé | idem (S : tous sauf soi) | `roleChangeRefusal` |
 | Supprimer un compte | non | non | non | **non** | < soi, tracé (S : tous sauf soi et comptes techniques) | `canDeleteMember` |

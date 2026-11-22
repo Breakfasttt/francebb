@@ -40,7 +40,7 @@ import { moderatePost } from "@/app/forum/actions";
 import { getPendingReportsByType, resolveReportsAction } from "../actions";
 
 interface ReportsTabProps {
-  type: "POST" | "TOPIC" | "USER" | "ARTICLE" | "LIGUE" | "MESSAGE";
+  type: "POST" | "TOPIC" | "USER" | "ARTICLE" | "LIGUE" | "CONVERSATION";
   title: string;
   onActionSuccess?: () => void;
 }
@@ -53,7 +53,7 @@ const ICONS = {
   USER: Users,
   ARTICLE: BookOpen,
   LIGUE: Trophy,
-  MESSAGE: MessageSquare,
+  CONVERSATION: MessageSquare,
 } as const;
 
 /** Nom du type de contenu, affiché en étiquette sur la fiche. */
@@ -63,7 +63,7 @@ const TYPE_LABELS = {
   USER: "Coach",
   ARTICLE: "Article",
   LIGUE: "Ligue",
-  MESSAGE: "Message privé",
+  CONVERSATION: "Conversation privée",
 } as const;
 
 /** Mots qui présentent l'auteur du contenu, selon son type. */
@@ -73,7 +73,7 @@ const AUTHOR_WORDS = {
   USER: "",
   ARTICLE: "Article de",
   LIGUE: "Ligue créée par",
-  MESSAGE: "Message de",
+  CONVERSATION: "Participants :",
 } as const;
 
 /** Un groupe de signalements (même contenu visé), tel que le renvoie `getPendingReportsByType`. */
@@ -199,6 +199,12 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
         <h2 className="flex-1 text-lg font-bold text-bb-text">{title}</h2>
         <Badge variant="neutral">{total} en attente</Badge>
       </div>
+      {type === "CONVERSATION" && (
+        <p className="m-0 text-[0.95rem] text-bb-text-muted">
+          La modération ne lit pas les conversations privées. Elle les lit seulement si un participant t&apos;y invite :
+          la conversation s&apos;ouvre alors depuis sa fiche.
+        </p>
+      )}
 
       {loading && reportGroups.length === 0 ? (
         <div className="flex flex-col gap-3">
@@ -219,7 +225,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
             const others = group.count - 1;
             const canHide = type === "POST" && !target.hidden;
             const canBan = type === "USER" && !target.hidden;
-            const viewLabel = type === "POST" ? "Voir dans le sujet" : type === "USER" ? "Voir le profil" : "Voir";
+            const viewLabel = type === "POST" ? "Voir dans le sujet" : type === "USER" ? "Voir le profil" : type === "CONVERSATION" ? "Ouvrir la conversation" : "Voir";
             return (
               <Card key={group.targetId} className="overflow-hidden">
                 <article aria-label={`Signalement : ${group.firstReason}`}>

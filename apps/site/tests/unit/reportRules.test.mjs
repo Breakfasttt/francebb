@@ -13,10 +13,14 @@ test("un signalement complet est accepté", () => {
 });
 
 test("un type inconnu, une raison vide ou des précisions trop longues sont refusés", () => {
-  assert.notEqual(reportInputRefusal({ ...valid, targetType: "CONVERSATION" }), null);
+  assert.notEqual(reportInputRefusal({ ...valid, targetType: "MESSAGE" }), null);
   assert.notEqual(reportInputRefusal({ ...valid, reason: "   " }), null);
   assert.notEqual(reportInputRefusal({ ...valid, details: "x".repeat(REPORT_DETAILS_MAX + 1) }), null);
   assert.notEqual(reportInputRefusal({ ...valid, targetId: 42 }), null);
+});
+
+test("une conversation privée peut être signalée (carte 223)", () => {
+  assert.equal(reportInputRefusal({ ...valid, targetType: "CONVERSATION", targetId: "conversation-1" }), null);
 });
 
 test("on ne se signale pas soi-même", () => {

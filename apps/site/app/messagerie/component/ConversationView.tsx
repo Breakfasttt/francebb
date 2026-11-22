@@ -19,12 +19,14 @@
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { ArrowLeft, LogOut, Pencil, Send, UserPlus, Users } from "lucide-react";
+import { AlertTriangle, ArrowLeft, LogOut, Pencil, Send, ShieldCheck, UserPlus, Users } from "lucide-react";
 import { ActionMenu, Avatar, Button, ConfirmDialog, DESKTOP_QUERY, EmptyState, Sheet, SheetContent, Skeleton, toast, useMediaQuery } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
 import { getConversationMessages, leaveConversation, sendMessage, type ReplyBlock } from "../actions";
 import ChatBubble from "./ChatBubble";
 import InviteParticipantModal from "./InviteParticipantModal";
+import InviteModeratorModal from "./InviteModeratorModal";
+import ReportModal from "@/common/components/ReportModal/ReportModal";
 import RenameConversationModal from "./RenameConversationModal";
 import { conversationTitle } from "./conversationText";
 import { MESSAGE_MAX_LENGTH } from "@/lib/messageRules";
@@ -94,6 +96,11 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
   const [leaving, setLeaving] = useState(false);
   const [inviteOpen, setInviteOpen] = useState(false);
   const [renameOpen, setRenameOpen] = useState(false);
+  // Carte 223 : signaler la conversation, inviter un modérateur pour qu'il la lise
+  const [reportOpen, setReportOpen] = useState(false);
+  const [moderatorOpen, setModeratorOpen] = useState(false);
+  // Fenêtre d'invitation ouverte juste après un signalement : elle le rappelle en tête
+  const [justReported, setJustReported] = useState(false);
   const [participantsOpen, setParticipantsOpen] = useState(false);
   const [unavailable, setUnavailable] = useState<Unavailable | null>(null);
   const [retry, setRetry] = useState(0);
@@ -277,6 +284,8 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
               items={[
                 { label: "Ajouter des participants", icon: <UserPlus size={18} aria-hidden="true" />, onSelect: () => setInviteOpen(true), hidden: !isGroup },
                 { label: "Renommer le groupe", icon: <Pencil size={18} aria-hidden="true" />, onSelect: () => setRenameOpen(true), hidden: !isGroup },
+                { label: "Inviter un modérateur", icon: <ShieldCheck size={18} aria-hidden="true" />, onSelect: () => setModeratorOpen(true) },
+                { label: "Signaler la conversation", icon: <AlertTriangle size={18} aria-hidden="true" />, onSelect: () => setReportOpen(true) },
                 { label: "Quitter la conversation", icon: <LogOut size={18} aria-hidden="true" />, onSelect: () => setLeaveOpen(true), danger: true },
               ]}
             />
@@ -397,6 +406,39 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
             onChange?.();
           }}
           existingUserIds={participants.map((p) => p.user.id)}
+        />
+      )}
+
+      {moderatorOpen && conversation && (
+        <InviteModeratorModal
+          conversationId={conversationId}
+          intro={justReported ? "Signalement envoyé. Pour que la modération lise les messages, invite un modérateur." : undefined}
+          onClose={() => {
+            setModeratorOpen(false);
+            setJustReported(false);
+          }}
+          onSuccess={() => {
+            loadMessages();
+            onChange?.();
+          }}
+        />
+      )}
+
+      {conversation && (
+        <ReportModal
+          isOpen={reportOpen}
+          onClose={() => setReportOpen(false)}
+          targetId={conversationId}
+          targetType="CONVERSATION"
+          title="Signaler la conversation"
+          itemTitle={`la conversation « ${title} »`}
+          note="La modération verra qui participe à cette conversation, mais ne lira pas les messages."
+          onReported={() => {
+            // Le signalement seul ne montre rien à la modération : on propose aussitôt d'inviter un modérateur
+            setReportOpen(false);
+            setJustReported(true);
+            setModeratorOpen(true);
+          }}
         />
       )}
 

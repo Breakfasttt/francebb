@@ -4,12 +4,12 @@ import { getActiveSession } from "@/lib/authGuard";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
-import { markConversationNotificationsRead, notifyPrivateMessage } from "@/lib/notifications";
+import { markConversationNotificationsRead, notifyPrivateMessage, NOTIFICATION_TYPE } from "@/lib/notifications";
 import { encrypt, decrypt } from "@/lib/crypto";
 import { countUnreadByConversation } from "@/lib/unreadMessages";
 import type { ActionResult } from "@/lib/actionResult";
 import { groupNameError, messageContentError, participantsError } from "@/lib/messageRules";
-import { SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
+import { ROLE_POWER, SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
 
 const CONVERSATION_LIMIT = 50;
 
@@ -557,3 +557,74 @@ export async function renameConversation(conversationId: string, name: string): 
     return { success: true };
 }
 
+
+/**
+ * Modérateurs qu'un participant peut inviter dans sa conversation (carte 223) : la modération ne lit jamais une
+ * conversation privée, sauf si un participant l'y invite. Rôles de pouvoir modérateur ou plus (table RoleConfig, rôles
+ * personnalisés compris), non bannis, hors comptes techniques et hors participants déjà présents.
+ */
+export async function getModeratorsToInvite(conversationId: string) {
+    const session = await getActiveSession();
+    const myId = session?.user?.id;
+    if (!myId || typeof conversationId !== "string") return [];
+    const me = await prisma.conversationParticipant.findUnique({
+        where: { userId_conversationId: { userId: myId, conversationId } },
+        select: { deletedAt: true }
+    });
+    if (!me || me.deletedAt) return [];
+
+    const roles = await prisma.roleConfig.findMany({ where: { power: { gte: ROLE_POWER.MODERATOR } }, select: { name: true } });
+    const present = await prisma.conversationParticipant.findMany({ where: { conversationId, deletedAt: null }, select: { userId: true } });
+    return prisma.user.findMany({
+        where: {
+            role: { in: roles.map((role) => role.name) },
+            isBanned: false,
+            id: { notIn: [...SYSTEM_ACCOUNT_IDS, ...present.map((p) => p.userId)] },
+        },
+        orderBy: { name: "asc" },
+        take: 30,
+        select: { id: true, name: true, image: true, role: true }
+    });
+}
+
+/**
+ * Invite un modérateur dans une conversation (carte 223), à la demande d'un de ses participants : le modérateur lit
+ * alors toute la conversation, comme tout membre invité. Une conversation à deux devient un groupe, pour que l'autre
+ * membre voie qu'un modérateur l'a rejointe. Le modérateur reçoit une notification qui mène à la conversation.
+ */
+export async function inviteModerator(conversationId: string, moderatorId: string): Promise<ActionResult> {
+    const session = await getActiveSession();
+    const myId = session?.user?.id;
+    if (!myId) return { success: false, error: "Non autorisé" };
+    if (typeof conversationId !== "string" || typeof moderatorId !== "string") return { success: false, error: "Accès refusé" };
+
+    const me = await prisma.conversationParticipant.findUnique({
+        where: { userId_conversationId: { userId: myId, conversationId } },
+        select: { deletedAt: true }
+    });
+    if (!me || me.deletedAt) return { success: false, error: "Accès refusé" };
+
+    const candidates = await getModeratorsToInvite(conversationId);
+    if (!candidates.some((candidate) => candidate.id === moderatorId)) {
+        return { success: false, error: "Ce membre ne fait pas partie de la modération, ou il est déjà dans la conversation." };
+    }
+    const presentCount = await prisma.conversationParticipant.count({ where: { conversationId, deletedAt: null } });
+    const limitError = participantsError([moderatorId], presentCount + 1);
+    if (limitError) return { success: false, error: limitError };
+
+    const now = new Date();
+    await prisma.$transaction([
+        prisma.conversationParticipant.upsert({
+            where: { userId_conversationId: { userId: moderatorId, conversationId } },
+            update: { deletedAt: null, lastReadAt: now },
+            create: { userId: moderatorId, conversationId, isAdmin: false, lastReadAt: now }
+        }),
+        prisma.conversation.update({ where: { id: conversationId }, data: { isGroup: true } }),
+        prisma.notification.create({
+            data: { userId: moderatorId, type: NOTIFICATION_TYPE.MODERATOR_INVITED, conversationId, actorId: myId }
+        }),
+    ]);
+
+    revalidatePath("/messagerie");
+    return { success: true };
+}

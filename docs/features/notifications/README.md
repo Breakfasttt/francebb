@@ -34,6 +34,8 @@ Depuis la carte 186, deux notifications de tournoi s'ajoutent, sans e-mail, cré
 
 Depuis la carte 222, un avertissement de la modération crée une notification `USER_WARNED`, sans auteur (le modérateur n'est pas nommé) : « La modération t'a adressé un avertissement : lis-le sur ton profil ». Elle mène à `/profile#avertissements`.
 
+Depuis la carte 223 : « Ton signalement a été traité par la modération » (`REPORT_HANDLED`, sans auteur ni lien, pour chaque membre qui avait signalé un contenu fermé ensuite) et « X t'invite à lire une conversation privée qu'il a signalée » (`MODERATOR_INVITED`, pour le modérateur invité, qui mène à la conversation).
+
 ## Les pièges
 
 - **Qui est prévenu** : jamais l'auteur lui-même, ni un membre banni, ni un membre qui n'a pas accès au forum du sujet (rôles calculés par `accessibleRolesFor` de `lib/forumAccess.ts`), ni un membre qui a bloqué l'auteur ou que l'auteur a bloqué. Au plus 10 mentions par message : un message avec 500 mentions ne prévient que les 10 premiers.

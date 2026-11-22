@@ -38,6 +38,10 @@ export const NOTIFICATION_TYPE = {
   TOURNAMENT_FORMAT_CHANGED: "TOURNAMENT_FORMAT_CHANGED",
   /** Avertissement de la modération (carte 222) : sans auteur affiché, le motif se lit sur le profil. */
   USER_WARNED: "USER_WARNED",
+  /** Signalement fermé par la modération (carte 223) : « Ton signalement a été traité », sans dire la décision. */
+  REPORT_HANDLED: "REPORT_HANDLED",
+  /** Un participant invite un modérateur dans sa conversation privée, pour qu'il la lise (carte 223). */
+  MODERATOR_INVITED: "MODERATOR_INVITED",
 } as const;
 
 /** Forum d'un sujet, avec ce qu'il faut pour savoir qui y a accès (voir FORUM_ACCESS_SELECT de lib/forumAccess.ts). */

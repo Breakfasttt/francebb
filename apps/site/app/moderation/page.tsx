@@ -3,7 +3,7 @@
 /**
  * Page de modération `/moderation` (refonte, carte 099, ADR 0006), réservée aux modérateurs et aux rôles supérieurs.
  * L'onglet ouvert est lu dans l'adresse (`?tab=logs|reports_post|reports_topic|reports_user|reports_article|
- * reports_ligue|reports_user_banned|resources_validation`) ; sans paramètre, c'est le premier onglet qui a des cas en
+ * reports_ligue|reports_conversation|reports_user_banned|resources_validation`) ; sans paramètre, c'est le premier onglet qui a des cas en
  * attente, ou le journal s'il n'y en a aucun (carte 221) ; une valeur inconnue ouvre le journal. Le dernier onglet,
  * « Membres (page à part) », mène à l'annuaire `/membres`. Les onglets des signalements et des ressources portent une
  * pastille avec le nombre d'éléments en attente ; sur téléphone, une ligne sous les onglets rappelle les cas en
@@ -15,7 +15,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
-import { AlertTriangle, BookOpen, FileText, Layout, MessageSquare, Trophy, Users, UserX } from "lucide-react";
+import { AlertTriangle, BookOpen, FileText, Layout, MessageSquare, MessagesSquare, Trophy, Users, UserX } from "lucide-react";
 import { Skeleton } from "@bbfrance/ui";
 import StaffPageLayout from "@/common/components/StaffPageLayout/StaffPageLayout";
 import LogsTab from "./component/LogsTab";
@@ -32,13 +32,14 @@ const TABS = [
   { id: "reports_user", label: "Coachs signalés", icon: Users },
   { id: "reports_article", label: "Articles signalés", icon: BookOpen },
   { id: "reports_ligue", label: "Ligues signalées", icon: Trophy },
+  { id: "reports_conversation", label: "Conversations signalées", icon: MessagesSquare },
   { id: "reports_user_banned", label: "Coachs bannis", icon: UserX },
   { id: "resources_validation", label: "Ressources à valider", icon: Layout },
   { id: "users", label: "Membres (page à part)", icon: Users },
 ] as const;
 
 /** Onglets qui portent des cas en attente, dans l'ordre de la colonne : le premier non vide s'ouvre par défaut. */
-const PENDING_TABS = ["reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "resources_validation"] as const;
+const PENDING_TABS = ["reports_post", "reports_topic", "reports_user", "reports_article", "reports_ligue", "reports_conversation", "resources_validation"] as const;
 
 /** Libellé court d'un onglet dans le rappel des cas en attente (téléphone). */
 const SHORT_LABELS: Record<(typeof PENDING_TABS)[number], [string, string]> = {
@@ -47,6 +48,7 @@ const SHORT_LABELS: Record<(typeof PENDING_TABS)[number], [string, string]> = {
   reports_user: ["coach", "coachs"],
   reports_article: ["article", "articles"],
   reports_ligue: ["ligue", "ligues"],
+  reports_conversation: ["conversation", "conversations"],
   resources_validation: ["ressource", "ressources"],
 };
 
@@ -59,6 +61,7 @@ const REPORT_TABS = {
   reports_user: { type: "USER", title: "Signalements de coachs" },
   reports_article: { type: "ARTICLE", title: "Signalements d'articles" },
   reports_ligue: { type: "LIGUE", title: "Signalements de ligues" },
+  reports_conversation: { type: "CONVERSATION", title: "Signalements de conversations privées" },
 } as const;
 
 /**

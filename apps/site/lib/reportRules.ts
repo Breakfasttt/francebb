@@ -5,7 +5,8 @@
  */
 
 /** Ce qu'on peut signaler, et l'écran qui propose « Signaler ». */
-export const REPORT_TARGET_TYPES = ["POST", "TOPIC", "USER", "ARTICLE", "LIGUE"] as const;
+/** CONVERSATION (carte 223) : une conversation privée, signalée par un de ses participants, sans son contenu. */
+export const REPORT_TARGET_TYPES = ["POST", "TOPIC", "USER", "ARTICLE", "LIGUE", "CONVERSATION"] as const;
 export type ReportTargetType = (typeof REPORT_TARGET_TYPES)[number];
 
 export const REPORT_REASON_MAX = 100;

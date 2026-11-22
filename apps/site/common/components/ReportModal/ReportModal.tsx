@@ -18,6 +18,10 @@ interface ReportModalProps {
   targetId: string;
   targetType: string;
   itemTitle?: string;
+  /** Précision affichée sous « Tu signales » (carte 223 : ce que la modération verra d'une conversation privée). */
+  note?: string;
+  /** Titre de la fenêtre (« Signaler un contenu » par défaut). */
+  title?: string;
   /** Appelé après un envoi réussi (carte 221) : l'écran peut alors dire « Signalement envoyé » au lieu de « Signaler ». */
   onReported?: () => void;
 }
@@ -30,7 +34,7 @@ const REPORT_REASONS = [
   "Autre (préciser ci-dessous)"
 ];
 
-export default function ReportModal({ isOpen, onClose, targetId, targetType, itemTitle, onReported }: ReportModalProps) {
+export default function ReportModal({ isOpen, onClose, targetId, targetType, itemTitle, note, title = "Signaler un contenu", onReported }: ReportModalProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
@@ -66,7 +70,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
   return (
     <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <SheetContent
-        title="Signaler un contenu"
+        title={title}
         side={isDesktop ? "center" : "bottom"}
         onInteractOutside={(event) => event.preventDefault()}
       >
@@ -74,6 +78,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
           <p className="m-0 text-[0.95rem] text-bb-text-muted">
             Tu signales : <strong className="font-semibold break-words text-bb-text">{itemTitle || `${targetType} (${targetId.substring(0, 8)})`}</strong>
           </p>
+          {note && <p className="m-0 text-[0.95rem] text-bb-text">{note}</p>}
 
           <div role="group" aria-labelledby="report-reason-label" aria-describedby={reasonError ? "report-reason-error" : undefined} className="flex flex-col gap-2">
             <p id="report-reason-label" className="m-0 text-sm font-semibold text-bb-text">Raison du signalement</p>
