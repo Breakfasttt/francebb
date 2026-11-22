@@ -13,6 +13,7 @@ import { isSiteTheme } from "@/lib/themes";
 import { isHubAuthMode } from "@/auth";
 import { hubOrigin, updateHubProfile } from "@/lib/hub/hubAccount";
 import { getRoleLabelMap } from "@/lib/roleLabels";
+import { isModerator } from "@/lib/roles";
 
 export async function updateProfile(formData: FormData): Promise<ActionResult> {
   const session = await getActiveSession();
@@ -117,6 +118,31 @@ export async function getBlockedUsersIds() {
   });
 
   return blocks.map(b => b.blockedId);
+}
+
+/**
+ * Vrai si ce membre a bloqué le membre connecté (carte 221) : sa fiche affiche alors « Message privé » grisé, avec
+ * la raison, au lieu d'un refus seulement à l'envoi. Ne renvoie qu'un oui ou non, jamais la date du blocage.
+ */
+export async function hasBlockedMe(userId: string): Promise<boolean> {
+  const session = await getActiveSession();
+  if (!session?.user?.id || typeof userId !== "string") return false;
+  const block = await prisma.block.findUnique({
+    where: { blockerId_blockedId: { blockerId: userId, blockedId: session.user.id } },
+    select: { blockerId: true }
+  });
+  return !!block;
+}
+
+/**
+ * Motif du bannissement d'un membre, pour la fiche `/spy/[id]` (carte 221) : réservé aux modérateurs, null pour
+ * tout autre visiteur ou si le membre n'est pas banni.
+ */
+export async function getBanReason(userId: string): Promise<string | null> {
+  const session = await getActiveSession();
+  if (!session?.user?.id || !isModerator(session.user.role) || typeof userId !== "string") return null;
+  const user = await prisma.user.findUnique({ where: { id: userId }, select: { isBanned: true, banReason: true } });
+  return user?.isBanned ? user.banReason || "Motif non renseigné." : null;
 }
 
 export async function getBlockedUsers() {

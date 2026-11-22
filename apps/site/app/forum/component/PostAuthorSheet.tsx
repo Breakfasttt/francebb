@@ -5,7 +5,7 @@
  * dans l'en-tête du message : un panneau qui monte du bas sur téléphone, une fenêtre centrée sur ordinateur.
  * Elle reprend ce qu'affichait la colonne de l'auteur avant la refonte : avatar avec son cadre de rang, rôle,
  * statistiques renseignées (numéro NAF avec lien vers le site de la NAF, équipe, région, ligues et ligue saisie à la
- * main), puis, pour un membre connecté, les boutons « Profil » et « MP » (pas de « MP » vers soi-même).
+ * main), puis, pour un membre connecté, les boutons « Profil » et « Message privé » (pas de message privé à soi-même).
  */
 import Link from "next/link";
 import { Mail, MapPin, Shield, Trophy, User, Users } from "lucide-react";
@@ -139,7 +139,7 @@ export default function PostAuthorSheet({ open, onOpenChange, author, roleLabel,
             {author.id !== currentUserId && (
               <Button asChild variant="primary" size="tap" className="flex-1">
                 <Link href={`/messagerie?userId=${author.id}`}>
-                  <Mail size={18} aria-hidden="true" /> MP
+                  <Mail size={18} aria-hidden="true" /> Message privé
                 </Link>
               </Button>
             )}

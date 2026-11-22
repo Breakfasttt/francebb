@@ -8,13 +8,15 @@
  * L'onglet ouvert est lu dans l'adresse (`?tab=followed|activity|articles|ressources|blocked|edit|settings`) : chaque
  * onglet est un lien, qu'on peut partager ou rouvrir. Sans paramètre (ou avec une valeur inconnue), ce sont les
  * sujets suivis.
+ * Carte 221 : sur téléphone, « Modifier mon profil » et « Réglages du compte » sont aussi deux boutons juste sous la
+ * carte du membre ; dans la rangée d'onglets, ils étaient les deux derniers, hors de l'écran.
  */
 import { useSession } from "next-auth/react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ComponentProps } from "react";
 import Link from "next/link";
 import { UserX } from "lucide-react";
-import { Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
+import { Button, Card, EmptyState, LinkTabs, Skeleton, cn } from "@bbfrance/ui";
 
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
 import { PanelLink } from "@/common/components/SiteLayout/SiteLayout";
@@ -35,9 +37,9 @@ const TABS = [
   { id: "activity", label: "Activité du forum" },
   { id: "articles", label: "Mes articles" },
   { id: "ressources", label: "Mes ressources" },
-  { id: "blocked", label: "Utilisateurs bloqués" },
-  { id: "edit", label: "Éditer mon profil" },
-  { id: "settings", label: "Gérer mon compte" },
+  { id: "blocked", label: "Membres bloqués" },
+  { id: "edit", label: "Modifier mon profil" },
+  { id: "settings", label: "Réglages du compte" },
 ] as const;
 
 type ProfileTab = (typeof TABS)[number]["id"];
@@ -135,6 +137,19 @@ export default function ProfilePage() {
         {/* Panneau gauche (DESIGN.md) : la fiche du membre, puis les rubriques du compte en navigation verticale */}
         <div className="flex flex-col gap-5 lg:sticky lg:top-20">
           <ProfileSidebar user={user} postCount={stats.postCount} isOwnProfile roleLabels={roleLabels} />
+          {/* Téléphone : accès direct au profil et aux réglages, sans faire défiler les onglets */}
+          <div className="grid grid-cols-2 gap-2 lg:hidden">
+            <Button asChild variant="secondary" size="tap" className={cn("px-2", activeTab === "edit" && "border-bb-accent-text")}>
+              <Link href="/profile?tab=edit" scroll={false} aria-current={activeTab === "edit" ? "page" : undefined}>
+                Modifier mon profil
+              </Link>
+            </Button>
+            <Button asChild variant="secondary" size="tap" className={cn("px-2", activeTab === "settings" && "border-bb-accent-text")}>
+              <Link href="/profile?tab=settings" scroll={false} aria-current={activeTab === "settings" ? "page" : undefined}>
+                Réglages du compte
+              </Link>
+            </Button>
+          </div>
           <nav aria-label="Rubriques du compte" className="hidden flex-col lg:flex">
             {tabs.map((tab) => (
               <PanelLink key={tab.href} href={tab.href} active={tab.active} linkComponent={TabLink}>

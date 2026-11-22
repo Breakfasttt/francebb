@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Fenêtre « Modérer le message » ou « Modérer l'article » (forum et articles), refaite à la carte 088 : le modérateur écrit la raison
+ * Fenêtre « Masquer le message » ou « Masquer l'article » (forum et articles), refaite à la carte 088 : le modérateur écrit la raison
  * (obligatoire) puis confirme. Fenêtre centrée sur ordinateur, panneau qui monte du bas sur téléphone (composant
  * Sheet de @bbfrance/ui), au-dessus de la barre de navigation du bas. L'action elle-même est fournie par le parent
  * (`onConfirm`). Le type de contenu modéré (`contentType` : message, article ou ligue, carte 140) choisit les mots du
@@ -44,7 +44,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
       await onConfirm(reason);
       onClose();
     } catch {
-      toast.error("Erreur lors de la modération.");
+      toast.error("Le masquage a échoué. Réessaie dans un instant.");
     } finally {
       setIsSubmitting(false);
     }
@@ -53,17 +53,17 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
   return (
     <Sheet open={isOpen} onOpenChange={(open) => { if (!open) onClose(); }}>
       <SheetContent
-        title={`Modérer ${words.the} de ${authorName}`}
+        title={`Masquer ${words.the} de ${authorName}`}
         side={isDesktop ? "center" : "bottom"}
         description={`Le contenu ${words.ofThe} sera masqué pour les membres, mais restera visible pour toi et pour son auteur.`}
       >
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 pt-1 pb-2">
-          <Field label="Raison de la modération" htmlFor="moderation-reason">
+          <Field label="Raison du masquage" htmlFor="moderation-reason">
             <Textarea
               id="moderation-reason"
               value={reason}
               onChange={(e) => setReason(e.target.value)}
-              placeholder="Ex : contenu inapproprié, irrespectueux, spam…"
+              placeholder="Ex. : contenu inapproprié, irrespectueux, spam…"
               required
               rows={4}
               className="resize-none"
@@ -75,7 +75,7 @@ export default function ModerationModal({ isOpen, onClose, onConfirm, authorName
               Annuler
             </Button>
             <Button type="submit" variant="danger" size="tap" disabled={isSubmitting || !reason.trim()}>
-              <ShieldAlert size={18} aria-hidden="true" /> Confirmer la modération
+              <ShieldAlert size={18} aria-hidden="true" /> Masquer {words.the}
             </Button>
           </div>
         </form>

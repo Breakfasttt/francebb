@@ -398,7 +398,7 @@ export async function clearTournamentResults(tournamentId: string): Promise<Acti
 }
 
 /**
- * Valide (validate = true) ou retire la validation (validate = false) des résultats d'un tournoi de la Coupe de France
+ * Valide (validate = true) ou retire la validation (validate = false) des résultats d'un tournoi du Championnat de France
  * (carte 162). Réservé aux modérateurs et aux administrateurs : leur rôle est relu en base à chaque lecture de la
  * session (auth.ts). Seuls les résultats validés comptent au classement national (app/classement/actions.ts).
  * L'action est notée au journal de modération.
@@ -415,7 +415,7 @@ export async function setCdfValidation(tournamentId: string, validate: boolean):
     select: { id: true, name: true, isCDF: true, isFinished: true, isCancelled: true, topic: { select: { id: true } }, _count: { select: { results: true } } }
   });
   if (!tournament) return { success: false, error: "Tournoi introuvable." };
-  if (!tournament.isCDF) return { success: false, error: "Ce tournoi ne compte pas pour la Coupe de France." };
+  if (!tournament.isCDF) return { success: false, error: "Ce tournoi ne compte pas pour le Championnat de France." };
   if (validate) {
     if (tournament.isCancelled) return { success: false, error: "Ce tournoi est annulé : ses résultats ne peuvent pas compter au classement." };
     if (!tournament.isFinished || tournament._count.results === 0) {

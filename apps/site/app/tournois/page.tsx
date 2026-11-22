@@ -9,6 +9,7 @@
  */
 import { getReferenceLists } from "@/lib/referenceData";
 import Link from "next/link";
+import { Map as MapIcon } from "lucide-react";
 import { Button, Card, PageNav } from "@bbfrance/ui";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
@@ -200,6 +201,12 @@ export default async function TournamentsPage({
         backHref="/"
         backTitle="Retour à l'accueil"
       >
+        {/* Téléphone : la carte en bouton discret à côté de l'action principale (sur ordinateur, dans le panneau gauche) */}
+        <Button asChild variant="secondary" size="tap-icon" className="lg:hidden">
+          <Link href="/carte" aria-label="Voir sur la carte" title="Voir sur la carte">
+            <MapIcon size={18} aria-hidden="true" />
+          </Link>
+        </Button>
         {createHref && (
           <Button asChild variant="primary" size="tap" className="lg:hidden">
             <Link href={createHref}>Annoncer un tournoi</Link>

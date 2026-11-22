@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { prisma } from "./prisma";
-import { escapeHtml, escapeHtmlMultiline } from "./htmlEscape";
-import { stripBBCode } from "./bbcode";
+import { escapeHtml } from "./htmlEscape";
+import { announcementBodyHtml } from "./announcementMail";
 
 /**
  * Règle de ce fichier (carte 167) : toute valeur venue d'un membre ou de la base (titre de sujet, pseudo, extrait de
@@ -187,10 +187,9 @@ export function getNewsletterTemplate(topics: any[], tournaments: any[]) {
 }
 
 /**
- * Corps d'une annonce de l'administration (carte 167) : le texte est écrit avec l'éditeur BBCode du site. Les balises
- * BBCode sont retirées (un e-mail ne sait pas afficher un spoiler ou une galerie), puis le texte est neutralisé ; ses
- * retours à la ligne sont gardés.
+ * Corps d'une annonce de l'administration (cartes 167 et 221) : texte neutralisé, avec gras, italique, liens http(s)
+ * et retours à la ligne (`announcementBodyHtml`, lib/announcementMail.ts). Les autres balises BBCode sont retirées.
  */
 export function getAnnouncementTemplate(text: string) {
-  return getEmailTemplate(`<p>${escapeHtmlMultiline(stripBBCode(text))}</p>`, "Annonce Officielle BBFrance");
+  return getEmailTemplate(`<p>${announcementBodyHtml(text)}</p>`, "Annonce Officielle BBFrance");
 }

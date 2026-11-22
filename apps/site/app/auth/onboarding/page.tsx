@@ -4,6 +4,7 @@ import { prisma } from "@/lib/prisma";
 import { safeCallbackUrl } from "@/lib/safeRedirect";
 import OnboardingForm from "./OnboardingForm";
 import OnboardingSuccess from "./OnboardingSuccess";
+import LogoutButton from "@/common/components/LogoutButton/LogoutButton";
 
 export const metadata = {
   title: "Bienvenue - BBFrance",
@@ -47,6 +48,10 @@ export default async function OnboardingPage(props: { searchParams: Promise<{ ca
           )}
         </header>
         {user.hasFinishedOnboarding ? <OnboardingSuccess callbackUrl={callbackUrl} /> : <OnboardingForm user={user} callbackUrl={callbackUrl} />}
+        {/* La page n'a pas de navigation (carte 221) : la déconnexion reste possible ici */}
+        <div className="flex justify-center">
+          <LogoutButton hubLogout={!!session.hubLogout} variant="quiet" />
+        </div>
       </section>
     </div>
   );

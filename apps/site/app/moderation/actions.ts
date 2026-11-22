@@ -16,6 +16,8 @@ import { forumPostHrefFor } from "@/lib/forumPostLink";
 import { getForumAccess } from "@/lib/forumAccess";
 import { canSeeReportTarget } from "@/lib/moderationReports";
 import { reportInputRefusal, type ReportTargetType } from "@/lib/reportRules";
+import { formatRoleChangeDetails, isLogGroup, LOG_GROUP_ACTIONS } from "@/lib/moderationLogFormat";
+import { getRoleLabelMap } from "@/lib/roleLabels";
 
 /**
  * Créer un nouveau signalement (bouton « Signaler » d'un message, d'un sujet, d'un membre, d'un article, d'une ligue).
@@ -67,7 +69,12 @@ export async function createReportAction(data: {
 /**
  * Récupérer les logs avec pagination.
  */
-export async function getModerationLogs(page = 1, pageSize = 20) {
+/**
+ * Une page du journal (20 lignes), du plus récent au plus ancien. Carte 221 : `group` filtre par type d'action
+ * (Membres, Forum, Contenus, Administration) ; chaque ligne reçoit `targetName` (titre du sujet, pseudo du membre…)
+ * quand l'élément visé existe encore, et ses détails sont mis en forme pour l'affichage (libellés des rôles).
+ */
+export async function getModerationLogs(page = 1, pageSize = 20, group?: string) {
   const session = await getActiveSession();
   if (!isModerator(session?.user?.role)) return { logs: [], total: 0 };
 
@@ -76,22 +83,62 @@ export async function getModerationLogs(page = 1, pageSize = 20) {
     cleanupModerationLogs().catch(() => {});
   }
 
-  const skip = (page - 1) * pageSize;
+  const safePage = Math.max(1, Math.floor(Number(page)) || 1);
+  const take = Math.min(50, Math.max(1, Math.floor(Number(pageSize)) || 20));
+  const where = isLogGroup(group) ? { action: { in: LOG_GROUP_ACTIONS[group] } } : {};
 
-  const [logs, total] = await Promise.all([
-    prisma.moderationLog.findMany({
-      // L'identifiant départage les lignes créées à la même date, pour que l'ordre reste identique d'une page à l'autre
-      orderBy: [{ createdAt: "desc" }, { id: "desc" }],
-      include: {
-        moderator: { select: { id: true, name: true, image: true, role: true } }
-      },
-      take: pageSize,
-      skip
-    }),
-    prisma.moderationLog.count()
-  ]);
+  const logs = await prisma.moderationLog.findMany({
+    where,
+    // L'identifiant départage les lignes créées à la même date, pour que l'ordre reste identique d'une page à l'autre
+    orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+    include: {
+      moderator: { select: { id: true, name: true, image: true, role: true } }
+    },
+    take,
+    skip: (safePage - 1) * take
+  });
+  const total = await prisma.moderationLog.count({ where });
 
-  return { logs, total };
+  const names = await loadLogTargetNames(logs);
+  const roleLabels = logs.some((log) => log.action === "USER_ROLE_CHANGED") ? await getRoleLabelMap() : undefined;
+  return {
+    logs: logs.map((log) => ({
+      ...log,
+      details: log.details && log.action === "USER_ROLE_CHANGED" ? formatRoleChangeDetails(log.details, roleLabels) : log.details,
+      targetName: (log.targetId && names.get(`${log.targetType}:${log.targetId}`)) || null,
+    })),
+    total,
+  };
+}
+
+/** Noms des éléments visés par une page du journal, une requête par type (clé « TYPE:identifiant »). */
+async function loadLogTargetNames(logs: { targetId: string | null; targetType: string | null }[]) {
+  const ids = (type: string) => [...new Set(logs.filter((l) => l.targetType === type && l.targetId).map((l) => l.targetId as string))];
+  const names = new Map<string, string>();
+  const put = (type: string, rows: { id: string; label: string | null | undefined }[]) => {
+    for (const row of rows) if (row.label) names.set(`${type}:${row.id}`, row.label);
+  };
+  // Requêtes l'une après l'autre : la base locale de développement ne sert qu'une requête à la fois
+  const topicIds = ids("TOPIC");
+  if (topicIds.length) put("TOPIC", (await prisma.topic.findMany({ where: { id: { in: topicIds } }, select: { id: true, title: true } })).map((t) => ({ id: t.id, label: t.title })));
+  const postIds = ids("POST");
+  if (postIds.length) {
+    const posts = await prisma.post.findMany({ where: { id: { in: postIds } }, select: { id: true, topic: { select: { title: true } } } });
+    put("POST", posts.map((p) => ({ id: p.id, label: p.topic?.title })));
+  }
+  const userIds = ids("USER");
+  if (userIds.length) put("USER", (await prisma.user.findMany({ where: { id: { in: userIds } }, select: { id: true, name: true } })).map((u) => ({ id: u.id, label: u.name })));
+  const forumIds = ids("FORUM");
+  if (forumIds.length) put("FORUM", (await prisma.forum.findMany({ where: { id: { in: forumIds } }, select: { id: true, name: true } })).map((f) => ({ id: f.id, label: f.name })));
+  const articleIds = ids("ARTICLE");
+  if (articleIds.length) put("ARTICLE", (await prisma.article.findMany({ where: { id: { in: articleIds } }, select: { id: true, title: true } })).map((a) => ({ id: a.id, label: a.title })));
+  const ligueIds = ids("LIGUE");
+  if (ligueIds.length) put("LIGUE", (await prisma.ligue.findMany({ where: { id: { in: ligueIds } }, select: { id: true, name: true } })).map((l) => ({ id: l.id, label: l.name })));
+  const tournamentIds = ids("TOURNAMENT");
+  if (tournamentIds.length) put("TOURNAMENT", (await prisma.tournament.findMany({ where: { id: { in: tournamentIds } }, select: { id: true, name: true } })).map((t) => ({ id: t.id, label: t.name })));
+  const resourceIds = ids("RESOURCE");
+  if (resourceIds.length) put("RESOURCE", (await prisma.resource.findMany({ where: { id: { in: resourceIds } }, select: { id: true, title: true } })).map((r) => ({ id: r.id, label: r.title })));
+  return names;
 }
 
 /** Longueur de l'extrait du contenu signalé, en caractères. */

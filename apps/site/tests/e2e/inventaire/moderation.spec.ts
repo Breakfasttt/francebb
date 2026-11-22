@@ -416,9 +416,9 @@ test("message signalé : extrait, auteur, lien vers le message dans le même ong
 
   // « Masquer » : la fenêtre de modération demande une raison ; le message est masqué et le signalement se ferme
   await card.getByRole("button", { name: "Masquer" }).click();
-  const dialog = page.getByRole("dialog", { name: /Modérer le message/ });
-  await dialog.getByRole("textbox", { name: /Raison de la modération/ }).fill("Inv Mod message masqué");
-  await dialog.getByRole("button", { name: /Confirmer la modération/ }).click();
+  const dialog = page.getByRole("dialog", { name: /Masquer le message/ });
+  await dialog.getByRole("textbox", { name: /Raison du masquage/ }).fill("Inv Mod message masqué");
+  await dialog.getByRole("button", { name: /^Masquer le message$/ }).click();
   await expect(page.getByText("Message masqué, signalement fermé")).toBeVisible();
   await expect(entry(page, POST_REASON)).toHaveCount(0);
 

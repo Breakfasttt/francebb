@@ -24,7 +24,7 @@ import { logModerationAction } from "@/lib/moderationLog";
 import { createForumRecord, deleteForumRecord } from "@/lib/forumStructure";
 import { closePendingReports } from "@/lib/moderationReports";
 import { hidePostContent, PUBLIC_MEMBER_SELECT } from "@/lib/forumPostPrivacy";
-import { canRestorePost, decidePostDeletion, topicDeletionRefusal } from "@/lib/forumDeletion";
+import { canRestorePost, decidePostDeletion, postDeletedBy, topicDeletionRefusal } from "@/lib/forumDeletion";
 import { advanceReadPosition, isTopicUnread, shouldCountTopicView, type ReadPosition } from "@/lib/forumReadPosition";
 import { refreshTopicLastPost } from "@/lib/forumTopicLastPost";
 import { refreshForumStructure, refreshTopic, refreshTournament } from "@/lib/pageRefresh";
@@ -311,14 +311,22 @@ export async function getQuoteStatusMap(contents: string[]) {
   const { roles } = await getForumAccess();
   const posts = await prisma.post.findMany({
     where: { id: { in: Array.from(postIds).slice(0, 200) }, topic: { forum: forumAccessWhere(roles) } },
-    select: { id: true, isDeleted: true, isModerated: true, authorId: true, author: { select: { name: true } } }
+    select: { id: true, isDeleted: true, isModerated: true, authorId: true, deletedById: true, author: { select: { name: true } } }
   });
 
   // L'auteur réel du message cité (carte 169) : parseBBCode n'affiche « Par @… » que si la balise désigne bien cet
   // auteur, et avec son vrai pseudo. Une citation écrite à la main et attribuée à un autre membre perd donc cet onglet.
   const map: QuoteStatusMap = {};
   for (const p of posts) {
-    map[p.id] = { isDeleted: p.isDeleted, isModerated: p.isModerated, authorId: p.authorId, authorName: p.author.name };
+    // Supprimé par la modération ou par son auteur (même règle que postDeletedBy, lib/forumDeletion.ts) : seul ce
+    // booléen part dans la page, jamais l'identifiant de celui qui a supprimé
+    map[p.id] = {
+      isDeleted: p.isDeleted,
+      isModerated: p.isModerated,
+      deletedByModeration: postDeletedBy(p) === "moderation",
+      authorId: p.authorId,
+      authorName: p.author.name,
+    };
   }
   return map;
 }
@@ -406,11 +414,11 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
     const form = readTournamentForm(formData);
     if ("error" in form) return { success: false, error: form.error };
 
-    // Seuls les modérateurs et les administrateurs accréditent un tournoi de la Coupe de France (carte 162) : la case
+    // Seuls les modérateurs et les administrateurs accréditent un tournoi du Championnat de France (carte 162) : la case
     // n'est pas affichée aux autres, et le serveur refuse la demande si elle arrive quand même.
     const { wantsCdf, typeCDF, commissaireIds } = form.requests;
     if (wantsCdf && !isModerator(session.user.role)) {
-      return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
+      return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi du Championnat de France (CDF)." };
     }
 
     // Sans coordonnées venues du formulaire, l'adresse est cherchée par le serveur
@@ -846,7 +854,7 @@ export async function markAllTopicsAsRead() {
     return { success: true };
   } catch (error) {
     console.error("markAllTopicsAsRead Error:", error);
-    return { success: false, error: "Une erreur est survenue." };
+    return { success: false, error: "Impossible de tout marquer comme lu pour le moment. Réessaie dans un instant." };
   }
 }
 
@@ -1068,6 +1076,8 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
 
   const target = await findAccessiblePost(postId);
   if (!target || target.isDeleted) return { success: false, error: "Message introuvable." };
+  // Un message masqué par la modération ne reçoit plus de réaction (carte 221 : l'écran ne la propose plus)
+  if (target.isModerated) return { success: false, error: "Ce message a été masqué : il ne reçoit plus de réaction." };
   if (isLockedFor(target, session.user.role)) {
     return { success: false, error: closedTopicMessage(writeState(target.topic)) };
   }
@@ -1396,7 +1406,7 @@ export async function updateTournament(tournamentId: string, topicId: string, fi
   // formulaire. Retirer ou remettre la case annule une éventuelle validation des résultats par la modération.
   const { wantsCdf } = form.requests;
   if (wantsCdf && !tournament.isCDF && !isMod) {
-    return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi de la Coupe de France (CDF)." };
+    return { success: false, error: "Seuls les modérateurs et les administrateurs peuvent déclarer un tournoi du Championnat de France (CDF)." };
   }
   const isCdfNew = isMod ? wantsCdf : tournament.isCDF;
   const cdfUpdate = {

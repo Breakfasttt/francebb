@@ -18,6 +18,8 @@ interface ReportModalProps {
   targetId: string;
   targetType: string;
   itemTitle?: string;
+  /** Appelé après un envoi réussi (carte 221) : l'écran peut alors dire « Signalement envoyé » au lieu de « Signaler ». */
+  onReported?: () => void;
 }
 
 const REPORT_REASONS = [
@@ -28,7 +30,7 @@ const REPORT_REASONS = [
   "Autre (préciser ci-dessous)"
 ];
 
-export default function ReportModal({ isOpen, onClose, targetId, targetType, itemTitle }: ReportModalProps) {
+export default function ReportModal({ isOpen, onClose, targetId, targetType, itemTitle, onReported }: ReportModalProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
@@ -51,6 +53,7 @@ export default function ReportModal({ isOpen, onClose, targetId, targetType, ite
 
       if (res.success) {
         toast.success("Signalement envoyé à l'équipe");
+        onReported?.();
         onClose();
         setReason("");
         setDetails("");

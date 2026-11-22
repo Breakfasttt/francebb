@@ -485,7 +485,8 @@ export default function StructureTab() {
 
         {isLoading ? (
           <div className="flex flex-col gap-3">
-            {[0, 1].map((i) => <Skeleton key={i} className="h-40 w-full" />)}
+            {/* Filet en plus : sur la carte du thème sombre, le gris seul se voyait à peine (carte 221) */}
+            {[0, 1].map((i) => <Skeleton key={i} className="h-40 w-full border border-bb-border" />)}
           </div>
         ) : (
           <DndContext sensors={sensors} collisionDetection={closestCenter} onDragStart={handleDragStart} onDragEnd={handleDragEnd}>

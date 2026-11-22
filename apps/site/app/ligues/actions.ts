@@ -6,6 +6,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
+import { closePendingReports } from "@/lib/moderationReports";
 import type { ActionResult } from "@/lib/actionResult";
 import { departmentNumber } from "@/lib/france";
 
@@ -268,6 +269,8 @@ export async function deleteLigue(id: string): Promise<{ success: boolean; error
     "LIGUE",
     `Suppression de la ligue : ${ligue.name}`
   );
+  // Ses signalements en attente n'ont plus d'objet (carte 221)
+  await closePendingReports("LIGUE", [id], session.user.id);
 
   revalidatePath("/ligues");
   return { success: true };

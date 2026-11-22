@@ -20,7 +20,7 @@ export default function MarkAllAsReadButton({ className }: { className?: string 
     if (result.success) {
       setIsConfirming(false);
     } else {
-      toast.error(result.error || "Une erreur est survenue.");
+      toast.error(result.error || "Impossible de tout marquer comme lu. Réessaie dans un instant.");
     }
     setIsLoading(false);
   }

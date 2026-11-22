@@ -7,6 +7,7 @@
 import { prisma } from "@/lib/prisma";
 import { BBCODE_TAG_PATTERN, HEADLINE_OPTIONS } from "@/lib/forumSearchSnippet";
 import type { Prisma } from "@/prisma/generated-client";
+import type { SearchHit } from "@/lib/forumSearchGroups";
 
 /**
  * Nombre maximum de messages trouvés par la recherche plein texte, avant les filtres et les droits d'accès. Au-delà,
@@ -76,14 +77,28 @@ export async function headlinesFor(postIds: string[], q: string): Promise<Map<st
 }
 
 /**
- * Identifiants des messages trouvés par les mots-clés `q` et qui passent le filtre Prisma `where` (droits d'accès,
- * modération, auteur, forum, période), dans l'ordre d'affichage. Le filtre est appliqué par Prisma, avec les mêmes
- * fonctions que partout ailleurs (lib/forumAccess.ts), plutôt que recopié en SQL où il risquerait de diverger.
+ * Messages trouvés par les mots-clés `q` (identifiant et sujet) et qui passent le filtre Prisma `where` (droits
+ * d'accès, modération, auteur, forum, période), dans l'ordre d'affichage. Le filtre est appliqué par Prisma, avec les
+ * mêmes fonctions que partout ailleurs (lib/forumAccess.ts), plutôt que recopié en SQL où il risquerait de diverger.
+ * Le sujet sert à regrouper les résultats (lib/forumSearchGroups.ts).
  */
-export async function searchPostIds(q: string, sort: SearchSort, where: Prisma.PostWhereInput): Promise<string[]> {
+export async function searchPostHits(q: string, sort: SearchSort, where: Prisma.PostWhereInput): Promise<SearchHit[]> {
   const candidates = await searchCandidates(q, sort);
   if (candidates.length === 0) return [];
-  const allowed = await prisma.post.findMany({ where: { ...where, id: { in: candidates } }, select: { id: true } });
-  const allowedIds = new Set(allowed.map((post) => post.id));
-  return candidates.filter((id) => allowedIds.has(id));
+  const allowed = await prisma.post.findMany({ where: { ...where, id: { in: candidates } }, select: { id: true, topicId: true } });
+  const topicById = new Map(allowed.map((post) => [post.id, post.topicId]));
+  return candidates.flatMap((id) => {
+    const topicId = topicById.get(id);
+    return topicId ? [{ id, topicId }] : [];
+  });
+}
+
+/** Sans mot-clé (auteur, forum ou période seuls) : les mêmes messages, triés par date, 1 000 au plus. */
+export async function filteredPostHits(sort: SearchSort, where: Prisma.PostWhereInput): Promise<SearchHit[]> {
+  return prisma.post.findMany({
+    where,
+    orderBy: [{ createdAt: sort === "asc" ? "asc" : "desc" }, { id: sort === "asc" ? "asc" : "desc" }],
+    take: CANDIDATE_LIMIT,
+    select: { id: true, topicId: true },
+  });
 }

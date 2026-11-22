@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Clock, ShieldAlert, UserCheck, UserX } from "lucide-react";
+import Link from "next/link";
 import { Badge, Button, Card, ConfirmDialog, EmptyState, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import { getBannedUsers, unbanUserAction } from "../actions";
@@ -76,10 +77,11 @@ export default function BannedUsersTab() {
               <li key={user.id} className="flex flex-col gap-3 border-b border-bb-border px-4 py-3 last:border-b-0 lg:flex-row lg:items-center lg:gap-4">
                 <div className="flex min-w-0 flex-1 flex-col gap-1.5">
                   <div className="flex items-center justify-between gap-3">
-                    <span className="flex min-w-0 items-center gap-2 font-semibold text-bb-text">
+                    {/* Le nom mène au profil du coach (carte 221) */}
+                    <Link href={`/spy/${user.id}`} className="flex min-h-11 min-w-0 items-center gap-2 font-semibold text-bb-text no-underline hover:underline">
                       <MemberAvatarImage image={user.image} className="size-8 shrink-0 rounded-full object-cover" />
                       <span className="truncate">{user.name || "Inconnu"}</span>
-                    </span>
+                    </Link>
                     <span className="inline-flex shrink-0 items-center gap-1 text-sm text-bb-text-muted">
                       <Clock size={14} aria-hidden="true" />
                       {new Date(user.bannedAt).getTime() > 0 ? format(new Date(user.bannedAt), "dd/MM/yyyy", { locale: fr }) : "Date inconnue"}

@@ -17,11 +17,50 @@ import { ForumRow, LockMark, TopicRow, UnreadDot } from "@/app/forum/component/F
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { notFound, redirect } from "next/navigation";
+import { ChevronRight } from "lucide-react";
+import type { TopicRowData } from "@/app/forum/component/ForumListItems";
 
 export const dynamic = "force-dynamic";
 
 const TOPICS_PER_PAGE = 30;
 const MAX_SUBFORUMS = 10;
+/** Sujets archivés montrés en bas de la liste (les plus récents d'abord) ; les autres restent trouvables par la recherche. */
+const MAX_ARCHIVED = 100;
+
+/** Données d'une ligne de sujet, à partir d'un sujet lu avec `topicInclude`. */
+function rowData(
+  topic: {
+    id: string;
+    title: string;
+    isSticky: boolean;
+    isLocked: boolean;
+    tournamentId: string | null;
+    createdAt: Date;
+    lastPostAt: Date;
+    views: number | null;
+    author: { name: string | null; image: string | null };
+    lastPostAuthor: { name: string | null } | null;
+    _count: { posts: number };
+    tournament: TopicRowData["tournament"];
+  },
+  hasNew: boolean
+): TopicRowData {
+  return {
+    id: topic.id,
+    title: topic.title,
+    isSticky: topic.isSticky,
+    isLocked: topic.isLocked,
+    isTournament: !!topic.tournamentId,
+    tournament: topic.tournament,
+    hasNew,
+    author: topic.author,
+    createdAt: topic.createdAt,
+    lastPostAuthorName: topic.lastPostAuthor?.name ?? null,
+    lastPostAt: topic.lastPostAt,
+    postCount: topic._count.posts,
+    views: topic.views || 0,
+  };
+}
 
 export default async function ForumDetailPage({ params, searchParams }: { params: Promise<{ id: string }>, searchParams: Promise<{ page?: string }> }) {
   const [session, { roles }] = await Promise.all([getActiveSession(), getForumAccess()]);
@@ -72,10 +111,20 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   }
 
   // Topics paginés + total (mêmes critères : les archivés et les supprimés ne comptent pas) + non-lus du membre
-  // (sujets de la page et sous-forums), calculés par la base en une requête (unreadState.ts)
+  // (sujets de la page et sous-forums), calculés par la base en une requête (unreadState.ts).
+  // Les sujets archivés ont leur propre groupe, replié, en bas de la dernière page : l'accueil les compte, ils doivent
+  // donc rester trouvables. Ils n'entrent jamais dans les non-lus (règle voulue, unreadState.ts).
   const listWhere = { forumId: id, isArchived: false, isDeleted: false };
-  const [totalTopics, topics, unread] = await Promise.all([
+  const archivedWhere = { forumId: id, isArchived: true, isDeleted: false };
+  const topicInclude = {
+    author: { select: { name: true, image: true } },
+    lastPostAuthor: { select: { name: true } },
+    _count: { select: { posts: true } },
+    tournament: { select: { date: true, endDate: true, isCancelled: true, isFinished: true } }
+  } as const;
+  const [totalTopics, totalArchived, topics, unread] = await Promise.all([
     prisma.topic.count({ where: listWhere }),
+    prisma.topic.count({ where: archivedWhere }),
     prisma.topic.findMany({
     where: listWhere,
     orderBy: [
@@ -86,18 +135,20 @@ export default async function ForumDetailPage({ params, searchParams }: { params
     ],
     skip,
     take: TOPICS_PER_PAGE,
-    include: {
-      author: { select: { name: true, image: true } },
-      lastPostAuthor: { select: { name: true } },
-      _count: {
-        select: { posts: true }
-      },
-      tournament: { select: { date: true, endDate: true, isCancelled: true, isFinished: true } }
-    }
+    include: topicInclude
     }),
     userId ? getUnreadState(userId) : null,
   ]);
   const totalPages = Math.max(1, Math.ceil(totalTopics / TOPICS_PER_PAGE));
+  const showArchived = totalArchived > 0 && currentPage >= totalPages;
+  const archivedTopics = showArchived
+    ? await prisma.topic.findMany({
+        where: archivedWhere,
+        orderBy: [{ lastPostAt: "desc" }, { id: "desc" }],
+        take: MAX_ARCHIVED,
+        include: topicInclude
+      })
+    : [];
 
   const isUnread = (topicId: string) => unread?.unreadTopicIds.has(topicId) ?? false;
   // Point bleu du titre : ce forum contient un sujet non lu, sur cette page ou une autre
@@ -196,30 +247,13 @@ export default async function ForumDetailPage({ params, searchParams }: { params
               <span className="w-40 text-right">Dernier message</span>
             </div>
             {topics.length > 0 ? (
-              topics.map((topic) => {
-                return (
-                  <TopicRow
-                    key={topic.id}
-                    topic={{
-                      id: topic.id,
-                      title: topic.title,
-                      isSticky: topic.isSticky,
-                      isLocked: topic.isLocked,
-                      isTournament: !!topic.tournamentId,
-                      tournament: topic.tournament,
-                      hasNew: isUnread(topic.id),
-                      author: topic.author,
-                      createdAt: topic.createdAt,
-                      lastPostAuthorName: topic.lastPostAuthor?.name ?? null,
-                      lastPostAt: topic.lastPostAt,
-                      postCount: topic._count.posts,
-                      views: topic.views || 0,
-                    }}
-                  />
-                );
-              })
+              topics.map((topic) => <TopicRow key={topic.id} topic={rowData(topic, isUnread(topic.id))} />)
             ) : (
-              <p className="px-4 py-6 text-bb-text-muted">Pas encore de sujet ici. Lance la première discussion.</p>
+              <p className="px-4 py-6 text-bb-text-muted">
+                {totalArchived > 0
+                  ? "Aucun sujet en cours ici. Les anciens sujets sont rangés dans les archives, juste en dessous."
+                  : "Pas encore de sujet ici. Lance la première discussion."}
+              </p>
             )}
           </Card>
 
@@ -230,6 +264,28 @@ export default async function ForumDetailPage({ params, searchParams }: { params
             linkComponent={Link}
             className="self-center"
           />
+
+          {/* Sujets archivés : un groupe replié en bas de la dernière page (fermés, retirés des non-lus) */}
+          {showArchived && (
+            <details className="group overflow-hidden rounded-bb-lg border border-bb-border bg-bb-surface">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 bg-bb-surface-2 px-3 py-2 font-bb-heading text-bb-label text-bb-text-muted hover:text-bb-text focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:px-4 [&::-webkit-details-marker]:hidden">
+                <ChevronRight size={16} aria-hidden="true" className="shrink-0 transition-transform group-open:rotate-90" />
+                Sujets archivés ({totalArchived.toLocaleString("fr-FR")})
+              </summary>
+              <div className="border-t border-bb-border">
+                {archivedTopics.map((topic) => <TopicRow key={topic.id} topic={rowData(topic, false)} />)}
+                {totalArchived > archivedTopics.length && (
+                  <p className="m-0 border-t border-bb-border px-4 py-3 text-sm text-bb-text-muted">
+                    Les {MAX_ARCHIVED} plus récents sont listés ici. Pour les autres,{" "}
+                    <Link href={`/forum/search?forumId=${id}`} className="font-semibold text-bb-text hover:text-bb-accent-text">
+                      cherche dans ce forum
+                    </Link>
+                    .
+                  </p>
+                )}
+              </div>
+            </details>
+          )}
     </SiteLayout>
   );
 }

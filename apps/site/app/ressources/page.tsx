@@ -3,7 +3,7 @@
 /**
  * Liste des ressources `/ressources` (refonte, carte 096, ADR 0006) : un annuaire d'outils, de guides et d'aides de
  * jeu proposés par les membres et validés par la modération. Les outils officiels du site passent en premier.
- * En-tête compact « Ressources » avec le nombre de ressources trouvées et le bouton « Soumettre une ressource » ; puis
+ * En-tête compact « Ressources » avec le nombre de ressources trouvées et le bouton « Proposer une ressource » ; puis
  * la barre de recherche et d'affichage (`ResourceListControls`) et les ressources en grille ou en liste, 20 par page
  * (pagination `PageNav`). Sur ordinateur, le filtre par tags est dans une colonne à gauche ; sur téléphone, une seule
  * colonne, et ce filtre est rangé dans le panneau « Filtrer les ressources ».

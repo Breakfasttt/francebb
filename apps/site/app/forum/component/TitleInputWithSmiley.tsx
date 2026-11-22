@@ -20,7 +20,7 @@ interface TitleInputWithSmileyProps {
 export default function TitleInputWithSmiley({
   initialValue = "",
   name = "title",
-  placeholder = "Ex: Rechercher des joueurs, Stratégies Elfes..."
+  placeholder = "Ex. : Recherche de joueurs, stratégies elfes…"
 }: TitleInputWithSmileyProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [titleValue, setTitleValue] = useState(initialValue);

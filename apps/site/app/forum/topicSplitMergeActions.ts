@@ -183,6 +183,14 @@ export async function searchMergeTargets(topicId: string, query: string) {
     },
     orderBy: { lastPostAt: "desc" },
     take: 10,
-    select: { id: true, title: true, lastPostAt: true, forum: { select: { name: true } }, _count: { select: { posts: true } } },
+    // Auteur et date du dernier message (carte 221) : deux sujets au même titre se distinguent d'un coup d'œil
+    select: {
+      id: true,
+      title: true,
+      lastPostAt: true,
+      author: { select: { name: true } },
+      forum: { select: { name: true } },
+      _count: { select: { posts: true } },
+    },
   });
 }

@@ -378,9 +378,10 @@ test.describe("Inventaire 10 : articles", () => {
   });
 
   test("[modo] /articles/[id] : modérer, annuler la modération ; un article modéré n'est visible que par son auteur et les modos", async ({ page }, testInfo) => {
-    // Article déjà modéré : contenu masqué pour un visiteur et pour un autre membre
-    await page.goto(`/articles/${MODERATED.id}`, { waitUntil: "networkidle" });
-    await expect(page.getByText(/masqué par la modération/).first()).toBeVisible();
+    // Article déjà modéré : page introuvable pour un visiteur et pour un autre membre (carte 221), sans le texte, la
+    // raison ni le nom du modérateur
+    const hidden = await page.goto(`/articles/${MODERATED.id}`, { waitUntil: "networkidle" });
+    expect(hidden?.status()).toBe(404);
     await expect(page.getByText(MODERATED.content)).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("article-modere-visiteur.png"), fullPage: false });
     await loginAs(page, READER.id);
@@ -408,10 +409,10 @@ test.describe("Inventaire 10 : articles", () => {
     await loginAs(page, E2E.modoId);
     await page.goto(`/articles/${TO_MODERATE.id}`, { waitUntil: "networkidle" });
     await (await findAction(page, /^Modérer/))!.click();
-    const moderate = page.getByRole("dialog", { name: /Modérer/ });
+    const moderate = page.getByRole("dialog", { name: /Masquer l'article/ });
     await expect(moderate).toBeVisible();
     await moderate.getByRole("textbox", { name: /Raison/ }).fill("Modéré par le test d'inventaire");
-    await moderate.getByRole("button", { name: /Confirmer la modération/ }).click();
+    await moderate.getByRole("button", { name: /^Masquer l'article$/ }).click();
     await expect(moderate).toBeHidden();
     await expect.poll(() => db((prisma) => prisma.article.findUnique({ where: { id: TO_MODERATE.id }, select: { isModerated: true, moderationReason: true } })))
       .toEqual({ isModerated: true, moderationReason: "Modéré par le test d'inventaire" });

@@ -29,8 +29,8 @@ export default async function MediaPage() {
   return (
     <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <ForumListHeader
-        title="Vidéos et directs"
-        subtitle="Les directs et les vidéos de la communauté"
+        title="Médias"
+        subtitle="Vidéos et directs de la communauté"
         backHref="/"
         backTitle="Retour à l'accueil"
       />

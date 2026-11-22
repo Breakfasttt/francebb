@@ -371,9 +371,9 @@ test.describe("Inventaire 11 : ressources", () => {
     await resetMutable();
     await loginAs(page, AUTHOR.id);
 
-    // Le lien « Soumettre une ressource » de la liste
+    // Le lien « Proposer une ressource » de la liste
     await page.goto("/ressources", { waitUntil: "networkidle" });
-    const submitLink = await control(page, "link", /Soumettre/);
+    const submitLink = await control(page, "link", /Soumettre|Proposer/);
     await expect(submitLink).toHaveAttribute("href", "/ressources/submit");
 
     await page.goto("/ressources/submit", { waitUntil: "networkidle" });

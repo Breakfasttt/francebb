@@ -6,11 +6,12 @@
  * libellé (texte affiché), un ordre et un état actif ou non. On peut en ajouter, en modifier et en supprimer. Une seule
  * liste de fiches sur ordinateur comme sur téléphone (avant la refonte : un tableau qui défilait de côté). Les actions
  * `getAllReferenceDataAdmin`, `createReferenceData`, `updateReferenceData` et `deleteReferenceData` sont inchangées.
+ * Carte 221 : chaque groupe a un nom lisible et une phrase « Utilisé dans… », et se replie (fermé par défaut).
  */
 import { useEffect, useState, useTransition } from "react";
-import { Check, Edit2, Plus, Trash2, X } from "lucide-react";
+import { Check, ChevronDown, Edit2, Plus, Trash2, X } from "lucide-react";
 import {
-  Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Field, Input, Label, Skeleton, Switch, toast,
+  Badge, Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, Field, Input, Label, Select, Skeleton, Switch, toast,
 } from "@bbfrance/ui";
 import { createReferenceData, deleteReferenceData, getAllReferenceDataAdmin, updateReferenceData } from "../actions";
 
@@ -24,6 +25,25 @@ interface ReferenceData {
 }
 
 const EMPTY_FORM = { group: "COACH_REGION", key: "", label: "", order: 0 };
+
+/**
+ * Nom lisible et usage de chaque groupe (vérifiés dans le code, carte 221 : lib/referenceData.ts et ses appelants).
+ * Un groupe absent de cette liste s'affiche par son code, sans phrase d'usage.
+ */
+const GROUP_INFO: Record<string, { label: string; usedIn: string }> = {
+  COACH_REGION: {
+    label: "Zones des coachs",
+    usedIn: "profil et inscription, filtre de l'annuaire des membres, zone d'une ligue, formulaire de tournoi",
+  },
+  REGION_FRANCE: { label: "Régions de France", usedIn: "formulaires de tournoi et de ligue, filtre « Région » de la liste des tournois" },
+  DEPARTEMENT_FRANCE: { label: "Départements", usedIn: "formulaires de tournoi et de ligue, filtre de la liste des tournois" },
+  GAME_EDITION: { label: "Éditions du jeu", usedIn: "formulaire de tournoi" },
+  PLATFORM: { label: "Plateformes en ligne", usedIn: "formulaire de tournoi (tournoi en ligne)" },
+  TOURNAMENT_FORMAT: { label: "Formats de tournoi", usedIn: "formulaire de tournoi" },
+  TOURNAMENT_TYPE: { label: "Types de tournoi", usedIn: "formulaire de tournoi" },
+};
+
+const groupLabel = (group: string) => GROUP_INFO[group]?.label ?? group;
 
 export default function ReferenceDataTab() {
   const [data, setData] = useState<ReferenceData[]>([]);
@@ -76,11 +96,11 @@ export default function ReferenceDataTab() {
       });
 
       if (res.success) {
-        toast.success("Mis à jour");
+        toast.success("Donnée enregistrée.");
         setEditingId(null);
         loadData();
       } else {
-        toast.error(res.error || "Erreur");
+        toast.error(res.error || "L'enregistrement a échoué.");
       }
     });
   };
@@ -93,17 +113,17 @@ export default function ReferenceDataTab() {
     startTransition(async () => {
       const res = await deleteReferenceData(id);
       if (res.success) {
-        toast.success("Supprimé");
+        toast.success("Donnée supprimée.");
         loadData();
       } else {
-        toast.error("Erreur");
+        toast.error(res.error || "La suppression a échoué.");
       }
     });
   };
 
   const handleCreate = async () => {
     if (!newForm.group || !newForm.key || !newForm.label) {
-      toast.error("Tous les champs sont requis");
+      toast.error("Remplis la clé et le libellé.");
       return;
     }
 
@@ -114,12 +134,12 @@ export default function ReferenceDataTab() {
       });
 
       if (res.success) {
-        toast.success("Créé avec succès");
+        toast.success("Donnée ajoutée.");
         setIsCreating(false);
         setNewForm(EMPTY_FORM);
         loadData();
       } else {
-        toast.error(res.error || "Erreur");
+        toast.error(res.error || "L'enregistrement a échoué.");
       }
     });
   };
@@ -149,8 +169,12 @@ export default function ReferenceDataTab() {
             <div className="flex flex-col gap-4 rounded-bb-md border border-bb-border bg-bb-surface-2 p-3 lg:p-4">
               <h3 className="text-base font-bold text-bb-text">Nouvelle donnée</h3>
               <div className="flex flex-col gap-4 lg:grid lg:grid-cols-2">
-                <Field label="Groupe" htmlFor="ref-new-group" hint="Exemple : COACH_REGION">
-                  <Input id="ref-new-group" value={newForm.group} onChange={(e) => setNewForm({ ...newForm, group: e.target.value })} />
+                <Field label="Liste" htmlFor="ref-new-group" hint={GROUP_INFO[newForm.group] ? `Utilisée dans : ${GROUP_INFO[newForm.group].usedIn}.` : undefined}>
+                  <Select id="ref-new-group" value={newForm.group} onChange={(e) => setNewForm({ ...newForm, group: e.target.value })}>
+                    {[...new Set([...Object.keys(GROUP_INFO), ...Object.keys(groupedData)])].map((group) => (
+                      <option key={group} value={group}>{groupLabel(group)}</option>
+                    ))}
+                  </Select>
                 </Field>
                 <Field label="Clé" htmlFor="ref-new-key" hint="Identifiant technique. Exemple : IDF">
                   <Input id="ref-new-key" className="font-mono" value={newForm.key} onChange={(e) => setNewForm({ ...newForm, key: e.target.value })} />
@@ -180,16 +204,19 @@ export default function ReferenceDataTab() {
       {loading ? (
         <Skeleton className="h-60 w-full" />
       ) : (
-        Object.keys(groupedData).sort().map((group) => (
+        Object.keys(groupedData).sort((a, b) => groupLabel(a).localeCompare(groupLabel(b), "fr")).map((group) => (
           <Card key={group} className="overflow-hidden">
-            <section aria-label={`Groupe ${group}`}>
-              <CardHeader>
-                <CardTitle as="h3" className="text-[0.95rem]">
-                  Groupe : <span className="font-mono text-bb-accent-text">{group}</span>
-                </CardTitle>
+            {/* Groupe repliable, fermé par défaut : on ouvre seulement la liste qu'on veut retoucher */}
+            <details className="group/ref">
+              <summary className="flex min-h-14 cursor-pointer list-none items-center gap-3 px-4 py-2 [&::-webkit-details-marker]:hidden">
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="font-bb-heading text-[0.95rem] font-bold tracking-[0.04em] text-bb-text uppercase">{groupLabel(group)}</span>
+                  {GROUP_INFO[group] && <span className="text-sm text-bb-text-muted">Utilisé dans : {GROUP_INFO[group].usedIn}.</span>}
+                </span>
                 <Badge variant="neutral">{groupedData[group].length}</Badge>
-              </CardHeader>
-              <ul className="m-0 list-none p-0">
+                <ChevronDown size={18} aria-hidden="true" className="shrink-0 text-bb-text-muted transition-transform group-open/ref:rotate-180 motion-reduce:transition-none" />
+              </summary>
+              <ul aria-label={groupLabel(group)} className="m-0 list-none border-t border-bb-border p-0">
                 {groupedData[group].map((item) => (
                   <li key={item.id} className="border-b border-bb-border px-4 py-3 last:border-b-0">
                     {editingId === item.id ? (
@@ -243,7 +270,7 @@ export default function ReferenceDataTab() {
                   </li>
                 ))}
               </ul>
-            </section>
+            </details>
           </Card>
         ))
       )}

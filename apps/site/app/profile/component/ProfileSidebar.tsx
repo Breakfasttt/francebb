@@ -9,6 +9,8 @@
  *   numéro et un lien l'emmène au formulaire pour l'ajouter (carte 190).
  * - Sur le profil d'un autre membre : « Message privé », « Signaler », « Bloquer » ou « Débloquer » (pas sur un
  *   modérateur) et, pour un modérateur, « Bannir » ou « Débannir ». Chaque action demande une confirmation.
+ *   « Message privé » est grisé, avec la raison dessous, si le membre est banni ou si un blocage existe entre vous
+ *   (carte 221).
  * Les onglets ne sont plus ici : chaque page les affiche au-dessus de son contenu (composant LinkTabs).
  */
 import { useState, useTransition } from "react";
@@ -49,11 +51,17 @@ interface ProfileSidebarProps {
   user: ProfileUser;
   postCount: number;
   isOwnProfile: boolean;
-  /** Le visiteur est modérateur : il peut bannir ou débannir. */
+  /** Le visiteur est modérateur. */
   isModerator?: boolean;
+  /** Le visiteur peut bannir ou débannir ce membre (règle `canBanMember` de lib/roles.ts, la même que /membres). */
+  canBan?: boolean;
+  /** Motif du bannissement, fourni seulement à un modérateur. */
+  banReason?: string | null;
   /** Libellés des rôles lus dans la table RoleConfig (action getRoleLabels). */
   roleLabels?: Record<string, string>;
   isBlockedInitial?: boolean;
+  /** Ce membre a bloqué le visiteur : il ne reçoit pas ses messages. */
+  blockedMe?: boolean;
   onRefresh?: () => void;
 }
 
@@ -62,8 +70,11 @@ export default function ProfileSidebar({
   postCount,
   isOwnProfile,
   isModerator = false,
+  canBan = false,
+  banReason = null,
   roleLabels,
   isBlockedInitial = false,
+  blockedMe = false,
   onRefresh,
 }: ProfileSidebarProps) {
   const router = useRouter();
@@ -76,6 +87,14 @@ export default function ProfileSidebar({
   const isBlocked = blockedChoice ?? isBlockedInitial;
 
   const targetIsModerator = checkIsModerator(user.role);
+  // Raison pour laquelle on ne peut pas écrire à ce membre (même ordre que la messagerie)
+  const messageBlockedReason = user.isBanned
+    ? "Ce membre a été banni : il ne peut plus recevoir de messages."
+    : isBlocked
+      ? "Tu as bloqué ce membre. Débloque-le pour lui écrire."
+      : blockedMe
+        ? "Ce membre ne reçoit pas tes messages."
+        : null;
   const customLigues = (user.ligueCustom ?? "").split(",").map((s) => s.trim()).filter(Boolean);
   const hasLigues = (user.ligues?.length ?? 0) > 0 || customLigues.length > 0;
 
@@ -88,7 +107,7 @@ export default function ProfileSidebar({
       try {
         const res = await toggleBanUser(user.id, !user.isBanned, reason);
         if (res.success) {
-          toast.success(!user.isBanned ? "Utilisateur banni" : "Utilisateur débanni");
+          toast.success(!user.isBanned ? "Membre banni" : "Membre débanni");
           setShowBanModal(false);
           router.refresh();
           onRefresh?.();
@@ -152,14 +171,31 @@ export default function ProfileSidebar({
           </div>
         </div>
 
+        {/* Motif du bannissement, visible des seuls modérateurs (carte 221) */}
+        {!isOwnProfile && isModerator && user.isBanned && banReason && (
+          <div className="rounded-bb-md border border-bb-border bg-bb-surface-2 px-3 py-2.5">
+            <p className="m-0 text-sm font-semibold text-bb-text-muted">Motif du bannissement</p>
+            <p className="m-0 mt-0.5 break-words text-bb-text">{banReason}</p>
+          </div>
+        )}
+
         {/* Actions sur un autre membre, juste sous son nom */}
         {!isOwnProfile && (
           <div className="grid grid-cols-2 gap-2">
-            <Button asChild variant="primary" size="tap" className="col-span-2">
-              <Link href={`/messagerie?userId=${user.id}`}>
-                <MessageSquare size={18} aria-hidden="true" /> Message privé
-              </Link>
-            </Button>
+            {messageBlockedReason ? (
+              <div className="col-span-2 flex flex-col gap-1">
+                <Button type="button" variant="secondary" size="tap" disabled aria-describedby="profile-message-blocked">
+                  <MessageSquare size={18} aria-hidden="true" /> Message privé
+                </Button>
+                <p id="profile-message-blocked" className="m-0 text-sm text-bb-text-muted">{messageBlockedReason}</p>
+              </div>
+            ) : (
+              <Button asChild variant="primary" size="tap" className="col-span-2">
+                <Link href={`/messagerie?userId=${user.id}`}>
+                  <MessageSquare size={18} aria-hidden="true" /> Message privé
+                </Link>
+              </Button>
+            )}
             <Button type="button" variant="secondary" size="tap" onClick={() => setShowReportModal(true)}>
               <AlertTriangle size={18} aria-hidden="true" /> Signaler
             </Button>
@@ -169,7 +205,7 @@ export default function ProfileSidebar({
                 {isBlocked ? "Débloquer" : "Bloquer"}
               </Button>
             )}
-            {isModerator && !targetIsModerator && (
+            {canBan && (
               <Button
                 type="button"
                 variant={user.isBanned ? "secondary" : "danger"}

@@ -6,6 +6,7 @@
  * principal de cette catégorie, et « Insérer après » propose les forums qui seront ses voisins dans la liste.
  * Les noms des champs envoyés (name, description, categoryId, parentForumId, afterId) et l'action serveur
  * `createForum` sont ceux d'avant la refonte ; un refus du serveur s'affiche dans une notification (ActionForm).
+ * Sans catégorie dans l'adresse, la première catégorie est choisie d'office (carte 221).
  */
 
 import { FolderPlus } from "lucide-react";
@@ -45,7 +46,10 @@ export default function NewForumForm({
   initialParentForumId,
   createAction
 }: NewForumFormProps) {
-  const [selectedCat, setSelectedCat] = useState(initialCategoryId || "");
+  // Sans catégorie dans l'adresse (bouton de l'accueil du forum), celle du forum parent, sinon la première : la liste
+  // des forums parents est ainsi remplie dès l'ouverture (carte 221)
+  const parentCategory = allForums.find((f) => f.id === initialParentForumId)?.categoryId;
+  const [selectedCat, setSelectedCat] = useState(initialCategoryId || parentCategory || categories[0]?.id || "");
   const [selectedParent, setSelectedParent] = useState(initialParentForumId || "");
 
   // Forums disponibles comme parents (doivent être dans la même catégorie et être de niveau 1)

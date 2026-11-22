@@ -4,7 +4,8 @@
  * Onglet « Journal d'audit » de la modération (refonte, carte 099) : l'historique des actions de modération, 20 par
  * page, du plus récent au plus ancien. Chaque ligne donne le modérateur (lien vers son profil), l'action, ses détails,
  * l'élément visé (avec un lien quand il existe) et la date. Les administrateurs peuvent purger les lignes de plus de
- * 3 mois. Les actions `getModerationLogs` et `cleanupModerationLogs` sont inchangées.
+ * 3 mois. Carte 221 : filtre par type d'action (Membres, Forum, Contenus, Administration, côté serveur), nom de
+ * l'élément visé quand il existe encore, rôles affichés par leur libellé.
  */
 import { useEffect, useState } from "react";
 import Link from "next/link";
@@ -13,6 +14,7 @@ import { fr } from "date-fns/locale";
 import { Clock, Link as LinkIcon } from "lucide-react";
 import { Badge, Button, Card, CardHeader, CardTitle, ConfirmDialog, PageNav, Skeleton, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
+import { LOG_GROUPS, type LogGroup } from "@/lib/moderationLogFormat";
 import { cleanupModerationLogs, getModerationLogs } from "../actions";
 
 interface LogsTabProps {
@@ -41,8 +43,8 @@ const ACTION_LABELS: Record<string, string> = {
   TOPIC_SPLIT: "Sujet scindé",
   TOPIC_MERGED: "Sujets fusionnés",
   // Messages
-  POST_MODERATED: "Message modéré",
-  POST_UNMODERATED: "Modération du message annulée",
+  POST_MODERATED: "Message masqué",
+  POST_UNMODERATED: "Message démasqué",
   POST_DELETED: "Message supprimé",
   POST_RESTORED: "Message restauré",
   // Membres
@@ -66,7 +68,7 @@ const ACTION_LABELS: Record<string, string> = {
   // Signalements
   REPORT_IGNORED: "Signalement ignoré",
   REPORT_RESOLVED: "Signalement traité",
-  // Tournois de la Coupe de France (carte 162)
+  // Tournois de la Championnat de France (carte 162)
   TOURNAMENT_CDF_VALIDATED: "Résultats CDF validés",
   TOURNAMENT_CDF_UNVALIDATED: "Validation CDF retirée",
   // Carte 221
@@ -85,7 +87,7 @@ const ACTION_LABELS: Record<string, string> = {
   REFERENCE_DATA_UPDATED: "Donnée de référence modifiée",
   REFERENCE_DATA_DELETED: "Donnée de référence supprimée",
   SITE_SETTING_UPDATED: "Réglage du site modifié",
-  MASS_MAIL_SENT: "Courriel envoyé à tous",
+  MASS_MAIL_SENT: "Annonce envoyée par e-mail",
   LOGS_PURGED: "Journal purgé",
 };
 
@@ -139,10 +141,11 @@ export default function LogsTab({ userRole }: LogsTabProps) {
   const [total, setTotal] = useState(0);
   const [isCleaning, setIsCleaning] = useState(false);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [group, setGroup] = useState<LogGroup | null>(null);
 
   const fetchLogs = async () => {
     setLoading(true);
-    const res = await getModerationLogs(page);
+    const res = await getModerationLogs(page, PAGE_SIZE, group ?? undefined);
     setLogs(res.logs);
     setTotal(res.total);
     setLoading(false);
@@ -150,8 +153,13 @@ export default function LogsTab({ userRole }: LogsTabProps) {
 
   useEffect(() => {
     fetchLogs();
-    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé à chaque changement de page
-  }, [page]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- rechargé à chaque changement de page ou de filtre
+  }, [page, group]);
+
+  const chooseGroup = (next: LogGroup | null) => {
+    setGroup(next);
+    setPage(1);
+  };
 
   const onConfirmCleanup = async () => {
     setIsConfirmOpen(false);
@@ -182,12 +190,30 @@ export default function LogsTab({ userRole }: LogsTabProps) {
         )}
       </CardHeader>
 
+      <div role="group" aria-label="Filtrer par type d'action" className="flex gap-2 overflow-x-auto border-b border-bb-border px-4 py-2">
+        {([[null, "Tout"], ...Object.entries(LOG_GROUPS)] as [LogGroup | null, string][]).map(([id, label]) => (
+          <Button
+            key={id ?? "all"}
+            type="button"
+            variant="secondary"
+            size="tap"
+            aria-pressed={group === id}
+            onClick={() => chooseGroup(id)}
+            className={`shrink-0 ${group === id ? "border-bb-accent-text bg-bb-accent-soft" : ""}`}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
+
       {loading && logs.length === 0 ? (
         <div className="flex flex-col gap-3 p-4">
           {[0, 1, 2].map((i) => <Skeleton key={i} className="h-16 w-full" />)}
         </div>
       ) : logs.length === 0 ? (
-        <p className="px-4 py-5 text-bb-text-muted">Aucune action de modération enregistrée.</p>
+        <p className="px-4 py-5 text-bb-text-muted">
+          {group ? "Aucune action de ce type dans le journal." : "Aucune action de modération enregistrée."}
+        </p>
       ) : (
         <ul aria-label="Actions de modération" className={`m-0 list-none p-0 ${loading ? "opacity-60" : ""}`}>
           {logs.map((log) => {
@@ -210,11 +236,18 @@ export default function LogsTab({ userRole }: LogsTabProps) {
                   {log.details && <p className="m-0 text-sm break-words text-bb-text-muted [overflow-wrap:anywhere]">{log.details}</p>}
                   {log.targetId && (
                     <p className="m-0 flex flex-wrap items-center gap-x-2 text-sm text-bb-text-muted">
-                      <span>Cible : {TARGET_LABELS[log.targetType] ?? log.targetType}</span>
+                      <span className="min-w-0 break-words [overflow-wrap:anywhere]">
+                        {TARGET_LABELS[log.targetType] ?? log.targetType}
+                        {log.targetName && (
+                          log.targetType === "POST"
+                            ? <> dans « <span className="font-semibold text-bb-text">{log.targetName}</span> »</>
+                            : <> : <span className="font-semibold text-bb-text">{log.targetName}</span></>
+                        )}
+                      </span>
                       {targetUrl && (
                         <Link href={targetUrl} className="inline-flex min-h-11 items-center gap-1 font-semibold text-bb-accent-text lg:min-h-0">
                           <LinkIcon size={14} aria-hidden="true" />
-                          Voir l&apos;élément
+                          Voir
                         </Link>
                       )}
                     </p>

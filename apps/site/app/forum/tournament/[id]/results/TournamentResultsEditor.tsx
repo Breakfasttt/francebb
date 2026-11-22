@@ -3,7 +3,9 @@
 /**
  * Saisie des résultats d'un tournoi (refonte, carte 089, ADR 0006), réservée à l'organisateur, à ses commissaires et
  * aux modérateurs.
- * - En haut : l'import d'un rapport NAF (fichier XML) et « Vider les résultats », qui demande une confirmation.
+ * - En haut : l'import d'un rapport NAF (fichier XML). « Vider les résultats », qui demande une confirmation, est en bas
+ *   de la page, loin de l'import, en bouton secondaire (revue 221 : un seul rouge plein par écran, celui de la
+ *   publication).
  * - Onglet « Classement » : une ligne par coach, que l'on peut réordonner en la faisant glisser par sa poignée (ou au
  *   clavier). Sur ordinateur, une colonne par information ; sur téléphone, une carte par coach avec des champs
  *   libellés, assez grands pour le doigt.
@@ -17,7 +19,6 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   Trophy,
-  Swords,
   Trash2,
   Plus,
   Upload,
@@ -194,7 +195,8 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
         <label htmlFor={id('points')} className={cellLabel}>{isCDF ? 'Points CDF (calculés)' : 'Points'}</label>
         <NumberInput
           id={id('points')}
-          value={res.points}
+          // Points CDF calculés : arrondis à deux décimales à l'affichage (le calcul garde sa précision)
+          value={isCDF ? Math.round((Number(res.points) || 0) * 100) / 100 : res.points}
           onChange={(val: number) => updateResultField(idx, 'points', val)}
           step="0.0001"
           className={isCDF ? 'opacity-60' : ''}
@@ -204,9 +206,9 @@ const SortableRow = ({ res, idx, updateResultField, removeResult, OFFICIAL_ROSTE
       </div>
       <Button
         type="button"
-        variant="danger"
+        variant="quiet"
         size="tap-icon"
-        className="self-end max-lg:col-start-4 max-lg:row-start-1"
+        className="self-end text-bb-danger-text max-lg:col-start-4 max-lg:row-start-1"
         onClick={() => removeResult(idx)}
         aria-label={`Supprimer ${coachLabel}`}
         title="Supprimer"
@@ -522,9 +524,6 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         <Button type="button" variant="secondary" size="tap" onClick={() => fileInputRef.current?.click()} disabled={isParsing}>
           <Upload size={16} aria-hidden="true" /> {isParsing ? "Import..." : "Importer un rapport NAF"}
         </Button>
-        <Button type="button" variant="danger" size="tap" onClick={handleClearResults} disabled={isSaving || isParsing || (results.length === 0 && rounds.length === 0)}>
-          <Trash2 size={16} aria-hidden="true" /> Vider les résultats
-        </Button>
         <input type="file" ref={fileInputRef} onChange={handleFileUpload} hidden accept=".xml,text/xml" aria-label="Importer un rapport NAF (fichier XML)" />
       </div>
 
@@ -538,11 +537,11 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
       </Card>
 
       {tournament.isCDF && (
-        // Carte 162 : les résultats d'un tournoi de la Coupe de France passent par la modération avant de compter
+        // Carte 162 : les résultats d'un tournoi du Championnat de France passent par la modération avant de compter
         <Card className="flex items-start gap-3 p-3 text-sm">
           <ShieldCheck size={20} aria-hidden="true" className="mt-0.5 shrink-0 text-bb-accent-text" />
           <p className="m-0 text-bb-text">
-            <strong>Tournoi de la Coupe de France :</strong> chaque coach doit avoir un rang. Une fois publiés, les résultats
+            <strong>Tournoi du Championnat de France :</strong> chaque coach doit avoir un rang. Une fois publiés, les résultats
             comptent au classement national seulement après leur validation par un modérateur ou un administrateur.
             Modifier des résultats déjà validés retire la validation.
           </p>
@@ -551,8 +550,8 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
 
       <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'ranking' | 'matches')} className="flex flex-col gap-4">
         <TabsList aria-label="Saisie des résultats">
-          <TabsTrigger value="ranking"><Trophy size={16} aria-hidden="true" /> Classement</TabsTrigger>
-          <TabsTrigger value="matches"><Swords size={16} aria-hidden="true" /> Rondes et matchs</TabsTrigger>
+          <TabsTrigger value="ranking">Classement</TabsTrigger>
+          <TabsTrigger value="matches">Rondes et matchs</TabsTrigger>
         </TabsList>
 
         <TabsContent value="ranking" className="flex flex-col gap-3">
@@ -562,7 +561,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
               <Button type="button" variant="secondary" size="tap" className="flex-1 sm:flex-none" onClick={() => setResults(autoSortResults(results))}>
                 <Trophy size={16} aria-hidden="true" /> Trier par rang
               </Button>
-              <Button type="button" variant="primary" size="tap" className="flex-1 sm:flex-none" onClick={handleAddCoach}>
+              <Button type="button" variant="secondary" size="tap" className="flex-1 sm:flex-none" onClick={handleAddCoach}>
                 <Plus size={16} aria-hidden="true" /> Ajouter un coach
               </Button>
             </div>
@@ -618,7 +617,7 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
         <TabsContent value="matches" className="flex flex-col gap-3">
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
             <h2 className={cn(sectionTitle, "flex-1")}>Détail des matchs par ronde</h2>
-            <Button type="button" variant="primary" size="tap" onClick={addRound}>
+            <Button type="button" variant="secondary" size="tap" onClick={addRound}>
               <Plus size={16} aria-hidden="true" /> Ajouter une ronde
             </Button>
           </div>
@@ -632,8 +631,9 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                 </Button>
                 <Button
                   type="button"
-                  variant="danger"
+                  variant="quiet"
                   size="tap-icon"
+                  className="text-bb-danger-text"
                   aria-label={`Supprimer la ronde ${round.roundNumber}`}
                   title="Supprimer la ronde"
                   onClick={() => {
@@ -683,9 +683,9 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
                         <span className="flex-1 lg:hidden" />
                         <Button
                           type="button"
-                          variant="danger"
+                          variant="quiet"
                           size="tap-icon"
-                          className="shrink-0 lg:order-last"
+                          className="shrink-0 text-bb-danger-text lg:order-last"
                           onClick={() => removeMatch(rIdx, mIdx)}
                           aria-label={`Supprimer le match de la table ${match.tableNumber || mIdx + 1}`}
                           title="Supprimer le match"
@@ -706,6 +706,21 @@ export default function TournamentResultsEditor({ tournament, allUsers }: Tourna
           {rounds.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Ajoute une ronde pour commencer la saisie des matchs.</p>}
         </TabsContent>
       </Tabs>
+
+      {/* Effacement complet, à l'écart de l'import et de la publication, avec confirmation (revue 221) */}
+      <div className="flex flex-col gap-2 border-t border-bb-border pt-4 sm:flex-row sm:items-center sm:gap-4">
+        <Button
+          type="button"
+          variant="secondary"
+          size="tap"
+          className="text-bb-danger-text"
+          onClick={handleClearResults}
+          disabled={isSaving || isParsing || (results.length === 0 && rounds.length === 0)}
+        >
+          <Trash2 size={16} aria-hidden="true" /> Vider les résultats
+        </Button>
+        <p className="m-0 text-sm text-bb-text-muted">Efface tout le classement et tous les matchs publiés de ce tournoi.</p>
+      </div>
 
       {/* Ordinateur : boutons sous la saisie ; téléphone : barre collée en bas de l'écran */}
       <ComposeActionBar>

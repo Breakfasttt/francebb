@@ -215,22 +215,24 @@ const PostItem: React.FC<PostItemProps> = ({
               <span className="min-w-0 break-words">{name}</span>
             </Button>
             {rankLabel && <Badge variant="rank">{rankLabel}</Badge>}
+            {/* Téléphone : le rôle sur la ligne du pseudo, sans séparateur (il passe à la ligne proprement) */}
+            <span className="text-sm text-bb-text-muted">{roleLabel}</span>
           </div>
-          <p className="flex flex-wrap items-center gap-x-1.5 text-sm leading-snug text-bb-text-muted tabular-nums">
-            <span className="lg:hidden">{roleLabel}</span>
-            <span aria-hidden="true" className="lg:hidden">·</span>
-            <time dateTime={createdIso} className="font-semibold text-bb-text">{exactDate(post.createdAt)}</time>
-            <span aria-hidden="true">·</span>
-            <a href={`#post-${post.id}`} className="-my-3 inline-flex min-h-11 min-w-11 items-center justify-center text-bb-text-muted no-underline hover:text-bb-accent-text lg:my-0 lg:min-h-0 lg:min-w-0" aria-label={`Lien vers le message numéro ${index + 1}`}>
-              #{index + 1}
-            </a>
+          {/* Date et numéro restent ensemble (aucun « · » orphelin en fin de ligne) ; « modifié » passe seul à la ligne */}
+          <p className="flex flex-wrap items-center gap-x-2 text-sm leading-snug text-bb-text-muted tabular-nums">
+            <span className="inline-flex items-center gap-x-1.5 whitespace-nowrap">
+              <time dateTime={createdIso} className="font-semibold text-bb-text">{exactDate(post.createdAt)}</time>
+              <span aria-hidden="true">·</span>
+              <a href={`#post-${post.id}`} className="-my-3 inline-flex min-h-11 min-w-11 items-center justify-center text-bb-text-muted no-underline hover:text-bb-accent-text lg:my-0 lg:min-h-0 lg:min-w-0" aria-label={`Lien vers le message numéro ${index + 1}`}>
+                #{index + 1}
+              </a>
+            </span>
             {isEdited && (
-              <>
-                <span aria-hidden="true">·</span>
-                <span>modifié le {exactDate(post.updatedAt)}</span>
-              </>
+              <span className="text-[0.8125rem]" title={`Modifié le ${exactDate(post.updatedAt)}`}>
+                (modifié<span className="max-lg:sr-only"> le {exactDate(post.updatedAt)}</span>)
+              </span>
             )}
-            {isFirstPostAlwaysVisible && <Badge variant="outline" className="ml-1">Premier message</Badge>}
+            {isFirstPostAlwaysVisible && <Badge variant="outline">Premier message</Badge>}
           </p>
         </div>
 
@@ -288,7 +290,7 @@ const PostItem: React.FC<PostItemProps> = ({
               <p className="m-0 mb-3 flex items-start gap-2 rounded-bb-md border border-bb-danger-text px-3 py-2 text-sm text-bb-danger-text">
                 <Shield size={16} aria-hidden="true" className="mt-0.5 shrink-0" />
                 <span>
-                  Ce message a été modéré par {post.moderator?.name || "un modérateur"}, raison : {post.moderationReason}
+                  Ce message a été masqué par la modération ({post.moderator?.name || "un modérateur"}), raison : {post.moderationReason}
                 </span>
               </p>
             )}
@@ -358,7 +360,8 @@ const PostItem: React.FC<PostItemProps> = ({
               // Un message masqué par la modération ne se cite pas, même par un modérateur : la citation recopierait
               // le texte caché dans un message visible de tous (carte 164)
               canQuote={canReply && !post.isModerated}
-              canReact={canReply}
+              // Pas de nouvelle réaction sur un message masqué : les réactions déjà là restent affichées
+              canReact={canReply && !post.isModerated}
             />
           </>
         )}

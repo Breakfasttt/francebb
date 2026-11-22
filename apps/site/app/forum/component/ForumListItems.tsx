@@ -44,7 +44,8 @@ interface TournamentState {
 export function TournamentStatusBadge({ tournament }: { tournament: TournamentState | null | undefined }) {
   if (!tournament) return null;
   if (tournament.isCancelled) return <Badge variant="danger">Annulé</Badge>;
-  if (tournament.isFinished) return <Badge variant="success">Terminé</Badge>;
+  // Gris comme la liste /tournois : le vert n'est pas dans la palette du forum (DESIGN.md)
+  if (tournament.isFinished) return <Badge variant="neutral">Terminé</Badge>;
   // « Passé » une fois le dernier jour fini, heure de Paris (règle de lib/tournamentDates.ts, carte 187)
   if (isTournamentOver(tournament)) return <Badge variant="neutral">Passé</Badge>;
   return null;
@@ -65,6 +66,8 @@ export interface ForumRowData {
   /** Nombre de messages du forum (accueil du forum) ; sans lui, la colonne « Messages » n'est pas affichée */
   postCount?: number;
   hasNew: boolean;
+  /** Sous-forums visibles, rappelés sous la ligne (« Sous-forums : … », accueil du forum) */
+  subForums?: { id: string; name: string }[];
   lastTopic?: {
     title: string;
     isTournament: boolean;
@@ -83,10 +86,14 @@ export interface ForumRowData {
  */
 export function ForumRow({ forum }: { forum: ForumRowData }) {
   const { lastTopic } = forum;
+  const plural = (count: number, word: string) => `${count.toLocaleString("fr-FR")} ${word}${count > 1 ? "s" : ""}`;
+  const subForums = forum.subForums ?? [];
+  // Les sous-forums sont des liens à part : ils ne peuvent pas être dans le lien de la ligne, d'où l'enveloppe
   return (
+    <div className={`border-b border-l-[3px] border-b-bb-border last:border-b-0 ${forum.hasNew ? "border-l-bb-unread" : "border-l-transparent"}`}>
     <Link
       href={`/forum/${forum.id}`}
-      className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-1 border-b border-l-[3px] border-b-bb-border px-3 py-3 text-bb-text no-underline last:border-b-0 hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:items-center lg:px-4 ${forum.postCount !== undefined ? FORUM_COLUMNS_WITH_POSTS : FORUM_COLUMNS} ${forum.hasNew ? "border-l-bb-unread" : "border-l-transparent"}`}
+      className={`grid grid-cols-[minmax(0,1fr)] gap-x-6 gap-y-1 px-3 py-3 text-bb-text no-underline hover:bg-bb-surface-2 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-bb-focus lg:items-center lg:px-4 ${subForums.length > 0 ? "pb-1.5" : ""} ${forum.postCount !== undefined ? FORUM_COLUMNS_WITH_POSTS : FORUM_COLUMNS}`}
     >
       <span className="flex min-w-0 flex-col gap-0.5">
         <span className="flex min-w-0 items-center gap-1.5">
@@ -96,6 +103,11 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
           {forum.hasNew && <span className="sr-only">(messages non lus)</span>}
         </span>
         {forum.description && <span className="text-sm leading-snug text-bb-text-muted">{forum.description}</span>}
+        {/* Téléphone : les chiffres des colonnes, résumés sur une ligne */}
+        <span className="text-sm text-bb-text-muted tabular-nums lg:hidden">
+          {plural(forum.topicCount, "sujet")}
+          {forum.postCount !== undefined && ` · ${plural(forum.postCount, "message")}`}
+        </span>
       </span>
       <span className="text-sm text-bb-text-muted tabular-nums max-lg:hidden lg:text-right">
         <span className="font-semibold text-bb-text lg:block lg:text-base">{forum.topicCount.toLocaleString("fr-FR")}</span>{" "}
@@ -118,9 +130,24 @@ export function ForumRow({ forum }: { forum: ForumRowData }) {
           </span>
         </span>
       ) : (
-        <span className="text-sm text-bb-text-muted">Aucun sujet</span>
+        // Forum dont tous les sujets sont archivés : ils restent dans la liste du forum, en bas
+        <span className="text-sm text-bb-text-muted max-lg:hidden">{forum.topicCount > 0 ? "Aucun sujet en cours" : "Aucun sujet"}</span>
       )}
     </Link>
+      {subForums.length > 0 && (
+        <p className="m-0 flex flex-wrap items-center gap-x-3 px-3 pb-2 text-sm text-bb-text-muted lg:px-4">
+          <span>{subForums.length > 1 ? "Sous-forums :" : "Sous-forum :"}</span>
+          {subForums.map((sub) => (
+            <Link
+              key={sub.id}
+              href={`/forum/${sub.id}`}
+              className="inline-flex min-h-11 items-center font-semibold text-bb-text no-underline hover:text-bb-accent-text hover:underline focus-visible:outline-2 focus-visible:outline-bb-focus lg:min-h-8"
+              dangerouslySetInnerHTML={{ __html: parseInlineBBCode(sub.name) }}
+            />
+          ))}
+        </p>
+      )}
+    </div>
   );
 }
 

@@ -1,21 +1,22 @@
 "use client";
 
 /**
- * Formulaire de la recherche avancée du forum (refonte, carte 088).
- * - Le champ des mots-clés et le bouton « Lancer la recherche » sont toujours visibles.
- * - Sur ordinateur, les quatre filtres (auteur, forum, période, tri) sont affichés sous le champ, sur une ligne.
- * - Sur téléphone, ils sont rangés dans un panneau qui monte du bas, ouvert par le bouton « Filtres » ; ce bouton
- *   indique combien de filtres sont actifs.
- * - Sous le formulaire, une pastille par filtre actif rappelle ce qui restreint les résultats ; un appui sur la
- *   pastille retire ce filtre.
+ * Formulaire de la recherche avancée du forum (refonte, carte 088 ; coquille SiteLayout depuis la revue 221).
+ * - `SearchFormProvider` garde les valeurs (mots-clés et filtres) partagées par les deux morceaux du formulaire, qui
+ *   sont à deux endroits de la page.
+ * - `SearchFilterPanel` : sur ordinateur, les quatre filtres (auteur, forum, période, tri) dans le panneau gauche.
+ * - `SearchForm` (par défaut) : le champ des mots-clés et « Lancer la recherche », toujours visibles ; sur téléphone,
+ *   le bouton « Filtres » ouvre les mêmes filtres dans un panneau qui monte du bas, avec le nombre de filtres actifs.
+ *   Sous le formulaire, une pastille par filtre actif ; un appui sur la pastille retire ce filtre.
  * L'adresse de la page reste celle d'avant (`?q=`, `author`, `forumId`, `date`, `sortBy`) : la recherche est lancée en
  * changeant l'adresse, et la page serveur relit ces paramètres.
  */
-import { useEffect, useState, useTransition, type ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, useTransition, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import { Button, Card, CountBadge, DESKTOP_QUERY, Field, Input, Select, Sheet, SheetContent, useMediaQuery } from "@bbfrance/ui";
+import { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
 
 export interface ForumOption {
   id: string;
@@ -30,6 +31,7 @@ interface SearchFormProps {
   initialDate?: string;
   initialSortBy?: string;
   forums: ForumOption[];
+  children: ReactNode;
 }
 
 /** Périodes proposées : valeur du paramètre `date` de l'adresse, libellé de la liste et libellé court de la pastille. */
@@ -59,71 +61,83 @@ function searchHref(values: SearchValues): string {
   return `/forum/search?${params.toString()}`;
 }
 
-export default function SearchForm({
+interface SearchState {
+  values: SearchValues;
+  /** Valeurs de l'adresse : ce qui a vraiment servi à la recherche affichée (pastilles). */
+  current: SearchValues;
+  set: (field: keyof SearchValues, value: string) => void;
+  submit: () => void;
+  isPending: boolean;
+  forums: ForumOption[];
+  filtersOpen: boolean;
+  setFiltersOpen: (open: boolean) => void;
+}
+
+const SearchContext = createContext<SearchState | null>(null);
+
+/** Valeurs partagées ; `null` hors de `SearchFormProvider` (le morceau ne s'affiche alors pas). */
+function useSearchState(): SearchState | null {
+  return useContext(SearchContext);
+}
+
+/**
+ * Valeurs partagées du formulaire. Quand l'adresse change (bouton retour du navigateur, pastille retirée), la page
+ * recrée ce fournisseur (attribut `key`) : il repart alors des valeurs de la nouvelle adresse.
+ */
+export function SearchFormProvider({
   initialQuery = "",
   initialForumId = "",
   initialAuthor = "",
   initialDate = "all",
   initialSortBy = "relevance",
   forums,
+  children,
 }: SearchFormProps) {
   const router = useRouter();
-  const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
   const [filtersOpen, setFiltersOpen] = useState(false);
-
-  const [q, setQ] = useState(initialQuery);
-  const [forumId, setForumId] = useState(initialForumId);
-  const [author, setAuthor] = useState(initialAuthor);
-  const [date, setDate] = useState(initialDate);
-  const [sortBy, setSortBy] = useState(initialSortBy);
-  // Quand l'adresse change (bouton retour du navigateur, pastille retirée), la page recrée ce formulaire (attribut
-  // `key`) : il repart alors des valeurs de la nouvelle adresse.
-
-  // Sur ordinateur, avant toute recherche, le curseur est placé dans le champ des mots-clés. Pas sur téléphone :
-  // le clavier s'ouvrirait tout seul et cacherait la page.
-  useEffect(() => {
-    if (isDesktop && !initialQuery) document.getElementById("search-q")?.focus();
-  }, [isDesktop, initialQuery]);
-
-  const submit = () => {
-    setFiltersOpen(false);
-    startTransition(() => {
-      router.push(searchHref({ q, author, forumId, date, sortBy }));
-    });
-  };
-
-  // Pastilles des filtres actifs, lues dans l'adresse (ce qui a vraiment servi à la recherche affichée)
   const current: SearchValues = { q: initialQuery, author: initialAuthor, forumId: initialForumId, date: initialDate, sortBy: initialSortBy };
-  const forumName = forums.find((forum) => forum.id === initialForumId)?.name;
-  const chips: { label: string; href: string }[] = [];
-  if (initialAuthor) chips.push({ label: `Auteur : ${initialAuthor}`, href: searchHref({ ...current, author: "" }) });
-  if (initialForumId) chips.push({ label: `Forum : ${forumName ?? "forum choisi"}`, href: searchHref({ ...current, forumId: "" }) });
-  const period = PERIODS.find((item) => item.value === initialDate);
-  if (period?.chip) chips.push({ label: period.chip, href: searchHref({ ...current, date: "all" }) });
-  // Le tri par défaut est la pertinence (carte 191) : un tri par date est un choix, retiré par sa pastille
-  if (initialSortBy === "desc") chips.push({ label: "Plus récents d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
-  if (initialSortBy === "asc") chips.push({ label: "Plus anciens d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
+  const [values, setValues] = useState<SearchValues>(current);
 
-  /** Les quatre filtres ; `prefix` distingue les champs du panneau de ceux de la page (identifiants uniques). */
-  const filterFields = (prefix: string): ReactNode => (
+  const state: SearchState = {
+    values,
+    current,
+    set: (field, value) => setValues((previous) => ({ ...previous, [field]: value })),
+    submit: () => {
+      setFiltersOpen(false);
+      startTransition(() => router.push(searchHref(values)));
+    },
+    isPending,
+    forums,
+    filtersOpen,
+    setFiltersOpen,
+  };
+  return <SearchContext.Provider value={state}>{children}</SearchContext.Provider>;
+}
+
+/** Les quatre filtres ; `prefix` distingue les champs du panneau de ceux du panneau du bas (identifiants uniques). */
+function FilterFields({ prefix }: { prefix: string }) {
+  const state = useSearchState();
+  if (!state) return null;
+  const { values, set, forums } = state;
+  return (
     <>
       <Field label="Auteur" htmlFor={`${prefix}-author`}>
         <Input
           id={`${prefix}-author`}
           type="text"
-          placeholder="Ex : Admin, Nuffle…"
-          value={author}
-          onChange={(event) => setAuthor(event.target.value)}
+          placeholder="Ex. : Admin, Nuffle…"
+          value={values.author}
+          onChange={(event) => set("author", event.target.value)}
           autoComplete="off"
         />
       </Field>
       <Field label="Forum" htmlFor={`${prefix}-forum`}>
-        <Select id={`${prefix}-forum`} value={forumId} onChange={(event) => setForumId(event.target.value)}>
+        <Select id={`${prefix}-forum`} value={values.forumId} onChange={(event) => set("forumId", event.target.value)}>
           <option value="">Tous les forums</option>
           {forums.map((forum) => (
             <option key={forum.id} value={forum.id}>
-              {" ".repeat(forum.level * 4)}
+              {" ".repeat(forum.level * 4)}
               {forum.level > 0 ? "↳ " : ""}
               {forum.name}
             </option>
@@ -131,7 +145,7 @@ export default function SearchForm({
         </Select>
       </Field>
       <Field label="Période" htmlFor={`${prefix}-date`}>
-        <Select id={`${prefix}-date`} value={date} onChange={(event) => setDate(event.target.value)}>
+        <Select id={`${prefix}-date`} value={values.date} onChange={(event) => set("date", event.target.value)}>
           {PERIODS.map((item) => (
             <option key={item.value} value={item.value}>
               {item.label}
@@ -140,7 +154,7 @@ export default function SearchForm({
         </Select>
       </Field>
       <Field label="Trier par" htmlFor={`${prefix}-sort`}>
-        <Select id={`${prefix}-sort`} value={sortBy} onChange={(event) => setSortBy(event.target.value)}>
+        <Select id={`${prefix}-sort`} value={values.sortBy} onChange={(event) => set("sortBy", event.target.value)}>
           <option value="relevance">Pertinence</option>
           <option value="desc">Plus récents d&apos;abord</option>
           <option value="asc">Plus anciens d&apos;abord</option>
@@ -148,6 +162,61 @@ export default function SearchForm({
       </Field>
     </>
   );
+}
+
+/** Pastilles des filtres actifs, lues dans l'adresse. */
+function activeChips(current: SearchValues, forums: ForumOption[]): { label: string; href: string }[] {
+  const forumName = forums.find((forum) => forum.id === current.forumId)?.name;
+  const chips: { label: string; href: string }[] = [];
+  if (current.author) chips.push({ label: `Auteur : ${current.author}`, href: searchHref({ ...current, author: "" }) });
+  if (current.forumId) chips.push({ label: `Forum : ${forumName ?? "forum choisi"}`, href: searchHref({ ...current, forumId: "" }) });
+  const period = PERIODS.find((item) => item.value === current.date);
+  if (period?.chip) chips.push({ label: period.chip, href: searchHref({ ...current, date: "all" }) });
+  // Le tri par défaut est la pertinence (carte 191) : un tri par date est un choix, retiré par sa pastille
+  if (current.sortBy === "desc") chips.push({ label: "Plus récents d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
+  if (current.sortBy === "asc") chips.push({ label: "Plus anciens d'abord", href: searchHref({ ...current, sortBy: "relevance" }) });
+  return chips;
+}
+
+/** Panneau gauche (ordinateur) : les filtres l'un sous l'autre, puis « Appliquer les filtres ». */
+export function SearchFilterPanel() {
+  const state = useSearchState();
+  if (!state) return null;
+  const { submit, isPending, current, forums } = state;
+  const hasFilters = activeChips(current, forums).length > 0;
+  return (
+    <section aria-labelledby="search-filters-title" className="flex flex-col gap-3">
+      <PanelTitle id="search-filters-title">Filtres</PanelTitle>
+      <FilterFields prefix="search" />
+      <Button type="button" variant="secondary" size="tap" className="w-full" onClick={submit} disabled={isPending}>
+        Appliquer les filtres
+      </Button>
+      {hasFilters && (
+        <Link
+          href={searchHref({ q: current.q, author: "", forumId: "", date: "all", sortBy: "relevance" })}
+          className="inline-flex min-h-11 items-center text-sm font-semibold text-bb-text-muted no-underline hover:text-bb-text"
+        >
+          Retirer tous les filtres
+        </Link>
+      )}
+    </section>
+  );
+}
+
+export default function SearchForm() {
+  const state = useSearchState();
+  const isDesktop = useMediaQuery(DESKTOP_QUERY);
+  const initialQuery = state?.current.q ?? "";
+
+  // Sur ordinateur, avant toute recherche, le curseur est placé dans le champ des mots-clés. Pas sur téléphone :
+  // le clavier s'ouvrirait tout seul et cacherait la page.
+  useEffect(() => {
+    if (isDesktop && !initialQuery) document.getElementById("search-q")?.focus();
+  }, [isDesktop, initialQuery]);
+
+  if (!state) return null;
+  const { values, set, submit, isPending, current, forums, filtersOpen, setFiltersOpen } = state;
+  const chips = activeChips(current, forums);
 
   return (
     <div className="flex flex-col gap-3">
@@ -169,8 +238,8 @@ export default function SearchForm({
                 type="text"
                 aria-label="Mots-clés"
                 placeholder="Rechercher…"
-                value={q}
-                onChange={(event) => setQ(event.target.value)}
+                value={values.q}
+                onChange={(event) => set("q", event.target.value)}
                 enterKeyHint="search"
                 className="pl-10"
               />
@@ -182,10 +251,7 @@ export default function SearchForm({
             </Button>
           </div>
 
-          {/* Ordinateur : les filtres sur une ligne */}
-          <div className="hidden gap-3 lg:grid lg:grid-cols-4">{filterFields("search")}</div>
-
-          {/* Téléphone : bouton du panneau des filtres */}
+          {/* Téléphone : bouton du panneau des filtres (sur ordinateur, ils sont dans le panneau gauche) */}
           <Button type="button" variant="secondary" size="tap" className="w-full lg:hidden" onClick={() => setFiltersOpen(true)}>
             <SlidersHorizontal size={18} aria-hidden="true" />
             Filtres
@@ -214,7 +280,7 @@ export default function SearchForm({
       <Sheet open={filtersOpen} onOpenChange={setFiltersOpen}>
         <SheetContent title="Filtres de recherche">
           <div className="flex flex-col gap-4 pt-2 pb-2">
-            {filterFields("sheet")}
+            <FilterFields prefix="sheet" />
             <Button type="button" variant="primary" size="tap" className="w-full" onClick={submit}>
               <Search size={18} aria-hidden="true" /> Lancer la recherche
             </Button>

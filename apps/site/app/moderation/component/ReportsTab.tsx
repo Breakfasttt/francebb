@@ -11,6 +11,8 @@
  *   onglet ; pour un message, à la bonne page du sujet, directement sur le message ;
  * - « Masquer » (un message pas encore masqué) : ouvre la fenêtre « Modérer le message » ; une fois le message masqué,
  *   ses signalements se ferment d'eux-mêmes (`moderatePost`, app/forum/actions.ts) ;
+ * - « Bannir » (un coach pas encore banni, carte 221) : ouvre `BanUserDialog` ; le bannissement ferme ses signalements
+ *   (`toggleBanUser`, app/membres/actions.ts) ;
  * - « Ignorer » : ferme les signalements sans agir sur le contenu (statut IGNORED, ligne « Signalement ignoré » au
  *   journal), avec un commentaire facultatif (carte 144) ;
  * - « Marquer comme traité » : ferme les signalements après une action faite ailleurs, avec un commentaire facultatif.
@@ -25,12 +27,14 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
-  AlertTriangle, ArrowRight, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, EyeOff,
+  AlertTriangle, ArrowRight, Ban, BookOpen, Check, ChevronDown, ChevronLeft, ChevronRight, ChevronUp, Clock, EyeOff,
   MessageSquare, ShieldAlert, Trash2, Trophy, Users, X,
 } from "lucide-react";
 import { ActionMenu, Badge, Button, Card, ConfirmDialog, EmptyState, Label, PageNav, Skeleton, Textarea, toast } from "@bbfrance/ui";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
 import ModerationModal from "@/app/forum/component/ModerationModal";
+import BanUserDialog from "@/common/components/BanUserDialog/BanUserDialog";
+import { toggleBanUser } from "@/app/membres/actions";
 import { moderatePost } from "@/app/forum/actions";
 import { getPendingReportsByType, resolveReportsAction } from "../actions";
 
@@ -89,6 +93,9 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
   const [confirmAction, setConfirmAction] = useState<"RESOLVE" | "IGNORE">("RESOLVE");
   // Message à masquer (fenêtre « Modérer le message » ouverte)
   const [hideTarget, setHideTarget] = useState<{ postId: string; authorName: string } | null>(null);
+  // Coach à bannir (fenêtre « Bannir » ouverte)
+  const [banTarget, setBanTarget] = useState<{ userId: string; name: string } | null>(null);
+  const [banning, setBanning] = useState(false);
 
   const fetchReports = async () => {
     setLoading(true);
@@ -153,6 +160,21 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
     refreshAfterAction();
   };
 
+  // « Bannir » : le serveur vérifie le rang et ferme les signalements du coach
+  const onBanConfirm = async (reason: string) => {
+    if (!banTarget) return;
+    setBanning(true);
+    const res = await toggleBanUser(banTarget.userId, true, reason);
+    setBanning(false);
+    if (!res.success) {
+      toast.error(res.error || "Le coach n'a pas pu être banni.");
+      return;
+    }
+    toast.success(`${banTarget.name} est banni, signalement fermé`);
+    setBanTarget(null);
+    refreshAfterAction();
+  };
+
   // Contenu déjà supprimé : le signalement est fermé directement, sans fenêtre de confirmation
   const closeGoneReports = async (targetId: string) => {
     setResolving(true);
@@ -195,6 +217,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
             const firstReport = group.reports[0];
             const others = group.count - 1;
             const canHide = type === "POST" && !target.hidden;
+            const canBan = type === "USER" && !target.hidden;
             const viewLabel = type === "POST" ? "Voir dans le sujet" : type === "USER" ? "Voir le profil" : "Voir";
             return (
               <Card key={group.targetId} className="overflow-hidden">
@@ -247,7 +270,7 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
 
                     <div className="flex flex-wrap gap-2">
                       {target.gone ? (
-                        <Button type="button" variant="primary" size="tap" disabled={resolving} onClick={() => closeGoneReports(group.targetId)}>
+                        <Button type="button" variant="secondary" size="tap" disabled={resolving} onClick={() => closeGoneReports(group.targetId)}>
                           <X size={16} aria-hidden="true" />
                           Fermer le signalement
                         </Button>
@@ -272,12 +295,23 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
                               Masquer
                             </Button>
                           )}
+                          {canBan && (
+                            <Button
+                              type="button"
+                              variant="danger"
+                              size="tap"
+                              onClick={() => setBanTarget({ userId: group.targetId, name: target.title ?? "ce coach" })}
+                            >
+                              <Ban size={16} aria-hidden="true" />
+                              Bannir
+                            </Button>
+                          )}
                           <Button type="button" variant="secondary" size="tap" onClick={() => openConfirm(group.targetId, "IGNORE")}>
                             <X size={16} aria-hidden="true" />
                             Ignorer
                           </Button>
                           {type !== "POST" && (
-                            <Button type="button" variant="primary" size="tap" onClick={() => openConfirm(group.targetId)}>
+                            <Button type="button" variant="secondary" size="tap" onClick={() => openConfirm(group.targetId)}>
                               <Check size={16} aria-hidden="true" />
                               Marquer comme traité
                             </Button>
@@ -405,6 +439,15 @@ export default function ReportsTab({ type, title, onActionSuccess }: ReportsTabP
         onClose={() => setHideTarget(null)}
         onConfirm={onHideConfirm}
         authorName={hideTarget?.authorName ?? ""}
+      />
+
+      <BanUserDialog
+        open={banTarget !== null}
+        onOpenChange={(open) => { if (!open) setBanTarget(null); }}
+        userName={banTarget?.name ?? ""}
+        isBanned={false}
+        pending={banning}
+        onConfirm={onBanConfirm}
       />
     </div>
   );

@@ -22,14 +22,30 @@ import { useSession } from "next-auth/react";
 import { ArrowLeft, LogOut, Pencil, Send, UserPlus, Users } from "lucide-react";
 import { ActionMenu, Avatar, Button, ConfirmDialog, DESKTOP_QUERY, EmptyState, Sheet, SheetContent, Skeleton, toast, useMediaQuery } from "@bbfrance/ui";
 import BBCodeEditor from "@/common/components/BBCodeEditor/BBCodeEditor";
-import { getConversationMessages, leaveConversation, sendMessage } from "../actions";
+import { getConversationMessages, leaveConversation, sendMessage, type ReplyBlock } from "../actions";
 import ChatBubble from "./ChatBubble";
 import InviteParticipantModal from "./InviteParticipantModal";
 import RenameConversationModal from "./RenameConversationModal";
 import { conversationTitle } from "./conversationText";
 import { MESSAGE_MAX_LENGTH } from "@/lib/messageRules";
 
-type ConversationData = NonNullable<Awaited<ReturnType<typeof getConversationMessages>>>;
+type ConversationData = Extract<NonNullable<Awaited<ReturnType<typeof getConversationMessages>>>, { status: "ok" }>;
+
+/** Conversation qu'on ne peut pas ouvrir (carte 221) : quittée, introuvable, ou lecture en échec. */
+type Unavailable = "left" | "missing" | "error";
+
+const UNAVAILABLE_TEXT: Record<Unavailable, { title: string; text: string }> = {
+  left: { title: "Tu as quitté cette conversation", text: "Elle n'est plus dans ta liste. Pour revenir dans un groupe, un de ses membres doit t'inviter à nouveau." },
+  missing: { title: "Conversation introuvable", text: "Elle a été supprimée, ou tu n'en fais pas partie." },
+  error: { title: "Impossible de charger la conversation", text: "Vérifie ta connexion, puis réessaie." },
+};
+
+/** Bandeau qui remplace la zone de saisie d'une conversation à deux où on ne peut plus écrire (carte 221). */
+const REPLY_BLOCK_TEXT: Record<ReplyBlock, string> = {
+  banned: "Ce membre a été banni : il ne peut plus recevoir de messages.",
+  blockedByMe: "Tu as bloqué ce membre. Pour lui écrire, débloque-le depuis ton profil (onglet « Membres bloqués »).",
+  blockedMe: "Ce membre ne reçoit pas tes messages.",
+};
 
 const REFRESH_DELAY = 10_000;
 const MAX_LENGTH = MESSAGE_MAX_LENGTH;
@@ -79,34 +95,58 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
   const [inviteOpen, setInviteOpen] = useState(false);
   const [renameOpen, setRenameOpen] = useState(false);
   const [participantsOpen, setParticipantsOpen] = useState(false);
+  const [unavailable, setUnavailable] = useState<Unavailable | null>(null);
+  const [retry, setRetry] = useState(0);
   useVisibleViewport(frameRef);
 
   const onCloseRef = useRef(onClose);
   onCloseRef.current = onClose;
+  const loadedRef = useRef(false);
 
+  /** Charge les messages ; renvoie faux si la conversation ne peut pas (ou plus) être lue. */
   const loadMessages = useCallback(async () => {
     try {
       const result = await getConversationMessages(conversationId);
       if (!result) {
-        toast.error("Accès refusé");
+        // Session perdue : retour à la liste (le gabarit de la messagerie renvoie vers la connexion)
         onCloseRef.current();
-        return;
+        return false;
       }
+      if (result.status !== "ok") {
+        setUnavailable(result.status);
+        return false;
+      }
+      loadedRef.current = true;
+      setUnavailable(null);
       setData(result);
+      return true;
     } catch {
-      toast.error("Impossible de charger la conversation");
-      onCloseRef.current();
+      // Un rafraîchissement raté ne ferme pas une conversation déjà affichée : le suivant réessaiera
+      if (!loadedRef.current) setUnavailable("error");
+      return loadedRef.current;
     }
   }, [conversationId]);
 
-  // Premier chargement (les non-lus disparaissent alors de la liste), puis rafraîchissement toutes les 10 secondes
+  // Premier chargement (les non-lus disparaissent alors de la liste), puis rafraîchissement toutes les 10 secondes,
+  // arrêté si la conversation n'est pas lisible
   useEffect(() => {
-    loadMessages().then(() => onChange?.());
-    const interval = setInterval(loadMessages, REFRESH_DELAY);
-    return () => clearInterval(interval);
+    let interval: ReturnType<typeof setInterval> | undefined;
+    let cancelled = false;
+    loadMessages().then((ok) => {
+      onChange?.();
+      if (ok && !cancelled) {
+        interval = setInterval(async () => {
+          if (!(await loadMessages()) && interval) clearInterval(interval);
+        }, REFRESH_DELAY);
+      }
+    });
+    return () => {
+      cancelled = true;
+      if (interval) clearInterval(interval);
+    };
     // onChange n'est appelé qu'à l'ouverture : inutile de relancer le rafraîchissement s'il change
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadMessages]);
+  }, [loadMessages, retry]);
 
   const handleSend = async () => {
     if (!content.trim() || sending) return;
@@ -152,6 +192,51 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
   const title = conversation ? conversationTitle(conversation, myId) : "Chargement…";
   const participants = conversation?.participants ?? [];
   const others = participants.filter((p) => p.user.id !== myId);
+  const replyBlock = data?.replyBlock ?? null;
+  const leaveMessage = isGroup
+    ? "Elle disparaît de ta liste. Les autres participants la gardent. Pour y revenir, il faudra qu'un membre du groupe t'invite à nouveau."
+    : `Elle disparaît de ta liste. ${others[0]?.user.name || "L'autre membre"} la garde. Si l'un de vous deux écrit à nouveau, elle revient dans ta liste.`;
+
+  if (unavailable) {
+    const { title: unavailableTitle, text } = UNAVAILABLE_TEXT[unavailable];
+    return (
+      <div
+        ref={frameRef}
+        data-fullscreen=""
+        className="flex flex-col bg-bb-surface max-lg:fixed max-lg:inset-x-0 max-lg:top-[var(--chat-top,0px)] max-lg:z-[var(--z-index-screen)] max-lg:h-[var(--chat-height,100dvh)] lg:h-full lg:min-h-0"
+      >
+        <header className="flex shrink-0 items-center gap-2 border-b border-bb-border bg-bb-surface px-2 py-2 lg:px-4">
+          <Button asChild variant="quiet" size="tap-icon" className="lg:hidden">
+            <Link href="/messagerie" aria-label="Retour à la liste">
+              <ArrowLeft size={22} aria-hidden="true" />
+            </Link>
+          </Button>
+          <h2 className="min-w-0 flex-1 truncate text-lg leading-tight font-bold text-bb-text">{unavailableTitle}</h2>
+        </header>
+        <div role="status" className="flex flex-col items-start gap-3 px-4 py-6 lg:px-5">
+          <p className="m-0 max-w-[60ch] text-bb-text">{text}</p>
+          <div className="flex flex-wrap gap-2">
+            {unavailable === "error" && (
+              <Button
+                type="button"
+                variant="secondary"
+                size="tap"
+                onClick={() => {
+                  setUnavailable(null);
+                  setRetry((n) => n + 1);
+                }}
+              >
+                Réessayer
+              </Button>
+            )}
+            <Button asChild variant="secondary" size="tap">
+              <Link href="/messagerie" className="no-underline">Retour à mes conversations</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -227,7 +312,17 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
         )}
       </div>
 
-      {/* Zone de saisie, collée en bas ; data-page-bottom-bar fait monter les notifications au-dessus d'elle */}
+      {/* Conversation à deux où on ne peut plus écrire : un bandeau fixe à la place de la zone de saisie (carte 221) */}
+      {replyBlock ? (
+        <p
+          role="status"
+          data-page-bottom-bar="always"
+          className="m-0 shrink-0 border-t border-bb-border bg-bb-surface-2 px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] text-bb-text-muted"
+        >
+          {REPLY_BLOCK_TEXT[replyBlock]}
+        </p>
+      ) : (
+      /* Zone de saisie, collée en bas ; data-page-bottom-bar fait monter les notifications au-dessus d'elle */
       <div
         data-page-bottom-bar="always"
         className="shrink-0 border-t border-bb-border bg-bb-surface px-2 pt-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] lg:px-4 lg:pb-3 [&_textarea]:min-h-20 max-lg:[&_textarea]:max-h-32 max-lg:[&_textarea]:min-h-16"
@@ -248,6 +343,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
           </Button>
         </div>
       </div>
+      )}
 
       {/* Participants : nom et lien vers le profil de chacun ; dans un groupe, accès à l'ajout */}
       <Sheet open={participantsOpen} onOpenChange={setParticipantsOpen}>
@@ -285,7 +381,7 @@ export default function ConversationView({ conversationId, onClose, onChange }: 
         open={leaveOpen}
         onOpenChange={setLeaveOpen}
         title="Quitter la conversation ?"
-        message="Si tu quittes cette conversation, elle sera supprimée de ta liste. S'il ne reste alors qu'un seul participant, elle sera définitivement supprimée, avec tous ses messages."
+        message={leaveMessage}
         confirmLabel="Quitter"
         danger
         pending={leaving}

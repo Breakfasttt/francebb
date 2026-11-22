@@ -6,6 +6,8 @@
  *   (`/tournois?ligueId=`), le chef de ligue et les commissaires, et la liste des membres (membres connectés seulement,
  *   comme avant la refonte).
  * Sur ordinateur, le chef et les commissaires occupent une colonne à droite ; sur téléphone, tout est sur une colonne.
+ * Revue 221 : la section des membres dit comment rejoindre la ligue (on l'ajoute dans son profil), le chef ne peut pas
+ * signaler sa propre ligue, et la modération voit si le chef ou un commissaire est banni.
  */
 import { getReferenceLabel } from "@/lib/referenceData";
 import Link from "next/link";
@@ -18,6 +20,7 @@ import { isModerator } from "@/lib/roles";
 import { parseBBCode } from "@/lib/bbcode";
 import { DateBlock } from "@/app/tournois/component/TournamentListItems";
 import { upcomingTournamentWhere } from "@/lib/tournamentDates";
+import { platformLabel } from "@/lib/tournamentForm";
 import LigueBlason from "@/app/ligues/component/LigueBlason";
 import LigueActions from "./component/LigueActions";
 // Styles des blocs BBCode (accordéons, spoilers, galeries) de la présentation, comme dans les sujets du forum ; avant
@@ -37,8 +40,8 @@ export default async function LigueDetailPage({
   const ligue = await prisma.ligue.findUnique({
     where: { id },
     include: {
-      creator: { select: { id: true, name: true, image: true } },
-      commissaires: { select: { id: true, name: true, image: true } },
+      creator: { select: { id: true, name: true, image: true, isBanned: true } },
+      commissaires: { select: { id: true, name: true, image: true, isBanned: true } },
       _count: {
         select: { tournaments: true, members: true }
       },
@@ -74,12 +77,13 @@ export default async function LigueDetailPage({
   const place = [zone ?? ligue.geographicalZone, ligue.ville || ligue.region].filter(Boolean).join(" · ") || "France";
 
   // Chef et commissaires : une ligne par personne, ses rôles réunis (le chef peut aussi être commissaire)
-  const leaders: { id: string; name: string | null; image: string | null; roles: string[] }[] = [];
+  const leaders: { id: string; name: string | null; image: string | null; isBanned: boolean; roles: string[] }[] = [];
   for (const [user, role] of [[ligue.creator, "Chef de ligue"], ...ligue.commissaires.map((user) => [user, "Commissaire"] as const)] as const) {
     const existing = leaders.find((leader) => leader.id === user.id);
     if (existing) existing.roles.push(role);
-    else leaders.push({ id: user.id, name: user.name, image: user.image ?? null, roles: [role] });
+    else leaders.push({ id: user.id, name: user.name, image: user.image ?? null, isBanned: user.isBanned, roles: [role] });
   }
+  const isMember = !!session && ligue.members.some((member) => member.id === session.user.id);
 
   return (
     <SiteLayout
@@ -110,7 +114,8 @@ export default async function LigueDetailPage({
               </p>
               {ligue.address && <p className="text-sm break-words text-bb-text-muted">{ligue.address}</p>}
             </div>
-            <LigueActions ligueId={ligue.id} ligueName={ligue.name} canEdit={canEdit} canManage={canManage} canReport={!!session} />
+            {/* Le chef ne signale pas sa propre ligue */}
+            <LigueActions ligueId={ligue.id} ligueName={ligue.name} canEdit={canEdit} canManage={canManage} canReport={!!session && !isCreator} />
           </div>
         </header>
       }
@@ -122,7 +127,11 @@ export default async function LigueDetailPage({
               <li key={leader.id} className="flex items-center gap-3 border-b border-bb-border py-2.5">
                 <Avatar name={leader.name} src={leader.image} size={36} />
                 <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="font-semibold break-words text-bb-text">{leader.name}</span>
+                  <span className="flex flex-wrap items-center gap-2 font-semibold break-words text-bb-text">
+                    {leader.name}
+                    {/* Seule la modération voit le bannissement (même règle que la gestion des inscriptions) */}
+                    {isMod && leader.isBanned && <Badge variant="danger">Banni</Badge>}
+                  </span>
                   <span className="text-sm text-bb-text-muted">{leader.roles.join(" et ")}</span>
                 </span>
               </li>
@@ -167,7 +176,7 @@ export default async function LigueDetailPage({
                         <span className="block text-sm text-bb-text-muted">{tournament.ville || tournament.location}</span>
                       )}
                     </span>
-                    {tournament.platform && <Badge variant="neutral">{tournament.platform}</Badge>}
+                    {tournament.platform && <Badge variant="neutral">{platformLabel(tournament.platform)}</Badge>}
                   </Link>
                 </li>
               ))}
@@ -181,6 +190,18 @@ export default async function LigueDetailPage({
       {session && (
         <section aria-labelledby="ligue-members-title" className="flex flex-col gap-2">
           <h2 id="ligue-members-title" className={sectionTitle}>Membres ({ligue.members.length})</h2>
+          {/* On rejoint une ligue depuis son profil (« Mes ligues ») : la fiche le dit (revue 221) */}
+          <p className="m-0 text-sm text-bb-text-muted">
+            {isMember ? (
+              <>Tu es membre de cette ligue. Tu peux la retirer dans </>
+            ) : (
+              <>Pour rejoindre cette ligue, ajoute-la dans </>
+            )}
+            <Link href="/profile?tab=edit" className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
+              ton profil
+            </Link>
+            .
+          </p>
           {ligue.members.length > 0 ? (
             <ul className={cn("grid gap-1 sm:grid-cols-2 lg:grid-cols-3 min-[1440px]:grid-cols-4")}>
               {ligue.members.map((member) => (
@@ -196,9 +217,20 @@ export default async function LigueDetailPage({
               ))}
             </ul>
           ) : (
-            <p className="text-bb-text-muted">Aucun membre rattaché à cette ligue pour le moment.</p>
+            <p className="text-bb-text-muted">Pas encore de membre rattaché à cette ligue.</p>
           )}
         </section>
+      )}
+      {!session && (
+        <p className="m-0 text-sm text-bb-text-muted">
+          <Link
+            href={`/auth/login?callbackUrl=${encodeURIComponent(`/ligue/${ligue.id}`)}`}
+            className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center"
+          >
+            Connecte-toi
+          </Link>{" "}
+          pour voir les membres et rejoindre cette ligue depuis ton profil.
+        </p>
       )}
     </SiteLayout>
   );

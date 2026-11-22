@@ -389,6 +389,34 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
  * (`notifNewsletter`, carte 167). Le texte est neutralisé avant d'être inséré dans l'e-mail. Seuls les e-mails
  * réellement partis sont comptés dans `count` : `sendMail` renvoie `{ success: false }` en cas d'échec, sans erreur.
  */
+/** Membres qui reçoivent une annonce : e-mail connu, non bannis, préférence « Newsletter et annonces » cochée. */
+const ANNOUNCEMENT_RECIPIENTS_WHERE = { email: { not: null }, isBanned: false, notifNewsletter: true } as const;
+
+async function adminUserId(): Promise<string | null> {
+  const session = await getActiveSession();
+  const role = session?.user?.role;
+  if (!session || !role || getRolePower(role) < ROLE_POWER.ADMIN) return null;
+  return session.user.id;
+}
+
+/** Nombre réel de destinataires d'une annonce, affiché dans la confirmation (carte 221). Admin seulement. */
+export async function countAnnouncementRecipients(): Promise<number | null> {
+  if (!(await adminUserId())) return null;
+  return prisma.user.count({ where: ANNOUNCEMENT_RECIPIENTS_WHERE });
+}
+
+/** Envoie l'annonce à l'admin lui-même, pour la relire avant de la diffuser (carte 221). Rien au journal. */
+export async function sendTestAnnouncement(subject: string, content: string) {
+  const userId = await adminUserId();
+  if (!userId) return { success: false, error: "Accès refusé." };
+  if (!subject.trim() || !content.trim()) return { success: false, error: "Indique l'objet et le texte du mail." };
+  const me = await prismaWithEmail.user.findUnique({ where: { id: userId }, select: { email: true } });
+  if (!me?.email) return { success: false, error: "Ton compte n'a pas d'adresse e-mail." };
+  const { sendMail, getAnnouncementTemplate } = await import("@/lib/mail");
+  const result = await sendMail({ to: me.email, subject: `[Essai] [BBFrance Info] ${subject}`, html: getAnnouncementTemplate(content) });
+  return result.success ? { success: true } : { success: false, error: "L'essai n'est pas parti : vérifie la configuration du serveur de mail." };
+}
+
 export async function sendGlobalInfoMail(subject: string, content: string) {
   const session = await getActiveSession();
   const userRole = (session?.user as any)?.role;
@@ -401,7 +429,7 @@ export async function sendGlobalInfoMail(subject: string, content: string) {
   }
 
   const users = await prismaWithEmail.user.findMany({
-    where: { email: { not: null }, isBanned: false, notifNewsletter: true },
+    where: ANNOUNCEMENT_RECIPIENTS_WHERE,
     select: { email: true }
   });
 

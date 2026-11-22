@@ -2,13 +2,17 @@
 
 /**
  * Module d'inscription d'un tournoi, dans le sujet du forum du tournoi (refonte, carte 089, ADR 0006).
- * - En-tête : le bouton « Gestion des inscriptions » (avec le nombre d'inscrits) déplie les listes ; « Inscriptions
- *   closes » quand l'organisateur les a fermées ; puis l'action du membre connecté : se pré-inscrire ou annuler son
- *   inscription (tournoi individuel), inscrire une équipe ou se déclarer mercenaire, modifier ou désinscrire son
- *   équipe (tournoi par équipes). Sur téléphone, ces boutons prennent toute la largeur.
+ * - En tête, une phrase dit au membre connecté où il en est (« Tu es inscrit », « Tu es pré-inscrit… », liste
+ *   d'attente avec sa place, mercenaire, équipe) : revue 221, avant il ne voyait que son bouton.
+ * - En-tête : le bouton « Gestion des inscriptions » (avec le nombre d'inscrits, compté comme la fiche et la liste
+ *   des tournois) déplie les listes, ouvertes d'office pour l'organisateur ; « Inscriptions fermées » quand
+ *   l'organisateur les a fermées ; puis l'action du membre connecté : se pré-inscrire ou retirer son inscription
+ *   (tournoi individuel), inscrire une équipe ou se déclarer mercenaire, modifier ou désinscrire son équipe (tournoi
+ *   par équipes). Sur téléphone, ces boutons prennent toute la largeur. Un tournoi terminé n'affiche plus ce module :
+ *   les résultats prennent sa place.
  * - Listes : pré-inscriptions, inscriptions validées, liste d'attente (et mercenaires pour un tournoi par équipes).
  *   L'organisateur, ses commissaires (et les modérateurs, via la page) y changent le statut d'inscription et de
- *   paiement de chaque coach ou équipe, avec des boutons de 44 pixels.
+ *   paiement de chaque coach ou équipe, avec des boutons de 44 pixels qui disent ce qu'ils font.
  * - Fenêtres : inscription ou modification d'une équipe, détails d'une équipe, confirmations. Ce sont des panneaux
  *   qui montent du bas sur téléphone (composants `Sheet` et `ConfirmDialog` de packages/ui).
  * Les actions serveur appelées sont les mêmes qu'avant la refonte. Depuis la carte 186, le capitaine choisit ses
@@ -20,7 +24,7 @@
 import { useState, useTransition, type ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AlertCircle, CheckCircle2, ChevronDown, Clock, ListOrdered, Lock, Pencil, Plus, UserMinus, UserPlus, Users } from "lucide-react";
+import { ChevronDown, Pencil, Plus, UserMinus, UserPlus } from "lucide-react";
 import { Avatar, Badge, Button, Card, ConfirmDialog, DESKTOP_QUERY, Field, Input, Select, Sheet, SheetContent, cn, toast, useMediaQuery } from "@bbfrance/ui";
 import {
   joinTournament,
@@ -32,6 +36,7 @@ import {
   toggleMercenary
 } from "../actions";
 import { isTournamentOver } from "@/lib/tournamentDates";
+import { placesLabel } from "@/lib/tournamentPlaces";
 import type { PublicTournamentMercenary, PublicTournamentRegistration, PublicTournamentTeam } from "@/lib/forumPostPrivacy";
 
 /**
@@ -44,6 +49,8 @@ export interface RegistrationTournament {
   /** Dernier jour du tournoi : les inscriptions restent ouvertes jusqu'à sa fin, heure de Paris (carte 187). */
   endDate: Date | null;
   isTeam: boolean;
+  /** Nombre maximal d'inscrits (ou d'équipes) ; `null` : sans limite. */
+  maxParticipants?: number | null;
   coachsPerTeam: number;
   isFinished: boolean;
   isCancelled: boolean;
@@ -74,7 +81,8 @@ interface ConfirmState {
 export default function RegistrationModule({ tournament, currentUser, isOrganizer, isCommissioner }: RegistrationModuleProps) {
   const isDesktop = useMediaQuery(DESKTOP_QUERY);
   const [isPending, startTransition] = useTransition();
-  const [isExpanded, setIsExpanded] = useState(false);
+  // Liste ouverte d'office pour l'organisateur et ses commissaires : c'est leur outil de travail (revue 221)
+  const [isExpanded, setIsExpanded] = useState(isOrganizer || isCommissioner);
   const [isTeamModalOpen, setIsTeamModalOpen] = useState(false);
   const [editingTeamId, setEditingTeamId] = useState<string | null>(null);
   const [newTeamName, setNewTeamName] = useState("");
@@ -91,7 +99,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const isActionBlocked = tournament.registrationsLocked || tournament.isFinished || tournament.isCancelled || isOver;
 
   // -- Inscription Individuelle --
-  const isRegistered = tournament.registrations?.some((r: any) => r.userId === currentUser?.id);
+  const myRegistration = tournament.registrations?.find((r) => r.userId === currentUser?.id);
+  const isRegistered = !!myRegistration;
 
   const handleJoin = () => {
     startTransition(async () => {
@@ -107,9 +116,9 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   };
 
   const handleLeave = () => {
-    openConfirm("Désinscription", "Tu veux vraiment annuler ton inscription à ce tournoi ?", "Quitter le tournoi", async () => {
+    openConfirm("Retirer mon inscription", "Tu veux vraiment retirer ton inscription à ce tournoi ?", "Retirer mon inscription", async () => {
       const res = await leaveTournament(tournament.id);
-      if (res.success) toast.success("Désinscription effectuée");
+      if (res.success) toast.success("Ton inscription est retirée.");
       else toast.error(res.error || "Erreur");
     });
   };
@@ -148,7 +157,8 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const openEditTeam = (team: any) => {
     setEditingTeamId(team.id);
     setNewTeamName(team.name);
-    setSelectedMembers(team.members?.map((m: any) => m.user) || []);
+    // Le capitaine fait partie des membres de l'équipe : il n'est pas un coéquipier à cocher (sinon « 4 / 3 », revue 221)
+    setSelectedMembers(team.members?.filter((m: any) => m.userId !== team.captainId).map((m: any) => m.user) || []);
     setIsTeamModalOpen(true);
   };
 
@@ -169,7 +179,7 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   const handleToggleMercenary = () => {
     startTransition(async () => {
       const res = await toggleMercenary(tournament.id);
-      if (res.success) toast.success("Statut mercenaire mis à jour");
+      if (res.success) toast.success(isMercenary ? "Tu n'es plus mercenaire." : "Tu es mercenaire : un capitaine peut t'ajouter à son équipe.");
       else toast.error(res.error || "Erreur");
     });
   };
@@ -184,8 +194,28 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
     });
   };
 
-  const totalInscrits = (tournament.registrations?.length || 0) + (tournament.teams?.length || 0);
+  // Inscrits : validés et pré-inscrits (en équipes pour un tournoi par équipes), comme la fiche et la liste des tournois
+  // (« 4 / 24 places », revue 221) ; la liste d'attente est comptée à part.
+  const entries: { status: string }[] = tournament.isTeam ? tournament.teams ?? [] : tournament.registrations ?? [];
+  const totalInscrits = entries.filter((entry) => entry.status !== "WAITING_LIST").length;
+  const totalWaiting = entries.length - totalInscrits;
   const actionButton = "w-full sm:w-auto";
+
+  // Où en est le membre connecté, dit en une phrase au-dessus de ses boutons (revue 221)
+  let myStatus: string | null = null;
+  if (currentUser) {
+    if (tournament.isTeam && userTeam) {
+      myStatus = `Tu es dans l'équipe ${userTeam.name}${isCaptain ? " (capitaine)" : ""}.`;
+      if (userTeam.status === "PRE_REGISTERED") myStatus += " Elle est pré-inscrite : l'organisateur doit valider.";
+      else if (userTeam.status === "WAITING_LIST") myStatus += ` Elle est en liste d'attente (${rankText(waitingRank(tournament.teams, userTeam.id))}).`;
+    } else if (tournament.isTeam && isMercenary) {
+      myStatus = "Tu es mercenaire : un capitaine peut t'ajouter à son équipe.";
+    } else if (!tournament.isTeam && myRegistration) {
+      if (myRegistration.status === "REGISTERED") myStatus = "Tu es inscrit.";
+      else if (myRegistration.status === "PRE_REGISTERED") myStatus = "Tu es pré-inscrit : l'organisateur doit valider.";
+      else myStatus = `Tu es en liste d'attente (${rankText(waitingRank(tournament.registrations, myRegistration.id))}).`;
+    }
+  }
 
   // Action du membre connecté ; un visiteur est invité à se connecter pour s'inscrire, puis revient sur ce sujet
   let userActions: ReactNode = null;
@@ -205,13 +235,11 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             <Button type="button" variant="secondary" size="tap" className={actionButton} onClick={() => openEditTeam(userTeam)} disabled={isPending}>
               <Pencil size={16} aria-hidden="true" /> Modifier mon équipe
             </Button>
-            <Button type="button" variant="danger" size="tap" className={actionButton} onClick={() => handleDeleteTeam(userTeam.id)} disabled={isPending}>
+            <Button type="button" variant="secondary" size="tap" className={actionButton} onClick={() => handleDeleteTeam(userTeam.id)} disabled={isPending}>
               <UserMinus size={16} aria-hidden="true" /> Désinscrire mon équipe
             </Button>
           </>
-        ) : (
-          <Badge variant="success" className="px-2.5 py-1.5 text-sm">Inscrit avec l&apos;équipe {userTeam.name}</Badge>
-        )
+        ) : null
       ) : (
         <>
           {!isActionBlocked && (
@@ -228,15 +256,16 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             disabled={isPending || isActionBlocked}
             aria-pressed={isMercenary}
           >
-            {isMercenary ? "Retirer mercenaire" : "Être mercenaire"}
+            {isMercenary ? "Ne plus être mercenaire" : "Être mercenaire"}
           </Button>
         </>
       );
     } else {
-      // Individuel : toujours montrer « Annuler mon inscription » ; « Me pré-inscrire » seulement si c'est ouvert
+      // Individuel : toujours montrer « Retirer mon inscription », en bouton secondaire (le rouge plein reste à l'action
+      // principale) ; « Me pré-inscrire » seulement si c'est ouvert
       userActions = isRegistered ? (
-        <Button type="button" variant="danger" size="tap" className={actionButton} onClick={handleLeave} disabled={isPending}>
-          <UserMinus size={16} aria-hidden="true" /> Annuler mon inscription
+        <Button type="button" variant="secondary" size="tap" className={actionButton} onClick={handleLeave} disabled={isPending}>
+          <UserMinus size={16} aria-hidden="true" /> Retirer mon inscription
         </Button>
       ) : (
         !isActionBlocked && (
@@ -247,6 +276,9 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
       );
     }
   }
+
+  // Tournoi terminé : les résultats prennent la place des inscrits (revue 221)
+  if (tournament.isFinished) return null;
 
   return (
     <>
@@ -275,11 +307,11 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
             </section>
             <section>
               <h3 className="mb-2 text-bb-label font-bold tracking-wide text-bb-text-muted uppercase">
-                Membres ({selectedTeamDetails?.members?.length || 0})
+                Coéquipiers ({teammatesOf(selectedTeamDetails).length})
               </h3>
-              {selectedTeamDetails?.members?.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Aucun membre additionnel</p>}
+              {teammatesOf(selectedTeamDetails).length === 0 && <p className="m-0 text-sm text-bb-text-muted">Pas encore de coéquipier.</p>}
               <ul className="m-0 flex list-none flex-col gap-2 p-0">
-                {selectedTeamDetails?.members?.map((m: any) => (
+                {teammatesOf(selectedTeamDetails).map((m: any) => (
                   <li key={m.id} className="rounded-bb-md bg-bb-surface-2 px-3 py-2">
                     <MemberLine user={m.user} size={32} />
                   </li>
@@ -291,6 +323,11 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
       </Sheet>
 
       <Card className="overflow-hidden">
+        {myStatus && (
+          <p role="status" className="m-0 border-b border-bb-border px-3 py-2.5 text-[0.95rem] font-semibold text-bb-text lg:px-4">
+            {myStatus}
+          </p>
+        )}
         <div className="flex flex-col gap-3 p-3 lg:flex-row lg:flex-wrap lg:items-center lg:p-4">
           <Button
             type="button"
@@ -301,13 +338,15 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
           >
             {/* « Gestion » pour l'organisateur et les commissaires ; pour les autres, la liste des inscrits */}
             <span className="font-bb-heading text-[0.95rem]">{canManage ? "Gestion des inscriptions" : "Inscrits"}</span>
-            <span className="text-sm text-bb-text-muted tabular-nums">({totalInscrits})</span>
+            <span className="text-sm text-bb-text-muted tabular-nums">
+              ({placesLabel(totalInscrits, tournament.maxParticipants ?? null, tournament.isTeam)}{totalWaiting > 0 && ` · ${totalWaiting} en attente`})
+            </span>
             <ChevronDown size={18} aria-hidden="true" className={cn("ml-auto shrink-0 text-bb-text-muted transition-transform lg:ml-1", isExpanded && "rotate-180")} />
           </Button>
 
           {tournament.registrationsLocked && (
-            <Badge variant="danger" className="self-start px-2 py-1 text-sm lg:self-center">
-              <Lock size={14} aria-hidden="true" /> Inscriptions closes
+            <Badge variant="neutral" className="self-start px-2 py-1 text-sm lg:self-center">
+              Inscriptions fermées
             </Badge>
           )}
 
@@ -420,6 +459,18 @@ export default function RegistrationModule({ tournament, currentUser, isOrganize
   );
 }
 
+/** Coéquipiers d'une équipe : ses membres sans le capitaine, qui en fait partie dans la base. */
+function teammatesOf(team: any): any[] {
+  return (team?.members ?? []).filter((m: any) => m.userId !== team.captainId);
+}
+
+/** Place dans la liste d'attente (1 pour la première), dans l'ordre où le serveur range les inscriptions. */
+function waitingRank(items: { id: string; status: string }[], id: string): number {
+  return items.filter((item) => item.status === "WAITING_LIST").findIndex((item) => item.id === id) + 1;
+}
+
+const rankText = (rank: number) => (rank === 1 ? "1re place" : `${rank}e place`);
+
 /** Avatar et pseudo d'un membre. */
 function MemberLine({ user, size }: { user: any; size: number }) {
   return (
@@ -438,9 +489,9 @@ function IndividualRegistrationMode({ tournament, canManage }: any) {
 
   return (
     <>
-      <RegistrationSection title="Pré-inscriptions" items={preReg} canManage={canManage} icon={<Clock size={16} />} />
-      <RegistrationSection title="Validées" items={registered} canManage={canManage} icon={<CheckCircle2 size={16} />} showPayment />
-      <RegistrationSection title="Liste d'attente" items={waiting} canManage={canManage} icon={<AlertCircle size={16} />} />
+      <RegistrationSection title="Pré-inscriptions" items={preReg} canManage={canManage} />
+      <RegistrationSection title="Validées" items={registered} canManage={canManage} showPayment />
+      <RegistrationSection title="Liste d'attente" items={waiting} canManage={canManage} />
     </>
   );
 }
@@ -453,13 +504,13 @@ function TeamRegistrationMode({ tournament, currentUser, canManage, onShowTeamDe
 
   return (
     <>
-      <RegistrationSection title="Pré-inscriptions" items={preRegTeams} type="TEAM" canManage={canManage} icon={<Clock size={16} />} onShowTeamDetails={onShowTeamDetails} />
-      <RegistrationSection title="Validées" items={registeredTeams} type="TEAM" canManage={canManage} icon={<CheckCircle2 size={16} />} showPayment onShowTeamDetails={onShowTeamDetails} />
-      <RegistrationSection title="Liste d'attente" items={waitingTeams} type="TEAM" canManage={canManage} icon={<AlertCircle size={16} />} onShowTeamDetails={onShowTeamDetails} />
+      <RegistrationSection title="Pré-inscriptions" items={preRegTeams} type="TEAM" canManage={canManage} onShowTeamDetails={onShowTeamDetails} />
+      <RegistrationSection title="Validées" items={registeredTeams} type="TEAM" canManage={canManage} showPayment onShowTeamDetails={onShowTeamDetails} />
+      <RegistrationSection title="Liste d'attente" items={waitingTeams} type="TEAM" canManage={canManage} onShowTeamDetails={onShowTeamDetails} />
 
       <section>
-        <SectionTitle icon={<Users size={16} />} title="Mercenaires" count={mercenaries.length} />
-        {mercenaries.length === 0 && <p className="m-0 text-sm text-bb-text-muted italic">Aucun mercenaire disponible</p>}
+        <SectionTitle title="Mercenaires" count={mercenaries.length} />
+        {mercenaries.length === 0 && <p className="m-0 text-sm text-bb-text-muted">Pas de mercenaire pour l&apos;instant.</p>}
         <ul className="m-0 flex list-none flex-wrap gap-2 p-0">
           {mercenaries.map((m: any) => (
             <li key={m.id} className="flex items-center gap-2 rounded-full border border-bb-border bg-bb-surface-2 py-1 pr-3 pl-1 text-sm">
@@ -474,21 +525,21 @@ function TeamRegistrationMode({ tournament, currentUser, canManage, onShowTeamDe
   );
 }
 
-function SectionTitle({ icon, title, count }: { icon: ReactNode; title: string; count: number }) {
+/** Intitulé d'une liste, sans icône (DESIGN.md : pas d'icône devant chaque titre). */
+function SectionTitle({ title, count }: { title: string; count: number }) {
   return (
-    <h3 className="mb-2 flex items-center gap-2 text-sm font-bold text-bb-text">
-      <span aria-hidden="true" className="text-bb-text-muted">{icon}</span>
-      {title} ({count})
+    <h3 className="mb-2 font-bb-heading text-sm text-bb-text">
+      {title} <span className="text-bb-text-muted tabular-nums">({count})</span>
     </h3>
   );
 }
 
-function RegistrationSection({ title, items, type = "PLAYER", canManage, icon, showPayment, onShowTeamDetails }: any) {
+function RegistrationSection({ title, items, type = "PLAYER", canManage, showPayment, onShowTeamDetails }: any) {
   return (
     <section>
-      <SectionTitle icon={icon} title={title} count={items.length} />
+      <SectionTitle title={title} count={items.length} />
       {items.length === 0 ? (
-        <p className="m-0 text-sm text-bb-text-muted italic">Aucun</p>
+        <p className="m-0 text-sm text-bb-text-muted">Personne pour l&apos;instant.</p>
       ) : (
         <ul className="m-0 list-none overflow-hidden rounded-bb-md border border-bb-border p-0">
           {items.map((item: any) => (
@@ -523,10 +574,12 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
     });
   };
 
-  const statusButton = (status: string, label: string, icon: ReactNode) =>
+  // Boutons avec leur texte (revue 221 : les seules icônes ne se comprenaient pas) ; le libellé complet reste pour
+  // les lecteurs d'écran, qui entendent le nom du coach ou de l'équipe
+  const statusButton = (status: string, text: string, label: string) =>
     item.status !== status && (
-      <Button type="button" variant="secondary" size="tap-icon" title={label} aria-label={label} onClick={() => moveStatus(status)} disabled={isPending}>
-        {icon}
+      <Button type="button" variant="secondary" size="tap" className="px-3" aria-label={label} onClick={() => moveStatus(status)} disabled={isPending}>
+        {text}
       </Button>
     );
 
@@ -549,7 +602,7 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
             <span className="text-[0.95rem] font-bold break-words text-bb-accent-text">{item.name}</span>
             <span className="text-sm break-words text-bb-text-muted">
               Capitaine : {item.captain?.name}
-              {item.members?.length > 0 && <> · Coéquipiers : {item.members.map((m: any) => m.user?.name).join(", ")}</>}
+              {teammatesOf(item).length > 0 && <> · Coéquipiers : {teammatesOf(item).map((m: any) => m.user?.name).join(", ")}</>}
             </span>
           </Button>
         )}
@@ -565,15 +618,18 @@ function RegistrationItem({ item, type, canManage, showPayment, onShowTeamDetail
               aria-label={`Statut de paiement de ${name}`}
               className="w-auto min-w-0 flex-1 sm:flex-none"
             >
-              <option value="NOT_PAID">🚫 En attente</option>
-              <option value="PAID">✅ Payé</option>
-              <option value="AT_TOURNAMENT">🏠 Sur place</option>
-              <option value="GUEST">🎁 Invité</option>
+              {/* Toutes les valeurs de PaymentStatus (schema.prisma) : une valeur absente de la liste s'affichait mal et se
+                  perdait au premier changement (revue 221, « Dépannage ») */}
+              <option value="NOT_PAID">Non payé</option>
+              <option value="PAID">Payé</option>
+              <option value="AT_TOURNAMENT">Paiera sur place</option>
+              <option value="GUEST">Invité</option>
+              <option value="DEPANNAGE">Dépannage</option>
             </Select>
           )}
-          {statusButton("REGISTERED", `Valider l'inscription de ${name}`, <CheckCircle2 size={18} aria-hidden="true" className="text-bb-success-text" />)}
-          {statusButton("PRE_REGISTERED", `Remettre ${name} en pré-inscription`, <Clock size={18} aria-hidden="true" />)}
-          {statusButton("WAITING_LIST", `Mettre ${name} en liste d'attente`, <ListOrdered size={18} aria-hidden="true" className="text-bb-warning-text" />)}
+          {statusButton("REGISTERED", "Valider", `Valider l'inscription de ${name}`)}
+          {statusButton("PRE_REGISTERED", "Pré-inscription", `Remettre ${name} en pré-inscription`)}
+          {statusButton("WAITING_LIST", "Liste d'attente", `Mettre ${name} en liste d'attente`)}
         </div>
       )}
     </li>

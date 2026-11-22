@@ -33,8 +33,8 @@ const EDITOR_TOPIC = "e2e_bugf_editeur";
 const TOURNAMENT = { id: "e2e_bugf_tournoi", topic: "e2e_bugf_tournoi_topic" };
 
 const pagedPostId = (n: number) => `e2e_bugf_p${String(n).padStart(2, "0")}`;
-const QUICK_REPLY_PLACEHOLDER = "Écris ta réponse ici...";
-const REPLY_PLACEHOLDER = "Tape ta réponse ici...";
+const QUICK_REPLY_PLACEHOLDER = "Écris ta réponse…";
+const REPLY_PLACEHOLDER = "Écris ta réponse…";
 
 /** Supprime tout ce que ce fichier a créé (y compris un reste d'un lancement interrompu). */
 async function cleanUp() {
@@ -129,7 +129,7 @@ test.describe("Carte 110 : citation d'un message modéré ou supprimé", () => {
     await expect(editor).toHaveValue(new RegExp(`^\\[quote=${AUTHOR.id}\\|${QUOTED_POST}\\|`));
     await editor.press("End");
     await editor.pressSequentially(" Réponse avec citation");
-    await visibleButton(page, "Envoyer ma réponse").click();
+    await visibleButton(page, "Publier ma réponse").click();
 
     let replyId = "";
     await expect
@@ -222,11 +222,11 @@ test.describe("Carte 113 : appui juste après une saisie, sur téléphone", () =
     await expect(page.locator("html")).not.toHaveAttribute("data-typing", "true");
   });
 
-  test("[membre] sujet : saisir puis appuyer aussitôt sur « Envoyer ma réponse »", async ({ page }) => {
+  test("[membre] sujet : saisir puis appuyer aussitôt sur « Publier ma réponse »", async ({ page }) => {
     await loginAs(page, READER.id);
     await page.goto(`/forum/topic/${EDITOR_TOPIC}?page=1`, { waitUntil: "networkidle" });
     await page.getByPlaceholder(QUICK_REPLY_PLACEHOLDER).fill("Réponse envoyée du premier coup");
-    await visibleButton(page, "Envoyer ma réponse").click();
+    await visibleButton(page, "Publier ma réponse").click();
     await expect(page.getByText("Réponse envoyée du premier coup", { exact: true })).toBeVisible({ timeout: 20_000 });
   });
 });

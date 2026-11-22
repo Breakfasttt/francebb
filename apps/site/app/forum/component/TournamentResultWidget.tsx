@@ -1,16 +1,16 @@
 "use client";
 
 /**
- * Bloc « Résultats du tournoi » du sujet d'un tournoi terminé (refonte, carte 089, ADR 0006). Replié par défaut ; une
- * fois déplié, il montre le classement et, si des rondes ont été saisies, les matchs ronde par ronde (onglets
+ * Bloc « Résultats du tournoi » du sujet d'un tournoi terminé (refonte, carte 089, ADR 0006). Déplié par défaut (revue
+ * 221 : c'est ce qu'on vient voir quand le tournoi est fini) ; il montre le classement et, si des rondes ont été saisies, les matchs ronde par ronde (onglets
  * « Classement » et « Matchs »). Sans résultat publié, il n'apparaît que pour qui peut les publier, avec le lien
  * « Publier les résultats ». Le classement est en lignes : sur téléphone, le roster passe sous le nom du coach.
- * Pour un tournoi de la Coupe de France, un bandeau sous le titre dit si les résultats sont validés par la modération
+ * Pour un tournoi du Championnat de France, un bandeau sous le titre dit si les résultats sont validés par la modération
  * ou en attente, avec le bouton de validation pour les modérateurs (CdfValidationPanel, carte 162).
  */
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { ChevronDown, ChevronLeft, ChevronRight, Edit2, Swords, Trophy } from 'lucide-react';
+import { ChevronDown, ChevronLeft, ChevronRight, Trophy } from 'lucide-react';
 import { Avatar, Button, Card, Tabs, TabsContent, TabsList, TabsTrigger, cn } from "@bbfrance/ui";
 import CdfValidationPanel from "@/app/forum/component/CdfValidationPanel";
 
@@ -54,7 +54,7 @@ interface TournamentResultWidgetProps {
   rounds: TournamentRound[];
   canEdit: boolean;
   /**
-   * Tournoi de la Coupe de France seulement (carte 162) : date de validation des résultats par la modération (vide
+   * Tournoi du Championnat de France seulement (carte 162) : date de validation des résultats par la modération (vide
    * tant qu'ils sont en attente) et droit de les valider (modérateurs et administrateurs).
    */
   cdf?: { validatedAt: Date | string | null; canValidate: boolean };
@@ -112,7 +112,7 @@ export function ResultsRanking({ results }: { results: TournamentResult[] }) {
 
 export default function TournamentResultWidget({ tournamentId, results, rounds, canEdit, cdf }: TournamentResultWidgetProps) {
   const [currentRoundIndex, setCurrentRoundIndex] = useState(0);
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(true);
 
   const hasResults = results && results.length > 0;
   const hasRounds = rounds && rounds.length > 0;
@@ -183,16 +183,13 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
           aria-expanded={isExpanded}
           onClick={() => setIsExpanded(!isExpanded)}
         >
-          <Trophy size={18} aria-hidden="true" className="text-bb-rank" />
-          <span>Résultats du tournoi</span>
+          <span className="font-bb-heading text-[0.95rem]">Résultats du tournoi</span>
           <span className="text-sm font-normal text-bb-text-muted">{hasResults ? `(${results.length} participants)` : "(en attente)"}</span>
           <ChevronDown size={18} aria-hidden="true" className={cn("ml-auto shrink-0 text-bb-text-muted transition-transform", isExpanded && "rotate-180")} />
         </Button>
         {canEdit && hasResults && (
-          <Button asChild variant="secondary" size="tap" className="shrink-0 px-3 max-lg:w-11 max-lg:px-0">
-            <Link href={resultsHref} title="Modifier les résultats">
-              <Edit2 size={16} aria-hidden="true" /> <span className="max-lg:sr-only">Modifier</span>
-            </Link>
+          <Button asChild variant="secondary" size="tap" className="shrink-0 px-3">
+            <Link href={resultsHref}>Modifier les résultats</Link>
           </Button>
         )}
       </div>
@@ -207,28 +204,33 @@ export default function TournamentResultWidget({ tournamentId, results, rounds, 
       {isExpanded && (
         <div className="border-t border-bb-border p-3 lg:p-4">
           {!hasResults ? (
-            <div className="flex flex-col items-center gap-3 py-4 text-center">
-              <Trophy size={36} aria-hidden="true" className="text-bb-text-muted" />
-              <p className="m-0 text-[0.95rem] text-bb-text-muted">Le tournoi est terminé ! Les résultats n&apos;ont pas encore été publiés.</p>
+            <div className="flex flex-col items-start gap-3">
+              <p className="m-0 text-[0.95rem] text-bb-text-muted">Le tournoi est terminé. Les résultats n&apos;ont pas encore été publiés.</p>
               {canEdit && (
                 <Button asChild variant="primary" size="tap">
-                  <Link href={resultsHref}>
-                    <Edit2 size={16} aria-hidden="true" /> Publier les résultats
-                  </Link>
+                  <Link href={resultsHref}>Publier les résultats</Link>
                 </Button>
               )}
             </div>
           ) : hasRounds ? (
             <Tabs defaultValue="ranking" className="flex flex-col gap-3">
               <TabsList aria-label="Résultats">
-                <TabsTrigger value="ranking"><Trophy size={16} aria-hidden="true" /> Classement</TabsTrigger>
-                <TabsTrigger value="matches"><Swords size={16} aria-hidden="true" /> Matchs</TabsTrigger>
+                <TabsTrigger value="ranking">Classement</TabsTrigger>
+                <TabsTrigger value="matches">Matchs</TabsTrigger>
               </TabsList>
               <TabsContent value="ranking">{ranking}</TabsContent>
               <TabsContent value="matches">{matches}</TabsContent>
             </Tabs>
           ) : (
             ranking
+          )}
+          {/* Page des résultats seule, à partager (revue 221 : elle n'avait aucun lien) */}
+          {hasResults && (
+            <p className="m-0 mt-3 text-sm">
+              <Link href={`${resultsHref}/view`} className="font-semibold text-bb-accent-text hover:underline max-lg:inline-flex max-lg:min-h-11 max-lg:items-center">
+                Ouvrir les résultats dans une page à part
+              </Link>
+            </p>
           )}
         </div>
       )}

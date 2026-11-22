@@ -2,6 +2,7 @@ import { getQuoteStatusMap } from "@/app/forum/actions";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import { TopicVisitorInvite } from "@/app/forum/component/ForumVisitorInvite";
 import MarkAsRead from "@/app/forum/component/MarkAsRead";
+import EditRefusedNotice from "@/app/forum/component/EditRefusedNotice";
 import PostItem from "@/app/forum/component/PostItem";
 import QuickReply from "@/app/forum/component/QuickReply";
 import RegistrationModule from "@/app/forum/component/RegistrationModule";
@@ -12,7 +13,7 @@ import { getActiveSession } from "@/lib/authGuard";
 import { getForumAccess, canAccessForum, forumAccessWhere } from "@/lib/forumAccess";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import { prisma } from "@/lib/prisma";
-import { effectiveReadPosition } from "@/lib/forumReadPosition";
+import { effectiveReadPosition, firstUnreadPostId, type ReadPosition } from "@/lib/forumReadPosition";
 import { forumPostHrefFor, TOPIC_POSTS_PER_PAGE } from "@/lib/forumPostLink";
 import { isTopicClosedFor } from "@/lib/forumWriteRules";
 import { canEditPost, canReplyToTopic } from "@/lib/forumRights";
@@ -29,9 +30,9 @@ import {
   withPaymentStatus
 } from "@/lib/forumPostPrivacy";
 import { getBlockedUsersIds } from "@/app/profile/actions";
-import { Lock as LockIcon } from "lucide-react";
 import { Badge, Card } from "@bbfrance/ui";
 import Link from "next/link";
+import { Fragment } from "react";
 import BackButton from "@/common/components/BackButton/BackButton";
 import { notFound, redirect } from "next/navigation";
 // Styles des blocs BBCode (spoiler, accordéon, galerie) et animation du nouveau message, partagés par le forum
@@ -50,9 +51,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   // Récupérer les blocages de l'utilisateur courant
   const blockedUserIds = await getBlockedUsersIds();
 
-  // Sans numéro de page demandé, le coach est envoyé au premier message qu'il n'a pas lu (carte 166) : celui qui suit sa
-  // position de lecture dans ce sujet ou, s'il ne l'a jamais ouvert, sa date « tout est lu avant le… »
-  if (!pageStr && currentUserId) {
+  // Position de lecture du membre dans ce sujet (carte 166) : celle de sa dernière lecture ou, s'il ne l'a jamais
+  // ouvert, sa date « tout est lu avant le… ». Elle sert à l'envoyer sur son premier message non lu, puis à placer le
+  // repère « Nouveaux messages » (lue avant que la page ne marque ces messages comme lus).
+  let position: ReadPosition | null = null;
+  if (currentUserId) {
     const [topicView, reader] = await Promise.all([
       prisma.topicView.findUnique({
         where: { userId_topicId: { userId: currentUserId, topicId: id } },
@@ -60,10 +63,14 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       }),
       prisma.user.findUnique({ where: { id: currentUserId }, select: { forumReadAllAt: true } })
     ]);
-    const position = effectiveReadPosition(
+    position = effectiveReadPosition(
       topicView && { at: topicView.lastReadPostAt, postId: topicView.lastPostId },
       reader?.forumReadAllAt ?? new Date(0)
     );
+  }
+
+  // Sans numéro de page demandé, le coach est envoyé au premier message qu'il n'a pas lu (carte 166)
+  if (!pageStr && position) {
 
     const firstUnread = await prisma.post.findFirst({
       where: {
@@ -146,10 +153,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
     // Liste des forums : uniquement pour les fenêtres « Déplacer » et « Scinder » (modérateurs)
     isUserModerator
       ? prisma.forum.findMany({
-          // Seuls les forums accessibles au rôle du modérateur peuvent recevoir le sujet
+          // Seuls les forums accessibles au rôle du modérateur peuvent recevoir le sujet ; rangés par catégorie puis
+          // dans l'ordre du forum, pour que la fenêtre « Scinder » les groupe par catégorie
           where: forumAccessWhere(roles),
-          orderBy: { name: "asc" },
-          select: { id: true, name: true, isTournamentForum: true }
+          orderBy: [{ category: { order: "asc" } }, { order: "asc" }, { name: "asc" }],
+          select: { id: true, name: true, isTournamentForum: true, category: { select: { name: true } } }
         })
       : []
   ]);
@@ -201,6 +209,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       date: t.date,
       endDate: t.endDate,
       isTeam: t.isTeam,
+      maxParticipants: t.maxParticipants,
       coachsPerTeam: t.coachsPerTeam,
       isFinished: t.isFinished,
       isCancelled: t.isCancelled,
@@ -216,6 +225,9 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const viewer = { id: currentUserId, isModerator: isUserModerator };
   const posts = topic.posts.map(p => hidePostContent(p, viewer));
   const firstPost = firstPostForTournament ? hidePostContent(firstPostForTournament, viewer) : null;
+
+  // Repère « Nouveaux messages » : devant le premier message non lu de la page (pas devant le premier du sujet)
+  const newMarkerPostId = position ? firstUnreadPostId(posts, position, safeCurrentPage === 1 ? posts[0]?.id : null) : null;
 
   const postContents = posts.map(p => p.content);
   const quoteStatusMap = await getQuoteStatusMap(postContents);
@@ -254,6 +266,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   return (
     <div className="mx-auto w-full max-w-[1760px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6 xl:px-8">
       <MarkAsRead topicId={id} shownPostId={posts[posts.length - 1]?.id} />
+      <EditRefusedNotice />
 
       <TopicToolsProvider
         topicId={id}
@@ -265,7 +278,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         isLocked={topic.isLocked}
         isForumLocked={topic.forum.isLocked}
         lastPostId={lastPost?.id || ""}
-        allForums={allForums}
+        allForums={allForums.map(({ category, ...forum }) => ({ ...forum, categoryName: category?.name ?? null }))}
         forumId={topic.forumId}
         topicTitle={topic.title}
         authorId={topic.authorId}
@@ -285,7 +298,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
           <ForumBreadcrumbs items={breadcrumbs} className="mb-0" />
         </div>
 
-        {/* En-tête du sujet : retour, titre, badge « ARCHIVÉ », nom du forum et, sur téléphone, les outils */}
+        {/* En-tête du sujet : retour, titre, badges « ARCHIVÉ » et « VERROUILLÉ », nom du forum et, sur téléphone, les outils */}
         <header className="flex items-start gap-3 pt-3 pb-4 lg:pt-5">
           <BackButton title="Retour au forum" className="lg:hidden" />
           <div className="min-w-0 flex-1">
@@ -294,6 +307,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
               {topic.isArchived && (
                 <Badge variant="neutral" className="ml-2 align-middle">
                   ARCHIVÉ
+                </Badge>
+              )}
+              {topic.isLocked && (
+                <Badge variant="neutral" className="ml-2 align-middle">
+                  VERROUILLÉ
                 </Badge>
               )}
             </h1>
@@ -374,8 +392,14 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
             {/* Liste des messages de la page courante */}
             {posts.map((post, index) => (
+              <Fragment key={post.id}>
+              {post.id === newMarkerPostId && (
+                <div id="nouveaux-messages" role="separator" aria-label="Nouveaux messages" className="flex scroll-mt-20 items-center gap-3 text-sm font-semibold text-bb-unread">
+                  <span aria-hidden="true">Nouveaux messages</span>
+                  <span aria-hidden="true" className="h-px flex-1 bg-bb-unread" />
+                </div>
+              )}
               <PostItem
-                key={post.id}
                 post={post}
                 index={skip + index}
                 topicId={id}
@@ -393,6 +417,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 canEdit={canEditPost(viewer, topicClosed, post.authorId)}
                 topicHasReplies={totalPostCount > 1}
               />
+              </Fragment>
             ))}
 
             {/* Pagination en bas de la liste, aussi sur téléphone : la barre du bas s'efface près de la réponse */}
@@ -408,15 +433,17 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
             ) : (
               // Pas d'ancre « quick-reply-area » ici : « Citer » et « Répondre » la cherchent pour y écrire une
               // réponse, et la trouver sur cet encart les faisait seulement défiler jusqu'à lui (carte 111)
-              <Card className="flex scroll-mt-20 flex-col items-center gap-2 px-4 py-8 text-center">
-                <LockIcon size={32} aria-hidden="true" className="text-bb-danger-text" />
-                <h2 className="text-lg font-bold text-bb-danger-text">
-                  {topic.isArchived && !topic.isLocked && !topic.forum.isLocked ? "Sujet archivé" : "Sujet verrouillé"}
+              // Encart sobre, aligné à gauche (DESIGN.md : pas de grande icône centrée)
+              <Card className="flex scroll-mt-20 flex-col gap-1 border-l-[3px] border-l-bb-border px-4 py-3">
+                <h2 className="text-base font-bold text-bb-text">
+                  {topic.isArchived && !topic.isLocked && !topic.forum.isLocked ? "Sujet archivé" : topic.forum.isLocked && !topic.isLocked ? "Forum verrouillé" : "Sujet verrouillé"}
                 </h2>
-                <p className="m-0 max-w-[50ch] text-sm text-bb-text-muted">
+                <p className="m-0 max-w-[75ch] text-sm text-bb-text-muted">
                   {topic.isArchived && !topic.isLocked && !topic.forum.isLocked
                     ? "Tu ne peux plus répondre ni réagir à ce sujet car il a été archivé par la modération."
-                    : "Tu ne peux plus répondre à ce sujet car il a été verrouillé par la modération."}
+                    : topic.forum.isLocked && !topic.isLocked
+                      ? "Ce forum est verrouillé : seule la modération peut encore y répondre."
+                      : "Tu ne peux plus répondre à ce sujet car il a été verrouillé par la modération."}
                 </p>
               </Card>
             )}

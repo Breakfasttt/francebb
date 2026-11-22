@@ -10,7 +10,7 @@ import { AtSign, Bell, Mail, MessageSquareReply, Trophy } from "lucide-react";
 import { Avatar, Card, PageNav, cn } from "@bbfrance/ui";
 import { parseInlineBBCode } from "@/lib/bbcode";
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
-import { UnreadDot, frenchDateTime } from "@/app/forum/component/ForumListItems";
+import RelativeTime from "@/common/components/RelativeTime/RelativeTime";
 import { getNotifications } from "./actions";
 import MarkAllNotificationsReadButton from "./component/MarkAllNotificationsReadButton";
 
@@ -98,9 +98,10 @@ export default async function NotificationsPage({ searchParams }: { searchParams
                         <span className={cn("text-[0.95rem] leading-snug break-words", isUnread ? "font-medium" : "text-bb-text-muted")}>
                           <NotificationText notification={notification} />
                         </span>
-                        <span className="text-sm text-bb-text-muted">{frenchDateTime(notification.createdAt)}</span>
+                        <RelativeTime date={notification.createdAt} className="text-sm text-bb-text-muted tabular-nums" />
                       </span>
-                      {isUnread && <UnreadDot className="mt-2" />}
+                      {/* Point bleu du non-lu (DESIGN.md) ; « Non lue » pour les lecteurs d'écran et au survol (carte 221) */}
+                      {isUnread && <span role="img" aria-label="Non lue" title="Non lue" className="mt-2 inline-block size-2.5 shrink-0 rounded-full bg-bb-unread" />}
                     </a>
                   </li>
                 );

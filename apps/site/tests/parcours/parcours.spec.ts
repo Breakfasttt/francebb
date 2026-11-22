@@ -25,6 +25,8 @@ import { measure } from "../e2e/mobileMeasure";
 
 /** Administrateur, article et notification créés par le parcours (le jeu de données de test n'en contient pas). */
 const ADMIN_ID = "e2e_parcours_admin";
+/** Carte 221 : Super Admin du parcours, pour voir les écrans avec tous les droits. */
+const SUPERADMIN_ID = "e2e_parcours_superadmin";
 const ARTICLE_ID = "e2e_parcours_article";
 const NOTIFICATION_ID = "e2e_parcours_notification";
 
@@ -36,7 +38,34 @@ const GROUPS: { who: string; userId: string | null; paths: string[] }[] = [
   {
     who: "visiteur",
     userId: null,
-    paths: ["/", "/auth/login", "/tournois", "/jouer", "/forum"],
+    paths: ["/", "/auth/login", "/tournois", "/jouer", "/forum", "/articles", "/ligues", "/classement", "/media", "/mentions-legales"],
+  },
+  // Carte 221 : un coach ordinaire voit les écrans d'écriture (sujet, article, tournoi, ligue, ressource) sans outils de
+  // modération ; un banni ne voit que la page des bannis.
+  {
+    who: "coach",
+    userId: E2E.coachId,
+    paths: [
+      "/",
+      "/forum",
+      `/forum/topic/${E2E.topicId}`,
+      `/forum/topic/${E2E.topicId}/reply`,
+      `/forum/new-topic?forumId=${E2E.forumId}`,
+      "/forum/new-tournament",
+      "/tournois",
+      "/articles/create",
+      "/ligues/create",
+      "/ressources/submit",
+      "/messagerie",
+      "/notifications",
+      "/profile",
+      "/membres",
+    ],
+  },
+  {
+    who: "banni",
+    userId: E2E.bannedId,
+    paths: ["/banned"],
   },
   {
     who: "modérateur",
@@ -68,6 +97,11 @@ const GROUPS: { who: string; userId: string | null; paths: string[] }[] = [
     userId: ADMIN_ID,
     paths: ["/administration", "/statistiques?admin"],
   },
+  {
+    who: "super admin",
+    userId: SUPERADMIN_ID,
+    paths: ["/membres", "/administration", "/moderation"],
+  },
 ];
 
 /**
@@ -89,6 +123,16 @@ test.beforeAll(async () => {
       where: { name: "ADMIN" },
       update: {},
       create: { name: "ADMIN", label: "Administrateur", power: 90, isBaseRole: true },
+    });
+    await prisma.roleConfig.upsert({
+      where: { name: "SUPERADMIN" },
+      update: {},
+      create: { name: "SUPERADMIN", label: "Super Admin", power: 100, isBaseRole: true },
+    });
+    await prisma.user.upsert({
+      where: { id: SUPERADMIN_ID },
+      update: { role: "SUPERADMIN" },
+      create: { id: SUPERADMIN_ID, name: "Super Parcours", email: "super-parcours@e2e.test", role: "SUPERADMIN", hasFinishedOnboarding: true },
     });
     await prisma.user.upsert({
       where: { id: ADMIN_ID },

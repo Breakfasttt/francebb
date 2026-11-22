@@ -132,6 +132,17 @@
   background-size: 8px 8px;
   user-select: none;
   transition: opacity 0.4s ease, visibility 0.4s;
+  /* Le masque est un bouton (lecteurs d'écran, clavier) : il couvre tout le bloc, marge d'un pixel comprise */
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.bb-spoiler-mask:focus-visible {
+  outline: 2px solid var(--bb-focus);
+  outline-offset: 2px;
 }
 
 .bb-spoiler-box.revealed > .bb-spoiler-mask {

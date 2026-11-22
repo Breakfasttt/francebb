@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { format, formatDistanceToNow, isToday } from "date-fns";
 import { fr } from "date-fns/locale";
 import { Users } from "lucide-react";
-import { Avatar, CountBadge, Skeleton, cn } from "@bbfrance/ui";
+import { Avatar, Button, CountBadge, Skeleton, cn } from "@bbfrance/ui";
 import { getConversations } from "../actions";
 import { conversationTitle, plainPreview } from "./conversationText";
 
@@ -29,22 +29,34 @@ export default function ConversationList({ activeId, version }: ConversationList
   const currentUserId = session?.user?.id;
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [loading, setLoading] = useState(true);
+  // Échec de lecture : à ne pas confondre avec une liste vide (carte 221)
+  const [failed, setFailed] = useState(false);
+  const [retry, setRetry] = useState(0);
 
   // Rechargée à chaque changement signalé, dont l'ouverture d'une conversation (ses non-lus disparaissent)
   useEffect(() => {
     let cancelled = false;
     getConversations()
       .then((data) => {
-        if (!cancelled && data) setConversations(data.conversations);
+        if (cancelled) return;
+        if (data) {
+          setConversations(data.conversations);
+          setFailed(false);
+        } else {
+          setFailed(true);
+        }
       })
-      .catch((error) => console.error(error))
+      .catch((error) => {
+        console.error(error);
+        if (!cancelled) setFailed(true);
+      })
       .finally(() => {
         if (!cancelled) setLoading(false);
       });
     return () => {
       cancelled = true;
     };
-  }, [version]);
+  }, [version, retry]);
 
   if (loading) {
     return (
@@ -58,6 +70,25 @@ export default function ConversationList({ activeId, version }: ConversationList
             </div>
           </div>
         ))}
+      </div>
+    );
+  }
+
+  if (failed && conversations.length === 0) {
+    return (
+      <div role="alert" className="flex flex-col items-start gap-3 px-3 py-4">
+        <p className="m-0 text-bb-text">Impossible de charger tes conversations.</p>
+        <Button
+          type="button"
+          variant="secondary"
+          size="tap"
+          onClick={() => {
+            setLoading(true);
+            setRetry((n) => n + 1);
+          }}
+        >
+          Réessayer
+        </Button>
       </div>
     );
   }
@@ -80,6 +111,8 @@ export default function ConversationList({ activeId, version }: ConversationList
         const isOneOnOne = !conv.isGroup && conv.participants.length === 2;
         const title = conversationTitle(conv, currentUserId);
         const isActive = conv.id === activeId;
+        // Date du dernier message ; à défaut (conversation sans message), celle de la conversation
+        const lastDate = new Date(lastMsg?.createdAt ?? conv.updatedAt);
 
         return (
           <li key={conv.id} className="border-b border-bb-border last:border-b-0">
@@ -112,11 +145,11 @@ export default function ConversationList({ activeId, version }: ConversationList
                   <span className={cn("min-w-0 flex-1 truncate text-[1.02rem]", unreadCount > 0 ? "font-bold" : "font-semibold")}>{title}</span>
                   {/* Heure si c'est aujourd'hui, sinon la date ; la durée écoulée reste lisible au survol */}
                   <time
-                    dateTime={new Date(conv.updatedAt).toISOString()}
-                    title={formatDistanceToNow(new Date(conv.updatedAt), { addSuffix: true, locale: fr })}
-                    className="shrink-0 text-sm text-bb-text-muted"
+                    dateTime={lastDate.toISOString()}
+                    title={formatDistanceToNow(lastDate, { addSuffix: true, locale: fr })}
+                    className="shrink-0 text-sm text-bb-text-muted tabular-nums"
                   >
-                    {isToday(new Date(conv.updatedAt)) ? format(new Date(conv.updatedAt), "HH:mm") : format(new Date(conv.updatedAt), "d MMM", { locale: fr })}
+                    {isToday(lastDate) ? format(lastDate, "HH:mm") : format(lastDate, "d MMM", { locale: fr })}
                   </time>
                 </span>
                 {!isOneOnOne && (

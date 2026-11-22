@@ -12,11 +12,11 @@ import Link from "next/link";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, type ComponentProps } from "react";
 import { UserX } from "lucide-react";
-import { Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
+import { Button, Card, EmptyState, LinkTabs, Skeleton } from "@bbfrance/ui";
 
 import ForumListHeader from "@/app/forum/component/ForumListHeader";
-import { getUserActivity, getUserStats, getBlockedUsersIds, getRoleLabels } from "@/app/profile/actions";
-import { isModerator as checkIsModerator } from "@/lib/roles";
+import { getBanReason, getUserActivity, getUserStats, getBlockedUsersIds, getRoleLabels, hasBlockedMe } from "@/app/profile/actions";
+import { canBanMember, isModerator as checkIsModerator } from "@/lib/roles";
 import ProfileActivity from "@/app/profile/component/ProfileActivity";
 import ProfileSidebar from "@/app/profile/component/ProfileSidebar";
 import ProfileArticles from "@/app/profile/component/ProfileArticles";
@@ -46,6 +46,11 @@ export default function SpyProfilePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- messages renvoyés par getUserActivity
   const [activities, setActivities] = useState<any[]>([]);
   const [isBlocked, setIsBlocked] = useState(false);
+  const [blockedMe, setBlockedMe] = useState(false);
+  // Motif du bannissement, lu seulement pour un modérateur (l'action le refuse aux autres)
+  const [banReason, setBanReason] = useState<string | null>(null);
+  // Fiche absente (404) ou lecture en échec : deux messages différents (carte 221)
+  const [loadState, setLoadState] = useState<"ok" | "notFound" | "error">("ok");
   const [roleLabels, setRoleLabels] = useState<Record<string, string>>({});
 
   /** Charge la fiche du membre, ses chiffres, son activité et l'état du blocage. */
@@ -53,14 +58,19 @@ export default function SpyProfilePage() {
     const response = await fetch(`/api/users/${id}`);
     if (!response.ok) {
       setUser(null);
+      setLoadState(response.status === 404 ? "notFound" : "error");
       return;
     }
-    setUser(await response.json());
+    const profile = await response.json();
+    setUser(profile);
+    setLoadState("ok");
+    setBanReason(profile.isBanned && checkIsModerator(session?.user?.role) ? await getBanReason(id) : null);
     setStats(await getUserStats(id));
     setActivities(await getUserActivity(id));
     if (session?.user?.id) {
-      const blockedIds = await getBlockedUsersIds();
+      const [blockedIds, blocksMe] = await Promise.all([getBlockedUsersIds(), hasBlockedMe(id)]);
       setIsBlocked(blockedIds.includes(id));
+      setBlockedMe(blocksMe);
     }
   }
 
@@ -80,6 +90,7 @@ export default function SpyProfilePage() {
         setRoleLabels(await getRoleLabels());
       } catch (error) {
         console.error("Error fetching spy profile data:", error);
+        setLoadState((state) => (state === "notFound" ? state : "error"));
       } finally {
         setLoading(false);
       }
@@ -107,7 +118,6 @@ export default function SpyProfilePage() {
   const header = (
     <ForumListHeader
       title={user ? <>Profil de {user.name}</> : "Profil d'un membre"}
-      subtitle={user ? `Consulte le profil de ${user.name}` : undefined}
       backHref="/"
       backTitle="Retour à l'accueil"
     />
@@ -128,12 +138,29 @@ export default function SpyProfilePage() {
     return (
       <div className={PROFILE_PAGE_CLASS}>
         {header}
-        <Card><EmptyState icon={<UserX size={32} />} title="Utilisateur introuvable." /></Card>
+        <Card>
+          {loadState === "notFound" ? (
+            <EmptyState icon={<UserX size={32} />} title="Membre introuvable">Ce compte n&apos;existe pas ou a été supprimé.</EmptyState>
+          ) : (
+            <EmptyState
+              title="Impossible de charger ce profil"
+              action={
+                <Button type="button" variant="secondary" size="tap" onClick={() => window.location.reload()}>
+                  Réessayer
+                </Button>
+              }
+            >
+              Vérifie ta connexion, puis réessaie.
+            </EmptyState>
+          )}
+        </Card>
       </div>
     );
   }
 
   const isModerator = checkIsModerator(session?.user?.role);
+  // Même règle que /membres : rang strictement inférieur (Super Admin : tout autre compte), jamais soi-même
+  const canBan = !!session?.user?.role && canBanMember(session.user.role, user.role || "COACH", session.user.id === user.id, user.id);
   const tabs = [
     { label: "Activité du forum", href: `/spy/${id}?tab=activity`, active: activeTab === "activity" },
     { label: "Articles", href: `/spy/${id}?tab=articles`, active: activeTab === "articles" },
@@ -149,8 +176,11 @@ export default function SpyProfilePage() {
           postCount={stats.postCount}
           isOwnProfile={false}
           isModerator={isModerator}
+          canBan={canBan}
+          banReason={banReason}
           roleLabels={roleLabels}
           isBlockedInitial={isBlocked}
+          blockedMe={blockedMe}
           onRefresh={refreshData}
         />
 

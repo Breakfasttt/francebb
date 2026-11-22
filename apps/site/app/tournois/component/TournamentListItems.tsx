@@ -1,13 +1,14 @@
 /**
  * Un tournoi dans la liste `/tournois` (refonte, carte 089) : carte de la grille (`TournamentCard`) ou ligne de la
  * liste (`TournamentRow`). La carte entière, comme la ligne entière, est un lien vers le sujet du forum du tournoi.
- * Le badge de statut (« Annulé », « Terminé », « Passé ») est partagé par les deux.
+ * Le badge d'état (« Annulé », « Terminé », « Passé », « Complet », « Inscriptions fermées ») et l'étiquette « Par
+ * équipes » sont partagés par les deux ; les places prises s'écrivent comme sur la fiche (`placesLabel`, revue 221).
  */
-import { DEFAULT_GAME_EDITION } from "@/lib/tournamentForm";
+import { gameEditionLabel, structureLabel } from "@/lib/tournamentForm";
 import Link from "next/link";
 import { CalendarDays, MapPin, Users } from "lucide-react";
 import { Badge, Card, cn } from "@bbfrance/ui";
-import { takenPlaces } from "@/lib/tournamentPlaces";
+import { isFull, placesLabel, takenPlaces } from "@/lib/tournamentPlaces";
 import { isTournamentOver } from "@/lib/tournamentDates";
 
 /** Champs du tournoi utilisés par la liste. */
@@ -36,6 +37,7 @@ export interface TournamentListItem {
   fridayArrival: boolean;
   isFinished: boolean;
   isCancelled: boolean;
+  registrationsLocked: boolean;
   organizer: { name: string | null };
   topic: { id: string } | null;
 }
@@ -43,21 +45,30 @@ export interface TournamentListItem {
 /** Adresse du sujet du tournoi ; sans sujet (supprimé), la liste des tournois, faute de page dédiée. */
 export const topicHref = (tournament: Pick<TournamentListItem, "topic">) => (tournament.topic?.id ? `/forum/topic/${tournament.topic.id}` : "/tournois");
 
-const priceText = (price: number | null) => (price === 0 ? "Gratuit" : price != null ? `${price} €` : "Prix non précisé");
+/** Prix : en gras quand il est connu ; « Prix non précisé » reste discret (revue 221). */
+function Price({ price }: { price: number | null }) {
+  if (price == null) return <span className="font-normal text-bb-text-muted">Prix non précisé</span>;
+  return <span className="font-bold text-bb-text">{price === 0 ? "Gratuit" : `${price} €`}</span>;
+}
 
 /** Ville du tournoi, ou à défaut son lieu. Réutilisé par l'accueil (carte 155). */
 export const placeText = (tournament: Pick<TournamentListItem, "ville" | "location">) => (tournament.ville || tournament.location);
 
 /**
- * Badge de statut : annulé, terminé ou passé (dernier jour dépassé, heure de Paris, sans avoir été marqué terminé :
- * règle de lib/tournamentDates.ts, carte 187).
+ * Badge d'état, un seul par tournoi : annulé, terminé, passé (dernier jour dépassé, heure de Paris, sans avoir été
+ * marqué terminé : règle de lib/tournamentDates.ts, carte 187), puis, pour un tournoi à venir, complet ou inscriptions
+ * fermées. Badges sobres (DESIGN.md) : le contour rouge est réservé à « Annulé », le reste est en gris.
  */
 export function TournamentStatusBadge({ tournament, now }: { tournament: TournamentListItem; now: Date }) {
   if (tournament.isCancelled) return <Badge variant="danger">Annulé</Badge>;
-  if (tournament.isFinished) return <Badge variant="success">Terminé</Badge>;
+  if (tournament.isFinished) return <Badge variant="neutral">Terminé</Badge>;
   if (isTournamentOver(tournament, now)) return <Badge variant="neutral">Passé</Badge>;
+  if (tournament.registrationsLocked) return <Badge variant="neutral">Inscriptions fermées</Badge>;
+  if (isFull(tournament)) return <Badge variant="neutral">Complet</Badge>;
   return null;
 }
+
+const places = (tournament: TournamentListItem) => placesLabel(takenPlaces(tournament), tournament.maxParticipants, tournament.isTeam);
 
 /** Pavé de la date : le jour en grand, le mois en dessous. Réutilisé par la fiche d'une ligue (carte 094). */
 export function DateBlock({ date, className }: { date: Date; className?: string }) {
@@ -108,22 +119,21 @@ export function TournamentCard({ tournament, now }: { tournament: TournamentList
         </div>
 
         <div className="flex flex-wrap gap-1.5">
-          <Badge variant="neutral">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Badge>
+          <Badge variant="neutral">{gameEditionLabel(tournament.gameEdition)}</Badge>
+          {tournament.isTeam && <Badge variant="neutral">Par équipes</Badge>}
           {tournament.ruleset && <Badge variant="neutral">Règles : {tournament.ruleset}</Badge>}
-          {tournament.structure && <Badge variant="neutral">{tournament.structure}</Badge>}
+          {tournament.structure && <Badge variant="neutral">{structureLabel(tournament.structure)}</Badge>}
           {tournament.mealsIncluded && <Badge variant="neutral">Repas inclus</Badge>}
           {tournament.lodgingAtVenue && <Badge variant="neutral">Dodo sur place</Badge>}
           {tournament.fridayArrival && <Badge variant="neutral">Vendredi</Badge>}
         </div>
 
         <div className="mt-auto flex items-center justify-between gap-3 border-t border-bb-border pt-3 text-sm">
-          <span className={cn("flex items-center gap-1.5", muted)} title="Inscriptions">
+          <span className={cn("flex items-center gap-1.5 tabular-nums", muted)}>
             <Users size={16} aria-hidden="true" />
-            <span>
-              {takenPlaces(tournament)} / {tournament.maxParticipants || "∞"} places
-            </span>
+            <span>{places(tournament)}</span>
           </span>
-          <span className="font-bold text-bb-text">{priceText(tournament.price)}</span>
+          <Price price={tournament.price} />
         </div>
       </Card>
     </Link>
@@ -144,12 +154,15 @@ export function TournamentRow({ tournament, now }: { tournament: TournamentListI
           <span className="min-w-0 break-words">{tournament.name}</span>
           <span className="lg:hidden">{status}</span>
         </p>
-        <p className={cn("m-0 mt-0.5 text-sm", muted)}>Par {tournament.organizer.name}</p>
+        <p className={cn("m-0 mt-0.5 text-sm", muted)}>
+          Par {tournament.organizer.name}
+          {tournament.isTeam && " · Par équipes"}
+        </p>
         {/* Téléphone : lieu, format et prix sous le nom (sur ordinateur, ils ont leurs colonnes) */}
         <p className={cn("m-0 mt-0.5 text-sm break-words lg:hidden", muted)}>
-          {placeText(tournament)} · {tournament.gameEdition || DEFAULT_GAME_EDITION}{tournament.ruleset ? ` · ${tournament.ruleset}` : ""} ·{" "}
-          <span className="font-semibold text-bb-text">{priceText(tournament.price)}</span>
-          {isActive && ` · ${takenPlaces(tournament)}/${tournament.maxParticipants || "∞"} places`}
+          {placeText(tournament)} · {gameEditionLabel(tournament.gameEdition)}{tournament.ruleset ? ` · ${tournament.ruleset}` : ""} ·{" "}
+          <Price price={tournament.price} />
+          {isActive && ` · ${places(tournament)}`}
         </p>
       </div>
       <div className="hidden min-w-0 text-sm lg:block">
@@ -159,19 +172,16 @@ export function TournamentRow({ tournament, now }: { tournament: TournamentListI
         </p>
       </div>
       <div className="hidden flex-wrap gap-1 lg:flex">
-        <Badge variant="neutral">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Badge>
+        <Badge variant="neutral">{gameEditionLabel(tournament.gameEdition)}</Badge>
         {tournament.ruleset && <Badge variant="neutral">{tournament.ruleset}</Badge>}
       </div>
-      <div className="hidden text-sm lg:block">
-        {isActive ? (
-          <span className={cn("tabular-nums", muted)}>
-            {takenPlaces(tournament)}/{tournament.maxParticipants || "∞"} places
-          </span>
-        ) : (
-          status
-        )}
+      <div className="hidden text-sm lg:flex lg:flex-col lg:items-start lg:gap-1">
+        {isActive && <span className={cn("tabular-nums", muted)}>{places(tournament)}</span>}
+        {status}
       </div>
-      <p className="m-0 hidden text-right text-sm font-bold text-bb-text lg:block">{priceText(tournament.price)}</p>
+      <p className="m-0 hidden text-right text-sm lg:block">
+        <Price price={tournament.price} />
+      </p>
     </Link>
   );
 }

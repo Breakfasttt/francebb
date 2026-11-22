@@ -74,9 +74,9 @@ const PROFILE_TABS = {
   activity: "Activité du forum",
   articles: "Mes articles",
   ressources: "Mes ressources",
-  blocked: "Utilisateurs bloqués",
-  edit: "Éditer mon profil",
-  settings: "Gérer mon compte",
+  blocked: "Membres bloqués",
+  edit: "Modifier mon profil",
+  settings: "Réglages du compte",
 } as const;
 
 async function cleanUp() {

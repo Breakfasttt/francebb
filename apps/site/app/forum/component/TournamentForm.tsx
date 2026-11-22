@@ -15,7 +15,7 @@ import { useRef, useState, type FormEvent, type ReactNode } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
-  BedDouble, Calendar, Check, Coins, FileText, Globe, Lock, Map, MapPin, Monitor, Pin, Save, Shield, Sun, Trophy, Users, Utensils
+  Check, Globe, Map, Save, Trophy
 } from "lucide-react";
 import { Button, Card, ConfirmDialog, Field, Input, Label, Select, Sheet, SheetContent, Skeleton, cn, toast, DESKTOP_QUERY, useMediaQuery } from "@bbfrance/ui";
 import { createTopic, updateTournament } from "../actions";
@@ -96,24 +96,20 @@ interface TournamentFormProps {
   };
 }
 
-/** Un bloc du formulaire : carte avec un titre et son icône. */
-function Block({ icon, title, children, className }: { icon: ReactNode; title: string; children: ReactNode; className?: string }) {
+/** Un bloc du formulaire : carte avec un titre en voix Heading, sans icône (DESIGN.md, revue 221). */
+function Block({ title, children, className }: { title: string; children: ReactNode; className?: string }) {
   return (
     <Card className={cn("flex flex-col gap-4 p-4 lg:p-5", className)}>
-      <h2 className="flex items-center gap-2 text-base font-bold text-bb-text">
-        <span aria-hidden="true" className="text-bb-accent-text">{icon}</span>
-        {title}
-      </h2>
+      <h2 className="font-bb-heading text-base text-bb-text">{title}</h2>
       {children}
     </Card>
   );
 }
 
 /** Case à cocher sur une ligne de 44 pixels (libellé à droite). */
-function CheckRow({ name, label, icon, checked, defaultChecked, onChange }: {
+function CheckRow({ name, label, checked, defaultChecked, onChange }: {
   name: string;
   label: string;
-  icon?: ReactNode;
   checked?: boolean;
   defaultChecked?: boolean;
   onChange?: (checked: boolean) => void;
@@ -128,7 +124,6 @@ function CheckRow({ name, label, icon, checked, defaultChecked, onChange }: {
         defaultChecked={defaultChecked}
         onChange={onChange ? (event) => onChange(event.target.checked) : undefined}
       />
-      {icon && <span aria-hidden="true" className="text-bb-text-muted">{icon}</span>}
       <span>{label}</span>
     </label>
   );
@@ -228,8 +223,8 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
 
   const moderationBoxes = userCanStick && (
     <div className="flex flex-col gap-2">
-      <CheckRow name="isSticky" label="Épingler (Post-it)" icon={<Pin size={16} />} />
-      <CheckRow name="isLocked" label="Verrouiller le sujet" icon={<Lock size={16} />} />
+      <CheckRow name="isSticky" label="Épingler (Post-it)" />
+      <CheckRow name="isLocked" label="Verrouiller le sujet" />
     </div>
   );
 
@@ -258,10 +253,10 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
 
       <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[minmax(0,1fr)_288px] lg:items-start lg:gap-6">
         <div className="flex min-w-0 flex-col gap-4">
-          <Block icon={<Trophy size={18} />} title="Le tournoi">
+          <Block title="Le tournoi">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="title">Titre de l&apos;annonce (nom du tournoi, obligatoire)</Label>
-              <TitleInputWithSmiley name="title" initialValue={initialData?.name} placeholder="Ex : Open de Bretagne 2027" />
+              <TitleInputWithSmiley name="title" initialValue={initialData?.name} placeholder="Ex. : Open de Bretagne 2027" />
             </div>
             <div className="flex flex-col gap-1.5">
               <p className="m-0 text-sm font-semibold text-bb-text">Ligue organisatrice (facultatif)</p>
@@ -270,7 +265,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             </div>
           </Block>
 
-          <Block icon={<Calendar size={18} />} title="Dates">
+          <Block title="Dates">
             <div className={grid2}>
               <Field label="Date de début (obligatoire)" htmlFor="tDate">
                 <Input id="tDate" type="date" name="tDate" required value={startDate} onChange={handleStartDateChange} />
@@ -281,7 +276,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             </div>
           </Block>
 
-          <Block icon={<MapPin size={18} />} title="Lieu">
+          <Block title="Lieu">
             <div className={grid2}>
               <Field label="Région de tournoi (NAF)" htmlFor="tRegionNAF">
                 <Select id="tRegionNAF" name="tRegionNAF" defaultValue={initialData?.regionNAF || ""}>
@@ -316,7 +311,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
                 </Select>
               </Field>
               <Field label="Ville" htmlFor="tVille">
-                <Input id="tVille" type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex : Lyon" autoComplete="address-level2" />
+                <Input id="tVille" type="text" name="tVille" defaultValue={initialData?.ville || ""} placeholder="Ex. : Lyon" autoComplete="address-level2" />
               </Field>
             </div>
             <div className="flex flex-col gap-1.5">
@@ -330,7 +325,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
                     name="tAddress"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder="Ex : 5 rue de la Paix, Paris"
+                    placeholder="Ex. : 5 rue de la Paix, Paris"
                     className="pl-10"
                     autoComplete="street-address"
                   />
@@ -347,16 +342,16 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             </div>
           </Block>
 
-          <Block icon={<Users size={18} />} title="Participants">
+          <Block title="Participants">
             <div className={cn(grid2, "sm:items-end")}>
-              <CheckRow name="isTeam" label="En équipe" icon={<Users size={16} />} checked={isTeam} onChange={setIsTeam} />
+              <CheckRow name="isTeam" label="En équipe" checked={isTeam} onChange={setIsTeam} />
               <Field label={isTeam ? "Nombre d'équipes max" : "Nombre de coachs max"} htmlFor="tMax">
                 <Input
                   id="tMax"
                   type="number"
                   name="tMax"
                   defaultValue={initialData?.maxParticipants || ""}
-                  placeholder="Ex : 40"
+                  placeholder="Ex. : 40"
                   min={1}
                   {...numeric}
                   onBlur={(e) => {
@@ -405,7 +400,7 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             )}
           </Block>
 
-          <Block icon={<Shield size={18} />} title="Championnats et points">
+          <Block title="Championnats et points">
             <fieldset className="m-0 border-0 p-0">
               <legend className="mb-2 p-0 text-sm font-semibold text-bb-text">Le tournoi compte pour</legend>
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">
@@ -430,8 +425,8 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
               {!canSetCdf && (
                 <p className={cn(hint, "mt-2")}>
                   {isCDF
-                    ? "Ce tournoi compte pour la Coupe de France (CDF). Seuls les modérateurs et les administrateurs peuvent changer ce choix."
-                    : "La Coupe de France (CDF) est accordée par les modérateurs et les administrateurs : demande-leur de l'ajouter à ton tournoi."}
+                    ? "Ce tournoi compte pour le Championnat de France (CDF). Seuls les modérateurs et les administrateurs peuvent changer ce choix."
+                    : "Le Championnat de France (CDF) est accordé par les modérateurs et les administrateurs : demande-leur de l'ajouter à ton tournoi."}
                 </p>
               )}
             </fieldset>
@@ -447,11 +442,11 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
             )}
 
             <Field label="Nombre de rondes (total)" htmlFor="tTotalMatches" hint="Sert au calcul des points CDF. Sans valeur, le site prend le nombre de rondes saisies avec les résultats, ou à défaut 3 rondes par jour.">
-              <Input id="tTotalMatches" type="number" name="tTotalMatches" defaultValue={initialData?.totalMatches ?? ""} placeholder="Ex : 5" min={1} className="sm:max-w-40" {...numeric} />
+              <Input id="tTotalMatches" type="number" name="tTotalMatches" defaultValue={initialData?.totalMatches ?? ""} placeholder="Ex. : 5" min={1} className="sm:max-w-40" {...numeric} />
             </Field>
           </Block>
 
-          <Block icon={<Monitor size={18} />} title="Jeu">
+          <Block title="Jeu">
             <div className={grid2}>
               <Field label="Plateforme" htmlFor="tPlatform">
                 <Select id="tPlatform" name="tPlatform" defaultValue={initialData?.platform || "Tabletop"}>
@@ -483,30 +478,30 @@ export default function TournamentForm({ forumId, userCanStick, canSetCdf, refer
               </Field>
             </div>
             <Field label="Ruleset (pack de règles)" htmlFor="tRuleset">
-              <Input id="tRuleset" type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex : Eurobowl 2024" />
+              <Input id="tRuleset" type="text" name="tRuleset" defaultValue={initialData?.ruleset || ""} placeholder="Ex. : Eurobowl 2024" />
             </Field>
           </Block>
 
-          <Block icon={<Coins size={18} />} title="Prix et logistique">
+          <Block title="Prix et logistique">
             <div className="grid gap-4 sm:grid-cols-3">
               <Field label="Prix d'inscription (€)" htmlFor="tPrice">
-                <Input id="tPrice" type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex : 15" {...decimal} />
+                <Input id="tPrice" type="number" step="0.5" name="tPrice" defaultValue={initialData?.price || ""} placeholder="Ex. : 15" {...decimal} />
               </Field>
               <Field label="Prix du repas (€, facultatif)" htmlFor="tPriceMeals">
-                <Input id="tPriceMeals" type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex : 5" {...decimal} />
+                <Input id="tPriceMeals" type="number" step="0.5" name="tPriceMeals" defaultValue={initialData?.priceMeals || ""} placeholder="Ex. : 5" {...decimal} />
               </Field>
               <Field label="Prix du logement (€, facultatif)" htmlFor="tPriceLodging">
-                <Input id="tPriceLodging" type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex : 10" {...decimal} />
+                <Input id="tPriceLodging" type="number" step="0.5" name="tPriceLodging" defaultValue={initialData?.priceLodging || ""} placeholder="Ex. : 10" {...decimal} />
               </Field>
             </div>
             <div className="grid gap-2 sm:grid-cols-3">
-              <CheckRow name="tMeals" label="Repas inclus" icon={<Utensils size={16} />} defaultChecked={initialData?.mealsIncluded} />
-              <CheckRow name="tLodging" label="Dodo sur place" icon={<BedDouble size={16} />} defaultChecked={initialData?.lodgingAtVenue} />
-              <CheckRow name="tFriday" label="Accueil vendredi" icon={<Sun size={16} />} defaultChecked={initialData?.fridayArrival} />
+              <CheckRow name="tMeals" label="Repas inclus" defaultChecked={initialData?.mealsIncluded} />
+              <CheckRow name="tLodging" label="Dodo sur place" defaultChecked={initialData?.lodgingAtVenue} />
+              <CheckRow name="tFriday" label="Accueil vendredi" defaultChecked={initialData?.fridayArrival} />
             </div>
           </Block>
 
-          <Block icon={<FileText size={18} />} title="Présentation">
+          <Block title="Présentation">
             <div className="flex flex-col gap-1.5">
               <Label htmlFor="content">Présentation complète et règlement détaillé (obligatoire)</Label>
               <BBCodeEditor

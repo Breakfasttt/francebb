@@ -4,7 +4,8 @@
  * vers la carte, participants, prix, plateforme, édition, règles, type) et la logistique (repas, logement, accueil
  * le vendredi). Sur téléphone, les informations passent sur deux colonnes, puis une seule sur un très petit écran.
  */
-import { DEFAULT_GAME_EDITION } from "@/lib/tournamentForm";
+import { gameEditionLabel, platformLabel, structureLabel } from "@/lib/tournamentForm";
+import { placesLabel } from "@/lib/tournamentPlaces";
 import React from "react";
 import Link from "next/link";
 import { ExternalLink } from "lucide-react";
@@ -112,9 +113,11 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
   ];
   // Participants en toutes lettres (l'ancien « 2 (p:1) » était illisible)
   const plural = (count: number, word: string) => `${count} ${word}${count > 1 ? "s" : ""}`;
-  const unit = tournament.isTeam ? "équipe" : "coach";
+  // Places prises : validés et pré-inscrits, en équipes pour un tournoi par équipes ; même calcul et même libellé que
+  // la liste /tournois (lib/tournamentPlaces.ts, revue 221). Le nombre importé de l'ancien site compte s'il est plus grand.
+  const taken = Math.max(validated.length + preReg.length, tournament.currentParticipants);
   const participantDetails = [
-    preReg.length > 0 && plural(preReg.length, "pré-inscrit"),
+    preReg.length > 0 && `dont ${plural(preReg.length, tournament.isTeam ? "équipe pré-inscrite" : "pré-inscrit")}`,
     waiting.length > 0 && `${waiting.length} en attente`,
     mercs.length > 0 && plural(mercs.length, "mercenaire"),
   ].filter(Boolean).join(" · ");
@@ -127,13 +130,19 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
         {tournament.isCancelled ? (
           <Badge variant="danger">Annulé</Badge>
         ) : tournament.isFinished ? (
-          <Badge variant="success">Terminé</Badge>
+          <Badge variant="neutral">Terminé</Badge>
         ) : null}
-        {tournament.isTeam && <Badge variant="neutral">Par équipe de {tournament.coachsPerTeam}</Badge>}
+        {tournament.isTeam && <Badge variant="neutral">Par équipes de {tournament.coachsPerTeam}</Badge>}
         {championships.map((c) => (
           <Badge key={c.label} variant="neutral">{c.label}</Badge>
         ))}
       </div>
+      {/* Tournoi annulé : dit en clair, en tête de la fiche (revue 221) */}
+      {tournament.isCancelled && (
+        <p role="status" className="m-0 rounded-bb-md border border-bb-danger-text px-3 py-2 text-[0.95rem] font-semibold text-bb-danger-text">
+          Ce tournoi est annulé. Les inscriptions sont fermées.
+        </p>
+      )}
       {(tournament.ligue || tournament.ligueCustom) && (
         <p className="-mt-2 flex flex-wrap items-center gap-1.5 text-sm text-bb-text-muted">
           <span>Organisé par</span>
@@ -169,12 +178,12 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
         </Fact>
         <Fact label="Participants">
           <span className="tabular-nums">
-            {plural(validated.length, "inscrit")} sur {tournament.maxParticipants ? plural(tournament.maxParticipants, unit) : `${unit}s illimités`}
+            {placesLabel(taken, tournament.maxParticipants, tournament.isTeam)}
           </span>
           {participantDetails && <span className="block text-sm font-normal text-bb-text-muted">{participantDetails}</span>}
         </Fact>
         <Fact label="Inscription (PAF)">
-          {tournament.price != null ? `${tournament.price} €` : 'Non précisée'}
+          {tournament.price === 0 ? "Gratuit" : tournament.price != null ? `${tournament.price} €` : <span className="font-normal text-bb-text-muted">Non précisé</span>}
           {(tournament.priceMeals || tournament.priceLodging) && (
             <span className="block text-sm font-normal text-bb-text-muted">
               {tournament.priceMeals && `Repas : +${tournament.priceMeals} € `}
@@ -182,10 +191,10 @@ const TournamentSummary: React.FC<TournamentSummaryProps> = ({ tournament }) => 
             </span>
           )}
         </Fact>
-        <Fact label="Plateforme">{tournament.platform || 'Tabletop'}</Fact>
-        <Fact label="Édition">{tournament.gameEdition || DEFAULT_GAME_EDITION}</Fact>
+        <Fact label="Plateforme">{platformLabel(tournament.platform)}</Fact>
+        <Fact label="Édition">{gameEditionLabel(tournament.gameEdition)}</Fact>
         {tournament.ruleset && <Fact label="Ruleset">{tournament.ruleset}</Fact>}
-        <Fact label="Type de tournoi">{tournament.structure || 'Resurrection'}</Fact>
+        <Fact label="Format">{structureLabel(tournament.structure || "Resurrection")}</Fact>
       </dl>
 
       <p className="border-t border-bb-border pt-3 text-sm text-bb-text-muted">

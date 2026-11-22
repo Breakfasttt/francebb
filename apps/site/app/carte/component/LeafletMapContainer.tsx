@@ -3,7 +3,8 @@
 /**
  * Carte OpenStreetMap de la page `/carte` (bibliothèque Leaflet, par react-leaflet), refaite à la carte 094.
  * Chaque point est un repère ; un appui ouvre une bulle avec le nom, le lieu, la date (tournoi) et le lien « Détails »
- * vers le sujet du tournoi ou la fiche de la ligue. Les boutons de zoom sont en bas à droite, à portée de pouce.
+ * vers le sujet du tournoi ou la fiche de la ligue. Plusieurs points au même endroit partagent un repère, dont la bulle
+ * les liste tous. Les boutons de zoom sont en bas à droite, à portée de pouce.
  * Les couleurs de la bulle et des boutons de zoom suivent le thème (classes posées par `CarteClient`).
  */
 import { useEffect, useMemo } from "react";
@@ -88,6 +89,26 @@ function FitToPoints({ points }: { points: MapPoint[] }) {
   return null;
 }
 
+const placeOf = (p: MapPoint) => p.location || p.ville || "Lieu inconnu";
+const hrefOf = (p: MapPoint, viewType: LeafletMapProps["viewType"]) =>
+  viewType === "tournaments" ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : "/tournois") : `/ligue/${p.id}`;
+
+/**
+ * Regroupe les points posés au même endroit (mêmes coordonnées, à environ un mètre près) : sinon, les repères se
+ * superposent et un seul reste cliquable. L'ordre d'arrivée (par date pour les tournois) est gardé.
+ */
+function groupByPlace(points: MapPoint[]): MapPoint[][] {
+  const groups = new Map<string, MapPoint[]>();
+  for (const p of points) {
+    if (p.lat === null || p.lng === null) continue;
+    const key = `${p.lat.toFixed(5)},${p.lng.toFixed(5)}`;
+    const group = groups.get(key);
+    if (group) group.push(p);
+    else groups.set(key, [p]);
+  }
+  return [...groups.values()];
+}
+
 export default function LeafletMapContainer({ points, viewType, isFullscreen = false, compact = false }: LeafletMapProps) {
   // Ce fichier n'est chargé que dans le navigateur (import dynamique sans rendu serveur) : Leaflet y est disponible
   const icons = useMemo(() => ({ red: markerIcon("red"), gold: markerIcon("gold") }), []);
@@ -103,36 +124,59 @@ export default function LeafletMapContainer({ points, viewType, isFullscreen = f
       <MapResizer isFullscreen={isFullscreen} />
       {compact && <FitToPoints points={points} />}
 
-      {points.map((p) => (
-        <Marker
-          key={`${viewType}-${p.id}`}
-          position={[p.lat as number, p.lng as number]}
-          alt={p.name}
-          icon={viewType === "tournaments" ? icons.red : icons.gold}
-        >
-          {/* Marges du recentrage automatique : la bulle ne passe pas sous les boutons posés sur la carte
-              (choix Tournois ou Ligues en haut, zoom en bas à droite) */}
-          <Popup autoPanPaddingTopLeft={[12, 80]} autoPanPaddingBottomRight={[64, 56]}>
-            <div className="flex min-w-48 flex-col gap-1.5 font-bb-sans text-[0.95rem] text-bb-text">
-              <strong className="text-base leading-snug break-words">{p.name}</strong>
-              <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
-                <MapPin size={14} aria-hidden="true" className="shrink-0" /> {p.location || p.ville || "Lieu inconnu"}
-              </span>
-              {p.date && (
-                <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
-                  <Calendar size={14} aria-hidden="true" className="shrink-0" /> {new Date(p.date).toLocaleDateString("fr-FR")}
-                </span>
+      {groupByPlace(points).map((group) => {
+        const first = group[0];
+        const several = group.length > 1;
+        return (
+          <Marker
+            key={`${viewType}-${first.id}`}
+            position={[first.lat as number, first.lng as number]}
+            alt={several ? `${group.length} ${viewType === "tournaments" ? "tournois" : "ligues"} à ${placeOf(first)}` : first.name}
+            icon={viewType === "tournaments" ? icons.red : icons.gold}
+          >
+            {/* Marges du recentrage automatique : la bulle ne passe pas sous les boutons posés sur la carte
+                (choix Tournois ou Ligues en haut, zoom en bas à droite) */}
+            <Popup autoPanPaddingTopLeft={[12, 80]} autoPanPaddingBottomRight={[64, 56]}>
+              {several ? (
+                // Plusieurs tournois (ou ligues) au même endroit : la bulle les liste tous (revue 221)
+                <div className="flex max-h-72 min-w-56 flex-col overflow-y-auto font-bb-sans text-[0.95rem] text-bb-text">
+                  <p className="m-0! pb-1 text-sm text-bb-text-muted">
+                    {group.length} {viewType === "tournaments" ? "tournois" : "ligues"} à {placeOf(first)}
+                  </p>
+                  <ul className="m-0 list-none p-0">
+                    {group.map((p) => (
+                      <li key={p.id} className="border-t border-bb-border">
+                        <a href={hrefOf(p, viewType)} className="flex min-h-11 flex-col justify-center py-1.5 text-bb-text! no-underline hover:underline">
+                          <span className="leading-snug font-semibold break-words">{p.name}</span>
+                          {p.date && <span className="text-sm text-bb-text-muted">{new Date(p.date).toLocaleDateString("fr-FR")}</span>}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : (
+                <div className="flex min-w-48 flex-col gap-1.5 font-bb-sans text-[0.95rem] text-bb-text">
+                  <strong className="text-base leading-snug break-words">{first.name}</strong>
+                  <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
+                    <MapPin size={14} aria-hidden="true" className="shrink-0" /> {placeOf(first)}
+                  </span>
+                  {first.date && (
+                    <span className="flex items-center gap-1.5 text-sm text-bb-text-muted">
+                      <Calendar size={14} aria-hidden="true" className="shrink-0" /> {new Date(first.date).toLocaleDateString("fr-FR")}
+                    </span>
+                  )}
+                  <a
+                    href={hrefOf(first, viewType)}
+                    className="mt-1 inline-flex min-h-11 items-center justify-center self-start rounded-bb-md bg-bb-accent px-4 text-sm font-bold text-bb-on-accent! no-underline hover:opacity-90"
+                  >
+                    Détails
+                  </a>
+                </div>
               )}
-              <a
-                href={viewType === "tournaments" ? (p.topic?.id ? `/forum/topic/${p.topic.id}` : "/tournois") : `/ligue/${p.id}`}
-                className="mt-1 inline-flex min-h-11 items-center justify-center self-start rounded-bb-md bg-bb-accent px-4 text-sm font-bold text-bb-on-accent! no-underline hover:opacity-90"
-              >
-                Détails
-              </a>
-            </div>
-          </Popup>
-        </Marker>
-      ))}
+            </Popup>
+          </Marker>
+        );
+      })}
     </MapContainer>
   );
 }

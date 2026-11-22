@@ -8,6 +8,8 @@
  *   le titre et le forum du nouveau sujet, puis ouvre ce nouveau sujet.
  * - Fusionner : le modérateur cherche le sujet d'arrivée par son titre ou son identifiant, le choisit dans la liste,
  *   puis confirme ; il arrive sur le sujet d'arrivée.
+ * Carte 221 : les résultats de la fusion donnent l'auteur, la date du dernier message et le début de l'identifiant ;
+ * les forums de la scission sont groupés par catégorie quand la page la fournit (`categoryName`).
  * Les règles et les vérifications sont dans app/forum/topicSplitMergeActions.ts.
  */
 import { useEffect, useState, useTransition } from "react";
@@ -17,11 +19,24 @@ import { Button, ConfirmDialog, Field, Input, Select, cn, toast } from "@bbfranc
 import { useDebounce } from "@/common/hooks/useDebounce";
 import { mergeTopics, searchMergeTargets, splitTopic } from "@/app/forum/topicSplitMergeActions";
 import { TOPIC_TITLE_MAX_LENGTH } from "@/lib/forumWriteRules";
+import { fullFrenchDateTime } from "@/common/components/RelativeTime/RelativeTime";
 
 export interface SplitForumOption {
   id: string;
   name: string;
   isTournamentForum?: boolean;
+  /** Catégorie du forum : les choix de la scission sont groupés par catégorie quand elle est connue. */
+  categoryName?: string | null;
+}
+
+/** Forums groupés par catégorie, dans l'ordre de leur première apparition ; un seul groupe sans nom sinon. */
+function groupByCategory(forums: SplitForumOption[]): { name: string | null; forums: SplitForumOption[] }[] {
+  const groups = new Map<string | null, SplitForumOption[]>();
+  for (const forum of forums) {
+    const key = forum.categoryName ?? null;
+    groups.set(key, [...(groups.get(key) ?? []), forum]);
+  }
+  return [...groups].map(([name, list]) => ({ name, forums: list }));
 }
 
 export function SplitTopicDialog({
@@ -110,11 +125,23 @@ export function SplitTopicDialog({
             <option value="" disabled>
               Choisir un forum…
             </option>
-            {choices.map((forum) => (
-              <option key={forum.id} value={forum.id}>
-                {forum.name}
-              </option>
-            ))}
+            {groupByCategory(choices).map((group) =>
+              group.name ? (
+                <optgroup key={group.name} label={group.name}>
+                  {group.forums.map((forum) => (
+                    <option key={forum.id} value={forum.id}>
+                      {forum.name}
+                    </option>
+                  ))}
+                </optgroup>
+              ) : (
+                group.forums.map((forum) => (
+                  <option key={forum.id} value={forum.id}>
+                    {forum.name}
+                  </option>
+                ))
+              )
+            )}
           </Select>
         </Field>
       </div>
@@ -235,7 +262,10 @@ export function MergeTopicDialog({
                       {topic.title}
                     </span>
                     <span className="text-sm font-normal text-bb-text-muted">
-                      {topic.forum.name} · {topic._count.posts} message{topic._count.posts > 1 ? "s" : ""}
+                      {topic.forum.name} · par {topic.author?.name ?? "un ancien membre"} · {topic._count.posts} message{topic._count.posts > 1 ? "s" : ""}
+                    </span>
+                    <span className="text-sm font-normal text-bb-text-muted tabular-nums">
+                      Dernier message le {fullFrenchDateTime(topic.lastPostAt)} · n° {topic.id.slice(-6)}
                     </span>
                   </Button>
                 </li>

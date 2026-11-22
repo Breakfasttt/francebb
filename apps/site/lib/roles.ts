@@ -102,11 +102,27 @@ export function roleChangeRefusal(input: {
 }
 
 /**
- * Suppression d'un compte par l'équipe (carte 221) : admin ou plus, sur un membre de rang strictement inférieur
- * (le Super Admin peut supprimer tout autre compte). Un modérateur bannit, il ne supprime pas.
+ * Comptes techniques du site (carte 221) : « Système » (auteur des ressources officielles) et « Coach Inconnu »
+ * (compte fantôme des comptes supprimés, lib/accountDeletion.ts). Personne ne les bannit ni ne les supprime.
  */
-export function canDeleteMember(actorRole: string, targetRole: string, isSelf = false): boolean {
-  if (isSelf || !isAdmin(actorRole)) return false;
+export const SYSTEM_ACCOUNT_IDS = ["system", "ghost_coach"];
+
+/**
+ * Suppression d'un compte par l'équipe (carte 221) : admin ou plus, sur un membre de rang strictement inférieur
+ * (le Super Admin peut supprimer tout autre compte). Un modérateur bannit, il ne supprime pas. Jamais son propre
+ * compte ni un compte technique (`targetId`).
+ */
+export function canDeleteMember(actorRole: string, targetRole: string, isSelf = false, targetId?: string): boolean {
+  if (isSelf || !isAdmin(actorRole) || (targetId && SYSTEM_ACCOUNT_IDS.includes(targetId))) return false;
+  return actorRole === "SUPERADMIN" || getRolePower(actorRole) > getRolePower(targetRole);
+}
+
+/**
+ * Bannir ou débannir (carte 221) : modérateur ou plus, sur un membre de rang strictement inférieur (le Super Admin
+ * sur tout autre compte). Jamais soi-même (un Super Admin pouvait se bannir et perdre l'accès) ni un compte technique.
+ */
+export function canBanMember(actorRole: string, targetRole: string, isSelf = false, targetId?: string): boolean {
+  if (isSelf || !isModerator(actorRole) || (targetId && SYSTEM_ACCOUNT_IDS.includes(targetId))) return false;
   return actorRole === "SUPERADMIN" || getRolePower(actorRole) > getRolePower(targetRole);
 }
 

@@ -8,9 +8,11 @@
  * - Sur téléphone : la recherche reste visible ; les filtres et le tri sont rangés dans le panneau « Filtrer les
  *   membres », ouvert par le bouton « Filtres » (qui indique combien de filtres sont actifs). Un membre par carte.
  * Les filtres actifs sont rappelés en pastilles, chacune avec une croix qui le retire.
- * Pour un modérateur : les bannis sont affichés, « Bannir » ou « Débannir » et « Supprimer » (super administrateur)
- * sont dans le menu « ⋯ » de chaque membre, et le rôle se change avec la liste « Changer le rôle ». Chaque action
- * demande une confirmation. Les actions serveur sont inchangées.
+ * Pour un modérateur : les bannis sont affichés (filtre « État » pour ne voir qu'eux, carte 221), « Bannir » ou
+ * « Débannir » et « Supprimer » (administrateur) sont dans le menu « ⋯ » de chaque membre, et le rôle se change avec
+ * la liste « Changer le rôle », qui propose aussi les rôles personnalisés, comme l'onglet de l'administration (même
+ * règle serveur, roleChangeRefusal). Chaque action demande une confirmation. Pas de « Message privé » vers soi-même,
+ * un banni ou un compte technique (SYSTEM_ACCOUNT_IDS).
  */
 import { useState, useTransition } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,8 +23,8 @@ import {
   Sheet, SheetContent, toast, useMediaQuery,
 } from "@bbfrance/ui";
 import {
-  ROLE_LABELS, UserRole, canDeleteMember, canEditTargetRole, getAllowedRolesToAssign, canManageRoles, isAdmin, isModerator, getRoleLabel,
-  getRolePower,
+  ROLE_LABELS, SYSTEM_ACCOUNT_IDS, UserRole, canBanMember, canDeleteMember, canEditTargetRole, canManageRoles, isAdmin, isModerator,
+  getRoleLabel, getRolePower,
 } from "@/lib/roles";
 import { updateUserRole, toggleBanUser, deleteUser } from "@/app/membres/actions";
 import MemberAvatarImage from "@/common/components/MemberAvatarImage/MemberAvatarImage";
@@ -96,6 +98,8 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const [selectedRole, setSelectedRole] = useState(() => searchParams.get("role") ?? "");
   const [selectedLigue, setSelectedLigue] = useState(() => searchParams.get("ligue") ?? "");
   const [selectedRegion, setSelectedRegion] = useState(() => searchParams.get("region") ?? "");
+  // « bannis » : seulement les membres bannis (modérateurs, qui sont les seuls à recevoir les bannis)
+  const [selectedState, setSelectedState] = useState(() => (searchParams.get("etat") === "bannis" ? "bannis" : ""));
   const [sortConfig, setSortConfig] = useState<SortConfig>(() => readSort(searchParams.get("tri")));
   const [currentPage, setCurrentPage] = useState(() => readPositiveInt(searchParams.get("page"), 1));
   useSyncUrlFilters(
@@ -104,6 +108,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       role: selectedRole,
       ligue: selectedLigue,
       region: selectedRegion,
+      etat: selectedState,
       tri: sortConfig ? `${sortConfig.key}${sortConfig.direction === "desc" ? "-desc" : ""}` : "",
       page: currentPage,
     },
@@ -111,7 +116,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   );
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const [roleModal, setRoleModal] = useState<{ userId: string; userName: string; newRole: UserRole } | null>(null);
+  const [roleModal, setRoleModal] = useState<{ userId: string; userName: string; newRole: string } | null>(null);
   // Membre dont on change le rôle : le choix se fait dans un panneau ouvert depuis le menu « ⋯ » de sa ligne
   const [roleSheetUser, setRoleSheetUser] = useState<Member | null>(null);
   const [banModal, setBanModal] = useState<{ userId: string; userName: string; isBanned: boolean } | null>(null);
@@ -126,6 +131,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const setRole = change(setSelectedRole);
   const setRegion = change(setSelectedRegion);
   const setLigue = change(setSelectedLigue);
+  const setState = change(setSelectedState);
   const setSort = change(setSortConfig);
 
   const roleLabel = (role: string) => getRoleLabel(role, roleLabels);
@@ -145,7 +151,10 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     startTransition(async () => {
       try {
         const res = await updateUserRole(roleModal.userId, roleModal.newRole);
-        if (res.success) toast.success("Rôle mis à jour");
+        if (res.success) {
+          toast.success("Rôle mis à jour");
+          router.refresh();
+        }
         else toast.error(res.error || "Erreur lors du changement de rôle");
       } catch {
         toast.error("Erreur lors du changement de rôle");
@@ -159,7 +168,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     if (!banModal) return;
     const isBanning = !banModal.isBanned;
     if (isBanning && !reason.trim()) {
-      toast.error("Veuillez sélectionner une raison");
+      toast.error("Choisis une raison.");
       return;
     }
     startTransition(async () => {
@@ -200,14 +209,19 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
   const showRoles = canManageRoles(currentUserRole);
   const showMod = isModerator(currentUserRole);
   const showDelete = isAdmin(currentUserRole);
-  const selectableRoles = getAllowedRolesToAssign(currentUserRole);
+  // Rôles qu'on peut donner : sous son rang (tous pour le Super Admin), rôles personnalisés compris, comme l'onglet
+  // « Membres & accès » de l'administration ; le serveur applique la même règle (roleChangeRefusal, lib/roles.ts)
+  const selectableRoles = roleFilterOptions.filter(
+    (role) => currentUserRole === "SUPERADMIN" || getRolePower(role.value) < getRolePower(currentUserRole)
+  );
 
   const filteredUsers = users.filter((u) => {
     const matchesSearch = u.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesRole = selectedRole === "" || u.role === selectedRole;
     const matchesRegion = selectedRegion === "" || u.region === selectedRegion;
     const matchesLigue = selectedLigue === "" || u.ligues?.some((l) => l.id === selectedLigue);
-    return matchesSearch && matchesRole && matchesRegion && matchesLigue;
+    const matchesState = selectedState === "" || u.isBanned;
+    return matchesSearch && matchesRole && matchesRegion && matchesLigue && matchesState;
   });
   const sortedUsers = sortConfig ? [...filteredUsers].sort((a, b) => compare(a, b, sortConfig)) : filteredUsers;
   const totalPages = Math.ceil(sortedUsers.length / USERS_PER_PAGE);
@@ -223,6 +237,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     setSelectedRole("");
     setSelectedRegion("");
     setSelectedLigue("");
+    setSelectedState("");
     setCurrentPage(1);
   };
 
@@ -230,6 +245,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
     selectedRole && { label: `Rôle : ${roleLabel(selectedRole)}`, clear: () => setRole("") },
     selectedRegion && { label: `Région : ${regionLabel(selectedRegion)}`, clear: () => setRegion("") },
     selectedLigue && { label: `Ligue : ${ligueLabel(selectedLigue)}`, clear: () => setLigue("") },
+    selectedState && { label: "Bannis seulement", clear: () => setState("") },
   ].filter(Boolean) as { label: string; clear: () => void }[];
 
   const countText = `${sortedUsers.length} membre${sortedUsers.length > 1 ? "s" : ""}`;
@@ -255,6 +271,14 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
           {allLigues.map((ligue) => <option key={ligue.id} value={ligue.id}>[{ligue.acronym}] {ligue.name}</option>)}
         </Select>
       </Field>
+      {isModerator(currentUserRole) && (
+        <Field label="État" htmlFor={`${prefix}-state`}>
+          <Select id={`${prefix}-state`} value={selectedState} onChange={(e) => setState(e.target.value)}>
+            <option value="">Tous les membres</option>
+            <option value="bannis">Bannis seulement</option>
+          </Select>
+        </Field>
+      )}
     </>
   );
 
@@ -272,11 +296,13 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         disabled={isPending}
         onChange={(e) => {
           setRoleSheetUser(null);
-          setRoleModal({ userId: user.id, userName: user.name, newRole: e.target.value as UserRole });
+          setRoleModal({ userId: user.id, userName: user.name, newRole: e.target.value });
         }}
       >
         <option value={user.role} disabled>Changer le rôle…</option>
-        {selectableRoles.map((role) => <option key={role} value={role}>{ROLE_LABELS[role]}</option>)}
+        {selectableRoles
+          .filter((role) => role.value !== user.role)
+          .map((role) => <option key={role.value} value={role.value}>{role.label}</option>)}
       </Select>
     ) : (
       <span className="text-sm text-bb-text-muted italic">Verrouillé</span>
@@ -284,7 +310,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
 
   /** Menu « ⋯ » d'un membre : changer le rôle, bannir ou débannir, supprimer (DESIGN.md : les actions rares dans le menu). */
   const actionMenu = (user: Member) => {
-    const canModerate = canEditTargetRole(currentUserRole, user.role as UserRole) || currentUserRole === "SUPERADMIN";
+    const canModerate = canBanMember(currentUserRole, user.role, user.id === currentUserId, user.id);
     return (
       <ActionMenu
         label={`Actions pour ${user.name}`}
@@ -305,7 +331,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
             label: "Supprimer",
             icon: <Trash2 size={18} aria-hidden="true" />,
             danger: true,
-            hidden: !canDeleteMember(currentUserRole, user.role, user.id === currentUserId),
+            hidden: !canDeleteMember(currentUserRole, user.role, user.id === currentUserId, user.id),
             onSelect: () => setDeleteModal({ userId: user.id, userName: user.name }),
           },
         ]}
@@ -340,7 +366,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
       </a>
     ) : <span className="text-bb-text-muted">—</span>;
 
-  const canMessage = (user: Member) => user.id !== currentUserId && !user.isBanned;
+  const canMessage = (user: Member) => user.id !== currentUserId && !user.isBanned && !SYSTEM_ACCOUNT_IDS.includes(user.id);
 
   const sortHeader = (key: SortKey, label: string) => {
     const active = sortConfig?.key === key;
@@ -556,7 +582,7 @@ export default function MembersTable({ users, currentUserRole, currentUserId, al
         open={!!roleModal}
         onOpenChange={(open) => { if (!open) setRoleModal(null); }}
         title={roleModal ? `Changer le rôle de ${roleModal.userName}` : "Changer le rôle"}
-        message={roleModal ? `Tu veux vraiment donner le rôle « ${ROLE_LABELS[roleModal.newRole]} » à ${roleModal.userName} ?` : ""}
+        message={roleModal ? `Tu veux vraiment donner le rôle « ${roleLabel(roleModal.newRole)} » à ${roleModal.userName} ?` : ""}
         pending={isPending}
         onConfirm={confirmRoleChange}
       />

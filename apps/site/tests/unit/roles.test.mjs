@@ -4,7 +4,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { canDeleteMember, roleChangeRefusal } from "../../lib/roles.ts";
+import { canBanMember, canDeleteMember, roleChangeRefusal } from "../../lib/roles.ts";
 
 const change = (actorRole, targetRole, newRole, extra = {}) =>
   roleChangeRefusal({ actorId: "moi", actorRole, targetId: "cible", targetRole, newRole, newRoleExists: true, ...extra });
@@ -42,4 +42,14 @@ test("seuls les admins suppriment un compte, sur un rang inférieur, jamais le l
   assert.equal(canDeleteMember("ADMIN", "ADMIN"), false);
   assert.equal(canDeleteMember("SUPERADMIN", "ADMIN"), true);
   assert.equal(canDeleteMember("SUPERADMIN", "SUPERADMIN", true), false);
+});
+
+test("personne ne se bannit soi-même ni ne bannit ou supprime un compte technique (carte 221)", () => {
+  assert.equal(canBanMember("SUPERADMIN", "SUPERADMIN", true), false);
+  assert.equal(canBanMember("SUPERADMIN", "SUPERADMIN", false, "system"), false);
+  assert.equal(canDeleteMember("SUPERADMIN", "COACH", false, "ghost_coach"), false);
+  assert.equal(canBanMember("MODERATOR", "COACH"), true);
+  assert.equal(canBanMember("MODERATOR", "MODERATOR"), false);
+  assert.equal(canBanMember("SUPERADMIN", "ADMIN"), true);
+  assert.equal(canBanMember("COACH", "COACH"), false);
 });

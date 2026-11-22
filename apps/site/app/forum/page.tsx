@@ -16,6 +16,8 @@ import { ForumVisitorBanner } from "@/app/forum/component/ForumVisitorInvite";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { getForumAccess, topicAccessWhere } from "@/lib/forumAccess";
 import SiteLayout, { PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
+import ForumQuickSearch from "@/app/forum/component/ForumQuickSearch";
+import { Button } from "@bbfrance/ui";
 
 import { unstable_cache } from "next/cache";
 
@@ -49,13 +51,14 @@ const getCachedCategories = unstable_cache(
               take: 1,
               select: { title: true, lastPostAt: true, tournamentId: true, lastPostAuthor: { select: { name: true } } },
             },
-            subForums: { where: accessible, select: { id: true } },
+            // Sous-forums visibles, rappelés sous leur forum parent (« Sous-forums : … »)
+            subForums: { where: accessible, orderBy: { order: "asc" }, select: { id: true, name: true } },
           },
         },
       },
     });
   },
-  ["forum-categories-list-v5"],
+  ["forum-categories-list-v6"],
   { revalidate: 60, tags: ["forum-categories"] }
 );
 
@@ -139,6 +142,15 @@ export default async function ForumPage() {
       contextLabel="Dernières discussions"
     >
       <DeletionToast />
+      {/* Téléphone : recherche et « Nouveau sujet » en tête, visibles sans défiler (sur ordinateur : panneau gauche) */}
+      <div className="flex flex-col gap-2 lg:hidden">
+        <ForumQuickSearch id="forum-search-mobile" />
+        {userId && (
+          <Button asChild variant="primary" size="tap" className="w-full">
+            <Link href="/forum/new-topic">Nouveau sujet</Link>
+          </Button>
+        )}
+      </div>
       {/* Visiteur non connecté : bandeau d'accueil qui explique le site et invite à créer un compte (carte 185) */}
       {!userId && <ForumVisitorBanner />}
       {unreadCount > 0 && (

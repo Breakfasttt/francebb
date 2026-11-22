@@ -2,15 +2,17 @@
  * Classement final d'un tournoi, visible par tous (refonte, carte 089, ADR 0006) : une ligne par coach, du premier au
  * dernier (rang, coach avec lien vers son profil s'il est membre du site, numéro NAF, roster, victoires, nuls et
  * défaites, sorties, points). Sans résultat publié, la page est introuvable (404), comme avant la refonte.
- * Pour un tournoi de la Coupe de France, un bandeau dit si les résultats sont validés par la modération ou en attente,
+ * Pour un tournoi du Championnat de France, un bandeau dit si les résultats sont validés par la modération ou en attente,
  * avec le bouton de validation pour les modérateurs et les administrateurs (carte 162).
+ * Gabarit commun (revue 221) : `SiteLayout` et `PageHeader`, retour au sujet dans le panneau gauche ; la page est
+ * atteinte par le lien « Ouvrir les résultats dans une page à part » du bloc des résultats du sujet.
  */
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
 import { Button, Card } from "@bbfrance/ui";
 import { prisma } from "@/lib/prisma";
-import ForumListHeader from "@/app/forum/component/ForumListHeader";
+import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
+import PageHeader from "@/common/components/PageHeader/PageHeader";
 import { ResultsRanking } from "@/app/forum/component/TournamentResultWidget";
 import CdfValidationPanel from "@/app/forum/component/CdfValidationPanel";
 import { getActiveSession } from "@/lib/authGuard";
@@ -39,21 +41,22 @@ export default async function TournamentResultsViewPage({ params }: { params: Pr
   const session = tournament.isCDF ? await getActiveSession() : null;
 
   return (
-    <div className="mx-auto w-full max-w-[960px] px-3 pb-10 font-bb-sans text-base text-bb-text lg:px-6">
-      <ForumListHeader title="Classement final" subtitle={tournament.topic?.title || tournament.name} backHref={topicHref} backTitle="Retour au sujet">
-        <Button asChild variant="secondary" size="tap" className="max-lg:w-full">
-          <Link href={topicHref}>
-            <ArrowLeft size={16} aria-hidden="true" /> Retour au sujet
-          </Link>
+    <SiteLayout
+      header={<PageHeader title="Classement final" subtitle={tournament.topic?.title || tournament.name} backHref={topicHref} backTitle="Retour au sujet" />}
+      aside={
+        <Button asChild variant="secondary" size="tap" className="w-full">
+          <Link href={topicHref}>Retour au sujet du tournoi</Link>
         </Button>
-      </ForumListHeader>
-
+      }
+      asideLabel="Tournoi"
+      asideOnMobile="bottom"
+    >
       <Card className="flex flex-col gap-3 p-3 lg:p-4">
         {tournament.isCDF && (
           <CdfValidationPanel tournamentId={tournament.id} validatedAt={tournament.cdfValidatedAt} canValidate={isModerator(session?.user?.role)} />
         )}
         <ResultsRanking results={tournament.results} />
       </Card>
-    </div>
+    </SiteLayout>
   );
 }

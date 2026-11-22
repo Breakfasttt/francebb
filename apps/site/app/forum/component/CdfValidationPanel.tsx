@@ -1,7 +1,7 @@
 "use client";
 
 /**
- * Validation des résultats d'un tournoi de la Coupe de France (CDF) par la modération (carte 162).
+ * Validation des résultats d'un tournoi du Championnat de France (CDF) par la modération (carte 162).
  * Les résultats d'un tournoi CDF ne comptent au classement national qu'une fois validés par un modérateur ou un
  * administrateur. Ce bloc dit à tout le monde où en sont les résultats (en attente ou validés) et, pour la modération
  * seulement, propose « Valider les résultats CDF » ou « Retirer la validation ». Le serveur revérifie le rôle
@@ -57,8 +57,8 @@ export default function CdfValidationPanel({ tournamentId, validatedAt, canValid
         )}
         <span>
           {isValidated
-            ? `Résultats validés par la modération le ${date} : ils comptent au classement de la Coupe de France.`
-            : "Résultats en attente de validation par la modération : ils ne comptent pas encore au classement de la Coupe de France."}
+            ? `Résultats validés par la modération le ${date} : ils comptent au classement du Championnat de France.`
+            : "Résultats en attente de validation par la modération : ils ne comptent pas encore au classement du Championnat de France."}
         </span>
       </p>
       {canValidate && (

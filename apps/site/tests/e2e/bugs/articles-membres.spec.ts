@@ -296,7 +296,7 @@ test.describe("carte 140 : page et modification d'un article", () => {
     const dialog = page.getByRole("dialog", { name: `Modérer l'article de ${SECRETIVE.name}` });
     await expect(dialog).toBeVisible();
     await expect(dialog.getByText(/Le contenu de l'article sera masqué/)).toBeVisible();
-    await expect(page.getByText(/Modérer le message/)).toHaveCount(0);
+    await expect(page.getByText(/Masquer le message|Modérer le message/)).toHaveCount(0);
     // Fermée sans confirmer : l'article n'est pas modéré
     await dialog.getByRole("button", { name: "Annuler" }).click();
     await expect(dialog).toBeHidden();

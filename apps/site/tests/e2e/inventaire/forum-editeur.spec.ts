@@ -33,7 +33,7 @@ const QUICK_TOPIC = "e2e_edi_rapide";
 const LOCKED_FORUM = { id: "e2e_edi_forum_verrou", name: "Inv Éditeur Forum Verrouillé" };
 
 const MORE_TOOLS = "Plus d'outils de mise en forme";
-const REPLY_PLACEHOLDER = "Tape ta réponse ici...";
+const REPLY_PLACEHOLDER = "Écris ta réponse…";
 
 /** Supprime tout ce que ce test a créé (y compris un reste d'un lancement interrompu). */
 async function cleanUp() {
@@ -548,7 +548,7 @@ test.describe("réponse rapide", () => {
   test("[membre] les outils de l'éditeur et l'envoi fonctionnent dans la réponse rapide", async ({ page }, testInfo) => {
     await loginAs(page, WRITER.id);
     await page.goto(`/forum/topic/${QUICK_TOPIC}?page=1`, { waitUntil: "networkidle" });
-    const textarea = page.getByPlaceholder("Écris ta réponse ici...");
+    const textarea = page.getByPlaceholder("Écris ta réponse…").first();
     await writeAndSelect(textarea, "Réponse rapide en gras");
     await applyTool(page, "Gras");
     await expect(textarea).toHaveValue("[b]Réponse rapide en gras[/b]");
@@ -556,7 +556,7 @@ test.describe("réponse rapide", () => {
     await applyTool(page, "Trait horizontal");
     await expect(textarea).toHaveValue("[b]Réponse rapide en gras[/b][hr]");
     await page.screenshot({ path: testInfo.outputPath("reponse-rapide.png"), fullPage: false });
-    await visibleButton(page, "Envoyer ma réponse").click();
+    await visibleButton(page, "Publier ma réponse").click();
     await expect(page.getByText("Réponse rapide en gras", { exact: true })).toBeVisible({ timeout: 20_000 });
     await expect(textarea).toHaveValue("");
   });

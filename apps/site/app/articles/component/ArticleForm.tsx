@@ -184,7 +184,7 @@ export default function ArticleForm({ initialData, isEdit = false }: ArticleForm
           </Block>
 
           <Block icon={<PenLine size={18} />} title="Contenu">
-            <Field label="Contenu de l'article (BBCode, obligatoire)" htmlFor="content" error={errors.content}>
+            <Field label="Texte de l'article (obligatoire)" htmlFor="content" error={errors.content}>
               <BBCodeEditor
                 id="content"
                 name="content"

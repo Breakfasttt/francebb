@@ -41,3 +41,18 @@ export function freePlaces(tournament: TournamentPlacesFields & { maxParticipant
   if (tournament.maxParticipants == null) return Infinity;
   return Math.max(0, tournament.maxParticipants - takenPlaces(tournament));
 }
+
+/**
+ * Libellé unique des places prises (revue 221), le même dans la liste `/tournois`, la fiche et le module
+ * d'inscription : « 4 / 24 places », ou « 2 / 8 équipes » pour un tournoi par équipes (on compte alors en équipes).
+ * Les pré-inscrits prennent une place, la liste d'attente non.
+ */
+export function placesLabel(taken: number, maxParticipants: number | null, isTeam: boolean): string {
+  const unit = isTeam ? "équipes" : "places";
+  return maxParticipants ? `${taken} / ${maxParticipants} ${unit}` : `${taken} ${isTeam ? (taken > 1 ? "équipes" : "équipe") : taken > 1 ? "inscrits" : "inscrit"}, sans limite`;
+}
+
+/** Tournoi complet : un nombre maximal de places, toutes prises. */
+export function isFull(tournament: TournamentPlacesFields & { maxParticipants: number | null }): boolean {
+  return tournament.maxParticipants != null && tournament.maxParticipants > 0 && freePlaces(tournament) === 0;
+}

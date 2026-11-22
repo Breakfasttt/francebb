@@ -18,10 +18,20 @@ interface StatCardProps {
  * discrète. Pas d'icône. Les cases sont séparées par les filets de leur grille (page statistiques).
  */
 export default function StatCard({ label, value, description }: StatCardProps) {
+  // La voix Display met tout en capitales : l'unité (« Mo ») garde sa casse, sinon elle se lirait « MO »
+  const withUnit = typeof value === "string" ? /^([\d\s.,]+)\s+(\D+)$/.exec(value) : null;
   return (
     <div className="flex flex-col gap-1 bg-bb-surface p-4 lg:p-5">
       <dt className="font-bb-heading text-bb-label text-bb-text-muted">{label}</dt>
-      <dd className="font-bb-display text-[2rem] text-bb-text tabular-nums lg:text-[2.75rem]">{value}</dd>
+      <dd className="font-bb-display text-[2rem] text-bb-text tabular-nums lg:text-[2.75rem]">
+        {withUnit ? (
+          <>
+            {withUnit[1]} <span className="normal-case">{withUnit[2]}</span>
+          </>
+        ) : (
+          value
+        )}
+      </dd>
       {description && <dd className="text-sm text-bb-text-muted">{description}</dd>}
     </div>
   );

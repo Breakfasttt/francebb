@@ -38,6 +38,31 @@ async function hasBlockBetween(userId: string, otherIds: string[]) {
     });
     return count > 0;
 }
+/**
+ * Pourquoi on ne peut plus écrire dans une conversation à deux (carte 221) : l'autre membre est banni, on l'a bloqué,
+ * ou il nous a bloqué. Seul ce statut est envoyé au navigateur, jamais la raison du bannissement ni la date du blocage.
+ */
+export type ReplyBlock = "banned" | "blockedByMe" | "blockedMe";
+
+async function replyBlockFor(userId: string, otherId: string): Promise<ReplyBlock | null> {
+  const [other, blocks] = await Promise.all([
+    prisma.user.findUnique({ where: { id: otherId }, select: { isBanned: true } }),
+    prisma.block.findMany({
+      where: {
+        OR: [
+          { blockerId: userId, blockedId: otherId },
+          { blockerId: otherId, blockedId: userId }
+        ]
+      },
+      select: { blockerId: true }
+    })
+  ]);
+  if (!other || other.isBanned) return "banned";
+  if (blocks.some((block) => block.blockerId === userId)) return "blockedByMe";
+  if (blocks.length > 0) return "blockedMe";
+  return null;
+}
+
 const CONVERSATIONS_PER_PAGE = 20;
 const MESSAGES_PER_PAGE = 30;
 
@@ -126,7 +151,10 @@ export async function getConversations(page = 1) {
 
 /**
  * Récupère les messages d'une conversation.
- * Renvoie null si le visiteur n'est pas connecté ou ne participe pas (ou plus) à cette conversation.
+ * Renvoie null si le visiteur n'est pas connecté. Sinon un statut (carte 221) : `left` si le membre a quitté la
+ * conversation, `missing` si elle n'existe pas ou qu'il n'y a jamais participé (les deux cas se confondent, pour ne
+ * pas révéler qu'une conversation existe), `ok` avec les messages et, pour une conversation à deux, `replyBlock` si
+ * on ne peut plus y écrire.
  */
 export async function getConversationMessages(conversationId: string, page = 1) {
   const session = await getActiveSession();
@@ -140,9 +168,8 @@ export async function getConversationMessages(conversationId: string, page = 1) 
     }
   });
 
-  if (!participant || participant.deletedAt) {
-    return null;
-  }
+  if (!participant) return { status: "missing" as const };
+  if (participant.deletedAt) return { status: "left" as const };
 
   const skip = (page - 1) * MESSAGES_PER_PAGE;
 
@@ -179,7 +206,14 @@ export async function getConversationMessages(conversationId: string, page = 1) 
 
   const total = await prisma.privateMessage.count({ where: { conversationId } });
 
+  // Conversation à deux : on dit tout de suite si l'autre membre ne peut plus recevoir de message, plutôt que de
+  // refuser seulement à l'envoi.
+  const other = conversation && !conversation.isGroup ? conversation.participants.find((p) => p.userId !== userId) : undefined;
+  const replyBlock = conversation && !conversation.isGroup ? (other ? await replyBlockFor(userId, other.userId) : "banned") : null;
+
   return {
+    status: "ok" as const,
+    replyBlock,
     messages: messages.map(m => ({ ...m, content: decrypt(m.content) })),
     conversation: conversation ? withoutLeftMembers(conversation) : null,
     totalPages: Math.ceil(total / MESSAGES_PER_PAGE),
@@ -285,10 +319,20 @@ export async function startConversation(userIds: string[], name?: string): Promi
     const isGroup = allParticipants.length > 2 || !!name;
     if (allParticipants.length < 2) return { success: false, error: "Choisis au moins un destinataire." };
     if (await unreachableMembers(allParticipants.filter(uid => uid !== myId))) {
+        // Un seul destinataire : on dit précisément pourquoi (carte 221)
+        if (allParticipants.length === 2) {
+            const recipient = await prisma.user.findUnique({ where: { id: allParticipants.find(uid => uid !== myId) }, select: { isBanned: true } });
+            return { success: false, error: recipient?.isBanned ? "Ce membre a été banni : il ne peut plus recevoir de messages." : "Ce membre n'existe pas ou a supprimé son compte." };
+        }
         return { success: false, error: "Un des membres choisis n'existe pas ou ne peut plus recevoir de messages." };
     }
 
     if (await hasBlockBetween(myId, allParticipants.filter(uid => uid !== myId))) {
+        if (allParticipants.length === 2) {
+            const block = await replyBlockFor(myId, allParticipants.find(uid => uid !== myId) as string);
+            if (block === "blockedByMe") return { success: false, error: "Tu as bloqué ce membre. Débloque-le depuis ton profil pour lui écrire." };
+            if (block === "blockedMe") return { success: false, error: "Ce membre ne reçoit pas tes messages." };
+        }
         return { success: false, error: "Impossible de démarrer une conversation avec un membre qui t'a bloqué ou que tu as bloqué." };
     }
 

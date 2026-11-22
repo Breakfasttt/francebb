@@ -6,12 +6,13 @@
  * - Partager : copie le lien du message (…/forum/topic/id?page=N#post-id) et affiche « Lien copié ! ».
  * - Signaler ce message (membre qui n'en est pas l'auteur), avec la fenêtre de signalement.
  * - Marquer comme non lu à partir d'ici (membre) : le membre reste sur le sujet, une notification le confirme (carte 169).
- * - Modifier (auteur ou modérateur), Supprimer (auteur, avec confirmation), Modérer ou Restaurer (modérateur) :
+ * - Modifier (auteur ou modérateur), Supprimer (auteur, avec confirmation), Masquer ou Démasquer (modérateur) :
  *   seulement quand le contenu du message est affiché (ni supprimé, ni masqué parce que l'auteur est bloqué ou banni).
  * - Suppression douce (carte 165) : « Supprimer » de l'auteur remplace le message par « supprimé par son auteur » ;
  *   sur le premier message d'un sujet sans réponse, c'est le sujet entier qui est supprimé. « Supprimer (modération) »
  *   permet à un modérateur de retirer le message d'un autre membre (un spam) avec une raison, et « Restaurer le
- *   message supprimé » de revenir dessus. Les règles sont dans lib/forumDeletion.ts.
+ *   message » de revenir dessus. Vocabulaire commun avec la modération (carte 221) : Masquer / Démasquer,
+ *   Supprimer (modération) / Restaurer le message. Les règles sont dans lib/forumDeletion.ts.
  * Ces actions étaient avant dans l'en-tête et le pied du message (SharePostButton, ReportPostButton,
  * MarkUnreadAction, PostActions) : leur logique est reprise telle quelle.
  */
@@ -74,6 +75,8 @@ export default function PostMoreMenu({
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [reportOpen, setReportOpen] = useState(false);
+  // Après un envoi, le menu le dit au lieu de proposer un deuxième signalement (refusé par le serveur, carte 221)
+  const [reported, setReported] = useState(false);
   const [moderateOpen, setModerateOpen] = useState(false);
   const [restoreOpen, setRestoreOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
@@ -109,7 +112,7 @@ export default function PostMoreMenu({
   const onConfirmModerate = async (reason: string) => {
     const res = await moderatePost(postId, reason);
     if (!res.success) {
-      toast.error(res.error || "Erreur lors de la modération.");
+      toast.error(res.error || "Le message n'a pas pu être masqué.");
       return;
     }
     window.location.reload();
@@ -119,12 +122,12 @@ export default function PostMoreMenu({
     try {
       const res = await unmoderatePost(postId);
       if (!res.success) {
-        toast.error(res.error || "Erreur lors de la restauration.");
+        toast.error(res.error || "Le message n'a pas pu être démasqué.");
         return;
       }
       window.location.reload();
     } catch {
-      toast.error("Erreur lors de la restauration.");
+      toast.error("Le message n'a pas pu être démasqué.");
     }
   };
 
@@ -170,12 +173,17 @@ export default function PostMoreMenu({
         linkComponent={Link}
         items={[
           { label: "Partager ce message", icon: icon(Share2), onSelect: handleShare },
-          { label: "Signaler ce message", icon: icon(TriangleAlert), onSelect: () => setReportOpen(true), hidden: !currentUserId || isAuthor },
+          {
+            label: reported ? "Signalement envoyé" : "Signaler ce message",
+            icon: icon(TriangleAlert),
+            onSelect: () => (reported ? toast.info("Tu as déjà signalé ce message : l'équipe va le regarder.") : setReportOpen(true)),
+            hidden: !currentUserId || isAuthor,
+          },
           { label: "Marquer comme non lu à partir d'ici", icon: icon(EyeOff), onSelect: handleMarkAsUnread, hidden: !currentUserId },
           { label: editLabel, icon: icon(Pencil), href: editHref, hidden: !showContentActions || !canEdit },
           { label: "Supprimer", icon: icon(Trash2), onSelect: openAuthorDelete, danger: true, hidden: !showContentActions || !isAuthor || !canEdit },
-          { label: "Modérer", icon: icon(ShieldAlert), onSelect: () => setModerateOpen(true), danger: true, hidden: !showContentActions || !isModerator || isModerated },
-          { label: "Restaurer", icon: icon(ShieldCheck), onSelect: () => setRestoreOpen(true), hidden: !showContentActions || !isModerator || !isModerated },
+          { label: "Masquer", icon: icon(ShieldAlert), onSelect: () => setModerateOpen(true), danger: true, hidden: !showContentActions || !isModerator || isModerated },
+          { label: "Démasquer", icon: icon(ShieldCheck), onSelect: () => setRestoreOpen(true), hidden: !showContentActions || !isModerator || !isModerated },
           // Le premier message ne se supprime pas seul : le modérateur supprime le sujet depuis les outils du sujet
           {
             label: "Supprimer (modération)",
@@ -184,11 +192,11 @@ export default function PostMoreMenu({
             danger: true,
             hidden: !showContentActions || !isModerator || isAuthor || isFirstPost,
           },
-          { label: "Restaurer le message supprimé", icon: icon(ArchiveRestore), onSelect: () => setRestoreDeletedOpen(true), hidden: !isModerator || !isDeletedByModeration },
+          { label: "Restaurer le message", icon: icon(ArchiveRestore), onSelect: () => setRestoreDeletedOpen(true), hidden: !isModerator || !isDeletedByModeration },
         ]}
       />
 
-      <ReportModal isOpen={reportOpen} onClose={() => setReportOpen(false)} targetId={postId} targetType="POST" itemTitle={`Message de ${authorName}`} />
+      <ReportModal isOpen={reportOpen} onClose={() => setReportOpen(false)} onReported={() => setReported(true)} targetId={postId} targetType="POST" itemTitle={`Message de ${authorName}`} />
 
       <ModerationModal isOpen={moderateOpen} onClose={() => setModerateOpen(false)} onConfirm={onConfirmModerate} authorName={authorName} />
 
@@ -196,9 +204,9 @@ export default function PostMoreMenu({
         isOpen={restoreOpen}
         onClose={() => setRestoreOpen(false)}
         onConfirm={handleUnmoderate}
-        title="Restaurer le message"
-        message="Tu veux vraiment annuler la modération de ce message ? Le contenu sera à nouveau visible par tous."
-        confirmLabel="Restaurer"
+        title="Démasquer le message"
+        message="Le message masqué sera de nouveau visible par tous."
+        confirmLabel="Démasquer"
       />
 
       <ConfirmDialog
@@ -257,9 +265,9 @@ export default function PostMoreMenu({
       <ConfirmDialog
         open={restoreDeletedOpen}
         onOpenChange={setRestoreDeletedOpen}
-        title="Restaurer le message supprimé"
+        title="Restaurer le message"
         message="Le message supprimé par la modération sera de nouveau visible par tous, tel qu'il était."
-        confirmLabel="Restaurer"
+        confirmLabel="Restaurer le message"
         pending={isPending}
         onConfirm={() => runDeletion(() => restorePost(postId), "Erreur lors de la restauration.")}
       />

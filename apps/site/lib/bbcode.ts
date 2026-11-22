@@ -77,7 +77,23 @@ function sanitizeStyle(value: string, type: 'color' | 'size'): string {
  * État des messages cités, calculé par le serveur (`getQuoteStatusMap`, app/forum/actions.ts) et indexé par
  * l'identifiant du message. `authorId` et `authorName` (carte 169) sont l'auteur réel du message cité.
  */
-export type QuoteStatusMap = Record<string, { isDeleted: boolean; isModerated: boolean; authorId?: string; authorName?: string | null }>;
+export type QuoteStatusMap = Record<string, {
+  isDeleted: boolean;
+  isModerated: boolean;
+  /** Supprimé par la modération et non par son auteur (sans dire qui l'a supprimé). */
+  deletedByModeration?: boolean;
+  authorId?: string;
+  authorName?: string | null;
+}>;
+
+/** Phrase qui remplace un message cité que le lecteur ne peut plus lire (citation, rappel des derniers messages). */
+export function hiddenQuoteText(status: { isDeleted: boolean; isModerated: boolean; deletedByModeration?: boolean }): string | null {
+  if (status.isDeleted) {
+    return status.deletedByModeration ? "Ce message a été supprimé par la modération." : "Ce message a été supprimé par son auteur.";
+  }
+  if (status.isModerated) return "Le contenu de ce message a été masqué par la modération.";
+  return null;
+}
 
 /**
  * Onglet « Par @… » d'une citation (carte 169) : à qui l'attribuer, ou `null` pour ne pas l'afficher.
@@ -196,7 +212,7 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
   while (/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i.test(html)) {
     html = html.replace(/\[spoiler(?:=(.*?))?\]((?:(?!\[spoiler)[\s\S])*?)\[\/spoiler\]/i, (match, title, content) => {
       const trimmedContent = content.trim();
-      return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box"><div class="bb-spoiler-body">${trimmedContent}<button type="button" class="bb-spoiler-rehide" title="Recouvrir le bloc">👁️</button></div><div class="bb-spoiler-mask"><span class="bb-spoiler-mask-text">👁️ SPOILER</span></div></div></div>`;
+      return `<div class="bb-spoiler-wrapper">${title ? `<div class="bb-spoiler-header">${title}</div>` : ""}<div class="bb-spoiler-box"><div class="bb-spoiler-body">${trimmedContent}<button type="button" class="bb-spoiler-rehide" title="Recouvrir le spoiler" aria-label="Recouvrir le spoiler"><span aria-hidden="true">👁️</span></button></div><button type="button" class="bb-spoiler-mask" aria-label="Spoiler : afficher le texte caché"><span class="bb-spoiler-mask-text" aria-hidden="true">👁️ Spoiler</span></button></div></div>`;
     });
   }
 
@@ -214,10 +230,10 @@ export function parseBBCode(text: string, postStatusMap?: QuoteStatusMap, curren
       let quoteContent = '';
       if (postId && postStatusMap && postStatusMap[postId]) {
         const status = postStatusMap[postId];
-        if (status.isDeleted) {
-          quoteContent = `<div style="text-align: center; color: var(--bb-text-muted); padding: 0.5rem;">Ce message a été supprimé par son auteur</div>`;
-        } else if (status.isModerated) {
-          quoteContent = `<div style="text-align: center; color: var(--bb-danger-text); padding: 0.5rem;">Le contenu de ce message a été masqué par la modération.</div>`;
+        const hiddenText = hiddenQuoteText(status);
+        if (hiddenText) {
+          const color = status.isDeleted ? "var(--bb-text-muted)" : "var(--bb-danger-text)";
+          quoteContent = `<div style="text-align: center; color: ${color}; padding: 0.5rem;">${hiddenText}</div>`;
         }
       }
       const displayContent = (quoteContent || content).trim();

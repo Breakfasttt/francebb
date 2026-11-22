@@ -410,13 +410,15 @@ test.describe("pages fixes", () => {
     await page.screenshot({ path: testInfo.outputPath("statistiques-admin.png"), fullPage: true });
   });
 
-  test("/banned : raison du bannissement et retour", async ({ page }, testInfo) => {
+  test("/banned : raison du bannissement et déconnexion", async ({ page }, testInfo) => {
     await loginAs(page, E2E.bannedId);
     await page.goto("/banned", { waitUntil: "networkidle" });
     const main = content(page);
     await expect(main.getByRole("heading", { name: /compte banni/i })).toBeVisible();
     await expect(main.getByText("Test e2e")).toBeVisible();
-    await expect(main.getByRole("link", { name: /retour à l.accueil/i })).toHaveAttribute("href", "/");
+    // Carte 221 : « Retour à l'accueil » renvoyait ici ; la seule sortie est la déconnexion, sans navigation autour
+    await expect(main.getByRole("button", { name: "Me déconnecter" })).toBeVisible();
+    await expect(page.getByRole("navigation", { name: "Navigation principale" })).toHaveCount(0);
     await page.screenshot({ path: testInfo.outputPath("banni.png"), fullPage: true });
   });
 

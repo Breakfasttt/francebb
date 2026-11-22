@@ -12,7 +12,8 @@ import { Avatar, Card, cn } from "@bbfrance/ui";
 import { Clock } from "lucide-react";
 import ForumBreadcrumbs from "@/app/forum/component/ForumBreadcrumbs";
 import BackButton from "@/common/components/BackButton/BackButton";
-import { parseBBCode } from "@/lib/bbcode";
+import { hiddenQuoteText, parseBBCode } from "@/lib/bbcode";
+import { postDeletedBy } from "@/lib/forumDeletion";
 
 interface ComposeScreenProps {
   /** Fil d'Ariane du forum (ordinateur) ; absent pour un écran hors du forum (formulaire de ligue, carte 094). */
@@ -75,12 +76,19 @@ type RecapPost = {
   content: string;
   isDeleted?: boolean;
   isModerated?: boolean;
+  /** Auteur et membre qui a supprimé le message : distinguent une suppression par l'auteur ou par la modération. */
+  authorId?: string;
+  deletedById?: string | null;
   author: { name: string | null; image: string | null };
 };
 
-/** Phrase affichée à la place du texte d'un message que le lecteur n'a pas le droit de lire. */
+/** Phrase affichée à la place du texte d'un message que le lecteur n'a pas le droit de lire (même texte que les citations). */
 const hiddenRecapText = (post: RecapPost) =>
-  post.isDeleted ? "Ce message a été supprimé par son auteur." : "Le contenu de ce message a été masqué par la modération.";
+  hiddenQuoteText({
+    isDeleted: !!post.isDeleted,
+    isModerated: !!post.isModerated,
+    deletedByModeration: postDeletedBy({ isDeleted: !!post.isDeleted, authorId: post.authorId ?? "", deletedById: post.deletedById }) === "moderation",
+  }) ?? "";
 
 /**
  * « Rappel des derniers messages » sous l'éditeur : les 3 derniers messages du sujet, coupés à quelques lignes.

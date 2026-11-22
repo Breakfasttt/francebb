@@ -52,7 +52,7 @@ export interface TournamentFormFields {
 
 /** Ce que le formulaire demande en plus, que chaque action traite selon ses règles. */
 export interface TournamentFormRequests {
-  /** Case « Coupe de France » cochée (seuls les modérateurs peuvent la changer, carte 162). */
+  /** Case « Championnat de France » cochée (seuls les modérateurs peuvent la changer, carte 162). */
   wantsCdf: boolean;
   /** Type de classement CDF envoyé par le formulaire, ou rien. */
   typeCDF: string | null;
@@ -63,6 +63,27 @@ export interface TournamentFormRequests {
 export const DEFAULT_GAME_EDITION = "BB2025";
 export const DEFAULT_PLATFORM = "Tabletop";
 export const DEFAULT_TOURNAMENT_TYPE = "SWISS";
+
+/**
+ * Libellés lisibles des codes enregistrés (édition, plateforme, format) : seul l'affichage change, la base garde le
+ * code. Un code inconnu (saisie de l'ancien site) s'affiche tel quel.
+ */
+const GAME_EDITION_LABELS: Record<string, string> = {
+  BB2025: "Blood Bowl 2025",
+  BB25: "Blood Bowl 2025",
+  BB20: "Blood Bowl 2020",
+  BB3: "Blood Bowl 3",
+  BB7: "Blood Bowl 7's",
+  GutterBowl: "Gutter Bowl",
+  Classic: "Classic / LRB6",
+  DungeonBowl: "Dungeon Bowl",
+};
+const PLATFORM_LABELS: Record<string, string> = { Tabletop: "Sur table", Fumbbl: "Fumbbl", VideoGame: "Jeu vidéo", Other: "Autre" };
+const STRUCTURE_LABELS: Record<string, string> = { Resurrection: "Résurrection", Evolutif: "Évolutif", Other: "Autre" };
+
+export const gameEditionLabel = (code: string | null | undefined) => GAME_EDITION_LABELS[code || DEFAULT_GAME_EDITION] ?? code ?? "";
+export const platformLabel = (code: string | null | undefined) => PLATFORM_LABELS[code || DEFAULT_PLATFORM] ?? code ?? "";
+export const structureLabel = (code: string | null | undefined) => (code ? STRUCTURE_LABELS[code] ?? code : "");
 
 /** Texte d'un champ, sans espaces autour, ou `null` s'il est vide. */
 function text(formData: FormData, name: string): string | null {

@@ -262,14 +262,17 @@ test.describe("3.8 recherche avancée", () => {
         await expect(resultLinks(page).nth(index)).toHaveAttribute("href", new RegExp(`#post-${postId}$`));
       }
     };
-    // Période : 7 jours, 30 jours, 1 an, tout ; tri par défaut du plus récent au plus ancien
+    // Période : 7 jours, 30 jours, 1 an, tout ; tri par défaut du plus récent au plus ancien. Les résultats sont
+    // regroupés par sujet (revue 221) : « recent », « coach » et « old » sont dans le même sujet, représenté par le
+    // premier de ses messages dans l'ordre choisi
     await expectResults({ q: KEYWORD, date: "7d" }, [POST.recent]);
     await expectResults({ q: KEYWORD, date: "30d" }, [POST.recent, POST.tournament]);
-    await expectResults({ q: KEYWORD, date: "1y" }, [POST.recent, POST.tournament, POST.coach]);
-    await expectResults({ q: KEYWORD }, [POST.recent, POST.tournament, POST.coach, POST.old]);
-    await expectResults({ q: KEYWORD, sortBy: "asc" }, [POST.old, POST.coach, POST.tournament, POST.recent]);
-    // Auteur : les messages du coach sont écartés
-    await expectResults({ q: KEYWORD, author: AUTHOR.name }, [POST.recent, POST.tournament, POST.old]);
+    await expectResults({ q: KEYWORD, date: "1y" }, [POST.recent, POST.tournament]);
+    await expectResults({ q: KEYWORD }, [POST.recent, POST.tournament]);
+    await expectResults({ q: KEYWORD, sortBy: "asc" }, [POST.old, POST.tournament]);
+    // Auteur : les messages du coach sont écartés ; sujet regroupé, le plus ancien d'abord
+    await expectResults({ q: KEYWORD, author: AUTHOR.name, sortBy: "asc" }, [POST.old, POST.tournament]);
+    await expectResults({ q: KEYWORD, author: AUTHOR.name, date: "1y", sortBy: "asc" }, [POST.tournament, POST.recent]);
     // Forum : un forum parent inclut ses sous-forums, un sous-forum ne contient que les siens
     await expectResults({ q: KEYWORD, forumId: CHILD_FORUM.id }, [POST.tournament]);
     await expectResults({ q: KEYWORD, forumId: ROOT_FORUM.id, date: "30d" }, [POST.recent, POST.tournament]);
@@ -302,21 +305,14 @@ test.describe("3.8 recherche avancée", () => {
     await expect(page.getByRole("img", { name: "Tournoi" }).filter({ visible: true })).toHaveCount(1);
   });
 
-  test("[tous] 20 résultats par page ; le lien mène au message, sur la bonne page du sujet", async ({ page }) => {
+  test("[tous] résultats regroupés par sujet ; le lien mène au message, sur la bonne page du sujet", async ({ page }) => {
     await page.goto(searchUrl({ q: "paginatruc" }), { waitUntil: "networkidle" });
-    await expect(page.getByText(/\b25\b.*(résultat|trouvé)/)).toBeVisible();
-    await expect(resultLinks(page)).toHaveCount(20);
+    await expect(page.getByText(/\b25\b.*(résultat|trouvé)/).first()).toBeVisible();
+    // Les 25 messages sont dans le même sujet : une seule ligne (revue 221)
+    await expect(resultLinks(page)).toHaveCount(1);
+    await expect(page.getByText("25 messages trouvés dans ce sujet")).toBeVisible();
     // Le message le plus récent est le 25e du sujet : il est sur la deuxième page du sujet
     await expect(resultLinks(page).first()).toHaveAttribute("href", postHref(PAGES_TOPIC.id, pagePostId(25), 2));
-
-    const pager = page.getByRole("navigation", { name: "Pagination" }).filter({ visible: true }).first();
-    await expect(pager).toBeVisible();
-    await pager.getByRole("button", { name: /^(2|next)$/ }).or(pager.getByRole("link", { name: "Page suivante" })).first().click();
-    await page.waitForURL(/[?&]page=2/);
-    await page.waitForLoadState("networkidle");
-    expect(new URL(page.url()).searchParams.get("q")).toBe("paginatruc");
-    await expect(resultLinks(page)).toHaveCount(5);
-    await expect(resultLinks(page).last()).toHaveAttribute("href", postHref(PAGES_TOPIC.id, pagePostId(1), 1));
 
     // Bug de l'inventaire (section 18) : le lien atteint-il bien le message ?
     await page.goto(searchUrl({ q: "paginatruc" }), { waitUntil: "networkidle" });
@@ -444,17 +440,17 @@ test.describe("fenêtres de modération et de signalement", () => {
     await loginAs(page, E2E.modoId);
     await page.goto(`/forum/topic/${MODO_TOPIC.id}`, { waitUntil: "networkidle" });
     try {
-      await (await postAction(page, MODO_TOPIC.postId, "Modérer")).click();
-      const title = page.getByText(`Modérer le message de ${AUTHOR.name}`);
+      await (await postAction(page, MODO_TOPIC.postId, "Masquer")).click();
+      const title = page.getByText(`Masquer le message de ${AUTHOR.name}`);
       await expect(title).toBeVisible();
-      const confirm = page.getByRole("button", { name: "Confirmer la modération" });
+      const confirm = page.getByRole("button", { name: "Masquer le message" });
       await expect(confirm).toBeDisabled();
       await page.screenshot({ path: testInfo.outputPath("fenetre-moderer.png"), fullPage: false });
       await page.getByRole("button", { name: "Annuler" }).filter({ visible: true }).last().click();
       await expect(title).toBeHidden();
 
-      await (await postAction(page, MODO_TOPIC.postId, "Modérer")).click();
-      await page.getByLabel("Raison de la modération").fill("Raison de la recherche");
+      await (await postAction(page, MODO_TOPIC.postId, "Masquer")).click();
+      await page.getByLabel("Raison du masquage").fill("Raison de la recherche");
       await confirm.click();
       await expect(page.locator(`[id="post-${MODO_TOPIC.postId}"]`).getByText(/raison : Raison de la recherche/)).toBeVisible({ timeout: 20_000 });
     } finally {

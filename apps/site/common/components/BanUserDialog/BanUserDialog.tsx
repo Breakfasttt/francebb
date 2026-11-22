@@ -7,6 +7,7 @@
  *
  * Pour bannir, le modérateur choisit une raison rapide (obligatoire) et peut ajouter des précisions. La raison
  * envoyée est « [raison rapide] précisions », ou la raison rapide seule : c'est le format enregistré avant la carte.
+ * Avec « Autre », seule la précision est enregistrée, et elle devient obligatoire (carte 221).
  * Panneau qui monte du bas sur téléphone, fenêtre centrée sur ordinateur. L'action elle-même est fournie par le
  * parent (`onConfirm`).
  */
@@ -14,12 +15,14 @@ import { useState } from "react";
 import { Ban, UserCheck } from "lucide-react";
 import { Button, DESKTOP_QUERY, Field, Sheet, SheetContent, Textarea, useMediaQuery } from "@bbfrance/ui";
 
+const OTHER_BAN_REASON = "Autre (préciser ci-dessous)";
+
 export const BAN_REASONS = [
   "Spam / Publicité",
   "Harcèlement / Insultes",
   "Contenu inapproprié / NSFW",
   "Bot",
-  "Autre (préciser ci-dessous)",
+  OTHER_BAN_REASON,
 ];
 
 export default function BanUserDialog({
@@ -48,8 +51,8 @@ export default function BanUserDialog({
         side={isDesktop ? "center" : "bottom"}
         description={
           isBanned
-            ? `${userName} retrouvera l'accès au forum et ses messages seront de nouveau visibles.`
-            : `${userName} n'aura plus accès au forum et ses messages seront masqués.`
+            ? `${userName} retrouvera l'accès au site et ses messages du forum seront de nouveau affichés normalement.`
+            : `${userName} n'aura plus accès au site. Dans le forum, ses messages seront repliés : chacun pourra encore les afficher.`
         }
         onInteractOutside={(event) => event.preventDefault()}
       >
@@ -68,7 +71,8 @@ function BanForm({ isBanned, pending, onConfirm, onCancel }: {
 }) {
   const [reason, setReason] = useState("");
   const [details, setDetails] = useState("");
-  const fullReason = details.trim() ? `[${reason}] ${details.trim()}` : reason;
+  const isOther = reason === OTHER_BAN_REASON;
+  const fullReason = isOther ? details.trim() : details.trim() ? `[${reason}] ${details.trim()}` : reason;
 
   return (
     <div className="flex flex-col gap-4 pt-1 pb-2">
@@ -90,7 +94,7 @@ function BanForm({ isBanned, pending, onConfirm, onCancel }: {
               </Button>
             ))}
           </div>
-          <Field label="Précisions (facultatif)" htmlFor="ban-details">
+          <Field label={isOther ? "Précise la raison" : "Précisions (facultatif)"} htmlFor="ban-details">
             <Textarea
               id="ban-details"
               value={details}
@@ -114,7 +118,7 @@ function BanForm({ isBanned, pending, onConfirm, onCancel }: {
             variant="danger"
             size="tap"
             className="w-full lg:w-auto"
-            disabled={pending || !reason}
+            disabled={pending || !reason || (isOther && !details.trim())}
             onClick={() => onConfirm(fullReason)}
           >
             <Ban size={18} aria-hidden="true" /> Confirmer le bannissement

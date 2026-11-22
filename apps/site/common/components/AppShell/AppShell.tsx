@@ -113,6 +113,9 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
   // Écrans plein écran sans barre basse : les écrans de rédaction du forum (carte 087). L'éditeur BBScheme, qui en
   // faisait partie, a quitté le site (carte 179).
   const immersive = isComposePath(pathname);
+  // Pages sans navigation (carte 221) : la page d'un banni (chaque rubrique le renverrait ici) et l'inscription d'un
+  // nouveau membre (il termine d'abord son profil). Seul le nom du site reste dans la barre haute.
+  const bare = pathname === "/banned" || pathname === "/auth/onboarding";
   const [moreOpen, setMoreOpen] = useState(false);
   const [themeOpen, setThemeOpen] = useState(false);
   const closeMore = useCallback(() => setMoreOpen(false), []);
@@ -134,7 +137,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
           <div className="flex-1" />
           {/* Comptes de test, en développement seulement (carte 204) */}
           <DebugAuthWidget className={devButtonClass} />
-          {user && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
+          {user && !bare && <NotificationBell count={notificationCount} active={pathname === "/notifications"} />}
           {showLoginButton && (
             // Secondaire : le rouge reste à l'action principale de la page (DESIGN.md, un seul rouge par écran)
             <Button asChild variant="secondary" size="tap" className="px-3 whitespace-nowrap">
@@ -146,23 +149,26 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
         {/* Ordinateur */}
         <div className="mx-auto hidden h-16 max-w-[1760px] items-center gap-6 px-6 lg:flex xl:px-8">
           <SiteLogo scale={0.85} />
-          <nav aria-label="Navigation principale" className="flex flex-1 flex-wrap items-center gap-1">
-            {DESKTOP_NAV.map((item) => (
-              <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined} className={navLinkClass(isActive(pathname, item.href))}>
-                {item.label}
-              </Link>
-            ))}
-            <ActionMenu
-              label="Plus de rubriques"
-              items={desktopMoreItems}
-              linkComponent={Link}
-              triggerClassName="px-3 gap-1 font-bb-heading text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
-              trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>}
-            />
-          </nav>
+          {!bare && (
+            <nav aria-label="Navigation principale" className="flex flex-1 flex-wrap items-center gap-1">
+              {DESKTOP_NAV.map((item) => (
+                <Link key={item.href} href={item.href} aria-current={isActive(pathname, item.href) ? "page" : undefined} className={navLinkClass(isActive(pathname, item.href))}>
+                  {item.label}
+                </Link>
+              ))}
+              <ActionMenu
+                label="Plus de rubriques"
+                items={desktopMoreItems}
+                linkComponent={Link}
+                triggerClassName="px-3 gap-1 font-bb-heading text-[0.95rem] text-bb-nav-text hover:bg-transparent hover:text-bb-nav-active"
+                trigger={<>Plus <ChevronDown size={16} aria-hidden="true" /></>}
+              />
+            </nav>
+          )}
 
+          {bare && <div className="flex-1" />}
           <DebugAuthWidget className={devButtonClass} />
-          {user ? (
+          {bare ? null : user ? (
             <div className="flex items-center gap-1">
               <NotificationBell count={notificationCount} active={pathname === "/notifications"} />
               <Link href="/messagerie" aria-label={`Messagerie, ${unreadCount} message(s) non lu(s)`} className={iconLinkClass}>
@@ -209,7 +215,7 @@ export default function AppShell({ user, hubLogout, isAdmin, isMod, counts }: Ap
       </header>
 
       {/* Barre basse du téléphone */}
-      {!immersive && (
+      {!immersive && !bare && (
         <nav aria-label="Navigation principale" className="app-bottom-nav fixed inset-x-0 bottom-0 z-[5000] grid grid-cols-5 border-t border-bb-nav-border bg-bb-nav-bg font-bb-sans lg:hidden">
           {PRIMARY_NAV.map(({ label, href, icon: Icon }) => {
             const active = activeTab === href;

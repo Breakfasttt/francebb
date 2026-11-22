@@ -10,6 +10,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { isModerator } from "@/lib/roles";
 import { logModerationAction } from "@/lib/moderationLog";
+import { closePendingReports } from "@/lib/moderationReports";
 
 export async function createArticle(formData: FormData) {
   const session = await getActiveSession();
@@ -153,6 +154,10 @@ export async function toggleArticleReaction(articleId: string, emoji: string) {
   const userId = session.user.id;
 
   try {
+    // Article masqué par la modération (ou inexistant) : aucune réaction (carte 221)
+    const article = await prisma.article.findUnique({ where: { id: articleId }, select: { isModerated: true } });
+    if (!article || article.isModerated) return { error: "Cet article n'accepte pas de réaction." };
+
     const existing = await prisma.articleReaction.findFirst({
       where: { articleId, userId },
     });
@@ -205,6 +210,8 @@ export async function moderateArticle(articleId: string, reason: string) {
       "ARTICLE",
       `Article modéré. Raison : ${reason}`
     );
+    // L'article masqué n'a plus besoin de ses signalements en attente (carte 221)
+    await closePendingReports("ARTICLE", [articleId], session.user.id);
 
     revalidatePath(`/articles/${articleId}`);
     return { success: true };

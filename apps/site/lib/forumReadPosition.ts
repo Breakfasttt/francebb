@@ -60,3 +60,18 @@ export function shouldCountTopicView(previousVisitAt: Date | null, positionAdvan
   if (!previousVisitAt) return true;
   return positionAdvanced && now.getTime() - previousVisitAt.getTime() > TOPIC_VISIT_GAP_MS;
 }
+
+/**
+ * Message devant lequel la page d'un sujet place le repère « Nouveaux messages » : le premier message affiché qui suit
+ * la position de lecture du membre. Rien quand tout est lu, ou quand ce premier non-lu est le tout premier message du
+ * sujet (`firstTopicPostId`) : un sujet jamais lu n'a pas besoin de repère. `posts` est dans l'ordre de la page.
+ */
+export function firstUnreadPostId(
+  posts: { id: string; createdAt: Date | string }[],
+  position: ReadPosition,
+  firstTopicPostId?: string | null,
+): string | null {
+  const first = posts.find((post) => isPositionAfter({ at: new Date(post.createdAt), postId: post.id }, position));
+  if (!first || first.id === firstTopicPostId) return null;
+  return first.id;
+}

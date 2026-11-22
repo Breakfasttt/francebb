@@ -31,7 +31,9 @@ export default async function ReplyPage({
 
   const session = await getActiveSession();
   if (!session?.user?.id) {
-    redirect(`/forum/topic/${id}`);
+    // Visiteur : connexion, puis retour sur cet écran (citation comprise)
+    const back = `/forum/topic/${id}/reply${quotePostId ? `?quotePostId=${encodeURIComponent(quotePostId)}` : ""}`;
+    redirect(`/auth/login?callbackUrl=${encodeURIComponent(back)}`);
   }
 
   const topic = await prisma.topic.findUnique({

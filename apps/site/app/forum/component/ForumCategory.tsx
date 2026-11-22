@@ -22,7 +22,7 @@ export interface ForumIndexCategory {
     isTournamentForum: boolean;
     _count: { topics: number };
     topics: { title: string; lastPostAt: Date | string; tournamentId: string | null; lastPostAuthor: { name: string | null } | null }[];
-    subForums: { id: string }[];
+    subForums: { id: string; name: string }[];
   }[];
 }
 
@@ -71,6 +71,7 @@ export default function ForumCategory({ category, unreadForumIds, postCounts }: 
                   topicCount: forum._count.topics,
                   postCount: postCounts[forum.id] ?? 0,
                   hasNew: unreadForumIds.includes(forum.id),
+                  subForums: forum.subForums,
                   lastTopic: lastTopic && {
                     title: lastTopic.title,
                     isTournament: !!lastTopic.tournamentId,

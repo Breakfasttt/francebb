@@ -147,6 +147,8 @@ async function seedTopic(topic: {
       topicId: topic.id,
       authorId: post.author,
       createdAt: postDate(index),
+      // Sans cette date, Prisma met la date du remplissage et chaque message s'affiche « modifié le … »
+      updatedAt: postDate(index),
       isModerated: !!post.moderated,
       moderatedBy: post.moderated?.by ?? null,
       moderationReason: post.moderated?.reason ?? null,

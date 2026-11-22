@@ -2,15 +2,16 @@
 
 import { getActiveSession } from "@/lib/authGuard";
 import { prisma } from "@/lib/prisma";
-import { canDeleteMember, canEditTargetRole, UserRole, isAdmin, isModerator } from "@/lib/roles";
+import { canBanMember, canDeleteMember, isAdmin, isModerator } from "@/lib/roles";
 import { changeMemberRole } from "@/lib/memberRole";
 import { revalidatePath } from "next/cache";
 import { logModerationAction } from "@/lib/moderationLog";
 import { anonymizeAndDeleteUser } from "@/lib/accountDeletion";
+import { closePendingReports } from "@/lib/moderationReports";
 import type { ActionResult } from "@/lib/actionResult";
 
 /** Change le rôle d'un membre depuis la liste des membres. Règles et journal : lib/memberRole.ts (carte 221). */
-export async function updateUserRole(userId: string, newRole: UserRole): Promise<ActionResult> {
+export async function updateUserRole(userId: string, newRole: string): Promise<ActionResult> {
   const session = await getActiveSession();
   if (!session?.user) return { success: false, error: "Non authentifié" };
 
@@ -44,8 +45,9 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
 
   if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
-  if (!canEditTargetRole(me.role as UserRole, target.role as UserRole) && me.role !== "SUPERADMIN") {
-    return { success: false, error: `Tu ne peux pas ${isBanned ? "bannir" : "débannir"} ce membre (hiérarchie insuffisante)` };
+  // Règle commune avec l'écran (lib/roles.ts) : rang inférieur, jamais soi-même ni un compte technique (carte 221)
+  if (!canBanMember(me.role, target.role, userId === session.user.id, userId)) {
+    return { success: false, error: `Tu ne peux pas ${isBanned ? "bannir" : "débannir"} ce membre.` };
   }
 
   await prisma.user.update({
@@ -63,6 +65,8 @@ export async function toggleBanUser(userId: string, isBanned: boolean, reason?: 
     "USER",
     isBanned ? (reason || "Bannissement de l'utilisateur") : "Débannissement de l'utilisateur"
   );
+  // La modération a agi sur ce coach : ses signalements en attente se ferment (carte 221).
+  if (isBanned) await closePendingReports("USER", [userId], session.user.id);
 
   revalidatePath("/membres");
   revalidatePath(`/spy/${userId}`);
@@ -90,7 +94,7 @@ export async function deleteUser(userId: string): Promise<ActionResult> {
   if (!target) return { success: false, error: "Utilisateur cible non trouvé" };
 
   // Admin ou plus, sur un rang strictement inférieur ; jamais son propre compte (carte 221).
-  if (!canDeleteMember(me.role, target.role, userId === session.user.id)) {
+  if (!canDeleteMember(me.role, target.role, userId === session.user.id, userId)) {
     return { success: false, error: "Tu ne peux pas supprimer ce membre (hiérarchie insuffisante)" };
   }
 

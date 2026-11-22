@@ -16,7 +16,7 @@ export default async function SubmitResourcePage() {
 
   return (
     <ComposeScreen
-      title="Soumettre une ressource"
+      title="Proposer une ressource"
       subtitle="Partage un outil, un guide ou une aide de jeu avec la communauté."
       backHref="/ressources"
       backTitle="Retour aux ressources"

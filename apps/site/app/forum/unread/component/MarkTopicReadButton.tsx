@@ -1,8 +1,8 @@
 "use client";
 
 /**
- * Bouton « Marquer ce sujet comme lu » d'une ligne de la liste des non-lus (refonte, carte 085) : une coche de
- * 44 pixels. Le sujet quitte la liste dès que la page est rafraîchie.
+ * Bouton « Marquer comme lu » d’une ligne de la liste des non-lus (refonte, carte 085, libellé visible depuis la revue 221) :
+ * 44 pixels de haut. Le sujet quitte la liste dès que la page est rafraîchie.
  */
 import { useTransition } from "react";
 import { Check } from "lucide-react";
@@ -12,9 +12,10 @@ import { useRouter } from "next/navigation";
 
 interface MarkTopicReadButtonProps {
   topicId: string;
+  className?: string;
 }
 
-export default function MarkTopicReadButton({ topicId }: MarkTopicReadButtonProps) {
+export default function MarkTopicReadButton({ topicId, className = "" }: MarkTopicReadButtonProps) {
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
 
@@ -34,14 +35,16 @@ export default function MarkTopicReadButton({ topicId }: MarkTopicReadButtonProp
     <Button
       type="button"
       variant="quiet"
-      size="tap-icon"
+      size="tap"
       onClick={handleMarkAsRead}
       disabled={isPending}
-      aria-label="Marquer ce sujet comme lu"
-      title="Marquer ce sujet comme lu"
-      className="shrink-0 hover:text-bb-success-text"
+      className={`shrink-0 gap-1.5 text-sm text-bb-text-muted hover:text-bb-text ${className}`}
     >
-      <Check size={20} aria-hidden="true" />
+      <Check size={18} aria-hidden="true" />
+      {/* Libellé visible « Marquer comme lu » ; les lecteurs d'écran entendent « Marquer ce sujet comme lu » */}
+      <span>
+        Marquer<span className="sr-only"> ce sujet</span> comme lu
+      </span>
     </Button>
   );
 }

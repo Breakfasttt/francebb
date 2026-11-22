@@ -6,7 +6,7 @@
  */
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { advanceReadPosition, effectiveReadPosition, isPositionAfter, isTopicUnread, shouldCountTopicView } from "../../lib/forumReadPosition.ts";
+import { advanceReadPosition, effectiveReadPosition, firstUnreadPostId, isPositionAfter, isTopicUnread, shouldCountTopicView } from "../../lib/forumReadPosition.ts";
 
 const at = (minute) => new Date(Date.UTC(2026, 10, 4, 12, minute));
 const position = (minute, postId) => ({ at: at(minute), postId });
@@ -65,4 +65,17 @@ test("compteur de vues (carte 169) : une vue par visite où le membre lit du nou
   assert.equal(shouldCountTopicView(minutesAgo(120), false, now), false);
   // Retour plus tard pour lire de nouveaux messages : une vue
   assert.equal(shouldCountTopicView(minutesAgo(120), true, now), true);
+});
+
+test("repère « Nouveaux messages » : devant le premier message affiché après la position de lecture", () => {
+  const posts = [{ id: "p1", createdAt: at(1) }, { id: "p2", createdAt: at(2) }, { id: "p3", createdAt: at(3) }];
+  assert.equal(firstUnreadPostId(posts, position(2, "p2"), "p0"), "p3");
+  // Tout est lu : pas de repère
+  assert.equal(firstUnreadPostId(posts, position(3, "p3"), "p0"), null);
+  // Le premier non-lu est le tout premier message du sujet (sujet jamais lu) : pas de repère
+  assert.equal(firstUnreadPostId(posts, position(0, null), "p1"), null);
+  // Sur une page suivante, le premier message de la page peut porter le repère
+  assert.equal(firstUnreadPostId(posts, position(0, null), "p0"), "p1");
+  // Dates reçues en texte (données sérialisées)
+  assert.equal(firstUnreadPostId([{ id: "p4", createdAt: at(4).toISOString() }], position(3, "p3")), "p4");
 });

@@ -264,7 +264,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
             </h2>
             <p className="m-0 text-sm text-bb-text-muted">{validationNote}</p>
             <Button type="submit" variant="primary" size="tap" className="w-full" disabled={loading}>
-              {isEdit ? "Mettre à jour" : "Soumettre la ressource"}
+              {isEdit ? "Enregistrer" : "Proposer la ressource"}
             </Button>
             <Button asChild variant="secondary" size="tap" className="w-full">
               <Link href="/ressources">Annuler</Link>
@@ -278,7 +278,7 @@ export default function ResourceForm({ initialData }: ResourceFormProps) {
           <Link href="/ressources">Annuler</Link>
         </Button>
         <Button type="submit" variant="primary" size="tap" className="flex-1" disabled={loading}>
-          {submitIcon} {isEdit ? "Mettre à jour" : "Soumettre"}
+          {submitIcon} {isEdit ? "Enregistrer" : "Proposer"}
         </Button>
       </ComposeActionBar>
     </form>

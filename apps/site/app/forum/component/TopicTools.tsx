@@ -50,7 +50,6 @@ import {
   SlidersHorizontal,
   Trash2,
   TriangleAlert,
-  Trophy,
   Type,
   XCircle,
 } from "lucide-react";
@@ -230,12 +229,12 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
 
   const handleUnfinish = () =>
     openConfirm(
-      "Réouvrir le tournoi",
-      "Tu veux marquer ce tournoi comme ACTIF ? Cela réouvrira les inscriptions.",
+      "Rouvrir le tournoi",
+      "Le tournoi ne sera plus marqué « Terminé » et ses inscriptions rouvriront.",
       async () => {
         const res = await unfinishTournament(tournamentId!);
         if (res.success) {
-          toast.success("Tournoi réouvert !");
+          toast.success("Tournoi rouvert");
           router.refresh();
         } else {
           // Avant la carte 201, un refus du serveur ne s'affichait pas
@@ -243,7 +242,7 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
         }
       },
       false,
-      "Réouvrir"
+      "Rouvrir le tournoi"
     );
 
   const handleCancel = () =>
@@ -283,19 +282,19 @@ export function TopicToolsProvider({ children, ...props }: TopicToolsProps & { c
     );
 
   const handleToggleRegistrations = () => {
-    const actionLabel = registrationsLocked ? "réouvrir" : "bloquer";
+    const actionLabel = registrationsLocked ? "rouvrir" : "fermer";
     openConfirm(
-      `${registrationsLocked ? "Réouvrir" : "Bloquer"} les inscriptions`,
+      `${registrationsLocked ? "Rouvrir" : "Fermer"} les inscriptions`,
       `Tu veux vraiment ${actionLabel} les inscriptions pour ce tournoi ?`,
       async () => {
         const res = await toggleTournamentRegistrations(tournamentId!);
         if (res?.success) {
-          toast.success(res.locked ? "Inscriptions bloquées" : "Inscriptions réouvertes");
+          toast.success(res.locked ? "Inscriptions fermées" : "Inscriptions rouvertes");
           router.refresh();
         }
       },
       !registrationsLocked,
-      registrationsLocked ? "Réouvrir" : "Bloquer les inscriptions"
+      registrationsLocked ? "Rouvrir les inscriptions" : "Fermer les inscriptions"
     );
   };
 
@@ -601,8 +600,9 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
           </p>
         )}
 
+        {/* Secondaire (carte 221) : le seul rouge plein de l'écran est « Envoyer ma réponse », sous les messages */}
         {t.canReply && (
-          <Button type="button" variant="primary" size="tap" className={toolButton} onClick={() => t.run(t.scrollToReply)}>
+          <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={() => t.run(t.scrollToReply)}>
             {ico(MessageSquare)} Répondre
           </Button>
         )}
@@ -657,13 +657,9 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
           </Button>
           {t.isFinished ? (
             <>
-              <Button asChild variant="secondary" size="tap" className={toolButton}>
-                <Link href={`/forum/tournament/${t.tournamentId}/results`}>
-                  {ico(Trophy)} Publier les résultats
-                </Link>
-              </Button>
+              {/* « Publier / Modifier les résultats » est dans le bloc des résultats du tournoi (carte 221) : pas de doublon ici */}
               <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={() => t.run(t.open.unfinish)} disabled={t.isPending}>
-                {ico(RotateCcw)} Réouvrir le tournoi
+                {ico(RotateCcw)} Rouvrir le tournoi
               </Button>
             </>
           ) : (
@@ -672,9 +668,9 @@ function ToolsSections({ asCards = false }: { asCards?: boolean }) {
                 {ico(CheckCircle)} Terminer le tournoi
               </Button>
               <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={() => t.run(t.open.toggleRegistrations)} disabled={t.isPending}>
-                {t.registrationsLocked ? ico(Check) : ico(LockIcon)} {t.registrationsLocked ? "Réouvrir les inscriptions" : "Bloquer les inscriptions"}
+                {t.registrationsLocked ? ico(Check) : ico(LockIcon)} {t.registrationsLocked ? "Rouvrir les inscriptions" : "Fermer les inscriptions"}
               </Button>
-              <Button type="button" variant="danger" size="tap" className={toolButton} onClick={() => t.run(t.open.cancel)} disabled={t.isPending}>
+              <Button type="button" variant="secondary" size="tap" className={toolButton} onClick={() => t.run(t.open.cancel)} disabled={t.isPending}>
                 {ico(XCircle)} Annuler le tournoi
               </Button>
             </>
@@ -804,7 +800,8 @@ export function SplitPostCheckbox({ postId, isFirstPost }: { postId: string; isF
         aria-label="Déplacer ce message vers le nouveau sujet"
         className="size-5 accent-[var(--bb-accent)]"
       />
-      <span aria-hidden="true" className="max-[374px]:hidden">
+      {/* Téléphone : la case seule, pour laisser la place à l'en-tête du message (pseudo, date) ; carte 221 */}
+      <span aria-hidden="true" className="max-lg:hidden">
         Déplacer
       </span>
     </label>

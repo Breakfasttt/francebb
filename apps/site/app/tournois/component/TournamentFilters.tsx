@@ -154,7 +154,7 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
       title: "Circuits et labels",
       filters: [
         { name: "isNAF", label: "Homologué NAF", type: "checkbox" },
-        { name: "isCDF", label: "Coupe de France (CDF)", type: "checkbox" },
+        { name: "isCDF", label: "Championnat de France (CDF)", type: "checkbox" },
         { name: "isCGO", label: "Circuit du Grand Ouest", type: "checkbox" },
         { name: "isTGE", label: "Tournoi du Grand Est", type: "checkbox" },
         { name: "isTSC", label: "Tournoi du Sud-Centre", type: "checkbox" },
@@ -189,7 +189,7 @@ export function TournamentFilterFields({ prefix, places }: { prefix: string; pla
           {section.filters.map((filter) => {
             const id = `${prefix}-${filter.name}`;
             if (filter.type === "select") {
-              const allLabel = filter.name === "isTeam" ? "Tous" : "Toutes";
+              const allLabel = filter.name === "isTeam" || filter.name === "dept" ? "Tous" : "Toutes";
               return (
                 <Field key={filter.name} label={filter.label} htmlFor={id}>
                   <Select
@@ -274,6 +274,10 @@ export function TournamentFilterAside({ places, createHref, showFilters = true }
             <Link href={createHref}>Annoncer un tournoi</Link>
           </Button>
         )}
+        {/* Les tournois à venir sur la carte de France (revue 221) */}
+        <Button asChild variant="secondary" size="tap" className="w-full">
+          <Link href="/carte">Voir sur la carte</Link>
+        </Button>
         {showFilters && (
           <div className="flex flex-col gap-4">
             <div className="flex items-center justify-between gap-2">

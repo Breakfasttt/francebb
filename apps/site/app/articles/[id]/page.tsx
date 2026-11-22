@@ -6,8 +6,8 @@
  * - l'avis de modération, s'il y a lieu ;
  * - le texte, limité à environ 70 caractères par ligne avec un interligne de 1,6 pour un confort de lecture ;
  * - les réactions émoji.
- * Un article modéré n'est lisible que par son auteur et par la modération ; les autres lecteurs voient seulement
- * l'avis de modération. Le compteur de vues (`ViewCounter`) est inchangé.
+ * Un article modéré n'est lisible que par son auteur et par la modération ; pour tout autre lecteur, la page répond
+ * « introuvable » (carte 221) : ni le texte, ni la raison, ni le nom du modérateur ne lui sont montrés. Le compteur de vues (`ViewCounter`) est inchangé.
  * Avant la refonte, l'auteur, les informations et les actions étaient dans une colonne à gauche du texte.
  */
 import Link from "next/link";
@@ -67,6 +67,7 @@ export default async function ArticleDetailPage({
   const isMod = isModerator(sessionUser?.role);
   const canEdit = isAuthor || isMod;
   const canRead = !article.isModerated || isMod || isAuthor;
+  if (!canRead) notFound();
 
   const createdAt = new Date(article.createdAt);
   const formattedDate = format(createdAt, "d MMMM yyyy 'à' HH:mm", { locale: fr });
@@ -160,31 +161,26 @@ export default async function ArticleDetailPage({
               Raison : {article.moderationReason || "Cet article a été modéré par un membre de l'équipe."}
             </p>
             {article.moderator && <p className="m-0 text-sm text-bb-text-muted">Par {article.moderator.name}</p>}
-            {canRead && (
-              <p className="m-0 flex items-center gap-1.5 text-sm font-semibold text-bb-text-muted">
-                <EyeOff size={16} aria-hidden="true" />
-                Contenu original visible par toi seul et les modérateurs.
-              </p>
-            )}
+            <p className="m-0 flex items-center gap-1.5 text-sm font-semibold text-bb-text-muted">
+              <EyeOff size={16} aria-hidden="true" />
+              {isAuthor ? "Ton article n'est visible que par toi et les modérateurs." : "Article visible seulement par son auteur et les modérateurs."}
+            </p>
           </Card>
         )}
 
-        {canRead ? (
-          // Texte de l'article (BBCode converti en HTML) ; atténué quand il est modéré. BBCodeContent, comme dans le
-          // forum, lance aussi le lecteur des schémas BBScheme insérés dans le texte (carte 140). La largeur de
-          // lecture est portée par un bloc autour : BBCodeContent impose sa propre largeur maximale (100 %).
-          <div className={`max-w-[70ch] ${article.isModerated ? "opacity-60" : ""}`}>
-            <BBCodeContent content={article.content} currentUserId={sessionUser?.id} className={proseClass} />
-          </div>
-        ) : (
-          <Card className="px-4 py-10 text-center text-bb-text-muted italic">
-            Le contenu de cet article a été masqué par la modération.
-          </Card>
-        )}
-
-        <div className="border-t border-bb-border pt-4">
-          <ArticleReactions articleId={article.id} reactions={article.reactions} currentUserId={sessionUser?.id} />
+        {/* Texte de l'article (BBCode converti en HTML) ; atténué quand il est modéré. BBCodeContent, comme dans le
+            forum, lance aussi le lecteur des schémas BBScheme insérés dans le texte (carte 140). La largeur de
+            lecture est portée par un bloc autour : BBCodeContent impose sa propre largeur maximale (100 %). */}
+        <div className={`max-w-[70ch] ${article.isModerated ? "opacity-60" : ""}`}>
+          <BBCodeContent content={article.content} currentUserId={sessionUser?.id} className={proseClass} />
         </div>
+
+        {/* Pas de réaction sur un article modéré (refusée aussi par le serveur, carte 221) */}
+        {!article.isModerated && (
+          <div className="border-t border-bb-border pt-4">
+            <ArticleReactions articleId={article.id} reactions={article.reactions} currentUserId={sessionUser?.id} />
+          </div>
+        )}
       </article>
     </div>
   );

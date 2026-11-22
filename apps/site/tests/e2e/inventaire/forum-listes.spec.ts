@@ -286,6 +286,11 @@ test.describe("3.2 un forum", () => {
     await expect(page).toHaveURL(new RegExp(`${forumUrl}\\?page=2$`));
     const secondPage = await shownTopicTitles(page);
     expect(secondPage).toEqual(["Inv sujet 29", "Inv sujet 30", "Inv sujet 31", "Inv sujet verrouillé"]);
+    // Dernière page : les sujets archivés sont rangés dans un groupe replié (revue 221), qui s'ouvre d'un appui
+    const archives = page.getByText("Sujets archivés (1)");
+    await expect(archives).toBeVisible();
+    await archives.click();
+    await expect(page.getByRole("link", { name: /Inv sujet archivé/ }).filter({ visible: true })).toHaveCount(1);
 
     // Un visiteur ne peut pas créer de sujet
     await expectNoAction(page, "link", /nouveau sujet/i);

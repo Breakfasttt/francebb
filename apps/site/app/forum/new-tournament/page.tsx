@@ -33,8 +33,9 @@ export default async function NewTournamentPage({ searchParams }: { searchParams
   if (!canAccessForum(forum, roles)) notFound();
 
   const session = await getActiveSession();
+  // Visiteur : connexion, puis retour sur ce formulaire (comme /ligues/create)
   if (!session?.user?.id) {
-    redirect("/forum");
+    redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-tournament?forumId=${forumId}`)}`);
   }
 
   const userCanStick = isModerator(session.user.role);
