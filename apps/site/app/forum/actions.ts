@@ -9,6 +9,7 @@ import { rateLimitRefusal } from "@/lib/rateLimit";
 import { userSearchWhere, USER_SEARCH_MIN_LENGTH } from "@/lib/userSearch";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
+import { canModerateForum, canModeratePost, canModerateTopic } from "@/lib/forumModerators";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
@@ -93,8 +94,8 @@ function writeState(topic: { isLocked: boolean; isArchived: boolean; forum: { is
  * Vrai si le sujet est fermé pour ce membre : verrouillé, archivé (carte 169) ou rangé dans un forum verrouillé. Les
  * modérateurs passent outre.
  */
-function isLockedFor(post: { topic: { isLocked: boolean; isArchived: boolean; forum: { isLocked: boolean } } }, role: string | undefined) {
-  return isTopicClosedFor(writeState(post.topic), isModerator(role));
+function isLockedFor(post: { topic: { isLocked: boolean; isArchived: boolean; forum: { isLocked: boolean } } }, viewerCanModerate: boolean) {
+  return isTopicClosedFor(writeState(post.topic), viewerCanModerate);
 }
 
 /** Ajoute une vue au compteur du sujet, en SQL direct pour ne pas changer sa date de dernière modification (`updatedAt`). */
@@ -408,7 +409,9 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
   });
   if (!forum) return { success: false, error: "Forum introuvable." };
 
-  if (forum?.isLocked && !isModerator(session.user.role)) {
+  // Modération du site ou de ce forum (carte 225)
+  const canModerateHere = await canModerateForum(session.user.id, session.user.role, forumId);
+  if (forum?.isLocked && !canModerateHere) {
     return { success: false, error: "Ce forum est verrouillé. Tu ne peux pas y créer de nouveau sujet." };
   }
 
@@ -452,8 +455,8 @@ export async function createTopic(formData: FormData): Promise<ActionResult> {
         title: title.trim(),
         forumId,
         authorId: session.user.id,
-        isSticky: isSticky && isModerator(session.user.role),
-        isLocked: isLocked && isModerator(session.user.role),
+        isSticky: isSticky && canModerateHere,
+        isLocked: isLocked && canModerateHere,
         tournamentId: tournamentId
       }
     });
@@ -514,7 +517,7 @@ export async function createPost(topicId: string, content: string): Promise<Acti
 
   // Un sujet archivé est fermé comme un sujet verrouillé (carte 169) : avant, il acceptait des réponses invisibles
   // Même règle que l'outil « Répondre » de la page du sujet (lib/forumRights.ts, carte 200)
-  if (!canReplyToTopic({ id: session.user.id, isModerator: isModerator(session.user.role) }, { ...writeState(topic), isDeleted: topic.isDeleted })) {
+  if (!canReplyToTopic({ id: session.user.id, isModerator: await canModerateForum(session.user.id, session.user.role, topic.forumId) }, { ...writeState(topic), isDeleted: topic.isDeleted })) {
     return { success: false, error: closedTopicMessage(writeState(topic)) };
   }
 
@@ -578,7 +581,7 @@ export async function updatePost(postId: string, content: string): Promise<Actio
 
   if (!existingPost) return { success: false, error: "Message introuvable." };
   // Même règle que le menu « ⋯ » du message (lib/forumRights.ts, carte 200)
-  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  const viewer = { id: session.user.id, isModerator: await canModeratePost(session.user.id, session.user.role, postId) };
   if (!canSavePostEdit(viewer, isTopicClosedFor(writeState(existingPost.topic), false), existingPost)) {
     return {
       success: false,
@@ -628,7 +631,7 @@ export async function getPostById(postId: string) {
     where: { id: postId, topic: topicAccessWhere(roles) },
     include: { author: { select: PUBLIC_MEMBER_SELECT } }
   });
-  return post ? hidePostContent(post, { id: session?.user?.id, isModerator: isModerator(session?.user?.role) }) : null;
+  return post ? hidePostContent(post, { id: session?.user?.id, isModerator: await canModeratePost(session?.user?.id, session?.user?.role, postId) }) : null;
 }
 
 /**
@@ -643,13 +646,13 @@ export async function getTopicLatestPosts(topicId: string, limit: number = 3) {
     orderBy: { createdAt: "desc" },
     include: { author: { select: PUBLIC_MEMBER_SELECT } }
   });
-  const viewer = { id: session?.user?.id, isModerator: isModerator(session?.user?.role) };
+  const viewer = { id: session?.user?.id, isModerator: await canModerateTopic(session?.user?.id, session?.user?.role, topicId) };
   return posts.map(post => hidePostContent(post, viewer));
 }
 
 export async function moderatePost(postId: string, reason: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModeratePost(session.user.id, session.user.role, postId))) {
     return { success: false, error: "Seuls les modérateurs peuvent modérer des messages." };
   }
 
@@ -690,7 +693,7 @@ export async function moderatePost(postId: string, reason: string): Promise<Acti
 
 export async function unmoderatePost(postId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModeratePost(session.user.id, session.user.role, postId))) {
     return { success: false, error: "Seuls les modérateurs peuvent annuler une modération." };
   }
 
@@ -744,7 +747,8 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
   const post = await findAccessiblePost(postId);
 
   if (!post) return { success: false, error: "Message introuvable." };
-  if (isLockedFor(post, session.user.role)) {
+  const viewerCanModerate = await canModeratePost(userId, session.user.role, postId);
+  if (isLockedFor(post, viewerCanModerate)) {
     return { success: false, error: "Ce sujet est verrouillé ou archivé. Tu ne peux plus supprimer ce message." };
   }
 
@@ -756,7 +760,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
 
   const decision = decidePostDeletion({
     viewerId: userId,
-    viewerIsModerator: isModerator(session.user.role),
+    viewerIsModerator: viewerCanModerate,
     post,
     isFirstPost: firstPost?.id === postId,
     otherVisiblePosts,
@@ -811,7 +815,7 @@ export async function deletePost(postId: string, reason?: string): Promise<Actio
  */
 export async function restorePost(postId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModeratePost(session.user.id, session.user.role, postId))) {
     return { success: false, error: "Seuls les modérateurs peuvent restaurer un message." };
   }
 
@@ -867,7 +871,7 @@ export async function markAllTopicsAsRead() {
 
 export async function togglePinTopic(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) {
     return { success: false, error: "Seuls les modérateurs peuvent épingler des sujets." };
   }
 
@@ -938,7 +942,7 @@ export async function deleteTopic(topicId: string, reason: string): Promise<Acti
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
   const refusal = topicDeletionRefusal({
-    viewerIsModerator: isModerator(session.user.role),
+    viewerIsModerator: await canModerateTopic(session.user.id, session.user.role, topicId),
     isDeleted: topic.isDeleted,
     tournament: topic.tournament ? { isCancelled: topic.tournament.isCancelled, resultCount: topic.tournament._count.results } : null,
   });
@@ -966,7 +970,7 @@ export async function deleteTopic(topicId: string, reason: string): Promise<Acti
 /** Restaure un sujet supprimé (carte 165), avec tous ses messages. Réservé aux modérateurs. */
 export async function restoreTopic(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) {
     return { success: false, error: "Seuls les modérateurs peuvent restaurer un sujet." };
   }
 
@@ -992,11 +996,15 @@ export async function restoreTopic(topicId: string): Promise<ActionResult> {
 
 export async function moveTopic(topicId: string, newForumId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) {
     return { success: false, error: "Seuls les modérateurs peuvent déplacer des sujets." };
   }
 
   // Le sujet et le forum de destination doivent tous deux être accessibles au rôle du modérateur
+  // Un modérateur de forum ne déplace que vers un forum qu'il modère aussi (carte 225)
+  if (!(await canModerateForum(session.user.id, session.user.role, newForumId))) {
+    return { success: false, error: "Tu ne modères pas le forum de destination." };
+  }
   const { roles } = await getForumAccess();
   const [topic, destination] = await Promise.all([
     prisma.topic.findFirst({ where: { id: topicId, ...topicAccessWhere(roles) } }),
@@ -1046,7 +1054,7 @@ export async function updateTopicTitle(topicId: string, title: string): Promise<
   if (!topic) return { success: false, error: "Sujet introuvable." };
 
   const sessionUser = session.user as { id: string; role: string };
-  const viewerIsModerator = isModerator(sessionUser.role);
+  const viewerIsModerator = await canModerateTopic(sessionUser.id, sessionUser.role, topicId);
   if (topic.authorId !== sessionUser.id && !viewerIsModerator) {
     return { success: false, error: "Tu n'as pas l'autorisation de modifier ce sujet." };
   }
@@ -1088,7 +1096,7 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
   // Limite d'actions par minute (carte 224)
   const tooFast = await rateLimitRefusal(userId, session.user.role, "REACTION");
   if (tooFast) return { success: false, error: tooFast };
-  if (isLockedFor(target, session.user.role)) {
+  if (isLockedFor(target, await canModeratePost(userId, session.user.role, postId))) {
     return { success: false, error: closedTopicMessage(writeState(target.topic)) };
   }
 
@@ -1117,7 +1125,7 @@ export async function togglePostReaction(postId: string, emoji: string): Promise
 
 export async function toggleArchiveTopic(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) {
     return { success: false, error: "Seuls les modérateurs peuvent archiver des sujets." };
   }
 
@@ -1307,7 +1315,7 @@ export async function toggleForumLock(forumId: string): Promise<ActionResult> {
 
 export async function toggleTopicLock(topicId: string): Promise<ActionResult> {
   const session = await getActiveSession();
-  if (!session || !isModerator(session.user.role)) {
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) {
     return { success: false, error: "Action non autorisée." };
   }
 

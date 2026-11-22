@@ -9,6 +9,7 @@ import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
 import { getUnreadState } from "@/app/forum/unreadState";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
+import { canModerateForum } from "@/lib/forumModerators";
 import { Card, CardHeader, CardTitle, PageNav } from "@bbfrance/ui";
 import ForumSidebar, { ForumPrimaryActions } from "@/app/forum/component/ForumSidebar";
 import SiteLayout from "@/common/components/SiteLayout/SiteLayout";
@@ -163,7 +164,8 @@ export default async function ForumDetailPage({ params, searchParams }: { params
   }
   breadcrumbs.push({ label: forum.name });
 
-  const canModerate = isModerator(session?.user?.role);
+  // Modération du site, ou modérateur de ce forum (carte 225) : peut écrire dans un forum verrouillé
+  const canModerate = await canModerateForum(session?.user?.id, session?.user?.role, id);
 
   return (
     <SiteLayout

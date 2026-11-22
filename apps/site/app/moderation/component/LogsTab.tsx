@@ -50,6 +50,8 @@ const ACTION_LABELS: Record<string, string> = {
   // Membres
   USER_ROLE_CHANGED: "Rôle modifié",
   USER_WARNED: "Membre averti",
+  FORUM_MODERATOR_ADDED: "Modérateur de forum ajouté",
+  FORUM_MODERATOR_REMOVED: "Modérateur de forum retiré",
   USER_BANNED: "Utilisateur banni",
   USER_TEMP_BANNED: "Utilisateur banni temporairement",
   USER_UNBANNED: "Utilisateur débanni",

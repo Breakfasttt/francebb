@@ -19,6 +19,7 @@ import { isTopicClosedFor } from "@/lib/forumWriteRules";
 import { canEditPost, canReplyToTopic } from "@/lib/forumRights";
 import { canManagePayments as canPayTournament, canManageTournament } from "@/lib/tournamentRights";
 import { isModerator } from "@/lib/roles";
+import { forumModerationScope } from "@/lib/forumModerators";
 import {
   hidePostContent,
   POST_AUTHOR_SELECT,
@@ -103,6 +104,11 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   const skip = (safeCurrentPage - 1) * POSTS_PER_PAGE;
 
   const isUserModerator = isModerator(session?.user?.role);
+  // Modération de ce sujet : modération du site, ou modérateur de son forum (carte 225). La CDF et la gestion du
+  // tournoi restent à la modération du site (isUserModerator).
+  const moderates = await forumModerationScope(session?.user?.id, session?.user?.role);
+  const topicForum = await prisma.topic.findUnique({ where: { id }, select: { forumId: true } });
+  const canModerateHere = !!topicForum && moderates(topicForum.forumId);
 
   const [topic, lastPost, allForums] = await Promise.all([
     prisma.topic.findUnique({
@@ -151,7 +157,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
       select: { id: true }
     }),
     // Liste des forums : uniquement pour les fenêtres « Déplacer » et « Scinder » (modérateurs)
-    isUserModerator
+    canModerateHere
       ? prisma.forum.findMany({
           // Seuls les forums accessibles au rôle du modérateur peuvent recevoir le sujet ; rangés par catégorie puis
           // dans l'ordre du forum, pour que la fenêtre « Scinder » les groupe par catégorie
@@ -163,7 +169,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
   ]);
 
   // Un sujet supprimé (carte 165) est introuvable, sauf pour un modérateur, qui le voit avec « Restaurer »
-  if (!topic || (topic.isDeleted && !isUserModerator)) notFound();
+  if (!topic || (topic.isDeleted && !canModerateHere)) notFound();
 
   // Sécurité : forum du topic (ou sa catégorie / son forum parent) réservé à un rôle supérieur
   if (!canAccessForum(topic.forum, roles)) {
@@ -222,7 +228,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
 
   // Le texte d'un message supprimé, ou masqué pour un lecteur qui n'est ni son auteur ni modérateur, est vidé ici,
   // avant d'être confié aux composants : il ne doit pas apparaître dans le code de la page (carte 164)
-  const viewer = { id: currentUserId, isModerator: isUserModerator };
+  const viewer = { id: currentUserId, isModerator: canModerateHere };
   const posts = topic.posts.map(p => hidePostContent(p, viewer));
   const firstPost = firstPostForTournament ? hidePostContent(firstPostForTournament, viewer) : null;
 
@@ -272,13 +278,13 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
         topicId={id}
         currentPage={safeCurrentPage}
         totalPages={totalPages}
-        isModerator={isUserModerator}
+        isModerator={canModerateHere}
         canReply={canReply}
         isPinned={topic.isSticky}
         isLocked={topic.isLocked}
         isForumLocked={topic.forum.isLocked}
         lastPostId={lastPost?.id || ""}
-        allForums={allForums.map(({ category, ...forum }) => ({ ...forum, categoryName: category?.name ?? null }))}
+        allForums={allForums.filter((forum) => moderates(forum.id)).map(({ category, ...forum }) => ({ ...forum, categoryName: category?.name ?? null }))}
         forumId={topic.forumId}
         topicTitle={topic.title}
         authorId={topic.authorId}
@@ -377,7 +383,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 index={0}
                 topicId={id}
                 currentUserId={currentUserId}
-                isUserModerator={isUserModerator}
+                isUserModerator={canModerateHere}
                 quoteStatusMap={quoteStatusMap}
                 safeCurrentPage={safeCurrentPage}
                 regionLabels={regionLabels}
@@ -404,7 +410,7 @@ export default async function TopicPage({ params, searchParams }: { params: Prom
                 index={skip + index}
                 topicId={id}
                 currentUserId={currentUserId}
-                isUserModerator={isUserModerator}
+                isUserModerator={canModerateHere}
                 quoteStatusMap={quoteStatusMap}
                 safeCurrentPage={safeCurrentPage}
                 regionLabels={regionLabels}

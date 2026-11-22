@@ -8,8 +8,9 @@
  * rafraîchissent aussi les pages du forum.
  */
 import { prisma } from "@/lib/prisma";
+import type { Rank } from "@/common/components/UserAvatar/UserAvatar";
 import { getActiveSession } from "@/lib/authGuard";
-import { getRolePower, ROLE_POWER } from "@/lib/roles";
+import { getRolePower, ROLE_POWER, SYSTEM_ACCOUNT_IDS } from "@/lib/roles";
 import {
   createForumRecord, deleteForumRecord, isKnownAccessRole, readForumStructure, updateForumRecord, type StructureCategory,
 } from "@/lib/forumStructure";
@@ -145,5 +146,54 @@ export async function reorderForums(containerId: string, isCategory: boolean, or
   );
   await logModerationAction(session.user.id, "FORUMS_REORDERED", containerId, isCategory ? "CATEGORY" : "FORUM");
   refreshForumStructure();
+  return { success: true };
+}
+
+// ---------------- MODÉRATEURS D'UN FORUM (carte 225) ----------------
+
+/** Modérateurs propres à un forum, pour la fiche du forum dans l'administration. Admin seulement. */
+export async function getForumModerators(forumId: string) {
+  if (!(await adminSession()) || typeof forumId !== "string") return [];
+  const rows = await prisma.forumModerator.findMany({
+    where: { forumId },
+    orderBy: { createdAt: "asc" },
+    select: { user: { select: { id: true, name: true, image: true, avatarFrame: true } } },
+  });
+  // Le cadre d'avatar est rangé en texte : UserSearch attend un rang connu (« auto » par défaut)
+  return rows.map((row) => ({ ...row.user, avatarFrame: row.user.avatarFrame as Rank | null }));
+}
+
+/** Inscrit un membre comme modérateur de ce forum et de ses sous-forums. Ni banni, ni compte technique. */
+export async function addForumModerator(forumId: string, userId: string) {
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  if (typeof forumId !== "string" || typeof userId !== "string") return { success: false, error: "Demande incomplète." };
+  if (SYSTEM_ACCOUNT_IDS.includes(userId)) return { success: false, error: "Un compte technique ne modère pas." };
+  const [forum, user] = await Promise.all([
+    prisma.forum.findUnique({ where: { id: forumId }, select: { name: true } }),
+    prisma.user.findUnique({ where: { id: userId }, select: { name: true, isBanned: true } }),
+  ]);
+  if (!forum) return { success: false, error: "Forum introuvable." };
+  if (!user || user.isBanned) return { success: false, error: "Ce membre n'existe pas ou il est banni." };
+
+  await prisma.forumModerator.upsert({ where: { forumId_userId: { forumId, userId } }, update: {}, create: { forumId, userId } });
+  await logModerationAction(session.user.id, "FORUM_MODERATOR_ADDED", userId, "USER", `${user.name} modère le forum « ${forum.name} »`);
+  refreshForumStructure(forumId);
+  return { success: true };
+}
+
+/** Retire un membre des modérateurs de ce forum. */
+export async function removeForumModerator(forumId: string, userId: string) {
+  const session = await adminSession();
+  if (!session) return { success: false, error: "Non autorisé." };
+  if (typeof forumId !== "string" || typeof userId !== "string") return { success: false, error: "Demande incomplète." };
+  const row = await prisma.forumModerator.findUnique({
+    where: { forumId_userId: { forumId, userId } },
+    select: { forum: { select: { name: true } }, user: { select: { name: true } } },
+  });
+  if (!row) return { success: true };
+  await prisma.forumModerator.delete({ where: { forumId_userId: { forumId, userId } } });
+  await logModerationAction(session.user.id, "FORUM_MODERATOR_REMOVED", userId, "USER", `${row.user.name} ne modère plus le forum « ${row.forum.name} »`);
+  refreshForumStructure(forumId);
   return { success: true };
 }

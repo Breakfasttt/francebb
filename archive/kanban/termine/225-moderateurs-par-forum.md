@@ -26,3 +26,9 @@ Relevé à la fin de la série 116-224 : 45 contrôles `isModerator(role)` dans 
 7. **Tests** : unitaires de la remontée parent ; e2e d'un coach modérateur d'un forum (masque un message de ce forum, n'a pas le bouton ni le droit serveur dans un autre forum) ; fiches `permissions`, `forum`, `INTERACTIONS.md`.
 
 ## Résultat
+- Base : table `ForumModerator` (forum, membre, date ; suppression en cascade), migration `20261122200000_moderateurs_par_forum` (création seulement).
+- Règle unique : `lib/forumModerators.ts` (`canModerateForum`, `canModerateTopic`, `canModeratePost`, et `forumModerationScope` pour filtrer une liste de forums en une requête) ; partie pure `lib/forumModeratorRules.ts` (remontée des forums parents, boucle arrêtée), testée par `tests/unit/forumModeratorRules.test.mjs`.
+- Actions basculées comme prévu au plan (masquer, démasquer, supprimer, restaurer, modifier le message d'un autre, épingler, verrouiller, archiver, renommer, déplacer avec forum d'arrivée vérifié, scinder et fusionner avec les deux forums vérifiés, écrire dans un sujet ou forum verrouillé). Restent à la modération du site : créer, supprimer et verrouiller un forum, CDF, tournois, `/moderation`, bannissement et avertissements.
+- Écrans : page d'un sujet (outils, liste « Déplacer » et « Scinder » limitée aux forums modérés), page d'un forum et colonne de gauche, réponse, modification d'un message, « Nouveau sujet » (forums verrouillés proposés seulement s'ils sont modérés).
+- Administration > Structure du forum > « Modifier » un forum : « Modérateurs de ce forum » (composant `UserSearch`), ajout et retrait enregistrés aussitôt, journal `FORUM_MODERATOR_ADDED` et `FORUM_MODERATOR_REMOVED`.
+- Tests : unitaires ; e2e `tests/e2e/inventaire/forum-moderateurs.spec.ts` (inscription par l'admin, masquage dans le forum et son sous-forum, aucun outil dans un autre forum, retrait), vert sur téléphone et ordinateur.

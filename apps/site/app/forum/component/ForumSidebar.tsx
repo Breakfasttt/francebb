@@ -13,6 +13,7 @@ import { Button } from "@bbfrance/ui";
 import { PanelLink, PanelTitle } from "@/common/components/SiteLayout/SiteLayout";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
+import { canModerateForum } from "@/lib/forumModerators";
 import DeleteForumButton from "@/app/forum/component/DeleteForumButton";
 import MarkAllAsReadButton from "@/app/forum/component/MarkAllAsReadButton";
 import NewForumButton from "@/app/forum/component/NewForumButton";
@@ -82,6 +83,8 @@ export default async function ForumSidebar({
     getActiveSession(),
   ]);
   const canCreateForum = isModerator(session?.user?.role);
+  // Écrire dans un forum verrouillé : modération du site ou de ce forum (carte 225)
+  const canModerateThisForum = forumId ? await canModerateForum(session?.user?.id, session?.user?.role, forumId) : false;
   const showUnread = !!session && !forumId && !categoryId && !parentForumId && unreadTopics > 0;
   // Accueil du forum et non-lus : « Nouveau sujet » mène au choix du forum (/forum/new-topic sans forumId)
   const isForumHome = !forumId && !categoryId && !parentForumId;
@@ -96,7 +99,7 @@ export default async function ForumSidebar({
           isLocked={!!isLocked}
           isTournamentForum={!!isTournamentForum}
           isMember={!!session}
-          isModerator={canCreateForum}
+          isModerator={canModerateThisForum}
           className="max-lg:hidden"
         />
       )}

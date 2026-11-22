@@ -8,6 +8,7 @@ import EditPostForm from "@/app/forum/component/EditPostForm";
 import ComposeScreen, { RecentPostsRecap } from "@/app/forum/component/ComposeScreen";
 import type { EditRefusal } from "@/app/forum/component/EditRefusedNotice";
 import { isModerator } from "@/lib/roles";
+import { forumModerationScope } from "@/lib/forumModerators";
 import { canSavePostEdit } from "@/lib/forumRights";
 import { isTopicClosedFor } from "@/lib/forumWriteRules";
 import { forumPostHrefFor } from "@/lib/forumPostLink";
@@ -58,7 +59,7 @@ export default async function EditPostPage({
   if (!canAccessForum(post.topic.forum, roles)) notFound();
 
   // Même règle que l'action updatePost (lib/forumRights.ts) : sinon le membre écrirait pour rien
-  const viewer = { id: session.user.id, isModerator: isModerator(session.user.role) };
+  const viewer = { id: session.user.id, isModerator: (await forumModerationScope(session.user.id, session.user.role))(post.topic.forumId) };
   const topicState = { isLocked: post.topic.isLocked, isArchived: post.topic.isArchived, forumIsLocked: post.topic.forum.isLocked };
   if (!canSavePostEdit(viewer, isTopicClosedFor(topicState, false), post)) {
     const reason: EditRefusal =

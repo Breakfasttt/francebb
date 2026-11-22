@@ -593,6 +593,12 @@ exports.Prisma.ActionCounterScalarFieldEnum = {
   count: 'count'
 };
 
+exports.Prisma.ForumModeratorScalarFieldEnum = {
+  forumId: 'forumId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -662,7 +668,8 @@ exports.Prisma.ModelName = {
   LegacyMember: 'LegacyMember',
   MailLog: 'MailLog',
   UserWarning: 'UserWarning',
-  ActionCounter: 'ActionCounter'
+  ActionCounter: 'ActionCounter',
+  ForumModerator: 'ForumModerator'
 };
 
 /**

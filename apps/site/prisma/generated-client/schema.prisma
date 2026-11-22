@@ -111,6 +111,7 @@ model User {
   warningsReceived         UserWarning[]             @relation("WarningsReceived")
   warningsGiven            UserWarning[]             @relation("WarningsGiven")
   actionCounters           ActionCounter[]
+  forumsModerated          ForumModerator[]
 
   @@index([role])
 }
@@ -209,19 +210,20 @@ model Category {
 }
 
 model Forum {
-  id                String    @id @default(cuid())
-  name              String    @unique
+  id                String           @id @default(cuid())
+  name              String           @unique
   description       String?
-  order             Int       @default(0)
-  allowedRoles      String    @default("ALL")
-  isLocked          Boolean   @default(false)
-  isTournamentForum Boolean   @default(false)
+  order             Int              @default(0)
+  allowedRoles      String           @default("ALL")
+  isLocked          Boolean          @default(false)
+  isTournamentForum Boolean          @default(false)
   categoryId        String?
   parentForumId     String?
-  legacyId          String?   @unique
-  parentForum       Forum?    @relation("SubForums", fields: [parentForumId], references: [id])
-  subForums         Forum[]   @relation("SubForums")
-  category          Category? @relation(fields: [categoryId], references: [id])
+  legacyId          String?          @unique
+  parentForum       Forum?           @relation("SubForums", fields: [parentForumId], references: [id])
+  subForums         Forum[]          @relation("SubForums")
+  moderators        ForumModerator[]
+  category          Category?        @relation(fields: [categoryId], references: [id])
   topics            Topic[]
 
   @@index([categoryId])
@@ -788,4 +790,17 @@ model ActionCounter {
 
   @@id([userId, action, windowStart])
   @@index([windowStart])
+}
+
+/// Modérateur propre à un forum (carte 225) : un membre qui modère ce forum et ses sous-forums, sans être modérateur
+/// de tout le site. Géré dans l'administration, onglet Forums.
+model ForumModerator {
+  forumId   String
+  userId    String
+  createdAt DateTime @default(now())
+  forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([forumId, userId])
+  @@index([userId])
 }

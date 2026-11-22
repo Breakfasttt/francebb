@@ -27,6 +27,7 @@ import { logModerationAction } from "@/lib/moderationLog";
 import { closePendingReports } from "@/lib/moderationReports";
 import { prisma } from "@/lib/prisma";
 import { isModerator } from "@/lib/roles";
+import { canModerateForum, canModerateTopic } from "@/lib/forumModerators";
 import { refreshTopicLastPost } from "@/lib/forumTopicLastPost";
 import { topicTitleError } from "@/lib/forumWriteRules";
 import type { ActionResult } from "@/lib/actionResult";
@@ -59,7 +60,12 @@ async function copyReadersAndFollowers(tx: Tx, fromTopicId: string, toTopicId: s
  */
 export async function splitTopic(topicId: string, postIds: string[], title: string, forumId: string): Promise<ActionResult & { topicId?: string }> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  // Modération du site, ou du forum du sujet et du forum d'arrivée (carte 225)
+  if (
+    !session?.user?.id ||
+    !(await canModerateTopic(session.user.id, session.user.role, topicId)) ||
+    !(await canModerateForum(session.user.id, session.user.role, forumId))
+  ) {
     return { success: false, error: "Seuls les modérateurs peuvent scinder un sujet." };
   }
 
@@ -125,7 +131,12 @@ export async function splitTopic(topicId: string, postIds: string[], title: stri
  */
 export async function mergeTopics(sourceId: string, targetId: string): Promise<ActionResult & { topicId?: string }> {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) {
+  // Modération du site, ou des forums des deux sujets (carte 225)
+  if (
+    !session?.user?.id ||
+    !(await canModerateTopic(session.user.id, session.user.role, sourceId)) ||
+    !(await canModerateTopic(session.user.id, session.user.role, targetId))
+  ) {
     return { success: false, error: "Seuls les modérateurs peuvent fusionner des sujets." };
   }
   const moderatorId = session.user.id;
@@ -169,12 +180,12 @@ export async function mergeTopics(sourceId: string, targetId: string): Promise<A
  */
 export async function searchMergeTargets(topicId: string, query: string) {
   const session = await getActiveSession();
-  if (!session?.user?.id || !isModerator(session.user.role)) return [];
+  if (!session?.user?.id || !(await canModerateTopic(session.user.id, session.user.role, topicId))) return [];
   const clean = typeof query === "string" ? query.trim() : "";
   if (clean.length < 2) return [];
 
   const { roles } = await getForumAccess();
-  return prisma.topic.findMany({
+  const topics = await prisma.topic.findMany({
     where: {
       ...topicAccessWhere(roles),
       id: { not: topicId },
@@ -191,6 +202,14 @@ export async function searchMergeTargets(topicId: string, query: string) {
       author: { select: { name: true } },
       forum: { select: { name: true } },
       _count: { select: { posts: true } },
+      forumId: true,
     },
   });
+  // Un modérateur de forum ne voit que les sujets des forums qu'il modère (carte 225)
+  if (isModerator(session.user.role)) return topics;
+  const allowed: typeof topics = [];
+  for (const topic of topics) {
+    if (await canModerateForum(session.user.id, session.user.role, topic.forumId)) allowed.push(topic);
+  }
+  return allowed;
 }

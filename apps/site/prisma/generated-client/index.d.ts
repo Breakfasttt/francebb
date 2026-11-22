@@ -222,6 +222,12 @@ export type UserWarning = $Result.DefaultSelection<Prisma.$UserWarningPayload>
  * signalements, réactions et recherches par minute. Les lignes de plus de dix minutes sont effacées au fil de l'eau.
  */
 export type ActionCounter = $Result.DefaultSelection<Prisma.$ActionCounterPayload>
+/**
+ * Model ForumModerator
+ * Modérateur propre à un forum (carte 225) : un membre qui modère ce forum et ses sous-forums, sans être modérateur
+ * de tout le site. Géré dans l'administration, onglet Forums.
+ */
+export type ForumModerator = $Result.DefaultSelection<Prisma.$ForumModeratorPayload>
 
 /**
  * Enums
@@ -786,6 +792,16 @@ export class PrismaClient<
     * ```
     */
   get actionCounter(): Prisma.ActionCounterDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.forumModerator`: Exposes CRUD operations for the **ForumModerator** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ForumModerators
+    * const forumModerators = await prisma.forumModerator.findMany()
+    * ```
+    */
+  get forumModerator(): Prisma.ForumModeratorDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -1260,7 +1276,8 @@ export namespace Prisma {
     LegacyMember: 'LegacyMember',
     MailLog: 'MailLog',
     UserWarning: 'UserWarning',
-    ActionCounter: 'ActionCounter'
+    ActionCounter: 'ActionCounter',
+    ForumModerator: 'ForumModerator'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -1276,7 +1293,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog" | "userWarning" | "actionCounter"
+      modelProps: "account" | "session" | "user" | "block" | "verificationToken" | "tournament" | "category" | "forum" | "topic" | "post" | "conversation" | "conversationParticipant" | "privateMessage" | "topicView" | "mention" | "notification" | "postReaction" | "roleConfig" | "topicFollow" | "rankingArchive" | "referenceData" | "tournamentRegistration" | "tournamentTeam" | "tournamentTeamMember" | "tournamentMercenary" | "siteSetting" | "article" | "articleTag" | "articleReaction" | "ligue" | "moderationReport" | "moderationLog" | "resource" | "resourceTag" | "tournamentResult" | "tournamentRound" | "tournamentMatch" | "legacyMember" | "mailLog" | "userWarning" | "actionCounter" | "forumModerator"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -4314,6 +4331,80 @@ export namespace Prisma {
           }
         }
       }
+      ForumModerator: {
+        payload: Prisma.$ForumModeratorPayload<ExtArgs>
+        fields: Prisma.ForumModeratorFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.ForumModeratorFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.ForumModeratorFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          findFirst: {
+            args: Prisma.ForumModeratorFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.ForumModeratorFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          findMany: {
+            args: Prisma.ForumModeratorFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>[]
+          }
+          create: {
+            args: Prisma.ForumModeratorCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          createMany: {
+            args: Prisma.ForumModeratorCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.ForumModeratorCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>[]
+          }
+          delete: {
+            args: Prisma.ForumModeratorDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          update: {
+            args: Prisma.ForumModeratorUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          deleteMany: {
+            args: Prisma.ForumModeratorDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.ForumModeratorUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.ForumModeratorUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>[]
+          }
+          upsert: {
+            args: Prisma.ForumModeratorUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$ForumModeratorPayload>
+          }
+          aggregate: {
+            args: Prisma.ForumModeratorAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateForumModerator>
+          }
+          groupBy: {
+            args: Prisma.ForumModeratorGroupByArgs<ExtArgs>
+            result: $Utils.Optional<ForumModeratorGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.ForumModeratorCountArgs<ExtArgs>
+            result: $Utils.Optional<ForumModeratorCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -4463,6 +4554,7 @@ export namespace Prisma {
     mailLog?: MailLogOmit
     userWarning?: UserWarningOmit
     actionCounter?: ActionCounterOmit
+    forumModerator?: ForumModeratorOmit
   }
 
   /* Types for Logging */
@@ -4588,6 +4680,7 @@ export namespace Prisma {
     warningsReceived: number
     warningsGiven: number
     actionCounters: number
+    forumsModerated: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4636,6 +4729,7 @@ export namespace Prisma {
     warningsReceived?: boolean | UserCountOutputTypeCountWarningsReceivedArgs
     warningsGiven?: boolean | UserCountOutputTypeCountWarningsGivenArgs
     actionCounters?: boolean | UserCountOutputTypeCountActionCountersArgs
+    forumsModerated?: boolean | UserCountOutputTypeCountForumsModeratedArgs
   }
 
   // Custom InputTypes
@@ -4964,6 +5058,13 @@ export namespace Prisma {
     where?: ActionCounterWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountForumsModeratedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ForumModeratorWhereInput
+  }
+
 
   /**
    * Count Type TournamentCountOutputType
@@ -5078,11 +5179,13 @@ export namespace Prisma {
 
   export type ForumCountOutputType = {
     subForums: number
+    moderators: number
     topics: number
   }
 
   export type ForumCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     subForums?: boolean | ForumCountOutputTypeCountSubForumsArgs
+    moderators?: boolean | ForumCountOutputTypeCountModeratorsArgs
     topics?: boolean | ForumCountOutputTypeCountTopicsArgs
   }
 
@@ -5102,6 +5205,13 @@ export namespace Prisma {
    */
   export type ForumCountOutputTypeCountSubForumsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ForumWhereInput
+  }
+
+  /**
+   * ForumCountOutputType without action
+   */
+  export type ForumCountOutputTypeCountModeratorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ForumModeratorWhereInput
   }
 
   /**
@@ -8164,6 +8274,7 @@ export namespace Prisma {
     warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
     warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
     actionCounters?: boolean | User$actionCountersArgs<ExtArgs>
+    forumsModerated?: boolean | User$forumsModeratedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8301,6 +8412,7 @@ export namespace Prisma {
     warningsReceived?: boolean | User$warningsReceivedArgs<ExtArgs>
     warningsGiven?: boolean | User$warningsGivenArgs<ExtArgs>
     actionCounters?: boolean | User$actionCountersArgs<ExtArgs>
+    forumsModerated?: boolean | User$forumsModeratedArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8359,6 +8471,7 @@ export namespace Prisma {
       warningsReceived: Prisma.$UserWarningPayload<ExtArgs>[]
       warningsGiven: Prisma.$UserWarningPayload<ExtArgs>[]
       actionCounters: Prisma.$ActionCounterPayload<ExtArgs>[]
+      forumsModerated: Prisma.$ForumModeratorPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8837,6 +8950,7 @@ export namespace Prisma {
     warningsReceived<T extends User$warningsReceivedArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsReceivedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     warningsGiven<T extends User$warningsGivenArgs<ExtArgs> = {}>(args?: Subset<T, User$warningsGivenArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserWarningPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     actionCounters<T extends User$actionCountersArgs<ExtArgs> = {}>(args?: Subset<T, User$actionCountersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ActionCounterPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    forumsModerated<T extends User$forumsModeratedArgs<ExtArgs> = {}>(args?: Subset<T, User$forumsModeratedArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -10369,6 +10483,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ActionCounterScalarFieldEnum | ActionCounterScalarFieldEnum[]
+  }
+
+  /**
+   * User.forumsModerated
+   */
+  export type User$forumsModeratedArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    where?: ForumModeratorWhereInput
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    cursor?: ForumModeratorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ForumModeratorScalarFieldEnum | ForumModeratorScalarFieldEnum[]
   }
 
   /**
@@ -15691,6 +15829,7 @@ export namespace Prisma {
     legacyId?: boolean
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     subForums?: boolean | Forum$subForumsArgs<ExtArgs>
+    moderators?: boolean | Forum$moderatorsArgs<ExtArgs>
     category?: boolean | Forum$categoryArgs<ExtArgs>
     topics?: boolean | Forum$topicsArgs<ExtArgs>
     _count?: boolean | ForumCountOutputTypeDefaultArgs<ExtArgs>
@@ -15743,6 +15882,7 @@ export namespace Prisma {
   export type ForumInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     parentForum?: boolean | Forum$parentForumArgs<ExtArgs>
     subForums?: boolean | Forum$subForumsArgs<ExtArgs>
+    moderators?: boolean | Forum$moderatorsArgs<ExtArgs>
     category?: boolean | Forum$categoryArgs<ExtArgs>
     topics?: boolean | Forum$topicsArgs<ExtArgs>
     _count?: boolean | ForumCountOutputTypeDefaultArgs<ExtArgs>
@@ -15761,6 +15901,7 @@ export namespace Prisma {
     objects: {
       parentForum: Prisma.$ForumPayload<ExtArgs> | null
       subForums: Prisma.$ForumPayload<ExtArgs>[]
+      moderators: Prisma.$ForumModeratorPayload<ExtArgs>[]
       category: Prisma.$CategoryPayload<ExtArgs> | null
       topics: Prisma.$TopicPayload<ExtArgs>[]
     }
@@ -16171,6 +16312,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     parentForum<T extends Forum$parentForumArgs<ExtArgs> = {}>(args?: Subset<T, Forum$parentForumArgs<ExtArgs>>): Prisma__ForumClient<$Result.GetResult<Prisma.$ForumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     subForums<T extends Forum$subForumsArgs<ExtArgs> = {}>(args?: Subset<T, Forum$subForumsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    moderators<T extends Forum$moderatorsArgs<ExtArgs> = {}>(args?: Subset<T, Forum$moderatorsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     category<T extends Forum$categoryArgs<ExtArgs> = {}>(args?: Subset<T, Forum$categoryArgs<ExtArgs>>): Prisma__CategoryClient<$Result.GetResult<Prisma.$CategoryPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     topics<T extends Forum$topicsArgs<ExtArgs> = {}>(args?: Subset<T, Forum$topicsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TopicPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -16653,6 +16795,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ForumScalarFieldEnum | ForumScalarFieldEnum[]
+  }
+
+  /**
+   * Forum.moderators
+   */
+  export type Forum$moderatorsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    where?: ForumModeratorWhereInput
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    cursor?: ForumModeratorWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: ForumModeratorScalarFieldEnum | ForumModeratorScalarFieldEnum[]
   }
 
   /**
@@ -54151,6 +54317,1051 @@ export namespace Prisma {
 
 
   /**
+   * Model ForumModerator
+   */
+
+  export type AggregateForumModerator = {
+    _count: ForumModeratorCountAggregateOutputType | null
+    _min: ForumModeratorMinAggregateOutputType | null
+    _max: ForumModeratorMaxAggregateOutputType | null
+  }
+
+  export type ForumModeratorMinAggregateOutputType = {
+    forumId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type ForumModeratorMaxAggregateOutputType = {
+    forumId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type ForumModeratorCountAggregateOutputType = {
+    forumId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type ForumModeratorMinAggregateInputType = {
+    forumId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type ForumModeratorMaxAggregateInputType = {
+    forumId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type ForumModeratorCountAggregateInputType = {
+    forumId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type ForumModeratorAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ForumModerator to aggregate.
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ForumModerators to fetch.
+     */
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: ForumModeratorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ForumModerators from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ForumModerators.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ForumModerators
+    **/
+    _count?: true | ForumModeratorCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ForumModeratorMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ForumModeratorMaxAggregateInputType
+  }
+
+  export type GetForumModeratorAggregateType<T extends ForumModeratorAggregateArgs> = {
+        [P in keyof T & keyof AggregateForumModerator]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateForumModerator[P]>
+      : GetScalarType<T[P], AggregateForumModerator[P]>
+  }
+
+
+
+
+  export type ForumModeratorGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: ForumModeratorWhereInput
+    orderBy?: ForumModeratorOrderByWithAggregationInput | ForumModeratorOrderByWithAggregationInput[]
+    by: ForumModeratorScalarFieldEnum[] | ForumModeratorScalarFieldEnum
+    having?: ForumModeratorScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ForumModeratorCountAggregateInputType | true
+    _min?: ForumModeratorMinAggregateInputType
+    _max?: ForumModeratorMaxAggregateInputType
+  }
+
+  export type ForumModeratorGroupByOutputType = {
+    forumId: string
+    userId: string
+    createdAt: Date
+    _count: ForumModeratorCountAggregateOutputType | null
+    _min: ForumModeratorMinAggregateOutputType | null
+    _max: ForumModeratorMaxAggregateOutputType | null
+  }
+
+  type GetForumModeratorGroupByPayload<T extends ForumModeratorGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<ForumModeratorGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ForumModeratorGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ForumModeratorGroupByOutputType[P]>
+            : GetScalarType<T[P], ForumModeratorGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ForumModeratorSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    forumId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["forumModerator"]>
+
+  export type ForumModeratorSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    forumId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["forumModerator"]>
+
+  export type ForumModeratorSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    forumId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["forumModerator"]>
+
+  export type ForumModeratorSelectScalar = {
+    forumId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type ForumModeratorOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"forumId" | "userId" | "createdAt", ExtArgs["result"]["forumModerator"]>
+  export type ForumModeratorInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ForumModeratorIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type ForumModeratorIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    forum?: boolean | ForumDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $ForumModeratorPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "ForumModerator"
+    objects: {
+      forum: Prisma.$ForumPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      forumId: string
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["forumModerator"]>
+    composites: {}
+  }
+
+  type ForumModeratorGetPayload<S extends boolean | null | undefined | ForumModeratorDefaultArgs> = $Result.GetResult<Prisma.$ForumModeratorPayload, S>
+
+  type ForumModeratorCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<ForumModeratorFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: ForumModeratorCountAggregateInputType | true
+    }
+
+  export interface ForumModeratorDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['ForumModerator'], meta: { name: 'ForumModerator' } }
+    /**
+     * Find zero or one ForumModerator that matches the filter.
+     * @param {ForumModeratorFindUniqueArgs} args - Arguments to find a ForumModerator
+     * @example
+     * // Get one ForumModerator
+     * const forumModerator = await prisma.forumModerator.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends ForumModeratorFindUniqueArgs>(args: SelectSubset<T, ForumModeratorFindUniqueArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one ForumModerator that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {ForumModeratorFindUniqueOrThrowArgs} args - Arguments to find a ForumModerator
+     * @example
+     * // Get one ForumModerator
+     * const forumModerator = await prisma.forumModerator.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends ForumModeratorFindUniqueOrThrowArgs>(args: SelectSubset<T, ForumModeratorFindUniqueOrThrowArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ForumModerator that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorFindFirstArgs} args - Arguments to find a ForumModerator
+     * @example
+     * // Get one ForumModerator
+     * const forumModerator = await prisma.forumModerator.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends ForumModeratorFindFirstArgs>(args?: SelectSubset<T, ForumModeratorFindFirstArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first ForumModerator that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorFindFirstOrThrowArgs} args - Arguments to find a ForumModerator
+     * @example
+     * // Get one ForumModerator
+     * const forumModerator = await prisma.forumModerator.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends ForumModeratorFindFirstOrThrowArgs>(args?: SelectSubset<T, ForumModeratorFindFirstOrThrowArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more ForumModerators that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ForumModerators
+     * const forumModerators = await prisma.forumModerator.findMany()
+     * 
+     * // Get first 10 ForumModerators
+     * const forumModerators = await prisma.forumModerator.findMany({ take: 10 })
+     * 
+     * // Only select the `forumId`
+     * const forumModeratorWithForumIdOnly = await prisma.forumModerator.findMany({ select: { forumId: true } })
+     * 
+     */
+    findMany<T extends ForumModeratorFindManyArgs>(args?: SelectSubset<T, ForumModeratorFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a ForumModerator.
+     * @param {ForumModeratorCreateArgs} args - Arguments to create a ForumModerator.
+     * @example
+     * // Create one ForumModerator
+     * const ForumModerator = await prisma.forumModerator.create({
+     *   data: {
+     *     // ... data to create a ForumModerator
+     *   }
+     * })
+     * 
+     */
+    create<T extends ForumModeratorCreateArgs>(args: SelectSubset<T, ForumModeratorCreateArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many ForumModerators.
+     * @param {ForumModeratorCreateManyArgs} args - Arguments to create many ForumModerators.
+     * @example
+     * // Create many ForumModerators
+     * const forumModerator = await prisma.forumModerator.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends ForumModeratorCreateManyArgs>(args?: SelectSubset<T, ForumModeratorCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many ForumModerators and returns the data saved in the database.
+     * @param {ForumModeratorCreateManyAndReturnArgs} args - Arguments to create many ForumModerators.
+     * @example
+     * // Create many ForumModerators
+     * const forumModerator = await prisma.forumModerator.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many ForumModerators and only return the `forumId`
+     * const forumModeratorWithForumIdOnly = await prisma.forumModerator.createManyAndReturn({
+     *   select: { forumId: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends ForumModeratorCreateManyAndReturnArgs>(args?: SelectSubset<T, ForumModeratorCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a ForumModerator.
+     * @param {ForumModeratorDeleteArgs} args - Arguments to delete one ForumModerator.
+     * @example
+     * // Delete one ForumModerator
+     * const ForumModerator = await prisma.forumModerator.delete({
+     *   where: {
+     *     // ... filter to delete one ForumModerator
+     *   }
+     * })
+     * 
+     */
+    delete<T extends ForumModeratorDeleteArgs>(args: SelectSubset<T, ForumModeratorDeleteArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one ForumModerator.
+     * @param {ForumModeratorUpdateArgs} args - Arguments to update one ForumModerator.
+     * @example
+     * // Update one ForumModerator
+     * const forumModerator = await prisma.forumModerator.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends ForumModeratorUpdateArgs>(args: SelectSubset<T, ForumModeratorUpdateArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more ForumModerators.
+     * @param {ForumModeratorDeleteManyArgs} args - Arguments to filter ForumModerators to delete.
+     * @example
+     * // Delete a few ForumModerators
+     * const { count } = await prisma.forumModerator.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends ForumModeratorDeleteManyArgs>(args?: SelectSubset<T, ForumModeratorDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ForumModerators.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ForumModerators
+     * const forumModerator = await prisma.forumModerator.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends ForumModeratorUpdateManyArgs>(args: SelectSubset<T, ForumModeratorUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ForumModerators and returns the data updated in the database.
+     * @param {ForumModeratorUpdateManyAndReturnArgs} args - Arguments to update many ForumModerators.
+     * @example
+     * // Update many ForumModerators
+     * const forumModerator = await prisma.forumModerator.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more ForumModerators and only return the `forumId`
+     * const forumModeratorWithForumIdOnly = await prisma.forumModerator.updateManyAndReturn({
+     *   select: { forumId: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends ForumModeratorUpdateManyAndReturnArgs>(args: SelectSubset<T, ForumModeratorUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one ForumModerator.
+     * @param {ForumModeratorUpsertArgs} args - Arguments to update or create a ForumModerator.
+     * @example
+     * // Update or create a ForumModerator
+     * const forumModerator = await prisma.forumModerator.upsert({
+     *   create: {
+     *     // ... data to create a ForumModerator
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ForumModerator we want to update
+     *   }
+     * })
+     */
+    upsert<T extends ForumModeratorUpsertArgs>(args: SelectSubset<T, ForumModeratorUpsertArgs<ExtArgs>>): Prisma__ForumModeratorClient<$Result.GetResult<Prisma.$ForumModeratorPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of ForumModerators.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorCountArgs} args - Arguments to filter ForumModerators to count.
+     * @example
+     * // Count the number of ForumModerators
+     * const count = await prisma.forumModerator.count({
+     *   where: {
+     *     // ... the filter for the ForumModerators we want to count
+     *   }
+     * })
+    **/
+    count<T extends ForumModeratorCountArgs>(
+      args?: Subset<T, ForumModeratorCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ForumModeratorCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ForumModerator.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ForumModeratorAggregateArgs>(args: Subset<T, ForumModeratorAggregateArgs>): Prisma.PrismaPromise<GetForumModeratorAggregateType<T>>
+
+    /**
+     * Group by ForumModerator.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ForumModeratorGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ForumModeratorGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ForumModeratorGroupByArgs['orderBy'] }
+        : { orderBy?: ForumModeratorGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ForumModeratorGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetForumModeratorGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the ForumModerator model
+   */
+  readonly fields: ForumModeratorFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ForumModerator.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__ForumModeratorClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    forum<T extends ForumDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ForumDefaultArgs<ExtArgs>>): Prisma__ForumClient<$Result.GetResult<Prisma.$ForumPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the ForumModerator model
+   */
+  interface ForumModeratorFieldRefs {
+    readonly forumId: FieldRef<"ForumModerator", 'String'>
+    readonly userId: FieldRef<"ForumModerator", 'String'>
+    readonly createdAt: FieldRef<"ForumModerator", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * ForumModerator findUnique
+   */
+  export type ForumModeratorFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter, which ForumModerator to fetch.
+     */
+    where: ForumModeratorWhereUniqueInput
+  }
+
+  /**
+   * ForumModerator findUniqueOrThrow
+   */
+  export type ForumModeratorFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter, which ForumModerator to fetch.
+     */
+    where: ForumModeratorWhereUniqueInput
+  }
+
+  /**
+   * ForumModerator findFirst
+   */
+  export type ForumModeratorFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter, which ForumModerator to fetch.
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ForumModerators to fetch.
+     */
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ForumModerators.
+     */
+    cursor?: ForumModeratorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ForumModerators from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ForumModerators.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ForumModerators.
+     */
+    distinct?: ForumModeratorScalarFieldEnum | ForumModeratorScalarFieldEnum[]
+  }
+
+  /**
+   * ForumModerator findFirstOrThrow
+   */
+  export type ForumModeratorFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter, which ForumModerator to fetch.
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ForumModerators to fetch.
+     */
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ForumModerators.
+     */
+    cursor?: ForumModeratorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ForumModerators from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ForumModerators.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ForumModerators.
+     */
+    distinct?: ForumModeratorScalarFieldEnum | ForumModeratorScalarFieldEnum[]
+  }
+
+  /**
+   * ForumModerator findMany
+   */
+  export type ForumModeratorFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter, which ForumModerators to fetch.
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ForumModerators to fetch.
+     */
+    orderBy?: ForumModeratorOrderByWithRelationInput | ForumModeratorOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ForumModerators.
+     */
+    cursor?: ForumModeratorWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ForumModerators from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ForumModerators.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ForumModerators.
+     */
+    distinct?: ForumModeratorScalarFieldEnum | ForumModeratorScalarFieldEnum[]
+  }
+
+  /**
+   * ForumModerator create
+   */
+  export type ForumModeratorCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * The data needed to create a ForumModerator.
+     */
+    data: XOR<ForumModeratorCreateInput, ForumModeratorUncheckedCreateInput>
+  }
+
+  /**
+   * ForumModerator createMany
+   */
+  export type ForumModeratorCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many ForumModerators.
+     */
+    data: ForumModeratorCreateManyInput | ForumModeratorCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * ForumModerator createManyAndReturn
+   */
+  export type ForumModeratorCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * The data used to create many ForumModerators.
+     */
+    data: ForumModeratorCreateManyInput | ForumModeratorCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ForumModerator update
+   */
+  export type ForumModeratorUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * The data needed to update a ForumModerator.
+     */
+    data: XOR<ForumModeratorUpdateInput, ForumModeratorUncheckedUpdateInput>
+    /**
+     * Choose, which ForumModerator to update.
+     */
+    where: ForumModeratorWhereUniqueInput
+  }
+
+  /**
+   * ForumModerator updateMany
+   */
+  export type ForumModeratorUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update ForumModerators.
+     */
+    data: XOR<ForumModeratorUpdateManyMutationInput, ForumModeratorUncheckedUpdateManyInput>
+    /**
+     * Filter which ForumModerators to update
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * Limit how many ForumModerators to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * ForumModerator updateManyAndReturn
+   */
+  export type ForumModeratorUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * The data used to update ForumModerators.
+     */
+    data: XOR<ForumModeratorUpdateManyMutationInput, ForumModeratorUncheckedUpdateManyInput>
+    /**
+     * Filter which ForumModerators to update
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * Limit how many ForumModerators to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * ForumModerator upsert
+   */
+  export type ForumModeratorUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * The filter to search for the ForumModerator to update in case it exists.
+     */
+    where: ForumModeratorWhereUniqueInput
+    /**
+     * In case the ForumModerator found by the `where` argument doesn't exist, create a new ForumModerator with this data.
+     */
+    create: XOR<ForumModeratorCreateInput, ForumModeratorUncheckedCreateInput>
+    /**
+     * In case the ForumModerator was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<ForumModeratorUpdateInput, ForumModeratorUncheckedUpdateInput>
+  }
+
+  /**
+   * ForumModerator delete
+   */
+  export type ForumModeratorDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+    /**
+     * Filter which ForumModerator to delete.
+     */
+    where: ForumModeratorWhereUniqueInput
+  }
+
+  /**
+   * ForumModerator deleteMany
+   */
+  export type ForumModeratorDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which ForumModerators to delete
+     */
+    where?: ForumModeratorWhereInput
+    /**
+     * Limit how many ForumModerators to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * ForumModerator without action
+   */
+  export type ForumModeratorDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the ForumModerator
+     */
+    select?: ForumModeratorSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the ForumModerator
+     */
+    omit?: ForumModeratorOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ForumModeratorInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -54760,6 +55971,15 @@ export namespace Prisma {
   export type ActionCounterScalarFieldEnum = (typeof ActionCounterScalarFieldEnum)[keyof typeof ActionCounterScalarFieldEnum]
 
 
+  export const ForumModeratorScalarFieldEnum: {
+    forumId: 'forumId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type ForumModeratorScalarFieldEnum = (typeof ForumModeratorScalarFieldEnum)[keyof typeof ForumModeratorScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -55101,6 +56321,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningListRelationFilter
     warningsGiven?: UserWarningListRelationFilter
     actionCounters?: ActionCounterListRelationFilter
+    forumsModerated?: ForumModeratorListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -55175,6 +56396,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningOrderByRelationAggregateInput
     warningsGiven?: UserWarningOrderByRelationAggregateInput
     actionCounters?: ActionCounterOrderByRelationAggregateInput
+    forumsModerated?: ForumModeratorOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -55252,6 +56474,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningListRelationFilter
     warningsGiven?: UserWarningListRelationFilter
     actionCounters?: ActionCounterListRelationFilter
+    forumsModerated?: ForumModeratorListRelationFilter
   }, "id" | "email" | "legacyId">
 
   export type UserOrderByWithAggregationInput = {
@@ -55775,6 +56998,7 @@ export namespace Prisma {
     legacyId?: StringNullableFilter<"Forum"> | string | null
     parentForum?: XOR<ForumNullableScalarRelationFilter, ForumWhereInput> | null
     subForums?: ForumListRelationFilter
+    moderators?: ForumModeratorListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     topics?: TopicListRelationFilter
   }
@@ -55792,6 +57016,7 @@ export namespace Prisma {
     legacyId?: SortOrderInput | SortOrder
     parentForum?: ForumOrderByWithRelationInput
     subForums?: ForumOrderByRelationAggregateInput
+    moderators?: ForumModeratorOrderByRelationAggregateInput
     category?: CategoryOrderByWithRelationInput
     topics?: TopicOrderByRelationAggregateInput
   }
@@ -55812,6 +57037,7 @@ export namespace Prisma {
     parentForumId?: StringNullableFilter<"Forum"> | string | null
     parentForum?: XOR<ForumNullableScalarRelationFilter, ForumWhereInput> | null
     subForums?: ForumListRelationFilter
+    moderators?: ForumModeratorListRelationFilter
     category?: XOR<CategoryNullableScalarRelationFilter, CategoryWhereInput> | null
     topics?: TopicListRelationFilter
   }, "id" | "name" | "legacyId">
@@ -58217,6 +59443,55 @@ export namespace Prisma {
     count?: IntWithAggregatesFilter<"ActionCounter"> | number
   }
 
+  export type ForumModeratorWhereInput = {
+    AND?: ForumModeratorWhereInput | ForumModeratorWhereInput[]
+    OR?: ForumModeratorWhereInput[]
+    NOT?: ForumModeratorWhereInput | ForumModeratorWhereInput[]
+    forumId?: StringFilter<"ForumModerator"> | string
+    userId?: StringFilter<"ForumModerator"> | string
+    createdAt?: DateTimeFilter<"ForumModerator"> | Date | string
+    forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type ForumModeratorOrderByWithRelationInput = {
+    forumId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    forum?: ForumOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type ForumModeratorWhereUniqueInput = Prisma.AtLeast<{
+    forumId_userId?: ForumModeratorForumIdUserIdCompoundUniqueInput
+    AND?: ForumModeratorWhereInput | ForumModeratorWhereInput[]
+    OR?: ForumModeratorWhereInput[]
+    NOT?: ForumModeratorWhereInput | ForumModeratorWhereInput[]
+    forumId?: StringFilter<"ForumModerator"> | string
+    userId?: StringFilter<"ForumModerator"> | string
+    createdAt?: DateTimeFilter<"ForumModerator"> | Date | string
+    forum?: XOR<ForumScalarRelationFilter, ForumWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "forumId_userId">
+
+  export type ForumModeratorOrderByWithAggregationInput = {
+    forumId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: ForumModeratorCountOrderByAggregateInput
+    _max?: ForumModeratorMaxOrderByAggregateInput
+    _min?: ForumModeratorMinOrderByAggregateInput
+  }
+
+  export type ForumModeratorScalarWhereWithAggregatesInput = {
+    AND?: ForumModeratorScalarWhereWithAggregatesInput | ForumModeratorScalarWhereWithAggregatesInput[]
+    OR?: ForumModeratorScalarWhereWithAggregatesInput[]
+    NOT?: ForumModeratorScalarWhereWithAggregatesInput | ForumModeratorScalarWhereWithAggregatesInput[]
+    forumId?: StringWithAggregatesFilter<"ForumModerator"> | string
+    userId?: StringWithAggregatesFilter<"ForumModerator"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"ForumModerator"> | Date | string
+  }
+
   export type AccountCreateInput = {
     id?: string
     type: string
@@ -58440,6 +59715,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -58513,6 +59789,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -58586,6 +59863,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -58659,6 +59937,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -59272,6 +60551,7 @@ export namespace Prisma {
     legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorCreateNestedManyWithoutForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
   }
@@ -59288,6 +60568,7 @@ export namespace Prisma {
     parentForumId?: string | null
     legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorUncheckedCreateNestedManyWithoutForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
 
@@ -59302,6 +60583,7 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUpdateManyWithoutForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
   }
@@ -59318,6 +60600,7 @@ export namespace Prisma {
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUncheckedUpdateManyWithoutForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
 
@@ -61770,6 +63053,46 @@ export namespace Prisma {
     count?: IntFieldUpdateOperationsInput | number
   }
 
+  export type ForumModeratorCreateInput = {
+    createdAt?: Date | string
+    forum: ForumCreateNestedOneWithoutModeratorsInput
+    user: UserCreateNestedOneWithoutForumsModeratedInput
+  }
+
+  export type ForumModeratorUncheckedCreateInput = {
+    forumId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ForumModeratorUpdateInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    forum?: ForumUpdateOneRequiredWithoutModeratorsNestedInput
+    user?: UserUpdateOneRequiredWithoutForumsModeratedNestedInput
+  }
+
+  export type ForumModeratorUncheckedUpdateInput = {
+    forumId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ForumModeratorCreateManyInput = {
+    forumId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ForumModeratorUpdateManyMutationInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ForumModeratorUncheckedUpdateManyInput = {
+    forumId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -62172,6 +63495,12 @@ export namespace Prisma {
     none?: ActionCounterWhereInput
   }
 
+  export type ForumModeratorListRelationFilter = {
+    every?: ForumModeratorWhereInput
+    some?: ForumModeratorWhereInput
+    none?: ForumModeratorWhereInput
+  }
+
   export type AccountOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -62285,6 +63614,10 @@ export namespace Prisma {
   }
 
   export type ActionCounterOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type ForumModeratorOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -64133,6 +65466,29 @@ export namespace Prisma {
     count?: SortOrder
   }
 
+  export type ForumModeratorForumIdUserIdCompoundUniqueInput = {
+    forumId: string
+    userId: string
+  }
+
+  export type ForumModeratorCountOrderByAggregateInput = {
+    forumId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ForumModeratorMaxOrderByAggregateInput = {
+    forumId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type ForumModeratorMinOrderByAggregateInput = {
+    forumId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutAccountsInput = {
     create?: XOR<UserCreateWithoutAccountsInput, UserUncheckedCreateWithoutAccountsInput>
     connectOrCreate?: UserCreateOrConnectWithoutAccountsInput
@@ -64499,6 +65855,13 @@ export namespace Prisma {
     connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
   }
 
+  export type ForumModeratorCreateNestedManyWithoutUserInput = {
+    create?: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput> | ForumModeratorCreateWithoutUserInput[] | ForumModeratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutUserInput | ForumModeratorCreateOrConnectWithoutUserInput[]
+    createMany?: ForumModeratorCreateManyUserInputEnvelope
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+  }
+
   export type AccountUncheckedCreateNestedManyWithoutUserInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -64809,6 +66172,13 @@ export namespace Prisma {
     connectOrCreate?: ActionCounterCreateOrConnectWithoutUserInput | ActionCounterCreateOrConnectWithoutUserInput[]
     createMany?: ActionCounterCreateManyUserInputEnvelope
     connect?: ActionCounterWhereUniqueInput | ActionCounterWhereUniqueInput[]
+  }
+
+  export type ForumModeratorUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput> | ForumModeratorCreateWithoutUserInput[] | ForumModeratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutUserInput | ForumModeratorCreateOrConnectWithoutUserInput[]
+    createMany?: ForumModeratorCreateManyUserInputEnvelope
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
   }
 
   export type NullableDateTimeFieldUpdateOperationsInput = {
@@ -65454,6 +66824,20 @@ export namespace Prisma {
     deleteMany?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
   }
 
+  export type ForumModeratorUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput> | ForumModeratorCreateWithoutUserInput[] | ForumModeratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutUserInput | ForumModeratorCreateOrConnectWithoutUserInput[]
+    upsert?: ForumModeratorUpsertWithWhereUniqueWithoutUserInput | ForumModeratorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ForumModeratorCreateManyUserInputEnvelope
+    set?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    disconnect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    delete?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    update?: ForumModeratorUpdateWithWhereUniqueWithoutUserInput | ForumModeratorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ForumModeratorUpdateManyWithWhereWithoutUserInput | ForumModeratorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
+  }
+
   export type AccountUncheckedUpdateManyWithoutUserNestedInput = {
     create?: XOR<AccountCreateWithoutUserInput, AccountUncheckedCreateWithoutUserInput> | AccountCreateWithoutUserInput[] | AccountUncheckedCreateWithoutUserInput[]
     connectOrCreate?: AccountCreateOrConnectWithoutUserInput | AccountCreateOrConnectWithoutUserInput[]
@@ -66081,6 +67465,20 @@ export namespace Prisma {
     deleteMany?: ActionCounterScalarWhereInput | ActionCounterScalarWhereInput[]
   }
 
+  export type ForumModeratorUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput> | ForumModeratorCreateWithoutUserInput[] | ForumModeratorUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutUserInput | ForumModeratorCreateOrConnectWithoutUserInput[]
+    upsert?: ForumModeratorUpsertWithWhereUniqueWithoutUserInput | ForumModeratorUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: ForumModeratorCreateManyUserInputEnvelope
+    set?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    disconnect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    delete?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    update?: ForumModeratorUpdateWithWhereUniqueWithoutUserInput | ForumModeratorUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: ForumModeratorUpdateManyWithWhereWithoutUserInput | ForumModeratorUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
+  }
+
   export type UserCreateNestedOneWithoutBlockedByInput = {
     create?: XOR<UserCreateWithoutBlockedByInput, UserUncheckedCreateWithoutBlockedByInput>
     connectOrCreate?: UserCreateOrConnectWithoutBlockedByInput
@@ -66506,6 +67904,13 @@ export namespace Prisma {
     connect?: ForumWhereUniqueInput | ForumWhereUniqueInput[]
   }
 
+  export type ForumModeratorCreateNestedManyWithoutForumInput = {
+    create?: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput> | ForumModeratorCreateWithoutForumInput[] | ForumModeratorUncheckedCreateWithoutForumInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutForumInput | ForumModeratorCreateOrConnectWithoutForumInput[]
+    createMany?: ForumModeratorCreateManyForumInputEnvelope
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+  }
+
   export type CategoryCreateNestedOneWithoutForumsInput = {
     create?: XOR<CategoryCreateWithoutForumsInput, CategoryUncheckedCreateWithoutForumsInput>
     connectOrCreate?: CategoryCreateOrConnectWithoutForumsInput
@@ -66524,6 +67929,13 @@ export namespace Prisma {
     connectOrCreate?: ForumCreateOrConnectWithoutParentForumInput | ForumCreateOrConnectWithoutParentForumInput[]
     createMany?: ForumCreateManyParentForumInputEnvelope
     connect?: ForumWhereUniqueInput | ForumWhereUniqueInput[]
+  }
+
+  export type ForumModeratorUncheckedCreateNestedManyWithoutForumInput = {
+    create?: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput> | ForumModeratorCreateWithoutForumInput[] | ForumModeratorUncheckedCreateWithoutForumInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutForumInput | ForumModeratorCreateOrConnectWithoutForumInput[]
+    createMany?: ForumModeratorCreateManyForumInputEnvelope
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
   }
 
   export type TopicUncheckedCreateNestedManyWithoutForumInput = {
@@ -66555,6 +67967,20 @@ export namespace Prisma {
     update?: ForumUpdateWithWhereUniqueWithoutParentForumInput | ForumUpdateWithWhereUniqueWithoutParentForumInput[]
     updateMany?: ForumUpdateManyWithWhereWithoutParentForumInput | ForumUpdateManyWithWhereWithoutParentForumInput[]
     deleteMany?: ForumScalarWhereInput | ForumScalarWhereInput[]
+  }
+
+  export type ForumModeratorUpdateManyWithoutForumNestedInput = {
+    create?: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput> | ForumModeratorCreateWithoutForumInput[] | ForumModeratorUncheckedCreateWithoutForumInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutForumInput | ForumModeratorCreateOrConnectWithoutForumInput[]
+    upsert?: ForumModeratorUpsertWithWhereUniqueWithoutForumInput | ForumModeratorUpsertWithWhereUniqueWithoutForumInput[]
+    createMany?: ForumModeratorCreateManyForumInputEnvelope
+    set?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    disconnect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    delete?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    update?: ForumModeratorUpdateWithWhereUniqueWithoutForumInput | ForumModeratorUpdateWithWhereUniqueWithoutForumInput[]
+    updateMany?: ForumModeratorUpdateManyWithWhereWithoutForumInput | ForumModeratorUpdateManyWithWhereWithoutForumInput[]
+    deleteMany?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
   }
 
   export type CategoryUpdateOneWithoutForumsNestedInput = {
@@ -66593,6 +68019,20 @@ export namespace Prisma {
     update?: ForumUpdateWithWhereUniqueWithoutParentForumInput | ForumUpdateWithWhereUniqueWithoutParentForumInput[]
     updateMany?: ForumUpdateManyWithWhereWithoutParentForumInput | ForumUpdateManyWithWhereWithoutParentForumInput[]
     deleteMany?: ForumScalarWhereInput | ForumScalarWhereInput[]
+  }
+
+  export type ForumModeratorUncheckedUpdateManyWithoutForumNestedInput = {
+    create?: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput> | ForumModeratorCreateWithoutForumInput[] | ForumModeratorUncheckedCreateWithoutForumInput[]
+    connectOrCreate?: ForumModeratorCreateOrConnectWithoutForumInput | ForumModeratorCreateOrConnectWithoutForumInput[]
+    upsert?: ForumModeratorUpsertWithWhereUniqueWithoutForumInput | ForumModeratorUpsertWithWhereUniqueWithoutForumInput[]
+    createMany?: ForumModeratorCreateManyForumInputEnvelope
+    set?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    disconnect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    delete?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    connect?: ForumModeratorWhereUniqueInput | ForumModeratorWhereUniqueInput[]
+    update?: ForumModeratorUpdateWithWhereUniqueWithoutForumInput | ForumModeratorUpdateWithWhereUniqueWithoutForumInput[]
+    updateMany?: ForumModeratorUpdateManyWithWhereWithoutForumInput | ForumModeratorUpdateManyWithWhereWithoutForumInput[]
+    deleteMany?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
   }
 
   export type TopicUncheckedUpdateManyWithoutForumNestedInput = {
@@ -68359,6 +69799,34 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutActionCountersInput, UserUpdateWithoutActionCountersInput>, UserUncheckedUpdateWithoutActionCountersInput>
   }
 
+  export type ForumCreateNestedOneWithoutModeratorsInput = {
+    create?: XOR<ForumCreateWithoutModeratorsInput, ForumUncheckedCreateWithoutModeratorsInput>
+    connectOrCreate?: ForumCreateOrConnectWithoutModeratorsInput
+    connect?: ForumWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutForumsModeratedInput = {
+    create?: XOR<UserCreateWithoutForumsModeratedInput, UserUncheckedCreateWithoutForumsModeratedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutForumsModeratedInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type ForumUpdateOneRequiredWithoutModeratorsNestedInput = {
+    create?: XOR<ForumCreateWithoutModeratorsInput, ForumUncheckedCreateWithoutModeratorsInput>
+    connectOrCreate?: ForumCreateOrConnectWithoutModeratorsInput
+    upsert?: ForumUpsertWithoutModeratorsInput
+    connect?: ForumWhereUniqueInput
+    update?: XOR<XOR<ForumUpdateToOneWithWhereWithoutModeratorsInput, ForumUpdateWithoutModeratorsInput>, ForumUncheckedUpdateWithoutModeratorsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutForumsModeratedNestedInput = {
+    create?: XOR<UserCreateWithoutForumsModeratedInput, UserUncheckedCreateWithoutForumsModeratedInput>
+    connectOrCreate?: UserCreateOrConnectWithoutForumsModeratedInput
+    upsert?: UserUpsertWithoutForumsModeratedInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutForumsModeratedInput, UserUpdateWithoutForumsModeratedInput>, UserUncheckedUpdateWithoutForumsModeratedInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -68696,6 +70164,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAccountsInput = {
@@ -68768,6 +70237,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAccountsInput = {
@@ -68856,6 +70326,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAccountsInput = {
@@ -68928,6 +70399,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSessionsInput = {
@@ -69000,6 +70472,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSessionsInput = {
@@ -69072,6 +70545,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSessionsInput = {
@@ -69160,6 +70634,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSessionsInput = {
@@ -69232,6 +70707,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateWithoutUserInput = {
@@ -71066,6 +72542,26 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ForumModeratorCreateWithoutUserInput = {
+    createdAt?: Date | string
+    forum: ForumCreateNestedOneWithoutModeratorsInput
+  }
+
+  export type ForumModeratorUncheckedCreateWithoutUserInput = {
+    forumId: string
+    createdAt?: Date | string
+  }
+
+  export type ForumModeratorCreateOrConnectWithoutUserInput = {
+    where: ForumModeratorWhereUniqueInput
+    create: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput>
+  }
+
+  export type ForumModeratorCreateManyUserInputEnvelope = {
+    data: ForumModeratorCreateManyUserInput | ForumModeratorCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type AccountUpsertWithWhereUniqueWithoutUserInput = {
     where: AccountWhereUniqueInput
     update: XOR<AccountUpdateWithoutUserInput, AccountUncheckedUpdateWithoutUserInput>
@@ -72262,6 +73758,31 @@ export namespace Prisma {
     count?: IntFilter<"ActionCounter"> | number
   }
 
+  export type ForumModeratorUpsertWithWhereUniqueWithoutUserInput = {
+    where: ForumModeratorWhereUniqueInput
+    update: XOR<ForumModeratorUpdateWithoutUserInput, ForumModeratorUncheckedUpdateWithoutUserInput>
+    create: XOR<ForumModeratorCreateWithoutUserInput, ForumModeratorUncheckedCreateWithoutUserInput>
+  }
+
+  export type ForumModeratorUpdateWithWhereUniqueWithoutUserInput = {
+    where: ForumModeratorWhereUniqueInput
+    data: XOR<ForumModeratorUpdateWithoutUserInput, ForumModeratorUncheckedUpdateWithoutUserInput>
+  }
+
+  export type ForumModeratorUpdateManyWithWhereWithoutUserInput = {
+    where: ForumModeratorScalarWhereInput
+    data: XOR<ForumModeratorUpdateManyMutationInput, ForumModeratorUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type ForumModeratorScalarWhereInput = {
+    AND?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
+    OR?: ForumModeratorScalarWhereInput[]
+    NOT?: ForumModeratorScalarWhereInput | ForumModeratorScalarWhereInput[]
+    forumId?: StringFilter<"ForumModerator"> | string
+    userId?: StringFilter<"ForumModerator"> | string
+    createdAt?: DateTimeFilter<"ForumModerator"> | Date | string
+  }
+
   export type UserCreateWithoutBlockedByInput = {
     id?: string
     name?: string | null
@@ -72332,6 +73853,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlockedByInput = {
@@ -72404,6 +73926,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlockedByInput = {
@@ -72481,6 +74004,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutBlocksInput = {
@@ -72553,6 +74077,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutBlocksInput = {
@@ -72641,6 +74166,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlockedByInput = {
@@ -72713,6 +74239,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutBlocksInput = {
@@ -72796,6 +74323,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutBlocksInput = {
@@ -72868,6 +74396,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutCdfValidatedTournamentsInput = {
@@ -72940,6 +74469,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCdfValidatedTournamentsInput = {
@@ -73012,6 +74542,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCdfValidatedTournamentsInput = {
@@ -73193,6 +74724,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentsInput = {
@@ -73265,6 +74797,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentsInput = {
@@ -73490,6 +75023,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissairesTournamentsInput = {
@@ -73562,6 +75096,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissairesTournamentsInput = {
@@ -73650,6 +75185,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCdfValidatedTournamentsInput = {
@@ -73722,6 +75258,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutTournamentInput = {
@@ -73921,6 +75458,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentsInput = {
@@ -73993,6 +75531,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentMercenaryUpsertWithWhereUniqueWithoutTournamentInput = {
@@ -74142,6 +75681,7 @@ export namespace Prisma {
     legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorCreateNestedManyWithoutForumInput
     topics?: TopicCreateNestedManyWithoutForumInput
   }
 
@@ -74156,6 +75696,7 @@ export namespace Prisma {
     parentForumId?: string | null
     legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorUncheckedCreateNestedManyWithoutForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
 
@@ -74211,6 +75752,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
+    moderators?: ForumModeratorCreateNestedManyWithoutForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
   }
@@ -74226,6 +75768,7 @@ export namespace Prisma {
     categoryId?: string | null
     parentForumId?: string | null
     legacyId?: string | null
+    moderators?: ForumModeratorUncheckedCreateNestedManyWithoutForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
 
@@ -74244,6 +75787,7 @@ export namespace Prisma {
     isTournamentForum?: boolean
     legacyId?: string | null
     subForums?: ForumCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorCreateNestedManyWithoutForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
     topics?: TopicCreateNestedManyWithoutForumInput
   }
@@ -74259,6 +75803,7 @@ export namespace Prisma {
     categoryId?: string | null
     legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorUncheckedCreateNestedManyWithoutForumInput
     topics?: TopicUncheckedCreateNestedManyWithoutForumInput
   }
 
@@ -74269,6 +75814,26 @@ export namespace Prisma {
 
   export type ForumCreateManyParentForumInputEnvelope = {
     data: ForumCreateManyParentForumInput | ForumCreateManyParentForumInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type ForumModeratorCreateWithoutForumInput = {
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutForumsModeratedInput
+  }
+
+  export type ForumModeratorUncheckedCreateWithoutForumInput = {
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type ForumModeratorCreateOrConnectWithoutForumInput = {
+    where: ForumModeratorWhereUniqueInput
+    create: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput>
+  }
+
+  export type ForumModeratorCreateManyForumInputEnvelope = {
+    data: ForumModeratorCreateManyForumInput | ForumModeratorCreateManyForumInput[]
     skipDuplicates?: boolean
   }
 
@@ -74376,6 +75941,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
+    moderators?: ForumModeratorUpdateManyWithoutForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
   }
@@ -74391,6 +75957,7 @@ export namespace Prisma {
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    moderators?: ForumModeratorUncheckedUpdateManyWithoutForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
 
@@ -74408,6 +75975,22 @@ export namespace Prisma {
   export type ForumUpdateManyWithWhereWithoutParentForumInput = {
     where: ForumScalarWhereInput
     data: XOR<ForumUpdateManyMutationInput, ForumUncheckedUpdateManyWithoutParentForumInput>
+  }
+
+  export type ForumModeratorUpsertWithWhereUniqueWithoutForumInput = {
+    where: ForumModeratorWhereUniqueInput
+    update: XOR<ForumModeratorUpdateWithoutForumInput, ForumModeratorUncheckedUpdateWithoutForumInput>
+    create: XOR<ForumModeratorCreateWithoutForumInput, ForumModeratorUncheckedCreateWithoutForumInput>
+  }
+
+  export type ForumModeratorUpdateWithWhereUniqueWithoutForumInput = {
+    where: ForumModeratorWhereUniqueInput
+    data: XOR<ForumModeratorUpdateWithoutForumInput, ForumModeratorUncheckedUpdateWithoutForumInput>
+  }
+
+  export type ForumModeratorUpdateManyWithWhereWithoutForumInput = {
+    where: ForumModeratorScalarWhereInput
+    data: XOR<ForumModeratorUpdateManyMutationInput, ForumModeratorUncheckedUpdateManyWithoutForumInput>
   }
 
   export type CategoryUpsertWithoutForumsInput = {
@@ -74525,6 +76108,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedTopicsInput = {
@@ -74597,6 +76181,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedTopicsInput = {
@@ -74674,6 +76259,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLastPostTopicsInput = {
@@ -74746,6 +76332,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLastPostTopicsInput = {
@@ -74986,6 +76573,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicsInput = {
@@ -75058,6 +76646,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicsInput = {
@@ -75076,6 +76665,7 @@ export namespace Prisma {
     legacyId?: string | null
     parentForum?: ForumCreateNestedOneWithoutSubForumsInput
     subForums?: ForumCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorCreateNestedManyWithoutForumInput
     category?: CategoryCreateNestedOneWithoutForumsInput
   }
 
@@ -75091,6 +76681,7 @@ export namespace Prisma {
     parentForumId?: string | null
     legacyId?: string | null
     subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
+    moderators?: ForumModeratorUncheckedCreateNestedManyWithoutForumInput
   }
 
   export type ForumCreateOrConnectWithoutTopicsInput = {
@@ -75253,6 +76844,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedTopicsInput = {
@@ -75325,6 +76917,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutLastPostTopicsInput = {
@@ -75408,6 +77001,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLastPostTopicsInput = {
@@ -75480,6 +77074,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithWhereUniqueWithoutTopicInput = {
@@ -75700,6 +77295,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicsInput = {
@@ -75772,6 +77368,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ForumUpsertWithoutTopicsInput = {
@@ -75796,6 +77393,7 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUpdateManyWithoutForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
   }
 
@@ -75811,6 +77409,7 @@ export namespace Prisma {
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUncheckedUpdateManyWithoutForumNestedInput
   }
 
   export type TopicFollowUpsertWithWhereUniqueWithoutTopicInput = {
@@ -75931,6 +77530,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDeletedPostsInput = {
@@ -76003,6 +77603,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDeletedPostsInput = {
@@ -76106,6 +77707,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedPostsInput = {
@@ -76178,6 +77780,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedPostsInput = {
@@ -76255,6 +77858,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostsInput = {
@@ -76327,6 +77931,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostsInput = {
@@ -76526,6 +78131,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDeletedPostsInput = {
@@ -76598,6 +78204,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type MentionUpsertWithWhereUniqueWithoutPostInput = {
@@ -76697,6 +78304,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedPostsInput = {
@@ -76769,6 +78377,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutPostsInput = {
@@ -76852,6 +78461,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostsInput = {
@@ -76924,6 +78534,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutPostsInput = {
@@ -77089,6 +78700,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser2ConversationsInput = {
@@ -77161,6 +78773,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser2ConversationsInput = {
@@ -77238,6 +78851,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutUser1ConversationsInput = {
@@ -77310,6 +78924,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutUser1ConversationsInput = {
@@ -77482,6 +79097,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser2ConversationsInput = {
@@ -77554,6 +79170,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutUser1ConversationsInput = {
@@ -77637,6 +79254,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutUser1ConversationsInput = {
@@ -77709,6 +79327,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PrivateMessageUpsertWithWhereUniqueWithoutConversationInput = {
@@ -77829,6 +79448,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutConversationParticipantsInput = {
@@ -77901,6 +79521,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutConversationParticipantsInput = {
@@ -78022,6 +79643,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutConversationParticipantsInput = {
@@ -78094,6 +79716,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationUpsertWithoutParticipantsInput = {
@@ -78205,6 +79828,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPrivateMessagesInput = {
@@ -78277,6 +79901,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPrivateMessagesInput = {
@@ -78398,6 +80023,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPrivateMessagesInput = {
@@ -78470,6 +80096,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ConversationUpsertWithoutMessagesInput = {
@@ -78636,6 +80263,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTopicViewsInput = {
@@ -78708,6 +80336,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTopicViewsInput = {
@@ -78857,6 +80486,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTopicViewsInput = {
@@ -78929,6 +80559,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutMentionsReceivedInput = {
@@ -79001,6 +80632,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsReceivedInput = {
@@ -79073,6 +80705,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsReceivedInput = {
@@ -79150,6 +80783,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMentionsMadeInput = {
@@ -79222,6 +80856,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMentionsMadeInput = {
@@ -79353,6 +80988,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsReceivedInput = {
@@ -79425,6 +81061,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMentionsMadeInput = {
@@ -79508,6 +81145,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMentionsMadeInput = {
@@ -79580,6 +81218,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutMentionsInput = {
@@ -79701,6 +81340,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -79773,6 +81413,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -79850,6 +81491,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutNotificationsCausedInput = {
@@ -79922,6 +81564,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutNotificationsCausedInput = {
@@ -80141,6 +81784,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -80213,6 +81857,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutNotificationsCausedInput = {
@@ -80296,6 +81941,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutNotificationsCausedInput = {
@@ -80368,6 +82014,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TopicUpsertWithoutNotificationsInput = {
@@ -80589,6 +82236,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutPostReactionsInput = {
@@ -80661,6 +82309,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutPostReactionsInput = {
@@ -80792,6 +82441,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutPostReactionsInput = {
@@ -80864,6 +82514,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type PostUpsertWithoutReactionsInput = {
@@ -80985,6 +82636,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRoleConfigInput = {
@@ -81057,6 +82709,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRoleConfigInput = {
@@ -81210,6 +82863,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutFollowedTopicsInput = {
@@ -81282,6 +82936,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutFollowedTopicsInput = {
@@ -81431,6 +83086,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutFollowedTopicsInput = {
@@ -81503,6 +83159,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutRankingArchivesInput = {
@@ -81575,6 +83232,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutRankingArchivesInput = {
@@ -81647,6 +83305,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutRankingArchivesInput = {
@@ -81735,6 +83394,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRankingArchivesInput = {
@@ -81807,6 +83467,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutTournamentRegistrationsInput = {
@@ -81879,6 +83540,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentRegistrationsInput = {
@@ -81951,6 +83613,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentRegistrationsInput = {
@@ -82154,6 +83817,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentRegistrationsInput = {
@@ -82226,6 +83890,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutRegistrationsInput = {
@@ -82419,6 +84084,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCaptainTeamsInput = {
@@ -82491,6 +84157,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCaptainTeamsInput = {
@@ -82714,6 +84381,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCaptainTeamsInput = {
@@ -82786,6 +84454,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutTeamsInput = {
@@ -82995,6 +84664,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTeamMembershipsInput = {
@@ -83067,6 +84737,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTeamMembershipsInput = {
@@ -83182,6 +84853,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTeamMembershipsInput = {
@@ -83254,6 +84926,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentTeamUpsertWithoutMembersInput = {
@@ -83359,6 +85032,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMercenaryStatusInput = {
@@ -83431,6 +85105,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMercenaryStatusInput = {
@@ -83634,6 +85309,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMercenaryStatusInput = {
@@ -83706,6 +85382,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutMercenariesInput = {
@@ -83948,6 +85625,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModeratedArticlesInput = {
@@ -84020,6 +85698,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModeratedArticlesInput = {
@@ -84097,6 +85776,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticlesInput = {
@@ -84169,6 +85849,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticlesInput = {
@@ -84351,6 +86032,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModeratedArticlesInput = {
@@ -84423,6 +86105,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutArticlesInput = {
@@ -84506,6 +86189,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticlesInput = {
@@ -84578,6 +86262,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleReactionUpsertWithWhereUniqueWithoutArticleInput = {
@@ -84743,6 +86428,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutArticleReactionsInput = {
@@ -84815,6 +86501,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutArticleReactionsInput = {
@@ -84940,6 +86627,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutArticleReactionsInput = {
@@ -85012,6 +86700,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ArticleUpsertWithoutReactionsInput = {
@@ -85169,6 +86858,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutOwnedLiguesInput = {
@@ -85241,6 +86931,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutOwnedLiguesInput = {
@@ -85438,6 +87129,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCommissaireLiguesInput = {
@@ -85510,6 +87202,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCommissaireLiguesInput = {
@@ -85587,6 +87280,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutLiguesInput = {
@@ -85659,6 +87353,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutLiguesInput = {
@@ -85763,6 +87458,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutOwnedLiguesInput = {
@@ -85835,6 +87531,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithWhereUniqueWithoutLigueInput = {
@@ -85955,6 +87652,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsResolvedInput = {
@@ -86027,6 +87725,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsResolvedInput = {
@@ -86104,6 +87803,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportsMadeInput = {
@@ -86176,6 +87876,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportsMadeInput = {
@@ -86264,6 +87965,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsResolvedInput = {
@@ -86336,6 +88038,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutReportsMadeInput = {
@@ -86419,6 +88122,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportsMadeInput = {
@@ -86491,6 +88195,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutModerationLogsInput = {
@@ -86563,6 +88268,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutModerationLogsInput = {
@@ -86635,6 +88341,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutModerationLogsInput = {
@@ -86723,6 +88430,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutModerationLogsInput = {
@@ -86795,6 +88503,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutSubmittedResourcesInput = {
@@ -86867,6 +88576,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutSubmittedResourcesInput = {
@@ -86939,6 +88649,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutSubmittedResourcesInput = {
@@ -87042,6 +88753,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutSubmittedResourcesInput = {
@@ -87114,6 +88826,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ResourceTagUpsertWithWhereUniqueWithoutResourcesInput = {
@@ -87257,6 +88970,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutTournamentResultsInput = {
@@ -87329,6 +89043,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutTournamentResultsInput = {
@@ -87532,6 +89247,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutTournamentResultsInput = {
@@ -87604,6 +89320,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentUpsertWithoutResultsInput = {
@@ -88089,6 +89806,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach2Input = {
@@ -88161,6 +89879,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach2Input = {
@@ -88238,6 +89957,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutMatchesAsCoach1Input = {
@@ -88310,6 +90030,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutMatchesAsCoach1Input = {
@@ -88415,6 +90136,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach2Input = {
@@ -88487,6 +90209,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutMatchesAsCoach1Input = {
@@ -88570,6 +90293,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutMatchesAsCoach1Input = {
@@ -88642,6 +90366,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TournamentRoundUpsertWithoutMatchesInput = {
@@ -88737,6 +90462,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWarningsReceivedInput = {
@@ -88809,6 +90535,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWarningsReceivedInput = {
@@ -88886,6 +90613,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWarningsGivenInput = {
@@ -88958,6 +90686,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWarningsGivenInput = {
@@ -89046,6 +90775,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarningsReceivedInput = {
@@ -89118,6 +90848,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutWarningsGivenInput = {
@@ -89201,6 +90932,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWarningsGivenInput = {
@@ -89273,6 +91005,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutActionCountersInput = {
@@ -89345,6 +91078,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    forumsModerated?: ForumModeratorCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutActionCountersInput = {
@@ -89417,6 +91151,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
     warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
     warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    forumsModerated?: ForumModeratorUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutActionCountersInput = {
@@ -89505,6 +91240,7 @@ export namespace Prisma {
     notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutActionCountersInput = {
@@ -89577,6 +91313,391 @@ export namespace Prisma {
     notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ForumCreateWithoutModeratorsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    allowedRoles?: string
+    isLocked?: boolean
+    isTournamentForum?: boolean
+    legacyId?: string | null
+    parentForum?: ForumCreateNestedOneWithoutSubForumsInput
+    subForums?: ForumCreateNestedManyWithoutParentForumInput
+    category?: CategoryCreateNestedOneWithoutForumsInput
+    topics?: TopicCreateNestedManyWithoutForumInput
+  }
+
+  export type ForumUncheckedCreateWithoutModeratorsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    order?: number
+    allowedRoles?: string
+    isLocked?: boolean
+    isTournamentForum?: boolean
+    categoryId?: string | null
+    parentForumId?: string | null
+    legacyId?: string | null
+    subForums?: ForumUncheckedCreateNestedManyWithoutParentForumInput
+    topics?: TopicUncheckedCreateNestedManyWithoutForumInput
+  }
+
+  export type ForumCreateOrConnectWithoutModeratorsInput = {
+    where: ForumWhereUniqueInput
+    create: XOR<ForumCreateWithoutModeratorsInput, ForumUncheckedCreateWithoutModeratorsInput>
+  }
+
+  export type UserCreateWithoutForumsModeratedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleCreateNestedManyWithoutModeratorInput
+    articles?: ArticleCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionCreateNestedManyWithoutUserInput
+    blockedBy?: BlockCreateNestedManyWithoutBlockedInput
+    blocks?: BlockCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostCreateNestedManyWithoutModeratorInput
+    posts?: PostCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceCreateNestedManyWithoutAuthorInput
+    sessions?: SessionCreateNestedManyWithoutUserInput
+    topics?: TopicCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewCreateNestedManyWithoutUserInput
+    tournaments?: TournamentCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberCreateNestedManyWithoutUserInput
+    roleConfig?: RoleConfigCreateNestedOneWithoutUsersInput
+    commissaireLigues?: LigueCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutForumsModeratedInput = {
+    id?: string
+    name?: string | null
+    email?: string | null
+    emailVerified?: Date | string | null
+    image?: string | null
+    role?: string
+    nafNumber?: string | null
+    region?: string | null
+    signature?: string | null
+    isBanned?: boolean
+    banReason?: string | null
+    bannedUntil?: Date | string | null
+    avatarFrame?: string | null
+    theme?: string
+    previousTheme?: string | null
+    equipe?: string | null
+    ligueCustom?: string | null
+    legacyId?: string | null
+    forumactifName?: string | null
+    hasFinishedOnboarding?: boolean
+    notifPm?: boolean
+    notifFollowedTopic?: boolean
+    notifNewsletter?: boolean
+    autoFollowTopics?: boolean
+    forumReadAllAt?: Date | string
+    accounts?: AccountUncheckedCreateNestedManyWithoutUserInput
+    moderatedArticles?: ArticleUncheckedCreateNestedManyWithoutModeratorInput
+    articles?: ArticleUncheckedCreateNestedManyWithoutAuthorInput
+    articleReactions?: ArticleReactionUncheckedCreateNestedManyWithoutUserInput
+    blockedBy?: BlockUncheckedCreateNestedManyWithoutBlockedInput
+    blocks?: BlockUncheckedCreateNestedManyWithoutBlockerInput
+    user2Conversations?: ConversationUncheckedCreateNestedManyWithoutUser2Input
+    user1Conversations?: ConversationUncheckedCreateNestedManyWithoutUser1Input
+    conversationParticipants?: ConversationParticipantUncheckedCreateNestedManyWithoutUserInput
+    ownedLigues?: LigueUncheckedCreateNestedManyWithoutCreatorInput
+    mentionsReceived?: MentionUncheckedCreateNestedManyWithoutMentionedUserInput
+    mentionsMade?: MentionUncheckedCreateNestedManyWithoutMentionerInput
+    moderationLogs?: ModerationLogUncheckedCreateNestedManyWithoutModeratorInput
+    reportsResolved?: ModerationReportUncheckedCreateNestedManyWithoutResolvedByInput
+    reportsMade?: ModerationReportUncheckedCreateNestedManyWithoutReporterInput
+    moderatedPosts?: PostUncheckedCreateNestedManyWithoutModeratorInput
+    posts?: PostUncheckedCreateNestedManyWithoutAuthorInput
+    postReactions?: PostReactionUncheckedCreateNestedManyWithoutUserInput
+    privateMessages?: PrivateMessageUncheckedCreateNestedManyWithoutAuthorInput
+    rankingArchives?: RankingArchiveUncheckedCreateNestedManyWithoutArchivedByInput
+    submittedResources?: ResourceUncheckedCreateNestedManyWithoutAuthorInput
+    sessions?: SessionUncheckedCreateNestedManyWithoutUserInput
+    topics?: TopicUncheckedCreateNestedManyWithoutAuthorInput
+    followedTopics?: TopicFollowUncheckedCreateNestedManyWithoutUserInput
+    topicViews?: TopicViewUncheckedCreateNestedManyWithoutUserInput
+    tournaments?: TournamentUncheckedCreateNestedManyWithoutOrganizerInput
+    matchesAsCoach2?: TournamentMatchUncheckedCreateNestedManyWithoutCoach2UserInput
+    matchesAsCoach1?: TournamentMatchUncheckedCreateNestedManyWithoutCoach1UserInput
+    mercenaryStatus?: TournamentMercenaryUncheckedCreateNestedManyWithoutUserInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedCreateNestedManyWithoutUserInput
+    tournamentResults?: TournamentResultUncheckedCreateNestedManyWithoutUserInput
+    captainTeams?: TournamentTeamUncheckedCreateNestedManyWithoutCaptainInput
+    teamMemberships?: TournamentTeamMemberUncheckedCreateNestedManyWithoutUserInput
+    commissaireLigues?: LigueUncheckedCreateNestedManyWithoutCommissairesInput
+    ligues?: LigueUncheckedCreateNestedManyWithoutMembersInput
+    commissairesTournaments?: TournamentUncheckedCreateNestedManyWithoutCommissairesInput
+    cdfValidatedTournaments?: TournamentUncheckedCreateNestedManyWithoutCdfValidatedByInput
+    deletedTopics?: TopicUncheckedCreateNestedManyWithoutDeletedByInput
+    deletedPosts?: PostUncheckedCreateNestedManyWithoutDeletedByInput
+    lastPostTopics?: TopicUncheckedCreateNestedManyWithoutLastPostAuthorInput
+    notifications?: NotificationUncheckedCreateNestedManyWithoutUserInput
+    notificationsCaused?: NotificationUncheckedCreateNestedManyWithoutActorInput
+    warningsReceived?: UserWarningUncheckedCreateNestedManyWithoutUserInput
+    warningsGiven?: UserWarningUncheckedCreateNestedManyWithoutModeratorInput
+    actionCounters?: ActionCounterUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutForumsModeratedInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutForumsModeratedInput, UserUncheckedCreateWithoutForumsModeratedInput>
+  }
+
+  export type ForumUpsertWithoutModeratorsInput = {
+    update: XOR<ForumUpdateWithoutModeratorsInput, ForumUncheckedUpdateWithoutModeratorsInput>
+    create: XOR<ForumCreateWithoutModeratorsInput, ForumUncheckedCreateWithoutModeratorsInput>
+    where?: ForumWhereInput
+  }
+
+  export type ForumUpdateToOneWithWhereWithoutModeratorsInput = {
+    where?: ForumWhereInput
+    data: XOR<ForumUpdateWithoutModeratorsInput, ForumUncheckedUpdateWithoutModeratorsInput>
+  }
+
+  export type ForumUpdateWithoutModeratorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
+    subForums?: ForumUpdateManyWithoutParentForumNestedInput
+    category?: CategoryUpdateOneWithoutForumsNestedInput
+    topics?: TopicUpdateManyWithoutForumNestedInput
+  }
+
+  export type ForumUncheckedUpdateWithoutModeratorsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    order?: IntFieldUpdateOperationsInput | number
+    allowedRoles?: StringFieldUpdateOperationsInput | string
+    isLocked?: BoolFieldUpdateOperationsInput | boolean
+    isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
+    categoryId?: NullableStringFieldUpdateOperationsInput | string | null
+    parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
+  }
+
+  export type UserUpsertWithoutForumsModeratedInput = {
+    update: XOR<UserUpdateWithoutForumsModeratedInput, UserUncheckedUpdateWithoutForumsModeratedInput>
+    create: XOR<UserCreateWithoutForumsModeratedInput, UserUncheckedCreateWithoutForumsModeratedInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutForumsModeratedInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutForumsModeratedInput, UserUncheckedUpdateWithoutForumsModeratedInput>
+  }
+
+  export type UserUpdateWithoutForumsModeratedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUpdateManyWithoutModeratorNestedInput
+    posts?: PostUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUpdateManyWithoutUserNestedInput
+    topics?: TopicUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUpdateManyWithoutUserNestedInput
+    roleConfig?: RoleConfigUpdateOneRequiredWithoutUsersNestedInput
+    commissaireLigues?: LigueUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutForumsModeratedInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    emailVerified?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    image?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: StringFieldUpdateOperationsInput | string
+    nafNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    region?: NullableStringFieldUpdateOperationsInput | string | null
+    signature?: NullableStringFieldUpdateOperationsInput | string | null
+    isBanned?: BoolFieldUpdateOperationsInput | boolean
+    banReason?: NullableStringFieldUpdateOperationsInput | string | null
+    bannedUntil?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    avatarFrame?: NullableStringFieldUpdateOperationsInput | string | null
+    theme?: StringFieldUpdateOperationsInput | string
+    previousTheme?: NullableStringFieldUpdateOperationsInput | string | null
+    equipe?: NullableStringFieldUpdateOperationsInput | string | null
+    ligueCustom?: NullableStringFieldUpdateOperationsInput | string | null
+    legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+    forumactifName?: NullableStringFieldUpdateOperationsInput | string | null
+    hasFinishedOnboarding?: BoolFieldUpdateOperationsInput | boolean
+    notifPm?: BoolFieldUpdateOperationsInput | boolean
+    notifFollowedTopic?: BoolFieldUpdateOperationsInput | boolean
+    notifNewsletter?: BoolFieldUpdateOperationsInput | boolean
+    autoFollowTopics?: BoolFieldUpdateOperationsInput | boolean
+    forumReadAllAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    accounts?: AccountUncheckedUpdateManyWithoutUserNestedInput
+    moderatedArticles?: ArticleUncheckedUpdateManyWithoutModeratorNestedInput
+    articles?: ArticleUncheckedUpdateManyWithoutAuthorNestedInput
+    articleReactions?: ArticleReactionUncheckedUpdateManyWithoutUserNestedInput
+    blockedBy?: BlockUncheckedUpdateManyWithoutBlockedNestedInput
+    blocks?: BlockUncheckedUpdateManyWithoutBlockerNestedInput
+    user2Conversations?: ConversationUncheckedUpdateManyWithoutUser2NestedInput
+    user1Conversations?: ConversationUncheckedUpdateManyWithoutUser1NestedInput
+    conversationParticipants?: ConversationParticipantUncheckedUpdateManyWithoutUserNestedInput
+    ownedLigues?: LigueUncheckedUpdateManyWithoutCreatorNestedInput
+    mentionsReceived?: MentionUncheckedUpdateManyWithoutMentionedUserNestedInput
+    mentionsMade?: MentionUncheckedUpdateManyWithoutMentionerNestedInput
+    moderationLogs?: ModerationLogUncheckedUpdateManyWithoutModeratorNestedInput
+    reportsResolved?: ModerationReportUncheckedUpdateManyWithoutResolvedByNestedInput
+    reportsMade?: ModerationReportUncheckedUpdateManyWithoutReporterNestedInput
+    moderatedPosts?: PostUncheckedUpdateManyWithoutModeratorNestedInput
+    posts?: PostUncheckedUpdateManyWithoutAuthorNestedInput
+    postReactions?: PostReactionUncheckedUpdateManyWithoutUserNestedInput
+    privateMessages?: PrivateMessageUncheckedUpdateManyWithoutAuthorNestedInput
+    rankingArchives?: RankingArchiveUncheckedUpdateManyWithoutArchivedByNestedInput
+    submittedResources?: ResourceUncheckedUpdateManyWithoutAuthorNestedInput
+    sessions?: SessionUncheckedUpdateManyWithoutUserNestedInput
+    topics?: TopicUncheckedUpdateManyWithoutAuthorNestedInput
+    followedTopics?: TopicFollowUncheckedUpdateManyWithoutUserNestedInput
+    topicViews?: TopicViewUncheckedUpdateManyWithoutUserNestedInput
+    tournaments?: TournamentUncheckedUpdateManyWithoutOrganizerNestedInput
+    matchesAsCoach2?: TournamentMatchUncheckedUpdateManyWithoutCoach2UserNestedInput
+    matchesAsCoach1?: TournamentMatchUncheckedUpdateManyWithoutCoach1UserNestedInput
+    mercenaryStatus?: TournamentMercenaryUncheckedUpdateManyWithoutUserNestedInput
+    tournamentRegistrations?: TournamentRegistrationUncheckedUpdateManyWithoutUserNestedInput
+    tournamentResults?: TournamentResultUncheckedUpdateManyWithoutUserNestedInput
+    captainTeams?: TournamentTeamUncheckedUpdateManyWithoutCaptainNestedInput
+    teamMemberships?: TournamentTeamMemberUncheckedUpdateManyWithoutUserNestedInput
+    commissaireLigues?: LigueUncheckedUpdateManyWithoutCommissairesNestedInput
+    ligues?: LigueUncheckedUpdateManyWithoutMembersNestedInput
+    commissairesTournaments?: TournamentUncheckedUpdateManyWithoutCommissairesNestedInput
+    cdfValidatedTournaments?: TournamentUncheckedUpdateManyWithoutCdfValidatedByNestedInput
+    deletedTopics?: TopicUncheckedUpdateManyWithoutDeletedByNestedInput
+    deletedPosts?: PostUncheckedUpdateManyWithoutDeletedByNestedInput
+    lastPostTopics?: TopicUncheckedUpdateManyWithoutLastPostAuthorNestedInput
+    notifications?: NotificationUncheckedUpdateManyWithoutUserNestedInput
+    notificationsCaused?: NotificationUncheckedUpdateManyWithoutActorNestedInput
+    warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
+    warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
+    actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AccountCreateManyUserInput = {
@@ -90114,6 +92235,11 @@ export namespace Prisma {
     action: string
     windowStart: Date | string
     count?: number
+  }
+
+  export type ForumModeratorCreateManyUserInput = {
+    forumId: string
+    createdAt?: Date | string
   }
 
   export type AccountUpdateWithoutUserInput = {
@@ -92114,6 +94240,21 @@ export namespace Prisma {
     count?: IntFieldUpdateOperationsInput | number
   }
 
+  export type ForumModeratorUpdateWithoutUserInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    forum?: ForumUpdateOneRequiredWithoutModeratorsNestedInput
+  }
+
+  export type ForumModeratorUncheckedUpdateWithoutUserInput = {
+    forumId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ForumModeratorUncheckedUpdateManyWithoutUserInput = {
+    forumId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TournamentMercenaryCreateManyTournamentInput = {
     id?: string
     userId: string
@@ -92376,6 +94517,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissairesTournamentsInput = {
@@ -92448,6 +94590,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissairesTournamentsInput = {
@@ -92501,6 +94644,7 @@ export namespace Prisma {
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     parentForum?: ForumUpdateOneWithoutSubForumsNestedInput
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUpdateManyWithoutForumNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
   }
 
@@ -92515,6 +94659,7 @@ export namespace Prisma {
     parentForumId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUncheckedUpdateManyWithoutForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
 
@@ -92540,6 +94685,11 @@ export namespace Prisma {
     isTournamentForum?: boolean
     categoryId?: string | null
     legacyId?: string | null
+  }
+
+  export type ForumModeratorCreateManyForumInput = {
+    userId: string
+    createdAt?: Date | string
   }
 
   export type TopicCreateManyForumInput = {
@@ -92573,6 +94723,7 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUpdateManyWithoutForumNestedInput
     category?: CategoryUpdateOneWithoutForumsNestedInput
     topics?: TopicUpdateManyWithoutForumNestedInput
   }
@@ -92588,6 +94739,7 @@ export namespace Prisma {
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
     subForums?: ForumUncheckedUpdateManyWithoutParentForumNestedInput
+    moderators?: ForumModeratorUncheckedUpdateManyWithoutForumNestedInput
     topics?: TopicUncheckedUpdateManyWithoutForumNestedInput
   }
 
@@ -92601,6 +94753,21 @@ export namespace Prisma {
     isTournamentForum?: BoolFieldUpdateOperationsInput | boolean
     categoryId?: NullableStringFieldUpdateOperationsInput | string | null
     legacyId?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ForumModeratorUpdateWithoutForumInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutForumsModeratedNestedInput
+  }
+
+  export type ForumModeratorUncheckedUpdateWithoutForumInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ForumModeratorUncheckedUpdateManyWithoutForumInput = {
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type TopicUpdateWithoutForumInput = {
@@ -93141,6 +95308,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutRoleConfigInput = {
@@ -93213,6 +95381,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutRoleConfigInput = {
@@ -93688,6 +95857,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCommissaireLiguesInput = {
@@ -93760,6 +95930,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCommissaireLiguesInput = {
@@ -93860,6 +96031,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutLiguesInput = {
@@ -93932,6 +96104,7 @@ export namespace Prisma {
     warningsReceived?: UserWarningUncheckedUpdateManyWithoutUserNestedInput
     warningsGiven?: UserWarningUncheckedUpdateManyWithoutModeratorNestedInput
     actionCounters?: ActionCounterUncheckedUpdateManyWithoutUserNestedInput
+    forumsModerated?: ForumModeratorUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutLiguesInput = {

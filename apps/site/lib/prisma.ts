@@ -20,7 +20,7 @@ const createPublicClient = () =>
     omit: USER_PRIVATE_FIELDS,
   });
 
-const CLIENT_VERSION = "v30";
+const CLIENT_VERSION = "v31";
 const globalForPrisma = global as unknown as {
   prisma?: ReturnType<typeof createPublicClient>;
   prismaWithEmail?: PrismaClient;

@@ -28,7 +28,9 @@ export type ModerationAction =
   | "REFERENCE_DATA_CREATED" | "REFERENCE_DATA_UPDATED" | "REFERENCE_DATA_DELETED"
   | "SITE_SETTING_UPDATED" | "MEDIA_CHANNELS_UPDATED" | "MASS_MAIL_SENT" | "LOGS_PURGED"
   // Carte 222 : avertissement et bannissement temporaire (la levée automatique est notée USER_UNBANNED)
-  | "USER_WARNED" | "USER_TEMP_BANNED";
+  | "USER_WARNED" | "USER_TEMP_BANNED"
+  // Carte 225 : modérateurs propres à un forum
+  | "FORUM_MODERATOR_ADDED" | "FORUM_MODERATOR_REMOVED";
 
 /** Durée de conservation du journal, en mois (carte 221 : fixée par le serveur, jamais par l'appelant). */
 export const LOG_RETENTION_MONTHS = 3;

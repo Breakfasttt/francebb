@@ -1,6 +1,7 @@
 import { canReplyToTopic } from "@/lib/forumRights";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
+import { forumModerationScope } from "@/lib/forumModerators";
 import { prisma } from "@/lib/prisma";
 import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum } from "@/lib/forumAccess";
@@ -60,7 +61,7 @@ export default async function ReplyPage({
   // Carte 169 : un sujet archivé est fermé de la même façon.
   // Même règle que le bouton « Répondre » et que l'action serveur (lib/forumRights.ts, carte 200)
   const topicState = { isLocked: topic.isLocked, isArchived: topic.isArchived, forumIsLocked: topic.forum.isLocked, isDeleted: topic.isDeleted };
-  if (!canReplyToTopic({ id: session.user.id, isModerator: isModerator(session.user.role) }, topicState)) {
+  if (!canReplyToTopic({ id: session.user.id, isModerator: (await forumModerationScope(session.user.id, session.user.role))(topic.forumId) }, topicState)) {
     redirect(`/forum/topic/${id}`);
   }
 

@@ -29,8 +29,10 @@ import { getAllRoles } from "../actions";
 import {
   createCategory, createForum, deleteCategory, deleteForum,
   getForumStructure, reorderCategories, reorderForums,
-  updateCategory, updateForum
+  updateCategory, updateForum,
+  addForumModerator, getForumModerators, removeForumModerator
 } from "../actionsStructure";
+import UserSearch from "@/common/components/UserSearch/UserSearch";
 
 import {
   closestCenter, DndContext, DragEndEvent, DragOverlay,
@@ -181,6 +183,8 @@ export default function StructureTab() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [editingItem, setEditingItem] = useState<StructureItem | null>(null);
   const [editingType, setEditingType] = useState<"Category" | "Forum">("Category");
+  // Modérateurs propres au forum ouvert (carte 225) ; enregistrés aussitôt, sans attendre « Enregistrer »
+  const [forumModerators, setForumModerators] = useState<Awaited<ReturnType<typeof getForumModerators>>>([]);
   const [parentTargetId, setParentTargetId] = useState<string | null>(null);
 
   const [formName, setFormName] = useState("");
@@ -404,7 +408,34 @@ export default function StructureTab() {
     setFormName(item.name); setFormDesc(item.description || "");
     setFormAllowedRoles(item.allowedRoles || "ALL");
     setFormIsTournament(isForum ? item.isTournamentForum : false);
+    setForumModerators([]);
+    if (isForum) void getForumModerators(item.id).then(setForumModerators);
     setIsPanelOpen(true);
+  };
+
+  const addModerator = (user: { id: string; name: string | null }) => {
+    if (!editingItem) return;
+    startTransition(async () => {
+      const res = await addForumModerator(editingItem.id, user.id);
+      if (!res.success) {
+        toast.error(res.error || "Le modérateur n'a pas été ajouté.");
+        return;
+      }
+      setForumModerators(await getForumModerators(editingItem.id));
+      toast.success(`${user.name ?? "Le membre"} modère maintenant ce forum.`);
+    });
+  };
+
+  const removeModerator = (userId: string) => {
+    if (!editingItem) return;
+    startTransition(async () => {
+      const res = await removeForumModerator(editingItem.id, userId);
+      if (!res.success) {
+        toast.error(res.error || "Le modérateur n'a pas été retiré.");
+        return;
+      }
+      setForumModerators(await getForumModerators(editingItem.id));
+    });
   };
 
   const handleSave = () => {
@@ -598,6 +629,21 @@ export default function StructureTab() {
                 {availableDbRoles.map((r) => (<option key={r.name} value={r.name}>{r.label} et supérieurs</option>))}
               </Select>
             </Field>
+
+            {editingType === "Forum" && editingItem && (
+              <div className="flex flex-col gap-2">
+                <p id="structure-moderators-label" className="m-0 text-sm font-semibold text-bb-text">Modérateurs de ce forum</p>
+                <p className="m-0 text-sm text-bb-text-muted">
+                  Ils modèrent ce forum et ses sous-forums, sans être modérateurs du site. Ajout et retrait enregistrés aussitôt.
+                </p>
+                <UserSearch
+                  selectedUsers={forumModerators}
+                  onSelect={addModerator}
+                  onRemove={removeModerator}
+                  placeholder="Ajouter un membre…"
+                />
+              </div>
+            )}
 
             <div className="flex flex-col gap-2 border-t border-bb-border pt-4">
               <Button type="button" variant="primary" size="tap" className="w-full" onClick={handleSave} disabled={isPending}>

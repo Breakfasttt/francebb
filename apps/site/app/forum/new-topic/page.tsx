@@ -3,6 +3,7 @@ import { ChevronRight } from "lucide-react";
 import { Card } from "@bbfrance/ui";
 import { getActiveSession } from "@/lib/authGuard";
 import { isModerator } from "@/lib/roles";
+import { canModerateForum, forumModerationScope } from "@/lib/forumModerators";
 import { notFound, redirect } from "next/navigation";
 import { getForumAccess, canAccessForum, forumAccessWhere } from "@/lib/forumAccess";
 import { prisma } from "@/lib/prisma";
@@ -42,7 +43,8 @@ export default async function NewTopicPage({ searchParams }: { searchParams: Pro
     redirect(`/auth/login?callbackUrl=${encodeURIComponent(`/forum/new-topic?forumId=${forumId}`)}`);
   }
 
-  const userCanStick = isModerator(session.user.role);
+  // Modération du site, ou modérateur de ce forum (carte 225)
+  const userCanStick = await canModerateForum(session.user.id, session.user.role, forumId);
 
   // Carte 152 : même règle que createTopic, un forum verrouillé n'accepte de nouveaux sujets que des modérateurs.
   // Un membre ordinaire est renvoyé vers le forum avant d'écrire, au lieu d'être refusé à l'envoi.
@@ -81,15 +83,17 @@ async function ForumChoice() {
   if (!session?.user?.id) redirect(`/auth/login?callbackUrl=${encodeURIComponent("/forum/new-topic")}`);
 
   const { roles } = await getForumAccess();
-  const canModerate = isModerator(session.user.role);
-  const [categories, forums] = await Promise.all([
+  // Un forum verrouillé n'est proposé qu'à qui peut le modérer (modération du site ou du forum, carte 225)
+  const moderates = await forumModerationScope(session.user.id, session.user.role);
+  const [categories, allForums] = await Promise.all([
     prisma.category.findMany({ where: { allowedRoles: { in: roles } }, orderBy: { order: "asc" }, select: { id: true, name: true } }),
     prisma.forum.findMany({
-      where: { ...forumAccessWhere(roles), ...(canModerate ? {} : { isLocked: false }) },
+      where: forumAccessWhere(roles),
       orderBy: { order: "asc" },
-      select: { id: true, name: true, description: true, categoryId: true, parentForumId: true },
+      select: { id: true, name: true, description: true, categoryId: true, parentForumId: true, isLocked: true },
     }),
   ]);
+  const forums = allForums.filter((forum) => !forum.isLocked || moderates(forum.id));
 
   const rootsOf = (categoryId: string) => forums.filter((forum) => forum.categoryId === categoryId && !forum.parentForumId);
   const childrenOf = (parentId: string) => forums.filter((forum) => forum.parentForumId === parentId);

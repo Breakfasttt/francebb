@@ -77,6 +77,8 @@ Personne, pas même la modération, ne lit les messages privés des autres. Ils 
 | Signaler | non | oui, contenu visible, pas deux fois | non | oui | oui | `reportInputRefusal`, `canSeeReportTarget` |
 | Voir et traiter les signalements, le journal | non | non | non | oui | oui | `isModerator` |
 | Bannir / débannir | non | non | non | < soi, jamais soi-même ni un compte technique, tracé ; durée obligatoire (1, 7, 30 jours ou définitif) ; bannir ferme ses signalements | idem (S : tous sauf soi et comptes techniques) | `canBanMember` dans `toggleBanUser` (cartes 221, 222) |
+| Inscrire ou retirer le modérateur d'un forum | non | non | non | non | oui, tracé (`FORUM_MODERATOR_ADDED`, `FORUM_MODERATOR_REMOVED`) | `addForumModerator`, `removeForumModerator` (carte 225) |
+| Modérer les messages et sujets d'un forum | non | seulement s'il est inscrit modérateur de ce forum ou d'un forum parent | non | oui, partout | idem | `canModerateForum` (carte 225) |
 | Avertir un membre | non | non | non | < soi, jamais soi-même ni un compte technique, tracé, motif obligatoire | idem | `canBanMember` dans `warnUser` (carte 222) |
 | Signaler une conversation privée | non | participant présent ; la modération n'en voit que les participants | non | idem | idem | `canSeeReportTarget` (carte 223) |
 | Inviter un modérateur dans une conversation | non | participant présent | non | idem | idem | `inviteModerator` (carte 223) |
