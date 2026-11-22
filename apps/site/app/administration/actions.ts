@@ -385,11 +385,9 @@ export async function updateHowToPlaySettings(settings: Record<string, string>) 
 }
 
 /**
- * Envoie une annonce par e-mail aux coachs non bannis qui acceptent la préférence « Newsletter et annonces »
- * (`notifNewsletter`, carte 167). Le texte est neutralisé avant d'être inséré dans l'e-mail. Seuls les e-mails
- * réellement partis sont comptés dans `count` : `sendMail` renvoie `{ success: false }` en cas d'échec, sans erreur.
+ * Membres qui reçoivent une annonce : e-mail connu, non bannis, préférence « Newsletter et annonces » cochée
+ * (`notifNewsletter`, carte 167). Le compte affiché et l'envoi utilisent ce même filtre.
  */
-/** Membres qui reçoivent une annonce : e-mail connu, non bannis, préférence « Newsletter et annonces » cochée. */
 const ANNOUNCEMENT_RECIPIENTS_WHERE = { email: { not: null }, isBanned: false, notifNewsletter: true } as const;
 
 async function adminUserId(): Promise<string | null> {
@@ -417,41 +415,47 @@ export async function sendTestAnnouncement(subject: string, content: string) {
   return result.success ? { success: true } : { success: false, error: "L'essai n'est pas parti : vérifie la configuration du serveur de mail." };
 }
 
-export async function sendGlobalInfoMail(subject: string, content: string) {
-  const session = await getActiveSession();
-  const userRole = (session?.user as any)?.role;
-  if (!userRole || getRolePower(userRole) < ROLE_POWER.ADMIN) {
-    return { success: false, error: "Accès refusé." };
-  }
+/** Un lot compte 20 e-mails : environ 10 secondes avec l'attente entre deux envois, loin de la durée maximale d'une fonction Vercel. */
+const ANNOUNCEMENT_BATCH_SIZE = 20;
+/** Attente entre deux e-mails, pour le débit du serveur SMTP. Aucune avec le faux envoi des tests. */
+const ANNOUNCEMENT_DELAY_MS = 500;
 
-  if (!subject || !content) {
-    return { success: false, error: "Sujet et contenu requis." };
-  }
+/**
+ * Envoie un lot de l'annonce (carte 145) : les destinataires sont pris par identifiant croissant, après `afterId`. L'écran
+ * appelle cette action lot après lot et affiche l'avancement ; aucun appel ne dure plus de quelques secondes. Le dernier
+ * lot (`done`) écrit le journal de modération, avec le nombre d'e-mails partis depuis `startedAt` lu dans `MailLog`.
+ */
+export async function sendAnnouncementBatch(subject: string, content: string, afterId: string | null, startedAt: string) {
+  const userId = await adminUserId();
+  if (!userId) return { success: false as const, error: "Accès refusé." };
+  if (!subject.trim() || !content.trim()) return { success: false as const, error: "Indique l'objet et le texte du mail." };
+  const since = new Date(startedAt);
+  if (Number.isNaN(since.getTime())) return { success: false as const, error: "Date de début de l'envoi illisible." };
 
   const users = await prismaWithEmail.user.findMany({
-    where: ANNOUNCEMENT_RECIPIENTS_WHERE,
-    select: { email: true }
+    where: { ...ANNOUNCEMENT_RECIPIENTS_WHERE, ...(afterId ? { id: { gt: afterId } } : {}) },
+    select: { id: true, email: true },
+    orderBy: { id: "asc" },
+    take: ANNOUNCEMENT_BATCH_SIZE,
   });
 
-  const { sendMail, getAnnouncementTemplate } = await import("@/lib/mail");
+  const { sendMail, getAnnouncementTemplate, isFakeMail } = await import("@/lib/mail");
   const html = getAnnouncementTemplate(content);
+  const fullSubject = `[BBFrance Info] ${subject}`;
 
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
-  let successCount = 0;
-  for (const user of users) {
-    const result = await sendMail({
-      to: user.email!,
-      subject: `[BBFrance Info] ${subject}`,
-      html
-    });
-    if (result.success) successCount++;
-    else console.error(`Erreur mail à ${user.email}:`, result.error);
-    // Attendre 500ms entre chaque envoi pour le débit SMTP
-    await sleep(500);
+  let sent = 0;
+  for (const [index, user] of users.entries()) {
+    if (index > 0 && !isFakeMail) await new Promise((resolve) => setTimeout(resolve, ANNOUNCEMENT_DELAY_MS));
+    const result = await sendMail({ to: user.email!, subject: fullSubject, html });
+    if (result.success) sent++;
+    else console.error(`Annonce : e-mail non parti pour le membre ${user.id}`, result.error);
   }
 
-  await logModerationAction(session!.user.id, "MASS_MAIL_SENT", undefined, "SYSTEM", `« ${subject} » : ${successCount}/${users.length} envoyés`);
+  const done = users.length < ANNOUNCEMENT_BATCH_SIZE;
+  if (done) {
+    const total = await prisma.mailLog.count({ where: { subject: fullSubject, sentAt: { gte: since } } });
+    await logModerationAction(userId, "MASS_MAIL_SENT", undefined, "SYSTEM", `« ${subject} » : ${total} e-mail${total > 1 ? "s" : ""} parti${total > 1 ? "s" : ""}`);
+  }
 
-  return { success: true, count: successCount, total: users.length };
+  return { success: true as const, sent, failed: users.length - sent, lastId: users.at(-1)?.id ?? afterId, done };
 }

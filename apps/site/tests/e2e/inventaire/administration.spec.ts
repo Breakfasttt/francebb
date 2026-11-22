@@ -45,6 +45,9 @@ const SA = { id: "e2e_invadm_sa", name: "Inv Adm Super Admin" };
 const MODO = { id: "e2e_invadm_modo", name: "Inv Adm Modo" };
 const TARGET = { id: "e2e_invadm_target", name: "Inv Adm Cible" };
 const USER_IDS = [ADMIN.id, SA.id, MODO.id, TARGET.id];
+/** Destinataires ajoutés pour l'envoi d'une annonce : 21, pour que l'envoi demande deux lots de 20 (carte 145). */
+const RECIPIENT_PREFIX = "e2e_invadm_rcpt_";
+const ANNOUNCEMENT_SUBJECT = "Inv Adm annonce envoyée";
 
 const ROLE_A = { name: "INV_ADM_A", label: "Inv Adm Rôle A" };
 const ROLE_B = { name: "INV_ADM_B", label: "Inv Adm Rôle B" };
@@ -74,7 +77,8 @@ async function cleanUp() {
     await prisma.category.deleteMany({ where: { name: CATEGORY } });
     await prisma.referenceData.deleteMany({ where: { group: REF.group, key: REF.key } });
     await prisma.moderationLog.deleteMany({ where: { OR: [{ moderatorId: { in: USER_IDS } }, { targetId: { in: USER_IDS } }] } });
-    await prisma.user.deleteMany({ where: { id: { in: USER_IDS } } });
+    await prisma.user.deleteMany({ where: { OR: [{ id: { in: USER_IDS } }, { id: { startsWith: RECIPIENT_PREFIX } }] } });
+    await prisma.mailLog.deleteMany({ where: { subject: `[BBFrance Info] ${ANNOUNCEMENT_SUBJECT}` } });
     await prisma.roleConfig.deleteMany({ where: { name: { in: [ROLE_A.name, ROLE_B.name] } } });
   });
 }
@@ -403,5 +407,36 @@ test("info-mails : objet et message, puis confirmation « Oui, diffuser » (annu
   await expect(dialog.getByRole("button", { name: /^(Envoyer à \d[\d\s]* coachs?|Oui, diffuser)$/ }).filter({ visible: true }).first()).toBeVisible();
   await dialog.getByRole("button", { name: "Annuler" }).filter({ visible: true }).first().click();
   await expect(dialog).toBeHidden();
+});
+
+test("info-mails : l'annonce part par lots, avec l'avancement, jusqu'à « Diffusion terminée » (faux envoi, carte 145)", async ({ page }) => {
+  // E2E_FAKE_MAIL=1 (playwright.config.ts) : aucun e-mail ne quitte le serveur, mais chacun est compté dans MailLog
+  const expected = await db(async (prisma) => {
+    await prisma.user.createMany({
+      data: Array.from({ length: 21 }, (_, n) => ({
+        id: `${RECIPIENT_PREFIX}${String(n).padStart(2, "0")}`,
+        name: `Inv Adm Destinataire ${n}`,
+        email: `invadm-rcpt-${n}@e2e.test`,
+        hasFinishedOnboarding: true,
+      })),
+    });
+    return prisma.user.count({ where: { email: { not: null }, isBanned: false, notifNewsletter: true } });
+  });
+
+  await loginAs(page, ADMIN.id);
+  await page.goto("/administration?tab=info-mails", { waitUntil: "networkidle" });
+  await page.getByRole("textbox", { name: "Objet du mail" }).fill(ANNOUNCEMENT_SUBJECT);
+  await page.getByRole("textbox", { name: "Texte du mail" }).fill("Inv Adm [b]annonce[/b]");
+  await stopTyping(page);
+  await page.getByRole("button", { name: /^Diffuser/ }).click();
+  const label = `Envoyer à ${expected.toLocaleString("fr-FR")} coachs`;
+  await page.getByRole("dialog").getByRole("button", { name: label }).filter({ visible: true }).first().click();
+
+  await expect(page.getByText("Diffusion terminée", { exact: true })).toBeVisible({ timeout: 60_000 });
+  await expect(page.getByText(`${expected} coachs sur ${expected}`)).toBeVisible();
+  await expectPoll(() => db((prisma) => prisma.mailLog.count({ where: { subject: `[BBFrance Info] ${ANNOUNCEMENT_SUBJECT}` } }))).toBe(expected);
+  await expectPoll(() =>
+    db((prisma) => prisma.moderationLog.count({ where: { moderatorId: ADMIN.id, action: "MASS_MAIL_SENT", details: { contains: ANNOUNCEMENT_SUBJECT } } })),
+  ).toBe(1);
 });
 

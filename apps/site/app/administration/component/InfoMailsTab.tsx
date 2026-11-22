@@ -4,14 +4,15 @@
  * Onglet « Annonces par e-mail » de l'administration (refonte, carte 099) : envoyer une annonce aux coachs non bannis
  * qui acceptent la préférence « Newsletter et annonces » de leur profil (carte 167). L'envoi est confirmé dans une
  * fenêtre qui donne le vrai nombre de destinataires (carte 221), puis l'écran « Diffusion terminée » donne le nombre
- * d'e-mails réellement partis. Le texte accepte gras, italique et liens (lib/announcementMail.ts) ; « M'envoyer un
+ * d'e-mails réellement partis. L'envoi se fait par lots de 20 (carte 145) : l'écran les enchaîne et affiche l'avancement,
+ * pour qu'aucun appel au serveur ne dépasse la durée maximale d'une fonction Vercel. Le texte accepte gras, italique et liens (lib/announcementMail.ts) ; « M'envoyer un
  * essai » l'envoie d'abord à l'admin.
  */
 import { useState, useTransition } from "react";
 import { AlertTriangle, CheckCircle2, Loader2, Send } from "lucide-react";
 import { Button, Card, CardBody, CardHeader, CardTitle, ConfirmDialog, EmptyState, Field, Input, Textarea, toast } from "@bbfrance/ui";
 import { ANNOUNCEMENT_FORMAT_HELP } from "@/lib/announcementMail";
-import { countAnnouncementRecipients, sendGlobalInfoMail, sendTestAnnouncement } from "../actions";
+import { countAnnouncementRecipients, sendAnnouncementBatch, sendTestAnnouncement } from "../actions";
 
 export default function InfoMailsTab() {
   const [isPending, startTransition] = useTransition();
@@ -22,7 +23,9 @@ export default function InfoMailsTab() {
   const [showConfirm, setShowConfirm] = useState(false);
   const [recipients, setRecipients] = useState<number | null>(null);
   const [isTesting, startTest] = useTransition();
-  const [result, setResult] = useState<{ success: boolean; count: number; total: number } | null>(null);
+  const [result, setResult] = useState<{ count: number; total: number } | null>(null);
+  // Avancement de l'envoi en cours : e-mails traités (partis ou non) sur le nombre annoncé dans la confirmation
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
 
   const checkFields = () => {
     const nextErrors = {
@@ -55,19 +58,34 @@ export default function InfoMailsTab() {
 
   const confirmSend = () => {
     setShowConfirm(false);
+    const total = recipients ?? 0;
     startTransition(async () => {
+      const startedAt = new Date().toISOString();
+      let afterId: string | null = null;
+      let sent = 0;
+      let handled = 0;
+      setProgress({ done: 0, total });
       try {
-        const res = await sendGlobalInfoMail(subject, content);
-        if (res.success) {
-          setResult({ success: true, count: res.count || 0, total: res.total || 0 });
-          toast.success(`Annonce envoyée à ${res.count} coachs.`);
-          setSubject("");
-          setContent("");
-        } else {
-          toast.error(res.error || "L'annonce n'est pas partie.");
+        for (;;) {
+          const res = await sendAnnouncementBatch(subject, content, afterId, startedAt);
+          if (!res.success) {
+            toast.error(sent ? `${res.error} ${sent} e-mails étaient déjà partis.` : res.error);
+            return;
+          }
+          sent += res.sent;
+          handled += res.sent + res.failed;
+          afterId = res.lastId;
+          setProgress({ done: handled, total: Math.max(total, handled) });
+          if (res.done) break;
         }
-      } catch (e: unknown) {
-        toast.error(e instanceof Error ? e.message : "L'annonce n'est pas partie. Réessaie dans un moment.");
+        setResult({ count: sent, total: handled });
+        toast.success(`Annonce envoyée à ${sent} coach${sent > 1 ? "s" : ""}.`);
+        setSubject("");
+        setContent("");
+      } catch {
+        toast.error(`L'envoi s'est arrêté après ${sent} e-mail${sent > 1 ? "s" : ""}. Regarde le journal de modération avant de relancer.`);
+      } finally {
+        setProgress(null);
       }
     });
   };
@@ -144,6 +162,16 @@ export default function InfoMailsTab() {
             {isPending ? "Diffusion en cours…" : "Diffuser aux coachs"}
           </Button>
         </div>
+
+        {progress && (
+          <div role="status" className="flex flex-col gap-2">
+            <p className="m-0 text-bb-text">
+              Envoi en cours : <strong>{progress.done.toLocaleString("fr-FR")} / {progress.total.toLocaleString("fr-FR")}</strong>.
+              Garde cette page ouverte jusqu&apos;à la fin.
+            </p>
+            <progress className="h-2 w-full accent-bb-accent" max={Math.max(progress.total, 1)} value={progress.done} />
+          </div>
+        )}
       </CardBody>
 
       <ConfirmDialog

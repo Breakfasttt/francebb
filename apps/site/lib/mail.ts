@@ -16,15 +16,23 @@ export { escapeHtml };
 /** Durée de conservation du journal des emails envoyés : 6 mois (registre RGPD, carte 126). */
 const MAIL_LOG_RETENTION_MS = 183 * 24 * 60 * 60 * 1000;
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: Number(process.env.SMTP_PORT) === 465, // true pour le port 465, false pour les autres
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASSWORD,
-  },
-});
+/**
+ * Faux envoi pour les tests de bout en bout (carte 145) : avec `E2E_FAKE_MAIL=1`, en développement seulement, les e-mails
+ * ne quittent pas le serveur (transport JSON de Nodemailer) mais restent comptés dans le journal `MailLog`.
+ */
+export const isFakeMail = process.env.NODE_ENV === "development" && process.env.E2E_FAKE_MAIL === "1";
+
+const transporter = isFakeMail
+  ? nodemailer.createTransport({ jsonTransport: true })
+  : nodemailer.createTransport({
+      host: process.env.SMTP_HOST,
+      port: Number(process.env.SMTP_PORT),
+      secure: Number(process.env.SMTP_PORT) === 465, // true pour le port 465, false pour les autres
+      auth: {
+        user: process.env.SMTP_USER,
+        pass: process.env.SMTP_PASSWORD,
+      },
+    });
 
 interface SendMailOptions {
   to: string;

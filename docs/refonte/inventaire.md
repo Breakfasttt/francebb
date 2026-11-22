@@ -354,7 +354,7 @@ Fichiers actuels : `apps/site/app/forum/**`, actions serveur dans `app/forum/act
 - [x] [admin] `structure` : catégories, forums et sous-forums : créer, modifier, supprimer, indenter ou désindenter, rôle minimum d'accès, glisser-déposer. *Glisser-déposer vérifié au clavier sur des forums ; « changer de catégorie » n'est pas vérifié par le test.*
 - [x] [admin] `reference` : données de référence (clé, libellé, groupe, ordre) : créer, éditer, supprimer.
 - [x] [admin] `howtoplay` : textes des 6 sections de `/jouer`.
-- [ ] [admin] `info-mails` : objet et message BBCode, confirmation « Oui, diffuser », écran « Diffusion terminée ». *Carte 099 : objet, message et fenêtre « Oui, diffuser » vérifiés ; l'envoi et l'écran « Diffusion terminée » ne le sont pas, car le test écrirait à tous les membres de la base de test. Ligne laissée non cochée.*
+- [x] [admin] `info-mails` : objet et message BBCode, confirmation « Oui, diffuser », écran « Diffusion terminée ». *Carte 145 : envoi complet vérifié par lots avec le faux envoi (`E2E_FAKE_MAIL`).*
 - [x] [SA] `reset` : remise à zéro, protégée par la saisie de « JE COMPRENDS LES RISQUES ». *Vérifié : onglet absent pour un administrateur, bouton désactivé tant que les cases ne sont pas cochées et que la phrase n'est pas exacte. La remise à zéro n'est jamais déclenchée par le test.*
 
 ---
