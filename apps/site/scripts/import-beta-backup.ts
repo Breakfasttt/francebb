@@ -16,8 +16,15 @@
  * - Quand une ligne existe déjà sous la même clé naturelle (le nom d'un rôle, le groupe et la clé d'une donnée de
  *   référence…) mais avec un autre identifiant, la version déjà en base est gardée
  *   (en général celle de firstSetup) et la ligne de la sauvegarde est comptée comme ignorée.
- * - Les tables qui ne sont pas reprises (messages privés, forum, tournoi, modération, sessions…) ne
- *   sont pas lues : le résumé indique seulement leur nombre de lignes.
+ * - Réglages du site (SiteSetting) et données de référence (ReferenceData) ne sont PAS repris (23/11/2026) : la base
+ *   garde exactement ceux de firstSetup (lien Discord, chaînes vidéo, textes du guide, listes, championnats).
+ * - Forum et tournois repris depuis le 23/11/2026 : sujets, messages, réactions, mentions, sujets suivis, tournois et
+ *   inscriptions. Chaque sujet va dans le forum du même nom créé par firstSetup (même structure que la bêta). Un auteur
+ *   non repris est remplacé par le compte « Système » (firstSetup), pour ne perdre aucun message. Les anciennes cases
+ *   isNAF… isTSC d'un tournoi deviennent sa liste de championnats (carte 227). Les états « lu / non lu » (TopicView) ne
+ *   sont pas repris : les anciens sujets apparaissent comme lus.
+ * - Les tables qui ne sont pas reprises (messages privés, modération, sessions…) ne sont pas lues : le résumé
+ *   indique seulement leur nombre de lignes.
  * - Les schémas BBScheme (table BBSchemeState) ne sont plus repris ici depuis la carte 179 : ils vont dans la base de
  *   l'application BBScheme, par le script apps/bbscheme/scripts/import-beta-backup.ts.
  * - Les données du quiz (questions, parties, et les scores rangés sur la fiche des membres : colonnes quizTotalScore,
@@ -181,10 +188,17 @@ function keepExisting(table: TableStats, existing: object, data: object) {
 
 /** Tables lues et reprises ; toutes les autres tables de la sauvegarde sont ignorées. */
 const IMPORTED_TABLES = [
-  "RoleConfig", "SiteSetting", "ReferenceData", "User", "Account", "Ligue", "_LigueMembers", "_LigueCommissaires",
+  "RoleConfig", "User", "Account", "Ligue", "_LigueMembers", "_LigueCommissaires",
   "ResourceTag", "Resource", "_ResourceToResourceTag", "ArticleTag", "Article", "_ArticleToArticleTag",
   "ArticleReaction", "RankingArchive",
+  "Tournament", "_TournamentCommissaires", "Topic", "Post", "PostReaction", "Mention", "TopicFollow", "TournamentRegistration",
 ];
+
+/** Compte créé par firstSetup, auteur de remplacement d'un sujet, d'un message ou d'un tournoi dont l'auteur manque. */
+const SYSTEM_USER_ID = "system";
+
+/** Anciennes cases de championnat de la bêta (structure 0_init) et leur clé dans la liste `championships`. */
+const BETA_CHAMPIONSHIP_FLAGS: [string, string][] = [["isNAF", "NAF"], ["isCDF", "CDF"], ["isCGO", "CGO"], ["isTGE", "TGE"], ["isTSC", "TSC"]];
 
 async function main() {
   const backupPath = process.argv[2];
@@ -221,41 +235,7 @@ async function main() {
     }
     const knownRoles = new Set((await prisma.roleConfig.findMany({ select: { name: true } })).map((r) => r.name));
 
-    // Réglages du site (textes du guide du débutant) : la version de la bêta, modifiée par l'administration, l'emporte.
-    const settings = statsFor("SiteSetting");
-    for (const row of rows("SiteSetting")) {
-      settings.read++;
-      const key = text(row, "key");
-      const data = { value: text(row, "value") };
-      await upsertById(
-        settings,
-        await prisma.siteSetting.findUnique({ where: { key } }),
-        data,
-        () => prisma.siteSetting.create({ data: { key, ...data } }),
-        () => prisma.siteSetting.update({ where: { key }, data }),
-      );
-    }
-
-    // Données de référence : clé naturelle = groupe + clé ; la version de firstSetup est gardée.
-    const references = statsFor("ReferenceData");
-    for (const row of rows("ReferenceData")) {
-      references.read++;
-      const id = text(row, "id");
-      const naturalKey = { group: text(row, "group"), key: text(row, "key") };
-      const data = { ...naturalKey, label: text(row, "label"), order: int(row, "order"), isActive: bool(row, "isActive") };
-      const sameKey = await prisma.referenceData.findUnique({ where: { group_key: naturalKey } });
-      if (sameKey && sameKey.id !== id) {
-        keepExisting(references, sameKey, data);
-        continue;
-      }
-      await upsertById(
-        references,
-        sameKey,
-        data,
-        () => prisma.referenceData.create({ data: { id, ...data } }),
-        () => prisma.referenceData.update({ where: { id }, data }),
-      );
-    }
+    // Réglages du site et données de référence : volontairement non repris (voir l'en-tête), firstSetup fait foi.
 
     // Membres. Le thème : comme la migration de la carte 078, tout le monde passe au thème « vestiaire » et l'ancien
     // thème est gardé dans previousTheme pour que le bandeau du nouveau look propose d'y revenir.
@@ -629,6 +609,300 @@ async function main() {
         data,
         () => prisma.rankingArchive.create({ data: { id, ...data } }),
         () => prisma.rankingArchive.update({ where: { id }, data }),
+      );
+    }
+
+    // --- Forum et tournois (23/11/2026) ---------------------------------------------------------------------------
+    const system = await prisma.user.findUnique({ where: { id: SYSTEM_USER_ID }, select: { id: true } });
+    if (!system) throw new Error("Compte « Système » absent : lancer d'abord prisma/firstSetup.ts sur la base cible.");
+    /** Auteur repris, ou le compte « Système » (le remplacement est compté dans le résumé). */
+    const authorOrSystem = (table: TableStats, userId: string | null) => {
+      if (userId && importedUsers.has(userId)) return userId;
+      table.clear("auteur non repris : remplacé par le compte « Système »");
+      return SYSTEM_USER_ID;
+    };
+
+    // Forums : même nom dans la bêta et dans la base cible (firstSetup reprend la structure de la bêta).
+    const targetForums = new Map((await prisma.forum.findMany({ select: { id: true, name: true } })).map((f) => [f.name, f.id]));
+    const forumIds = new Map<string, string>();
+    for (const row of rows("Forum")) {
+      const targetId = targetForums.get(text(row, "name"));
+      if (targetId) forumIds.set(text(row, "id"), targetId);
+    }
+
+    // Tournois (avant les sujets, qui pointent vers eux).
+    const tournaments = statsFor("Tournament");
+    const importedTournaments = new Set<string>();
+    for (const row of rows("Tournament")) {
+      tournaments.read++;
+      const id = text(row, "id");
+      let ligueId = textOrNull(row, "ligueId");
+      if (ligueId && !importedLigues.has(ligueId)) {
+        tournaments.clear("ligue non reprise : champ ligueId vidé");
+        ligueId = null;
+      }
+      const data = {
+        name: text(row, "name"),
+        date: date(row, "date"),
+        endDate: dateOrNull(row, "endDate"),
+        location: text(row, "location"),
+        address: textOrNull(row, "address"),
+        gmapsUrl: textOrNull(row, "gmapsUrl"),
+        ville: textOrNull(row, "ville"),
+        departement: textOrNull(row, "departement"),
+        region: textOrNull(row, "region"),
+        regionNAF: textOrNull(row, "regionNAF"),
+        description: textOrNull(row, "description"),
+        maxParticipants: intOrNull(row, "maxParticipants"),
+        currentParticipants: int(row, "currentParticipants"),
+        preRegistered: int(row, "preRegistered"),
+        isTeam: bool(row, "isTeam"),
+        coachsPerTeam: int(row, "coachsPerTeam"),
+        days: textOrNull(row, "days"),
+        totalMatches: intOrNull(row, "totalMatches"),
+        price: floatOrNull(row, "price"),
+        priceMeals: floatOrNull(row, "priceMeals"),
+        priceLodging: floatOrNull(row, "priceLodging"),
+        structure: textOrNull(row, "structure"),
+        lodgingAtVenue: bool(row, "lodgingAtVenue"),
+        ruleset: textOrNull(row, "ruleset"),
+        mealsIncluded: bool(row, "mealsIncluded"),
+        fridayArrival: bool(row, "fridayArrival"),
+        gameEdition: textOrNull(row, "gameEdition"),
+        platform: textOrNull(row, "platform"),
+        championships: BETA_CHAMPIONSHIP_FLAGS.filter(([column]) => bool(row, column)).map(([, key]) => key),
+        isFinished: bool(row, "isFinished"),
+        isCancelled: bool(row, "isCancelled"),
+        organizerId: authorOrSystem(tournaments, textOrNull(row, "organizerId")),
+        ligueId,
+        ligueCustom: textOrNull(row, "ligueCustom"),
+        lat: floatOrNull(row, "lat"),
+        lng: floatOrNull(row, "lng"),
+        registrationsLocked: bool(row, "registrationsLocked"),
+        typeCDF: textOrNull(row, "typeCDF"),
+        tournamentType: textOrNull(row, "tournamentType"),
+      };
+      const existing = await prisma.tournament.findUnique({ where: { id } });
+      // Liste comparée à part : `differs` compare des valeurs simples
+      const sameChampionships = existing && existing.championships.join() === data.championships.join();
+      await upsertById(
+        tournaments,
+        existing,
+        sameChampionships ? { ...data, championships: existing!.championships } : data,
+        () => prisma.tournament.create({ data: { id, ...data } }),
+        () => prisma.tournament.update({ where: { id }, data }),
+      );
+      importedTournaments.add(id);
+    }
+
+    // Commissaires des tournois (table de liaison : A = le tournoi, B = le membre), seulement les membres repris.
+    const tournamentCommissaires = statsFor("_TournamentCommissaires");
+    for (const row of rows("_TournamentCommissaires")) {
+      tournamentCommissaires.read++;
+      const tournamentId = text(row, "A");
+      const userId = text(row, "B");
+      if (!importedTournaments.has(tournamentId) || !importedUsers.has(userId)) {
+        tournamentCommissaires.ignore("tournoi ou membre non repris");
+        continue;
+      }
+      const tournament = await prisma.tournament.findUniqueOrThrow({ where: { id: tournamentId }, select: { commissaires: { select: { id: true } } } });
+      if (tournament.commissaires.some((user) => user.id === userId)) {
+        tournamentCommissaires.unchanged++;
+        continue;
+      }
+      await prisma.tournament.update({ where: { id: tournamentId }, data: { commissaires: { connect: { id: userId } } } });
+      tournamentCommissaires.created++;
+    }
+
+    // Sujets : rangés dans le forum du même nom ; la date du dernier message est recalculée après les messages.
+    const topics = statsFor("Topic");
+    const importedTopics = new Set<string>();
+    for (const row of rows("Topic")) {
+      topics.read++;
+      const id = text(row, "id");
+      const forumId = forumIds.get(text(row, "forumId"));
+      if (!forumId) {
+        topics.ignore("forum introuvable dans la base cible (nom différent)");
+        continue;
+      }
+      let tournamentId = textOrNull(row, "tournamentId");
+      if (tournamentId && !importedTournaments.has(tournamentId)) {
+        topics.clear("tournoi non repris : champ tournamentId vidé");
+        tournamentId = null;
+      }
+      const data = {
+        title: text(row, "title"),
+        isLocked: bool(row, "isLocked"),
+        isSticky: bool(row, "isSticky"),
+        isArchived: bool(row, "isArchived"),
+        createdAt: date(row, "createdAt"),
+        updatedAt: date(row, "updatedAt"),
+        views: int(row, "views"),
+        forumId,
+        authorId: authorOrSystem(topics, textOrNull(row, "authorId")),
+        tournamentId,
+        legacyId: textOrNull(row, "legacyId"),
+      };
+      await upsertById(
+        topics,
+        await prisma.topic.findUnique({ where: { id } }),
+        data,
+        () => prisma.topic.create({ data: { id, ...data, lastPostAt: data.createdAt } }),
+        () => prisma.topic.update({ where: { id }, data }),
+      );
+      importedTopics.add(id);
+    }
+
+    // Messages.
+    const posts = statsFor("Post");
+    const importedPosts = new Set<string>();
+    for (const row of rows("Post")) {
+      posts.read++;
+      const id = text(row, "id");
+      const topicId = text(row, "topicId");
+      if (!importedTopics.has(topicId)) {
+        posts.ignore("sujet non repris");
+        continue;
+      }
+      let moderatedBy = textOrNull(row, "moderatedBy");
+      if (moderatedBy && !importedUsers.has(moderatedBy)) {
+        posts.clear("modérateur non repris : champ moderatedBy vidé");
+        moderatedBy = null;
+      }
+      const data = {
+        content: text(row, "content"),
+        createdAt: date(row, "createdAt"),
+        updatedAt: date(row, "updatedAt"),
+        topicId,
+        authorId: authorOrSystem(posts, textOrNull(row, "authorId")),
+        isModerated: bool(row, "isModerated"),
+        moderationReason: textOrNull(row, "moderationReason"),
+        moderatedBy,
+        isDeleted: bool(row, "isDeleted"),
+        legacyId: textOrNull(row, "legacyId"),
+      };
+      await upsertById(
+        posts,
+        await prisma.post.findUnique({ where: { id } }),
+        data,
+        () => prisma.post.create({ data: { id, ...data } }),
+        () => prisma.post.update({ where: { id }, data }),
+      );
+      importedPosts.add(id);
+    }
+
+    // Dernier message de chaque sujet repris (date, message, auteur), comme le tient le forum.
+    for (const topicId of importedTopics) {
+      const last = await prisma.post.findFirst({
+        where: { topicId, isDeleted: false },
+        orderBy: [{ createdAt: "desc" }, { id: "desc" }],
+        select: { id: true, createdAt: true, authorId: true },
+      });
+      if (!last) continue;
+      // updatedAt redonné tel quel : sans lui, Prisma le mettrait à la date du jour et une nouvelle exécution
+      // compterait chaque sujet comme modifié
+      const topic = await prisma.topic.findUniqueOrThrow({ where: { id: topicId }, select: { updatedAt: true, lastPostId: true } });
+      if (topic.lastPostId === last.id) continue;
+      await prisma.topic.update({
+        where: { id: topicId },
+        data: { lastPostAt: last.createdAt, lastPostId: last.id, lastPostAuthorId: last.authorId, updatedAt: topic.updatedAt },
+      });
+    }
+
+    // Réactions aux messages : clé naturelle = message + membre + émoji.
+    const postReactions = statsFor("PostReaction");
+    for (const row of rows("PostReaction")) {
+      postReactions.read++;
+      const id = text(row, "id");
+      const data = { emoji: text(row, "emoji"), createdAt: date(row, "createdAt"), postId: text(row, "postId"), userId: text(row, "userId") };
+      if (!importedPosts.has(data.postId) || !importedUsers.has(data.userId)) {
+        postReactions.ignore("message ou membre non repris");
+        continue;
+      }
+      const sameKey = await prisma.postReaction.findUnique({
+        where: { postId_userId_emoji: { postId: data.postId, userId: data.userId, emoji: data.emoji } },
+      });
+      if (sameKey && sameKey.id !== id) {
+        keepExisting(postReactions, sameKey, data);
+        continue;
+      }
+      await upsertById(postReactions, sameKey, data, () => prisma.postReaction.create({ data: { id, ...data } }), () =>
+        prisma.postReaction.update({ where: { id }, data }),
+      );
+    }
+
+    // Mentions (@pseudo) : clé naturelle = message + membre mentionné.
+    const mentions = statsFor("Mention");
+    for (const row of rows("Mention")) {
+      mentions.read++;
+      const id = text(row, "id");
+      const data = {
+        createdAt: date(row, "createdAt"),
+        postId: text(row, "postId"),
+        mentionerId: text(row, "mentionerId"),
+        mentionedUserId: text(row, "mentionedUserId"),
+        readAt: dateOrNull(row, "readAt"),
+      };
+      if (!importedPosts.has(data.postId) || !importedUsers.has(data.mentionerId) || !importedUsers.has(data.mentionedUserId)) {
+        mentions.ignore("message ou membre non repris");
+        continue;
+      }
+      const sameKey = await prisma.mention.findUnique({
+        where: { postId_mentionedUserId: { postId: data.postId, mentionedUserId: data.mentionedUserId } },
+      });
+      if (sameKey && sameKey.id !== id) {
+        keepExisting(mentions, sameKey, data);
+        continue;
+      }
+      await upsertById(mentions, sameKey, data, () => prisma.mention.create({ data: { id, ...data } }), () =>
+        prisma.mention.update({ where: { id }, data }),
+      );
+    }
+
+    // Sujets suivis : clé = membre + sujet.
+    const follows = statsFor("TopicFollow");
+    for (const row of rows("TopicFollow")) {
+      follows.read++;
+      const userId = text(row, "userId");
+      const topicId = text(row, "topicId");
+      if (!importedUsers.has(userId) || !importedTopics.has(topicId)) {
+        follows.ignore("membre ou sujet non repris");
+        continue;
+      }
+      const existing = await prisma.topicFollow.findUnique({ where: { userId_topicId: { userId, topicId } } });
+      if (existing) follows.unchanged++;
+      else {
+        await prisma.topicFollow.create({ data: { userId, topicId } });
+        follows.created++;
+      }
+    }
+
+    // Inscriptions aux tournois : clé naturelle = tournoi + membre.
+    const registrations = statsFor("TournamentRegistration");
+    for (const row of rows("TournamentRegistration")) {
+      registrations.read++;
+      const id = text(row, "id");
+      const data = {
+        tournamentId: text(row, "tournamentId"),
+        userId: text(row, "userId"),
+        status: text(row, "status") as "PRE_REGISTERED",
+        paymentStatus: text(row, "paymentStatus") as "NOT_PAID",
+        createdAt: date(row, "createdAt"),
+        updatedAt: date(row, "updatedAt"),
+      };
+      if (!importedTournaments.has(data.tournamentId) || !importedUsers.has(data.userId)) {
+        registrations.ignore("tournoi ou membre non repris");
+        continue;
+      }
+      const sameKey = await prisma.tournamentRegistration.findUnique({
+        where: { tournamentId_userId: { tournamentId: data.tournamentId, userId: data.userId } },
+      });
+      if (sameKey && sameKey.id !== id) {
+        keepExisting(registrations, sameKey, data);
+        continue;
+      }
+      await upsertById(registrations, sameKey, data, () => prisma.tournamentRegistration.create({ data: { id, ...data } }), () =>
+        prisma.tournamentRegistration.update({ where: { id }, data }),
       );
     }
 

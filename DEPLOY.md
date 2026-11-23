@@ -237,9 +237,9 @@ Le compte ne peut plus se connecter et ses accès aux applications sont retirés
 
 L'ancienne bêta (base SQLite chez Turso) a été arrêtée le 4 novembre 2026. Sa copie, `docs/backup-db/bbfrance-db-backup-20261104.db`, reste sur le poste du responsable : elle contient des données personnelles et ne doit jamais être enregistrée dans git. Le script `apps/site/scripts/import-beta-backup.ts` en recopie les membres et les données utiles dans la base du site. Il ne se lance qu'une fois, par le responsable ou avec son accord exprès.
 
-**Ce qui est repris** : les membres, avec leur rôle, leur bannissement éventuel et leurs liaisons Discord ou Google ; les rôles, réglages et données de référence qui manqueraient ; les ligues, leurs membres et commissaires ; les ressources, les articles, leurs étiquettes et réactions ; les archives du classement. Tous les membres passent au thème « vestiaire ».
+**Ce qui est repris** : les membres, avec leur rôle, leur bannissement éventuel et leurs liaisons Discord ou Google ; les rôles qui manqueraient ; les ligues, leurs membres et commissaires ; le forum (sujets rangés dans le forum du même nom, messages, réactions, mentions, sujets suivis) ; les tournois, leurs commissaires et leurs inscriptions (anciennes cases NAF, CDF… converties en championnats) ; les ressources, les articles, leurs étiquettes et réactions ; les archives du classement. Un auteur non repris est remplacé par le compte « Système ».
 
-**Ce qui n'est pas repris** : les messages privés ; les sujets et messages du forum et ce qui en dépend (tournois, inscriptions, réactions, mentions, lectures) ; le journal de modération et les signalements ; les sessions de connexion ; les schémas BBScheme et le quiz (ils iront dans leurs propres applications).
+**Ce qui n'est pas repris** : les réglages du site et les données de référence (ceux de `firstSetup` sont gardés tels quels) ; les messages privés ; les états « lu / non lu » ; le journal de modération et les signalements ; les sessions de connexion ; les schémas BBScheme et le quiz.
 
 1. Après les étapes 8 et 9, sur Neon, créer une branche de sauvegarde (`avant-reprise-beta`).
 2. Depuis `apps/site` :
